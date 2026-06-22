@@ -1359,6 +1359,21 @@ function salvarHabilidades(){
   fecharModal('modal-hab');
   const nome = document.getElementById('hab-nome').textContent;
   showN('✓ Habilidades de '+nome+' atualizadas!');
+  // Atualiza barras na tela do atleta em tempo real
+  atualizarHabilidadesAtleta(habAtualKey);
+}
+
+function atualizarHabilidadesAtleta(key){
+  const hab = HABILIDADES[key];
+  if(!hab) return;
+  Object.keys(HAB_LABELS).forEach(k=>{
+    const val = hab[k] || 70;
+    const c = val>=75?'#0d3d1a':val>=50?'#b8860b':'#c0392b';
+    const bar = document.getElementById('ev-bar-'+k);
+    const valEl = document.getElementById('ev-val-'+k);
+    if(bar){ bar.style.width=val+'%'; bar.style.background=c; }
+    if(valEl){ valEl.textContent=val; valEl.style.color=c; }
+  });
 }
 
 // =====================
@@ -2007,14 +2022,14 @@ function renderEvolucao(cor){
   <div style="background:#fdf3dc;border:1px solid #e8c97a;border-left:3px solid #b8860b;border-radius:var(--radius-sm);padding:10px 12px;font-size:11px;color:#7a4010;line-height:1.6;margin-bottom:12px"><strong style="font-weight:700">Técnico André:</strong> Foque no passe curto e na marcação. Sua finalização está excelente!</div>
 
   <div class="lbl">Habilidades</div>
-  <div class="cw" style="padding:12px 14px">
+  <div class="cw" style="padding:12px 14px" id="ev-hab-container">
     ${Object.entries(HAB_LABELS).map(([k,label])=>{
       const val = (HABILIDADES['KTsub13']||{})[k] || 70;
       const c = val>=75?'#0d3d1a':val>=50?'#b8860b':'#c0392b';
       return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
         <span style="font-size:10px;color:var(--text-2);width:76px;font-weight:500">${label}</span>
-        <div style="flex:1;background:var(--border);border-radius:4px;height:5px;overflow:hidden"><div style="width:${val}%;height:5px;border-radius:4px;background:${c};transition:width .6s ease"></div></div>
-        <span style="font-size:10px;font-weight:700;color:${c};width:24px;text-align:right">${val}</span>
+        <div style="flex:1;background:var(--border);border-radius:4px;height:5px;overflow:hidden"><div id="ev-bar-${k}" style="width:${val}%;height:5px;border-radius:4px;background:${c};transition:width .6s ease"></div></div>
+        <span id="ev-val-${k}" style="font-size:10px;font-weight:700;color:${c};width:24px;text-align:right">${val}</span>
       </div>`;
     }).join('')}
   </div>
