@@ -1216,7 +1216,7 @@ function renderAvaliacao(cat, cor){
       <textarea style="width:100%;font-size:11px;padding:6px 9px;border-radius:7px;border:1px solid #ddd;background:#fff;resize:none;height:44px;font-family:system-ui" placeholder="Nota livre (opcional)..."></textarea>
     </div>
   </div>`).join('')
-  + `<button class="btn-g" onclick="showN('✓ Avaliações salvas! Atletas notificados.')">Salvar avaliações</button>`;
+  + `<button class="btn-g" onclick="salvarAvaliacoes()">Salvar avaliações</button>`;
 }
 
 function togAv(i){const d=document.getElementById('avd-'+i);d.style.display=d.style.display==='none'?'block':'none';}
@@ -1258,7 +1258,7 @@ function renderTreino(cor){
     <button class="bav" style="background:#faeeda;color:#633806" onclick="selIntT(this,'${cor}')">Regular</button>
   </div>
   <div class="field"><label>Observação (opcional)</label><textarea placeholder="Ex: Grupo focado. Evoluiu no passe curto..."></textarea></div>
-  <button class="btn-g" style="background:${cor}" onclick="showN('✓ Treino publicado! Atletas e pais notificados.')">Publicar treino</button>`;
+  <button class="btn-g" style="background:${cor}" onclick="publicarTreino('${cor}')">Publicar treino</button>`;
 }
 
 function selTipoT(el,cor){
@@ -1268,6 +1268,52 @@ function selTipoT(el,cor){
 function selIntT(el,cor){
   el.closest('div').querySelectorAll('.bav').forEach(b=>{b.style.border='1.5px solid transparent';b.style.fontWeight='600';});
   el.style.border='1.5px solid '+cor;el.style.fontWeight='700';
+}
+
+// =====================
+// INJETAR NO FEED DO ATLETA
+// =====================
+function injetarFeed(cor, titulo, corpo, rodape){
+  const feed = document.getElementById('feed-msgs');
+  if(!feed) return;
+  const item = document.createElement('div');
+  item.className = 'card';
+  item.style.cssText = 'border-left:3px solid '+cor+';margin-bottom:8px';
+  item.innerHTML = `<div style="font-size:9px;font-weight:700;color:${cor};margin-bottom:3px">${titulo}</div>
+    <div style="font-size:11px;color:var(--text);line-height:1.6">${corpo}</div>
+    <div style="font-size:9px;color:var(--text-3);margin-top:4px">${rodape}</div>`;
+  feed.insertBefore(item, feed.firstChild);
+}
+
+function salvarAvaliacoes(){
+  // Coleta avaliações preenchidas
+  const badges = document.querySelectorAll('[id^="avb-"]');
+  const avs = [];
+  badges.forEach(b=>{
+    if(b.textContent !== 'pendente') avs.push(b.textContent);
+  });
+  const resumo = avs.length > 0
+    ? avs.join(' · ')
+    : 'Sem avaliações preenchidas';
+  injetarFeed('#185fa5','📋 AVALIAÇÃO DO TÉCNICO',
+    'O técnico registrou avaliação do treino de hoje: <strong>'+resumo+'</strong>',
+    'agora · avaliação');
+  showN('✓ Avaliações salvas! Atletas notificados.');
+}
+
+function publicarTreino(cor){
+  // Coleta tipo de treino selecionado
+  const tipoEl = document.querySelector('[id^="tc-"][style*="scale"]');
+  const tipo = tipoEl ? tipoEl.querySelector('span')?.textContent || 'Treino' : 'Treino';
+  // Coleta intensidade selecionada
+  const intEl = document.querySelector('.bav[style*="font-weight: 700"], .bav[style*="font-weight:700"]');
+  const intens = intEl ? intEl.textContent.trim() : '';
+  // Coleta habilidades selecionadas
+  const chips = [...document.querySelectorAll('.chip.on')].map(c=>c.textContent).filter(t=>t.length<20);
+  const habStr = chips.length > 0 ? chips.slice(0,3).join(', ') : 'variadas';
+  const corpo = `<strong>${tipo}</strong>${intens?' · '+intens:''} · Habilidades trabalhadas: ${habStr}.`;
+  injetarFeed(cor, '⚽ TREINO DE HOJE · Técnico', corpo, 'agora · publicado pelo técnico');
+  showN('✓ Treino publicado! Atletas e pais notificados.');
 }
 
 function renderMensagem(catNome, isDir, cor){
@@ -1493,7 +1539,21 @@ function renderCalendario(cor){
   const primeiroDia = new Date(ano,mes,1).getDay();
   const diasNoMes = new Date(ano,mes+1,0).getDate();
   const evMap={};
-  EVENTOS.forEach(e=>{const d=parseInt(e.data.split('-')[2]);if(!evMap[d])evMap[d]=[];evMap[d].push(e);});
+  // Eventos fixos
+  EVENTOS.forEach(e=>{
+    const [ea,em,ed]=e.data.split('-');
+    if(parseInt(ea)===ano && parseInt(em)-1===mes){
+      const d=parseInt(ed);if(!evMap[d])evMap[d]=[];evMap[d].push(e);
+    }
+  });
+  // Jogos agendados pelo professor
+  JOGOS_AGENDADOS.forEach(j=>{
+    const [ja,jm,jd]=j.data.split('-');
+    if(parseInt(ja)===ano && parseInt(jm)-1===mes){
+      const d=parseInt(jd);if(!evMap[d])evMap[d]=[];
+      evMap[d].push({tipo:'jogo',data:j.data,hora:j.hora,label:'vs '+j.adv,cat:j.cat});
+    }
+  });
   const dias=['D','S','T','Q','Q','S','S'];
   const headers=dias.map(d=>`<div style="text-align:center;font-size:9px;font-weight:700;color:var(--text-3);padding:4px 0">${d}</div>`).join('');
   let cells='';
@@ -1543,11 +1603,16 @@ function renderCalendario(cor){
 }
 
 function verDiaCalendario(dia){
-  const evMap={};
-  EVENTOS.forEach(e=>{const d=parseInt(e.data.split('-')[2]);if(!evMap[d])evMap[d]=[];evMap[d].push(e);});
+  const hoje2=new Date();const evMap={};
+  [...EVENTOS,...JOGOS_AGENDADOS.map(j=>({tipo:'jogo',data:j.data,hora:j.hora,label:'vs '+j.adv,cat:j.cat}))].forEach(e=>{
+    const [ea,em,ed]=e.data.split('-');
+    if(parseInt(ea)===hoje2.getFullYear()&&parseInt(em)-1===hoje2.getMonth()){
+      const d=parseInt(ed);if(!evMap[d])evMap[d]=[];evMap[d].push(e);
+    }
+  });
   const eventos=evMap[dia]||[];
-  if(!eventos.length) showN('Nenhum evento em '+dia+'/06');
-  else showN(dia+'/Jun: '+eventos.map(e=>e.label).join(' · '));
+  if(!eventos.length) showN('Nenhum evento neste dia.');
+  else showN(dia+': '+eventos.map(e=>e.label).join(' · '));
 }
 
 // =====================
@@ -2463,6 +2528,15 @@ function agendarJogo(){
 
   // Atualiza a tela de jogos se estiver visível
   atualizarListaJogos();
+
+  // Injeta no feed do atleta
+  const [ano,mes,dia] = data.split('-');
+  const meses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const dataFmt = dia+'/'+meses[parseInt(mes)-1];
+  injetarFeed('#8b1a1a','⚽ JOGO AGENDADO',
+    'Você foi convocado para o jogo vs <strong>'+adv+'</strong> em '+dataFmt+' às '+hora.replace(':','h')+'. '+
+    (obs ? '<br>📋 '+obs : ''),
+    'agora · convocação oficial');
 
   // Limpa o formulário
   if(document.getElementById('jogo-adv')) document.getElementById('jogo-adv').value='';
