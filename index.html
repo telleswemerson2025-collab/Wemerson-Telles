@@ -18,6 +18,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -328,60 +334,64 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface-2);min-
   <div class="logo-area">
     <div class="logo-badge" style="background:transparent;box-shadow:none;border:none;width:90px;height:90px"><img src="data:image/jpeg;base64,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" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5))"></div>
     <div class="logo-title">Votoraty Academy</div>
-    <div class="logo-sub">Selecione seu perfil</div>
+    <div class="logo-sub">Faça login para continuar</div>
     <div class="logo-divider"></div>
   </div>
 
-  <div class="perfil-section" style="width:100%">
-    <div class="perfil-section-label">Gestão</div>
-    <button class="perfil-btn" onclick="entrar('diretor')">
-      <div class="p-icon" style="background:rgba(83,74,183,.25)">👑</div>
-      <div><div class="p-title">Diretor / Admin</div><div class="p-sub">Todas as categorias · acesso total</div></div>
-      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
-    </button>
-    <button class="perfil-btn" onclick="entrar('professor')">
-      <div class="p-icon" style="background:rgba(22,96,36,.35)">🏫</div>
-      <div><div class="p-title">Professor / Técnico</div><div class="p-sub">Todos os subs · chamada, treino, avaliação</div></div>
-      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
-    </button>
-  </div>
-
-  <div class="perfil-section" style="width:100%;margin-top:4px">
-    <div class="perfil-section-label">Categorias</div>
-    <button class="perfil-btn" onclick="entrar('prof_sub7')">
-      <div class="p-icon" style="background:rgba(230,126,34,.25)">🌱</div>
-      <div><div class="p-title">Professor Sub-7</div><div class="p-sub">Somente Sub-7</div></div>
-      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
-    </button>
-    <button class="perfil-btn" onclick="entrar('prof_sub9')">
-      <div class="p-icon" style="background:rgba(26,188,156,.2)">🌿</div>
-      <div><div class="p-title">Professor Sub-9</div><div class="p-sub">Somente Sub-9</div></div>
-      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
-    </button>
-    <button class="perfil-btn" onclick="entrar('prof_sub11')">
-      <div class="p-icon" style="background:rgba(22,96,36,.3)">⚽</div>
-      <div><div class="p-title">Professor Sub-11</div><div class="p-sub">Somente Sub-11</div></div>
-      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
-    </button>
-    <button class="perfil-btn" onclick="entrar('prof_sub13')">
-      <div class="p-icon" style="background:rgba(24,95,165,.25)">🔵</div>
-      <div><div class="p-title">Professor Sub-13</div><div class="p-sub">Somente Sub-13</div></div>
-      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
-    </button>
-    <button class="perfil-btn" onclick="entrar('prof_sub15')">
-      <div class="p-icon" style="background:rgba(200,148,10,.25)">⭐</div>
-      <div><div class="p-title">Professor Sub-15</div><div class="p-sub">Somente Sub-15</div></div>
-      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
+  <!-- FORMULÁRIO DE LOGIN FIREBASE -->
+  <div id="login-firebase" style="width:100%;margin-bottom:6px">
+    <div id="login-erro" style="display:none;background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.35);border-radius:12px;padding:10px 13px;margin-bottom:10px;font-size:11px;color:#ff9e9e;font-weight:600;text-align:center"></div>
+    <div style="margin-bottom:10px">
+      <label style="font-size:9px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.14em;display:block;margin-bottom:6px">Email</label>
+      <input id="fb-email" type="email" autocomplete="email" placeholder="seu@email.com"
+        style="width:100%;padding:13px 15px;border-radius:13px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:#fff;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;outline:none;transition:all .2s"
+        onfocus="this.style.borderColor='rgba(255,255,255,.28)';this.style.background='rgba(255,255,255,.1)'"
+        onblur="this.style.borderColor='rgba(255,255,255,.12)';this.style.background='rgba(255,255,255,.07)'"
+        onkeydown="if(event.key==='Enter')document.getElementById('fb-pass').focus()">
+    </div>
+    <div style="margin-bottom:16px">
+      <label style="font-size:9px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.14em;display:block;margin-bottom:6px">Senha</label>
+      <input id="fb-pass" type="password" autocomplete="current-password" placeholder="••••••••"
+        style="width:100%;padding:13px 15px;border-radius:13px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:#fff;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;outline:none;transition:all .2s"
+        onfocus="this.style.borderColor='rgba(255,255,255,.28)';this.style.background='rgba(255,255,255,.1)'"
+        onblur="this.style.borderColor='rgba(255,255,255,.12)';this.style.background='rgba(255,255,255,.07)'"
+        onkeydown="if(event.key==='Enter')loginFirebase()">
+    </div>
+    <button id="btn-login" onclick="loginFirebase()"
+      style="width:100%;padding:15px;border-radius:14px;border:none;background:linear-gradient(135deg,#1a6628,#0d3d1a);color:#fff;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.04em;box-shadow:0 6px 24px rgba(13,61,26,.5),inset 0 1px 0 rgba(255,255,255,.12);transition:all .2s;position:relative;overflow:hidden">
+      <span id="btn-login-txt">Entrar</span>
+      <span id="btn-login-load" style="display:none">Entrando…</span>
     </button>
   </div>
 
-  <div class="perfil-section" style="width:100%;margin-top:4px">
-    <div class="perfil-section-label">Atleta</div>
-    <button class="perfil-btn" onclick="entrar('atleta')" style="border-color:rgba(184,134,11,.3);background:rgba(184,134,11,.08)">
-      <div class="p-icon" style="background:rgba(184,134,11,.25)">🏃</div>
-      <div><div class="p-title" style="color:#f5c842">Atleta / Família</div><div class="p-sub">Meu perfil, figurinhas, saúde, estudos</div></div>
-      <div class="perfil-arrow" style="background:rgba(184,134,11,.15)"><i class="ti ti-chevron-right" style="color:rgba(245,200,66,.6);font-size:14px"></i></div>
-    </button>
+  <!-- DIVISOR -->
+  <div style="display:flex;align-items:center;gap:10px;width:100%;margin:14px 0 10px">
+    <div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div>
+    <span style="font-size:9px;color:rgba(255,255,255,.3);font-weight:700;letter-spacing:.1em">OU MODO DEMO</span>
+    <div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div>
+  </div>
+
+  <!-- BOTÕES DEMO (sem login) -->
+  <div style="width:100%">
+    <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px;padding-left:4px">Acesso direto (sem Firebase)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+      <button class="perfil-btn" onclick="entrar('diretor')" style="padding:10px 12px;margin:0">
+        <div class="p-icon" style="background:rgba(83,74,183,.25);width:34px;height:34px;font-size:16px">👑</div>
+        <div><div class="p-title" style="font-size:11px">Diretor</div></div>
+      </button>
+      <button class="perfil-btn" onclick="entrar('professor')" style="padding:10px 12px;margin:0">
+        <div class="p-icon" style="background:rgba(22,96,36,.35);width:34px;height:34px;font-size:16px">🏫</div>
+        <div><div class="p-title" style="font-size:11px">Professor</div></div>
+      </button>
+      <button class="perfil-btn" onclick="entrar('prof_sub13')" style="padding:10px 12px;margin:0">
+        <div class="p-icon" style="background:rgba(24,95,165,.25);width:34px;height:34px;font-size:16px">🔵</div>
+        <div><div class="p-title" style="font-size:11px">Prof. Sub-13</div></div>
+      </button>
+      <button class="perfil-btn" onclick="entrar('atleta')" style="padding:10px 12px;margin:0;border-color:rgba(184,134,11,.3);background:rgba(184,134,11,.08)">
+        <div class="p-icon" style="background:rgba(184,134,11,.25);width:34px;height:34px;font-size:16px">🏃</div>
+        <div><div class="p-title" style="font-size:11px;color:#f5c842">Atleta</div></div>
+      </button>
+    </div>
   </div>
 </div>
 </div>
@@ -788,6 +798,120 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface-2);min-
 
 <script>
 // =====================
+// FIREBASE CONFIG
+// =====================
+// Preencha com os dados do seu projeto Firebase:
+// Firebase Console → Configurações do projeto → Seus apps → SDK Config
+const FIREBASE_CONFIG = {
+  apiKey:            "SUA_API_KEY",
+  authDomain:        "SEU_PROJETO.firebaseapp.com",
+  projectId:         "SEU_PROJETO",
+  storageBucket:     "SEU_PROJETO.appspot.com",
+  messagingSenderId: "SEU_SENDER_ID",
+  appId:             "SEU_APP_ID"
+};
+
+let _auth = null, _db = null, _listener = null;
+(function initFirebase(){
+  try {
+    if(FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.startsWith('SUA_')){
+      firebase.initializeApp(FIREBASE_CONFIG);
+      _auth = firebase.auth();
+      _db   = firebase.firestore();
+      // Se já estava logado, entra direto
+      _auth.onAuthStateChanged(async user => {
+        if(user && !perfilAtual){
+          const snap = await _db.collection('usuarios').doc(user.uid).get().catch(()=>null);
+          if(snap && snap.exists){
+            const role = snap.data().role;
+            entrar(role);
+          }
+        }
+      });
+    }
+  } catch(e){ console.warn('[Firebase] Não inicializado:', e.message); }
+})();
+
+async function loginFirebase(){
+  const email = (document.getElementById('fb-email')||{}).value||'';
+  const pass  = (document.getElementById('fb-pass')||{}).value||'';
+  if(!_auth){ mostrarErroLogin('Firebase não configurado. Use o Modo Demo abaixo.'); return; }
+  if(!email||!pass){ mostrarErroLogin('Preencha email e senha.'); return; }
+  setLoginLoading(true);
+  try {
+    const cred = await _auth.signInWithEmailAndPassword(email.trim(), pass);
+    const snap = await _db.collection('usuarios').doc(cred.user.uid).get();
+    if(!snap.exists){ mostrarErroLogin('Usuário sem perfil cadastrado. Fale com o administrador.'); await _auth.signOut(); return; }
+    const role = snap.data().role;
+    // Carrega dados do Firestore antes de entrar
+    await carregarFirestore();
+    entrar(role);
+  } catch(e){
+    const msg = e.code==='auth/wrong-password'||e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'
+      ? 'Email ou senha incorretos.' : 'Erro ao conectar. Tente novamente.';
+    mostrarErroLogin(msg);
+  } finally { setLoginLoading(false); }
+}
+
+function mostrarErroLogin(msg){
+  const el = document.getElementById('login-erro');
+  if(el){ el.textContent=msg; el.style.display='block'; }
+  setTimeout(()=>{ if(el) el.style.display='none'; }, 4000);
+}
+function setLoginLoading(on){
+  const bt  = document.getElementById('btn-login-txt');
+  const ld  = document.getElementById('btn-login-load');
+  const btn = document.getElementById('btn-login');
+  if(bt) bt.style.display = on?'none':'inline';
+  if(ld) ld.style.display = on?'inline':'none';
+  if(btn) btn.disabled = on;
+}
+
+// Salva no Firestore (assíncrono, sem bloquear a UI)
+function salvarFirestore(){
+  if(!_db) return;
+  _db.collection('escola').doc('votoraty').set({
+    stats: STATS,
+    habilidades: HABILIDADES,
+    fichas: FICHAS,
+    jogos_agendados: JOGOS_AGENDADOS,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge:true }).catch(e=>console.warn('[Firestore] Erro ao salvar:', e));
+}
+
+// Carrega dados do Firestore
+async function carregarFirestore(){
+  if(!_db) return false;
+  try {
+    const doc = await _db.collection('escola').doc('votoraty').get();
+    if(!doc.exists) return false;
+    const d = doc.data();
+    if(d.stats)           Object.assign(STATS, d.stats);
+    if(d.habilidades)     Object.assign(HABILIDADES, d.habilidades);
+    if(d.fichas)          Object.assign(FICHAS, d.fichas);
+    if(d.jogos_agendados){ JOGOS_AGENDADOS.length=0; d.jogos_agendados.forEach(j=>JOGOS_AGENDADOS.push(j)); }
+    return true;
+  } catch(e){ return false; }
+}
+
+// Listener em tempo real para o atleta — atualiza habilidades e jogos ao vivo
+function iniciarListenerAtleta(){
+  if(!_db || _listener) return;
+  _listener = _db.collection('escola').doc('votoraty').onSnapshot(doc=>{
+    if(!doc.exists) return;
+    const d = doc.data();
+    if(d.habilidades){
+      Object.assign(HABILIDADES, d.habilidades);
+      const key = ATLETA_DEFAULT.sig + ATLETA_DEFAULT.cat.replace('-','').replace(' ','').toLowerCase();
+      atualizarHabilidadesAtleta(key);
+    }
+    if(d.jogos_agendados){
+      JOGOS_AGENDADOS.length=0; d.jogos_agendados.forEach(j=>JOGOS_AGENDADOS.push(j));
+    }
+  });
+}
+
+// =====================
 // DADOS
 // =====================
 const CORES = {diretor:'#3c3489',sub7:'#c45e10',sub9:'#0f8c6e',sub11:'#0d3d1a',sub13:'#0e3d6e',sub15:'#8a6200',atleta:'#0d3d1a',professor:'#0d3d1a'};
@@ -910,6 +1034,7 @@ function salvarLS(){
   localStorage.setItem('vot_habilidades', JSON.stringify(HABILIDADES));
   localStorage.setItem('vot_fichas', JSON.stringify(FICHAS));
   localStorage.setItem('vot_jogos_agendados', JSON.stringify(JOGOS_AGENDADOS));
+  salvarFirestore(); // sincroniza com Firebase quando disponível
 }
 
 function carregarLS(){
@@ -991,6 +1116,8 @@ function entrar(perfil){
   const cor = CORES[perfil.replace('prof_','')];
   setCor(cor);
   configurarPerfil(perfil, cor);
+  // Listener em tempo real para atleta (dados sincronizados do professor)
+  if(perfil === 'atleta') iniciarListenerAtleta();
 }
 
 function configurarPerfil(perfil, cor){
@@ -2404,12 +2531,16 @@ function toggleOff(){
 }
 
 function sair(){
+  // Para o listener em tempo real do atleta
+  if(_listener){ _listener(); _listener=null; }
+  // Sign out do Firebase
+  if(_auth) _auth.signOut().catch(()=>{});
+  perfilAtual = null;
   document.getElementById('app').style.display='none';
   document.getElementById('tela-inicial').style.display='flex';
   const dp = document.getElementById('desktop-panel');
   if(dp && window.innerWidth >= 900) dp.style.display='block';
   chamadas={};golsV=2;offlineMode=false;
-  // Remove mini avatar do header ao sair
   const mini = document.getElementById('header-mini-av');
   if(mini) mini.remove();
 }
