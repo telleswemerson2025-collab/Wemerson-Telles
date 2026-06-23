@@ -602,6 +602,10 @@ body {
         <i class="ti ti-receipt"></i>
         <span>Mensalidade atletas</span>
       </div>
+      <div class="sidebar-item" onclick="sidebarClick(this, 'convocacoes')">
+        <i class="ti ti-clipboard-check"></i>
+        <span>Convocações</span>
+      </div>
       <div class="sidebar-item" onclick="sidebarClick(this, 'arbitragem')">
         <i class="ti ti-flag"></i>
         <span>Arbitragem</span>
@@ -773,6 +777,11 @@ body {
     <div id="tabela-atletas"></div>
   </div>
 
+  <!-- CONVOCAÇÕES -->
+  <div id="convocacoes" class="scr">
+    <div id="tabela-convocacoes"></div>
+  </div>
+
   <!-- ARBITRAGEM -->
   <div id="arbitragem" class="scr">
     <button class="btn-g" onclick="cobrarTodasArbitragem()">Cobrar pendentes</button>
@@ -837,22 +846,19 @@ const CHART_INSTANCES = {};
 
 const VALOR_ARBITRAGEM = 30;
 const JOGOS_AGENDADOS = [
-  {id:'j1',adv:'Flamengo',cat:'Sub-7',data:'15/06/2024',hora:'10:00',local:'Campo A',atletas:4},
-  {id:'j2',adv:'Botafogo',cat:'Sub-11',data:'16/06/2024',hora:'14:00',local:'Campo B',atletas:6},
-  {id:'j3',adv:'Vasco',cat:'Sub-13',data:'18/06/2024',hora:'18:00',local:'Campo A',atletas:8},
+  {id:'j1',adv:'Flamengo',cat:'Sub-7',data:'15/06/2024',hora:'10:00',local:'Campo A'},
+  {id:'j2',adv:'Botafogo',cat:'Sub-11',data:'16/06/2024',hora:'14:00',local:'Campo B'},
+  {id:'j3',adv:'Vasco',cat:'Sub-13',data:'18/06/2024',hora:'18:00',local:'Campo A'},
 ];
 
-let ARBITRAGEM = [
-  {id:'a1',jogoId:'j1',sig:'AS',catKey:'sub7',valor:30,status:'pago'},
-  {id:'a2',jogoId:'j1',sig:'LS',catKey:'sub7',valor:30,status:'pago'},
-  {id:'a3',jogoId:'j1',sig:'MF',catKey:'sub7',valor:30,status:'pendente'},
-  {id:'a4',jogoId:'j1',sig:'TP',catKey:'sub7',valor:30,status:'pendente'},
-  {id:'a5',jogoId:'j2',sig:'DR',catKey:'sub11',valor:30,status:'pago'},
-  {id:'a6',jogoId:'j2',sig:'LR',catKey:'sub11',valor:30,status:'pago'},
-  {id:'a7',jogoId:'j2',sig:'FB',catKey:'sub11',valor:30,status:'atraso'},
-  {id:'a8',jogoId:'j3',sig:'KT',catKey:'sub13',valor:30,status:'pendente'},
-  {id:'a9',jogoId:'j3',sig:'JC',catKey:'sub13',valor:30,status:'pendente'},
-];
+// CONVOCAÇÕES: Apenas atletas convocados geram cobrança de arbitragem
+const CONVOCACOES = {
+  'j1': ['AS','LS','MF','TP'],        // Sub-7: 4 atletas convocados
+  'j2': ['DR','LR','FB','WN','JB','CM'], // Sub-11: 6 atletas convocados
+  'j3': ['KT','JC','AA','GC','YD','ZA','MVD','CM'], // Sub-13: 8 atletas convocados
+};
+
+let ARBITRAGEM = [];
 
 const CATS_DATA = {
   'sub7':{nome:'Sub-7',cor:'#1a5c26'},
@@ -861,6 +867,31 @@ const CATS_DATA = {
   'sub13':{nome:'Sub-13',cor:'#6b4c9a'},
   'p12':{nome:'Profissional -12',cor:'#c0392b'},
 };
+
+// Gera arbitragem automaticamente baseado em convocações
+function gerarArbitragemDeConvocacoes() {
+  ARBITRAGEM = [];
+  let id = 1;
+
+  JOGOS_AGENDADOS.forEach(jogo => {
+    const convocados = CONVOCACOES[jogo.id] || [];
+    const catKey = jogo.cat.toLowerCase().replace('-','').replace('profissional','p').replace('sub','sub');
+
+    convocados.forEach(sig => {
+      ARBITRAGEM.push({
+        id: 'a' + id++,
+        jogoId: jogo.id,
+        sig: sig,
+        catKey: catKey,
+        valor: VALOR_ARBITRAGEM,
+        status: 'pendente'
+      });
+    });
+  });
+}
+
+// Popula dados iniciais
+gerarArbitragemDeConvocacoes();
 
 // HELPERS
 function fmtR$(v) {
@@ -1067,6 +1098,49 @@ function renderFinMensalidades() {
   document.getElementById('tabela-atletas').innerHTML = html;
 }
 
+function renderFinConvocacoes() {
+  let html = '';
+
+  JOGOS_AGENDADOS.forEach(jogo => {
+    const catKey = jogo.cat.toLowerCase().replace('-','').replace('profissional','p').replace('sub','sub');
+    const todosAatletas = Object.entries(MENSALIDADES_ATLETAS)
+      .filter(([id]) => id.toLowerCase().includes(catKey))
+      .map(([id]) => id.match(/([A-Z]+)/)?.[1] || '')
+      .filter((v, i, a) => v && a.indexOf(v) === i);
+
+    const convocados = CONVOCACOES[jogo.id] || [];
+
+    html += `
+      <div style="border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden;background:#fff">
+        <div style="padding:16px;background:var(--surface);border-bottom:1px solid var(--border)">
+          <div style="font-size:13px;font-weight:800;color:var(--text)">vs ${jogo.adv} — ${jogo.cat}</div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:2px">${jogo.data} • ${jogo.hora} • ${jogo.local}</div>
+          <div style="font-size:11px;color:#1a5c26;margin-top:6px;font-weight:700">${convocados.length}/${todosAatletas.length} convocados</div>
+        </div>
+        <div>
+          ${todosAatletas.map(sig => {
+            const isConvocado = convocados.includes(sig);
+            return `
+              <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div class="av">${sig}</div>
+                  <span style="font-size:12px;font-weight:600;color:var(--text)">${sig}</span>
+                </div>
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                  <input type="checkbox" ${isConvocado ? 'checked' : ''} onchange="atualizarConvocacao('${jogo.id}', '${sig}', this.checked)" style="cursor:pointer;width:18px;height:18px">
+                  <span style="font-size:11px;color:var(--text-3)">${isConvocado ? 'Convocado' : 'Não convocado'}</span>
+                </label>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  });
+
+  document.getElementById('tabela-convocacoes').innerHTML = html;
+}
+
 function renderFinArbitragem() {
   const jogosComArbitragem = JOGOS_AGENDADOS.filter(j => ARBITRAGEM.some(a => a.jogoId === j.id));
 
@@ -1166,6 +1240,20 @@ function filtrarTabelaArb() {
   });
 }
 
+function atualizarConvocacao(jogoId, sig, isConvocado) {
+  if (!CONVOCACOES[jogoId]) CONVOCACOES[jogoId] = [];
+
+  if (isConvocado && !CONVOCACOES[jogoId].includes(sig)) {
+    CONVOCACOES[jogoId].push(sig);
+  } else if (!isConvocado) {
+    CONVOCACOES[jogoId] = CONVOCACOES[jogoId].filter(s => s !== sig);
+  }
+
+  gerarArbitragemDeConvocacoes();
+  renderFinArbitragem();
+  renderFinPainel();
+}
+
 // SIDEBAR
 function sidebarClick(el, id) {
   document.querySelectorAll('.sidebar-item').forEach(e => e.classList.remove('on'));
@@ -1177,6 +1265,7 @@ function sidebarClick(el, id) {
   if (id === 'painel') renderFinPainel();
   if (id === 'socios') renderFinSocios();
   if (id === 'mensalidades') renderFinMensalidades();
+  if (id === 'convocacoes') renderFinConvocacoes();
   if (id === 'arbitragem') renderFinArbitragem();
   if (id === 'cobrancas') renderFinCobrancas();
 }
