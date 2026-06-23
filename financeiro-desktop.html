@@ -34,6 +34,15 @@ body {
   color: var(--text);
 }
 
+@media print {
+  .sidebar, .header-top-right, .btn-g, .btn-sm, .search-mini, .nav-tabs { display: none !important; }
+  .main { margin-left: 0 !important; padding: 0 !important; }
+  body { background: #fff !important; }
+  #relatorio-contador { display: block !important; }
+  .pdf-page { page-break-after: always; }
+  .pdf-page:last-child { page-break-after: avoid; }
+}
+
 /* SIDEBAR */
 .sidebar {
   width: 240px;
@@ -618,6 +627,16 @@ body {
   </div>
 
   <div class="sidebar-section">
+    <div class="sidebar-label">Relatórios</div>
+    <div class="sidebar-menu">
+      <div class="sidebar-item" onclick="sidebarClick(this, 'relatorio-contador')">
+        <i class="ti ti-file-invoice"></i>
+        <span>Relatório Contador</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
     <div class="sidebar-label">Caixa</div>
     <div class="sidebar-menu">
       <div class="sidebar-item">
@@ -794,6 +813,30 @@ body {
       </select>
     </div>
     <div id="tabela-arbitragem"></div>
+  </div>
+
+  <!-- RELATÓRIO CONTADOR -->
+  <div id="relatorio-contador" class="scr">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--text-3)">Gerado em: <span id="rel-data-geracao"></span></div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <select id="rel-mes" onchange="renderRelatorioContador()" style="padding:10px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:12px;font-family:'DM Sans',sans-serif">
+          <option value="0">Janeiro</option><option value="1">Fevereiro</option><option value="2">Março</option>
+          <option value="3">Abril</option><option value="4">Maio</option><option value="5" selected>Junho</option>
+          <option value="6">Julho</option><option value="7">Agosto</option><option value="8">Setembro</option>
+          <option value="9">Outubro</option><option value="10">Novembro</option><option value="11">Dezembro</option>
+        </select>
+        <select id="rel-ano" onchange="renderRelatorioContador()" style="padding:10px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:12px;font-family:'DM Sans',sans-serif">
+          <option value="2024">2024</option><option value="2025" selected>2025</option>
+        </select>
+        <button class="btn-g" style="padding:10px 20px;margin:0" onclick="window.print()">
+          <i class="ti ti-printer"></i> Exportar PDF
+        </button>
+      </div>
+    </div>
+    <div id="rel-corpo"></div>
   </div>
 
   <!-- COBRANÇAS -->
@@ -1254,6 +1297,172 @@ function atualizarConvocacao(jogoId, sig, isConvocado) {
   renderFinPainel();
 }
 
+function renderRelatorioContador() {
+  const mes = parseInt(document.getElementById('rel-mes')?.value ?? 5);
+  const ano = parseInt(document.getElementById('rel-ano')?.value ?? 2025);
+  const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const mesNome = meses[mes];
+
+  document.getElementById('rel-data-geracao').textContent = new Date().toLocaleDateString('pt-BR');
+
+  const socios_pago = SOCIOS.filter(s => s.status === 'pago');
+  const socios_atraso = SOCIOS.filter(s => s.status !== 'pago');
+  const atletas_pago = Object.entries(MENSALIDADES_ATLETAS).filter(([,m]) => m.status === 'pago');
+  const atletas_atraso = Object.entries(MENSALIDADES_ATLETAS).filter(([,m]) => m.status !== 'pago');
+  const arb_pago = ARBITRAGEM.filter(a => a.status === 'pago');
+  const arb_pend = ARBITRAGEM.filter(a => a.status !== 'pago');
+
+  const totalReceitaSocios = socios_pago.reduce((s, x) => s + x.valor, 0);
+  const totalReceitaAtletas = atletas_pago.reduce((s, [,m]) => s + m.valor, 0);
+  const totalReceitaArb = arb_pago.reduce((s, a) => s + a.valor, 0);
+  const totalDespesas = DESPESAS_CLUBE.reduce((s, d) => s + d.valor, 0);
+  const totalReceitas = totalReceitaSocios + totalReceitaAtletas + totalReceitaArb;
+  const saldo = totalReceitas - totalDespesas;
+
+  document.getElementById('rel-corpo').innerHTML = `
+    <!-- CAPA -->
+    <div class="pdf-page" style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:40px;margin-bottom:20px">
+      <div style="border-bottom:3px solid #b89d3f;padding-bottom:24px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.08em;color:#0d3d1a">VOTORATY ACADEMY</div>
+          <div style="font-size:13px;color:var(--text-3);margin-top:4px">CNPJ: 00.000.000/0001-00 · Rua do Clube, 100 · Votoraty</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Relatório Financeiro</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#b89d3f">${mesNome} / ${ano}</div>
+        </div>
+      </div>
+
+      <!-- KPIs RESUMO -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px">
+        <div style="background:#d4f0dc;border-radius:12px;padding:16px">
+          <div style="font-size:10px;font-weight:800;color:#1a5c26;text-transform:uppercase;letter-spacing:.05em">Total Receitas</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#1a5c26;margin-top:4px">${fmtR$(totalReceitas)}</div>
+        </div>
+        <div style="background:#fde8e8;border-radius:12px;padding:16px">
+          <div style="font-size:10px;font-weight:800;color:#8b1a1a;text-transform:uppercase;letter-spacing:.05em">Total Despesas</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#8b1a1a;margin-top:4px">${fmtR$(totalDespesas)}</div>
+        </div>
+        <div style="background:${saldo>=0?'#d4f0dc':'#fde8e8'};border-radius:12px;padding:16px">
+          <div style="font-size:10px;font-weight:800;color:${saldo>=0?'#1a5c26':'#8b1a1a'};text-transform:uppercase;letter-spacing:.05em">Saldo do Mês</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:${saldo>=0?'#1a5c26':'#8b1a1a'};margin-top:4px">${saldo>=0?'+':'−'} ${fmtR$(Math.abs(saldo))}</div>
+        </div>
+        <div style="background:#faebd7;border-radius:12px;padding:16px">
+          <div style="font-size:10px;font-weight:800;color:#7a4010;text-transform:uppercase;letter-spacing:.05em">Inadimplência</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#7a4010;margin-top:4px">${fmtR$(socios_atraso.reduce((s,x)=>s+x.valor,0) + atletas_atraso.reduce((s,[,m])=>s+m.valor,0))}</div>
+        </div>
+      </div>
+
+      <!-- TABELA RECEITAS -->
+      <div style="margin-bottom:28px">
+        <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border)">1. RECEITAS</div>
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead>
+            <tr style="background:#f8f7f4">
+              <th style="text-align:left;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Descrição</th>
+              <th style="text-align:right;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Qtd</th>
+              <th style="text-align:right;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border)">
+              <td style="padding:10px 12px;font-weight:600">Mensalidades — Sócios</td>
+              <td style="padding:10px 12px;text-align:right;color:var(--text-3)">${socios_pago.length} sócio(s)</td>
+              <td style="padding:10px 12px;text-align:right;font-weight:700;color:#1a5c26">${fmtR$(totalReceitaSocios)}</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border)">
+              <td style="padding:10px 12px;font-weight:600">Mensalidades — Atletas</td>
+              <td style="padding:10px 12px;text-align:right;color:var(--text-3)">${atletas_pago.length} atleta(s)</td>
+              <td style="padding:10px 12px;text-align:right;font-weight:700;color:#1a5c26">${fmtR$(totalReceitaAtletas)}</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border)">
+              <td style="padding:10px 12px;font-weight:600">Arbitragem (jogos)</td>
+              <td style="padding:10px 12px;text-align:right;color:var(--text-3)">${arb_pago.length} cobrança(s)</td>
+              <td style="padding:10px 12px;text-align:right;font-weight:700;color:#1a5c26">${fmtR$(totalReceitaArb)}</td>
+            </tr>
+            <tr style="background:#d4f0dc">
+              <td colspan="2" style="padding:10px 12px;font-weight:800;color:#1a5c26">TOTAL RECEITAS</td>
+              <td style="padding:10px 12px;text-align:right;font-weight:800;color:#1a5c26;font-size:14px">${fmtR$(totalReceitas)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TABELA DESPESAS -->
+      <div style="margin-bottom:28px">
+        <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border)">2. DESPESAS</div>
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead>
+            <tr style="background:#f8f7f4">
+              <th style="text-align:left;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Descrição</th>
+              <th style="text-align:right;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${DESPESAS_CLUBE.map(d => `
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:10px 12px;font-weight:600">${d.descricao}</td>
+                <td style="padding:10px 12px;text-align:right;font-weight:700;color:#8b1a1a">${fmtR$(d.valor)}</td>
+              </tr>
+            `).join('')}
+            <tr style="background:#fde8e8">
+              <td style="padding:10px 12px;font-weight:800;color:#8b1a1a">TOTAL DESPESAS</td>
+              <td style="padding:10px 12px;text-align:right;font-weight:800;color:#8b1a1a;font-size:14px">${fmtR$(totalDespesas)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- INADIMPLÊNCIA -->
+      <div style="margin-bottom:28px">
+        <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border)">3. INADIMPLÊNCIA</div>
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead>
+            <tr style="background:#f8f7f4">
+              <th style="text-align:left;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Nome</th>
+              <th style="text-align:left;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Tipo</th>
+              <th style="text-align:left;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Status</th>
+              <th style="text-align:right;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${socios_atraso.map(s => `
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:10px 12px;font-weight:600">${s.nome}</td>
+                <td style="padding:10px 12px;color:var(--text-3)">${s.plano}</td>
+                <td style="padding:10px 12px"><span style="background:#fde8e8;color:#8b1a1a;padding:3px 8px;border-radius:20px;font-size:9px;font-weight:800;text-transform:uppercase">${s.status}</span></td>
+                <td style="padding:10px 12px;text-align:right;font-weight:700;color:#8b1a1a">${fmtR$(s.valor)}</td>
+              </tr>
+            `).join('')}
+            ${atletas_atraso.map(([id, m]) => {
+              const match = id.match(/([A-Z]+)([a-z0-9]+)/);
+              const sig = match?.[1] || id;
+              const cat = match?.[2] || '';
+              return `
+                <tr style="border-bottom:1px solid var(--border)">
+                  <td style="padding:10px 12px;font-weight:600">${sig}</td>
+                  <td style="padding:10px 12px;color:var(--text-3)">${CATS_DATA[cat]?.nome || 'Atleta'}</td>
+                  <td style="padding:10px 12px"><span style="background:#faebd7;color:#7a4010;padding:3px 8px;border-radius:20px;font-size:9px;font-weight:800;text-transform:uppercase">${m.status}</span></td>
+                  <td style="padding:10px 12px;text-align:right;font-weight:700;color:#8b1a1a">${fmtR$(m.valor)}</td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RODAPÉ -->
+      <div style="border-top:2px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-3)">
+        <div>Votoraty Academy · Relatório Financeiro ${mesNome}/${ano}</div>
+        <div style="text-align:center">
+          <div style="border-top:1px solid var(--text-3);padding-top:8px;width:200px">Responsável Financeiro</div>
+        </div>
+        <div style="text-align:right">Gerado em: ${new Date().toLocaleDateString('pt-BR')}</div>
+      </div>
+    </div>
+  `;
+}
+
 // SIDEBAR
 function sidebarClick(el, id) {
   document.querySelectorAll('.sidebar-item').forEach(e => e.classList.remove('on'));
@@ -1268,6 +1477,7 @@ function sidebarClick(el, id) {
   if (id === 'convocacoes') renderFinConvocacoes();
   if (id === 'arbitragem') renderFinArbitragem();
   if (id === 'cobrancas') renderFinCobrancas();
+  if (id === 'relatorio-contador') renderRelatorioContador();
 }
 
 // INIT
