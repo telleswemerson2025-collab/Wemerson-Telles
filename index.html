@@ -383,12 +383,12 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface-2);min-
         <div class="p-icon" style="background:rgba(22,96,36,.35);width:34px;height:34px;font-size:16px">🏫</div>
         <div><div class="p-title" style="font-size:11px">Professor</div></div>
       </button>
-      <button class="perfil-btn" onclick="entrar('prof_sub13')" style="padding:10px 12px;margin:0">
-        <div class="p-icon" style="background:rgba(24,95,165,.25);width:34px;height:34px;font-size:16px">🔵</div>
-        <div><div class="p-title" style="font-size:11px">Prof. Sub-13</div></div>
+      <button class="perfil-btn" onclick="entrar('financeiro')" style="padding:10px 12px;margin:0;border-color:rgba(184,134,11,.3);background:rgba(184,134,11,.08)">
+        <div class="p-icon" style="background:rgba(184,134,11,.25);width:34px;height:34px;font-size:16px">💰</div>
+        <div><div class="p-title" style="font-size:11px;color:#f5c842">Financeiro</div></div>
       </button>
-      <button class="perfil-btn" onclick="entrar('atleta')" style="padding:10px 12px;margin:0;border-color:rgba(184,134,11,.3);background:rgba(184,134,11,.08)">
-        <div class="p-icon" style="background:rgba(184,134,11,.25);width:34px;height:34px;font-size:16px">🏃</div>
+      <button class="perfil-btn" onclick="entrar('atleta')" style="padding:10px 12px;margin:0;border-color:rgba(184,134,11,.2);background:rgba(184,134,11,.05)">
+        <div class="p-icon" style="background:rgba(184,134,11,.2);width:34px;height:34px;font-size:16px">🏃</div>
         <div><div class="p-title" style="font-size:11px;color:#f5c842">Atleta</div></div>
       </button>
     </div>
@@ -914,7 +914,7 @@ function iniciarListenerAtleta(){
 // =====================
 // DADOS
 // =====================
-const CORES = {diretor:'#3c3489',sub7:'#c45e10',sub9:'#0f8c6e',sub11:'#0d3d1a',sub13:'#0e3d6e',sub15:'#8a6200',atleta:'#0d3d1a',professor:'#0d3d1a'};
+const CORES = {diretor:'#3c3489',sub7:'#c45e10',sub9:'#0f8c6e',sub11:'#0d3d1a',sub13:'#0e3d6e',sub15:'#8a6200',atleta:'#0d3d1a',professor:'#0d3d1a',financeiro:'#b8860b'};
 const CATS_DATA = {
   sub7:  {nome:'Sub-7',  emoji:'🌱', atletas:[
     {sig:'AS',nome:'Arthur Santos',pos:'Meia',pres:90,gols:3,nivel:3},
@@ -1092,6 +1092,26 @@ const HAB_LABELS = {fin:'Finalização',dri:'Drible',vel:'Velocidade',pas:'Passe
 const HAB_ICONS  = {fin:'⚽',dri:'🎯',vel:'⚡',pas:'↗️',mar:'🛡️',ati:'💪'};
 
 // =====================
+// DADOS FINANCEIROS
+// =====================
+const SOCIOS = [
+  {id:'S1',nome:'Paulo Mendes',entrada:'2023-01',quota:500,pago:true,tel:'11999999999'},
+  {id:'S2',nome:'Maria Silva',entrada:'2023-02',quota:500,pago:true,tel:'11988888888'},
+  {id:'S3',nome:'João Pereira',entrada:'2023-03',quota:300,pago:false,tel:'11977777777'},
+  {id:'S4',nome:'Ana Costa',entrada:'2023-04',quota:500,pago:true,tel:'11966666666'},
+  {id:'S5',nome:'Roberto Dias',entrada:'2023-05',quota:200,pago:false,tel:'11955555555'},
+  {id:'S6',nome:'Carla Souza',entrada:'2023-06',quota:500,pago:true,tel:'11944444444'},
+];
+
+const MENSALIDADES_ATLETAS = [
+  {atleta:'Kauan Silva',cat:'Sub-13',mes:'2026-06',valor:150,status:'pago',vencimento:'2026-06-10'},
+  {atleta:'João Santos',cat:'Sub-13',mes:'2026-06',valor:150,status:'atrasado',vencimento:'2026-06-10'},
+  {atleta:'Lucas Gomes',cat:'Sub-11',mes:'2026-06',valor:120,status:'pago',vencimento:'2026-06-10'},
+  {atleta:'Pedro Costa',cat:'Sub-11',mes:'2026-06',valor:120,status:'pendente',vencimento:'2026-06-10'},
+  {atleta:'Bruno Alves',cat:'Sub-9',mes:'2026-06',valor:100,status:'pago',vencimento:'2026-06-10'},
+];
+
+// =====================
 // CSS VAR COLOR
 // =====================
 function setCor(cor){
@@ -1132,6 +1152,11 @@ function configurarPerfil(perfil, cor){
     document.getElementById('hdr-sub').textContent = 'Diretor · acesso total';
     document.getElementById('cat-pill').textContent = '👑 Todas as categorias';
     document.getElementById('sbar-mid').textContent = 'Admin · Votoraty';
+  } else if(perfil === 'financeiro'){
+    document.getElementById('hdr-title').textContent = 'Financeiro';
+    document.getElementById('hdr-sub').textContent = 'Sócios, mensalidades e caixa';
+    document.getElementById('cat-pill').textContent = '💰 Gestão financeira';
+    document.getElementById('sbar-mid').textContent = 'Financeiro · Votoraty';
   } else if(perfil === 'atleta'){
     document.getElementById('hdr-title').textContent = ATLETA_DEFAULT.nome;
     document.getElementById('hdr-sub').textContent = ATLETA_DEFAULT.pos+' · '+ATLETA_DEFAULT.cat+' · Nível '+ATLETA_DEFAULT.nivel;
@@ -1147,6 +1172,7 @@ function configurarPerfil(perfil, cor){
   // Montar nav e telas
   if(perfil === 'atleta') montarAtleta(cor);
   else if(perfil === 'diretor') montarDiretor(cor);
+  else if(perfil === 'financeiro') montarFinanceiro(cor);
   else montarProfessor(catKey, catData, cor);
 }
 
@@ -2126,6 +2152,112 @@ function renderConfig(cor){
     ${[['Relatório geral PDF','Toda a temporada'],['Lista de atletas Excel','Planilha completa'],['Backup completo','Todos os dados']].map(([l,s])=>`
     <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">${l}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">${s}</div></div><button class="btn-sm" onclick="showN('Exportado com sucesso!')">Exportar</button></div>`).join('')}
   </div>`;
+}
+
+// =====================
+// FINANCEIRO
+// =====================
+function montarFinanceiro(cor){
+  const navItems = ['Dashboard','Sócios','Mensalidades','Histórico'];
+  const bnavItems = [
+    {icon:'ti-chart-pie',label:'Dashboard'},
+    {icon:'ti-users',label:'Sócios'},
+    {icon:'ti-currency-dollar',label:'Mensalidades'},
+    {icon:'ti-history',label:'Histórico'}
+  ];
+  montarNav(navItems, cor);
+  montarBnav(bnavItems, cor);
+  const sc = document.getElementById('screens');
+  const totalSocios = SOCIOS.length;
+  const totalPago = SOCIOS.filter(s=>s.pago).length;
+  const totalAtraso = totalSocios - totalPago;
+  const totalMens = MENSALIDADES_ATLETAS.reduce((a,b)=>a+(b.status==='pago'?b.valor:0),0);
+  const totalPendente = MENSALIDADES_ATLETAS.reduce((a,b)=>a+(b.status==='pendente'||b.status==='atrasado'?b.valor:0),0);
+
+  sc.innerHTML = `
+  <div id="s-0" class="scr on" style="padding:11px 13px;overflow-y:auto">
+    <div class="lbl">Resumo financeiro</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      <div class="card" style="background:linear-gradient(135deg,#dcf0e0 0%,#c8e6c9 100%);padding:14px 14px">
+        <div style="font-size:9px;color:#1a5c26;font-weight:700;text-transform:uppercase">Sócios ativos</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#0d3d1a;margin-top:4px">${totalSocios}</div>
+        <div style="font-size:9px;color:#27500a;margin-top:3px">R$ ${(totalSocios * 450).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</div>
+      </div>
+      <div class="card" style="background:linear-gradient(135deg,#dceaf8 0%,#bbdefb 100%);padding:14px 14px">
+        <div style="font-size:9px;color:#0a3d7a;font-weight:700;text-transform:uppercase">Mensalidades</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#0e3d6e;margin-top:4px">${MENSALIDADES_ATLETAS.length}</div>
+        <div style="font-size:9px;color:#185fa5;margin-top:3px">Atletas cadastrados</div>
+      </div>
+    </div>
+    <div class="lbl" style="margin-top:12px">Últimas transações</div>
+    <div class="card" style="padding:9px 11px">
+      ${MENSALIDADES_ATLETAS.slice(0,3).map(m=>`
+      <div style="padding:8px 0;border-bottom:1px solid #f0eeea;display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-size:11px;font-weight:700;color:var(--text)">${m.atleta}</div>
+        <div style="font-size:9px;color:var(--text-3);margin-top:2px">${m.cat}</div></div>
+        <div style="text-align:right"><div style="font-size:11px;font-weight:700;color:${m.status==='pago'?'#1a5c26':'#8b1a1a'}">R$ ${m.valor}</div>
+        <div style="font-size:8px;color:${m.status==='pago'?'#27500a':'#c0392b'};text-transform:uppercase;font-weight:700;margin-top:1px">${m.status}</div></div>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <div id="s-1" class="scr" style="padding:11px 13px;overflow-y:auto">
+    <div class="lbl">Sócios (${totalSocios})</div>
+    <div class="card" style="padding:2px">
+      <table style="font-size:11px">
+        <thead><tr><th>Nome</th><th>Quota</th><th>Status</th></tr></thead>
+        <tbody>
+          ${SOCIOS.map(s=>`<tr>
+            <td style="padding:9px 8px;border-bottom:1px solid #f0eeea"><span style="font-weight:700">${s.nome}</span></td>
+            <td style="padding:9px 8px;border-bottom:1px solid #f0eeea">R$ ${s.quota}</td>
+            <td style="padding:9px 8px;border-bottom:1px solid #f0eeea"><span style="display:inline-block;padding:3px 8px;border-radius:12px;font-size:9px;font-weight:700;background:${s.pago?'#dcf0e0':'#fde8e8'};color:${s.pago?'#1a5c26':'#8b1a1a'}">${s.pago?'✓ Pago':'Pendente'}</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="s-2" class="scr" style="padding:11px 13px;overflow-y:auto">
+    <div class="lbl">Mensalidades de atletas</div>
+    <div class="card" style="padding:2px">
+      <table style="font-size:11px">
+        <thead><tr><th>Atleta</th><th>Categoria</th><th>Valor</th><th>Status</th></tr></thead>
+        <tbody>
+          ${MENSALIDADES_ATLETAS.map(m=>`<tr>
+            <td style="padding:9px 8px;border-bottom:1px solid #f0eeea"><span style="font-weight:700">${m.atleta}</span></td>
+            <td style="padding:9px 8px;border-bottom:1px solid #f0eeea">${m.cat}</td>
+            <td style="padding:9px 8px;border-bottom:1px solid #f0eeea">R$ ${m.valor}</td>
+            <td style="padding:9px 8px;border-bottom:1px solid #f0eeea"><span style="display:inline-block;padding:3px 8px;border-radius:12px;font-size:9px;font-weight:700;background:${m.status==='pago'?'#dcf0e0':m.status==='atrasado'?'#fde8e8':'#eae8fd'};color:${m.status==='pago'?'#1a5c26':m.status==='atrasado'?'#8b1a1a':'#3c2e9e'}">${m.status.toUpperCase()}</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="s-3" class="scr" style="padding:11px 13px;overflow-y:auto">
+    <div class="lbl">Histórico mensal</div>
+    <div class="card" style="padding:14px 16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div><div style="font-size:11px;font-weight:700">Junho 2026</div></div>
+        <button class="btn-sm" onclick="showN('Relatório gerado!')">Exportar</button>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:10px">
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0eeea">
+          <div><span style="font-size:11px;color:var(--text-2)">Mensalidades recebidas</span></div>
+          <span style="font-weight:700;color:#1a5c26">+R$ ${totalMens}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0eeea">
+          <div><span style="font-size:11px;color:var(--text-2)">Mensalidades pendentes</span></div>
+          <span style="font-weight:700;color:#c0392b">-R$ ${totalPendente}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1.5px solid var(--text);margin-top:6px">
+          <div><span style="font-size:11px;font-weight:700">Saldo mês</span></div>
+          <span style="font-weight:700;font-size:13px;color:${totalMens >= totalPendente ? '#1a5c26':'#8b1a1a'}">R$ ${(totalMens - totalPendente).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  setCor(cor);
 }
 
 // =====================
