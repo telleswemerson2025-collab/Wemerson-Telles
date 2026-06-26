@@ -126,6 +126,8 @@ function salvarLS(){
   localStorage.setItem('vot_habilidades', JSON.stringify(HABILIDADES));
   localStorage.setItem('vot_fichas', JSON.stringify(FICHAS));
   localStorage.setItem('vot_jogos_agendados', JSON.stringify(JOGOS_AGENDADOS));
+  localStorage.setItem('vot_mensalidades', JSON.stringify(MENSALIDADES_ATLETAS));
+  localStorage.setItem('vot_socios', JSON.stringify(SOCIOS));
   if(window.PRESENCA_HIST) localStorage.setItem('vot_presenca_hist', JSON.stringify(window.PRESENCA_HIST));
   if(window.ARBITRAGEM_STATUS) localStorage.setItem('vot_arbitragem', JSON.stringify(window.ARBITRAGEM_STATUS));
   salvarFirestore();
@@ -141,6 +143,10 @@ function carregarLS(){
     if(fic){ Object.assign(FICHAS, JSON.parse(fic)); }
     const jog = localStorage.getItem('vot_jogos_agendados');
     if(jog){ JOGOS_AGENDADOS.length=0; JSON.parse(jog).forEach(j=>JOGOS_AGENDADOS.push(j)); }
+    const mens = localStorage.getItem('vot_mensalidades');
+    if(mens){ Object.assign(MENSALIDADES_ATLETAS, JSON.parse(mens)); }
+    const soc = localStorage.getItem('vot_socios');
+    if(soc){ const arr=JSON.parse(soc); arr.forEach(s=>{ const idx=SOCIOS.findIndex(x=>x.id===s.id); if(idx>=0) Object.assign(SOCIOS[idx],s); else SOCIOS.push(s); }); }
     const ph = localStorage.getItem('vot_presenca_hist');
     if(ph){ window.PRESENCA_HIST = JSON.parse(ph); }
     const arb = localStorage.getItem('vot_arbitragem');

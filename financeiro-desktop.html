@@ -1048,10 +1048,18 @@ function finCalcs() {
   };
 }
 
+function salvarDesktopLS() {
+  try {
+    localStorage.setItem('vot_socios', JSON.stringify(SOCIOS));
+    localStorage.setItem('vot_mensalidades', JSON.stringify(MENSALIDADES_ATLETAS));
+  } catch(e){}
+}
+
 function marcarSocioPago(id) {
   const s = SOCIOS.find(s => s.id === id);
   if (s) {
     s.status = s.status === 'pago' ? 'atraso' : 'pago';
+    salvarDesktopLS();
     renderFinSocios();
     renderFinPainel();
   }
@@ -1061,6 +1069,20 @@ function marcarAtletaPago(id) {
   const m = MENSALIDADES_ATLETAS[id];
   if (m) {
     m.status = m.status === 'pago' ? 'atraso' : 'pago';
+    // Sincroniza arbitragem: o professor/mobile usam campo 'pago' (boolean)
+    try {
+      const arb = JSON.parse(localStorage.getItem('vot_arbitragem') || '{}');
+      const match = id.match(/^([A-Z]+)([a-z0-9]+)$/);
+      if(match) {
+        const sig = match[1], catKey = match[2];
+        if(!arb[catKey]) arb[catKey] = [];
+        const entrada = arb[catKey].find(x => x.sig === sig);
+        if(entrada) entrada.pago = m.status === 'pago';
+        else arb[catKey].push({sig, pago: m.status === 'pago'});
+        localStorage.setItem('vot_arbitragem', JSON.stringify(arb));
+      }
+    } catch(e){}
+    salvarDesktopLS();
     renderFinMensalidades();
     renderFinPainel();
   }
@@ -1618,6 +1640,7 @@ function cobrarGrupoSocios() {
   const pendentes = SOCIOS.filter(s => s.status !== 'pago');
   if (pendentes.length === 0) return;
   pendentes.forEach(s => { s.status = 'pago'; });
+  try { localStorage.setItem('vot_socios', JSON.stringify(SOCIOS)); } catch(e) {}
   showToast(`📲 Cobrança enviada para ${pendentes.length} sócio${pendentes.length!==1?'s':''}!`, 'info');
   renderFinCobrancas();
   renderFinPainel();
@@ -1640,6 +1663,7 @@ function cobrarIndividualCobranca(tipo, id) {
     const s = SOCIOS.find(x => x.id === id);
     if (!s) return;
     s.status = 'pago';
+    try { localStorage.setItem('vot_socios', JSON.stringify(SOCIOS)); } catch(e) {}
     showToast(`📲 Cobrança enviada para ${s.nome}!`, 'info');
   } else {
     const m = MENSALIDADES_ATLETAS[id];
@@ -1657,14 +1681,16 @@ function marcarArbitragemPaga(id) {
   const a = ARBITRAGEM.find(x => x.id === id);
   if (a) {
     a.status = a.status === 'pago' ? 'pendente' : 'pago';
-    // Sincroniza com localStorage para o index.html (Professor) ler
+    // Sincroniza com localStorage para o index.html (Professor/Financeiro mobile) ler
+    // Usa campo 'pago' (boolean) que é o formato esperado por ARBITRAGEM_STATUS no mobile
     try {
       const arb = JSON.parse(localStorage.getItem('vot_arbitragem') || '{}');
       const catKey = a.catKey || 'sub13';
       if(!arb[catKey]) arb[catKey] = [];
       const entrada = arb[catKey].find(x=>x.sig===a.sig);
-      if(entrada) entrada.status = a.status;
-      else arb[catKey].push({sig:a.sig, status:a.status});
+      const isPago = a.status === 'pago';
+      if(entrada){ entrada.pago = isPago; entrada.status = a.status; }
+      else arb[catKey].push({sig:a.sig, pago: isPago, status: a.status});
       localStorage.setItem('vot_arbitragem', JSON.stringify(arb));
     } catch(e){}
     renderFinArbitragem();
@@ -2155,6 +2181,12 @@ function sidebarClick(el, id) {
 window.addEventListener('DOMContentLoaded', () => {
   document.body.insertAdjacentHTML('afterbegin', '<div id="loading-overlay" style="position:fixed;inset:0;background:#fff;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px"><div style="width:40px;height:40px;border:3px solid #e0e0e0;border-top-color:#1a5c26;border-radius:50%;animation:spin 0.8s linear infinite"></div><div style="font-size:13px;color:#555">Carregando dados...</div></div>');
   try {
+    // Mensalidades de atletas salvas pelo mobile (financeiro.js / data.js)
+    const mens = localStorage.getItem('vot_mensalidades');
+    if(mens){ Object.assign(MENSALIDADES_ATLETAS, JSON.parse(mens)); }
+    // Sócios salvos pelo mobile
+    const soc = localStorage.getItem('vot_socios');
+    if(soc){ const arr=JSON.parse(soc); arr.forEach(s=>{ const idx=SOCIOS.findIndex(x=>x.id===s.id); if(idx>=0) Object.assign(SOCIOS[idx],s); else SOCIOS.push(s); }); }
     // Convocações / jogos agendados
     const jog = localStorage.getItem('vot_jogos_agendados');
     if(jog){
@@ -2162,14 +2194,18 @@ window.addEventListener('DOMContentLoaded', () => {
       // Sincroniza CONVOCACOES: mapeia id do jogo → array de sigs convocados
       jogos.forEach(j => { if(j.id && j.conv) CONVOCACOES[j.id] = j.conv; });
     }
-    // Arbitragem status do professor
+    // Arbitragem status do professor/mobile
+    // Suporta ambos os formatos: {pago:bool} (mobile) e {status:'pago'} (desktop legado)
     const arb = localStorage.getItem('vot_arbitragem');
     if(arb){
       const arbData = JSON.parse(arb);
       Object.entries(arbData).forEach(([catKey, atletas]) => {
         atletas.forEach(a => {
-          const entrada = ARBITRAGEM.find(x => x.sig === a.sig);
-          if(entrada && a.status === 'pago') entrada.status = 'pago';
+          const entrada = ARBITRAGEM.find(x => x.sig === a.sig && x.catKey === catKey);
+          if(entrada){
+            const isPago = (a.pago === true) || (a.status === 'pago');
+            if(isPago) entrada.status = 'pago';
+          }
         });
       });
     }
