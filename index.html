@@ -1,0 +1,2926 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Votoraty Academy</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0d3d1a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Votoraty">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="description" content="Gestão completa da escolinha Votoraty Academy.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#0d3d1a;--gd:#071f0d;
+  --gold:#b8860b;--gold-l:#f5c842;
+  --font-display:'Bebas Neue',sans-serif;
+  --surface:#f7f6f2;--surface-2:#efede8;
+  --border:#e4e1d9;
+  --text:#1a1a18;--text-2:#6b6860;--text-3:#aaa89f;
+  --radius:14px;--radius-sm:9px;
+  --shadow:0 2px 12px rgba(0,0,0,.07),0 1px 3px rgba(0,0,0,.05);
+  --shadow-md:0 8px 32px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06);
+}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface-2);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:20px 12px}
+
+/* PHONE FRAME */
+.phone{width:100%;max-width:390px;border-radius:36px;overflow:hidden;background:#fff;box-shadow:0 24px 80px rgba(0,0,0,.18),0 4px 16px rgba(0,0,0,.08),inset 0 0 0 1px rgba(255,255,255,.6);min-height:680px;display:flex;flex-direction:column;border:1.5px solid rgba(0,0,0,.08)}
+
+/* STATUS BAR */
+.sbar{background:var(--color,#0d3d1a);padding:9px 20px 7px;display:flex;justify-content:space-between;align-items:center;transition:background .35s}
+.sbar span{color:rgba(255,255,255,.95);font-size:11px;font-weight:500;letter-spacing:.01em}
+
+/* HEADER */
+.hdr{padding:14px 20px 18px;transition:background .35s;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.06) 0%,transparent 60%);pointer-events:none}
+.hdr::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.15),rgba(255,255,255,.08))}
+.hdr-row{display:flex;justify-content:space-between;align-items:flex-start}
+.hdr h1{font-family:'Bebas Neue',sans-serif;font-size:22px;font-weight:400;color:#fff;letter-spacing:.06em;line-height:1}
+.hdr p{font-size:11px;color:rgba(255,255,255,.65);margin-top:3px;font-weight:400;letter-spacing:.01em}
+.cat-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);color:#fff;font-size:10px;font-weight:600;padding:4px 11px;border-radius:20px;margin-top:8px;border:1px solid rgba(255,255,255,.12);letter-spacing:.02em}
+
+/* NAV TABS */
+.nav-s{display:flex;overflow-x:auto;background:#fff;scrollbar-width:none;flex-shrink:0;border-bottom:1px solid var(--border);padding:0 4px}
+.nav-s::-webkit-scrollbar{display:none}
+.nt{flex-shrink:0;padding:10px 13px;font-size:10px;font-weight:600;color:var(--text-3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;letter-spacing:.03em;text-transform:uppercase}
+.nt.on{color:var(--color,#0d3d1a);border-bottom-color:var(--color,#0d3d1a)}
+
+/* SCREENS */
+.scr{display:none;padding:14px 15px;flex:1;overflow-y:auto}
+.scr.on{display:block}
+
+/* BOTTOM NAV */
+.bnav{display:flex;border-top:1px solid var(--border);padding:8px 0 10px;background:#fff;flex-shrink:0}
+.bi{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:opacity .15s}
+.bi i{font-size:19px;color:var(--text-3);transition:color .2s}
+.bi span{font-size:8px;color:var(--text-3);transition:color .2s;font-weight:600;letter-spacing:.03em;text-transform:uppercase}
+.bi.on i,.bi.on span{font-weight:700}
+
+/* LABELS */
+.lbl{font-size:9px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 7px}
+.lbl:first-child{margin-top:0}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow)}
+.cw{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow)}
+
+/* BUTTONS */
+.btn-g{color:#fff;border:none;padding:13px 16px;border-radius:var(--radius-sm);font-size:12px;font-weight:700;cursor:pointer;width:100%;margin-top:6px;background:var(--color,#0d3d1a);transition:all .2s;letter-spacing:.02em;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.btn-g:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.22)}
+.btn-g:active{transform:translateY(0)}
+.btn-blue{background:#185fa5;color:#fff;border:none;padding:10px 14px;border-radius:var(--radius-sm);font-size:11px;font-weight:700;cursor:pointer;width:100%;margin-top:5px;box-shadow:0 3px 10px rgba(24,95,165,.3)}
+.btn-sm{background:#fff;border:1px solid var(--border);color:var(--text-2);padding:5px 11px;border-radius:7px;font-size:10px;cursor:pointer;font-weight:600;transition:all .15s;box-shadow:var(--shadow)}
+.btn-sm:hover{border-color:var(--color,#0d3d1a);color:var(--color,#0d3d1a)}
+
+/* FORM FIELDS */
+.field{margin-bottom:10px}
+.field label{font-size:10px;color:var(--text-3);display:block;margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.field input,.field select,.field textarea{width:100%;font-size:12px;padding:9px 12px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-family:'DM Sans',system-ui;transition:all .2s;font-weight:500}
+.field textarea{resize:none;height:54px}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--color,#0d3d1a);background:#fff;box-shadow:0 0 0 3px rgba(13,61,26,.08)}
+
+/* NOTIFICATION */
+.notif{border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:500;box-shadow:var(--shadow-md)}
+
+/* TOGGLE */
+.toggle{width:44px;height:26px;border-radius:13px;background:var(--border);position:relative;cursor:pointer;transition:background .25s;flex-shrink:0}
+.toggle.on{background:var(--color,#0d3d1a)}
+.toggle-k{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.toggle.on .toggle-k{transform:translateX(18px)}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chip{font-size:10px;padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);cursor:pointer;background:#fff;color:var(--text-2);transition:all .15s;font-weight:500}
+.chip:hover{border-color:var(--color,#0d3d1a);color:var(--color,#0d3d1a)}
+.chip.on{font-weight:700;border-color:var(--color,#0d3d1a);background:var(--color,#0d3d1a);color:#fff}
+
+/* AVATAR */
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0;background:var(--color,#0d3d1a);font-size:11px;letter-spacing:.03em}
+
+/* PROGRESS */
+.prog{background:var(--border);border-radius:4px;height:4px;margin-top:4px;overflow:hidden}
+.prog-f{height:4px;border-radius:4px;background:var(--color,#0d3d1a);transition:width .5s ease}
+
+/* TAGS */
+.tag{font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.03em}
+.tg{background:#dcf0e0;color:#1a5c26}
+.tb{background:#dceaf8;color:#0a3d7a}
+.ta{background:#faebd7;color:#7a4010}
+.tr{background:#fce8e8;color:#8b1a1a}
+.tp{background:#ece9fd;color:#3c2e9e}
+
+/* CHAMADA ITEMS */
+.cr-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:#fff;margin-bottom:6px;transition:border-color .15s;box-shadow:var(--shadow)}
+.cr-item:hover{border-color:rgba(13,61,26,.15)}
+.crb{width:34px;height:34px;border-radius:50%;border:none;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.02em}
+.crb-p{background:#dcf0e0;color:#1a5c26}
+.crb-p.on{background:#0d3d1a;color:#fff;box-shadow:0 2px 8px rgba(13,61,26,.35)}
+.crb-f{background:#fce8e8;color:#8b1a1a}
+.crb-f.on{background:#c0392b;color:#fff;box-shadow:0 2px 8px rgba(192,57,43,.35)}
+
+/* BAV BUTTONS */
+.bav-row{display:flex;gap:6px;margin-bottom:10px}
+.bav{flex:1;padding:10px 4px;border-radius:10px;border:1.5px solid var(--border);font-size:11px;font-weight:600;cursor:pointer;text-align:center;transition:all .18s;background:#fff}
+.bav:hover{transform:translateY(-1px)}
+
+/* CHECK ITEMS */
+.check-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.check-item:last-child{border-bottom:none}
+.chk{width:22px;height:22px;border-radius:7px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s}
+.chk.on{background:var(--color,#0d3d1a);border-color:var(--color,#0d3d1a);box-shadow:0 2px 8px rgba(13,61,26,.3)}
+.chk-lbl{font-size:12px;color:var(--text);flex:1;font-weight:500}
+.chk-lbl.done{text-decoration:line-through;color:var(--text-3)}
+.xp-tag{font-size:9px;font-weight:700;padding:3px 7px;border-radius:20px;background:#dcf0e0;color:#1a5c26;flex-shrink:0;letter-spacing:.02em}
+
+/* STAT GRID */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.stat-c{border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.stat-v{font-family:'Bebas Neue',sans-serif;font-size:28px;font-weight:400;line-height:1;letter-spacing:.04em}
+.stat-l{font-size:10px;margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+
+/* FIGURINHAS - ESTILO OPÇÃO 3 */
+.stk-mini{display:none}
+.stk-ribbon,.stk-body,.stk-foot{display:none}
+.stk-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:14px}
+.stk-card{
+  border-radius:16px;overflow:hidden;position:relative;
+  cursor:pointer;transition:transform .18s,box-shadow .22s;
+  aspect-ratio:.72;display:flex;flex-direction:column;
+}
+.stk-card:hover{transform:scale(1.05);z-index:2}
+.stk-card:active{transform:scale(.96)}
+
+/* Brilho diagonal */
+.stk-diagonal{
+  position:absolute;inset:0;
+  background:linear-gradient(130deg,rgba(255,255,255,.22) 0%,transparent 48%,rgba(0,0,0,.1) 100%);
+  pointer-events:none;z-index:1;
+}
+/* Topo: raridade + estrelas */
+.stk-top{
+  position:relative;z-index:2;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:8px 8px 0;
+}
+.stk-badge-pill{
+  font-size:7px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:3px 8px;border-radius:12px;
+  background:rgba(0,0,0,.28);color:#fff;
+  border:1px solid rgba(255,255,255,.2);
+}
+.stk-stars-top{
+  font-size:10px;line-height:1;
+}
+
+/* Foto circular com anel brilhante */
+.stk-photo-wrap{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:4px 16px 2px;position:relative;z-index:2;
+}
+.stk-avatar{
+  width:82%;aspect-ratio:1;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative;
+  box-shadow:0 4px 20px rgba(0,0,0,.45);
+}
+.stk-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.stk-avatar-icon{
+  width:52%;height:52%;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* Rodapé */
+.stk-bottom{
+  position:relative;z-index:2;
+  padding:6px 9px 7px;
+  background:rgba(0,0,0,.28);
+}
+.stk-name{
+  font-size:15px;font-weight:900;
+  color:#fff;
+  letter-spacing:.06em;
+  font-family:Impact,'Arial Narrow',sans-serif;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-shadow:0 1px 4px rgba(0,0,0,.5);
+  line-height:1.1;
+  margin-bottom:3px;
+}
+.stk-stars-row{display:flex;justify-content:space-between;align-items:center}
+.stk-stars-val{font-size:11px;letter-spacing:1px}
+.stk-ev-tag{
+  font-size:8px;font-weight:700;
+  color:rgba(255,255,255,.9);
+  background:rgba(0,0,0,.22);
+  padding:2px 6px;border-radius:6px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:65px;
+}
+
+/* ZOOM */
+.stk-zoom-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:400;align-items:center;justify-content:center;backdrop-filter:blur(14px)}
+.stk-zoom-overlay.on{display:flex}
+@keyframes zoomIn{from{transform:scale(.3) rotate(-8deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.stk-zoom-card{border-radius:20px;overflow:hidden;width:228px;box-shadow:0 32px 80px rgba(0,0,0,.65);animation:zoomIn .3s cubic-bezier(.34,1.56,.64,1)}
+.stk-zoom-ribbon,.stk-zoom-body,.stk-zoom-foot{display:none}
+
+
+/* ALERTS */
+.alerta{border-radius:var(--radius);padding:12px 13px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;box-shadow:var(--shadow)}
+.al-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* CONFIG ROW */
+.config-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)}
+.config-row:last-child{border-bottom:none}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.on{display:flex}
+.modal-sheet{background:#fff;border-radius:24px 24px 0 0;padding:20px 18px 28px;width:100%;max-width:390px;max-height:85vh;overflow-y:auto}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:20px;font-weight:400;color:var(--text);margin-bottom:14px;letter-spacing:.06em}
+
+/* TELA INICIAL */
+#tela-inicial{
+  position:fixed;inset:0;z-index:200;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  padding:0;overflow-y:auto;
+  background:#071f0d;
+}
+#tela-inicial::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 10%,rgba(22,96,36,.6) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%,rgba(184,134,11,.15) 0%,transparent 60%),
+    radial-gradient(ellipse 100% 80% at 50% 50%,rgba(13,61,26,.8) 0%,rgba(7,31,13,1) 100%);
+  z-index:0;pointer-events:none;
+}
+#tela-inicial > *{position:relative;z-index:1}
+.tela-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;padding:40px 20px 32px}
+.logo-area{text-align:center;margin-bottom:36px}
+.logo-badge{
+  width:80px;height:80px;border-radius:22px;background:linear-gradient(145deg,#1a5c26,#0d3d1a);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 16px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.08);font-size:38px;
+}
+.logo-title{font-family:'Bebas Neue',sans-serif;font-size:32px;font-weight:400;color:#fff;letter-spacing:.12em;text-transform:uppercase;line-height:1}
+.logo-sub{font-size:12px;color:rgba(255,255,255,.45);margin-top:6px;letter-spacing:.12em;text-transform:uppercase;font-weight:500}
+.logo-divider{width:40px;height:1px;background:linear-gradient(90deg,transparent,rgba(184,134,11,.6),transparent);margin:16px auto 0}
+.perfil-section{width:100%;margin-bottom:6px}
+.perfil-section-label{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px;padding-left:4px}
+.perfil-btn{
+  width:100%;padding:14px 16px;border-radius:16px;border:none;cursor:pointer;
+  display:flex;align-items:center;gap:13px;margin-bottom:8px;text-align:left;
+  transition:all .2s;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);
+}
+.perfil-btn:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.16);transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,0,0,.3)}
+.perfil-btn:active{transform:translateY(0)}
+.p-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:1px solid rgba(255,255,255,.08)}
+.p-title{font-size:13px;font-weight:700;color:#fff;letter-spacing:.01em}
+.p-sub{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px;font-weight:400}
+.perfil-arrow{width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<!-- TELA INICIAL -->
+<div id="tela-inicial">
+<div class="tela-inner">
+  <div class="logo-area">
+    <div class="logo-badge" style="background:transparent;box-shadow:none;border:none;width:90px;height:90px"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCADhAO4DASIAAhEBAxEB/8QAHQABAAEFAQEBAAAAAAAAAAAAAAYDBAUHCAIJAf/EAFAQAAEEAQEEBAgICQoGAgMAAAIAAQMEBQYHERITISIxMggUQUJRUnFyFSMzNUNhYnMWU4GCkZKxsrMkJSY2OGN0ocHRNDdEdcLhVdKTovD/xAAbAQACAwEBAQAAAAAAAAAAAAAABQMEBgIBB//EADURAAICAQIEBAQFAgcBAAAAAAABAgMEERIFITFBBhNRcSIyYYEUNJGx0cHwFSQzQnKh8eH/2gAMAwEAAhEDEQA/AOMkREAEREAEREAEREAEREAEREAERXFSArEzRjv+t+3hZAF7h6vETymPucQs7e3c6tchWeCbczPwP3XUmxdNpSaMR4YxbzVaZSnxscMnCJD3SXbqmoKxrkwTi5bV1Iyi9yAQG4l3mXhcAEREAEREAEREAEREAEREAEREAEREAEREAEREAEREAEREAERehZyJhFt7oA9RiRmwj2upFjKjxs0MfWIn/WdUMbRaF2IutKXq/sZSbH1eQPEXyhK1h4ssmei6LqRXXKqOr6larC0EIxj+cqGUqc2PmR/KD/8AsyvEWpnjVzq8p9BTG2UZ7yGZOmU4tJCPxg/pJYNTzKU+2aMer54qP5Kjzt8sXy3lb1//AH+1ZK+iWPPZIcV2RsjuiYJERQnYREQAREQAREQAREQAREQARZ+lWpS1oy8UEyJm6xEe8n8vY6rjjIRLiGiX6pv+1c7ke7WRlFJSxsA7ykp/rcYsrC5ixGPmQEXukjcmG1mJRel5XR4EREAEVSMDlNgjAiL0MsjVxbl1pz/IP+6ALKtXksScMY+1/IyzlCiMXCMYkUxd4ldVazOUcMYjGJF1fQs5VrRVh6ve84lcw8KWU9f9qIb71R1XMpUabQfGSdaT91XayeS0/lcfpWhqSwNXxG+7DEIyE59PF2tw/ZXvVGnMrpq5Xq5TxXisw80OTI59DPuT7GycWGlVT/tdRddTc9ZzRiURExKwWMyFDtkhH3gWTRV8jFhkR2zJarZVvWJD79ELAuQ9Wb1vW9qwk0UkEjxyC4kyn96kEu+SPqyLBWIAlh4ZA6pb+FZXLxZ40tsunYcU2K6OsepGEWTtYuUOtB8YPq+X/wBrHEziTiTbnVY7PKIiACIqkMRyyNHGPEToApos3XxkAbimLmF+gVe/Blb/AOM/if7rncj3ayLopQWNqsPzcI//AJP/ALLG5SCrAAOMLg5P5pPu+vtXu5MNrL3T1qSCGtaEutWl6n5r8X/ku3K8wW6sNqPh4ZY2kH2E29cLYIx+Nj63F0E3s8q7E2T3/hPZzg7HF1hrNAftjfhSXjEfhjIv4L5tEnkAJBeOSOMhLvCQs4rUG2bZlQkxdjUWnao1rEDOdqrCO4JQ852bzXZbhTcxdUh4hLqkKT0XzpmpRZesrjNaNHCOZrCO6wDN1n3OrNqloo+Y1aXl+twvuU6y2Gng1BlKNOPq1LcsHe3dDGTMqceAuF3uSP5y10bY6IXQ4ffbzhB6ERjxdp3fiKOPo9bi/d3q7hxcAdaQik/yZS+HTwfTWSL7IishXxlKDuwCResXSuXfEYU8AyZ/PokRahjLEw8NWtwx+t2Ms7RwVeLcVoueXq+aswigldJj7E4LRRzl8TMLmBYctSER4R4HXtU8188UvcdVFreA/ln7mD8SL/PyNg60/wCQ+lPvx/dkVXb9/WDCf9uf99Udaf8AIfSf34fuyKtt+/rBhP8Atz/vpFw783X/AMpnWT/oS9omuUU70bjMPT2e5XWWSxUOYmgn5UVawW6IWZxZVtplLDfgPpnNY3B0cXNfk5hjXH0x79yff41F5PkqD66a/UW/gZeV5jfPTXQ18iInZQPwu46/dPwxT4flzRjIPMNfhdx1U0z81j946zPiDpD7ms8JxU8iaa1WhaXtP9pU5PzJFg71AhLhuVf1v9HU7X4QsQ8JCJD6pLOwukupqsngVNurr+FmspsSG/4qVx7OgulWs+OshxkAjILecJdvsZ+lbHsYehL9GUZf3asZtPF9DZH84VMr4iO7gWTD5Vqa/mrWYGZ5YJY/eB2Wd07jbFiatUqwvLbtGIxiPaTl2MsyWCvxl1RjL3SU12B4p5Np0fjUXWpVZbI+3sZ1zdeo1uaKbwbq5LzItI23s72dYTStGMpq0N3LE3xtqQd/C/oj391lNURZOd07JbpMYwgorRIhW2674jsxy3rTtHWH881yNnzfmRR+bucx/L0f+K6S8JzI8rT+JxfF1p7Ryl7I2XMuVMSuycPE3DuHc/pZut/nvWh4VDSnX1FmY9Z6HrEycu1wkfCJg4l+1m/WZl094M+S5+k8jiyLrVLfMH2SMuV68pQzxzD3gJib8i3n4NuUGrrifG83ijv1TES9Y4+sym4lXvoZziS0sOi0RFlBuc16sh8W2manr+tb5v63SrdZra1X8U2uXi823Sil/wAtywq0db1hF/RGg4S9cfT0bCIi7GQREQBhM188UvcdVFksVpzJ6u13iNOYaSuF+5zGrlMW4N7CRbnVhcqZHGZa5h8xSOjk6MjxWK59rOy1nAsiCr8p9WfMPElUnmSmjYWzfUmEs4X8FdYDCVGo/jdGWbujwdblqLa41JY1VqCTKSCUdcW5VOL8XH/u6wRCJd4V+q7RwmqnJlfHq+3p6/qJrM2c6lW/79DaeicVazWxHK4umUI2J7x8POLgDoeN1r7OWc2G7TuUyBTw4mR4oohJjijdm3dDsLKZYn+z3nP8a/8AFjWuhYR7o8KX8Jo35F05aaKT/XkWsyzbVCK66GRwOGymeyHiOJqc+YQ5h8RcARt6Sd1c6k0vntORwzZanGMMr8ITwzNIG/0O7KXbG/6u60/wTfw5FgquocUOxf8ABspZPhTxtpRi5D8O7mC/aurOI5X4uVcF8KaTXv3PI4tXkKUurTZFC7jqppn5rH7x1TLuOqmmfmsfvHXPiLpD7jnwh+Zl7GUREWWPowREQAUv2Aw83XWftfiaUcX6XUQWwfBvr8UepMh+MtxxD+axOocl6UyE/GX8MI/U22iIKz4lOdPCSyQWtdQ0Sk+JoVAEvsub8TrRk8hzSnKfSRk5P7XU32k5f4W1PnMsMny9mTlfaDfwM36qgjLY4teyqMfoI7pbpthu1TjZ9mSxOew+Y4/+EnjI/cZ+F2/VUHWXwcnFHJCXF631ML9DqacFKLTOIPSWp3X1S6wlxCXdJQbbNqHOaYwNHIYOevGUl1oJymh423EyyGyfMfDmz3E3CLimjh8Wl9+Pqqz24UPhDZflhHvQMFkfzHWRqioXqEvXQdzbdeq9CFak2e7SNQ5aHLZLJafK1FDygKPeA8H6qjuoNIa305VO5exte/Tj60ktEuPlt6XZb10bfbK6Rw+S73PpREXt3bnWXVhZ9kHtaWiJKbLKlrXJo5dp2YbddpoS4hJVlmdq2nodK66jmox8vG5hnkEB7sUzdrMsMminGUVKPRmlwct5Fesuq6hERel0lWwb+0Zon76X+FItoeHBs9vhmaO0nD0TsVxg8Wy7RD1gYfk5X9m/ctX7Bv7Rmifvpf4Ui+ghiJC7E29n7WTHHnKCUonz7jKTy5pny1r2IZx4oTElVXXnhM7C9OZTSeQ1XpPFw4vUOPiK040x5YWwDrGJAy4+pzDPVCYfOZavAz/xPwyXxGXyMfy+aJHV1PYraBu6RHHxlHbneXxjndYekX7OH7KwKIrdGNXS5OHd6shstlYkpdjZGx3+rmtP8E38ORa1r8ficc3Km5e5h4+W/Bv95bC2N3K3L1HhZLMMFrJVOGrzi4BkdmJtyr6gg/BnYzHpXJW6pZSe7zBirzNJ1OPi3rNrJni59ijHVykv09Ro6o240W30TNbl3HVTTPzWP3jqmXcdVNM/NY/eOpvEXSH3GvhD8zL2MoiIssfRgra5bGCSOGOKSe1K/DFBGO8pHdXEhDHG8hd0W4iWwvB905FJVn1pei4rVmQ4qfF9FG3Q7suLbY1Qc5C3iOZKiKhDqyN4/ZztCvQtYKDG44S7sViTr/5b1kIcTtG2a6Rv2q+TwI0YZPGZR4XklIy4R8ord61x4Qk5lourh4flspkYoBFLq8yd01CSWhnMiU5R3Tk2yYaNtX72k8VeyhCVyzVGWUhHcO8unsVvtEy3wHofMZIS4ZI6xjF759Vlm6sAVKsNWPuwxtGPsFty1J4TWYaDB43BiXWszPZl9yNV8etW5CS9Tm17K9e5znnJHGOOBi8vEQ+zoZ1h1fZWQjuGJcTcvqcPo3dv+asVr0JGFdY6RorYOXBwv1Xcuxt/lf2K1RB4dK+DHmetldPyF3ma5B+6a3JlqYZLE28fJ3bMEkRfnNuXJezDUXwJq3E5kpPixlYbPuH1TXX3ukszxKp13qa7jfFluhoa98H26c+z9sfN8ti7ctQx/wA1sJa00H/Me2LVun+7DfEMjWFbLVXKivMcl35/qTU/Loaw8JCsxaLo3vOqZEP0ExLWS3Nt0qeNbL8t/c8uf9UxWk6Z8dOGT1o2TLBetH3HHB3pbOP0RWREVsfEq2Df2jNE/fS/wpF9Bl8wCy2VwGrMXmMHbenkqbFJXmYBJmf3XXffg+bRh2mbO62dnhCvkYpCrX4Q7oTD27vqftV+lPYmfP8AjH5yZsIwGQXA2Yhdtzs6412u+DJqbE5W7ltng18liZieX4LMuCav9UT+VdmIpq7JVy3QejFTipLRny2+NjsT1bVaapcgN454JhdjjNuh2dnXpdC+HRoksZqHF7QqFRxq228SykkQ9kn0Rl+z8i55EmkHiEuIVqeH5n4ivST+JCrJp8uXLoCYSHhIRJBAI+6IirijVmvXI6dfl86Z+EBKRgEn9rqcybMs8Ol4bA0S+FvGi5sHMDqw7lJk5mNjyirZJNnNVNtqexPRGvi7jqppn5rH7x1+3oTrTTV5uXzI3cS4SYx3+1l+aZ+ax+8dJfELTjBo1HhHllS9jKIiLLn0Qss8fBibBfY4V0bs/ptj9C4OqI8PLoxfpJt5Lm3UTFLRCuPenmAB/Kuqq8I1qsNce7FGMf6G3KhxF/BFGb4m9crT0X8lRa011/PO2TSGD70dEJMhOP7P4a2WtabPf582uav1J3oanDjqxezt/dVHF5bp+iFtvPSP1NlrljbpnmymvsjMJCVfHM1WLyj1O9+k10hrLMBp7SuRzBf9NA5B9qR+gG/WXF+dsmTOxycUkpORlxdb0vv9pJhwenWTsZVzZ6R2mDREWgFgREQBlsJL1ZK5Pu84f2Ouu9jOoPwg0DRkkPitUm8Vn9odj/lFca1ZXgnGVulhfpb0t5WW8fB11EON1ceHml/kuWDhD74ekP0pdxKjzadV1RbxLNs9CfbUP5h2iaR1d3YSmfH2i+ols1RLbBhizmz3KVYx4rEAeNQe/H0q92c5odQ6JxWU4uKSSBo5fvA6rpDZ8VMZd1y/gZR5TaNf6kzGu9R6n1NoXGwYUq8UbiXOEgMoD7HYlDshozXGmse0lzCjbpwt1pacnMIWWwsx/MvhC4m53Yc1j3rF77LZ6tPKdCiopaNf+hROdc3OEtGcuUbVe5DzIS4vWHzhVdSvblpeHAZKvqzExDBVszcq/EPd437DUUTCE42RU4mm4fmPIi1L5l1MJmvnil7jqf7CdqmR2TajtTeKHkMDkXZ71UO8BN2SRqAZr54pe46qLV8LxI5OI4y66mB8QXOviEmj6I7MNqWi9o9WSTTGWaaxCzPPUlHlzxe8Dqbr5k6M1Ja0PrvDawx5EJUbQlZEfpYH6JAf2ivpTh8nRy+Jq5TGWY7VK3EMsE0b7xMCbodlQyceWPZskVqrFZHcj9y2PoZbGz47KU4LtOwDxzQTAxhIL+R2ftXLu33wa8Rj9P3NUbOQmpWqcZTzYzjI4pgFt5MDdrPuXVq8mImLiTb2dtzsoYycXquTO9NeTPlrVmGzXCQfOZbKtbRY7OJm06VGYcSVHxQJ+Y/jHGzdEjq+20bCtXaG1Bfu6dw1nM6XmkKeAqg8yWqP4sw8rfWtT17Ec48UZe8PnCtBX+G4goK3nJfuLpebjN7OjKhfJ/mqppn5rH7x1TLuOqmmfmsfvHVTxD8sPuP/AAh+al7GUVrYuMFiOrXgkt3Jn4QghHeZL3kLI1aclj1W6vtW4Niej4cLgYc9ei4sxko+aRl3ooy7AZZK66NMN8jY8QzZUtV1/Ma8q7PNoV6Spe+CqNTkTDPFFastxb29LMtibM9UaqzmrM5h9QBjR+C2YTKmP0jv6y2BNIEEJ2JC4Y4geQvY3StaeD7EdnC5rUU3ey2SkP8AIKXyyHfVKU0uXQz1jk7VKT5vqTvVGTDC6byOYk/6SsRj7WboUW2E4w8ds7q2Jv8AiMlIdyUve7qsdvFma1jcPpGmX8qzd4QL7sXWwoYq2Nx8cIkMdWpCwiXmiAMq7+GhLvJ/sHWz2NQeExnuXVx2mYS60z+N2fY3QDLm3Jzc62XW4hHoFTTaPqM8/qTJ5snPhnk3Vx9UG6I1AFpMOjyalEU5Fm+eoREVsgCIiACkOnb00JwyQS8uetI0kZfaZ97Oo8rmjYKvYaTf1e6XsXko6o9i9Gdx6NzkGptL0c1GI8NmP40PVkboMFCNku/TmsdS6FmL4uKbx6h92SiHg36pGrlp9M2pfib/AMbV9UZm7W/KKl+2AD09qTT+vqo9WpM1W/8AaiNZqdHl2ypfR9BvGe6Kn3R+7foZKmLweqK4/HYfIgRe4S2TXmjs147EJcUcwNIBfUTb2WH1tjItR6JyWNhIZBt1XKAvWfvA6wuxHMPltnNDmF8dS305R9zuqvL4qE+8X+53HlZ7lfbNU8c2Y5uPh60MLTj+YYutFYs+Zja5f3bLpfPUxyWDv48h/wCJqyxfrBuXLumzL4LCMu9GbiSvcOetTX1GvC5aZOnqi3zXzxS9x1UVPNfPFL3HV7j6k165HTrlDzpn4Q5kjAJP7XW+4G1HGbfTUx/iRN8QkkWxCxC4l3SUs2cbT9fbOI/F9N5fn4xic3xt0eZE2/1X81e9VaDyuBxdXITckYyrMVrimBuXNvLqN6yiCuOONxCvfF66d0KE7cWWjPodsR2jY7adoeDUFOB6s4m8NuqT73hlHtZTrsXAXg17VINlmrbsGZCYtOZhwewYDxPVmHsN/qXcmldU6e1XjfhHTmZpZSrv3PJWmE2Z/Q+7sWZuqlTNwkNYSU47kZhcYeG1oKppzU2L1xiaY1q+WJ62TaJtwc/tGV//AO8i7PWI1fpvDas07bwOfox3cfbHhliP/J2fyO3pXNc3XJSXVA0pLRnzOLul7qqaZ+ax+8dby2z+DNktH4W3qHROVs5bH1heWfHWm4pxj8rgTd7ctG6X+aW991PxXMjkwi0uaG/heh05Uvqj3monslSoj3rNqOP9L7l1YIDELQj3Y24R9jLmrSdT4S2mabo94Y7PPP2B1v8AxXSyyPEn8sRrmz3ZU37IiW2LK/A+zfMWBLhklh8Wi9snQrvZnivgXQeGx5DwyDWaSX3z6zqI7Yt+e1dpTRcfdnseOWvuxUz2gZ6LTOj8jmOqMkUfDWH+8LoBV3B+VCtdXzKGq3OT7EN0/wD0q225TMd6jp6DxOt6pTP0OrjwgNSfA2jfguufDcyzvF7sLd91ldjuDfAaDq+NdW5d33LRF6T9PsFc+bXdV/hHqu5lRLipxfEUx+wPZ+nvK5j0q/IWnyxILbPLq+rIDmZWknaMfM73tdY9eidyJyJ97rytCKwiIgAiIgAiIgCR6byFiCWKevK8VqqYyRG3aPD2OutMbbobSNm58XCI34HinH8RO3+xLi6tMUMwyj2stzbBtZDgNRtQty8GMym4ScuyOTzDS/iGO5w3w+ZFvGtUXtfc2zsQzNizp2fT+S6uUwEr1ZRLvcDdx1jND/0X2wag0uXVp5ZvhCn7e12TXgvonaRjtbQjw43JbqeWH1X8hqttyqTU4cNrrGjxWMLYDj4fOgN0pSUpcuk1/wB/+lzml9Ymyx6pLmPMUfgjXWoMTw8Ix23li9wulv3l0rj7kGQx9fIUy4q9mMJYi+om3rSW3qh8H6+xeaEeGHI1uQfvgvOHS22OD7l7Hs8u6Fn1/c15mvnil7jqvGQjIBSBzBF2Ih9b6lQzXzxS9x1UX0bgS1xn7ma8Sfn5Eh1Jq3K6hp+K5TkyDHPza3CO7kdG7gb6lHkRN6aK6I7a1ohFOcpvWTBMJDwksts81ZkNnOs8fqnDyyQhHKI3oB7lmBy6QdliV+SAJxvGQ9UlHl4scitxa59jum11y115H1Ax9uvkKNe9TlGatYjGWKQX6CAm3s7K5XAmyHbzrPZrjYsLLUi1BgYW3RV5T4Jq4+qB+X8q7Q2W68wW0bSUGocDMTxG/BNBI26SvI3eA29LLI20zqltmtBvGcZrWJn818zXf8PJ+66+Y2l/mlvfdfTnN/M13/DyfuuvmHpuUYsG8hd2MjJVL+iH/AGo5Db7Inuwmn49tGyWS+jx9Tlj759C3staeDrjCqaLny0w/HZS0R/mB0Ms9tcz/wCDmg71qEuG5ZbxWr75rN5Wt2TsXsdSs11sfd6kb2a/0m2oam1l3qtZ/g+iSa+/pjtLxGi4+tj8b/L8p/oCzOm46mzfZLHNeERkrV/GZx8pzn5isNlNMcDo/I621JLw3MtvvWpS7ww9oMpHJbpWLt8MSFLkov3Z48IDVg4XS/wLVl4b2UZxL+7g8rrlbMz8djlD3Q/apVtF1Va1BnreascQyTnwwB+KBuxvyKDOneFj+TXz6sXZFm+X0PxERXCAIiIAIiIAIiIALJ4aw7F4sXndz2+hYxEAdVbNc3T2jbP7ukc5LxXoYODj86QPo5vaKv8AZfcfL6dyuz3U3zhiwOnKJd44H6GNvYud9E6jv4fL18tjzcLdQuJ/RIL9ov8AU63lqq82Qp4za9pEeKxSHlZOr5xR9jsXsSPJxvLltXR9Po//AKMqbd617r9jLbEb9miOT0HlC/l2Fnflfbgd1fbdsMWX2f2JoR4rGNNrQexug1H9oFmKCxgNrmm/jq4sMV8B8+Eujp/dW0qs9HK4uOxCQ2aN2HiH1TjNlQtk67I3L7+/cnhzi4M5NuWGs3MdMPnRurledSYWbTmtLGDm7tSd+UXrRl0g69L6XwFp47a9f4M5xi125G6XoERV6dS3cmeGnWmsyCDycEI7y3N0u6cykoptvRCpJyeiRQRbNwuyS9Zjo2r2S5dOzC8hlHH1o37WbrLG6g2Y5zEYt73EM/FZ5UEEYu8soOW4DbclseNYUp+WrOZaeBkKO5x5EEW2fBO2kY7Z3rq/jM/YGrhc6wbrBPujrzg3Rx+1uhapkA4pDjkEhkjfhIS6CF2VKaMJR5cg8Qqxm4iyq9F9iOi7yZas+nORmgtaftT15gkikqmQSRlvZ2cX6Wdl8u6LTT4Wvj6o8Vi7Z5QD7XUv2bbQtSbNckNjFXZ58LK7xXcXJJxQmJej1TVXwe8CWV1g2UmHip4cOMfvj7FjeIVyxU/M7Gj4ff12d1ob/wADjYcPg6OJr/J1IBiH8jLXGW/pxtmr4sfjMPplubY9WSdS/aVqcNJ6TtZL/rC+Kph60xKEU5D2Y7LwIhKfVWbk4hDvGU5//VZjHjLR2d3yX9WMLGuUS61k76/2j1dH1yIsPhz8ayxj3Tk8kainhDa2is2vwTx8ojTqOxXCHulI3ZH7BWWyl4NlGz1seMoyaszG+eeXteN37Tf3VzvmbpSyFGMpHxPxSl6xJniYylJS7R6e/dlS+1xWnd9SzvWHsWHk39XsH2K3RE3KAREQAREQAREQAREQAREQBUhlOKVpB7wrZ2ynXJaZypGQlZxNtuC/VL1fW9rLV25Vqs5V5mkH8rKO2tWR2yOoScXqjpbEy4/R2YPC2pRu6B1QLlRn7Qgc+0Fldl92zpLVFvZvmpSKPe8+HnL6WN+ngWodDaootiptMahYrGnLxcW8emWlN+Oj/wBRUykhuZerW0flLgjqTFi1nTWUjLq3oe1o2P8AYlN2O+cZf36P+S/XZ0aJF4RWnHlo1NXU4+KaluitfahfsdamjNpI2Ie6S6D2e6lq640vYp5SARvRA9XKUy/Q77vQ60RqbB2dI6otYG0RFDv5lOUvpI37E68M57pm8S37C/i2Nvj5sC0W8/B20y1+kWRxTXbGRld4rMTDwxCPay0YupfBp1kWJ03BNcGvZiePxcArlukjGN/KLp14km1ipa6JvmUOFrW1vv2Nz6tzmAgwDY6erwzMwcFR4dxRuz+hfmpLVbVemirYCu9yVtxt1GFot3aO9+x3WO2gafyuWYc8IQRiEQj4u77yYd/Q7l+VX+Hr39CacnnuxxXYHLmSNCW4gN9w7m39rLGOVjskpLSOnUdpRUU0/i1OOduWAr4XUnO59or1s5JLUVgfkvQteLc3hNZ23k8lXGUaYVrkr2mjEneUTHoWmVveB2SnhQcv7XYz/EIqORJIt8lIIVXHh4ik6oj6zuukNlemR0nourTmERuTN4zcL1TL/YVqjYjpj8IdUPnrkXFi8WfxQl3ZZ1N9q+fuZXIBs/07KI3rbcWTsebUg7X3ush4gzPxuT5NfRdWO+HUfh6t8urMQOQqa01ta1ZlJeXo/S+/kEXdnm9KtK+ainuWNrGrIi5Me+DTuOLtk+tYu9awmQow42GWSpoDAHulMeiXK2vQPrO61xtC1jbz+UazPHHAEcbRU6cfydWFuwVTqx970XT+n8vuT2W7Vr3LDWepMjmszYyV6fm3LL8RF+LbyMP+iii9kRGTkTuRO+93Xjp3ptGKitEUXJyerPxERengREQAREQAREQAREQAREQAREQBcVLMleTiHuv2spzp/PxWcSOIyUkhUwk46s4/LUJfSP2H8orX7r3DNJAXFGbi65lBSR1GTRu2jqDJhnotQUTj/CasH8oEfkcxX9dv7z0rZGpqOK2s6DjyWDMRyVbrQcXeik8sBLmvH5N5I2hEyjMSY4x4u6XpF1KtJ6yyunM42Yx5DzJOrai+itt9belULsWWqnXykuharuWmkujKdeWTikr2AKC1E7xyxF0ELspJofUsulcpPehow2ymgeLhk6CH2OpJq7EYvaJi31lov56gZvH6H0sn/ta3q2AnH1SHqmBd4XWr4dn1cSodF6+LuhNk48sWzzK+nY6zp7c6+Zx1PBvl6gSzVuKaxwcth4fNdyWI15t8azpkKtazVuytY5c1fhJjlET6X3suaEXK8N0qesptr0PHxSe3RRWpe5zIHlcxbyUkUcBWZHk4I+6O9UMPiL+ps9Bp/Fj8dN1p5fNijbvO6oV4buSyUOJxNYrN6d+EAHzfrdbMsZPC7INOniceUOU1ZbZitH5I/e+pvIKj4xxJY9axcb5v2JcHFdkvOt6Ej1ZnKOzvTdHSemYudmJY+XVi9Xf2zyLUU2Qr1sdcx45EigsnxZvKD1pbx9vIh3+Yo1ezF65NatWLMklq7vK1ZIuvI3o+yCjmRyxnwxwE+4G4Wf1fdWboxNi59X1Glt2r+hmNWamlulDAEUcFaozhUpxvvjrD9frG/lLyqIkRGTkTuRO+93XntX4r8YqK0RVbberCIi9PAiIgAiIgAiIgAiIgAiIgAiIgAiIgAiIgAspUypN1bPFJ9vzli0QBNtPZy9h8jHk8NeKCxH3ZI/2Oz+a/odTi9dwWvCG4JV9Pas87iLdTyD+36I1pWKQ4i4ozIS9LLJVsr5tgH3esH+yilXpLfF6S9SRT5bX0JxY8Zo3pMflq0lK5F34ph3KriaORz00kOLGOOvF1rV6wXBXrN6SN1hqWppZqMdG29fKU4vkoLW9yi+qMm3GPuj1Vb5vU01uEKs1kfF4fkqdUWGGP62Zur+d3kxnxXKlV5ff1KyxKVPd29CdSavxWkMbPi9DkU16ZuG5nZh3HJ9ULP3QWub95opDlsSlJORORcRbzIn8rrFWcnPK/xXxI/Z7f0qwS6FKjz6stSsb9i4uXZbHV38IeqrVEUpEEREAEREAEREAEREAEREAEREAEREAEREAEREAEREAEREAEREAF+t2oiAPxERABERABERABERABERABERABERAH/9k=" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5))"></div>
+    <div class="logo-title">Votoraty Academy</div>
+    <div class="logo-sub">Selecione seu perfil</div>
+    <div class="logo-divider"></div>
+  </div>
+
+  <div class="perfil-section" style="width:100%">
+    <div class="perfil-section-label">Gestão</div>
+    <button class="perfil-btn" onclick="entrar('diretor')">
+      <div class="p-icon" style="background:rgba(83,74,183,.25)">👑</div>
+      <div><div class="p-title">Diretor / Admin</div><div class="p-sub">Todas as categorias · acesso total</div></div>
+      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
+    </button>
+    <button class="perfil-btn" onclick="entrar('professor')">
+      <div class="p-icon" style="background:rgba(22,96,36,.35)">🏫</div>
+      <div><div class="p-title">Professor / Técnico</div><div class="p-sub">Todos os subs · chamada, treino, avaliação</div></div>
+      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
+    </button>
+  </div>
+
+  <div class="perfil-section" style="width:100%;margin-top:4px">
+    <div class="perfil-section-label">Categorias</div>
+    <button class="perfil-btn" onclick="entrar('prof_sub7')">
+      <div class="p-icon" style="background:rgba(230,126,34,.25)">🌱</div>
+      <div><div class="p-title">Professor Sub-7</div><div class="p-sub">Somente Sub-7</div></div>
+      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
+    </button>
+    <button class="perfil-btn" onclick="entrar('prof_sub9')">
+      <div class="p-icon" style="background:rgba(26,188,156,.2)">🌿</div>
+      <div><div class="p-title">Professor Sub-9</div><div class="p-sub">Somente Sub-9</div></div>
+      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
+    </button>
+    <button class="perfil-btn" onclick="entrar('prof_sub11')">
+      <div class="p-icon" style="background:rgba(22,96,36,.3)">⚽</div>
+      <div><div class="p-title">Professor Sub-11</div><div class="p-sub">Somente Sub-11</div></div>
+      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
+    </button>
+    <button class="perfil-btn" onclick="entrar('prof_sub13')">
+      <div class="p-icon" style="background:rgba(24,95,165,.25)">🔵</div>
+      <div><div class="p-title">Professor Sub-13</div><div class="p-sub">Somente Sub-13</div></div>
+      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
+    </button>
+    <button class="perfil-btn" onclick="entrar('prof_sub15')">
+      <div class="p-icon" style="background:rgba(200,148,10,.25)">⭐</div>
+      <div><div class="p-title">Professor Sub-15</div><div class="p-sub">Somente Sub-15</div></div>
+      <div class="perfil-arrow"><i class="ti ti-chevron-right" style="color:rgba(255,255,255,.5);font-size:14px"></i></div>
+    </button>
+  </div>
+
+  <div class="perfil-section" style="width:100%;margin-top:4px">
+    <div class="perfil-section-label">Atleta</div>
+    <button class="perfil-btn" onclick="entrar('atleta')" style="border-color:rgba(184,134,11,.3);background:rgba(184,134,11,.08)">
+      <div class="p-icon" style="background:rgba(184,134,11,.25)">🏃</div>
+      <div><div class="p-title" style="color:#f5c842">Atleta / Família</div><div class="p-sub">Meu perfil, figurinhas, saúde, estudos</div></div>
+      <div class="perfil-arrow" style="background:rgba(184,134,11,.15)"><i class="ti ti-chevron-right" style="color:rgba(245,200,66,.6);font-size:14px"></i></div>
+    </button>
+  </div>
+</div>
+</div>
+
+<!-- APP -->
+<div class="phone" id="app" style="display:none">
+  <div class="sbar" id="sbar" style="--color:#0d3d1a;background:var(--color)">
+    <span style="font-weight:600;letter-spacing:.02em">9:41</span>
+    <span id="sbar-mid" style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.8">Votoraty Academy</span>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span id="offline-dot" style="display:none;background:#d4a017;color:#fff;font-size:8px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:.04em">OFFLINE</span>
+      <button onclick="sair()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:9px;padding:3px 8px;border-radius:6px;cursor:pointer;font-weight:600;letter-spacing:.04em">SAIR</button>
+    </div>
+  </div>
+  <div class="hdr" id="hdr" style="--color:#0d3d1a;background:var(--color)">
+    <div class="hdr-row">
+      <div>
+        <h1 id="hdr-title">Votoraty Academy</h1>
+        <p id="hdr-sub">Bem-vindo</p>
+        <div class="cat-pill" id="cat-pill">—</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;padding-top:6px">
+        <button onclick="toggleOff()" id="btn-off" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.85);font-size:9px;padding:3px 8px;border-radius:6px;cursor:pointer;font-weight:600;letter-spacing:.04em">OFFLINE</button>
+        <div style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="showN('Sem notificações pendentes.')">
+          <i class="ti ti-bell" style="color:rgba(255,255,255,.9);font-size:17px"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-s" id="nav"></div>
+  <div id="notif-wrap" style="display:none;padding:8px 14px 0">
+    <div class="notif" id="notif-el" style="background:#dcf0e0;border:1px solid #8ec99a;color:#1a5c26">
+      <i class="ti ti-check" style="font-size:14px"></i><span id="notif-txt">OK</span>
+    </div>
+  </div>
+  <div id="screens" style="flex:1;overflow:hidden;display:flex;flex-direction:column;background:var(--surface)"></div>
+  <div class="bnav" id="bnav"></div>
+</div>
+
+<!-- MODAIS -->
+<!-- MODAL FICHA MÉDICA -->
+<div class="modal-overlay" id="modal-ficha">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div id="ficha-av" style="width:46px;height:46px;border-radius:50%;background:var(--color);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0"></div>
+      <div>
+        <div style="font-family:var(--font-display);font-size:18px;letter-spacing:.06em;color:var(--text)" id="ficha-nome">Atleta</div>
+        <div style="font-size:10px;color:var(--text-3);font-weight:500" id="ficha-info"></div>
+      </div>
+      <span style="margin-left:auto;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;background:#fce8e8;color:#8b1a1a">🏥 Ficha médica</span>
+    </div>
+
+    <div class="lbl">Dados de saúde</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <div class="field" style="margin:0">
+        <label>Tipo sanguíneo</label>
+        <select id="ficha-sangue">
+          <option>Não informado</option>
+          <option>A+</option><option>A-</option>
+          <option>B+</option><option>B-</option>
+          <option>AB+</option><option>AB-</option>
+          <option>O+</option><option>O-</option>
+        </select>
+      </div>
+      <div class="field" style="margin:0">
+        <label>Plano de saúde</label>
+        <select id="ficha-plano">
+          <option>Não tem</option>
+          <option>Unimed</option><option>Bradesco</option>
+          <option>SulAmérica</option><option>Amil</option>
+          <option>Outro</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Alergias</label>
+      <input type="text" id="ficha-alergias" placeholder="Ex: amendoim, penicilina, látex — ou Nenhuma">
+    </div>
+    <div class="field">
+      <label>Medicamentos em uso</label>
+      <input type="text" id="ficha-meds" placeholder="Ex: Ritalina 10mg — ou Nenhum">
+    </div>
+    <div class="field">
+      <label>Condições especiais</label>
+      <input type="text" id="ficha-cond" placeholder="Ex: asma, diabetes, epilepsia — ou Nenhuma">
+    </div>
+
+    <div class="lbl">Contato de emergência</div>
+    <div class="field">
+      <label>Nome</label>
+      <input type="text" id="ficha-emerg-nome" placeholder="Nome do responsável">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <div class="field" style="margin:0">
+        <label>Parentesco</label>
+        <select id="ficha-parent">
+          <option>Pai</option><option>Mãe</option>
+          <option>Avô/Avó</option><option>Tio/Tia</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <div class="field" style="margin:0">
+        <label>WhatsApp</label>
+        <input type="tel" id="ficha-emerg-wpp" placeholder="(11) 99999-9999">
+      </div>
+    </div>
+
+    <div class="lbl">Restrições físicas</div>
+    <div class="chips" id="ficha-restricoes">
+      <span class="chip" onclick="this.classList.toggle('on')">Sem restrições</span>
+      <span class="chip" onclick="this.classList.toggle('on')">Evitar impacto</span>
+      <span class="chip" onclick="this.classList.toggle('on')">Sem corrida intensa</span>
+      <span class="chip" onclick="this.classList.toggle('on')">Uso de protetor</span>
+      <span class="chip" onclick="this.classList.toggle('on')">Fisioterapia ativa</span>
+      <span class="chip" onclick="this.classList.toggle('on')">Lesão em recuperação</span>
+    </div>
+
+    <div class="field">
+      <label>Observações médicas</label>
+      <textarea id="ficha-obs" placeholder="Outras informações importantes para o técnico e a equipe..."></textarea>
+    </div>
+
+    <button class="btn-g" id="ficha-btn" onclick="salvarFicha()">Salvar ficha médica</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-ficha')">Cancelar</button>
+  </div>
+</div>
+
+<!-- ZOOM FIGURINHA -->
+<div class="stk-zoom-overlay" id="stk-zoom" onclick="fecharZoom()">
+  <div onclick="event.stopPropagation()">
+    <div class="stk-zoom-card" id="stk-zoom-card">
+      <div class="stk-zoom-ribbon" id="szr"></div>
+      <div class="stk-zoom-body" style="background:#fff">
+        <div id="szav" style="width:70px;height:70px;border-radius:50%;border:3px solid #ccc;background:#e8f4ec;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#166024;overflow:hidden"></div>
+        <div id="sznome" style="font-size:15px;font-weight:700;color:#1a1a1a;text-align:center"></div>
+        <div id="szcat"  style="font-size:11px;color:#888;text-align:center"></div>
+        <div id="szst"   style="font-size:16px;color:#c8940a;text-align:center;letter-spacing:2px"></div>
+      </div>
+      <div class="stk-zoom-foot" id="szfoot" style="background:#f5f0e0;color:#5a3c00"></div>
+    </div>
+    <div style="text-align:center;margin-top:14px;color:rgba(255,255,255,.6);font-size:12px">Toque fora para fechar</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-atleta">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-atleta-titulo">Novo atleta</div>
+    <div class="field"><label>Nome completo</label><input type="text" id="m-nome" placeholder="Nome do atleta"></div>
+    <div class="field"><label>Data de nascimento</label><input type="date" id="m-nasc"></div>
+    <div class="field"><label>Posição</label><select id="m-pos"><option>Goleiro</option><option>Zagueiro</option><option>Lateral</option><option>Meia</option><option>Atacante</option></select></div>
+    <div class="field"><label>Responsável</label><input type="text" id="m-resp" placeholder="Nome do pai/mãe/responsável"></div>
+    <div class="field"><label>WhatsApp do responsável</label><input type="tel" id="m-wpp" placeholder="(11) 99999-9999"></div>
+    <button class="btn-g" onclick="cadastrarAtleta()">Cadastrar atleta</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-atleta')">Cancelar</button>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-jogo">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Agendar jogo</div>
+
+    <div class="field">
+      <label>Adversário</label>
+      <input type="text" id="jogo-adv" placeholder="Nome do time adversário">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field">
+        <label>Data</label>
+        <input type="date" id="jogo-data">
+      </div>
+      <div class="field">
+        <label>Hora</label>
+        <input type="time" id="jogo-hora" value="09:00">
+      </div>
+    </div>
+    <div class="field">
+      <label>Categoria</label>
+      <select id="jogo-cat" onchange="popularConvJogo()">
+        <option>Sub-7</option>
+        <option>Sub-9</option>
+        <option>Sub-11</option>
+        <option selected>Sub-13</option>
+        <option>Sub-15</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Local</label>
+      <select id="jogo-local-tipo" onchange="toggleLocalCustom()">
+        <option>Campo do Votoraty</option>
+        <option>Campo do adversário</option>
+        <option>Campo neutro</option>
+        <option value="outro">Outro (digitar)</option>
+      </select>
+    </div>
+    <div class="field" id="jogo-local-custom" style="display:none">
+      <label>Nome do local</label>
+      <input type="text" id="jogo-local-txt" placeholder="Ex: Estádio Municipal">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field">
+        <label>Campeonato</label>
+        <select id="jogo-camp">
+          <option>Camp. Municipal</option>
+          <option>Camp. Regional</option>
+          <option>Estadual</option>
+          <option>Amistoso</option>
+          <option>Copa</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Fase</label>
+        <select id="jogo-fase">
+          <option>Fase de grupos</option>
+          <option>Oitavas</option>
+          <option>Quartas</option>
+          <option>Semifinal</option>
+          <option>Final</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Uniforme</label>
+      <div style="display:flex;gap:8px">
+        <button id="unif-1" onclick="selUnif(1)" style="flex:1;padding:8px;border-radius:9px;border:1.5px solid var(--color);background:var(--color);color:#fff;font-size:11px;font-weight:700;cursor:pointer">Uniforme 1 · Branco</button>
+        <button id="unif-2" onclick="selUnif(2)" style="flex:1;padding:8px;border-radius:9px;border:1.5px solid var(--border);background:#fff;color:var(--text-2);font-size:11px;font-weight:600;cursor:pointer">Uniforme 2 · Azul</button>
+      </div>
+    </div>
+
+    <div class="lbl" style="margin-top:4px">Convocar atletas</div>
+    <div id="jogo-conv-lista" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+      <!-- preenchido por JS -->
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <button onclick="convTodos(true)" style="flex:1;background:#dcf0e0;color:#1a5c26;border:none;padding:7px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer">Todos</button>
+      <button onclick="convTodos(false)" style="flex:1;background:#fce8e8;color:#8b1a1a;border:none;padding:7px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer">Limpar</button>
+    </div>
+
+    <div class="field">
+      <label>Recado para os convocados</label>
+      <textarea id="jogo-obs" placeholder="Ex: Chegue 30min antes. Traga documento e chuteira de campo."></textarea>
+    </div>
+
+    <button class="btn-g" onclick="agendarJogo()">Agendar e notificar atletas</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-jogo')">Cancelar</button>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-camp">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Criar campeonato</div>
+    <div class="field"><label>Nome</label><input type="text" placeholder="Ex: Camp. Municipal 2025"></div>
+    <div class="field"><label>Formato</label><select><option>Pontos corridos</option><option>Mata-mata</option><option>Grupos + mata-mata</option></select></div>
+    <div class="field"><label>Times participantes</label><textarea placeholder="Um time por linha&#10;Votoraty Academy&#10;Atlético Jr&#10;..."></textarea></div>
+    <button class="btn-g" onclick="fecharModal('modal-camp');showN('Campeonato criado!')">Criar campeonato</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-camp')">Cancelar</button>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-fin">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Lançamento financeiro</div>
+    <div class="field"><label>Tipo</label><select><option>Receita · Mensalidade</option><option>Receita · Patrocínio</option><option>Despesa · Campo</option><option>Despesa · Uniforme</option><option>Despesa · Campeonato</option></select></div>
+    <div class="field"><label>Valor (R$)</label><input type="number" placeholder="0,00"></div>
+    <div class="field"><label>Data</label><input type="date"></div>
+    <div class="field"><label>Observação</label><input type="text" placeholder="Ex: Mensalidade maio 2025"></div>
+    <button class="btn-g" onclick="fecharModal('modal-fin');showN('Lançamento salvo!')">Salvar</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-fin')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL MENSAGEM DIRETA -->
+<div class="modal-overlay" id="modal-msg-direta">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+      <div id="msg-d-av" style="width:44px;height:44px;border-radius:50%;background:var(--color);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0"></div>
+      <div>
+        <div class="modal-title" id="msg-d-nome" style="margin-bottom:2px">Atleta</div>
+        <div id="msg-d-info" style="font-size:10px;color:var(--text-3);font-weight:500"></div>
+      </div>
+    </div>
+    <div class="lbl">Mensagens rápidas</div>
+    <div class="chips">
+      <span class="chip" onclick="setMsgD('Ótimo treino hoje! Continue assim. 👏')">Parabéns pelo treino</span>
+      <span class="chip" onclick="setMsgD('Precisamos conversar sobre sua presença nos treinos.')">Sobre presença</span>
+      <span class="chip" onclick="setMsgD('Você foi convocado para o próximo jogo! 🏆')">Convocado!</span>
+      <span class="chip" onclick="setMsgD('Foco nos estudos também, atleta! 📚')">Estudos</span>
+      <span class="chip" onclick="setMsgD('Sua evolução está sendo incrível! Continue dedicado.')">Evolução</span>
+      <span class="chip" onclick="setMsgD('Precisamos conversar. Pode falar com o técnico após o treino.')">Conversa pessoal</span>
+    </div>
+    <div class="field">
+      <label>Tipo</label>
+      <select id="msg-d-tipo">
+        <option>✉️ Mensagem privada</option>
+        <option>👏 Elogio</option>
+        <option>⚠️ Alerta de presença</option>
+        <option>🏆 Convocação</option>
+        <option>📚 Estudos</option>
+        <option>💪 Motivação</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Mensagem</label>
+      <textarea id="msg-d-txt" placeholder="Escreva a mensagem para o atleta..."></textarea>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <input type="checkbox" id="msg-d-pais" style="width:14px;height:14px" checked>
+      <label for="msg-d-pais" style="font-size:11px;color:var(--text-2)">Enviar cópia para os pais</label>
+    </div>
+    <button class="btn-g" id="msg-d-btn" onclick="enviarMsgDireta()">Enviar mensagem privada</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-msg-direta')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL HABILIDADES -->
+<div class="modal-overlay" id="modal-hab">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div id="hab-av" style="width:46px;height:46px;border-radius:50%;background:var(--color);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0"></div>
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.06em;color:var(--text)" id="hab-nome">Atleta</div>
+        <div id="hab-info" style="font-size:10px;color:var(--text-3);font-weight:500"></div>
+      </div>
+    </div>
+    <div id="hab-sliders"></div>
+    <button class="btn-g" id="hab-btn" onclick="salvarHabilidades()" style="margin-top:8px">Salvar habilidades</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-hab')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL LANÇAR GOL -->
+<div class="modal-overlay" id="modal-gol">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div id="gol-av" style="width:46px;height:46px;border-radius:50%;background:var(--color);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0"></div>
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.06em;color:var(--text)" id="gol-nome">Atleta</div>
+        <div id="gol-info" style="font-size:10px;color:var(--text-3);font-weight:500"></div>
+      </div>
+    </div>
+    <div class="lbl">Gols neste jogo</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:20px;padding:20px 0">
+      <button onclick="ajustarGol(-1)" style="width:48px;height:48px;border-radius:50%;border:2px solid var(--border);background:#fff;font-size:22px;cursor:pointer;font-weight:700;color:var(--text-2)">−</button>
+      <div style="text-align:center">
+        <div id="gol-count" style="font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--text);line-height:1;letter-spacing:.04em">0</div>
+        <div style="font-size:10px;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.06em">gols</div>
+      </div>
+      <button onclick="ajustarGol(1)" style="width:48px;height:48px;border-radius:50%;border:none;background:#0d3d1a;color:#fff;font-size:22px;cursor:pointer;font-weight:700">+</button>
+    </div>
+    <div class="lbl">Total de gols na temporada</div>
+    <div style="background:var(--surface);border-radius:var(--radius-sm);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span style="font-size:11px;color:var(--text-2);font-weight:500">Antes deste jogo</span>
+      <span id="gol-total-antes" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);letter-spacing:.04em">0</span>
+    </div>
+    <button class="btn-g" id="gol-btn" onclick="confirmarGols()">Confirmar gols</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-gol')">Cancelar</button>
+  </div>
+</div>
+
+<script>
+// =====================
+// DADOS
+// =====================
+const CORES = {diretor:'#3c3489',sub7:'#c45e10',sub9:'#0f8c6e',sub11:'#0d3d1a',sub13:'#0e3d6e',sub15:'#8a6200',atleta:'#0d3d1a',professor:'#0d3d1a'};
+const CATS_DATA = {
+  sub7:  {nome:'Sub-7',  emoji:'🌱', atletas:[
+    {sig:'AS',nome:'Arthur Santos',pos:'Meia',pres:90,gols:3,nivel:3},
+    {sig:'BL',nome:'Bruno Lima',pos:'Atacante',pres:85,gols:5,nivel:4},
+    {sig:'CM',nome:'Carlos Mendes',pos:'Goleiro',pres:95,gols:0,nivel:4},
+    {sig:'DT',nome:'Diego Torres',pos:'Lateral',pres:88,gols:1,nivel:3}]},
+  sub9:  {nome:'Sub-9',  emoji:'🌿', atletas:[
+    {sig:'EF',nome:'Eduardo Ferreira',pos:'Meia',pres:92,gols:5,nivel:5},
+    {sig:'FA',nome:'Felipe Alves',pos:'Atacante',pres:78,gols:7,nivel:5},
+    {sig:'KT',nome:'Gustavo Silva',pos:'Zagueiro',pres:96,gols:1,nivel:6},
+    {sig:'HC',nome:'Henrique Costa',pos:'Lateral',pres:83,gols:2,nivel:4}]},
+  sub11: {nome:'Sub-11', emoji:'⚽', atletas:[
+    {sig:'LF',nome:'Lucas Ferreira',pos:'Goleiro',pres:88,gols:0,nivel:5},
+    {sig:'IN',nome:'Igor Nunes',pos:'Meia',pres:91,gols:4,nivel:6},
+    {sig:'JL',nome:'João Lima',pos:'Atacante',pres:76,gols:6,nivel:5},
+    {sig:'KP',nome:'Kaique Pereira',pos:'Zagueiro',pres:94,gols:1,nivel:6}]},
+  sub13: {nome:'Sub-13', emoji:'🔵', atletas:[
+    {sig:'KT',nome:'Kauan Telles',pos:'Meia',pres:94,gols:14,nivel:8},
+    {sig:'PA',nome:'Pedro Alves',pos:'Atacante',pres:72,gols:7,nivel:6},
+    {sig:'MT',nome:'Mateus Torres',pos:'Zagueiro',pres:91,gols:2,nivel:7},
+    {sig:'RC',nome:'Rafael Costa',pos:'Lateral',pres:65,gols:3,nivel:5},
+    {sig:'TN',nome:'Thiago Nunes',pos:'Meia',pres:85,gols:5,nivel:6}]},
+  sub15: {nome:'Sub-15', emoji:'⭐', atletas:[
+    {sig:'MT',nome:'Mateus Torres',pos:'Zagueiro',pres:91,gols:5,nivel:7},
+    {sig:'NF',nome:'Nathan Ferreira',pos:'Atacante',pres:88,gols:9,nivel:7},
+    {sig:'OL',nome:'Oliver Lima',pos:'Meia',pres:93,gols:7,nivel:8},
+    {sig:'PM',nome:'Pablo Mendes',pos:'Goleiro',pres:96,gols:0,nivel:6},
+    {sig:'QR',nome:'Quirino Ribeiro',pos:'Lateral',pres:80,gols:3,nivel:5}]}
+};
+const ATLETA_DEFAULT = {sig:'KT',nome:'Kauan Telles',pos:'Meia',cat:'Sub-13',nivel:8,xp:720,gols:14,treinos:38,pres:94,conquistas:7};
+
+// =====================
+// STATS DINÂMICOS
+// =====================
+const STATS = {
+  treinos: 38,        // incrementa a cada chamada salva
+  presencas: 36,      // presenças confirmadas
+  faltas: 2,          // faltas
+  gols: 14,           // lançado manualmente
+  xp: 720,
+};
+
+// Conquistas — desbloqueadas por metas
+const CONQUISTAS_DEF = [
+  {id:'c1', icon:'⚽', titulo:'Primeiro Gol',     meta:'1 gol',        check:()=>STATS.gols>=1},
+  {id:'c2', icon:'🎯', titulo:'Artilheiro',       meta:'10 gols',      check:()=>STATS.gols>=10},
+  {id:'c3', icon:'🏆', titulo:'Hat-trick',        meta:'3 gols/jogo',  check:()=>STATS.gols>=3},
+  {id:'c4', icon:'📅', titulo:'Presença Total',   meta:'10 treinos',   check:()=>STATS.treinos>=10},
+  {id:'c5', icon:'🔥', titulo:'Dedicado',         meta:'30 treinos',   check:()=>STATS.treinos>=30},
+  {id:'c6', icon:'⭐', titulo:'Elite',            meta:'50 treinos',   check:()=>STATS.treinos>=50},
+  {id:'c7', icon:'💯', titulo:'100% Presença',    meta:'Sem faltas',   check:()=>STATS.faltas===0},
+];
+
+function getConquistas(){
+  return CONQUISTAS_DEF.filter(c=>c.check());
+}
+
+function calcPres(){
+  const total = STATS.treinos;
+  if(total===0) return 0;
+  return Math.round((STATS.presencas/total)*100);
+}
+
+function addTreino(presente){
+  STATS.treinos++;
+  if(presente) STATS.presencas++;
+  else STATS.faltas++;
+  STATS.xp += presente ? 20 : 0;
+  atualizarStatsUI();
+}
+
+function addGolAtleta(qtd){
+  STATS.gols += qtd;
+  STATS.xp += qtd * 50;
+  verificarConquistas();
+  atualizarStatsUI();
+}
+
+function verificarConquistas(){
+  const novas = getConquistas();
+  const ant = parseInt(localStorage.getItem('vot_conq')||'0');
+  if(novas.length > ant){
+    const nova = novas[novas.length-1];
+    showN('🏆 Conquista desbloqueada: '+nova.titulo+'!');
+  }
+}
+
+function atualizarStatsUI(){
+  salvarLS();
+  // Atualiza stats na tela de evolução se visível
+  const els = {
+    'stat-gols': STATS.gols,
+    'stat-treinos': STATS.treinos,
+    'stat-pres': calcPres()+'%',
+    'stat-conq': getConquistas().length,
+    'stat-xp': STATS.xp,
+  };
+  Object.entries(els).forEach(([id,val])=>{
+    const el = document.getElementById(id);
+    if(el) el.textContent = val;
+  });
+  // Barra XP
+  const xpBar = document.getElementById('xp-bar');
+  if(xpBar) xpBar.style.width = Math.min((STATS.xp%1000)/10, 100)+'%';
+}
+
+// =====================
+// FICHAS MÉDICAS
+// =====================
+const FICHAS = {};
+
+// =====================
+// PERSISTÊNCIA
+// =====================
+function salvarLS(){
+  localStorage.setItem('vot_stats', JSON.stringify(STATS));
+  localStorage.setItem('vot_habilidades', JSON.stringify(HABILIDADES));
+  localStorage.setItem('vot_fichas', JSON.stringify(FICHAS));
+  localStorage.setItem('vot_jogos_agendados', JSON.stringify(JOGOS_AGENDADOS));
+}
+
+function carregarLS(){
+  try {
+    const st = localStorage.getItem('vot_stats');
+    if(st){ const d=JSON.parse(st); Object.assign(STATS,d); }
+    const hab = localStorage.getItem('vot_habilidades');
+    if(hab){ Object.assign(HABILIDADES, JSON.parse(hab)); }
+    const fic = localStorage.getItem('vot_fichas');
+    if(fic){ Object.assign(FICHAS, JSON.parse(fic)); }
+    const jog = localStorage.getItem('vot_jogos_agendados');
+    if(jog){ JOGOS_AGENDADOS.length=0; JSON.parse(jog).forEach(j=>JOGOS_AGENDADOS.push(j)); }
+  } catch(e){}
+}
+
+carregarLS();
+
+let perfilAtual = null;
+let offline = false;
+let chamadas = {};
+
+// Habilidades por atleta (chave: sig+cat)
+const HABILIDADES = {
+  'ASsub7':  {fin:55,dri:60,vel:65,pas:58,mar:50,ati:80},
+  'BLsub7':  {fin:72,dri:68,vel:70,pas:55,mar:48,ati:75},
+  'CMsub7':  {fin:20,dri:30,vel:55,pas:45,mar:70,ati:85},
+  'DTsub7':  {fin:40,dri:50,vel:72,pas:60,mar:65,ati:78},
+  'EFsub9':  {fin:65,dri:70,vel:68,pas:72,mar:55,ati:88},
+  'FAsub9':  {fin:80,dri:75,vel:82,pas:58,mar:42,ati:70},
+  'GSsub9':  {fin:35,dri:42,vel:58,pas:55,mar:85,ati:90},
+  'HCsub9':  {fin:45,dri:55,vel:78,pas:65,mar:68,ati:82},
+  'LFsub11': {fin:25,dri:35,vel:60,pas:48,mar:72,ati:88},
+  'INsub11': {fin:70,dri:72,vel:68,pas:80,mar:58,ati:85},
+  'JLsub11': {fin:82,dri:70,vel:75,pas:55,mar:45,ati:72},
+  'KPsub11': {fin:38,dri:45,vel:62,pas:58,mar:82,ati:90},
+  'KTsub13': {fin:88,dri:81,vel:75,pas:62,mar:54,ati:95},
+  'PAsub13': {fin:78,dri:65,vel:80,pas:55,mar:48,ati:68},
+  'MTsub13': {fin:40,dri:48,vel:65,pas:60,mar:85,ati:88},
+  'RCsub13': {fin:52,dri:58,vel:72,pas:68,mar:62,ati:75},
+  'TNsub13': {fin:68,dri:72,vel:65,pas:78,mar:60,ati:85},
+  'MTsub15': {fin:55,dri:52,vel:68,pas:65,mar:88,ati:90},
+  'NFsub15': {fin:85,dri:72,vel:82,pas:60,mar:50,ati:80},
+  'OLsub15': {fin:72,dri:78,vel:70,pas:85,mar:65,ati:92},
+  'PMsub15': {fin:22,dri:32,vel:58,pas:50,mar:75,ati:88},
+  'QRsub15': {fin:48,dri:55,vel:80,pas:70,mar:72,ati:82},
+};
+
+const HAB_LABELS = {fin:'Finalização',dri:'Drible',vel:'Velocidade',pas:'Passe',mar:'Marcação',ati:'Atitude'};
+const HAB_ICONS  = {fin:'⚽',dri:'🎯',vel:'⚡',pas:'↗️',mar:'🛡️',ati:'💪'};
+
+// =====================
+// CSS VAR COLOR
+// =====================
+function setCor(cor){
+  document.documentElement.style.setProperty('--color', cor);
+  const sbar = document.getElementById('sbar');
+  const hdr = document.getElementById('hdr');
+  if(sbar) sbar.style.background = cor;
+  if(hdr) hdr.style.background = cor;
+  document.querySelectorAll('.btn-g').forEach(b=>b.style.background=cor);
+  document.querySelectorAll('.toggle.on').forEach(t=>t.style.background=cor);
+}
+
+// =====================
+// ENTRAR
+// =====================
+function entrar(perfil){
+  perfilAtual = perfil;
+  document.getElementById('tela-inicial').style.display='none';
+  document.getElementById('app').style.display='flex';
+  const cor = CORES[perfil.replace('prof_','')];
+  setCor(cor);
+  configurarPerfil(perfil, cor);
+}
+
+function configurarPerfil(perfil, cor){
+  const isProfDir = perfil !== 'atleta';
+  const isDir = perfil === 'diretor';
+  const catKey = perfil.replace('prof_','');
+  const catData = CATS_DATA[catKey];
+
+  // Header
+  if(perfil === 'diretor'){
+    document.getElementById('hdr-title').textContent = 'Votoraty Academy';
+    document.getElementById('hdr-sub').textContent = 'Diretor · acesso total';
+    document.getElementById('cat-pill').textContent = '👑 Todas as categorias';
+    document.getElementById('sbar-mid').textContent = 'Admin · Votoraty';
+  } else if(perfil === 'atleta'){
+    document.getElementById('hdr-title').textContent = ATLETA_DEFAULT.nome;
+    document.getElementById('hdr-sub').textContent = ATLETA_DEFAULT.pos+' · '+ATLETA_DEFAULT.cat+' · Nível '+ATLETA_DEFAULT.nivel;
+    document.getElementById('cat-pill').textContent = '🏃 '+ATLETA_DEFAULT.cat;
+    document.getElementById('sbar-mid').textContent = 'Atleta · Votoraty';
+  } else {
+    document.getElementById('hdr-title').textContent = 'Prof. '+catData.nome;
+    document.getElementById('hdr-sub').textContent = 'Técnico · '+catData.nome;
+    document.getElementById('cat-pill').textContent = catData.emoji+' '+catData.nome;
+    document.getElementById('sbar-mid').textContent = catData.nome+' · Votoraty';
+  }
+
+  // Montar nav e telas
+  if(perfil === 'atleta') montarAtleta(cor);
+  else if(perfil === 'diretor') montarDiretor(cor);
+  else montarProfessor(catKey, catData, cor);
+}
+
+// =====================
+// PROFESSOR
+// =====================
+function montarProfessor(catKey, cat, cor){
+  const navItems = ['Chamada','Avaliação','Treino','Mensagem','Atletas','Jogos'];
+  const bnavItems = [
+    {icon:'ti-users',label:'Chamada'},
+    {icon:'ti-chart-bar',label:'Avaliar'},
+    {icon:'ti-ball-football',label:'Treino'},
+    {icon:'ti-message',label:'Mensagem'},
+    {icon:'ti-list',label:'Atletas'},
+    {icon:'ti-trophy',label:'Jogos'}
+  ];
+  montarNav(navItems, cor);
+  montarBnav(bnavItems, cor);
+
+  const sc = document.getElementById('screens');
+  sc.innerHTML = `
+  <div id="s-0" class="scr on" style="padding:11px 13px;overflow-y:auto">
+    ${renderChamada(cat, cor)}
+  </div>
+  <div id="s-1" class="scr" style="padding:11px 13px;overflow-y:auto">
+    ${renderAvaliacao(cat, cor)}
+  </div>
+  <div id="s-2" class="scr" style="padding:11px 13px;overflow-y:auto">
+    ${renderTreino(cor)}
+  </div>
+  <div id="s-3" class="scr" style="padding:11px 13px;overflow-y:auto">
+    ${renderMensagem(cat.nome, false, cor)}
+  </div>
+  <div id="s-4" class="scr" style="padding:11px 13px;overflow-y:auto">
+    ${renderListaAtletas(cat, cor)}
+  </div>
+  <div id="s-5" class="scr" style="padding:11px 13px;overflow-y:auto">
+    ${renderJogosProfessor(cat, cor)}
+  </div>`;
+  setCor(cor);
+  chamadas={};
+}
+
+function renderJogosProfessor(cat, cor){
+  return `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Jogos — ${cat.nome}</span>
+    <button class="btn-sm" onclick="abrirModal('modal-jogo')">+ Agendar</button>
+  </div>
+
+  <!-- JOGO AO VIVO -->
+  <div class="lbl">Ao vivo</div>
+  <div class="card" style="border-left:3px solid #c0392b;padding:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <span style="font-size:10px;color:var(--text-3);font-weight:500">${cat.nome} · Camp. Municipal</span>
+      <span class="tag tr">🔴 Ao vivo</span>
+    </div>
+
+    <!-- PLACAR -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:14px">
+      <span style="font-size:13px;font-weight:700;flex:1;color:var(--text)">Votoraty</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button onclick="ajustarPlacar('v',-1)" style="width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);background:#fff;font-size:16px;cursor:pointer;color:var(--text-2);font-weight:700;line-height:1">−</button>
+        <span id="placar-v" style="font-family:var(--font-display);font-size:40px;color:var(--text);letter-spacing:.04em;min-width:32px;text-align:center">2</span>
+        <span style="font-size:18px;color:var(--text-3)">×</span>
+        <span id="placar-a" style="font-family:var(--font-display);font-size:40px;color:var(--text);letter-spacing:.04em;min-width:32px;text-align:center">1</span>
+        <button onclick="ajustarPlacar('a',-1)" style="width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);background:#fff;font-size:16px;cursor:pointer;color:var(--text-2);font-weight:700;line-height:1">−</button>
+      </div>
+      <span style="font-size:13px;font-weight:700;flex:1;text-align:right;color:var(--text)">Rapid FC</span>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <button onclick="ajustarPlacar('v',1)" style="flex:1;background:#0d3d1a;color:#fff;border:none;padding:8px;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer">⚽ + Gol Votoraty</button>
+      <button onclick="ajustarPlacar('a',1)" style="flex:1;background:#fcebeb;color:#8b1a1a;border:none;padding:8px;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer">+ Gol adv.</button>
+    </div>
+
+    <!-- GOLS POR ATLETA -->
+    <div class="lbl" style="margin-top:4px">Quem fez o gol?</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+      ${cat.atletas.map(a=>`
+      <button onclick="registrarGolAtleta('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${cor}')"
+        style="display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:20px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-size:10px;font-weight:600;color:var(--text);transition:all .15s"
+        onmouseover="this.style.background='${cor}';this.style.color='#fff';this.style.borderColor='${cor}'"
+        onmouseout="this.style.background='#fff';this.style.color='var(--text)';this.style.borderColor='var(--border)'">
+        <div style="width:22px;height:22px;border-radius:50%;background:${cor};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff">${a.sig}</div>
+        ${a.nome.split(' ')[0]}
+      </button>`).join('')}
+    </div>
+
+    <!-- TEMPO -->
+    <div style="display:flex;gap:6px">
+      <button onclick="showN('⏱️ Jogo encerrado! Resultado salvo e atletas notificados.')" style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text-2);padding:8px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer">Encerrar jogo</button>
+      <button onclick="showN('📢 Intervalo! Recado enviado aos atletas.')" style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text-2);padding:8px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer">Intervalo</button>
+    </div>
+  </div>
+
+  <!-- PRÓXIMOS JOGOS -->
+  <div class="lbl">Próximos jogos</div>
+  <div id="lista-jogos-agendados">${renderListaJogosAgendados()}</div>
+
+  <!-- RESULTADOS ANTERIORES -->
+  <div class="lbl">Últimos resultados</div>
+  ${JOGOS_RESULTADOS.map(r=>{
+    const win = r.resultado==='Vitória';
+    return `<div class="card" style="border-left:3px solid ${win?'#1a5c26':'#8b1a1a'}">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+        <span style="font-size:10px;color:var(--text-3);font-weight:500">${r.data} · ${r.cat}</span>
+        <span class="tag ${win?'tg':'tr'}">${r.resultado}</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+        <span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span>
+        <span style="font-family:var(--font-display);font-size:28px;color:var(--text);letter-spacing:.04em">${r.gv}</span>
+        <span style="font-size:14px;color:var(--text-3)">×</span>
+        <span style="font-family:var(--font-display);font-size:28px;color:var(--text);letter-spacing:.04em">${r.ga}</span>
+        <span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">${r.adv}</span>
+      </div>
+    </div>`;
+  }).join('')}`;
+}
+
+// Controle do placar ao vivo
+let placarV = 2, placarA = 1;
+function ajustarPlacar(time, delta){
+  if(time==='v') placarV = Math.max(0, placarV+delta);
+  else placarA = Math.max(0, placarA+delta);
+  const elV = document.getElementById('placar-v');
+  const elA = document.getElementById('placar-a');
+  if(elV) elV.textContent = placarV;
+  if(elA) elA.textContent = placarA;
+}
+
+function registrarGolAtleta(nome, sig, pos, cat, cor){
+  placarV++;
+  const el = document.getElementById('placar-v');
+  if(el) el.textContent = placarV;
+  // Abre modal para confirmar quantos gols
+  abrirLancarGol(nome, sig, pos, cat, cor);
+  showN('⚽ Gol de '+nome+'! Placar: '+placarV+'×'+placarA);
+}
+
+function renderChamada(cat, cor){
+  let rows = cat.atletas.map((a,i)=>{
+    const pc = a.pres>=85?'#27500a':a.pres>=70?'#854f0b':'#a32d2d';
+    return `<div class="cr-item">
+      <div class="av" style="width:32px;height:32px;font-size:11px;background:${cor}">${a.sig}</div>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:700">${a.nome}</div>
+        <div style="font-size:9px;color:#aaa">${a.pos} · <span style="color:${pc}">${a.pres}% presença</span></div>
+      </div>
+      <div style="display:flex;gap:4px">
+        <button class="crb crb-p" onclick="marcC('c${i}','P',this,'${cor}')" id="cp-c${i}">P</button>
+        <button class="crb crb-f" onclick="marcC('c${i}','F',this,'${cor}')" id="cf-c${i}">F</button>
+      </div>
+    </div>`;
+  }).join('');
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+    <span style="font-size:12px;font-weight:700">Chamada — ${cat.nome}</span>
+    <span style="font-size:10px;color:#aaa" id="cnt-c">0/${cat.atletas.length}</span>
+  </div>
+  <div style="background:#eee;border-radius:3px;height:4px;margin-bottom:10px"><div id="prog-c" style="height:4px;border-radius:3px;background:${cor};width:0;transition:width .3s"></div></div>
+  ${rows}
+  <button class="btn-g" style="background:${cor}" onclick="salvarChamada(${cat.atletas.length})">Salvar chamada e notificar pais</button>`;
+}
+
+function marcC(id,tipo,el,cor){
+  chamadas[id]=tipo;
+  document.getElementById('cp-'+id).classList.toggle('on',tipo==='P');
+  document.getElementById('cp-'+id).style.background = tipo==='P'?cor:'#eaf3de';
+  document.getElementById('cp-'+id).style.color = tipo==='P'?'#fff':'#27500a';
+  document.getElementById('cf-'+id).classList.toggle('on',tipo==='F');
+  const t=Object.keys(chamadas).length;
+  const all=document.querySelectorAll('.cr-item').length;
+  document.getElementById('cnt-c').textContent=t+'/'+all;
+  document.getElementById('prog-c').style.width=(t/all*100)+'%';
+}
+
+function salvarChamada(total){
+  const p=Object.values(chamadas).filter(v=>v==='P').length;
+  const f=Object.values(chamadas).filter(v=>v==='F').length;
+  // Atualiza stats se for o atleta principal (GS)
+  const gsPresente = chamadas['c0']==='P' || chamadas['KTsub13']==='P';
+  if(p+f > 0) addTreino(gsPresente);
+  showN('✓ Chamada salva! '+p+' presentes · '+f+' faltas · Pais notificados');
+}
+
+function renderAvaliacao(cat, cor){
+  return cat.atletas.map((a,i)=>`
+  <div style="border:1px solid #eee;border-radius:10px;margin-bottom:8px;overflow:hidden">
+    <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;background:#fff" onclick="togAv(${i})">
+      <div class="av" style="width:30px;height:30px;font-size:10px;background:${cor}">${a.sig}</div>
+      <div style="flex:1"><div style="font-size:12px;font-weight:700">${a.nome}</div><div style="font-size:9px;color:#aaa">${a.pos}</div></div>
+      <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;background:#fcebeb;color:#791f1f" id="avb-${i}">pendente</span>
+    </div>
+    <div id="avd-${i}" style="display:none;padding:10px 12px;border-top:1px solid #eee;background:#fafaf9">
+      <div class="bav-row">
+        <button class="bav" style="background:#eaf3de;color:#27500a" onclick="setAvB(${i},'Ótimo',this,'#eaf3de','#27500a')">⭐ Ótimo</button>
+        <button class="bav" style="background:#e6f1fb;color:#0c447c" onclick="setAvB(${i},'Bem',this,'#e6f1fb','#0c447c')">👍 Bem</button>
+        <button class="bav" style="background:#faeeda;color:#633806" onclick="setAvB(${i},'Atenção',this,'#faeeda','#633806')">⚠️ Atenção</button>
+      </div>
+      <div class="chips">
+        <span class="chip" onclick="this.classList.toggle('on')" style="--color:${cor}">Boa finalização</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Passe melhorou</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Marcação fraca</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Ótima atitude</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Cansado</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Desatento</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Liderança</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Veloz hoje</span>
+      </div>
+      <textarea style="width:100%;font-size:11px;padding:6px 9px;border-radius:7px;border:1px solid #ddd;background:#fff;resize:none;height:44px;font-family:system-ui" placeholder="Nota livre (opcional)..."></textarea>
+    </div>
+  </div>`).join('')
+  + `<button class="btn-g" onclick="showN('✓ Avaliações salvas! Atletas notificados.')">Salvar avaliações</button>`;
+}
+
+function togAv(i){const d=document.getElementById('avd-'+i);d.style.display=d.style.display==='none'?'block':'none';}
+function setAvB(i,txt,el,bg,cor){
+  el.closest('.bav-row').querySelectorAll('.bav').forEach(b=>b.style.fontWeight='600');
+  el.style.fontWeight='700';el.style.border='1.5px solid '+cor;
+  const b=document.getElementById('avb-'+i);b.textContent=txt;b.style.background=bg;b.style.color=cor;
+}
+
+function renderTreino(cor){
+  return `<div class="lbl">Tipo de treino</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px">
+    ${[['tec','ti-ball-football','#eaf3de','#3b6d11','#27500a','Técnico'],
+       ['tat','ti-chess','#e6f1fb','#185fa5','#0c447c','Tático'],
+       ['fis','ti-run','#faeeda','#854f0b','#633806','Físico'],
+       ['col','ti-users','#eeedfe','#534ab7','#3c3489','Coletivo'],
+       ['gol','ti-hand-stop','#fbeaf0','#993556','#72243e','Goleiro'],
+       ['pre','ti-trophy','#fcebeb','#a32d2d','#791f1f','Preparação']
+    ].map(([k,ic,bg,ic_c,tc,nm])=>`
+    <div id="tc-${k}" onclick="selTipoT(this,'${cor}')" style="border-radius:9px;padding:9px 5px;text-align:center;border:1.5px solid transparent;cursor:pointer;background:${bg};transition:all .15s">
+      <i class="ti ${ic}" style="font-size:19px;color:${ic_c};display:block;margin-bottom:3px"></i>
+      <span style="font-size:9px;font-weight:700;color:${tc}">${nm}</span>
+    </div>`).join('')}
+  </div>
+  <div class="lbl">Intensidade</div>
+  <div style="display:flex;gap:6px;margin-bottom:10px">
+    <button class="bav" style="background:#e6f1fb;color:#0c447c" onclick="selIntT(this,'${cor}')">Leve</button>
+    <button class="bav" style="background:#eaf3de;color:#27500a" onclick="selIntT(this,'${cor}')">Médio</button>
+    <button class="bav" style="background:#fcebeb;color:#791f1f" onclick="selIntT(this,'${cor}')">Intenso</button>
+  </div>
+  <div class="lbl">Habilidades trabalhadas</div>
+  <div class="chips">
+    ${['Passe curto','Passe longo','Finalização','Drible','Domínio','Cabeceio','Marcação','Posicionamento','Velocidade','Bola parada','Transição','Trabalho em equipe'].map(h=>`<span class="chip" onclick="this.classList.toggle('on')">${h}</span>`).join('')}
+  </div>
+  <div class="lbl">Como foi o treino?</div>
+  <div style="display:flex;gap:6px;margin-bottom:10px">
+    <button class="bav" style="background:#eaf3de;color:#27500a" onclick="selIntT(this,'${cor}')">Ótimo</button>
+    <button class="bav" style="background:#e6f1fb;color:#0c447c" onclick="selIntT(this,'${cor}')">Bom</button>
+    <button class="bav" style="background:#faeeda;color:#633806" onclick="selIntT(this,'${cor}')">Regular</button>
+  </div>
+  <div class="field"><label>Observação (opcional)</label><textarea placeholder="Ex: Grupo focado. Evoluiu no passe curto..."></textarea></div>
+  <button class="btn-g" style="background:${cor}" onclick="showN('✓ Treino publicado! Atletas e pais notificados.')">Publicar treino</button>`;
+}
+
+function selTipoT(el,cor){
+  document.querySelectorAll('[id^="tc-"]').forEach(c=>{c.style.transform='';c.style.border='1.5px solid transparent';});
+  el.style.transform='scale(1.05)';el.style.border='1.5px solid '+cor;
+}
+function selIntT(el,cor){
+  el.closest('div').querySelectorAll('.bav').forEach(b=>{b.style.border='1.5px solid transparent';b.style.fontWeight='600';});
+  el.style.border='1.5px solid '+cor;el.style.fontWeight='700';
+}
+
+function renderMensagem(catNome, isDir, cor){
+  return `<div class="lbl">Mensagem para ${catNome}</div>
+  ${isDir?`<div class="lbl" style="margin-bottom:5px">Para qual categoria</div>
+  <div class="chips" id="dest-chips">
+    <span class="chip on" onclick="selDest(this)">Todas</span>
+    <span class="chip" onclick="selDest(this)">Sub-7</span>
+    <span class="chip" onclick="selDest(this)">Sub-9</span>
+    <span class="chip" onclick="selDest(this)">Sub-11</span>
+    <span class="chip" onclick="selDest(this)">Sub-13</span>
+    <span class="chip" onclick="selDest(this)">Sub-15</span>
+  </div>`:''}
+  <div class="lbl">Mensagens rápidas</div>
+  <div class="chips">
+    ${['Ótimo treino hoje! 👏','Treino confirmado para amanhã.','Jogo neste sábado — chegue 30min antes.','Não esqueçam de estudar hoje! 📚','Bebam bastante água! 💧','Tragam uniforme e chuteira.','Treino cancelado hoje por chuva.','Parabéns pelo jogo! 🏆'].map(m=>`<span class="chip" onclick="setMsgQ('${m}')">${m}</span>`).join('')}
+  </div>
+  <div class="field"><label>Tipo</label>
+    <select><option>📢 Aviso geral</option><option>⚽ Sobre treino</option><option>🏆 Sobre jogo</option><option>📚 Estudos</option><option>💧 Saúde</option><option>💰 Financeiro</option><option>🎉 Parabéns</option><option>⚠️ Urgente</option></select>
+  </div>
+  <div class="field"><label>Mensagem</label><textarea id="msg-txt" placeholder="Escreva aqui..."></textarea></div>
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+    <input type="checkbox" id="cc-pais" style="width:14px;height:14px" checked>
+    <label for="cc-pais" style="font-size:11px;color:#555">Enviar também para os pais</label>
+  </div>
+  <button class="btn-g" style="background:${cor}" onclick="enviarMsg()">Enviar mensagem</button>
+  <div class="lbl" style="margin-top:10px">Último enviado</div>
+  <div class="card" style="padding:9px 11px">
+    <div style="font-size:10px;font-weight:700;color:${cor};margin-bottom:3px">${catNome}</div>
+    <div style="font-size:11px;color:#333">Treino confirmado para sábado às 08h. Não faltem!</div>
+    <div style="font-size:9px;color:#aaa;margin-top:4px">2h · 47 receberam</div>
+  </div>`;
+}
+
+function setMsgD(txt){const el=document.getElementById('msg-d-txt');if(el)el.value=txt;}
+
+// =====================
+// HABILIDADES
+// =====================
+let habAtualKey = null;
+
+function abrirHabilidades(nome, sig, pos, cat, catKey, cor){
+  habAtualKey = sig+catKey;
+  document.getElementById('hab-av').textContent = sig;
+  document.getElementById('hab-av').style.background = cor;
+  document.getElementById('hab-nome').textContent = nome;
+  document.getElementById('hab-info').textContent = pos + ' · ' + cat;
+  document.getElementById('hab-btn').style.background = cor;
+
+  const vals = HABILIDADES[habAtualKey] || {fin:50,dri:50,vel:50,pas:50,mar:50,ati:50};
+
+  document.getElementById('hab-sliders').innerHTML = Object.entries(HAB_LABELS).map(([k,label])=>{
+    const val = vals[k] || 50;
+    const c = val>=75?'#0d3d1a':val>=50?'#b8860b':'#c0392b';
+    return `<div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:12px;font-weight:600;color:var(--text)">${HAB_ICONS[k]} ${label}</span>
+        <span id="hab-val-${k}" style="font-family:var(--font-display);font-size:20px;font-weight:400;color:${c};min-width:36px;text-align:right;letter-spacing:.04em">${val}</span>
+      </div>
+      <input type="range" min="0" max="100" value="${val}" id="hab-sl-${k}"
+        oninput="atualizarSlider('${k}','${cor}')"
+        style="width:100%;height:6px;border-radius:3px;accent-color:${cor};cursor:pointer">
+      <div style="display:flex;justify-content:space-between;margin-top:3px">
+        <span style="font-size:9px;color:var(--text-3)">Iniciante</span>
+        <span style="font-size:9px;color:var(--text-3)">Elite</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  abrirModal('modal-hab');
+}
+
+function atualizarSlider(k, cor){
+  const val = parseInt(document.getElementById('hab-sl-'+k).value);
+  const c = val>=75?'#0d3d1a':val>=50?'#b8860b':'#c0392b';
+  const el = document.getElementById('hab-val-'+k);
+  el.textContent = val;
+  el.style.color = c;
+}
+
+function salvarHabilidades(){
+  if(!habAtualKey) return;
+  const novo = {};
+  Object.keys(HAB_LABELS).forEach(k=>{
+    novo[k] = parseInt(document.getElementById('hab-sl-'+k).value);
+  });
+  HABILIDADES[habAtualKey] = novo;
+  salvarLS();
+  fecharModal('modal-hab');
+  const nome = document.getElementById('hab-nome').textContent;
+  showN('✓ Habilidades de '+nome+' atualizadas!');
+}
+
+// =====================
+// FOTO DO ATLETA
+// =====================
+let fotoAtleta = null;
+
+function carregarFoto(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')){
+    showN('⚠️ Selecione uma imagem válida.', true);
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    fotoAtleta = e.target.result;
+    // Atualiza o avatar na tela de evolução
+    const av = document.getElementById('atleta-av');
+    if(av){
+      av.innerHTML = `<img src="${fotoAtleta}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    }
+    // Atualiza o avatar no álbum de figurinhas
+    document.querySelectorAll('.stk-foto').forEach(el=>{
+      el.innerHTML = `<img src="${fotoAtleta}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    });
+    // Esconde a dica
+    const dica = document.getElementById('foto-dica');
+    if(dica) dica.style.display = 'none';
+    // Atualiza o header
+    atualizarHeaderFoto();
+    showN('✓ Foto atualizada! Aparece no perfil e nas figurinhas.');
+  };
+  reader.readAsDataURL(file);
+}
+
+function atualizarHeaderFoto(){
+  // Só adiciona mini avatar se for perfil de atleta
+  if(perfilAtual !== 'atleta') return;
+  const pill = document.getElementById('cat-pill');
+  if(pill && fotoAtleta){
+    const existing = document.getElementById('header-mini-av');
+    if(!existing){
+      const mini = document.createElement('img');
+      mini.id = 'header-mini-av';
+      mini.src = fotoAtleta;
+      mini.style.cssText = 'width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.4);margin-left:8px;vertical-align:middle';
+      pill.parentElement.appendChild(mini);
+    } else {
+      existing.src = fotoAtleta;
+    }
+  }
+}
+
+function abrirFicha(nome, sig, pos, cat, catKey, cor){
+  const key = sig+catKey;
+  const ficha = FICHAS[key] || {};
+  document.getElementById('ficha-av').textContent = sig;
+  document.getElementById('ficha-av').style.background = cor;
+  document.getElementById('ficha-nome').textContent = nome;
+  document.getElementById('ficha-info').textContent = pos+' · '+cat;
+  document.getElementById('ficha-btn').style.background = cor;
+  if(ficha.sangue)  document.getElementById('ficha-sangue').value = ficha.sangue;
+  if(ficha.plano)   document.getElementById('ficha-plano').value  = ficha.plano;
+  if(ficha.alergias)document.getElementById('ficha-alergias').value = ficha.alergias;
+  if(ficha.meds)    document.getElementById('ficha-meds').value   = ficha.meds;
+  if(ficha.cond)    document.getElementById('ficha-cond').value   = ficha.cond;
+  if(ficha.enome)   document.getElementById('ficha-emerg-nome').value = ficha.enome;
+  if(ficha.ewpp)    document.getElementById('ficha-emerg-wpp').value  = ficha.ewpp;
+  if(ficha.obs)     document.getElementById('ficha-obs').value    = ficha.obs;
+  document.getElementById('ficha-nome').dataset.key = key;
+  abrirModal('modal-ficha');
+}
+
+function salvarFicha(){
+  const key = document.getElementById('ficha-nome').dataset.key;
+  const nome = document.getElementById('ficha-nome').textContent;
+  FICHAS[key] = {
+    sangue:  document.getElementById('ficha-sangue').value,
+    plano:   document.getElementById('ficha-plano').value,
+    alergias:document.getElementById('ficha-alergias').value,
+    meds:    document.getElementById('ficha-meds').value,
+    cond:    document.getElementById('ficha-cond').value,
+    enome:   document.getElementById('ficha-emerg-nome').value,
+    ewpp:    document.getElementById('ficha-emerg-wpp').value,
+    obs:     document.getElementById('ficha-obs').value,
+  };
+  salvarLS();
+  fecharModal('modal-ficha');
+  showN('✓ Ficha médica de '+nome+' salva!');
+}
+
+// =====================
+// CALENDÁRIO
+// =====================
+const EVENTOS = [
+  {tipo:'treino',data:'2025-06-03',hora:'08h',label:'Treino técnico',cat:'Sub-13'},
+  {tipo:'treino',data:'2025-06-05',hora:'08h',label:'Treino tático', cat:'Sub-13'},
+  {tipo:'jogo',  data:'2025-06-07',hora:'09h',label:'vs Rapid FC',   cat:'Sub-13'},
+  {tipo:'treino',data:'2025-06-10',hora:'08h',label:'Treino físico', cat:'Sub-13'},
+  {tipo:'treino',data:'2025-06-12',hora:'08h',label:'Treino técnico',cat:'Sub-13'},
+  {tipo:'jogo',  data:'2025-06-14',hora:'09h',label:'vs União Sport',cat:'Sub-13'},
+  {tipo:'treino',data:'2025-06-17',hora:'08h',label:'Treino coletivo',cat:'Sub-13'},
+  {tipo:'treino',data:'2025-06-19',hora:'08h',label:'Treino tático', cat:'Sub-13'},
+  {tipo:'treino',data:'2025-06-24',hora:'08h',label:'Treino físico', cat:'Sub-13'},
+  {tipo:'treino',data:'2025-06-26',hora:'08h',label:'Treino técnico',cat:'Sub-13'},
+  {tipo:'jogo',  data:'2025-06-28',hora:'09h',label:'vs Grêmio Jr',  cat:'Sub-13'},
+];
+
+function renderCalendario(cor){
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const mes = hoje.getMonth();
+  const diaHoje = hoje.getDate();
+  const nomesMes=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const nomeMes = nomesMes[mes];
+  const primeiroDia = new Date(ano,mes,1).getDay();
+  const diasNoMes = new Date(ano,mes+1,0).getDate();
+  const evMap={};
+  EVENTOS.forEach(e=>{const d=parseInt(e.data.split('-')[2]);if(!evMap[d])evMap[d]=[];evMap[d].push(e);});
+  const dias=['D','S','T','Q','Q','S','S'];
+  const headers=dias.map(d=>`<div style="text-align:center;font-size:9px;font-weight:700;color:var(--text-3);padding:4px 0">${d}</div>`).join('');
+  let cells='';
+  for(let i=0;i<primeiroDia;i++) cells+=`<div></div>`;
+  for(let d=1;d<=diasNoMes;d++){
+    const eventos=evMap[d]||[];
+    const isHoje=d===diaHoje;
+    const temJogo=eventos.some(e=>e.tipo==='jogo');
+    const temTreino=eventos.some(e=>e.tipo==='treino');
+    const bg=isHoje?cor:'transparent';
+    const tc=isHoje?'#fff':'var(--text)';
+    let dots='';
+    if(temTreino) dots+=`<div style="width:5px;height:5px;border-radius:50%;background:${isHoje?'rgba(255,255,255,.7)':cor};display:inline-block;margin:0 1px"></div>`;
+    if(temJogo)   dots+=`<div style="width:5px;height:5px;border-radius:50%;background:${isHoje?'rgba(255,255,255,.7)':'#8b1a1a'};display:inline-block;margin:0 1px"></div>`;
+    cells+=`<div style="text-align:center;cursor:pointer" onclick="verDiaCalendario(${d})">
+      <div style="width:28px;height:28px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:11px;font-weight:${isHoje?'700':'500'};color:${tc}">${d}</div>
+      <div style="height:8px;display:flex;justify-content:center;align-items:center;gap:1px;margin-top:1px">${dots}</div>
+    </div>`;
+  }
+  const listaEventos=EVENTOS.map(e=>{
+    const d=parseInt(e.data.split('-')[2]);
+    const ic=e.tipo==='jogo'?'⚽':'🏃';
+    const bg=e.tipo==='jogo'?'#fce8e8':'#dceaf8';
+    return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
+      <div style="width:34px;height:34px;border-radius:9px;background:${bg};display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${ic}</div>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:700;color:var(--text)">${e.label}</div>
+        <div style="font-size:10px;color:var(--text-3);font-weight:500">${e.cat} · ${d} Jun · ${e.hora}</div>
+      </div>
+      <span class="tag ${e.tipo==='jogo'?'tr':'tb'}">${e.tipo==='jogo'?'Jogo':'Treino'}</span>
+    </div>`;
+  }).join('');
+
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">${nomeMes} ${ano}</span>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:50%;background:${cor}"></div><span style="font-size:9px;color:var(--text-3);font-weight:600">Treino</span></div>
+      <div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:50%;background:#8b1a1a"></div><span style="font-size:9px;color:var(--text-3);font-weight:600">Jogo</span></div>
+    </div>
+  </div>
+  <div class="cw" style="padding:10px">
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:6px">${headers}</div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">${cells}</div>
+  </div>
+  <div class="lbl" style="margin-top:4px">Eventos do mês (${EVENTOS.length})</div>
+  <div class="cw" style="padding:6px 14px">${listaEventos}</div>`;
+}
+
+function verDiaCalendario(dia){
+  const evMap={};
+  EVENTOS.forEach(e=>{const d=parseInt(e.data.split('-')[2]);if(!evMap[d])evMap[d]=[];evMap[d].push(e);});
+  const eventos=evMap[dia]||[];
+  if(!eventos.length) showN('Nenhum evento em '+dia+'/06');
+  else showN(dia+'/Jun: '+eventos.map(e=>e.label).join(' · '));
+}
+
+// =====================
+// RELATÓRIO PDF
+// =====================
+function gerarRelatorio(nome, sig, catKey, cor){
+  const hab=HABILIDADES[sig+catKey]||{fin:70,dri:65,vel:70,pas:60,mar:55,ati:85};
+  const ficha=FICHAS[sig+catKey]||{};
+  const pres=calcPres();
+  const conq=getConquistas();
+  const catNome=CATS_DATA[catKey]?.nome||'Sub-13';
+
+  const habRows=Object.entries(HAB_LABELS).map(([k,label])=>{
+    const val=hab[k]||60;
+    const c=val>=75?'#0d3d1a':val>=50?'#b8860b':'#c0392b';
+    const pct=val+'%';
+    return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <span style="font-size:11px;color:#555;width:90px">${label}</span>
+      <div style="flex:1;background:#eee;border-radius:3px;height:6px"><div style="width:${pct};height:6px;border-radius:3px;background:${c}"></div></div>
+      <span style="font-size:11px;font-weight:700;color:${c};width:28px;text-align:right">${val}</span>
+    </div>`;
+  }).join('');
+
+  const win=window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head>
+  <meta charset="UTF-8"><title>Relatório — ${nome}</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:system-ui,sans-serif;padding:28px;color:#1a1a1a;max-width:620px;margin:0 auto}
+    .hdr{background:${cor};color:#fff;padding:20px 24px;border-radius:12px;margin-bottom:20px;display:flex;align-items:center;gap:16px}
+    .av{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0}
+    h1{font-size:20px;font-weight:700}p.sub{font-size:11px;opacity:.75;margin-top:3px}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+    .stat{background:#f5f4f0;border-radius:8px;padding:12px;text-align:center}
+    .stat-v{font-size:22px;font-weight:700;color:${cor}}
+    .stat-l{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+    .section{margin-bottom:18px}
+    .section h2{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.08em;border-bottom:1.5px solid #eee;padding-bottom:6px;margin-bottom:12px}
+    .conq{display:flex;flex-wrap:wrap;gap:6px}
+    .conq-chip{background:#dcf0e0;color:#1a5c26;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700}
+    .fr{display:flex;gap:8px;margin-bottom:5px}
+    .fl{font-size:11px;font-weight:700;color:#777;width:130px;flex-shrink:0}
+    .fv{font-size:11px;color:#1a1a1a}
+    .footer{margin-top:24px;text-align:center;font-size:10px;color:#aaa;border-top:1px solid #eee;padding-top:14px}
+    .print-btn{background:${cor};color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;margin-top:10px}
+    @media print{.print-btn{display:none}}
+  </style></head><body>
+  <div class="hdr">
+    <div class="av">${sig}</div>
+    <div><h1>${nome}</h1><p class="sub">${catNome} · Votoraty Academy · Junho 2025</p></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-v">${STATS.gols}</div><div class="stat-l">Gols</div></div>
+    <div class="stat"><div class="stat-v">${STATS.treinos}</div><div class="stat-l">Treinos</div></div>
+    <div class="stat"><div class="stat-v">${pres}%</div><div class="stat-l">Presença</div></div>
+    <div class="stat"><div class="stat-v">${conq.length}</div><div class="stat-l">Conquistas</div></div>
+  </div>
+  <div class="section"><h2>Habilidades técnicas</h2>${habRows}</div>
+  <div class="section"><h2>Conquistas</h2>
+    <div class="conq">${conq.map(c=>`<span class="conq-chip">${c.icon} ${c.titulo}</span>`).join('')||'<span style="font-size:11px;color:#aaa">Nenhuma ainda</span>'}</div>
+  </div>
+  ${ficha.sangue?`<div class="section"><h2>Ficha médica</h2>
+    <div class="fr"><span class="fl">Tipo sanguíneo</span><span class="fv">${ficha.sangue}</span></div>
+    <div class="fr"><span class="fl">Alergias</span><span class="fv">${ficha.alergias||'Nenhuma'}</span></div>
+    <div class="fr"><span class="fl">Medicamentos</span><span class="fv">${ficha.meds||'Nenhum'}</span></div>
+    <div class="fr"><span class="fl">Condições</span><span class="fv">${ficha.cond||'Nenhuma'}</span></div>
+    <div class="fr"><span class="fl">Emergência</span><span class="fv">${ficha.enome||'—'} · ${ficha.ewpp||'—'}</span></div>
+  </div>`:''}
+  <div class="section"><h2>Avaliação do técnico</h2>
+    <p style="font-size:12px;color:#333;line-height:1.7;background:#fffaf0;border-left:3px solid #b8860b;padding:10px 12px;border-radius:6px">
+      <strong>Técnico André:</strong> ${nome.split(' ')[0]} demonstra grande dedicação. Finalização e atitude são seus pontos fortes. Foco no passe e marcação para o próximo mês.
+    </p>
+  </div>
+  <div class="footer">
+    Votoraty Academy · Relatório gerado em ${new Date().toLocaleDateString('pt-BR')} · Documento oficial
+    <br><button class="print-btn" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+  </div>
+  </body></html>`);
+  win.document.close();
+}
+
+// =====================
+// LANÇAR GOL
+// =====================
+let golsModal = 0;
+let golNomeAtual = '';
+
+function abrirLancarGol(nome, sig, pos, cat, cor){
+  golsModal = 0;
+  golNomeAtual = nome;
+  document.getElementById('gol-av').textContent = sig;
+  document.getElementById('gol-av').style.background = cor;
+  document.getElementById('gol-nome').textContent = nome;
+  document.getElementById('gol-info').textContent = pos+' · '+cat;
+  document.getElementById('gol-btn').style.background = cor;
+  document.getElementById('gol-count').textContent = '0';
+  document.getElementById('gol-total-antes').textContent = STATS.gols;
+  abrirModal('modal-gol');
+}
+
+function ajustarGol(delta){
+  golsModal = Math.max(0, golsModal + delta);
+  document.getElementById('gol-count').textContent = golsModal;
+}
+
+function confirmarGols(){
+  if(golsModal === 0){showN('⚠️ Nenhum gol para lançar.',true);return;}
+  addGolAtleta(golsModal);
+  fecharModal('modal-gol');
+  showN('✓ '+golsModal+' gol(s) lançado(s) para '+golNomeAtual+'! Total: '+STATS.gols);
+}
+
+function abrirMsgDireta(nome, sig, pos, cat, cor){
+  document.getElementById('msg-d-av').textContent = sig;
+  document.getElementById('msg-d-av').style.background = cor;
+  document.getElementById('msg-d-nome').textContent = nome;
+  document.getElementById('msg-d-info').textContent = pos + ' · ' + cat;
+  document.getElementById('msg-d-txt').value = '';
+  document.getElementById('msg-d-btn').style.background = cor;
+  abrirModal('modal-msg-direta');
+}
+
+function enviarMsgDireta(){
+  const txt = document.getElementById('msg-d-txt').value.trim();
+  const nome = document.getElementById('msg-d-nome').textContent;
+  const pais = document.getElementById('msg-d-pais').checked;
+  if(!txt){showN('⚠️ Escreva a mensagem antes de enviar.',true);return;}
+  fecharModal('modal-msg-direta');
+  showN('✓ Mensagem enviada para '+nome+(pais?' e seus pais!':'!'));
+  // Injeta no feed do atleta se visível
+  const feed = document.getElementById('feed-msgs');
+  if(feed){
+    const cor = document.getElementById('msg-d-av').style.background;
+    const item = document.createElement('div');
+    item.className='card';
+    item.style.cssText='border-left:3px solid '+cor+';margin-bottom:8px;background:#f0fff4';
+    item.innerHTML=`<div style="font-size:9px;font-weight:700;color:${cor};margin-bottom:3px">✉️ MENSAGEM PRIVADA · Técnico</div>
+    <div style="font-size:11px;color:var(--text);line-height:1.6">${txt}</div>
+    <div style="font-size:9px;color:var(--text-3);margin-top:4px">agora · privado</div>`;
+    feed.insertBefore(item, feed.firstChild);
+  }
+}
+function selDest(el){document.querySelectorAll('#dest-chips .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
+function enviarMsg(){
+  const txt=document.getElementById('msg-txt');
+  if(!txt||!txt.value.trim()){showN('⚠️ Escreva a mensagem antes de enviar.',true);return;}
+  showN('✓ Mensagem enviada! Atletas e pais notificados.');
+  txt.value='';
+}
+
+function renderListaAtletas(cat, cor){
+  const catKey = Object.entries(CATS_DATA).find(([k,c])=>c.nome===cat.nome)?.[0]||'sub13';
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <span style="font-family:var(--font-display);font-size:18px;letter-spacing:.06em;color:var(--text)">Atletas — ${cat.nome}</span>
+    <button class="btn-sm" onclick="abrirModal('modal-atleta')">+ Novo</button>
+  </div>
+  <div class="cw" style="padding:6px 14px">
+    ${cat.atletas.map(a=>{
+      const pc=a.pres>=85?'#1a5c26':a.pres>=70?'#7a4010':'#8b1a1a';
+      const _fk=a.sig+catKey;
+      const temFicha=typeof FICHAS!=='undefined'&&FICHAS[_fk]&&FICHAS[_fk].sangue;
+      const fichaBg=temFicha?'#dcf0e0':'#fce8e8';
+      const fichaC=temFicha?'#1a5c26':'#8b1a1a';
+      return `<div style="padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+          <div class="av" style="width:34px;height:34px;font-size:11px;background:${cor}">${a.sig}</div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700;color:var(--text)">${a.nome}</div>
+            <div style="font-size:9px;color:var(--text-3);font-weight:500">${a.pos} · ${a.gols} gols · Nível ${a.nivel}</div>
+            <div class="prog"><div class="prog-f" style="width:${a.pres}%;background:${pc}"></div></div>
+          </div>
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;color:${pc};background:${pc}18">${a.pres}%</span>
+        </div>
+        <div style="display:flex;gap:5px;padding-left:44px">
+          <button onclick="abrirHabilidades('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${catKey}','${cor}')" style="flex:1;background:${cor}18;color:${cor};border:1px solid ${cor}33;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">⭐ Hab</button>
+          <button onclick="abrirFicha('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${catKey}','${cor}')" style="flex:1;background:${fichaBg};color:${fichaC};border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">🏥 Ficha</button>
+          <button onclick="gerarRelatorio('${a.nome}','${a.sig}','${catKey}','${cor}')" style="flex:1;background:#fdf3dc;color:#7a4010;border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">📊 PDF</button>
+          <button onclick="abrirMsgDireta('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${cor}')" style="flex:1;background:${cor};color:#fff;border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">✉️ Msg</button>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+// =====================
+// DIRETOR
+// =====================
+function montarDiretor(cor){
+  const navItems = ['Dashboard','Atletas','Jogos','Campeonatos','Financeiro','Avisos','Config'];
+  const bnavItems = [
+    {icon:'ti-layout-dashboard',label:'Início'},
+    {icon:'ti-users',label:'Atletas'},
+    {icon:'ti-ball-football',label:'Jogos'},
+    {icon:'ti-currency-dollar',label:'Financ.'},
+    {icon:'ti-settings',label:'Config'}
+  ];
+  montarNav(navItems, cor);
+  montarBnav(bnavItems, cor);
+  const sc = document.getElementById('screens');
+  sc.innerHTML = `
+  <div id="s-0" class="scr on" style="padding:11px 13px;overflow-y:auto">${renderDashboard(cor)}</div>
+  <div id="s-1" class="scr" style="padding:11px 13px;overflow-y:auto">${renderDirAtletas(cor)}</div>
+  <div id="s-2" class="scr" style="padding:11px 13px;overflow-y:auto">${renderJogos(cor)}</div>
+  <div id="s-3" class="scr" style="padding:11px 13px;overflow-y:auto">${renderCamps(cor)}</div>
+  <div id="s-4" class="scr" style="padding:11px 13px;overflow-y:auto">${renderFinanceiro(cor)}</div>
+  <div id="s-5" class="scr" style="padding:11px 13px;overflow-y:auto">${renderMensagem('todas as categorias',true,cor)}</div>
+  <div id="s-6" class="scr" style="padding:11px 13px;overflow-y:auto">${renderConfig(cor)}</div>`;
+  setCor(cor);
+}
+
+function renderDashboard(cor){
+  return `<div class="stat-grid">
+    <div class="stat-c" style="background:#dcf0e0;border:1px solid #8ec99a"><div class="stat-v" style="color:#1a5c26">47</div><div class="stat-l" style="color:#1a5c26">Atletas ativos</div><div style="font-size:9px;color:#3b7a40;margin-top:2px;font-weight:500">Sub-7 ao Sub-15</div></div>
+    <div class="stat-c" style="background:#dceaf8;border:1px solid #7eb3e8"><div class="stat-v" style="color:#0e3d6e">3</div><div class="stat-l" style="color:#0e3d6e">Camps. ativos</div><div style="font-size:9px;color:#185fa5;margin-top:2px;font-weight:500">em andamento</div></div>
+    <div class="stat-c" style="background:#fdf3dc;border:1px solid #e8c97a"><div class="stat-v" style="color:#7a4010">R$4.2k</div><div class="stat-l" style="color:#7a4010">Mensalidades</div><div style="font-size:9px;color:#a05a10;margin-top:2px;font-weight:500">maio 2025</div></div>
+    <div class="stat-c" style="background:#ece9fd;border:1px solid #afa9ec"><div class="stat-v" style="color:#3c2e9e">94%</div><div class="stat-l" style="color:#3c2e9e">Presença média</div><div style="font-size:9px;color:#534ab7;margin-top:2px;font-weight:500">esta semana</div></div>
+  </div>
+  <div class="lbl">Alertas urgentes</div>
+  <div class="alerta" style="background:#fce8e8;border:1px solid #e8a0a0">
+    <div class="al-icon" style="background:#f5c5c5"><i class="ti ti-alert-triangle" style="font-size:14px;color:#8b1a1a"></i></div>
+    <div style="flex:1"><div style="font-size:11px;font-weight:700;color:#8b1a1a">Pedro Alves — 4 faltas seguidas</div>
+    <div style="font-size:10px;color:#b03030;margin-top:2px;font-weight:500">Sub-13 · pai ainda não respondeu</div>
+    <button class="btn-sm" style="margin-top:6px" onclick="showN('Mensagem enviada ao pai do Pedro!')">Enviar mensagem ao pai</button></div>
+  </div>
+  <div class="alerta" style="background:#fdf3dc;border:1px solid #e8c97a">
+    <div class="al-icon" style="background:#fac775"><i class="ti ti-currency-dollar" style="font-size:14px;color:#7a4010"></i></div>
+    <div><div style="font-size:11px;font-weight:700;color:#7a4010">3 mensalidades em atraso</div>
+    <div style="font-size:10px;color:#a05a10;margin-top:2px;font-weight:500">Rafael Costa, João Silva, Marcos Lima</div>
+    <button class="btn-sm" style="margin-top:6px" onclick="showN('Cobrança automática enviada!')">Enviar cobrança</button></div>
+  </div>
+  <div class="lbl">Categorias — acesso rápido</div>
+  <div class="cw" style="padding:6px 14px">
+    ${Object.entries(CATS_DATA).map(([k,c])=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div style="width:36px;height:36px;border-radius:10px;background:${CORES[k]};display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 3px 8px rgba(0,0,0,.15)">${c.emoji}</div>
+      <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--text)">${c.nome}</div><div style="font-size:9px;color:var(--text-3);margin-top:1px;font-weight:500">${c.atletas.length} atletas · ${c.atletas.reduce((s,a)=>s+a.gols,0)} gols</div></div>
+      <button onclick="entrar('prof_${k}')" style="background:${CORES[k]};color:#fff;border:none;padding:6px 12px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);letter-spacing:.02em">Acessar</button>
+    </div>`).join('')}
+  </div>`;
+}
+
+function renderDirAtletas(cor){
+  const todos = Object.entries(CATS_DATA).flatMap(([k,c])=>c.atletas.map(a=>({...a,cat:c.nome,cor:CORES[k]})));
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Todos os atletas (${todos.length})</span>
+    <button class="btn-sm" onclick="abrirModal('modal-atleta')">+ Novo</button>
+  </div>
+  <div class="cw" style="padding:6px 14px">
+  ${todos.map(a=>{
+    const pc=a.pres>=85?'#1a5c26':a.pres>=70?'#7a4010':'#8b1a1a';
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div class="av" style="width:34px;height:34px;font-size:11px;background:${a.cor}">${a.sig}</div>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:700;color:var(--text)">${a.nome}</div>
+        <div style="font-size:9px;color:var(--text-3);font-weight:500">${a.pos} · ${a.cat} · ${a.gols} gols</div>
+        <div class="prog"><div class="prog-f" style="width:${a.pres}%;background:${pc}"></div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+        <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;color:${pc};background:${pc}18">${a.pres}%</span>
+        <button onclick="abrirMsgDireta('${a.nome}','${a.sig}','${a.pos}','${a.cat}','${a.cor}')" style="background:${a.cor};color:#fff;border:none;padding:4px 9px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer;white-space:nowrap">✉️ Msg</button>
+      </div>
+    </div>`;
+  }).join('')}
+  </div>`;
+}
+
+function renderJogos(cor){
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Jogos</span>
+    <button class="btn-sm" onclick="abrirModal('modal-jogo')">+ Agendar</button>
+  </div>
+  <div class="lbl">Ao vivo</div>
+  <div class="card" style="border-color:#e8a0a0;border-left:3px solid #c0392b">
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+      <span style="font-size:10px;color:var(--text-3);font-weight:500">Sub-13 · Camp. Municipal</span>
+      <span class="tag tr">Ao vivo 34'</span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0">
+      <span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span>
+      <span style="font-family:var(--font-display);font-size:28px;color:var(--text);letter-spacing:.06em" id="gv">2</span>
+      <span style="font-size:14px;color:var(--text-3)">×</span>
+      <span style="font-family:var(--font-display);font-size:28px;color:var(--text);letter-spacing:.06em">1</span>
+      <span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">Atlético Jr</span>
+    </div>
+    <div style="display:flex;gap:6px;margin-top:10px">
+      <button class="btn-sm" onclick="addGol()">+ Gol Votoraty</button>
+      <button class="btn-sm" onclick="showN('Gol adversário registrado.')">+ Gol adv.</button>
+      <button class="btn-sm" onclick="showN('Jogo encerrado! Resultado salvo.')">Encerrar</button>
+    </div>
+  </div>
+  <div class="lbl">Próximos</div>
+  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:var(--text-3);font-weight:500">Sub-13 · Sáb 25/05 · 09h</span><span class="tag tb">agendado</span></div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span><span style="font-size:13px;color:var(--text-3)">vs</span><span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">Rapid FC</span></div></div>
+  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:var(--text-3);font-weight:500">Sub-15 · Dom 01/06 · 10h</span><span class="tag ta">final</span></div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span><span style="font-size:13px;color:var(--text-3)">vs</span><span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">Estrela FC</span></div></div>
+  <div class="lbl">Últimos resultados</div>
+  <div class="card" style="border-left:3px solid #1a5c26"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:var(--text-3);font-weight:500">Sub-11 · 15/05</span><span class="tag tg">Vitória</span></div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span><span style="font-family:var(--font-display);font-size:28px;color:var(--text)">3</span><span style="font-size:14px;color:var(--text-3)">×</span><span style="font-family:var(--font-display);font-size:28px;color:var(--text)">0</span><span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">Estrela FC</span></div></div>`;
+}
+
+let golsV=2;
+function addGol(){golsV++;const el=document.getElementById('gv');if(el)el.textContent=golsV;showN('✓ Gol do Votoraty! '+golsV+'×1');}
+
+function renderCamps(cor){
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <span style="font-size:13px;font-weight:700">Campeonatos</span>
+    <button class="btn-sm" onclick="abrirModal('modal-camp')">+ Criar</button>
+  </div>
+  <div class="cw" style="padding:6px 12px">
+    ${[['tg','Camp. Municipal Sub-13','6 rodadas · Votoraty em 1º',80,'ativo'],
+       ['tb','Camp. Regional Sub-11','4 rodadas · Votoraty em 2º',50,'ativo'],
+       ['ta','Estadual Sub-15','Semifinal · fase final',90,'semifinal'],
+       ['tp','Sub-7 Amistoso','Encerrado · Votoraty campeão',100,'campeão']
+    ].map(([tg,nm,sub,pct,st])=>`
+    <div style="display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid #f0eeea">
+      <div style="width:30px;height:30px;border-radius:8px;background:#f9f9f7;border:1px solid #eee;display:flex;align-items:center;justify-content:center"><i class="ti ti-trophy" style="font-size:15px;color:#c8940a"></i></div>
+      <div style="flex:1"><div style="font-size:12px;font-weight:700">${nm}</div><div style="font-size:9px;color:#aaa">${sub}</div><div class="prog" style="margin-top:4px"><div class="prog-f" style="width:${pct}%;background:${cor}"></div></div></div>
+      <span class="tag ${tg}">${st}</span>
+    </div>`).join('')}
+  </div>`;
+}
+
+function renderFinanceiro(cor){
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Financeiro</span>
+    <button class="btn-sm" onclick="abrirModal('modal-fin')">+ Lançamento</button>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-c" style="background:#dcf0e0;border:1px solid #8ec99a"><div class="stat-v" style="color:#1a5c26">R$4.2k</div><div class="stat-l" style="color:#1a5c26">Recebido</div></div>
+    <div class="stat-c" style="background:#fce8e8;border:1px solid #e8a0a0"><div class="stat-v" style="color:#8b1a1a">R$840</div><div class="stat-l" style="color:#8b1a1a">Em atraso</div></div>
+  </div>
+  <div class="lbl">Mensalidades — maio 2025</div>
+  <div class="cw" style="padding:6px 14px">
+    ${[['Kauan Telles','Sub-13','✓ pago','#1a5c26',false],
+       ['Mateus Torres','Sub-15','✓ pago','#1a5c26',false],
+       ['Lucas Ferreira','Sub-11','✓ pago','#1a5c26',false],
+       ['Pedro Alves','Sub-13','✗ atraso','#8b1a1a',true],
+       ['Rafael Costa','Sub-13','✗ atraso','#8b1a1a',true]
+    ].map(([nm,cat,st,cor2,btn])=>`
+    <div style="display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:10px">
+      <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--text)">${nm}</div><div style="font-size:9px;color:var(--text-3);margin-top:1px;font-weight:500">${cat} · venc. 01/05</div></div>
+      <div style="text-align:right">
+        <span style="font-size:12px;font-weight:700;color:${cor2}">${st} R$180</span>
+        ${btn?`<div><button class="btn-sm" style="margin-top:4px" onclick="showN('Cobrança enviada para o pai!')">Cobrar</button></div>`:''}
+      </div>
+    </div>`).join('')}
+  </div>
+  <button class="btn-g" style="background:${cor}" onclick="showN('✓ Cobrança enviada para todos em atraso!')">Cobrar todos os inadimplentes</button>
+  <div class="lbl" style="margin-top:12px">Saldo do mês</div>
+  <div style="background:#dcf0e0;border:1px solid #8ec99a;border-radius:var(--radius);padding:14px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow)">
+    <span style="font-size:12px;font-weight:700;color:#1a5c26">Receitas − Despesas</span>
+    <span style="font-family:var(--font-display);font-size:24px;color:#1a5c26;letter-spacing:.06em">+ R$2.550</span>
+  </div>`;
+}
+
+function renderConfig(cor){
+  return `<div class="lbl">Dados do clube</div>
+  <div class="cw" style="padding:8px 14px">
+    ${[['Nome do clube','Votoraty Academy'],['Categorias','Sub-7, Sub-9, Sub-11, Sub-13, Sub-15'],['Dias de treino','Ter, Qui, Sáb'],['Mensalidade','R$ 180,00 / mês']].map(([l,v])=>`
+    <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">${l}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">${v}</div></div><button class="btn-sm" onclick="showN('Dados atualizados!')">Editar</button></div>`).join('')}
+  </div>
+  <div class="lbl">Automações</div>
+  <div class="cw" style="padding:8px 14px">
+    ${[['Lembrete saúde diário','Todos os dias às 07h'],['Lembrete de estudos','Todos os dias às 07h'],['Alerta de faltas','Após 2 faltas seguidas'],['Cobrança automática','5 dias após vencimento'],['Relatório mensal','Todo dia 1º do mês'],['Figurinha anual','Todo 01 de dezembro']].map(([l,s])=>`
+    <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">${l}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">${s}</div></div><div class="toggle on" onclick="this.classList.toggle('on');this.style.background=this.classList.contains('on')?'${cor}':'var(--border)'"><div class="toggle-k"></div></div></div>`).join('')}
+  </div>
+  <div class="lbl">Exportar dados</div>
+  <div class="cw" style="padding:8px 14px">
+    ${[['Relatório geral PDF','Toda a temporada'],['Lista de atletas Excel','Planilha completa'],['Backup completo','Todos os dados']].map(([l,s])=>`
+    <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">${l}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">${s}</div></div><button class="btn-sm" onclick="showN('Exportado com sucesso!')">Exportar</button></div>`).join('')}
+  </div>`;
+}
+
+// =====================
+// ATLETA
+// =====================
+function montarAtleta(cor){
+  const navItems = ['Feed','Evolução','Saúde','Estudos','Álbum','Calendário'];
+  const bnavItems = [
+    {icon:'ti-home',label:'Feed'},
+    {icon:'ti-chart-bar',label:'Evolução'},
+    {icon:'ti-heart',label:'Saúde'},
+    {icon:'ti-book',label:'Estudos'},
+    {icon:'ti-stack',label:'Álbum'},
+    {icon:'ti-calendar',label:'Agenda'}
+  ];
+  montarNav(navItems, cor);
+  montarBnav(bnavItems, cor);
+  const sc = document.getElementById('screens');
+  sc.innerHTML = `
+  <div id="s-0" class="scr on" style="padding:11px 13px;overflow-y:auto">${renderFeed(cor)}</div>
+  <div id="s-1" class="scr" style="padding:11px 13px;overflow-y:auto">${renderEvolucao(cor)}</div>
+  <div id="s-2" class="scr" style="padding:11px 13px;overflow-y:auto">${renderSaude(cor)}</div>
+  <div id="s-3" class="scr" style="padding:11px 13px;overflow-y:auto">${renderEstudos(cor)}</div>
+  <div id="s-4" class="scr" style="padding:11px 13px;overflow-y:auto">${renderAlbum(cor)}</div>
+  <div id="s-5" class="scr" style="padding:11px 13px;overflow-y:auto">${renderCalendario(cor)}</div>`;
+  setCor(cor);
+}
+
+function renderFeed(cor){
+  return `<div id="feed-msgs">
+  ${[
+    ['#185fa5','⚽ TREINO DE HOJE · Técnico André','Treino técnico com intensidade média. Habilidades: passe curto, finalização, drible. Balanço: ótimo!','agora · automático'],
+    ['#c8940a','💧 SAÚDE · lembrete automático','Beba pelo menos 2 litros hoje. Leve garrafinha pro treino. Corpo hidratado rende mais!','07h00 · automático'],
+    ['#185fa5','📚 ESTUDOS · lembrete automático','Atleta bom dentro e fora do campo! Separa 30 min pra estudar. "O estudo dura mais que o futebol." — Pelé','07h00 · automático'],
+    ['#27500a','⭐ CONQUISTA DESBLOQUEADA','Kauan Telles desbloqueou a figurinha Épica #004 — Hat-trick! Parabéns!','3h · automático'],
+  ].map(([bc,titulo,corpo,footer])=>`
+  <div class="card" style="border-left:3px solid ${bc};margin-bottom:8px">
+    <div style="font-size:9px;font-weight:700;color:${bc};margin-bottom:3px">${titulo}</div>
+    <div style="font-size:11px;color:#333;line-height:1.6">${corpo}</div>
+    <div style="font-size:9px;color:#aaa;margin-top:4px">${footer}</div>
+  </div>`).join('')}
+  <div class="card" id="msg-privada" style="display:none;border-left:3px solid ${cor}">
+    <div style="font-size:9px;font-weight:700;color:${cor};margin-bottom:3px">✉️ MENSAGEM PRIVADA · Técnico André</div>
+    <div style="font-size:11px;color:#333;line-height:1.6" id="msg-priv-txt"></div>
+    <div style="font-size:9px;color:#aaa;margin-top:4px">agora · privado</div>
+  </div>
+  </div>`;
+}
+
+function renderEvolucao(cor){
+  const a=ATLETA_DEFAULT;
+  const pres = calcPres();
+  const conq = getConquistas().length;
+  const nivel = Math.floor(STATS.xp/1000)+1;
+  const xpAtual = STATS.xp%1000;
+  return `
+  <!-- Input oculto para foto -->
+  <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="carregarFoto(event)">
+
+  <div style="background:${cor};border-radius:var(--radius);padding:16px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:var(--shadow-md)">
+    <div style="position:absolute;right:-10px;top:-10px;font-size:80px;opacity:.06;pointer-events:none">⚽</div>
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+
+      <!-- AVATAR COM FOTO -->
+      <div onclick="document.getElementById('foto-input').click()" style="position:relative;cursor:pointer;flex-shrink:0">
+        <div id="atleta-av" style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;overflow:hidden;letter-spacing:.03em">${a.sig}</div>
+        <div style="position:absolute;bottom:0;right:0;width:20px;height:20px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.2)">
+          <i class="ti ti-camera" style="font-size:11px;color:${cor}"></i>
+        </div>
+      </div>
+
+      <div style="flex:1">
+        <div style="font-family:var(--font-display);font-size:18px;color:#fff;letter-spacing:.08em">${a.nome}</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.65);margin-top:1px;font-weight:500">${a.pos} · ${a.cat} · Nível ${nivel}</div>
+        <div style="background:rgba(255,255,255,.15);border-radius:4px;height:4px;margin-top:6px;overflow:hidden">
+          <div id="xp-bar" style="width:${xpAtual/10}%;height:4px;border-radius:4px;background:rgba(255,255,255,.7);transition:width .5s"></div>
+        </div>
+        <div style="font-size:9px;color:rgba(255,255,255,.5);margin-top:2px;font-weight:500"><span id="stat-xp">${STATS.xp}</span>/1000 XP → Nível ${nivel+1}</div>
+      </div>
+      <div style="text-align:center;background:rgba(255,255,255,.12);padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.15)">
+        <div style="font-size:22px;line-height:1">🔥</div>
+        <div style="font-family:var(--font-display);font-size:16px;color:#fff;letter-spacing:.06em">${STATS.treinos}</div>
+        <div style="font-size:8px;color:rgba(255,255,255,.5);font-weight:600;text-transform:uppercase;letter-spacing:.06em">treinos</div>
+      </div>
+    </div>
+
+    <!-- DICA foto -->
+    <div id="foto-dica" style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border-radius:8px;padding:6px 10px;cursor:pointer" onclick="document.getElementById('foto-input').click()">
+      <i class="ti ti-camera" style="font-size:13px;color:rgba(255,255,255,.7)"></i>
+      <span style="font-size:10px;color:rgba(255,255,255,.7);font-weight:500">Toque para adicionar sua foto de perfil</span>
+    </div>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-c" style="background:#dcf0e0;border:1px solid #8ec99a"><div class="stat-v" style="color:#1a5c26" id="stat-gols">${STATS.gols}</div><div class="stat-l" style="color:#1a5c26">Gols 2025</div></div>
+    <div class="stat-c" style="background:#dceaf8;border:1px solid #7eb3e8"><div class="stat-v" style="color:#0e3d6e" id="stat-treinos">${STATS.treinos}</div><div class="stat-l" style="color:#0e3d6e">Treinos</div></div>
+    <div class="stat-c" style="background:#fdf3dc;border:1px solid #e8c97a"><div class="stat-v" style="color:#7a4010" id="stat-pres">${pres}%</div><div class="stat-l" style="color:#7a4010">Presença</div></div>
+    <div class="stat-c" style="background:#ece9fd;border:1px solid #afa9ec"><div class="stat-v" style="color:#3c2e9e" id="stat-conq">${conq}</div><div class="stat-l" style="color:#3c2e9e">Conquistas</div></div>
+  </div>
+
+  <div class="lbl">Foco desta semana</div>
+  <div style="background:#fdf3dc;border:1px solid #e8c97a;border-left:3px solid #b8860b;border-radius:var(--radius-sm);padding:10px 12px;font-size:11px;color:#7a4010;line-height:1.6;margin-bottom:12px"><strong style="font-weight:700">Técnico André:</strong> Foque no passe curto e na marcação. Sua finalização está excelente!</div>
+
+  <div class="lbl">Habilidades</div>
+  <div class="cw" style="padding:12px 14px">
+    ${Object.entries(HAB_LABELS).map(([k,label])=>{
+      const val = (HABILIDADES['KTsub13']||{})[k] || 70;
+      const c = val>=75?'#0d3d1a':val>=50?'#b8860b':'#c0392b';
+      return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span style="font-size:10px;color:var(--text-2);width:76px;font-weight:500">${label}</span>
+        <div style="flex:1;background:var(--border);border-radius:4px;height:5px;overflow:hidden"><div style="width:${val}%;height:5px;border-radius:4px;background:${c};transition:width .6s ease"></div></div>
+        <span style="font-size:10px;font-weight:700;color:${c};width:24px;text-align:right">${val}</span>
+      </div>`;
+    }).join('')}
+  </div>
+
+  <div class="lbl">Conquistas</div>
+  <div class="cw" style="padding:10px 14px">
+    ${CONQUISTAS_DEF.map(c=>{
+      const desbloqueada = c.check();
+      return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:${desbloqueada?1:0.4}">
+        <div style="width:34px;height:34px;border-radius:9px;background:${desbloqueada?'#dcf0e0':'var(--surface)'};border:1px solid ${desbloqueada?'#8ec99a':'var(--border)'};display:flex;align-items:center;justify-content:center;font-size:16px">${c.icon}</div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700;color:${desbloqueada?'var(--text)':'var(--text-3)'}">${c.titulo}</div>
+          <div style="font-size:10px;color:var(--text-3);font-weight:500">${c.meta}</div>
+        </div>
+        ${desbloqueada?'<span class="tag tg">✓</span>':'<span class="tag" style="background:var(--surface);color:var(--text-3)">🔒</span>'}
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function renderSaude(cor){
+  return `<div style="background:#e6f4ec;border:1px solid #97c459;border-radius:12px;padding:12px;margin-bottom:10px">
+    <div style="font-size:26px;margin-bottom:5px">💧</div>
+    <div style="font-size:9px;font-weight:700;color:#3b6d11;margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em">HIDRATAÇÃO · lembrete do dia</div>
+    <div style="font-size:13px;font-weight:700;color:#27500a;margin-bottom:5px">Beba água antes, durante e depois!</div>
+    <div style="font-size:11px;color:#166024;line-height:1.6">Beba pelo menos 2 litros hoje. Leve garrafinha pro treino. Corpo hidratado rende mais no campo e na escola!</div>
+    <div style="font-size:10px;background:rgba(22,96,36,.1);color:#27500a;padding:6px 8px;border-radius:7px;margin-top:8px"><strong>Dica:</strong> Garrafinha de 500ml → esvazie 4 vezes ao longo do dia.</div>
+  </div>
+  <div class="lbl">Check-in de saúde de hoje</div>
+  <div class="cw" style="padding:6px 11px">
+    ${[['Bebi 2 litros de água',10],['Comi fruta hoje',10],['Dormi 8 horas',10],['Me alonguei',5],['Evitei refrigerante e salgadinho',10]].map(([l,x])=>`
+    <div class="check-item" onclick="togChk(this,'${cor}')">
+      <div class="chk"><i class="ti ti-check" style="font-size:10px;color:#fff"></i></div>
+      <span class="chk-lbl">${l}</span>
+      <span class="xp-tag">+${x} XP</span>
+    </div>`).join('')}
+  </div>
+  <button class="btn-g" style="background:${cor}" onclick="salvarCheckin('saude')">Confirmar check-in de saúde</button>`;
+}
+
+function renderEstudos(cor){
+  return `<div style="background:#e6f1fb;border:1px solid #85b7eb;border-radius:12px;padding:12px;margin-bottom:10px">
+    <div style="font-size:26px;margin-bottom:5px">📚</div>
+    <div style="font-size:9px;font-weight:700;color:#185fa5;margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em">ESTUDOS · lembrete do dia</div>
+    <div style="font-size:13px;font-weight:700;color:#0c447c;margin-bottom:5px">Atleta bom dentro e fora do campo!</div>
+    <div style="font-size:11px;color:#042c53;line-height:1.6">Os maiores jogadores sabem que futebol tem prazo — o conhecimento é para sempre. Estuda hoje, é treino também!</div>
+    <div style="font-size:11px;font-style:italic;color:#185fa5;margin-top:8px;padding:7px 9px;border-radius:7px;background:rgba(24,95,165,.08);border-left:2px solid #85b7eb">"Futebol me deu muito, mas o estudo me dará muito mais." — Pelé</div>
+  </div>
+  <div class="lbl">Check-in de estudos de hoje</div>
+  <div class="cw" style="padding:6px 11px">
+    ${[['Fui à escola hoje',15],['Fiz o dever de casa',15],['Estudei 30 minutos',15],['Li alguma coisa hoje',10],['Não faltei à escola sem motivo',15]].map(([l,x])=>`
+    <div class="check-item" onclick="togChk(this,'#185fa5')">
+      <div class="chk"><i class="ti ti-check" style="font-size:10px;color:#fff"></i></div>
+      <span class="chk-lbl">${l}</span>
+      <span class="xp-tag">+${x} XP</span>
+    </div>`).join('')}
+  </div>
+  <button class="btn-g" style="background:#185fa5" onclick="salvarCheckin('estudos')">Confirmar check-in de estudos</button>`;
+}
+
+function mkCard(tp,bg,st,ev,nome,zoom){
+  const rings = {
+    'Comum':    {ring:'rgba(180,180,200,.7)', star:'rgba(220,220,240,.95)', shadow:'rgba(100,100,140,.5)'},
+    'Rara':     {ring:'rgba(60,140,255,.8)',  star:'rgba(120,190,255,.95)', shadow:'rgba(20,60,200,.55)'},
+    'Épica':    {ring:'rgba(170,70,255,.8)',  star:'rgba(200,120,255,.95)', shadow:'rgba(90,10,200,.55)'},
+    'Lendária': {ring:'rgba(255,210,0,.9)',   star:'rgba(255,215,0,1)',     shadow:'rgba(200,148,10,.65)'},
+  };
+  const r = rings[tp] || rings['Comum'];
+
+  // Escudo SVG do Votoraty como marca d'água
+  const escudo = `<div style="position:absolute;bottom:30%;left:50%;transform:translateX(-50%);width:65%;aspect-ratio:1;opacity:.07;pointer-events:none;z-index:1">
+    <svg viewBox="0 0 100 110" fill="white" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 2 L95 20 L95 60 Q95 90 50 108 Q5 90 5 60 L5 20 Z"/>
+      <path d="M50 12 L85 27 L85 60 Q85 85 50 100 Q15 85 15 60 L15 27 Z" fill="rgba(0,0,0,.3)"/>
+      <text x="50" y="62" text-anchor="middle" font-size="22" font-weight="900" fill="white" font-family="Impact,Arial">VFC</text>
+    </svg>
+  </div>`;
+
+  const temFoto = typeof fotoAtleta!=='undefined' && fotoAtleta;
+  const fotoSection = temFoto
+    ? `<div style="position:absolute;inset:0;z-index:0"><img src="${fotoAtleta}" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>
+       <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(0,0,0,.05) 0%,rgba(0,0,0,.0) 40%,rgba(0,0,0,.55) 75%,rgba(0,0,0,.85) 100%)"></div>`
+    : `<div style="position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center">
+         <svg viewBox="0 0 60 72" fill="${r.ring}" width="52%" opacity=".7"><circle cx="30" cy="20" r="14"/><path d="M2 72c0-15.5 12.5-28 28-28s28 12.5 28 28"/></svg>
+       </div>`;
+
+  const onclick = zoom ? `onclick="abrirZoom('${tp}','${bg}','${st}','${ev}')"` : '';
+
+  return `<div class="stk-card" style="background:${bg};border:2.5px solid ${r.ring};box-shadow:0 6px 24px ${r.shadow};position:relative;overflow:hidden" ${onclick}>
+    ${fotoSection}
+    ${escudo}
+    <div class="stk-diagonal"></div>
+
+    <!-- Topo: raridade + estrelas -->
+    <div style="position:relative;z-index:3;display:flex;justify-content:space-between;align-items:flex-start;padding:7px 7px 0">
+      <div style="font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:10px;background:rgba(0,0,0,.45);color:#fff;border:1px solid rgba(255,255,255,.2)">${tp}</div>
+      <div style="font-size:10px;color:${r.star};text-shadow:0 1px 4px rgba(0,0,0,.6)">${st}</div>
+    </div>
+
+    <!-- Espaço central (foto ocupa) -->
+    <div style="flex:1"></div>
+
+    <!-- Rodapé -->
+    <div style="position:relative;z-index:3;padding:6px 8px 7px">
+      <div style="font-size:15px;font-weight:900;color:#fff;letter-spacing:.06em;font-family:Impact,'Arial Narrow',sans-serif;text-shadow:0 2px 6px rgba(0,0,0,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1;margin-bottom:3px">${nome.toUpperCase()}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11px;letter-spacing:1px;color:${r.star};text-shadow:0 1px 4px rgba(0,0,0,.5)">${st}</span>
+        <span style="font-size:8px;font-weight:700;color:rgba(255,255,255,.9);background:rgba(0,0,0,.4);padding:2px 6px;border-radius:6px;white-space:nowrap">${ev}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function abrirZoom(tp, bg, st, ev){
+  const rings = {
+    'Comum':    {ring:'rgba(180,180,200,.7)', star:'rgba(220,220,240,.95)'},
+    'Rara':     {ring:'rgba(60,140,255,.8)',  star:'rgba(120,190,255,.95)'},
+    'Épica':    {ring:'rgba(170,70,255,.8)',  star:'rgba(200,120,255,.95)'},
+    'Lendária': {ring:'rgba(255,210,0,.9)',   star:'rgba(255,215,0,1)'},
+  };
+  const r = rings[tp] || rings['Comum'];
+  const hab = HABILIDADES['KTsub13']||{fin:88,dri:81,vel:75,pas:62,mar:54,ati:95};
+  const temFoto = typeof fotoAtleta!=='undefined' && fotoAtleta;
+
+  document.getElementById('stk-zoom').classList.add('on');
+  document.getElementById('stk-zoom-card').style.cssText = '';
+  document.getElementById('stk-zoom-card').innerHTML = `
+    <div style="background:${bg};border-radius:20px;overflow:hidden;position:relative;border:2.5px solid ${r.ring}">
+
+      <!-- Foto de fundo preenchendo -->
+      ${temFoto
+        ? `<div style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:0"><img src="${fotoAtleta}" style="width:100%;height:100%;object-fit:cover;object-position:top center"></div>
+           <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(0,0,0,.08) 0%,rgba(0,0,0,0) 35%,rgba(0,0,0,.6) 72%,rgba(0,0,0,.92) 100%)"></div>`
+        : `<div style="position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;padding-bottom:60px">
+             <svg viewBox="0 0 60 72" fill="${r.ring}" width="55%" opacity=".6"><circle cx="30" cy="20" r="14"/><path d="M2 72c0-15.5 12.5-28 28-28s28 12.5 28 28"/></svg>
+           </div>`}
+
+      <!-- Escudo VFC marca d'água -->
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) translateY(-20px);width:60%;aspect-ratio:1;opacity:.07;z-index:1;pointer-events:none">
+        <svg viewBox="0 0 100 110" fill="white"><path d="M50 2 L95 20 L95 60 Q95 90 50 108 Q5 90 5 60 L5 20 Z"/><path d="M50 12 L85 27 L85 60 Q85 85 50 100 Q15 85 15 60 L15 27 Z" fill="rgba(0,0,0,.3)"/><text x="50" y="62" text-anchor="middle" font-size="22" font-weight="900" fill="white" font-family="Impact,Arial">VFC</text></svg>
+      </div>
+
+      <!-- Topo -->
+      <div style="position:relative;z-index:3;display:flex;justify-content:space-between;align-items:flex-start;padding:14px 14px 0">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:12px;background:rgba(0,0,0,.5);color:#fff;border:1px solid ${r.ring}">${tp}</div>
+        <div style="font-size:14px;color:${r.star};text-shadow:0 1px 4px rgba(0,0,0,.7)">${st}</div>
+      </div>
+
+      <!-- Espaço foto -->
+      <div style="height:150px"></div>
+
+      <!-- Nome + conquista -->
+      <div style="position:relative;z-index:3;padding:10px 14px 8px">
+        <div style="font-family:Impact,'Arial Narrow',sans-serif;font-size:24px;letter-spacing:.08em;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.7)">KAUAN TELLES</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:5px">
+          <span style="font-size:16px;color:${r.star};text-shadow:0 1px 4px rgba(0,0,0,.6)">${st}</span>
+          <span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px;background:rgba(0,0,0,.45);color:rgba(255,255,255,.95);border:1px solid rgba(255,255,255,.15)">${ev}</span>
+        </div>
+      </div>
+
+      <!-- 6 Atributos -->
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);background:rgba(0,0,0,.55);border-top:1px solid ${r.ring}33;position:relative;z-index:3">
+        ${[['FIN',hab.fin],['DRI',hab.dri],['VEL',hab.vel],['PAS',hab.pas],['MAR',hab.mar],['ATI',hab.ati]].map(([l,v])=>`
+        <div style="padding:9px 2px;text-align:center;border-right:1px solid rgba(255,255,255,.08)">
+          <div style="font-size:15px;font-weight:700;color:${r.star};line-height:1">${v}</div>
+          <div style="font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-top:2px">${l}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function fecharZoom(){
+  document.getElementById('stk-zoom').classList.remove('on');
+}
+
+function renderAlbum(cor){
+  const cards = [
+    {tp:'Comum',    bg:'linear-gradient(155deg,#5a5a70,#8a8aa0)', st:'★☆☆☆☆', ev:'1º gol'},
+    {tp:'Épica',    bg:'linear-gradient(155deg,#3a1a6a,#7a3aaa)', st:'★★★☆☆', ev:'Hat-trick'},
+    {tp:'Épica',    bg:'linear-gradient(155deg,#3a1a6a,#7a3aaa)', st:'★★★☆☆', ev:'Artilheiro'},
+    {tp:'Rara',     bg:'linear-gradient(155deg,#1a3a7a,#3a6abe)', st:'★★☆☆☆', ev:'MVP da final'},
+    {tp:'Rara',     bg:'linear-gradient(155deg,#1a3a7a,#3a6abe)', st:'★★☆☆☆', ev:'5 gols'},
+    {tp:'Lendária', bg:'linear-gradient(155deg,#7a5200,#c8940a,#f5c842)', st:'★★★★★', ev:'14 gols'},
+  ];
+
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em;color:var(--text)">Álbum — ${ATLETA_DEFAULT.nome}</div>
+      <div style="font-size:10px;color:var(--text-3);font-weight:500">6 figurinhas · 1 lendária</div>
+    </div>
+    <span class="tag ta">Sub-13 · 2025</span>
+  </div>
+
+  <div class="stk-grid">
+    ${cards.map(c=>mkCard(c.tp,c.bg,c.st,c.ev,'K. Telles',true)).join('')}
+  </div>
+
+  <div style="border:2px dashed var(--border);border-radius:14px;padding:18px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80px;margin-bottom:12px;opacity:.5">
+    <i class="ti ti-lock" style="font-size:24px;color:var(--text-3)"></i>
+    <div style="font-size:10px;color:var(--text-3);margin-top:6px;text-align:center;font-weight:500">Marque 20 gols para desbloquear</div>
+  </div>
+
+  <div style="border-radius:16px;overflow:hidden;box-shadow:0 8px 28px rgba(200,148,10,.4);cursor:pointer;margin-bottom:4px"
+    onclick="abrirZoom('Lendária','linear-gradient(155deg,#7a5200,#c8940a,#f5c842)','★★★★★','14 gols')">
+    <div style="background:linear-gradient(160deg,#6a4a00,#c8940a);padding:12px 14px;display:flex;align-items:center;gap:10px">
+      <div style="width:36px;height:36px;border-radius:8px;background:#1a1a2e;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚽</div>
+      <div style="flex:1">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:#fff;letter-spacing:.08em">FIGURINHA ANUAL 2025</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.7)">Edição limitada · Sub-13 · Votoraty Academy</div>
+      </div>
+      <div style="font-size:16px;color:rgba(255,215,0,.95);letter-spacing:2px">★★★★★</div>
+    </div>
+    <div style="background:linear-gradient(160deg,#3a2000,#5a3500);padding:12px 14px;display:flex;align-items:center;gap:12px">
+      <div class="stk-foto" style="width:52px;height:52px;border-radius:50%;border:2.5px solid #c8940a;background:rgba(200,148,10,.2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#c8940a;flex-shrink:0;overflow:hidden">KT</div>
+      <div style="flex:1">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;letter-spacing:.06em">KAUAN TELLES</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.6);margin:2px 0 6px">14 gols · 38 treinos · Artilheiro · Sub-13</div>
+        <div style="display:flex;gap:10px">
+          ${[['FIN',88],['DRI',81],['VEL',75],['PAS',62]].map(([l,v])=>`
+          <div style="text-align:center"><div style="font-size:14px;font-weight:700;color:#c8940a">${v}</div><div style="font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase">${l}</div></div>`).join('')}
+        </div>
+      </div>
+      <button onclick="event.stopPropagation();showN('✓ PDF gerado! Pronto para imprimir.')"
+        style="background:#c8940a;color:#fff;border:none;padding:8px 14px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;flex-shrink:0">PDF</button>
+    </div>
+  </div>`;
+}
+
+// =====================
+// UTILITÁRIOS UI
+// =====================
+function togChk(el,cor){
+  const b=el.querySelector('.chk');
+  const l=el.querySelector('.chk-lbl');
+  const on=b.classList.toggle('on');
+  if(on){b.style.background=cor;b.style.borderColor=cor;}
+  else{b.style.background='';b.style.borderColor='#ddd';}
+  l.classList.toggle('done',on);
+}
+
+function salvarCheckin(tipo){
+  const sel=document.querySelectorAll('.chk.on').length;
+  showN('✓ Check-in de '+tipo+' salvo! +'+sel*10+' XP conquistados!');
+}
+
+function montarNav(items, cor){
+  document.getElementById('nav').innerHTML = items.map((nm,i)=>
+    `<div class="nt${i===0?' on':''}" onclick="goTab(${i},'${cor}')" style="${i===0?'color:'+cor+';border-bottom-color:'+cor:''}">${nm}</div>`
+  ).join('');
+}
+
+function montarBnav(items, cor){
+  document.getElementById('bnav').innerHTML = items.map((it,i)=>
+    `<div class="bi${i===0?' on':''}" onclick="goTab(${i},'${cor}')">
+      <i class="ti ${it.icon}" style="color:${i===0?cor:'#ccc'}"></i>
+      <span style="color:${i===0?cor:'#ccc'}">${it.label}</span>
+    </div>`
+  ).join('');
+}
+
+function goTab(idx, cor){
+  document.querySelectorAll('[id^="s-"]').forEach((s,i)=>s.classList.toggle('on',i===idx));
+  document.querySelectorAll('#nav .nt').forEach((t,i)=>{
+    t.classList.toggle('on',i===idx);
+    t.style.color=i===idx?cor:'#bbb';
+    t.style.borderBottomColor=i===idx?cor:'transparent';
+  });
+  document.querySelectorAll('#bnav .bi').forEach((t,i)=>{
+    t.classList.toggle('on',i===idx);
+    t.querySelector('i').style.color=i===idx?cor:'#ccc';
+    t.querySelector('span').style.color=i===idx?cor:'#ccc';
+  });
+}
+
+function showN(txt,err){
+  const el=document.getElementById('notif-el');
+  document.getElementById('notif-txt').textContent=txt;
+  el.style.background=err?'#fce8e8':'#dcf0e0';
+  el.style.borderColor=err?'#e8a0a0':'#8ec99a';
+  el.style.color=err?'#8b1a1a':'#1a5c26';
+  document.getElementById('notif-wrap').style.display='block';
+  setTimeout(()=>document.getElementById('notif-wrap').style.display='none',3200);
+}
+
+let offlineMode=false;
+function toggleOff(){
+  offlineMode=!offlineMode;
+  document.getElementById('offline-dot').style.display=offlineMode?'inline-block':'none';
+  document.getElementById('btn-off').textContent=offlineMode?'Online':'Offline';
+  showN(offlineMode?'📵 Modo offline. Dados salvos no celular.':'📶 Online! Sincronizando...');
+}
+
+function sair(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('tela-inicial').style.display='flex';
+  chamadas={};golsV=2;offlineMode=false;
+  // Remove mini avatar do header ao sair
+  const mini = document.getElementById('header-mini-av');
+  if(mini) mini.remove();
+}
+
+function cadastrarAtleta(){
+  const nm=document.getElementById('m-nome').value||'Novo Atleta';
+  fecharModal('modal-atleta');
+  showN('✓ '+nm+' cadastrado! Acesso enviado ao responsável.');
+  document.getElementById('m-nome').value='';
+}
+
+function abrirModal(id){
+  document.getElementById(id).classList.add('on');
+  // Se for modal de jogo, popula a lista de convocação
+  if(id === 'modal-jogo') popularConvJogo();
+}
+
+let unifSel = 1;
+let jogoConvSel = {};
+
+function popularConvJogo(){
+  // Pega atletas da categoria selecionada
+  const cat = document.getElementById('jogo-cat')?.value || 'Sub-13';
+  const catKey = cat.toLowerCase().replace('-','');
+  const atletas = CATS_DATA[catKey]?.atletas || CATS_DATA['sub13'].atletas;
+  const cor = getComputedStyle(document.documentElement).getPropertyValue('--color').trim() || '#0d3d1a';
+
+  jogoConvSel = {};
+  atletas.forEach(a => jogoConvSel[a.sig] = true); // todos selecionados por padrão
+
+  const lista = document.getElementById('jogo-conv-lista');
+  if(!lista) return;
+  lista.innerHTML = atletas.map(a=>`
+    <button id="jconv-${a.sig}" onclick="toggleJconv('${a.sig}','${cor}')"
+      style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;border:1.5px solid ${cor};background:${cor};color:#fff;font-size:10px;font-weight:700;cursor:pointer;transition:all .15s">
+      <div style="width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700">${a.sig}</div>
+      ${a.nome.split(' ')[0]}
+    </button>`).join('');
+}
+
+function toggleJconv(sig, cor){
+  const btn = document.getElementById('jconv-'+sig);
+  if(!btn) return;
+  if(jogoConvSel[sig]){
+    delete jogoConvSel[sig];
+    btn.style.background = '#fff';
+    btn.style.color = cor;
+    btn.style.borderColor = cor;
+  } else {
+    jogoConvSel[sig] = true;
+    btn.style.background = cor;
+    btn.style.color = '#fff';
+  }
+}
+
+function convTodos(sel){
+  const cor = getComputedStyle(document.documentElement).getPropertyValue('--color').trim() || '#0d3d1a';
+  document.querySelectorAll('[id^="jconv-"]').forEach(btn=>{
+    const sig = btn.id.replace('jconv-','');
+    if(sel){
+      jogoConvSel[sig] = true;
+      btn.style.background = cor; btn.style.color = '#fff'; btn.style.borderColor = cor;
+    } else {
+      delete jogoConvSel[sig];
+      btn.style.background = '#fff'; btn.style.color = cor;
+    }
+  });
+}
+
+function selUnif(n){
+  unifSel = n;
+  const cor = getComputedStyle(document.documentElement).getPropertyValue('--color').trim() || '#0d3d1a';
+  ['unif-1','unif-2'].forEach((id,i)=>{
+    const btn = document.getElementById(id);
+    if(!btn) return;
+    if(i+1 === n){
+      btn.style.background = cor; btn.style.color = '#fff'; btn.style.borderColor = cor; btn.style.fontWeight = '700';
+    } else {
+      btn.style.background = '#fff'; btn.style.color = 'var(--text-2)'; btn.style.borderColor = 'var(--border)'; btn.style.fontWeight = '600';
+    }
+  });
+}
+
+function toggleLocalCustom(){
+  const sel = document.getElementById('jogo-local-tipo');
+  const custom = document.getElementById('jogo-local-custom');
+  if(sel && custom) custom.style.display = sel.value === 'outro' ? 'block' : 'none';
+}
+
+// Array global de jogos agendados
+const JOGOS_AGENDADOS = [
+  {id:'j001', adv:'União Sport', data:'2025-06-08', hora:'09:00', local:'Campo Estrela',    cat:'Sub-13', camp:'Camp. Municipal', fase:'Fase de grupos', unif:'Uniforme 1 (branco)', conv:['KT','PA','MT','RC','TN'], obs:'Chegue 30min antes.', status:'agendado'},
+  {id:'j002', adv:'Grêmio Jr',   data:'2025-06-22', hora:'10:00', local:'Campo do Votoraty',cat:'Sub-13', camp:'Camp. Municipal', fase:'Quartas',         unif:'Uniforme 2 (azul)',  conv:['KT','PA','MT','RC','TN'], obs:'Uniforme azul obrigatório.', status:'agendado'},
+];
+
+const JOGOS_RESULTADOS = [
+  {adv:'Atlético Jr', data:'18/05', gv:2, ga:1, resultado:'Vitória',  cat:'Sub-13'},
+  {adv:'Estrela FC',  data:'04/05', gv:3, ga:0, resultado:'Vitória',  cat:'Sub-13'},
+  {adv:'Rapid FC',    data:'20/04', gv:1, ga:2, resultado:'Derrota',  cat:'Sub-13'},
+];
+
+function agendarJogo(){
+  const adv = document.getElementById('jogo-adv')?.value?.trim();
+  if(!adv){ showN('⚠️ Informe o nome do adversário.',true); return; }
+  const data = document.getElementById('jogo-data')?.value;
+  if(!data){ showN('⚠️ Informe a data do jogo.',true); return; }
+  const hora  = document.getElementById('jogo-hora')?.value || '09:00';
+  const cat   = document.getElementById('jogo-cat')?.value || 'Sub-13';
+  const localTipo = document.getElementById('jogo-local-tipo')?.value || 'Campo do Votoraty';
+  const localCustom = document.getElementById('jogo-local-txt')?.value?.trim();
+  const local = localTipo === 'outro' ? (localCustom || 'A definir') : localTipo;
+  const camp  = document.getElementById('jogo-camp')?.value || 'Camp. Municipal';
+  const fase  = document.getElementById('jogo-fase')?.value || 'Fase de grupos';
+  const unif  = unifSel === 1 ? 'Uniforme 1 (branco)' : 'Uniforme 2 (azul)';
+  const conv  = Object.keys(jogoConvSel);
+  const obs   = document.getElementById('jogo-obs')?.value?.trim() || '';
+
+  // Salva no array
+  const novoJogo = {
+    id: 'j'+Date.now(),
+    adv, data, hora, local, cat, camp, fase, unif, conv, obs,
+    status: 'agendado'
+  };
+  JOGOS_AGENDADOS.unshift(novoJogo);
+
+  // Ordena por data
+  JOGOS_AGENDADOS.sort((a,b)=>a.data.localeCompare(b.data));
+  salvarLS();
+  fecharModal('modal-jogo');
+  showN('✓ Jogo vs '+adv+' agendado! '+conv.length+' atletas convocados e notificados.');
+
+  // Atualiza a tela de jogos se estiver visível
+  atualizarListaJogos();
+
+  // Limpa o formulário
+  if(document.getElementById('jogo-adv')) document.getElementById('jogo-adv').value='';
+  if(document.getElementById('jogo-data')) document.getElementById('jogo-data').value='';
+  if(document.getElementById('jogo-obs')) document.getElementById('jogo-obs').value='';
+}
+
+function atualizarListaJogos(){
+  const el = document.getElementById('lista-jogos-agendados');
+  if(!el) return;
+  el.innerHTML = renderListaJogosAgendados();
+}
+
+function renderListaJogosAgendados(){
+  if(JOGOS_AGENDADOS.length === 0){
+    return `<div style="text-align:center;padding:20px;color:var(--text-3);font-size:12px">Nenhum jogo agendado ainda.<br>Clique em "+ Agendar" para adicionar.</div>`;
+  }
+  return JOGOS_AGENDADOS.map(j=>{
+    // Formata data para exibição
+    const [ano,mes,dia] = j.data.split('-');
+    const meses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    const dataFmt = dia+' '+meses[parseInt(mes)-1];
+    const horaFmt = j.hora.replace(':','h');
+    return `<div class="card" id="jogo-card-${j.id}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--text-3)">${j.cat} · ${dataFmt} · ${horaFmt}</div>
+          <div style="font-size:10px;color:var(--text-3);font-weight:500">📍 ${j.local} · ${j.camp} · ${j.fase}</div>
+        </div>
+        <span class="tag tb">agendado</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0">
+        <span style="font-size:13px;font-weight:700;flex:1;color:var(--text)">Votoraty</span>
+        <span style="font-size:13px;color:var(--text-3);font-weight:600">vs</span>
+        <span style="font-size:13px;font-weight:700;flex:1;text-align:right;color:var(--text)">${j.adv}</span>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:8px">
+        <span style="font-size:10px;font-weight:600;color:var(--text-3)">👕 ${j.unif}</span>
+        <span style="font-size:10px;font-weight:600;color:var(--text-3)">·</span>
+        <span style="font-size:10px;font-weight:600;color:var(--text-3)">👥 ${j.conv.length} convocados</span>
+      </div>
+      ${j.obs?`<div style="background:var(--surface);border-radius:7px;padding:7px 10px;font-size:10px;color:var(--text-2);margin-bottom:8px">📋 ${j.obs}</div>`:''}
+      <div style="display:flex;gap:6px">
+        <button onclick="iniciarJogoAoVivo('${j.id}')" style="flex:1;background:var(--color);color:#fff;border:none;padding:8px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer">🔴 Iniciar ao vivo</button>
+        <button onclick="cancelarJogo('${j.id}')" style="background:var(--surface);border:1px solid var(--border);color:var(--text-3);padding:8px 10px;border-radius:8px;font-size:10px;font-weight:600;cursor:pointer">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function cancelarJogo(id){
+  const idx = JOGOS_AGENDADOS.findIndex(j=>j.id===id);
+  if(idx>=0){
+    const adv = JOGOS_AGENDADOS[idx].adv;
+    JOGOS_AGENDADOS.splice(idx,1);
+    salvarLS();
+    atualizarListaJogos();
+    showN('Jogo vs '+adv+' removido.');
+  }
+}
+
+function iniciarJogoAoVivo(id){
+  const jogo = JOGOS_AGENDADOS.find(j=>j.id===id);
+  if(!jogo) return;
+  showN('🔴 Jogo vs '+jogo.adv+' iniciado ao vivo!');
+  // Scroll para o placar ao vivo
+  const placar = document.querySelector('[id="placar-v"]');
+  if(placar) placar.closest('.card')?.scrollIntoView({behavior:'smooth'});
+}
+
+function fecharModal(id){document.getElementById(id).classList.remove('on');}
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on');});
+});
+</script>
+
+<script>
+// Service Worker — PWA offline
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js')
+      .then(()=>console.log('SW registrado'))
+      .catch(e=>console.log('SW erro:', e));
+  });
+}
+</script>
+</body>
+</html>
+
+<script>
+// =====================
+// MURAL DE CONVOCAÇÃO PÚBLICA
+// Visible para todos os atletas no Feed
+// =====================
+
+// Dados de convocações publicadas (simula o banco de dados)
+const convocacoes_publicadas = [
+  {
+    id: 'conv_001',
+    jogo: 'Votoraty Academy vs Rapid FC',
+    data: 'Sábado, 25 de maio de 2025',
+    hora: '09h00',
+    local: 'Campo do Votoraty',
+    campeonato: 'Camp. Municipal Sub-13',
+    fase: 'Fase de grupos',
+    categoria: 'Sub-13',
+    cor: '#185fa5',
+    tecnico: 'Técnico André',
+    observacao: 'Chegue 30 minutos antes. Uniforme 1 (branco). Tragam a chuteira de campo.',
+    convocados: [
+      {sig:'KT', nome:'Kauan Telles',    pos:'Meia'},
+      {sig:'PA', nome:'Pedro Alves',      pos:'Atacante'},
+      {sig:'MT', nome:'Mateus Torres',    pos:'Zagueiro'},
+      {sig:'TN', nome:'Thiago Nunes',     pos:'Meia'},
+      {sig:'RC', nome:'Rafael Costa',     pos:'Lateral'},
+      {sig:'LF', nome:'Lucas Ferreira',   pos:'Goleiro'},
+      {sig:'KP', nome:'Kaique Pereira',   pos:'Zagueiro'},
+    ],
+    reservas: [
+      {sig:'IN', nome:'Igor Nunes',       pos:'Meia'},
+      {sig:'JL', nome:'João Lima',        pos:'Atacante'},
+    ]
+  },
+  {
+    id: 'conv_002',
+    jogo: 'Votoraty Academy vs Atlético Jr',
+    data: 'Sexta, 18 de maio de 2025',
+    hora: '18h30',
+    local: 'Campo Atlético Jr',
+    campeonato: 'Camp. Municipal Sub-13',
+    fase: 'Fase de grupos',
+    categoria: 'Sub-13',
+    cor: '#185fa5',
+    tecnico: 'Técnico André',
+    observacao: 'Uniforme 2 (azul). Saída do clube às 17h no ônibus.',
+    resultado: 'Vitória 2×1',
+    convocados: [
+      {sig:'KT', nome:'Kauan Telles',    pos:'Meia'},
+      {sig:'PA', nome:'Pedro Alves',      pos:'Atacante'},
+      {sig:'MT', nome:'Mateus Torres',    pos:'Zagueiro'},
+      {sig:'TN', nome:'Thiago Nunes',     pos:'Meia'},
+      {sig:'RC', nome:'Rafael Costa',     pos:'Lateral'},
+    ],
+    reservas: []
+  }
+];
+
+// Injeta tela de Convocações Públicas no app do ATLETA
+const _origMontarAtleta = montarAtleta;
+montarAtleta = function(cor){
+  _origMontarAtleta(cor);
+
+  // Adiciona aba no nav
+  const nav = document.getElementById('nav');
+  const nt = document.createElement('div');
+  nt.style.cssText='flex-shrink:0;padding:9px 11px;font-size:10px;font-weight:600;color:#bbb;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap';
+  nt.textContent = 'Convocações';
+  nt.className = 'nt';
+  nt.onclick = function(){ goTab(5, cor); };
+  nav.appendChild(nt);
+
+  // Adiciona tela
+  const sc = document.getElementById('screens');
+  const div = document.createElement('div');
+  div.id = 's-5';
+  div.className = 'scr';
+  div.style.cssText = 'padding:11px 13px;overflow-y:auto';
+  div.innerHTML = renderMuralConvocacoes(cor);
+  sc.appendChild(div);
+
+  // Adiciona no bnav
+  const bnav = document.getElementById('bnav');
+  const bi = document.createElement('div');
+  bi.className = 'bi';
+  bi.innerHTML = `<i class="ti ti-clipboard-list" style="font-size:18px;color:#ccc"></i><span style="font-size:8px;color:#ccc">Convoc.</span>`;
+  bi.onclick = function(){ goTab(5, cor); };
+  bnav.appendChild(bi);
+
+  // Adiciona notificação de convocação no feed
+  injetarConvocacaoNoFeed(cor);
+};
+
+function injetarConvocacaoNoFeed(cor){
+  setTimeout(()=>{
+    const feed = document.getElementById('feed-msgs');
+    if(!feed) return;
+    const conv = convocacoes_publicadas[0];
+    const item = document.createElement('div');
+    item.style.cssText='background:linear-gradient(160deg,#e6f4ec,#d4edd9);border:1.5px solid #97c459;border-radius:11px;padding:12px 13px;margin-bottom:9px';
+    item.innerHTML=`
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <div style="width:34px;height:34px;border-radius:9px;background:#166024;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🏆</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#173404">VOCÊ FOI CONVOCADO!</div>
+          <div style="font-size:10px;color:#3b6d11">${conv.tecnico} · ${conv.categoria}</div>
+        </div>
+        <span style="margin-left:auto;font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;background:#166024;color:#fff">novo</span>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:#1a1a1a;margin-bottom:3px">${conv.jogo}</div>
+      <div style="font-size:10px;color:#3b6d11;margin-bottom:5px">${conv.data} · ${conv.hora} · ${conv.local}</div>
+      <div style="font-size:11px;color:#173404;line-height:1.5;background:rgba(22,96,36,.08);padding:6px 9px;border-radius:7px;margin-bottom:8px">
+        📋 <strong>${conv.convocados.length} convocados:</strong> ${conv.convocados.map(c=>c.nome.split(' ')[0]).join(', ')}
+      </div>
+      <div style="font-size:10px;color:#3b6d11;font-style:italic">"${conv.observacao}"</div>
+      <div style="font-size:9px;color:#3b6d11;margin-top:6px;text-align:right">agora · automático</div>`;
+    feed.insertBefore(item, feed.firstChild);
+  }, 200);
+}
+
+function renderMuralConvocacoes(cor){
+  return `
+  <div style="font-size:13px;font-weight:700;margin-bottom:4px;color:#1a1a1a">Convocações oficiais</div>
+  <div style="font-size:11px;color:#aaa;margin-bottom:12px">Lista pública — todos os atletas podem ver</div>
+
+  ${convocacoes_publicadas.map((conv,idx)=>`
+  <div style="border:1.5px solid ${conv.resultado?'#97c459':conv.cor};border-radius:14px;overflow:hidden;margin-bottom:12px">
+
+    <!-- Header da convocação -->
+    <div style="background:${conv.resultado?'#eaf3de':conv.cor};padding:12px 14px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:${conv.resultado?'#173404':'#fff'}">${conv.jogo}</div>
+          <div style="font-size:10px;color:${conv.resultado?'#3b6d11':'rgba(255,255,255,.8)'};margin-top:2px">${conv.data} · ${conv.hora}</div>
+          <div style="font-size:10px;color:${conv.resultado?'#3b6d11':'rgba(255,255,255,.75)'}">📍 ${conv.local}</div>
+        </div>
+        ${conv.resultado
+          ? `<span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:8px;background:#166024;color:#fff;flex-shrink:0">${conv.resultado}</span>`
+          : `<span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:8px;background:rgba(255,255,255,.25);color:#fff;flex-shrink:0">${conv.categoria}</span>`
+        }
+      </div>
+      <div style="font-size:10px;color:${conv.resultado?'#3b6d11':'rgba(255,255,255,.7)'};margin-top:4px">${conv.campeonato} · ${conv.fase}</div>
+    </div>
+
+    <!-- Lista de convocados -->
+    <div style="padding:12px 14px;background:#fff">
+
+      <div style="font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">
+        ${conv.convocados.length} Convocados
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:0">
+        ${conv.convocados.map((a,i)=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f5f4f0">
+          <div style="width:22px;height:22px;border-radius:50%;background:${conv.cor};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">${i+1}</div>
+          <div style="width:30px;height:30px;border-radius:50%;background:${conv.cor}22;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${conv.cor};flex-shrink:0">${a.sig}</div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700;color:#1a1a1a">${a.nome}</div>
+            <div style="font-size:10px;color:#aaa">${a.pos}</div>
+          </div>
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;background:${conv.cor}18;color:${conv.cor}">${a.pos}</span>
+        </div>`).join('')}
+      </div>
+
+      ${conv.reservas && conv.reservas.length>0 ? `
+      <div style="font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;margin-top:10px;margin-bottom:6px">
+        ${conv.reservas.length} Reservas
+      </div>
+      ${conv.reservas.map((a,i)=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #f5f4f0;opacity:.7">
+        <div style="width:22px;height:22px;border-radius:50%;background:#f0eeea;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#888;flex-shrink:0">R${i+1}</div>
+        <div style="width:30px;height:30px;border-radius:50%;background:#f0eeea;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#888;flex-shrink:0">${a.sig}</div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:#555">${a.nome}</div>
+          <div style="font-size:10px;color:#aaa">${a.pos}</div>
+        </div>
+        <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;background:#f5f4f0;color:#888">Reserva</span>
+      </div>`).join('')}` : ''}
+
+      <!-- Observação do técnico -->
+      <div style="background:#fffaf0;border:1px solid #e8c97a;border-radius:8px;padding:8px 10px;margin-top:10px">
+        <div style="font-size:10px;font-weight:700;color:#854f0b;margin-bottom:3px">📋 Recado do ${conv.tecnico}</div>
+        <div style="font-size:11px;color:#633806;line-height:1.5">${conv.observacao}</div>
+      </div>
+
+      <!-- Confirmação de presença -->
+      ${!conv.resultado ? `
+      <div style="display:flex;gap:7px;margin-top:10px">
+        <button onclick="confirmarPresenca(this,'sim','${conv.cor}')" style="flex:1;background:#eaf3de;color:#27500a;border:none;padding:9px;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer">✓ Confirmar presença</button>
+        <button onclick="confirmarPresenca(this,'nao','${conv.cor}')" style="flex:1;background:#fcebeb;color:#791f1f;border:none;padding:9px;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer">✗ Não poderei ir</button>
+      </div>` : `
+      <div style="background:#eaf3de;border-radius:8px;padding:8px 10px;margin-top:10px;text-align:center;font-size:11px;font-weight:700;color:#27500a">
+        ✓ Jogo encerrado · ${conv.resultado}
+      </div>`}
+
+    </div>
+  </div>`).join('')}
+
+  <!-- BOTÃO VER TODAS -->
+  <div style="text-align:center;padding:8px 0">
+    <button onclick="showN('Carregando histórico completo de convocações...')" style="background:none;border:1px solid #ddd;color:#666;padding:8px 20px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer">
+      Ver histórico completo
+    </button>
+  </div>`;
+}
+
+function confirmarPresenca(btn, tipo, cor){
+  const row = btn.parentElement;
+  if(tipo==='sim'){
+    row.innerHTML=`<div style="background:#eaf3de;border-radius:8px;padding:9px;text-align:center;font-size:11px;font-weight:700;color:#27500a;width:100%">✓ Presença confirmada! Técnico foi notificado.</div>`;
+    showN('✓ Presença confirmada! Técnico André foi notificado.');
+  } else {
+    row.innerHTML=`<div style="background:#faeeda;border-radius:8px;padding:9px;text-align:center;font-size:11px;font-weight:700;color:#633806;width:100%">⚠️ Ausência informada. Técnico foi notificado.</div>`;
+    showN('⚠️ Ausência informada ao Técnico André.');
+  }
+}
+</script>
+<script>
+// =====================
+// CORREÇÃO: Professor acessa TODOS os subs
+// A diferença entre Professor e Diretor agora é só:
+// Diretor: vê financeiro, configurações, gestão de professores
+// Professor: vê todos os atletas de todas as categorias, mas não vê financeiro/config
+// =====================
+
+// Sobrescreve a tela inicial para refletir a nova lógica
+// Sobrescreve entrar() para tratar 'professor' como acesso a todos os subs
+const _origEntrar = entrar;
+entrar = function(perfil){
+  if(perfil === 'professor'){
+    montarProfessorTodos('#166024');
+    return;
+  }
+  _origEntrar(perfil);
+};
+
+function montarProfessorTodos(cor){
+  perfilAtual = 'professor';
+  document.getElementById('tela-inicial').style.display='none';
+  document.getElementById('app').style.display='flex';
+  setCor(cor);
+
+  document.getElementById('hdr-title').textContent = 'Área do Professor';
+  document.getElementById('hdr-sub').textContent = 'Todos os subs · Votoraty Academy';
+  document.getElementById('cat-pill').textContent = '🏫 Sub-7 ao Sub-15';
+  document.getElementById('sbar-mid').textContent = 'Professor · Votoraty';
+  document.getElementById('offline-dot').style.display='none';
+
+  // Nav com abas por categoria + geral
+  const navItems = ['Geral','Sub-7','Sub-9','Sub-11','Sub-13','Sub-15','Mensagem','Jogos'];
+  const bnavItems = [
+    {icon:'ti-layout-dashboard',label:'Geral'},
+    {icon:'ti-users',label:'Atletas'},
+    {icon:'ti-ball-football',label:'Treino'},
+    {icon:'ti-message',label:'Mensagem'},
+    {icon:'ti-trophy',label:'Jogos'}
+  ];
+  montarNav(navItems, cor);
+  montarBnav(bnavItems, cor);
+
+  const sc = document.getElementById('screens');
+  sc.innerHTML = `
+    <div id="s-0" class="scr on" style="padding:11px 13px;overflow-y:auto">${renderProfGeral(cor)}</div>
+    <div id="s-1" class="scr" style="padding:11px 13px;overflow-y:auto">${renderProfCat('sub7',cor)}</div>
+    <div id="s-2" class="scr" style="padding:11px 13px;overflow-y:auto">${renderProfCat('sub9',cor)}</div>
+    <div id="s-3" class="scr" style="padding:11px 13px;overflow-y:auto">${renderProfCat('sub11',cor)}</div>
+    <div id="s-4" class="scr" style="padding:11px 13px;overflow-y:auto">${renderProfCat('sub13',cor)}</div>
+    <div id="s-5" class="scr" style="padding:11px 13px;overflow-y:auto">${renderProfCat('sub15',cor)}</div>
+    <div id="s-6" class="scr" style="padding:11px 13px;overflow-y:auto">${renderMensagemTodos(cor)}</div>
+    <div id="s-7" class="scr" style="padding:11px 13px;overflow-y:auto">${renderJogosProfessor(CATS_DATA['sub13'], cor)}</div>`;
+
+  // Mapeia bnav para telas
+  document.querySelectorAll('#bnav .bi').forEach((b,i)=>{
+    const mapa=[0,1,2,6,7];
+    b.onclick=function(){goTab(mapa[i]||i,cor);};
+  });
+
+  setCor(cor);
+}
+
+function renderProfGeral(cor){
+  const cats = Object.entries(CATS_DATA);
+  return `
+  <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:#1a1a1a">Visão geral — todos os subs</div>
+
+  ${cats.map(([k,c])=>`
+  <div style="border:1px solid #eee;border-radius:11px;overflow:hidden;margin-bottom:9px">
+    <div style="display:flex;align-items:center;gap:10px;padding:11px 13px;background:${CORES[k]}12;border-bottom:1px solid #eee">
+      <div style="width:36px;height:36px;border-radius:9px;background:${CORES[k]};display:flex;align-items:center;justify-content:center;font-size:18px">${c.emoji}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700;color:#1a1a1a">${c.nome}</div>
+        <div style="font-size:10px;color:#aaa">${c.atletas.length} atletas · ${c.atletas.reduce((s,a)=>s+a.gols,0)} gols · ${Math.round(c.atletas.reduce((s,a)=>s+a.pres,0)/c.atletas.length)}% presença</div>
+      </div>
+      <button onclick="goTab(${['sub7','sub9','sub11','sub13','sub15'].indexOf(k)+1},'${cor}')" style="background:${CORES[k]};color:#fff;border:none;padding:5px 12px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer">Acessar</button>
+    </div>
+    <div style="padding:8px 13px;display:flex;gap:8px;flex-wrap:wrap">
+      ${c.atletas.map(a=>{
+        const pc=a.pres>=85?'#27500a':a.pres>=70?'#854f0b':'#a32d2d';
+        return `<div style="display:flex;align-items:center;gap:5px">
+          <div style="width:24px;height:24px;border-radius:50%;background:${CORES[k]};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff">${a.sig}</div>
+          <span style="font-size:10px;color:${pc}">${a.pres}%</span>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`).join('')}
+
+  <div style="background:#fff8e6;border:1px solid #e8c97a;border-radius:10px;padding:10px 12px;margin-top:4px">
+    <div style="font-size:11px;font-weight:500;color:#854f0b;margin-bottom:3px">⚠️ Alertas em todas as categorias</div>
+    <div style="font-size:11px;color:#633806;line-height:1.7">
+      Pedro Alves (Sub-13) — 4 faltas seguidas<br>
+      Rafael Costa (Sub-13) — presença 65%<br>
+      João Lima (Sub-11) — presença 76%
+    </div>
+  </div>`;
+}
+
+function renderProfCat(catKey, cor){
+  const cat = CATS_DATA[catKey];
+  const catCor = CORES[catKey];
+  if(!cat) return '<div style="padding:20px;text-align:center;color:#aaa">Carregando...</div>';
+
+  return `
+  <!-- SELETOR DE AÇÃO -->
+  <div style="display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap">
+    <button onclick="mostrarPainel('${catKey}','chamada','${catCor}')" style="flex:1;background:${catCor};color:#fff;border:none;padding:8px 6px;border-radius:9px;font-size:10px;font-weight:700;cursor:pointer">📋 Chamada</button>
+    <button onclick="mostrarPainel('${catKey}','avaliacao','${catCor}')" style="flex:1;background:${catCor}22;color:${catCor};border:none;padding:8px 6px;border-radius:9px;font-size:10px;font-weight:700;cursor:pointer">⭐ Avaliar</button>
+    <button onclick="mostrarPainel('${catKey}','treino','${catCor}')" style="flex:1;background:${catCor}22;color:${catCor};border:none;padding:8px 6px;border-radius:9px;font-size:10px;font-weight:700;cursor:pointer">⚽ Treino</button>
+    <button onclick="mostrarPainel('${catKey}','convocar','${catCor}')" style="flex:1;background:${catCor}22;color:${catCor};border:none;padding:8px 6px;border-radius:9px;font-size:10px;font-weight:700;cursor:pointer">🏆 Convocar</button>
+  </div>
+
+  <!-- PAINEL DINÂMICO -->
+  <div id="painel-${catKey}">
+    <!-- CHAMADA padrão -->
+    <div class="lbl">Chamada — ${cat.nome} · hoje</div>
+    <div style="background:#eee;border-radius:3px;height:4px;margin-bottom:8px"><div id="prog-${catKey}" style="height:4px;border-radius:3px;background:${catCor};width:0;transition:width .3s"></div></div>
+    ${cat.atletas.map((a,i)=>{
+      const pc=a.pres>=85?'#27500a':a.pres>=70?'#854f0b':'#a32d2d';
+      return `<div class="cr-item">
+        <div class="av" style="width:30px;height:30px;font-size:10px;background:${catCor}">${a.sig}</div>
+        <div style="flex:1"><div style="font-size:12px;font-weight:700">${a.nome}</div>
+        <div style="font-size:9px;color:#aaa">${a.pos} · <span style="color:${pc}">${a.pres}%</span> · ${a.gols} gols</div></div>
+        <div style="display:flex;gap:4px">
+          <button class="crb crb-p" onclick="marcC('${catKey}${i}','P',this,'${catCor}')" id="cp-${catKey}${i}">P</button>
+          <button class="crb crb-f" onclick="marcC('${catKey}${i}','F',this,'${catCor}')" id="cf-${catKey}${i}">F</button>
+        </div>
+      </div>`;
+    }).join('')}
+    <button style="background:${catCor};color:#fff;border:none;padding:11px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;width:100%;margin-top:5px" onclick="showN('✓ Chamada ${cat.nome} salva! Pais notificados.')">Salvar chamada</button>
+  </div>
+
+  <!-- LISTA DE ATLETAS -->
+  <div class="lbl" style="margin-top:12px">Atletas — ${cat.nome}</div>
+  <div class="cw" style="padding:6px 14px">
+    ${cat.atletas.map(a=>{
+      const pc=a.pres>=85?'#1a5c26':a.pres>=70?'#7a4010':'#8b1a1a';
+      const _fk=a.sig+catKey;
+      const temFicha=typeof FICHAS!=='undefined'&&FICHAS[_fk]&&FICHAS[_fk].sangue;
+      const fichaBg=temFicha?'#dcf0e0':'#fce8e8';
+      const fichaC=temFicha?'#1a5c26':'#8b1a1a';
+      return `<div style="padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+          <div class="av" style="width:34px;height:34px;font-size:11px;background:${catCor}">${a.sig}</div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700;color:var(--text)">${a.nome}</div>
+            <div style="font-size:9px;color:var(--text-3);font-weight:500">${a.pos} · Nível ${a.nivel} · ${a.gols} gols</div>
+            <div class="prog"><div class="prog-f" style="width:${a.pres}%;background:${pc}"></div></div>
+          </div>
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;color:${pc};background:${pc}18">${a.pres}%</span>
+        </div>
+        <div style="display:flex;gap:5px;padding-left:44px">
+          <button onclick="abrirHabilidades('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${catKey}','${catCor}')" style="flex:1;background:${catCor}18;color:${catCor};border:1px solid ${catCor}33;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">⭐ Hab</button>
+          <button onclick="abrirFicha('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${catKey}','${catCor}')" style="flex:1;background:${fichaBg};color:${fichaC};border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">🏥 Ficha</button>
+          <button onclick="gerarRelatorio('${a.nome}','${a.sig}','${catKey}','${catCor}')" style="flex:1;background:#fdf3dc;color:#7a4010;border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">📊 PDF</button>
+          <button onclick="abrirMsgDireta('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${catCor}')" style="flex:1;background:${catCor};color:#fff;border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">✉️ Msg</button>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function mostrarPainel(catKey, tipo, cor){
+  const paineis = {
+    chamada: `Chamada marcada para ${CATS_DATA[catKey].nome}`,
+    avaliacao: `Avaliação do ${CATS_DATA[catKey].nome} aberta`,
+    treino: `Registrar treino do ${CATS_DATA[catKey].nome}`,
+    convocar: `Convocação do ${CATS_DATA[catKey].nome} aberta`
+  };
+  showN('✓ '+paineis[tipo]);
+}
+
+function renderMensagemTodos(cor){
+  return `
+  <div style="font-size:13px;font-weight:700;margin-bottom:4px;color:#1a1a1a">Enviar mensagem</div>
+  <div style="font-size:11px;color:#aaa;margin-bottom:12px">O professor pode mandar para qualquer categoria</div>
+
+  <div class="lbl">Para qual categoria</div>
+  <div class="chips" id="prof-dest">
+    <span class="chip on" onclick="selDestProf(this)" style="background:#eaf3de;color:#27500a;border-color:#97c459;font-weight:700">Todos os subs</span>
+    ${Object.entries(CATS_DATA).map(([k,c])=>`<span class="chip" onclick="selDestProf(this)" style="--cor:${CORES[k]}">${c.emoji} ${c.nome}</span>`).join('')}
+  </div>
+
+  <div class="lbl">Mensagens rápidas</div>
+  <div class="chips">
+    <span class="chip" onclick="setMsgQ('Ótimo treino hoje! Parabéns a todos. 👏')">Ótimo treino</span>
+    <span class="chip" onclick="setMsgQ('Treino confirmado para amanhã. Não faltem!')">Confirmar treino</span>
+    <span class="chip" onclick="setMsgQ('Jogo neste sábado. Chegue 30min antes.')">Lembrete jogo</span>
+    <span class="chip" onclick="setMsgQ('Não esqueçam de estudar hoje! 📚')">Estudar hoje</span>
+    <span class="chip" onclick="setMsgQ('Hidratem bem antes do treino! 💧')">Hidratação</span>
+    <span class="chip" onclick="setMsgQ('Treino cancelado hoje. Reagendado em breve.')">Cancelar treino</span>
+    <span class="chip" onclick="setMsgQ('Parabéns pelo esforço de todos no jogo! 🏆')">Parabéns</span>
+  </div>
+
+  <div class="field"><label>Tipo</label>
+    <select><option>📢 Aviso geral</option><option>⚽ Treino</option><option>🏆 Jogo</option><option>📚 Estudos</option><option>💧 Saúde</option><option>⚠️ Urgente</option></select>
+  </div>
+  <div class="field"><label>Mensagem</label>
+    <textarea id="msg-txt" placeholder="Escreva aqui..."></textarea>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+    <input type="checkbox" id="cc-pais" style="width:14px;height:14px" checked>
+    <label for="cc-pais" style="font-size:11px;color:#555">Enviar também para os pais</label>
+  </div>
+  <button class="btn-g" style="background:${cor}" onclick="enviarMsg()">Enviar mensagem</button>
+
+  <div class="lbl" style="margin-top:12px">Últimos enviados</div>
+  <div class="card" style="padding:9px 11px">
+    ${[['Todos os subs','Treino confirmado para sábado. Não faltem!','1h'],
+       ['Sub-13','Jogo sábado 09h. Uniforme 1.','3h'],
+       ['Sub-11','Ótimo treino hoje! Parabéns.','1d']
+    ].map(([dest,msg,time])=>`
+    <div style="padding:7px 0;border-bottom:1px solid #f0eeea">
+      <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+        <span style="font-size:10px;font-weight:700;color:${cor}">${dest}</span>
+        <span style="font-size:9px;color:#aaa">${time}</span>
+      </div>
+      <div style="font-size:11px;color:#333">${msg}</div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function selDestProf(el){
+  document.querySelectorAll('#prof-dest .chip').forEach(c=>{
+    c.style.background=''; c.style.color=''; c.style.borderColor=''; c.style.fontWeight='';
+    c.classList.remove('on');
+  });
+  el.classList.add('on');
+  el.style.background='#eaf3de'; el.style.color='#27500a';
+  el.style.borderColor='#97c459'; el.style.fontWeight='700';
+}
+</script>
