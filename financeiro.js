@@ -105,9 +105,10 @@ function confirmarPagamentoArbitragem(sig, catKey){
   const entrada = window.ARBITRAGEM_STATUS[catKey].find(a => a.sig === sig);
   if(entrada){
     entrada.pago = !entrada.pago;
+    entrada.status = entrada.pago ? 'pago' : 'pendente';
     showN(entrada.pago ? '✓ Arbitragem confirmada! Professor notificado.' : '↩ Arbitragem revertida');
   } else {
-    window.ARBITRAGEM_STATUS[catKey].push({sig, pago: true});
+    window.ARBITRAGEM_STATUS[catKey].push({sig, pago: true, status: 'pago'});
     showN('✓ Arbitragem confirmada! Professor notificado.');
   }
   salvarLS();

@@ -15,7 +15,7 @@ const CATS_DATA = {
   sub9:  {nome:'Sub-9',  emoji:'🌿', atletas:[
     {sig:'EF',nome:'Eduardo Ferreira',pos:'Meia',pres:92,gols:5,nivel:5},
     {sig:'FA',nome:'Felipe Alves',pos:'Atacante',pres:78,gols:7,nivel:5},
-    {sig:'KT',nome:'Gustavo Silva',pos:'Zagueiro',pres:96,gols:1,nivel:6},
+    {sig:'GS',nome:'Gustavo Silva',pos:'Zagueiro',pres:96,gols:1,nivel:6},
     {sig:'HC',nome:'Henrique Costa',pos:'Lateral',pres:83,gols:2,nivel:4}]},
   sub11: {nome:'Sub-11', emoji:'⚽', atletas:[
     {sig:'LF',nome:'Lucas Ferreira',pos:'Goleiro',pres:88,gols:0,nivel:5},
@@ -181,11 +181,11 @@ const JOGOS_RESULTADOS = [
 // Presença e arbitragem — inicializados aqui, preenchidos pelo professor
 if(!window.PRESENCA_HIST)      window.PRESENCA_HIST      = {};
 if(!window.ARBITRAGEM_STATUS)  window.ARBITRAGEM_STATUS  = {
-  sub7: [{sig:'AS',pago:true},{sig:'BL',pago:true},{sig:'DT',pago:false}],
-  sub9: [{sig:'EF',pago:true},{sig:'FA',pago:false},{sig:'HC',pago:true}],
-  sub11:[{sig:'LF',pago:true},{sig:'IN',pago:false},{sig:'JL',pago:true},{sig:'KP',pago:false}],
-  sub13:[{sig:'KT',pago:true},{sig:'PA',pago:false},{sig:'MT',pago:true}],
-  sub15:[{sig:'MT',pago:false},{sig:'NF',pago:true}],
+  sub7: [{sig:'AS',pago:true,status:'pago'},{sig:'BL',pago:true,status:'pago'},{sig:'DT',pago:false,status:'pendente'}],
+  sub9: [{sig:'EF',pago:true,status:'pago'},{sig:'FA',pago:false,status:'pendente'},{sig:'HC',pago:true,status:'pago'}],
+  sub11:[{sig:'LF',pago:true,status:'pago'},{sig:'IN',pago:false,status:'pendente'},{sig:'JL',pago:true,status:'pago'},{sig:'KP',pago:false,status:'pendente'}],
+  sub13:[{sig:'KT',pago:true,status:'pago'},{sig:'PA',pago:false,status:'pendente'},{sig:'MT',pago:true,status:'pago'}],
+  sub15:[{sig:'MT',pago:false,status:'pendente'},{sig:'NF',pago:true,status:'pago'}],
 };
 
 // Habilidades por atleta (chave: sig+cat)
