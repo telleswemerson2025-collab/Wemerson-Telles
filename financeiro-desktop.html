@@ -1305,6 +1305,15 @@ function marcarArbitragemPaga(id) {
   const a = ARBITRAGEM.find(x => x.id === id);
   if (a) {
     a.status = a.status === 'pago' ? 'pendente' : 'pago';
+    // Sincroniza com localStorage para o index.html (Professor) ler
+    try {
+      const arb = JSON.parse(localStorage.getItem('vot_arbitragem') || '{}');
+      if(!arb[a.cat]) arb[a.cat] = [];
+      const entrada = arb[a.cat].find(x=>x.sig===a.sig);
+      if(entrada) entrada.pago = (a.status==='pago');
+      else arb[a.cat].push({sig:a.sig, pago:(a.status==='pago')});
+      localStorage.setItem('vot_arbitragem', JSON.stringify(arb));
+    } catch(e){}
     renderFinArbitragem();
     renderFinPainel();
   }
@@ -1524,8 +1533,29 @@ function sidebarClick(el, id) {
   if (id === 'relatorio-contador') renderRelatorioContador();
 }
 
-// INIT
+// INIT — carrega dados compartilhados com index.html via localStorage
 window.addEventListener('DOMContentLoaded', () => {
+  try {
+    // Convocações / jogos agendados
+    const jog = localStorage.getItem('vot_jogos_agendados');
+    if(jog){
+      const jogos = JSON.parse(jog);
+      // Sincroniza CONVOCACOES: mapeia id do jogo → array de sigs convocados
+      jogos.forEach(j => { if(j.id && j.conv) CONVOCACOES[j.id] = j.conv; });
+    }
+    // Arbitragem status do professor
+    const arb = localStorage.getItem('vot_arbitragem');
+    if(arb){
+      const arbData = JSON.parse(arb);
+      Object.entries(arbData).forEach(([catKey, atletas]) => {
+        atletas.forEach(a => {
+          const entrada = ARBITRAGEM.find(x => x.sig === a.sig);
+          if(entrada && a.pago) entrada.pago = true;
+        });
+      });
+    }
+    // Presença histórico já é lido em desenharGraficoFluxoAtletas()
+  } catch(e){}
   renderFinPainel();
 });
 </script>

@@ -1062,7 +1062,8 @@ function salvarLS(){
   localStorage.setItem('vot_fichas', JSON.stringify(FICHAS));
   localStorage.setItem('vot_jogos_agendados', JSON.stringify(JOGOS_AGENDADOS));
   if(window.PRESENCA_HIST) localStorage.setItem('vot_presenca_hist', JSON.stringify(window.PRESENCA_HIST));
-  salvarFirestore(); // sincroniza com Firebase quando disponível
+  if(window.ARBITRAGEM_STATUS) localStorage.setItem('vot_arbitragem', JSON.stringify(window.ARBITRAGEM_STATUS));
+  salvarFirestore();
 }
 
 function carregarLS(){
@@ -1077,6 +1078,8 @@ function carregarLS(){
     if(jog){ JOGOS_AGENDADOS.length=0; JSON.parse(jog).forEach(j=>JOGOS_AGENDADOS.push(j)); }
     const ph = localStorage.getItem('vot_presenca_hist');
     if(ph){ window.PRESENCA_HIST = JSON.parse(ph); }
+    const arb = localStorage.getItem('vot_arbitragem');
+    if(arb){ window.ARBITRAGEM_STATUS = JSON.parse(arb); }
   } catch(e){}
 }
 
@@ -1553,15 +1556,32 @@ function injetarFeed(cor, titulo, corpo, rodape){
 }
 
 function salvarAvaliacoes(){
-  // Coleta avaliações preenchidas
   const badges = document.querySelectorAll('[id^="avb-"]');
   const avs = [];
   badges.forEach(b=>{
     if(b.textContent !== 'pendente') avs.push(b.textContent);
   });
-  const resumo = avs.length > 0
-    ? avs.join(' · ')
-    : 'Sem avaliações preenchidas';
+  const resumo = avs.length > 0 ? avs.join(' · ') : 'Sem avaliações preenchidas';
+  const hoje = new Date().toISOString().split('T')[0];
+  const meta = window._chamadaMeta || {};
+  const catAtiva = meta.catKey || 'sub13';
+
+  // Persiste avaliação individual por atleta em FICHAS
+  if(meta.atletas){
+    meta.atletas.forEach((a, i) => {
+      const badge = document.getElementById('avb-'+i);
+      if(badge && badge.textContent !== 'pendente'){
+        const ficKey = a.sig + catAtiva;
+        if(!FICHAS[ficKey]) FICHAS[ficKey] = {};
+        if(!FICHAS[ficKey].hist_avaliacoes) FICHAS[ficKey].hist_avaliacoes = [];
+        const chips = [...document.querySelectorAll('#avd-'+i+' .chip.on')].map(c=>c.textContent);
+        const nota = document.querySelector('#avd-'+i+' textarea')?.value?.trim() || '';
+        FICHAS[ficKey].hist_avaliacoes.push({ data: hoje, conceito: badge.textContent, chips, nota });
+      }
+    });
+    salvarLS();
+  }
+
   injetarFeed('#185fa5','📋 AVALIAÇÃO DO TÉCNICO',
     'O técnico registrou avaliação do treino de hoje: <strong>'+resumo+'</strong>',
     'agora · avaliação');
@@ -3003,6 +3023,29 @@ function renderEvolucao(cor){
       </div>
       <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:6px;background:#dceaf8;color:#0e3d6e">Convocado</span>
     </div>`).join('')}
+  </div>`;
+  })()}
+
+  ${(()=>{
+    const sig = a.sig;
+    const catKey = (a.cat||'Sub-13').replace(/[^a-z0-9]/gi,'').toLowerCase();
+    const ficKey = sig + catKey;
+    const avs = (FICHAS[ficKey]||{}).hist_avaliacoes || [];
+    if(avs.length === 0) return '';
+    return `<div class="lbl">Avaliações do técnico</div>
+  <div class="cw" style="padding:10px 14px">
+    ${avs.slice(-6).reverse().map(av=>{
+      const cor2 = av.conceito==='Ótimo'?'#dcf0e0':av.conceito==='Bem'?'#dceaf8':av.conceito==='Atenção'?'#faeeda':'#f0f0f0';
+      const tc2  = av.conceito==='Ótimo'?'#1a5c26':av.conceito==='Bem'?'#0e3d6e':av.conceito==='Atenção'?'#633806':'#888';
+      return `<div style="padding:8px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:${cor2};color:${tc2}">${av.conceito}</span>
+          <span style="font-size:10px;color:var(--text-3)">${av.data}</span>
+        </div>
+        ${av.chips&&av.chips.length?`<div style="font-size:10px;color:var(--text-2)">${av.chips.join(' · ')}</div>`:''}
+        ${av.nota?`<div style="font-size:10px;color:var(--text-3);margin-top:2px;font-style:italic">"${av.nota}"</div>`:''}
+      </div>`;
+    }).join('')}
   </div>`;
   })()}`;
 }
