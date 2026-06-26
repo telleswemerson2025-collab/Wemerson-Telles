@@ -74,6 +74,7 @@ function marcarAtletaPago(chave){
     }
   }
   salvarLS();
+  localStorage.setItem('vot_mensalidades', JSON.stringify(MENSALIDADES_ATLETAS));
   showN(MENSALIDADES_ATLETAS[chave]?.status==='pago' ? '✓ Atleta marcado como pago! Professor notificado.' : '↩ Atleta marcado como em atraso');
   montarFinanceiro('#b8860b');
 }
@@ -435,33 +436,118 @@ function cobrarIndMens(id){
 }
 
 function renderFinCobrancas(){
-  const pend=listarPendentes();
-  const totalAtraso=pend.filter(p=>p.status==='atraso').reduce((s,p)=>s+p.valor,0);
-  const totalPend=pend.filter(p=>p.status==='pendente').reduce((s,p)=>s+p.valor,0);
+  // KPI de resumo
+  const sociosPend = SOCIOS.filter(s => s.status !== 'pago');
+  const totalAtrasaSocios = sociosPend.filter(s => s.status === 'atraso').reduce((s,x)=>s+x.valor,0);
+  const totalPendSocios   = sociosPend.filter(s => s.status === 'pendente').reduce((s,x)=>s+x.valor,0);
+
+  const CORES_MENS = {sub7:'#c45e10',sub9:'#0f8c6e',sub11:'#0d3d1a',sub13:'#0e3d6e',sub15:'#8a6200'};
+
+  // Atletas pendentes agrupados por categoria
+  const atletasPorCat = {};
+  Object.entries(CATS_DATA).forEach(([catKey, cat]) => {
+    const pendentes = (cat.atletas || []).reduce((acc, atleta) => {
+      const chave = atleta.sig + catKey;
+      const m = MENSALIDADES_ATLETAS[chave];
+      if (m && m.status !== 'pago') acc.push({ atleta, chave, m });
+      return acc;
+    }, []);
+    if (pendentes.length > 0) atletasPorCat[catKey] = { cat, pendentes };
+  });
+
+  const totalAtrasaAtletas = Object.values(atletasPorCat).flatMap(g=>g.pendentes)
+    .filter(e=>e.m.status==='atraso').reduce((s,e)=>s+e.m.valor,0);
+  const totalPendAtletas = Object.values(atletasPorCat).flatMap(g=>g.pendentes)
+    .filter(e=>e.m.status==='pendente').reduce((s,e)=>s+e.m.valor,0);
+
+  const totalAtraso = totalAtrasaSocios + totalAtrasaAtletas;
+  const totalPend   = totalPendSocios   + totalPendAtletas;
+  const totalCount  = sociosPend.length + Object.values(atletasPorCat).reduce((s,g)=>s+g.pendentes.length,0);
+
   return `
+  <!-- KPI resumo -->
   <div class="fin-side-kpi" style="--color:#8b1a1a">
     <div class="kpi-row"><span class="kpi-lbl">Em atraso</span><span class="kpi-val">${fmtR$(totalAtraso)}</span></div>
     <hr>
     <div class="kpi-row"><span class="kpi-lbl">A vencer</span><span class="kpi-val">${fmtR$(totalPend)}</span></div>
     <hr>
-    <div class="kpi-row"><span class="kpi-lbl">Total pendências</span><span class="kpi-val">${pend.length}</span></div>
+    <div class="kpi-row"><span class="kpi-lbl">Total pendências</span><span class="kpi-val">${totalCount}</span></div>
   </div>
-  <div class="card" style="padding:2px">
-    <table style="font-size:11px">
-      <thead><tr><th>Nome</th><th>Tipo</th><th>Venc.</th><th>Valor</th><th>Status</th></tr></thead>
-      <tbody>
-        ${pend.length===0?`<tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px">Nenhuma pendência 🎉</td></tr>`:
-        pend.map(p=>`<tr>
-          <td style="padding:9px 8px;font-weight:700">${p.nome}</td>
-          <td style="padding:9px 8px">${p.tipo}</td>
-          <td style="padding:9px 8px">${p.venc}</td>
-          <td style="padding:9px 8px">${fmtR$(p.valor)}</td>
-          <td style="padding:9px 8px">${tagHtml(p.status)}</td>
-        </tr>`).join('')}
-      </tbody>
-    </table>
-  </div>
-  ${pend.length>0?`<button class="btn-g" style="margin-top:8px;background:#8b1a1a" onclick="showN('Cobranças enviadas em massa!')">📲 Cobrar todos em massa</button>`:''}
+
+  <!-- GRUPO: Sócios em atraso -->
+  <div class="lbl" style="margin-top:12px">Sócios em atraso</div>
+  ${sociosPend.length === 0
+    ? `<div class="cw" style="padding:14px;text-align:center;font-size:11px;color:var(--text-3)">Todos os sócios em dia ✓</div>`
+    : `<div style="border:1.5px solid #b8860b33;border-radius:12px;margin-bottom:12px;overflow:hidden">
+        <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#b8860b12;border-bottom:1px solid #b8860b22">
+          <div style="width:32px;height:32px;border-radius:9px;background:#b8860b;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">👑</div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:800;color:#b8860b">Sócios</div>
+            <div style="font-size:9px;color:var(--text-3)">${sociosPend.length} pendente(s) · ${fmtR$(sociosPend.reduce((s,x)=>s+x.valor,0))}</div>
+          </div>
+          <button onclick="cobrarTodosSocios()" style="font-size:9px;font-weight:800;padding:4px 10px;border-radius:20px;border:none;cursor:pointer;background:#b8860b;color:#fff">📲 Cobrar todos</button>
+        </div>
+        <div style="padding:0 12px">
+          ${sociosPend.map(s => `
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f0ede8">
+            <div class="av" style="width:28px;height:28px;font-size:9px;background:#b8860b">${iniciais(s.nome)}</div>
+            <div style="flex:1">
+              <div style="font-size:11px;font-weight:700">${s.nome}</div>
+              <div style="font-size:9px;color:var(--text-3)">${fmtR$(s.valor)} · ${s.plano} · Venc. ${s.venc}</div>
+            </div>
+            <div style="display:flex;gap:4px;flex-shrink:0;align-items:center">
+              ${tagHtml(s.status)}
+              <button onclick="cobrarTodosSocios()" style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;background:#b8860b;color:#fff">📲</button>
+              <button onclick="marcarSocioPago('${s.id}')" style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;background:#fde8e8;color:#8b1a1a">Confirmar</button>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>`
+  }
+
+  <!-- GRUPOS: Atletas por categoria de mensalidades -->
+  <div class="lbl" style="margin-top:4px">Mensalidades pendentes por categoria</div>
+  ${Object.keys(CATS_DATA).length === 0 || Object.keys(atletasPorCat).length === 0
+    ? `<div class="cw" style="padding:14px;text-align:center;font-size:11px;color:var(--text-3)">Todos os atletas em dia ✓</div>`
+    : Object.entries(CATS_DATA).map(([catKey, cat]) => {
+        const grupo = atletasPorCat[catKey];
+        if (!grupo) return ''; // categoria sem pendentes — oculta
+        const cor = CORES_MENS[catKey] || '#555';
+        const { pendentes } = grupo;
+        const totalValor = pendentes.reduce((s,e)=>s+e.m.valor,0);
+        return `
+        <div style="border:1.5px solid ${cor}33;border-radius:12px;margin-bottom:12px;overflow:hidden">
+          <!-- Cabeçalho -->
+          <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:${cor}12;border-bottom:1px solid ${cor}22">
+            <div style="width:32px;height:32px;border-radius:9px;background:${cor};display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">${cat.emoji}</div>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:800;color:${cor}">${cat.nome}</div>
+              <div style="font-size:9px;color:var(--text-3)">${pendentes.length} pendente(s) · ${fmtR$(totalValor)}</div>
+            </div>
+            <button onclick="cobrarCategoriaMens('${catKey}')" style="font-size:9px;font-weight:800;padding:4px 10px;border-radius:20px;border:none;cursor:pointer;background:${cor};color:#fff">📲 Cobrar todos</button>
+          </div>
+          <!-- Atletas -->
+          <div style="padding:0 12px">
+            ${pendentes.map(({ atleta, chave, m }) => {
+              const nomeAtleta = atleta.nome || atleta.sig;
+              return `
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f0ede8">
+                <div class="av" style="width:28px;height:28px;font-size:9px;background:${cor}">${iniciais(nomeAtleta)}</div>
+                <div style="flex:1">
+                  <div style="font-size:11px;font-weight:700">${nomeAtleta}</div>
+                  <div style="font-size:9px;color:var(--text-3)">${fmtR$(m.valor)} · Venc. ${m.venc}</div>
+                </div>
+                <div style="display:flex;gap:4px;flex-shrink:0;align-items:center">
+                  ${tagHtml(m.status)}
+                  <button onclick="cobrarIndMens('${chave}')" style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;background:${cor};color:#fff">📲</button>
+                  <button onclick="marcarAtletaPago('${chave}')" style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;background:#fde8e8;color:#8b1a1a">Confirmar</button>
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>`;
+      }).join('')
+  }
 
   <!-- CONEXÃO FINANCEIRO → PROFESSOR: Arbitragem por categoria -->
   <div class="lbl" style="margin-top:12px">Arbitragem — Confirmar pagamentos (→ Professor)</div>
@@ -469,16 +555,15 @@ function renderFinCobrancas(){
     const arbStatus = window.ARBITRAGEM_STATUS || {};
     const cats = Object.entries(arbStatus).filter(([,atletas])=>atletas.length>0);
     if(cats.length === 0) return '<div class="cw" style="padding:16px;text-align:center;font-size:11px;color:var(--text-3)">Nenhuma cobrança de arbitragem pendente</div>';
-    const CORES_CAT_ARB = {sub7:'#e67e22',sub9:'#27ae60',sub11:'#2980b9',sub13:'#8e44ad',sub15:'#c0392b'};
+    const CORES_CAT_ARB = {sub7:'#c45e10',sub9:'#0f8c6e',sub11:'#0d3d1a',sub13:'#0e3d6e',sub15:'#8a6200'};
     return cats.map(([catKey, atletas]) => {
       const catNome = CATS_DATA[catKey]?.nome || catKey;
       const catEmoji = CATS_DATA[catKey]?.emoji || '⚽';
-      const catCor = CATS_DATA[catKey]?.cor || CORES_CAT_ARB[catKey] || '#0d3d1a';
+      const catCor = CORES_CAT_ARB[catKey] || '#0d3d1a';
       const pagos = atletas.filter(a=>a.pago).length;
       const pendentes = atletas.length - pagos;
       return `
       <div style="border:1.5px solid ${catCor}33;border-radius:12px;margin-bottom:10px;overflow:hidden">
-        <!-- Cabeçalho categoria -->
         <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:${catCor}12;border-bottom:1px solid ${catCor}22">
           <div style="width:32px;height:32px;border-radius:9px;background:${catCor};display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">${catEmoji}</div>
           <div style="flex:1">
@@ -487,7 +572,6 @@ function renderFinCobrancas(){
           </div>
           ${pendentes > 0 ? `<button onclick="cobrarCatArb('${catKey}')" style="font-size:9px;font-weight:800;padding:4px 10px;border-radius:20px;border:none;cursor:pointer;background:${catCor};color:#fff">Cobrar todos</button>` : `<span style="font-size:9px;font-weight:700;color:#1a5c26">✓ Tudo pago</span>`}
         </div>
-        <!-- Atletas -->
         <div style="padding:0 12px">
           ${atletas.map(a => `
           <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f0ede8">
