@@ -1365,169 +1365,433 @@ function atualizarConvocacao(jogoId, sig, isConvocado) {
 }
 
 function renderRelatorioContador() {
-  const mes = parseInt(document.getElementById('rel-mes')?.value ?? 5);
-  const ano = parseInt(document.getElementById('rel-ano')?.value ?? 2025);
+  const mes = parseInt(document.getElementById('rel-mes')?.value ?? new Date().getMonth());
+  const ano = parseInt(document.getElementById('rel-ano')?.value ?? new Date().getFullYear());
   const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
   const mesNome = meses[mes];
+  const hoje = new Date().toLocaleDateString('pt-BR');
+  const hojeISO = new Date().toISOString().split('T')[0];
 
-  document.getElementById('rel-data-geracao').textContent = new Date().toLocaleDateString('pt-BR');
+  document.getElementById('rel-data-geracao').textContent = hoje;
 
-  const socios_pago = SOCIOS.filter(s => s.status === 'pago');
-  const socios_atraso = SOCIOS.filter(s => s.status !== 'pago');
-  const atletas_pago = Object.entries(MENSALIDADES_ATLETAS).filter(([,m]) => m.status === 'pago');
+  // ── Dados ──
+  const socios_pago    = SOCIOS.filter(s => s.status === 'pago');
+  const socios_atraso  = SOCIOS.filter(s => s.status !== 'pago');
+  const socios_todos   = SOCIOS;
+
+  const atletas_pago   = Object.entries(MENSALIDADES_ATLETAS).filter(([,m]) => m.status === 'pago');
   const atletas_atraso = Object.entries(MENSALIDADES_ATLETAS).filter(([,m]) => m.status !== 'pago');
-  const arb_pago = ARBITRAGEM.filter(a => a.status === 'pago');
-  const arb_pend = ARBITRAGEM.filter(a => a.status !== 'pago');
+  const atletas_todos  = Object.entries(MENSALIDADES_ATLETAS);
 
-  const totalReceitaSocios = socios_pago.reduce((s, x) => s + x.valor, 0);
+  const arb_pago  = ARBITRAGEM.filter(a => a.status === 'pago');
+  const arb_pend  = ARBITRAGEM.filter(a => a.status !== 'pago');
+
+  const totalReceitaSocios  = socios_pago.reduce((s, x) => s + x.valor, 0);
   const totalReceitaAtletas = atletas_pago.reduce((s, [,m]) => s + m.valor, 0);
-  const totalReceitaArb = arb_pago.reduce((s, a) => s + a.valor, 0);
+  const totalReceitaArb     = arb_pago.reduce((s, a) => s + a.valor, 0);
+  const totalReceitas       = totalReceitaSocios + totalReceitaAtletas + totalReceitaArb;
+
   const totalDespesas = DESPESAS_CLUBE.reduce((s, d) => s + d.valor, 0);
-  const totalReceitas = totalReceitaSocios + totalReceitaAtletas + totalReceitaArb;
   const saldo = totalReceitas - totalDespesas;
 
-  document.getElementById('rel-corpo').innerHTML = `
-    <!-- CAPA -->
-    <div class="pdf-page" style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:40px;margin-bottom:20px">
-      <div style="border-bottom:3px solid #b89d3f;padding-bottom:24px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-start">
-        <div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.08em;color:#0d3d1a">VOTORATY ACADEMY</div>
-          <div style="font-size:13px;color:var(--text-3);margin-top:4px">CNPJ: 00.000.000/0001-00 · Rua do Clube, 100 · Votoraty</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Relatório Financeiro</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#b89d3f">${mesNome} / ${ano}</div>
-        </div>
-      </div>
+  const totalInadSocios  = socios_atraso.reduce((s, x) => s + x.valor, 0);
+  const totalInadAtletas = atletas_atraso.reduce((s, [,m]) => s + m.valor, 0);
+  const totalInad = totalInadSocios + totalInadAtletas;
 
-      <!-- KPIs RESUMO -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px">
-        <div style="background:#d4f0dc;border-radius:12px;padding:16px">
-          <div style="font-size:10px;font-weight:800;color:#1a5c26;text-transform:uppercase;letter-spacing:.05em">Total Receitas</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#1a5c26;margin-top:4px">${fmtR$(totalReceitas)}</div>
-        </div>
-        <div style="background:#fde8e8;border-radius:12px;padding:16px">
-          <div style="font-size:10px;font-weight:800;color:#8b1a1a;text-transform:uppercase;letter-spacing:.05em">Total Despesas</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#8b1a1a;margin-top:4px">${fmtR$(totalDespesas)}</div>
-        </div>
-        <div style="background:${saldo>=0?'#d4f0dc':'#fde8e8'};border-radius:12px;padding:16px">
-          <div style="font-size:10px;font-weight:800;color:${saldo>=0?'#1a5c26':'#8b1a1a'};text-transform:uppercase;letter-spacing:.05em">Saldo do Mês</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:${saldo>=0?'#1a5c26':'#8b1a1a'};margin-top:4px">${saldo>=0?'+':'−'} ${fmtR$(Math.abs(saldo))}</div>
-        </div>
-        <div style="background:#faebd7;border-radius:12px;padding:16px">
-          <div style="font-size:10px;font-weight:800;color:#7a4010;text-transform:uppercase;letter-spacing:.05em">Inadimplência</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#7a4010;margin-top:4px">${fmtR$(socios_atraso.reduce((s,x)=>s+x.valor,0) + atletas_atraso.reduce((s,[,m])=>s+m.valor,0))}</div>
-        </div>
-      </div>
+  const totalArbPend = arb_pend.reduce((s, a) => s + a.valor, 0);
 
-      <!-- TABELA RECEITAS -->
-      <div style="margin-bottom:28px">
-        <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border)">1. RECEITAS</div>
-        <table style="width:100%;border-collapse:collapse;font-size:12px">
-          <thead>
-            <tr style="background:#f8f7f4">
-              <th style="text-align:left;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Descrição</th>
-              <th style="text-align:right;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Qtd</th>
-              <th style="text-align:right;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Valor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid var(--border)">
-              <td style="padding:10px 12px;font-weight:600">Mensalidades — Sócios</td>
-              <td style="padding:10px 12px;text-align:right;color:var(--text-3)">${socios_pago.length} sócio(s)</td>
-              <td style="padding:10px 12px;text-align:right;font-weight:700;color:#1a5c26">${fmtR$(totalReceitaSocios)}</td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border)">
-              <td style="padding:10px 12px;font-weight:600">Mensalidades — Atletas</td>
-              <td style="padding:10px 12px;text-align:right;color:var(--text-3)">${atletas_pago.length} atleta(s)</td>
-              <td style="padding:10px 12px;text-align:right;font-weight:700;color:#1a5c26">${fmtR$(totalReceitaAtletas)}</td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border)">
-              <td style="padding:10px 12px;font-weight:600">Arbitragem (jogos)</td>
-              <td style="padding:10px 12px;text-align:right;color:var(--text-3)">${arb_pago.length} cobrança(s)</td>
-              <td style="padding:10px 12px;text-align:right;font-weight:700;color:#1a5c26">${fmtR$(totalReceitaArb)}</td>
-            </tr>
-            <tr style="background:#d4f0dc">
-              <td colspan="2" style="padding:10px 12px;font-weight:800;color:#1a5c26">TOTAL RECEITAS</td>
-              <td style="padding:10px 12px;text-align:right;font-weight:800;color:#1a5c26;font-size:14px">${fmtR$(totalReceitas)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  // taxa de inadimplência
+  const totalMensalPotencial = socios_todos.reduce((s,x)=>s+x.valor,0) + atletas_todos.reduce((s,[,m])=>s+m.valor,0);
+  const txInad = totalMensalPotencial > 0 ? ((totalInad / totalMensalPotencial) * 100).toFixed(1) : '0.0';
 
-      <!-- TABELA DESPESAS -->
-      <div style="margin-bottom:28px">
-        <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border)">2. DESPESAS</div>
-        <table style="width:100%;border-collapse:collapse;font-size:12px">
-          <thead>
-            <tr style="background:#f8f7f4">
-              <th style="text-align:left;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Descrição</th>
-              <th style="text-align:right;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Valor</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${DESPESAS_CLUBE.map(d => `
-              <tr style="border-bottom:1px solid var(--border)">
-                <td style="padding:10px 12px;font-weight:600">${d.descricao}</td>
-                <td style="padding:10px 12px;text-align:right;font-weight:700;color:#8b1a1a">${fmtR$(d.valor)}</td>
-              </tr>
-            `).join('')}
-            <tr style="background:#fde8e8">
-              <td style="padding:10px 12px;font-weight:800;color:#8b1a1a">TOTAL DESPESAS</td>
-              <td style="padding:10px 12px;text-align:right;font-weight:800;color:#8b1a1a;font-size:14px">${fmtR$(totalDespesas)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  // helper de linha de tabela estilo zebra
+  const TR = (cells, bold=false, bgColor='') => {
+    const bg = bgColor ? `background:${bgColor}` : '';
+    return `<tr style="${bg};border-bottom:1px solid #e8e5de">${cells}</tr>`;
+  };
+  const TD = (txt, align='left', color='', w='') =>
+    `<td style="padding:9px 12px;text-align:${align};color:${color||'#2c2c2c'};${w?'width:'+w:''};">${txt}</td>`;
+  const TDB = (txt, align='left', color='') =>
+    `<td style="padding:9px 12px;text-align:${align};color:${color||'#2c2c2c'};font-weight:700">${txt}</td>`;
+  const TH = (txt, align='left') =>
+    `<th style="padding:9px 12px;text-align:${align};font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;background:#f5f3ef">${txt}</th>`;
 
-      <!-- INADIMPLÊNCIA -->
-      <div style="margin-bottom:28px">
-        <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border)">3. INADIMPLÊNCIA</div>
-        <table style="width:100%;border-collapse:collapse;font-size:12px">
-          <thead>
-            <tr style="background:#f8f7f4">
-              <th style="text-align:left;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Nome</th>
-              <th style="text-align:left;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Tipo</th>
-              <th style="text-align:left;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Status</th>
-              <th style="text-align:right;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3)">Valor</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${socios_atraso.map(s => `
-              <tr style="border-bottom:1px solid var(--border)">
-                <td style="padding:10px 12px;font-weight:600">${s.nome}</td>
-                <td style="padding:10px 12px;color:var(--text-3)">${s.plano}</td>
-                <td style="padding:10px 12px"><span style="background:#fde8e8;color:#8b1a1a;padding:3px 8px;border-radius:20px;font-size:9px;font-weight:800;text-transform:uppercase">${s.status}</span></td>
-                <td style="padding:10px 12px;text-align:right;font-weight:700;color:#8b1a1a">${fmtR$(s.valor)}</td>
-              </tr>
-            `).join('')}
-            ${atletas_atraso.map(([id, m]) => {
-              const match = id.match(/([A-Z]+)([a-z0-9]+)/);
-              const sig = match?.[1] || id;
-              const cat = match?.[2] || '';
-              return `
-                <tr style="border-bottom:1px solid var(--border)">
-                  <td style="padding:10px 12px;font-weight:600">${sig}</td>
-                  <td style="padding:10px 12px;color:var(--text-3)">${CATS_DATA[cat]?.nome || 'Atleta'}</td>
-                  <td style="padding:10px 12px"><span style="background:#faebd7;color:#7a4010;padding:3px 8px;border-radius:20px;font-size:9px;font-weight:800;text-transform:uppercase">${m.status}</span></td>
-                  <td style="padding:10px 12px;text-align:right;font-weight:700;color:#8b1a1a">${fmtR$(m.valor)}</td>
-                </tr>
-              `;
-            }).join('')}
-          </tbody>
-        </table>
-      </div>
+  const PAGE = (content, breakBefore=false) =>
+    `<div class="pdf-page" style="background:#fff;border:1px solid #ddd;border-radius:12px;padding:44px;margin-bottom:16px;${breakBefore?'page-break-before:always':''}">${content}</div>`;
 
-      <!-- RODAPÉ -->
-      <div style="border-top:2px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-3)">
-        <div>Votoraty Academy · Relatório Financeiro ${mesNome}/${ano}</div>
-        <div style="text-align:center">
-          <div style="border-top:1px solid var(--text-3);padding-top:8px;width:200px">Responsável Financeiro</div>
-        </div>
-        <div style="text-align:right">Gerado em: ${new Date().toLocaleDateString('pt-BR')}</div>
+  const SEC_HDR = (n, title, sub='') =>
+    `<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #b89d3f">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#b89d3f">${n}</span>
+      <div>
+        <div style="font-size:13px;font-weight:800;color:#0d3d1a;text-transform:uppercase;letter-spacing:.04em">${title}</div>
+        ${sub?`<div style="font-size:11px;color:#888;margin-top:1px">${sub}</div>`:''}
+      </div>
+    </div>`;
+
+  const TABLE = (thead, tbody) =>
+    `<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:0">
+      <thead><tr>${thead}</tr></thead>
+      <tbody>${tbody}</tbody>
+    </table>`;
+
+  const STATUS_BADGE = (st) => {
+    const map = {
+      pago:     ['#d1fae5','#065f46','Pago'],
+      pendente: ['#fef3c7','#92400e','Pendente'],
+      atraso:   ['#fee2e2','#991b1b','Em Atraso'],
+      inativo:  ['#f3f4f6','#374151','Inativo'],
+    };
+    const [bg, fg, label] = map[st] || ['#f3f4f6','#374151', st];
+    return `<span style="background:${bg};color:${fg};padding:2px 8px;border-radius:20px;font-size:9px;font-weight:800;text-transform:uppercase;white-space:nowrap">${label}</span>`;
+  };
+
+  // ── CABEÇALHO reutilizável ──
+  const LETTERHEAD = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:18px;margin-bottom:18px;border-bottom:3px solid #0d3d1a">
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.1em;color:#0d3d1a;line-height:1">VOTORATY ACADEMY</div>
+        <div style="font-size:11px;color:#888;margin-top:3px">CNPJ: 00.000.000/0001-00 · Rua do Esporte, 100 · Votoraty – SP · (17) 99000-0000</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#888">Relatório Financeiro Mensal</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#b89d3f;line-height:1.1">${mesNome} / ${ano}</div>
+        <div style="font-size:10px;color:#aaa;margin-top:2px">Gerado em ${hoje}</div>
+      </div>
+    </div>`;
+
+  // ── AVISO de confidencialidade ──
+  const CONFIDENCIAL = `<div style="background:#fef9ec;border:1px solid #f0d070;border-radius:6px;padding:8px 14px;font-size:10px;color:#7a5c00;margin-bottom:20px">
+    ⚠ Documento confidencial — uso exclusivo do contador. Não reproduzir sem autorização da diretoria.
+  </div>`;
+
+  // ══════════════════════════════════════════
+  // PÁGINA 1 — Resumo Executivo (DRE Simplificado)
+  // ══════════════════════════════════════════
+  const pg1 = PAGE(`
+    ${LETTERHEAD}
+    ${CONFIDENCIAL}
+
+    <!-- KPIs grandes -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px">
+      <div style="background:#dcfce7;border-radius:10px;padding:18px;border-left:4px solid #16a34a">
+        <div style="font-size:10px;font-weight:800;color:#166534;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Total Receitas</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#166534">${fmtR$(totalReceitas)}</div>
+        <div style="font-size:10px;color:#4ade80;margin-top:2px">${socios_pago.length+atletas_pago.length+arb_pago.length} lançamentos</div>
+      </div>
+      <div style="background:#fee2e2;border-radius:10px;padding:18px;border-left:4px solid #dc2626">
+        <div style="font-size:10px;font-weight:800;color:#991b1b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Total Despesas</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#991b1b">${fmtR$(totalDespesas)}</div>
+        <div style="font-size:10px;color:#f87171;margin-top:2px">${DESPESAS_CLUBE.length} itens</div>
+      </div>
+      <div style="background:${saldo>=0?'#dcfce7':'#fee2e2'};border-radius:10px;padding:18px;border-left:4px solid ${saldo>=0?'#16a34a':'#dc2626'}">
+        <div style="font-size:10px;font-weight:800;color:${saldo>=0?'#166534':'#991b1b'};text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Resultado do Mês</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:${saldo>=0?'#166534':'#991b1b'}">${saldo>=0?'+':'−'}${fmtR$(Math.abs(saldo))}</div>
+        <div style="font-size:10px;color:${saldo>=0?'#4ade80':'#f87171'};margin-top:2px">${saldo>=0?'Superávit':'Déficit'}</div>
+      </div>
+      <div style="background:#fef3c7;border-radius:10px;padding:18px;border-left:4px solid #d97706">
+        <div style="font-size:10px;font-weight:800;color:#92400e;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Inadimplência</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:#92400e">${fmtR$(totalInad)}</div>
+        <div style="font-size:10px;color:#fbbf24;margin-top:2px">Taxa: ${txInad}%</div>
       </div>
     </div>
-  `;
+
+    <!-- DRE SIMPLIFICADO -->
+    ${SEC_HDR('1','Demonstrativo de Resultado do Exercício — DRE','Competência: '+mesNome+'/'+ano)}
+    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:24px">
+      <tbody>
+        <tr style="background:#f9fafb"><td colspan="2" style="padding:10px 12px;font-weight:800;font-size:11px;color:#374151;text-transform:uppercase;letter-spacing:.04em">RECEITAS OPERACIONAIS</td></tr>
+        ${TR(TDB('1.1 Mensalidades — Sócios')+TDB(fmtR$(totalReceitaSocios),'right','#166534'))}
+        ${TR(TDB('1.2 Mensalidades — Atletas')+TDB(fmtR$(totalReceitaAtletas),'right','#166534'))}
+        ${TR(TDB('1.3 Arbitragem / Taxas de jogos')+TDB(fmtR$(totalReceitaArb),'right','#166534'))}
+        <tr style="background:#dcfce7;border-top:2px solid #16a34a">
+          <td style="padding:10px 12px;font-weight:800;color:#166534;text-transform:uppercase;font-size:11px">(=) TOTAL RECEITAS</td>
+          <td style="padding:10px 12px;text-align:right;font-weight:800;color:#166534;font-size:14px">${fmtR$(totalReceitas)}</td>
+        </tr>
+        <tr><td colspan="2" style="padding:4px"></td></tr>
+        <tr style="background:#f9fafb"><td colspan="2" style="padding:10px 12px;font-weight:800;font-size:11px;color:#374151;text-transform:uppercase;letter-spacing:.04em">DESPESAS OPERACIONAIS</td></tr>
+        ${DESPESAS_CLUBE.map((d,i) => TR(TDB(`${i+1}. ${d.descricao}`)+TDB('(−) '+fmtR$(d.valor),'right','#991b1b'))).join('')}
+        <tr style="background:#fee2e2;border-top:2px solid #dc2626">
+          <td style="padding:10px 12px;font-weight:800;color:#991b1b;text-transform:uppercase;font-size:11px">(=) TOTAL DESPESAS</td>
+          <td style="padding:10px 12px;text-align:right;font-weight:800;color:#991b1b;font-size:14px">(−) ${fmtR$(totalDespesas)}</td>
+        </tr>
+        <tr><td colspan="2" style="padding:4px"></td></tr>
+        <tr style="background:${saldo>=0?'#dcfce7':'#fee2e2'};border:2px solid ${saldo>=0?'#16a34a':'#dc2626'}">
+          <td style="padding:12px;font-weight:800;font-size:13px;color:${saldo>=0?'#166534':'#991b1b'};text-transform:uppercase">(=) RESULTADO LÍQUIDO DO PERÍODO</td>
+          <td style="padding:12px;text-align:right;font-weight:800;font-size:16px;color:${saldo>=0?'#166534':'#991b1b'}">${saldo>=0?'+':'−'}${fmtR$(Math.abs(saldo))}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- INDICADORES -->
+    ${SEC_HDR('2','Indicadores de Desempenho')}
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:0">
+      <div style="border:1px solid #e5e7eb;border-radius:8px;padding:14px">
+        <div style="font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;font-weight:700">Total de Sócios</div>
+        <div style="font-size:20px;font-weight:800;color:#0d3d1a">${socios_todos.length}</div>
+        <div style="font-size:10px;color:#6b7280;margin-top:2px">${socios_pago.length} pagos · ${socios_atraso.length} em atraso</div>
+      </div>
+      <div style="border:1px solid #e5e7eb;border-radius:8px;padding:14px">
+        <div style="font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;font-weight:700">Total de Atletas</div>
+        <div style="font-size:20px;font-weight:800;color:#0d3d1a">${atletas_todos.length}</div>
+        <div style="font-size:10px;color:#6b7280;margin-top:2px">${atletas_pago.length} pagos · ${atletas_atraso.length} em atraso</div>
+      </div>
+      <div style="border:1px solid #e5e7eb;border-radius:8px;padding:14px">
+        <div style="font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;font-weight:700">Arbitragem Pendente</div>
+        <div style="font-size:20px;font-weight:800;color:${totalArbPend>0?'#92400e':'#166534'}">${fmtR$(totalArbPend)}</div>
+        <div style="font-size:10px;color:#6b7280;margin-top:2px">${arb_pend.length} cobrança(s) pendente(s)</div>
+      </div>
+    </div>
+  `);
+
+  // ══════════════════════════════════════════
+  // PÁGINA 2 — Detalhe de Sócios
+  // ══════════════════════════════════════════
+  const pg2 = PAGE(`
+    ${LETTERHEAD}
+    ${SEC_HDR('3','Relação Detalhada de Sócios','Mensalidades — '+mesNome+'/'+ano)}
+    ${TABLE(
+      TH('Nº')+TH('Nome do Sócio')+TH('Plano/Categoria')+TH('Valor','right')+TH('Vencimento','center')+TH('Status','center'),
+      socios_todos.map((s,i) => TR(
+        TD(String(i+1).padStart(2,'0'),'left','#aaa')+
+        TDB(s.nome)+
+        TD(s.plano,'left','#6b7280')+
+        TDB(fmtR$(s.valor),'right')+
+        TD(s.vencimento||'—','center','#6b7280')+
+        `<td style="padding:9px 12px;text-align:center">${STATUS_BADGE(s.status)}</td>`
+      , false, i%2===1?'#fafaf8':'').replace('<tr style=";','<tr style="')).join('')+
+      `<tr style="background:#dcfce7;border-top:2px solid #16a34a">
+        <td colspan="3" style="padding:10px 12px;font-weight:800;color:#166534">SUBTOTAL — SÓCIOS PAGOS (${socios_pago.length})</td>
+        <td style="padding:10px 12px;text-align:right;font-weight:800;color:#166534">${fmtR$(totalReceitaSocios)}</td>
+        <td colspan="2"></td>
+      </tr>`
+    )}
+
+    <div style="height:24px"></div>
+
+    <!-- Resumo por plano -->
+    ${SEC_HDR('3.1','Resumo por Tipo de Plano')}
+    ${(() => {
+      const porPlano = {};
+      socios_todos.forEach(s => {
+        if(!porPlano[s.plano]) porPlano[s.plano] = {total:0, pagos:0, valor:0};
+        porPlano[s.plano].total++;
+        if(s.status==='pago'){ porPlano[s.plano].pagos++; porPlano[s.plano].valor+=s.valor; }
+      });
+      return TABLE(
+        TH('Plano')+TH('Total Sócios','right')+TH('Pagos','right')+TH('Receita','right'),
+        Object.entries(porPlano).map(([plano, d]) =>
+          TR(TDB(plano)+TD(d.total,'right','#6b7280')+TD(d.pagos,'right','#166534')+TDB(fmtR$(d.valor),'right','#166534'))
+        ).join('')
+      );
+    })()}
+  `, true);
+
+  // ══════════════════════════════════════════
+  // PÁGINA 3 — Detalhe de Atletas
+  // ══════════════════════════════════════════
+  const pg3 = PAGE(`
+    ${LETTERHEAD}
+    ${SEC_HDR('4','Relação Detalhada de Atletas — Mensalidades','Competência: '+mesNome+'/'+ano)}
+    ${TABLE(
+      TH('Nº')+TH('Sigla/Atleta')+TH('Categoria')+TH('Valor','right')+TH('Status','center'),
+      atletas_todos.map(([id,m],i) => {
+        const match = id.match(/^([A-Z]+)([a-z0-9]+)$/);
+        const sig = match?.[1] || id;
+        const catKey = match?.[2] || '';
+        const catNome = CATS_DATA[catKey]?.nome || catKey;
+        return TR(
+          TD(String(i+1).padStart(2,'0'),'left','#aaa')+
+          TDB(sig)+
+          TD(catNome,'left','#6b7280')+
+          TDB(fmtR$(m.valor),'right')+
+          `<td style="padding:9px 12px;text-align:center">${STATUS_BADGE(m.status)}</td>`
+        , false, i%2===1?'#fafaf8':'').replace('<tr style=";','<tr style="');
+      }).join('')+
+      `<tr style="background:#dcfce7;border-top:2px solid #16a34a">
+        <td colspan="3" style="padding:10px 12px;font-weight:800;color:#166534">SUBTOTAL — ATLETAS PAGOS (${atletas_pago.length})</td>
+        <td style="padding:10px 12px;text-align:right;font-weight:800;color:#166534">${fmtR$(totalReceitaAtletas)}</td>
+        <td></td>
+      </tr>`
+    )}
+
+    <div style="height:24px"></div>
+
+    ${SEC_HDR('4.1','Resumo por Categoria')}
+    ${(() => {
+      const porCat = {};
+      atletas_todos.forEach(([id,m]) => {
+        const match = id.match(/^([A-Z]+)([a-z0-9]+)$/);
+        const catKey = match?.[2] || '';
+        const catNome = CATS_DATA[catKey]?.nome || catKey || 'Outros';
+        if(!porCat[catNome]) porCat[catNome] = {total:0, pagos:0, valor:0};
+        porCat[catNome].total++;
+        if(m.status==='pago'){ porCat[catNome].pagos++; porCat[catNome].valor+=m.valor; }
+      });
+      return TABLE(
+        TH('Categoria')+TH('Total Atletas','right')+TH('Pagos','right')+TH('Receita','right'),
+        Object.entries(porCat).map(([cat,d]) =>
+          TR(TDB(cat)+TD(d.total,'right','#6b7280')+TD(d.pagos,'right','#166534')+TDB(fmtR$(d.valor),'right','#166534'))
+        ).join('')
+      );
+    })()}
+  `, true);
+
+  // ══════════════════════════════════════════
+  // PÁGINA 4 — Arbitragem + Despesas
+  // ══════════════════════════════════════════
+  const pg4 = PAGE(`
+    ${LETTERHEAD}
+    ${SEC_HDR('5','Cobranças de Arbitragem — Jogos','Registro de taxas por convocação')}
+    ${ARBITRAGEM.length === 0
+      ? `<div style="text-align:center;padding:28px;color:#aaa;font-size:13px">Nenhuma cobrança de arbitragem registrada.</div>`
+      : TABLE(
+          TH('Atleta')+TH('Categoria')+TH('Jogo')+TH('Valor','right')+TH('Status','center'),
+          ARBITRAGEM.map((a,i) =>
+            TR(
+              TDB(a.sig||a.nome||'—')+
+              TD(a.catKey||'—','left','#6b7280')+
+              TD(a.jogo||'Jogo #'+(i+1),'left','#6b7280')+
+              TDB(fmtR$(a.valor),'right')+
+              `<td style="padding:9px 12px;text-align:center">${STATUS_BADGE(a.status)}</td>`
+            , false, i%2===1?'#fafaf8':'').replace('<tr style=";','<tr style="')
+          ).join('')+
+          `<tr style="background:#dcfce7;border-top:2px solid #16a34a">
+            <td colspan="3" style="padding:10px 12px;font-weight:800;color:#166534">SUBTOTAL — ARBITRAGEM PAGA (${arb_pago.length})</td>
+            <td style="padding:10px 12px;text-align:right;font-weight:800;color:#166534">${fmtR$(totalReceitaArb)}</td>
+            <td></td>
+          </tr>`+
+          (totalArbPend>0?`<tr style="background:#fef3c7;border-top:1px solid #d97706">
+            <td colspan="3" style="padding:10px 12px;font-weight:800;color:#92400e">ARBITRAGEM PENDENTE (${arb_pend.length})</td>
+            <td style="padding:10px 12px;text-align:right;font-weight:800;color:#92400e">${fmtR$(totalArbPend)}</td>
+            <td></td>
+          </tr>`:'')
+        )
+    }
+
+    <div style="height:28px"></div>
+
+    ${SEC_HDR('6','Despesas Operacionais Detalhadas','Competência: '+mesNome+'/'+ano)}
+    ${TABLE(
+      TH('Nº')+TH('Descrição da Despesa')+TH('Categoria')+TH('Valor','right'),
+      DESPESAS_CLUBE.map((d,i) =>
+        TR(
+          TD(String(i+1).padStart(2,'0'),'left','#aaa')+
+          TDB(d.descricao)+
+          TD(d.categoria||'Operacional','left','#6b7280')+
+          TDB('(−) '+fmtR$(d.valor),'right','#991b1b')
+        , false, i%2===1?'#fafaf8':'').replace('<tr style=";','<tr style="')
+      ).join('')+
+      `<tr style="background:#fee2e2;border-top:2px solid #dc2626">
+        <td colspan="3" style="padding:10px 12px;font-weight:800;color:#991b1b">TOTAL DESPESAS (${DESPESAS_CLUBE.length} itens)</td>
+        <td style="padding:10px 12px;text-align:right;font-weight:800;color:#991b1b">(−) ${fmtR$(totalDespesas)}</td>
+      </tr>`
+    )}
+  `, true);
+
+  // ══════════════════════════════════════════
+  // PÁGINA 5 — Inadimplência + Assinaturas
+  // ══════════════════════════════════════════
+  const totalInadGeral = totalInad + totalArbPend;
+  const pg5 = PAGE(`
+    ${LETTERHEAD}
+    ${SEC_HDR('7','Relatório de Inadimplência','Valores a receber — '+mesNome+'/'+ano)}
+
+    ${(socios_atraso.length + atletas_atraso.length) === 0
+      ? `<div style="background:#dcfce7;border-radius:8px;padding:20px;text-align:center;color:#166534;font-weight:700;margin-bottom:24px">✓ Nenhuma inadimplência registrada no período!</div>`
+      : `
+        <div style="background:#fef9ec;border:1px solid #fbbf24;border-radius:8px;padding:14px;margin-bottom:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center">
+          <div><div style="font-size:10px;color:#92400e;font-weight:700;text-transform:uppercase">Sócios em atraso</div><div style="font-size:18px;font-weight:800;color:#92400e">${socios_atraso.length}</div></div>
+          <div><div style="font-size:10px;color:#92400e;font-weight:700;text-transform:uppercase">Atletas em atraso</div><div style="font-size:18px;font-weight:800;color:#92400e">${atletas_atraso.length}</div></div>
+          <div><div style="font-size:10px;color:#92400e;font-weight:700;text-transform:uppercase">Total a receber</div><div style="font-size:18px;font-weight:800;color:#92400e">${fmtR$(totalInad)}</div></div>
+        </div>
+        ${TABLE(
+          TH('Nome / Sigla')+TH('Tipo')+TH('Plano/Categoria')+TH('Valor em Atraso','right')+TH('Status','center'),
+          [
+            ...socios_atraso.map((s,i) =>
+              TR(
+                TDB(s.nome)+
+                TD('Sócio','left','#6b7280')+
+                TD(s.plano,'left','#6b7280')+
+                TDB(fmtR$(s.valor),'right','#991b1b')+
+                `<td style="padding:9px 12px;text-align:center">${STATUS_BADGE(s.status)}</td>`
+              , false, i%2===1?'#fef9ec':'').replace('<tr style=";','<tr style="')
+            ),
+            ...atletas_atraso.map(([id,m],i) => {
+              const match = id.match(/^([A-Z]+)([a-z0-9]+)$/);
+              const sig = match?.[1] || id;
+              const catKey = match?.[2] || '';
+              const catNome = CATS_DATA[catKey]?.nome || catKey;
+              return TR(
+                TDB(sig)+
+                TD('Atleta','left','#6b7280')+
+                TD(catNome,'left','#6b7280')+
+                TDB(fmtR$(m.valor),'right','#991b1b')+
+                `<td style="padding:9px 12px;text-align:center">${STATUS_BADGE(m.status)}</td>`
+              , false, (socios_atraso.length+i)%2===1?'#fef9ec':'').replace('<tr style=";','<tr style="');
+            })
+          ].join('')+
+          (arb_pend.length > 0 ? `<tr style="background:#fef3c7;border-top:1px solid #fbbf24">
+            <td colspan="3" style="padding:10px 12px;font-weight:700;color:#92400e">Arbitragem pendente (${arb_pend.length} item/ns)</td>
+            <td style="padding:10px 12px;text-align:right;font-weight:800;color:#92400e">${fmtR$(totalArbPend)}</td>
+            <td></td>
+          </tr>` : '')+
+          `<tr style="background:#fee2e2;border-top:2px solid #dc2626">
+            <td colspan="3" style="padding:10px 12px;font-weight:800;color:#991b1b;font-size:11px;text-transform:uppercase">TOTAL GERAL INADIMPLENTE</td>
+            <td style="padding:10px 12px;text-align:right;font-weight:800;color:#991b1b;font-size:14px">${fmtR$(totalInadGeral)}</td>
+            <td></td>
+          </tr>`
+        )}`
+    }
+
+    <div style="height:32px"></div>
+
+    <!-- OBSERVAÇÕES -->
+    <div style="border:1px solid #e5e7eb;border-radius:8px;padding:16px;margin-bottom:32px">
+      <div style="font-size:11px;font-weight:800;color:#374151;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Observações / Notas do Contador</div>
+      <div style="height:60px;border-bottom:1px solid #e5e7eb;margin-bottom:8px"></div>
+      <div style="height:40px;border-bottom:1px solid #e5e7eb"></div>
+    </div>
+
+    <!-- BLOCO DE ASSINATURAS -->
+    <div style="margin-top:28px">
+      <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:20px;text-align:center">
+        Votoraty, ${hoje}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;margin-top:16px">
+        <div style="text-align:center">
+          <div style="height:1px;background:#374151;margin-bottom:8px"></div>
+          <div style="font-size:11px;font-weight:700;color:#1f2937">Diretor Financeiro</div>
+          <div style="font-size:10px;color:#9ca3af;margin-top:2px">Votoraty Academy</div>
+        </div>
+        <div style="text-align:center">
+          <div style="height:1px;background:#374151;margin-bottom:8px"></div>
+          <div style="font-size:11px;font-weight:700;color:#1f2937">Contador Responsável</div>
+          <div style="font-size:10px;color:#9ca3af;margin-top:2px">CRC: _______________</div>
+        </div>
+        <div style="text-align:center">
+          <div style="height:1px;background:#374151;margin-bottom:8px"></div>
+          <div style="font-size:11px;font-weight:700;color:#1f2937">Presidente do Clube</div>
+          <div style="font-size:10px;color:#9ca3af;margin-top:2px">Votoraty Academy</div>
+        </div>
+      </div>
+
+      <!-- CARIMBO / SELO -->
+      <div style="display:flex;justify-content:flex-end;margin-top:28px">
+        <div style="width:120px;height:120px;border:2px dashed #d1d5db;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px">
+          <div style="font-size:9px;font-weight:800;color:#9ca3af;text-transform:uppercase;text-align:center;letter-spacing:.04em">Carimbo<br>Contador</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RODAPÉ FINAL -->
+    <div style="border-top:1px solid #e5e7eb;padding-top:12px;margin-top:24px;display:flex;justify-content:space-between;font-size:9px;color:#9ca3af">
+      <div>Votoraty Academy · CNPJ 00.000.000/0001-00 · ${mesNome}/${ano}</div>
+      <div>Documento gerado automaticamente em ${hoje} · Página 5/5</div>
+      <div>Confidencial — uso restrito ao contador</div>
+    </div>
+  `, true);
+
+  document.getElementById('rel-corpo').innerHTML = pg1 + pg2 + pg3 + pg4 + pg5;
 }
 
 // SIDEBAR
