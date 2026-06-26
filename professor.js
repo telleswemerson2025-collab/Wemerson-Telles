@@ -265,17 +265,7 @@ function marcC(id,tipo,el,cor){
   document.getElementById('prog-c').style.width=(t/all*100)+'%';
 }
 
-// Histórico de presença acumulado (conecta chamada → financeiro)
-if(!window.PRESENCA_HIST) window.PRESENCA_HIST = {};
-
-// Status de arbitragem por categoria (conecta financeiro → professor)
-if(!window.ARBITRAGEM_STATUS) window.ARBITRAGEM_STATUS = {
-  sub7: [{sig:'AS',pago:true},{sig:'BL',pago:true},{sig:'DT',pago:false}],
-  sub9: [{sig:'EF',pago:true},{sig:'FA',pago:false},{sig:'HC',pago:true}],
-  sub11: [{sig:'LF',pago:true},{sig:'IN',pago:false},{sig:'JL',pago:true},{sig:'KP',pago:false}],
-  sub13: [{sig:'KT',pago:true},{sig:'PA',pago:false},{sig:'RC',pago:true},{sig:'TN',pago:true}],
-  sub15: [{sig:'MT',pago:true},{sig:'NF',pago:false},{sig:'OL',pago:true},{sig:'QR',pago:true}]
-};
+// PRESENCA_HIST e ARBITRAGEM_STATUS inicializados em data.js
 
 function salvarChamada(total){
   const p=Object.values(chamadas).filter(v=>v==='P').length;

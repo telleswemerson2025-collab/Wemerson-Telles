@@ -161,6 +161,27 @@ let _perfilAnterior = null;
 let offline = false; // alias — usar offlineMode
 let chamadas = {};
 
+// Jogos — globais usados por professor.js e atleta.js
+const JOGOS_AGENDADOS = [
+  {id:'j001', adv:'União Sport', data:'2025-06-08', hora:'09:00', local:'Campo Estrela',     cat:'Sub-13', camp:'Camp. Municipal', fase:'Fase de grupos', unif:'Uniforme 1 (branco)', conv:['KT','PA','MT','RC','TN'], obs:'Chegue 30min antes.', status:'agendado'},
+  {id:'j002', adv:'Grêmio Jr',   data:'2025-06-22', hora:'10:00', local:'Campo do Votoraty', cat:'Sub-13', camp:'Camp. Municipal', fase:'Quartas',         unif:'Uniforme 2 (azul)',  conv:['KT','PA','MT','RC','TN'], obs:'Uniforme azul obrigatório.', status:'agendado'},
+];
+const JOGOS_RESULTADOS = [
+  {adv:'Atlético Jr', data:'18/05', gv:2, ga:1, resultado:'Vitória', cat:'Sub-13'},
+  {adv:'Estrela FC',  data:'04/05', gv:3, ga:0, resultado:'Vitória', cat:'Sub-13'},
+  {adv:'Rapid FC',    data:'20/04', gv:1, ga:2, resultado:'Derrota', cat:'Sub-13'},
+];
+
+// Presença e arbitragem — inicializados aqui, preenchidos pelo professor
+if(!window.PRESENCA_HIST)      window.PRESENCA_HIST      = {};
+if(!window.ARBITRAGEM_STATUS)  window.ARBITRAGEM_STATUS  = {
+  sub7: [{sig:'AS',pago:true},{sig:'BL',pago:true},{sig:'DT',pago:false}],
+  sub9: [{sig:'EF',pago:true},{sig:'FA',pago:false},{sig:'HC',pago:true}],
+  sub11:[{sig:'LF',pago:true},{sig:'IN',pago:false},{sig:'JL',pago:true},{sig:'KP',pago:false}],
+  sub13:[{sig:'KT',pago:true},{sig:'PA',pago:false},{sig:'MT',pago:true}],
+  sub15:[{sig:'MT',pago:false},{sig:'NF',pago:true}],
+};
+
 // Habilidades por atleta (chave: sig+cat)
 const HABILIDADES = {
   'ASsub7':  {fin:55,dri:60,vel:65,pas:58,mar:50,ati:80},
