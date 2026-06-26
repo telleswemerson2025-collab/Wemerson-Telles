@@ -1268,11 +1268,14 @@ function renderFinMensalidades() {
           </div>
         </div>
         <div>
-          ${atletas.map(({ id, sig, m }) => `
+          ${atletas.map(({ id, sig, catKey: ck, m }) => {
+            const atletaInfo = (CATS_DATA[ck]?.atletas || []).find(a => a.sig === sig);
+            const nomeCompleto = atletaInfo?.nome || sig;
+            return `
             <div class="av-row" data-status="${m.status}" style="border:none;border-bottom:1px solid var(--border);border-radius:0;margin:0">
               <div class="av" style="background:${cor}">${sig}</div>
               <div class="av-content">
-                <h5>${sig}</h5>
+                <h5>${nomeCompleto}</h5>
                 <p>${fmtR$(m.valor)} · Venc. ${m.venc} · ${m.status === 'pago' ? '<span style="color:#1a5c26;font-weight:700">✓ Pago</span>' : '<span style="color:#b85c00;font-weight:700">Pendente</span>'}</p>
               </div>
               <div class="av-act" style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end">
@@ -1283,7 +1286,7 @@ function renderFinMensalidades() {
                 <button class="btn-sm" onclick="abrirEditarMensalidade('${id}','${sig}')">✏️</button>
               </div>
             </div>
-          `).join('')}
+          `; }).join('')}
         </div>
       </div>`;
   });
@@ -1410,17 +1413,6 @@ function renderFinConvocacoes() {
   });
 
   document.getElementById('tabela-convocacoes').innerHTML = html;
-}
-
-function atualizarConvocacao(jogoId, sig, convocado) {
-  if (!CONVOCACOES[jogoId]) CONVOCACOES[jogoId] = [];
-  if (convocado) {
-    if (!CONVOCACOES[jogoId].includes(sig)) CONVOCACOES[jogoId].push(sig);
-  } else {
-    CONVOCACOES[jogoId] = CONVOCACOES[jogoId].filter(s => s !== sig);
-  }
-  // Atualiza contador no cabeçalho sem re-renderizar tudo
-  renderFinConvocacoes();
 }
 
 function salvarConvocacaoJogo(jogoId) {
