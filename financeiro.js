@@ -469,10 +469,11 @@ function renderFinCobrancas(){
     const arbStatus = window.ARBITRAGEM_STATUS || {};
     const cats = Object.entries(arbStatus).filter(([,atletas])=>atletas.length>0);
     if(cats.length === 0) return '<div class="cw" style="padding:16px;text-align:center;font-size:11px;color:var(--text-3)">Nenhuma cobrança de arbitragem pendente</div>';
+    const CORES_CAT_ARB = {sub7:'#e67e22',sub9:'#27ae60',sub11:'#2980b9',sub13:'#8e44ad',sub15:'#c0392b'};
     return cats.map(([catKey, atletas]) => {
       const catNome = CATS_DATA[catKey]?.nome || catKey;
       const catEmoji = CATS_DATA[catKey]?.emoji || '⚽';
-      const catCor = CORES[catKey] || '#0d3d1a';
+      const catCor = CATS_DATA[catKey]?.cor || CORES_CAT_ARB[catKey] || '#0d3d1a';
       const pagos = atletas.filter(a=>a.pago).length;
       const pendentes = atletas.length - pagos;
       return `
