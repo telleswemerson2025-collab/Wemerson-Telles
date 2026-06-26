@@ -722,20 +722,22 @@ body {
           </div>
         </div>
 
-        <div class="chart-card">
-          <div class="chart-card-head">
-            <h4>Receita por origem — últimos 6 meses</h4>
-            <span>Sócios vs. atletas</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="chart-card">
+            <div class="chart-card-head">
+              <h4>Receita por origem — últimos 6 meses</h4>
+              <span>Sócios vs. atletas</span>
+            </div>
+            <div class="chart-wrap"><canvas id="chartReceitas"></canvas></div>
           </div>
-          <div class="chart-wrap"><canvas id="chartReceitas"></canvas></div>
-        </div>
 
-        <div class="chart-card">
-          <div class="chart-card-head">
-            <h4>Inadimplência — evolução mensal</h4>
-            <span>Valor em atraso (R$)</span>
+          <div class="chart-card">
+            <div class="chart-card-head">
+              <h4>Inadimplência — evolução mensal</h4>
+              <span>Valor em atraso (R$)</span>
+            </div>
+            <div class="chart-wrap"><canvas id="chartInadimplencia"></canvas></div>
           </div>
-          <div class="chart-wrap"><canvas id="chartInadimplencia"></canvas></div>
         </div>
       </div>
 
