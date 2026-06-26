@@ -932,11 +932,41 @@ const DESPESAS_CLUBE = [
 ];
 
 const CATS_DATA = {
-  'sub7': {nome:'Sub-7',  emoji:'🌱', cor:'#e67e22'},
-  'sub9': {nome:'Sub-9',  emoji:'🌿', cor:'#27ae60'},
-  'sub11':{nome:'Sub-11', emoji:'⚽', cor:'#2980b9'},
-  'sub13':{nome:'Sub-13', emoji:'🔵', cor:'#8e44ad'},
-  'sub15':{nome:'Sub-15', emoji:'⭐', cor:'#c0392b'},
+  'sub7': {nome:'Sub-7',  emoji:'🌱', cor:'#e67e22', atletas:[
+    {sig:'AS',nome:'Arthur Santos',  pos:'Meia'},
+    {sig:'LS',nome:'Lucas Sousa',    pos:'Atacante'},
+    {sig:'MF',nome:'Matheus Ferreira',pos:'Goleiro'},
+    {sig:'TP',nome:'Thiago Pereira', pos:'Zagueiro'},
+    {sig:'VH',nome:'Vitor Hugo',     pos:'Lateral'},
+  ]},
+  'sub9': {nome:'Sub-9',  emoji:'🌿', cor:'#27ae60', atletas:[
+    {sig:'BL',nome:'Bruno Lima',     pos:'Atacante'},
+    {sig:'RM',nome:'Rafael Moura',   pos:'Meia'},
+    {sig:'ED',nome:'Eduardo Dias',   pos:'Zagueiro'},
+    {sig:'FA',nome:'Felipe Alves',   pos:'Lateral'},
+  ]},
+  'sub11':{nome:'Sub-11', emoji:'⚽', cor:'#2980b9', atletas:[
+    {sig:'DR',nome:'Diego Rodrigues',pos:'Goleiro'},
+    {sig:'LR',nome:'Lucas Rocha',    pos:'Zagueiro'},
+    {sig:'FM',nome:'Felipe Melo',    pos:'Meia'},
+    {sig:'JB',nome:'João Batista',   pos:'Atacante'},
+    {sig:'WN',nome:'Wellington Neto',pos:'Lateral'},
+    {sig:'ZA',nome:'Zé Augusto',     pos:'Meia'},
+  ]},
+  'sub13':{nome:'Sub-13', emoji:'🔵', cor:'#8e44ad', atletas:[
+    {sig:'KT',nome:'Kauan Telles',   pos:'Atacante'},
+    {sig:'YD',nome:'Yan Davi',       pos:'Meia'},
+    {sig:'MT',nome:'Marco Tulio',    pos:'Zagueiro'},
+    {sig:'RC',nome:'Renan Costa',    pos:'Lateral'},
+  ]},
+  'sub15':{nome:'Sub-15', emoji:'⭐', cor:'#c0392b', atletas:[
+    {sig:'JC',nome:'João Carlos',    pos:'Goleiro'},
+    {sig:'MV',nome:'Marcos Vinicius',pos:'Zagueiro'},
+    {sig:'AA',nome:'André Araújo',   pos:'Lateral'},
+    {sig:'CA',nome:'Carlos Augusto', pos:'Meia'},
+    {sig:'GC',nome:'Gabriel Costa',  pos:'Atacante'},
+    {sig:'CM',nome:'Carlos Mendes',  pos:'Meia'},
+  ]},
 };
 
 // Gera arbitragem automaticamente baseado em convocações
@@ -1311,46 +1341,93 @@ function cobrarIndividualMens(id) {
 }
 
 function renderFinConvocacoes() {
+  if (!JOGOS_AGENDADOS || JOGOS_AGENDADOS.length === 0) {
+    document.getElementById('tabela-convocacoes').innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-3)">Nenhum jogo agendado</div>';
+    return;
+  }
+
   let html = '';
 
   JOGOS_AGENDADOS.forEach(jogo => {
     const catKey = jogo.cat.toLowerCase().replace(/[\s-]/g,'').replace('profissional','sub15');
-    const todosAatletas = Object.entries(MENSALIDADES_ATLETAS)
-      .filter(([id]) => id.toLowerCase().includes(catKey))
-      .map(([id]) => id.match(/([A-Z]+)/)?.[1] || '')
-      .filter((v, i, a) => v && a.indexOf(v) === i);
+    const catInfo = CATS_DATA[catKey] || {nome: jogo.cat, emoji: '⚽', cor: '#1a5c26'};
+    const cor = catInfo.cor || '#1a5c26';
+
+    // Busca atletas reais do CATS_DATA se disponível, senão usa MENSALIDADES_ATLETAS
+    let atletasLista = [];
+    if (catInfo.atletas && catInfo.atletas.length > 0) {
+      atletasLista = catInfo.atletas.map(a => ({sig: a.sig, nome: a.nome, pos: a.pos}));
+    } else {
+      atletasLista = Object.entries(MENSALIDADES_ATLETAS)
+        .filter(([id]) => id.endsWith(catKey))
+        .map(([id]) => {
+          const sig = id.match(/^([A-Z]+)/)?.[1] || id;
+          return {sig, nome: sig, pos: ''};
+        });
+    }
 
     const convocados = CONVOCACOES[jogo.id] || [];
+    const totalConv = atletasLista.filter(a => convocados.includes(a.sig)).length;
 
     html += `
-      <div style="border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden;background:#fff">
-        <div style="padding:16px;background:var(--surface);border-bottom:1px solid var(--border)">
-          <div style="font-size:13px;font-weight:800;color:var(--text)">vs ${jogo.adv} — ${jogo.cat}</div>
-          <div style="font-size:11px;color:var(--text-3);margin-top:2px">${jogo.data} • ${jogo.hora} • ${jogo.local}</div>
-          <div style="font-size:11px;color:#1a5c26;margin-top:6px;font-weight:700">${convocados.length}/${todosAatletas.length} convocados</div>
+      <div style="border:1.5px solid ${cor}33;border-radius:14px;margin-bottom:18px;overflow:hidden;background:#fff">
+        <!-- Cabeçalho do jogo -->
+        <div style="padding:14px 16px;background:${cor}10;border-bottom:1px solid ${cor}22;display:flex;align-items:center;gap:12px">
+          <div style="width:42px;height:42px;border-radius:12px;background:${cor};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${catInfo.emoji}</div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:800;color:${cor}">vs ${jogo.adv}</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px">${catInfo.nome} · ${jogo.data} · ${jogo.hora} · ${jogo.local}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:18px;font-weight:800;color:${cor}">${totalConv}/${atletasLista.length}</div>
+            <div style="font-size:10px;color:var(--text-3)">convocados</div>
+          </div>
         </div>
+        <!-- Lista de atletas -->
         <div>
-          ${todosAatletas.map(sig => {
-            const isConvocado = convocados.includes(sig);
+          ${atletasLista.map(atleta => {
+            const isConvocado = convocados.includes(atleta.sig);
             return `
-              <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:10px">
-                  <div class="av">${sig}</div>
-                  <span style="font-size:12px;font-weight:600;color:var(--text)">${sig}</span>
+              <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px">
+                <div class="av" style="background:${cor};flex-shrink:0">${atleta.sig}</div>
+                <div style="flex:1">
+                  <div style="font-size:13px;font-weight:700;color:var(--text)">${atleta.nome || atleta.sig}</div>
+                  ${atleta.pos ? `<div style="font-size:10px;color:var(--text-3)">${atleta.pos}</div>` : ''}
                 </div>
-                <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
-                  <input type="checkbox" ${isConvocado ? 'checked' : ''} onchange="atualizarConvocacao('${jogo.id}', '${sig}', this.checked)" style="cursor:pointer;width:18px;height:18px">
-                  <span style="font-size:11px;color:var(--text-3)">${isConvocado ? 'Convocado' : 'Não convocado'}</span>
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;flex-shrink:0">
+                  <input type="checkbox" ${isConvocado ? 'checked' : ''} onchange="atualizarConvocacao('${jogo.id}', '${atleta.sig}', this.checked)" style="cursor:pointer;width:18px;height:18px;accent-color:${cor}">
+                  <span style="font-size:11px;font-weight:700;color:${isConvocado ? cor : 'var(--text-3)'}">${isConvocado ? 'Convocado' : 'Disponível'}</span>
                 </label>
-              </div>
-            `;
+              </div>`;
           }).join('')}
         </div>
-      </div>
-    `;
+        <!-- Rodapé com ação -->
+        <div style="padding:12px 16px;background:${cor}08;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:11px;color:var(--text-3)">Convocados geram cobrança de arbitragem</span>
+          <button class="btn-sm" style="background:${cor};color:#fff;border:none" onclick="salvarConvocacaoJogo('${jogo.id}')">✅ Salvar</button>
+        </div>
+      </div>`;
   });
 
   document.getElementById('tabela-convocacoes').innerHTML = html;
+}
+
+function atualizarConvocacao(jogoId, sig, convocado) {
+  if (!CONVOCACOES[jogoId]) CONVOCACOES[jogoId] = [];
+  if (convocado) {
+    if (!CONVOCACOES[jogoId].includes(sig)) CONVOCACOES[jogoId].push(sig);
+  } else {
+    CONVOCACOES[jogoId] = CONVOCACOES[jogoId].filter(s => s !== sig);
+  }
+  // Atualiza contador no cabeçalho sem re-renderizar tudo
+  renderFinConvocacoes();
+}
+
+function salvarConvocacaoJogo(jogoId) {
+  const jogo = JOGOS_AGENDADOS.find(j => j.id === jogoId);
+  const count = (CONVOCACOES[jogoId] || []).length;
+  gerarArbitragemDeConvocacoes();
+  showToast(`✅ Convocação salva! ${count} atleta(s) — arbitragem gerada.`, 'success');
 }
 
 function renderFinArbitragem() {
