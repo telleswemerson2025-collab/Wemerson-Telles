@@ -640,7 +640,7 @@ body {
   <div class="sidebar-section">
     <div class="sidebar-label">Caixa</div>
     <div class="sidebar-menu">
-      <div class="sidebar-item">
+      <div class="sidebar-item" onclick="sidebarClick(this, 'caixa-clube')">
         <i class="ti ti-wallet"></i>
         <span>Caixa do clube</span>
       </div>
@@ -853,6 +853,11 @@ body {
   <!-- COBRANÇAS -->
   <div id="cobrancas" class="scr">
     <div id="tabela-pendentes"></div>
+  </div>
+
+  <!-- CAIXA DO CLUBE -->
+  <div id="caixa-clube" class="scr">
+    <div id="caixa-corpo"></div>
   </div>
 </div>
 
@@ -2160,6 +2165,85 @@ function renderRelatorioContador() {
   document.getElementById('rel-corpo').innerHTML = pg1 + pg2 + pg3 + pg4 + pg5;
 }
 
+// CAIXA DO CLUBE
+function renderCaixaClube() {
+  const totalDespesas = (typeof DESPESAS_CLUBE !== 'undefined' ? DESPESAS_CLUBE : []).reduce((s, d) => s + d.valor, 0);
+
+  const totalSociosPago = SOCIOS.filter(s => s.status === 'pago').reduce((s, x) => s + x.valor, 0);
+  const totalAtletasPago = Object.values(MENSALIDADES_ATLETAS).filter(m => m.status === 'pago').reduce((s, m) => s + m.valor, 0);
+  const totalEntradas = totalSociosPago + totalAtletasPago;
+  const saldo = totalEntradas - totalDespesas;
+  const saldoPositivo = saldo >= 0;
+
+  // Movimentações
+  const movs = [];
+
+  // Sócios pagos
+  SOCIOS.filter(s => s.status === 'pago').forEach(s => {
+    movs.push({tipo:'Receita', desc:'Sócio · ' + s.nome, valor: s.valor, cor:'#1a5c26', bg:'#dcf0e0'});
+  });
+
+  // Atletas pagos
+  Object.entries(MENSALIDADES_ATLETAS).filter(([,m]) => m.status === 'pago').forEach(([id, m]) => {
+    const match = id.match(/^([A-Z]+)([a-z0-9]+)$/);
+    const sig = match?.[1] || id;
+    const catKey = match?.[2] || '';
+    const catNome = CATS_DATA[catKey]?.nome || catKey;
+    const atletaInfo = (CATS_DATA[catKey]?.atletas || []).find(a => a.sig === sig);
+    const nome = atletaInfo?.nome || sig;
+    movs.push({tipo:'Receita', desc:'Mensalidade ' + catNome + ' · ' + nome, valor: m.valor, cor:'#1a5c26', bg:'#dcf0e0'});
+  });
+
+  // Despesas
+  (typeof DESPESAS_CLUBE !== 'undefined' ? DESPESAS_CLUBE : []).forEach(d => {
+    movs.push({tipo:'Despesa', desc:d.descricao, valor: d.valor, cor:'#c0392b', bg:'#fce8e8'});
+  });
+
+  const html = `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px">
+      <div style="background:#dcf0e0;border-radius:14px;padding:20px;border-left:4px solid #1a5c26">
+        <div style="font-size:10px;font-weight:800;color:#1a5c26;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Entradas do mês</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#1a5c26">${fmtR$(totalEntradas)}</div>
+        <div style="font-size:10px;color:#1a5c26;margin-top:2px;opacity:.7">Mensalidades + Sócios</div>
+      </div>
+      <div style="background:#fce8e8;border-radius:14px;padding:20px;border-left:4px solid #c0392b">
+        <div style="font-size:10px;font-weight:800;color:#c0392b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Saídas do mês</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#c0392b">${fmtR$(totalDespesas)}</div>
+        <div style="font-size:10px;color:#c0392b;margin-top:2px;opacity:.7">${(typeof DESPESAS_CLUBE !== 'undefined' ? DESPESAS_CLUBE : []).length} despesas</div>
+      </div>
+      <div style="background:${saldoPositivo?'#dcf0e0':'#fce8e8'};border-radius:14px;padding:20px;border-left:4px solid ${saldoPositivo?'#1a5c26':'#c0392b'}">
+        <div style="font-size:10px;font-weight:800;color:${saldoPositivo?'#1a5c26':'#c0392b'};text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Saldo atual</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:${saldoPositivo?'#1a5c26':'#c0392b'}">${saldoPositivo?'+':'−'}${fmtR$(Math.abs(saldo))}</div>
+        <div style="font-size:10px;color:${saldoPositivo?'#1a5c26':'#c0392b'};margin-top:2px;opacity:.7">${saldoPositivo?'Superávit':'Déficit'}</div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:13px;font-weight:800;color:var(--text)">Movimentações</span>
+        <span style="font-size:11px;color:var(--text-3)">${movs.length} lançamentos</span>
+      </div>
+      ${movs.length === 0
+        ? '<div style="text-align:center;padding:40px;color:var(--text-3)">Nenhuma movimentação registrada</div>'
+        : movs.map(mv => `
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)">
+            <div style="width:8px;height:8px;border-radius:50%;background:${mv.cor};flex-shrink:0"></div>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:700;color:var(--text)">${mv.desc}</div>
+              <div style="font-size:10px;color:var(--text-3);margin-top:1px">${mv.tipo}</div>
+            </div>
+            <div style="font-size:13px;font-weight:800;color:${mv.cor};font-family:'Courier New',monospace">
+              ${mv.tipo === 'Receita' ? '+' : '−'}${fmtR$(mv.valor)}
+            </div>
+          </div>
+        `).join('')
+      }
+    </div>
+  `;
+
+  document.getElementById('caixa-corpo').innerHTML = html;
+}
+
 // SIDEBAR
 function sidebarClick(el, id) {
   document.querySelectorAll('.sidebar-item').forEach(e => e.classList.remove('on'));
@@ -2175,6 +2259,7 @@ function sidebarClick(el, id) {
   if (id === 'arbitragem') renderFinArbitragem();
   if (id === 'cobrancas') renderFinCobrancas();
   if (id === 'relatorio-contador') renderRelatorioContador();
+  if (id === 'caixa-clube') renderCaixaClube();
 }
 
 // INIT — carrega dados compartilhados com index.html via localStorage
