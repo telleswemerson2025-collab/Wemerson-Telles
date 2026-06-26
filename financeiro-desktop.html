@@ -924,11 +924,11 @@ const DESPESAS_CLUBE = [
 ];
 
 const CATS_DATA = {
-  'sub7':{nome:'Sub-7',cor:'#1a5c26'},
-  'sub9':{nome:'Sub-9',cor:'#0e3d6e'},
-  'sub11':{nome:'Sub-11',cor:'#7a4010'},
-  'sub13':{nome:'Sub-13',cor:'#6b4c9a'},
-  'p12':{nome:'Profissional -12',cor:'#c0392b'},
+  'sub7': {nome:'Sub-7',  emoji:'🌱', cor:'#e67e22'},
+  'sub9': {nome:'Sub-9',  emoji:'🌿', cor:'#27ae60'},
+  'sub11':{nome:'Sub-11', emoji:'⚽', cor:'#2980b9'},
+  'sub13':{nome:'Sub-13', emoji:'🔵', cor:'#8e44ad'},
+  'sub15':{nome:'Sub-15', emoji:'⭐', cor:'#c0392b'},
 };
 
 // Gera arbitragem automaticamente baseado em convocações
@@ -938,7 +938,7 @@ function gerarArbitragemDeConvocacoes() {
 
   JOGOS_AGENDADOS.forEach(jogo => {
     const convocados = CONVOCACOES[jogo.id] || [];
-    const catKey = jogo.cat.toLowerCase().replace('-','').replace('profissional','p').replace('sub','sub');
+    const catKey = jogo.cat.toLowerCase().replace(/[\s-]/g,'').replace('profissional','sub15');
 
     convocados.forEach(sig => {
       ARBITRAGEM.push({
@@ -1306,7 +1306,7 @@ function renderFinConvocacoes() {
   let html = '';
 
   JOGOS_AGENDADOS.forEach(jogo => {
-    const catKey = jogo.cat.toLowerCase().replace('-','').replace('profissional','p').replace('sub','sub');
+    const catKey = jogo.cat.toLowerCase().replace(/[\s-]/g,'').replace('profissional','sub15');
     const todosAatletas = Object.entries(MENSALIDADES_ATLETAS)
       .filter(([id]) => id.toLowerCase().includes(catKey))
       .map(([id]) => id.match(/([A-Z]+)/)?.[1] || '')
