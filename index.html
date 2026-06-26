@@ -1419,6 +1419,64 @@ function renderJogosProfessor(cat, cor){
   }).join('')}`;
 }
 
+// =====================
+// CONVOCAÇÕES — Professor
+// =====================
+function renderConvocacoesProfessor(catKey, cat, cor){
+  const atletas = cat.atletas || [];
+  const rows = atletas.map(a => {
+    const key = a.sig + catKey;
+    const convocado = FICHAS[key]?.convocado ?? false;
+    return `
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0ede8">
+      <div class="av" style="width:32px;height:32px;font-size:11px;background:${cor}">${a.sig}</div>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:700">${a.nome}</div>
+        <div style="font-size:9px;color:var(--text-3)">${a.pos} · ${a.pres}% presença</div>
+      </div>
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+        <input type="checkbox" id="chk-conv-${a.sig}" ${convocado?'checked':''} onchange="toggleConvocado('${a.sig}','${catKey}',this.checked)"
+          style="width:18px;height:18px;accent-color:${cor};cursor:pointer">
+        <span style="font-size:11px;font-weight:700;color:${convocado?cor:'#aaa'}" id="lbl-conv-${a.sig}">${convocado?'Convocado':'Disponível'}</span>
+      </label>
+    </div>`;
+  });
+  const convocados = atletas.filter(a => FICHAS[a.sig+catKey]?.convocado).length;
+  return `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Convocar — ${cat.nome}</span>
+    <span style="font-size:11px;font-weight:700;color:${cor}">${convocados}/${atletas.length} selecionados</span>
+  </div>
+  <div class="card" style="padding:4px 12px;margin-bottom:14px">
+    ${rows.join('')}
+  </div>
+  <button class="btn-g" style="background:${cor}" onclick="salvarConvocacoesProfessor('${catKey}')">
+    ✅ Confirmar convocação
+  </button>`;
+}
+
+function toggleConvocado(sig, catKey, convocado){
+  const key = sig + catKey;
+  if(!FICHAS[key]) FICHAS[key] = {};
+  FICHAS[key].convocado = convocado;
+  const lbl = document.getElementById('lbl-conv-'+sig);
+  if(lbl){ lbl.textContent = convocado ? 'Convocado' : 'Disponível'; }
+}
+
+function salvarConvocacoesProfessor(catKey){
+  const cat = CATS_DATA[catKey];
+  if(!cat) return;
+  let count = 0;
+  (cat.atletas||[]).forEach(a => {
+    const chk = document.getElementById('chk-conv-'+a.sig);
+    if(!FICHAS[a.sig+catKey]) FICHAS[a.sig+catKey] = {};
+    FICHAS[a.sig+catKey].convocado = chk ? chk.checked : false;
+    if(FICHAS[a.sig+catKey].convocado) count++;
+  });
+  salvarLS();
+  showN('✅ Convocação salva! '+count+' atleta(s) convocado(s) para o próximo jogo.');
+}
+
 // Controle do placar ao vivo
 let placarV = 2, placarA = 1;
 function ajustarPlacar(time, delta){
