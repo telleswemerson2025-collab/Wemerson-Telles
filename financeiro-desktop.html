@@ -602,6 +602,10 @@ body {
         <i class="ti ti-receipt"></i>
         <span>Mensalidade atletas</span>
       </div>
+      <div class="sidebar-item" onclick="sidebarClick(this, 'arbitragem')">
+        <i class="ti ti-flag"></i>
+        <span>Arbitragem</span>
+      </div>
       <div class="sidebar-item" onclick="sidebarClick(this, 'cobrancas')">
         <i class="ti ti-alert-circle"></i>
         <span>Cobranças</span>
@@ -769,6 +773,20 @@ body {
     <div id="tabela-atletas"></div>
   </div>
 
+  <!-- ARBITRAGEM -->
+  <div id="arbitragem" class="scr">
+    <button class="btn-g" onclick="cobrarTodasArbitragem()">Cobrar pendentes</button>
+    <div class="search-mini">
+      <input type="text" placeholder="Buscar jogo..." id="busca-arb" onkeyup="filtrarTabelaArb()">
+      <select id="filtro-arb-status" onchange="filtrarTabelaArb()">
+        <option value="">Todos</option>
+        <option value="pago">Pagos</option>
+        <option value="pendente">Pendente</option>
+      </select>
+    </div>
+    <div id="tabela-arbitragem"></div>
+  </div>
+
   <!-- COBRANÇAS -->
   <div id="cobrancas" class="scr">
     <div id="tabela-pendentes"></div>
@@ -816,6 +834,25 @@ const HISTORICO_RECEITA_SOCIOS  = [580,610,590,640,600,620];
 const HISTORICO_RECEITA_ATLETAS = [3150,3200,3100,3260,3180,3200];
 const HISTORICO_INADIMPLENCIA   = [880,1040,760,1200,990,1060];
 const CHART_INSTANCES = {};
+
+const VALOR_ARBITRAGEM = 30;
+const JOGOS_AGENDADOS = [
+  {id:'j1',adv:'Flamengo',cat:'Sub-7',data:'15/06/2024',hora:'10:00',local:'Campo A',atletas:4},
+  {id:'j2',adv:'Botafogo',cat:'Sub-11',data:'16/06/2024',hora:'14:00',local:'Campo B',atletas:6},
+  {id:'j3',adv:'Vasco',cat:'Sub-13',data:'18/06/2024',hora:'18:00',local:'Campo A',atletas:8},
+];
+
+let ARBITRAGEM = [
+  {id:'a1',jogoId:'j1',sig:'AS',catKey:'sub7',valor:30,status:'pago'},
+  {id:'a2',jogoId:'j1',sig:'LS',catKey:'sub7',valor:30,status:'pago'},
+  {id:'a3',jogoId:'j1',sig:'MF',catKey:'sub7',valor:30,status:'pendente'},
+  {id:'a4',jogoId:'j1',sig:'TP',catKey:'sub7',valor:30,status:'pendente'},
+  {id:'a5',jogoId:'j2',sig:'DR',catKey:'sub11',valor:30,status:'pago'},
+  {id:'a6',jogoId:'j2',sig:'LR',catKey:'sub11',valor:30,status:'pago'},
+  {id:'a7',jogoId:'j2',sig:'FB',catKey:'sub11',valor:30,status:'atraso'},
+  {id:'a8',jogoId:'j3',sig:'KT',catKey:'sub13',valor:30,status:'pendente'},
+  {id:'a9',jogoId:'j3',sig:'JC',catKey:'sub13',valor:30,status:'pendente'},
+];
 
 const CATS_DATA = {
   'sub7':{nome:'Sub-7',cor:'#1a5c26'},
@@ -1030,6 +1067,53 @@ function renderFinMensalidades() {
   document.getElementById('tabela-atletas').innerHTML = html;
 }
 
+function renderFinArbitragem() {
+  const jogosComArbitragem = JOGOS_AGENDADOS.filter(j => ARBITRAGEM.some(a => a.jogoId === j.id));
+
+  if (jogosComArbitragem.length === 0) {
+    document.getElementById('tabela-arbitragem').innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-3)">Nenhum jogo agendado</div>';
+    return;
+  }
+
+  let html = '';
+  jogosComArbitragem.forEach(j => {
+    const cobrancas = ARBITRAGEM.filter(a => a.jogoId === j.id);
+    const pendentes = cobrancas.filter(a => a.status === 'pendente');
+    const pagos = cobrancas.filter(a => a.status === 'pago');
+
+    html += `
+      <div style="border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden;background:#fff">
+        <div style="padding:16px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:13px;font-weight:800;color:var(--text)">vs ${j.adv} — ${j.cat}</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px">${j.data} • ${j.hora} • ${j.local}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;font-weight:700;color:${pendentes.length===0?'#1a5c26':'#7a4010'}">${pagos.length}/${cobrancas.length} pagos</div>
+            ${pendentes.length > 0 ? `<button class="btn-sm" style="margin-top:8px" onclick="cobrarTodasArbitragem()">Cobrar ${pendentes.length}</button>` : ''}
+          </div>
+        </div>
+        <div>
+          ${cobrancas.map(a => `
+            <div class="av-row" data-status="${a.status}" style="border:none;border-bottom:1px solid var(--border);border-radius:0;margin:0">
+              <div class="av">${a.sig}</div>
+              <div class="av-content">
+                <h5>${a.sig}</h5>
+                <p>${CATS_DATA[a.catKey]?.nome || 'Cat.'} • ${fmtR$(a.valor)}</p>
+              </div>
+              <div class="av-act">
+                <button class="btn-sm" onclick="marcarArbitragemPaga('${a.id}')">${a.status === 'pago' ? '✓ Pago' : 'Cobrar'}</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+
+  document.getElementById('tabela-arbitragem').innerHTML = html;
+}
+
 function renderFinCobrancas() {
   const pend = [];
   SOCIOS.filter(s => s.status !== 'pago').forEach(s => {
@@ -1056,6 +1140,32 @@ function renderFinCobrancas() {
   document.getElementById('tabela-pendentes').innerHTML = html;
 }
 
+function marcarArbitragemPaga(id) {
+  const a = ARBITRAGEM.find(x => x.id === id);
+  if (a) {
+    a.status = a.status === 'pago' ? 'pendente' : 'pago';
+    renderFinArbitragem();
+    renderFinPainel();
+  }
+}
+
+function cobrarTodasArbitragem() {
+  ARBITRAGEM.filter(a => a.status === 'pendente').forEach(a => a.status = 'pendente');
+  renderFinArbitragem();
+}
+
+function filtrarTabelaArb() {
+  const busca = document.getElementById('busca-arb')?.value.toLowerCase() || '';
+  const filtro = document.getElementById('filtro-arb-status')?.value || '';
+
+  Array.from(document.getElementById('tabela-arbitragem').querySelectorAll('.av-row')).forEach(row => {
+    const txt = row.textContent.toLowerCase();
+    const status = row.getAttribute('data-status');
+    const match = (!busca || txt.includes(busca)) && (!filtro || status === filtro);
+    row.style.display = match ? '' : 'none';
+  });
+}
+
 // SIDEBAR
 function sidebarClick(el, id) {
   document.querySelectorAll('.sidebar-item').forEach(e => e.classList.remove('on'));
@@ -1067,6 +1177,7 @@ function sidebarClick(el, id) {
   if (id === 'painel') renderFinPainel();
   if (id === 'socios') renderFinSocios();
   if (id === 'mensalidades') renderFinMensalidades();
+  if (id === 'arbitragem') renderFinArbitragem();
   if (id === 'cobrancas') renderFinCobrancas();
 }
 
