@@ -1281,14 +1281,15 @@ function configurarPerfil(perfil, cor){
 // PROFESSOR
 // =====================
 function montarProfessor(catKey, cat, cor){
-  const navItems = ['Chamada','Avaliação','Treino','Mensagem','Atletas','Jogos'];
+  const navItems = ['Chamada','Avaliação','Treino','Mensagem','Atletas','Jogos','Convocações'];
   const bnavItems = [
     {icon:'ti-users',label:'Chamada'},
     {icon:'ti-chart-bar',label:'Avaliar'},
     {icon:'ti-ball-football',label:'Treino'},
     {icon:'ti-message',label:'Mensagem'},
     {icon:'ti-list',label:'Atletas'},
-    {icon:'ti-trophy',label:'Jogos'}
+    {icon:'ti-trophy',label:'Jogos'},
+    {icon:'ti-flag',label:'Convocar'}
   ];
   montarNav(navItems, cor);
   montarBnav(bnavItems, cor);
@@ -1334,6 +1335,9 @@ function montarProfessor(catKey, cat, cor){
   </div>
   <div id="s-5" class="scr" style="padding:11px 13px;overflow-y:auto">
     ${renderJogosProfessor(cat, cor)}
+  </div>
+  <div id="s-6" class="scr" style="padding:11px 13px;overflow-y:auto">
+    ${renderConvocacoesProfessor(catKey, cat, cor)}
   </div>`;
   setCor(cor);
   chamadas={};
@@ -1442,10 +1446,12 @@ function renderChamada(cat, cor){
 
   let rows = cat.atletas.map((a,i)=>{
     const pc = a.pres>=85?'#27500a':a.pres>=70?'#854f0b':'#a32d2d';
+    const fichaKey = a.sig + catKey;
+    const temCondicaoMedica = FICHAS[fichaKey]?.ficha_medica?.condicoes;
     return `<div class="cr-item">
       <div class="av" style="width:32px;height:32px;font-size:11px;background:${cor}">${a.sig}</div>
       <div style="flex:1">
-        <div style="font-size:12px;font-weight:700">${a.nome}</div>
+        <div style="font-size:12px;font-weight:700">${a.nome}${temCondicaoMedica ? ` <span style="color:#e74c3c;cursor:help" title="Atenção: condição médica — ver ficha">⚕️</span>` : ''}</div>
         <div style="font-size:9px;color:#aaa">${a.pos} · <span style="color:${pc}">${a.pres}% presença</span></div>
       </div>
       <div style="display:flex;gap:4px">
@@ -1500,7 +1506,10 @@ function salvarChamada(total){
 
   // Salva totais no PRESENCA_HIST (para gráfico financeiro)
   if(!window.PRESENCA_HIST[catAtiva]) window.PRESENCA_HIST[catAtiva] = [];
-  window.PRESENCA_HIST[catAtiva].push({data: hoje, presentes: p, total: total});
+  const hojeFormatado = new Date().toLocaleDateString('pt-BR');
+  window.PRESENCA_HIST[catAtiva].push({data: hojeFormatado, presentes: p, faltas: f, total: total});
+  // Mantém apenas os últimos 30 registros
+  if(window.PRESENCA_HIST[catAtiva].length > 30) window.PRESENCA_HIST[catAtiva] = window.PRESENCA_HIST[catAtiva].slice(-30);
 
   // Salva histórico individual de cada atleta em FICHAS
   if(meta.atletas){
@@ -3075,9 +3084,10 @@ function renderEvolucao(cor){
       </div>
 
       <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
           <div style="font-family:var(--font-display);font-size:18px;color:#fff;letter-spacing:.08em">${a.nome}</div>
           <button onclick="abrirEditarPerfil()" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:10px;padding:3px 8px;border-radius:8px;cursor:pointer;font-weight:600">✏️ Editar</button>
+          ${(()=>{ const catKeyAtl = a.cat.toLowerCase().replace('-','').replace(' ',''); const mens = MENSALIDADES_ATLETAS[a.sig+catKeyAtl]; return (mens && mens.status !== 'pago') ? '<span style="background:#e74c3c;color:#fff;border-radius:12px;padding:2px 10px;font-size:10px;font-weight:800">⚠ Mensalidade em atraso</span>' : ''; })()}
         </div>
         <div style="font-size:10px;color:rgba(255,255,255,.65);margin-top:1px;font-weight:500">${a.pos} · ${a.cat} · Nível ${nivel}</div>
         <div style="background:rgba(255,255,255,.15);border-radius:4px;height:4px;margin-top:6px;overflow:hidden">
@@ -3427,15 +3437,21 @@ function salvarCheckin(tipo){
 
 function montarNav(items, cor){
   _resetNav(cor);
-  document.getElementById('nav').innerHTML = items.map((nm,i)=>
-    `<div class="nt${i===0?' on':''}" onclick="goTab(${i},'${cor}')" style="${i===0?'color:'+cor+';border-bottom-color:'+cor:''}">${nm}</div>`
+  const nav = document.getElementById('nav');
+  nav.setAttribute('role','navigation');
+  nav.setAttribute('aria-label','Navegação principal');
+  nav.innerHTML = items.map((nm,i)=>
+    `<div class="nt${i===0?' on':''}" onclick="goTab(${i},'${cor}')" style="${i===0?'color:'+cor+';border-bottom-color:'+cor:''}" role="button" aria-label="Ir para ${nm}"${i===0?' aria-current="page"':''} tabindex="0">${nm}</div>`
   ).join('');
 }
 
 function montarBnav(items, cor){
-  document.getElementById('bnav').innerHTML = items.map((it,i)=>
-    `<div class="bi${i===0?' on':''}" onclick="goTab(${i},'${cor}')">
-      <i class="ti ${it.icon}" style="color:${i===0?cor:'#ccc'}"></i>
+  const bnav = document.getElementById('bnav');
+  bnav.setAttribute('role','navigation');
+  bnav.setAttribute('aria-label','Navegação inferior');
+  bnav.innerHTML = items.map((it,i)=>
+    `<div class="bi${i===0?' on':''}" onclick="goTab(${i},'${cor}')" role="button" aria-label="Ir para ${it.label}"${i===0?' aria-current="page"':''} tabindex="0">
+      <i class="ti ${it.icon}" style="color:${i===0?cor:'#ccc'}" aria-hidden="true"></i>
       <span style="color:${i===0?cor:'#ccc'}">${it.label}</span>
     </div>`
   ).join('');
@@ -3507,6 +3523,22 @@ function toggleOff(){
   showN(offlineMode?'📵 Modo offline. Dados salvos no celular.':'📶 Online! Sincronizando...');
 }
 
+// Detecta mudanças reais de conectividade
+window.addEventListener('offline', ()=>{
+  offlineMode = true;
+  const dot = document.getElementById('offline-dot');
+  if(dot){ dot.style.display='inline-block'; dot.textContent='OFFLINE'; }
+  showN('⚠ Modo offline — dados salvos localmente');
+});
+window.addEventListener('online', ()=>{
+  offlineMode = false;
+  const dot = document.getElementById('offline-dot');
+  if(dot) dot.style.display='none';
+  const agora = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  showN('✓ Online — dados sincronizados às '+agora);
+  if(typeof salvarFirestore === 'function') salvarFirestore();
+});
+
 function sair(){
   // Para o listener em tempo real do atleta
   if(_listener){ _listener(); _listener=null; }
@@ -3531,6 +3563,9 @@ function cadastrarAtleta(){
 
 function abrirModal(id){
   document.getElementById(id).classList.add('on');
+  document.body.style.overflow='hidden';
+  const sc = document.getElementById('screens');
+  if(sc) sc.style.overflow='hidden';
   // Se for modal de jogo, popula a lista de convocação
   if(id === 'modal-jogo') popularConvJogo();
 }
@@ -3730,9 +3765,26 @@ function iniciarJogoAoVivo(id){
   if(placar) placar.closest('.card')?.scrollIntoView({behavior:'smooth'});
 }
 
-function fecharModal(id){document.getElementById(id).classList.remove('on');}
+function fecharModal(id){
+  document.getElementById(id).classList.remove('on');
+  // Só restaura scroll se não houver outro modal aberto
+  if(!document.querySelector('.modal-overlay.on')){
+    document.body.style.overflow='';
+    const sc = document.getElementById('screens');
+    if(sc) sc.style.overflow='';
+  }
+}
 document.querySelectorAll('.modal-overlay').forEach(m=>{
-  m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on');});
+  m.addEventListener('click',e=>{
+    if(e.target===m){
+      m.classList.remove('on');
+      if(!document.querySelector('.modal-overlay.on')){
+        document.body.style.overflow='';
+        const sc = document.getElementById('screens');
+        if(sc) sc.style.overflow='';
+      }
+    }
+  });
 });
 
 // =====================
@@ -4418,13 +4470,14 @@ function montarProfessorTodos(cor){
   document.getElementById('offline-dot').style.display='none';
 
   // Nav com abas por categoria + geral
-  const navItems = ['Geral','Sub-7','Sub-9','Sub-11','Sub-13','Sub-15','Mensagem','Jogos'];
+  const navItems = ['Geral','Sub-7','Sub-9','Sub-11','Sub-13','Sub-15','Mensagem','Jogos','Convocações'];
   const bnavItems = [
     {icon:'ti-layout-dashboard',label:'Geral'},
     {icon:'ti-users',label:'Atletas'},
     {icon:'ti-ball-football',label:'Treino'},
     {icon:'ti-message',label:'Mensagem'},
-    {icon:'ti-trophy',label:'Jogos'}
+    {icon:'ti-trophy',label:'Jogos'},
+    {icon:'ti-flag',label:'Convocar'}
   ];
   montarNav(navItems, cor);
   montarBnav(bnavItems, cor);
@@ -4438,15 +4491,52 @@ function montarProfessorTodos(cor){
     <div id="s-4" class="scr" style="padding:11px 13px;overflow-y:auto">${renderProfCat('sub13',cor)}</div>
     <div id="s-5" class="scr" style="padding:11px 13px;overflow-y:auto">${renderProfCat('sub15',cor)}</div>
     <div id="s-6" class="scr" style="padding:11px 13px;overflow-y:auto">${renderMensagemTodos(cor)}</div>
-    <div id="s-7" class="scr" style="padding:11px 13px;overflow-y:auto">${renderJogosProfessor(CATS_DATA['sub13'], cor)}</div>`;
+    <div id="s-7" class="scr" style="padding:11px 13px;overflow-y:auto">${renderJogosProfessor(CATS_DATA['sub13'], cor)}</div>
+    <div id="s-8" class="scr" style="padding:11px 13px;overflow-y:auto">${renderConvocacoesProfessor(cor)}</div>`;
 
   // Mapeia bnav para telas
   document.querySelectorAll('#bnav .bi').forEach((b,i)=>{
-    const mapa=[0,1,2,6,7];
+    const mapa=[0,1,2,6,7,8];
     b.onclick=function(){goTab(mapa[i]||i,cor);};
   });
 
   setCor(cor);
+}
+
+function renderConvocacoesProfessor(cor){
+  const cats = Object.entries(CATS_DATA);
+  const linhas = cats.map(([catKey, cat])=>{
+    return cat.atletas.map(a=>{
+      const ficKey = a.sig + catKey;
+      const convocado = FICHAS[ficKey]?.convocado || false;
+      return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0">
+        <div style="width:32px;height:32px;border-radius:50%;background:${cor};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">${a.sig}</div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700">${a.nome}</div>
+          <div style="font-size:10px;color:#aaa">${a.pos} · ${cat.nome}</div>
+        </div>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:11px;font-weight:600;color:${cor}">
+          <input type="checkbox" id="conv-${ficKey}" ${convocado?'checked':''} onchange="toggleConvocado('${ficKey}',this.checked)" style="accent-color:${cor};width:16px;height:16px">
+          Convocar
+        </label>
+      </div>`;
+    }).join('');
+  }).join('');
+  return `<div style="font-size:13px;font-weight:700;margin-bottom:4px;color:#1a1a1a">Convocar atletas para o próximo jogo</div>
+  <div style="font-size:10px;color:#aaa;margin-bottom:12px">Selecione os atletas convocados para o próximo jogo</div>
+  ${linhas}
+  <button onclick="salvarConvocacoesProfessor()" style="width:100%;margin-top:16px;padding:13px;border-radius:12px;border:none;background:${cor};color:#fff;font-size:13px;font-weight:700;cursor:pointer">Confirmar convocação</button>`;
+}
+
+function toggleConvocado(ficKey, val){
+  if(!FICHAS[ficKey]) FICHAS[ficKey] = {};
+  FICHAS[ficKey].convocado = val;
+}
+
+function salvarConvocacoesProfessor(){
+  salvarLS();
+  const total = Object.values(FICHAS).filter(f=>f.convocado).length;
+  showN('✓ Convocação salva! '+total+' atleta(s) convocado(s).');
 }
 
 function renderProfGeral(cor){

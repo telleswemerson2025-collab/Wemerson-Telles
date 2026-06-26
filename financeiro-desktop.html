@@ -25,6 +25,7 @@
 }
 
 @keyframes fadeUp {from {opacity: 0; transform: translateY(12px)} to {opacity: 1; transform: translateY(0)}}
+@keyframes spin { to { transform: rotate(360deg) } }
 
 body {
   font-family: 'DM Sans', system-ui, sans-serif;
@@ -1898,6 +1899,7 @@ function sidebarClick(el, id) {
 
 // INIT — carrega dados compartilhados com index.html via localStorage
 window.addEventListener('DOMContentLoaded', () => {
+  document.body.insertAdjacentHTML('afterbegin', '<div id="loading-overlay" style="position:fixed;inset:0;background:#fff;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px"><div style="width:40px;height:40px;border:3px solid #e0e0e0;border-top-color:#1a5c26;border-radius:50%;animation:spin 0.8s linear infinite"></div><div style="font-size:13px;color:#555">Carregando dados...</div></div>');
   try {
     // Convocações / jogos agendados
     const jog = localStorage.getItem('vot_jogos_agendados');
@@ -1920,6 +1922,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // Presença histórico já é lido em desenharGraficoFluxoAtletas()
   } catch(e){}
   renderFinPainel();
+  setTimeout(() => { const lo = document.getElementById('loading-overlay'); if(lo) lo.remove(); }, 600);
 });
 </script>
 
