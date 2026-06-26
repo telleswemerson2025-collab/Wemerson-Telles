@@ -1374,6 +1374,10 @@ function registrarGolAtleta(nome, sig, pos, cat, cor){
 }
 
 function renderChamada(cat, cor){
+  // Guarda meta para salvarChamada saber sig e catKey de cada atleta
+  const catKey = Object.entries(CATS_DATA).find(([k,c])=>c===cat)?.[0] || 'sub13';
+  window._chamadaMeta = { catKey, atletas: cat.atletas.map(a=>({sig:a.sig, nome:a.nome})) };
+
   let rows = cat.atletas.map((a,i)=>{
     const pc = a.pres>=85?'#27500a':a.pres>=70?'#854f0b':'#a32d2d';
     return `<div class="cr-item">
@@ -1425,22 +1429,30 @@ function salvarChamada(total){
   const p=Object.values(chamadas).filter(v=>v==='P').length;
   const f=Object.values(chamadas).filter(v=>v==='F').length;
 
-  // CORRIGIDO: qualquer atleta presente atualiza stats (não só KT)
   const algumPresente = p > 0;
   if(p+f > 0) addTreino(algumPresente);
 
-  // Detecta categoria ativa pela chave dos atletas marcados
-  const primeiraChave = Object.keys(chamadas).find(k=>k.length>2) || '';
-  const catAtiva = primeiraChave.replace(/^[A-Z]+/, '') || 'sub13';
-
-  // CORRIGIDO: Salva presença no histórico e ALSO atualiza painel financeiro
   const hoje = new Date().toISOString().split('T')[0];
+  const meta = window._chamadaMeta || {};
+  const catAtiva = meta.catKey || 'sub13';
+
+  // Salva totais no PRESENCA_HIST (para gráfico financeiro)
   if(!window.PRESENCA_HIST[catAtiva]) window.PRESENCA_HIST[catAtiva] = [];
   window.PRESENCA_HIST[catAtiva].push({data: hoje, presentes: p, total: total});
 
-  // Salva no localStorage para persistir entre sessões
-  salvarLS();
+  // Salva histórico individual de cada atleta em FICHAS
+  if(meta.atletas){
+    meta.atletas.forEach((a, i) => {
+      const chave = 'c'+i;
+      const status = chamadas[chave] || 'N'; // P, F ou N (não marcado)
+      const ficKey = a.sig + catAtiva;
+      if(!FICHAS[ficKey]) FICHAS[ficKey] = {};
+      if(!FICHAS[ficKey].hist_presenca) FICHAS[ficKey].hist_presenca = [];
+      FICHAS[ficKey].hist_presenca.push({ data: hoje, status });
+    });
+  }
 
+  salvarLS();
   showN('✓ Chamada salva! '+p+' presentes · '+f+' faltas · Pais notificados');
 }
 
@@ -2953,7 +2965,46 @@ function renderEvolucao(cor){
         ${desbloqueada?'<span class="tag tg">✓</span>':'<span class="tag" style="background:var(--surface);color:var(--text-3)">🔒</span>'}
       </div>`;
     }).join('')}
+  </div>
+
+  ${(()=>{
+    const sig = a.sig;
+    const catKey = (a.cat||'Sub-13').replace(/[^a-z0-9]/gi,'').toLowerCase().replace('sub','sub');
+    const ficKey = sig + catKey;
+    const hist = (FICHAS[ficKey]||{}).hist_presenca || [];
+    if(hist.length === 0) return '';
+    const ultimos = hist.slice(-10).reverse();
+    return `<div class="lbl">Histórico de presença (chamada)</div>
+  <div class="cw" style="padding:10px 14px">
+    ${ultimos.map(h=>{
+      const cor2 = h.status==='P'?'#dcf0e0':h.status==='F'?'#fde8e8':'#f0f0f0';
+      const tc2  = h.status==='P'?'#1a5c26':h.status==='F'?'#8b1a1a':'#888';
+      const icon = h.status==='P'?'✓':h.status==='F'?'✗':'–';
+      return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border)">
+        <div style="width:26px;height:26px;border-radius:7px;background:${cor2};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:${tc2}">${icon}</div>
+        <span style="font-size:11px;color:var(--text);font-weight:500">${h.data}</span>
+        <span style="font-size:10px;color:${tc2};font-weight:600;margin-left:auto">${h.status==='P'?'Presente':h.status==='F'?'Falta':'Não marcado'}</span>
+      </div>`;
+    }).join('')}
   </div>`;
+  })()}
+
+  ${(()=>{
+    const convs = JOGOS_AGENDADOS.filter(j=>j.conv&&j.conv.includes(a.sig));
+    if(convs.length===0) return '';
+    return `<div class="lbl">Histórico de convocações</div>
+  <div class="cw" style="padding:10px 14px">
+    ${convs.slice(-8).reverse().map(c=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">
+      <div style="width:26px;height:26px;border-radius:7px;background:#dceaf8;display:flex;align-items:center;justify-content:center;font-size:13px">⚽</div>
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:700;color:var(--text)">vs ${c.adv||'Adversário'}</div>
+        <div style="font-size:9px;color:var(--text-3)">${c.data||''} ${c.hora||''} · ${c.cat||''}</div>
+      </div>
+      <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:6px;background:#dceaf8;color:#0e3d6e">Convocado</span>
+    </div>`).join('')}
+  </div>`;
+  })()}`;
 }
 
 function renderSaude(cor){
