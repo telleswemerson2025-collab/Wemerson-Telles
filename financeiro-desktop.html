@@ -1241,41 +1241,61 @@ function renderFinConvocacoes() {
 }
 
 function renderFinArbitragem() {
-  const jogosComArbitragem = JOGOS_AGENDADOS.filter(j => ARBITRAGEM.some(a => a.jogoId === j.id));
-
-  if (jogosComArbitragem.length === 0) {
-    document.getElementById('tabela-arbitragem').innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-3)">Nenhum jogo agendado</div>';
+  if (ARBITRAGEM.length === 0) {
+    document.getElementById('tabela-arbitragem').innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-3)">Nenhuma cobrança de arbitragem</div>';
     return;
   }
 
+  // Agrupa por categoria
+  const porCat = {};
+  ARBITRAGEM.forEach(a => {
+    const k = a.catKey || 'sub13';
+    if (!porCat[k]) porCat[k] = [];
+    porCat[k].push(a);
+  });
+
+  const CORES_CAT = {sub7:'#e67e22',sub9:'#27ae60',sub11:'#2980b9',sub13:'#8e44ad',sub15:'#c0392b'};
+
   let html = '';
-  jogosComArbitragem.forEach(j => {
-    const cobrancas = ARBITRAGEM.filter(a => a.jogoId === j.id);
-    const pendentes = cobrancas.filter(a => a.status === 'pendente');
+  Object.entries(porCat).forEach(([catKey, cobrancas]) => {
+    const cat = CATS_DATA[catKey] || {nome: catKey, emoji: '⚽'};
+    const catCor = CORES_CAT[catKey] || '#555';
     const pagos = cobrancas.filter(a => a.status === 'pago');
+    const pendentes = cobrancas.filter(a => a.status === 'pendente');
+    const totalPend = pendentes.reduce((s,a)=>s+a.valor,0);
+    const totalPago = pagos.reduce((s,a)=>s+a.valor,0);
 
     html += `
-      <div style="border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden;background:#fff">
-        <div style="padding:16px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div style="font-size:13px;font-weight:800;color:var(--text)">vs ${j.adv} — ${j.cat}</div>
-            <div style="font-size:11px;color:var(--text-3);margin-top:2px">${j.data} • ${j.hora} • ${j.local}</div>
+      <div style="border:1.5px solid ${catCor}33;border-radius:14px;margin-bottom:14px;overflow:hidden;background:#fff">
+        <!-- Cabeçalho categoria -->
+        <div style="padding:14px 16px;background:${catCor}10;border-bottom:1px solid ${catCor}22;display:flex;align-items:center;gap:10px">
+          <div style="width:38px;height:38px;border-radius:10px;background:${catCor};display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${cat.emoji}</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:800;color:${catCor}">${cat.nome}</div>
+            <div style="font-size:10px;color:var(--text-3);margin-top:2px">${cobrancas.length} atletas · ${pagos.length} pagos · ${pendentes.length} pendentes</div>
           </div>
           <div style="text-align:right">
-            <div style="font-size:12px;font-weight:700;color:${pendentes.length===0?'#1a5c26':'#7a4010'}">${pagos.length}/${cobrancas.length} pagos</div>
-            ${pendentes.length > 0 ? `<button class="btn-sm" style="margin-top:8px" onclick="cobrarTodasArbitragem()">Cobrar ${pendentes.length}</button>` : ''}
+            ${pendentes.length > 0
+              ? `<div style="font-size:11px;font-weight:700;color:#7a4010">A receber: R$ ${totalPend.toFixed(2).replace('.',',')}</div>
+                 <button class="btn-sm" style="margin-top:6px;background:${catCor};color:#fff;border:none" onclick="cobrarCategoria('${catKey}')">Cobrar todos</button>`
+              : `<div style="font-size:11px;font-weight:700;color:#1a5c26">✓ Tudo pago</div>`
+            }
           </div>
         </div>
+        <!-- Lista de atletas da categoria -->
         <div>
           ${cobrancas.map(a => `
             <div class="av-row" data-status="${a.status}" style="border:none;border-bottom:1px solid var(--border);border-radius:0;margin:0">
-              <div class="av">${a.sig}</div>
+              <div class="av" style="background:${catCor}">${a.sig}</div>
               <div class="av-content">
-                <h5>${a.sig}</h5>
-                <p>${CATS_DATA[a.catKey]?.nome || 'Cat.'} • ${fmtR$(a.valor)}</p>
+                <h5>${a.sig} · ${a.jogo || 'Arbitragem'}</h5>
+                <p>${fmtR$(a.valor)} · ${a.status === 'pago' ? 'Pago' : 'Pendente'}</p>
               </div>
               <div class="av-act">
-                <button class="btn-sm" onclick="marcarArbitragemPaga('${a.id}')">${a.status === 'pago' ? '✓ Pago' : 'Cobrar'}</button>
+                <button class="btn-sm" onclick="marcarArbitragemPaga('${a.id}')"
+                  style="${a.status==='pago'?'color:#1a5c26;border-color:#8ec99a':'color:#7a4010;border-color:#e8c97a'}">
+                  ${a.status === 'pago' ? '✓ Pago' : 'Confirmar'}
+                </button>
               </div>
             </div>
           `).join('')}
@@ -1285,6 +1305,12 @@ function renderFinArbitragem() {
   });
 
   document.getElementById('tabela-arbitragem').innerHTML = html;
+}
+
+function cobrarCategoria(catKey) {
+  ARBITRAGEM.filter(a => a.catKey === catKey && a.status === 'pendente').forEach(a => a.status = 'pago');
+  renderFinArbitragem();
+  renderFinPainel();
 }
 
 function renderFinCobrancas() {
