@@ -231,7 +231,7 @@ function renderChamada(cat, cor){
   let rows = cat.atletas.map((a,i)=>{
     const pc = a.pres>=85?'#27500a':a.pres>=70?'#854f0b':'#a32d2d';
     const fichaKey = a.sig + catKey;
-    const temCondicaoMedica = FICHAS[fichaKey]?.ficha_medica?.condicoes;
+    const temCondicaoMedica = FICHAS[fichaKey]?.cond;
     return `<div class="cr-item">
       <div class="av" style="width:32px;height:32px;font-size:11px;background:${cor}">${a.sig}</div>
       <div style="flex:1">
