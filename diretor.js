@@ -38,12 +38,25 @@ function montarDiretor(cor){
 }
 
 function renderDashboard(cor){
+  // Calcula totais reais a partir dos dados
+  const totalAtletas = Object.values(CATS_DATA).reduce((s,c)=>s+(c.atletas||[]).length,0);
+  const numCats = Object.keys(CATS_DATA).length;
+  const totalMens = Object.values(MENSALIDADES_ATLETAS).filter(m=>m.status==='pago').reduce((s,m)=>s+m.valor,0);
+  const totalMensK = (totalMens/1000).toFixed(1);
+  // Presença média geral (média das % de cada atleta em todas categorias)
+  const todosAtletas = Object.values(CATS_DATA).flatMap(c=>c.atletas||[]);
+  const presMedia = todosAtletas.length
+    ? Math.round(todosAtletas.reduce((s,a)=>s+(a.pres||0),0)/todosAtletas.length)
+    : 0;
+  // Próximos jogos
+  const proxJogos = JOGOS_AGENDADOS.slice(0,3);
   return `<div class="stat-grid">
-    <div class="stat-c" style="background:#dcf0e0;border:1px solid #8ec99a"><div class="stat-v" style="color:#1a5c26">47</div><div class="stat-l" style="color:#1a5c26">Atletas ativos</div><div style="font-size:9px;color:#3b7a40;margin-top:2px;font-weight:500">Sub-7 ao Sub-15</div></div>
-    <div class="stat-c" style="background:#dceaf8;border:1px solid #7eb3e8"><div class="stat-v" style="color:#0e3d6e">3</div><div class="stat-l" style="color:#0e3d6e">Camps. ativos</div><div style="font-size:9px;color:#185fa5;margin-top:2px;font-weight:500">em andamento</div></div>
-    <div class="stat-c" style="background:#fdf3dc;border:1px solid #e8c97a"><div class="stat-v" style="color:#7a4010">R$4.2k</div><div class="stat-l" style="color:#7a4010">Mensalidades</div><div style="font-size:9px;color:#a05a10;margin-top:2px;font-weight:500">maio 2025</div></div>
-    <div class="stat-c" style="background:#ece9fd;border:1px solid #afa9ec"><div class="stat-v" style="color:#3c2e9e">94%</div><div class="stat-l" style="color:#3c2e9e">Presença média</div><div style="font-size:9px;color:#534ab7;margin-top:2px;font-weight:500">esta semana</div></div>
+    <div class="stat-c" style="background:#dcf0e0;border:1px solid #8ec99a"><div class="stat-v" style="color:#1a5c26">${totalAtletas}</div><div class="stat-l" style="color:#1a5c26">Atletas ativos</div><div style="font-size:9px;color:#3b7a40;margin-top:2px;font-weight:500">${numCats} categorias</div></div>
+    <div class="stat-c" style="background:#dceaf8;border:1px solid #7eb3e8"><div class="stat-v" style="color:#0e3d6e">${numCats}</div><div class="stat-l" style="color:#0e3d6e">Categorias</div><div style="font-size:9px;color:#185fa5;margin-top:2px;font-weight:500">Sub-7 ao Sub-15</div></div>
+    <div class="stat-c" style="background:#fdf3dc;border:1px solid #e8c97a"><div class="stat-v" style="color:#7a4010">R$${totalMensK}k</div><div class="stat-l" style="color:#7a4010">Mensalidades</div><div style="font-size:9px;color:#a05a10;margin-top:2px;font-weight:500">recebido</div></div>
+    <div class="stat-c" style="background:#ece9fd;border:1px solid #afa9ec"><div class="stat-v" style="color:#3c2e9e">${presMedia}%</div><div class="stat-l" style="color:#3c2e9e">Presença média</div><div style="font-size:9px;color:#534ab7;margin-top:2px;font-weight:500">todas cats.</div></div>
   </div>
+  ${proxJogos.length ? `<div class="lbl">Próximos jogos</div><div class="cw" style="padding:6px 14px">${proxJogos.map(j=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--text)">vs ${j.adv}</div><div style="font-size:9px;color:var(--text-3);margin-top:1px;font-weight:500">${j.cat} · ${j.data} · ${j.hora} · ${j.local||'—'}</div></div><span class="tag tb">${j.status||'agendado'}</span></div>`).join('')}</div>` : ''}
   <div class="lbl">Alertas urgentes</div>
   <div class="alerta" style="background:#fce8e8;border:1px solid #e8a0a0">
     <div class="al-icon" style="background:#f5c5c5"><i class="ti ti-alert-triangle" style="font-size:14px;color:#8b1a1a"></i></div>

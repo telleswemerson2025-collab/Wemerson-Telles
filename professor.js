@@ -68,6 +68,14 @@ function montarProfessor(catKey, cat, cor){
 }
 
 function renderJogosProfessor(cat, cor){
+  // Deriva catKey a partir do objeto cat para filtrar jogos pela categoria correta
+  const catKey = Object.entries(CATS_DATA).find(([k,c])=>c===cat)?.[0] || 'sub13';
+  // Filtra jogos agendados para a categoria atual
+  const jogosCat = JOGOS_AGENDADOS.filter(j => {
+    const jCat = (j.cat||'').toLowerCase().replace(/[^a-z0-9]/g,'').replace('sub','sub');
+    const kNorm = catKey.toLowerCase();
+    return jCat === kNorm || j.cat === cat.nome;
+  });
   return `
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
     <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Jogos — ${cat.nome}</span>
@@ -120,27 +128,52 @@ function renderJogosProfessor(cat, cor){
   </div>
 
   <!-- PRÓXIMOS JOGOS -->
-  <div class="lbl">Próximos jogos</div>
-  <div id="lista-jogos-agendados">${renderListaJogosAgendados()}</div>
+  <div class="lbl">Próximos jogos — ${cat.nome}</div>
+  <div id="lista-jogos-agendados">
+    ${jogosCat.length === 0
+      ? `<div style="color:var(--text-3);font-size:12px;padding:10px 0">Nenhum jogo agendado para ${cat.nome}.</div>`
+      : jogosCat.map(j=>{
+          const conv = j.conv || [];
+          const convStr = conv.length ? conv.join(', ') : 'Nenhum';
+          return `<div class="card" style="margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+              <span style="font-size:10px;color:var(--text-3);font-weight:500">${j.cat} · ${j.data} · ${j.hora}</span>
+              <span class="tag tb">${j.status||'agendado'}</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px">
+              <span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span>
+              <span style="font-size:13px;color:var(--text-3)">vs</span>
+              <span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">${j.adv}</span>
+            </div>
+            <div style="font-size:9px;color:var(--text-3);margin-top:2px">📍 ${j.local||'—'} · ${j.camp||'—'}</div>
+            <div style="font-size:9px;color:var(--text-3);margin-top:2px">👕 ${j.unif||'—'}</div>
+            <div style="font-size:9px;color:var(--text-3);margin-top:2px">🚩 Convocados: ${convStr}</div>
+          </div>`;
+        }).join('')
+    }
+  </div>
 
   <!-- RESULTADOS ANTERIORES -->
-  <div class="lbl">Últimos resultados</div>
-  ${JOGOS_RESULTADOS.map(r=>{
-    const win = r.resultado==='Vitória';
-    return `<div class="card" style="border-left:3px solid ${win?'#1a5c26':'#8b1a1a'}">
-      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-        <span style="font-size:10px;color:var(--text-3);font-weight:500">${r.data} · ${r.cat}</span>
-        <span class="tag ${win?'tg':'tr'}">${r.resultado}</span>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px">
-        <span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span>
-        <span style="font-family:var(--font-display);font-size:28px;color:var(--text);letter-spacing:.04em">${r.gv}</span>
-        <span style="font-size:14px;color:var(--text-3)">×</span>
-        <span style="font-family:var(--font-display);font-size:28px;color:var(--text);letter-spacing:.04em">${r.ga}</span>
-        <span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">${r.adv}</span>
-      </div>
-    </div>`;
-  }).join('')}`;
+  <div class="lbl">Últimos resultados — ${cat.nome}</div>
+  ${JOGOS_RESULTADOS.filter(r=>r.cat===cat.nome).length === 0
+    ? `<div style="color:var(--text-3);font-size:12px;padding:6px 0">Nenhum resultado registrado para ${cat.nome}.</div>`
+    : JOGOS_RESULTADOS.filter(r=>r.cat===cat.nome).map(r=>{
+        const win = r.resultado==='Vitória';
+        return `<div class="card" style="border-left:3px solid ${win?'#1a5c26':'#8b1a1a'}">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+            <span style="font-size:10px;color:var(--text-3);font-weight:500">${r.data} · ${r.cat}</span>
+            <span class="tag ${win?'tg':'tr'}">${r.resultado}</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+            <span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span>
+            <span style="font-family:var(--font-display);font-size:28px;color:var(--text);letter-spacing:.04em">${r.gv}</span>
+            <span style="font-size:14px;color:var(--text-3)">×</span>
+            <span style="font-family:var(--font-display);font-size:28px;color:var(--text);letter-spacing:.04em">${r.ga}</span>
+            <span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">${r.adv}</span>
+          </div>
+        </div>`;
+      }).join('')
+  }`;
 }
 
 // =====================
