@@ -739,6 +739,14 @@ body {
             <div class="chart-wrap"><canvas id="chartInadimplencia"></canvas></div>
           </div>
         </div>
+
+        <div class="chart-card" style="margin-top:0">
+          <div class="chart-card-head">
+            <h4>Fluxo de atletas — presença por categoria</h4>
+            <span>Dados salvos na chamada do professor</span>
+          </div>
+          <div class="chart-wrap" style="height:200px"><canvas id="chartFluxoAtletas"></canvas></div>
+        </div>
       </div>
 
       <div class="grid-side">
@@ -1059,6 +1067,39 @@ function desenharGraficoInadimplencia() {
   });
 }
 
+function desenharGraficoFluxoAtletas() {
+  destruirGrafico('chartFluxoAtletas');
+  const ph = (() => {
+    try { return JSON.parse(localStorage.getItem('vot_presenca_hist') || 'null'); } catch(e){ return null; }
+  })();
+  const labels = ph?.labels || HISTORICO_MESES;
+  const sub7   = ph?.sub7   || [0,0,0,0,0,0];
+  const sub9   = ph?.sub9   || [0,0,0,0,0,0];
+  const sub11  = ph?.sub11  || [0,0,0,0,0,0];
+  const sub13  = ph?.sub13  || [0,0,0,0,0,0];
+  const sub15  = ph?.sub15  || [0,0,0,0,0,0];
+  const ctx = document.getElementById('chartFluxoAtletas')?.getContext('2d');
+  if(!ctx) return;
+  CHART_INSTANCES['chartFluxoAtletas'] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {label:'Sub-7', data:sub7,  borderColor:'#c45e10',backgroundColor:'transparent',borderWidth:2,tension:.4,pointRadius:3},
+        {label:'Sub-9', data:sub9,  borderColor:'#0f8c6e',backgroundColor:'transparent',borderWidth:2,tension:.4,pointRadius:3},
+        {label:'Sub-11',data:sub11, borderColor:'#0d3d1a',backgroundColor:'transparent',borderWidth:2,tension:.4,pointRadius:3},
+        {label:'Sub-13',data:sub13, borderColor:'#0e3d6e',backgroundColor:'transparent',borderWidth:2,tension:.4,pointRadius:3},
+        {label:'Sub-15',data:sub15, borderColor:'#8a6200',backgroundColor:'transparent',borderWidth:2,tension:.4,pointRadius:3},
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:8,font:{size:9}}}},
+      scales:{y:{beginAtZero:true,ticks:{stepSize:2},title:{display:true,text:'Atletas presentes',font:{size:9}}}}
+    }
+  });
+}
+
 function desenharGraficoSocios() {
   destruirGrafico('chartSocios');
   const pago = SOCIOS.filter(s => s.status === 'pago').length;
@@ -1103,6 +1144,7 @@ function renderFinPainel() {
     desenharGraficoReceitas();
     desenharGraficoInadimplencia();
     desenharGraficoSocios();
+    setTimeout(()=>{ desenharGraficoFluxoAtletas(); }, 50);
   }, 100);
 }
 
