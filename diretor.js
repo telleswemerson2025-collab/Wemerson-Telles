@@ -31,7 +31,7 @@ function montarDiretor(cor){
   <div id="s-1" class="scr" style="padding:11px 13px;overflow-y:auto">${renderDirAtletas(cor)}</div>
   <div id="s-2" class="scr" style="padding:11px 13px;overflow-y:auto">${renderJogos(cor)}</div>
   <div id="s-3" class="scr" style="padding:11px 13px;overflow-y:auto">${renderCamps(cor)}</div>
-  <div id="s-4" class="scr" style="padding:11px 13px;overflow-y:auto">${renderFinanceiro(cor)}</div>
+  <div id="s-4" class="scr" style="padding:11px 13px;overflow-y:auto">${renderFinResumoDiretor(cor)}</div>
   <div id="s-5" class="scr" style="padding:11px 13px;overflow-y:auto">${renderMensagem('todas as categorias',true,cor)}</div>
   <div id="s-6" class="scr" style="padding:11px 13px;overflow-y:auto">${renderConfig(cor)}</div>`;
   setCor(cor);
@@ -186,38 +186,7 @@ function renderCamps(cor){
   </div>`;
 }
 
-function renderFinanceiro(cor){
-  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-    <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Financeiro</span>
-    <button class="btn-sm" onclick="abrirModal('modal-fin')">+ Lançamento</button>
-  </div>
-  <div class="stat-grid">
-    <div class="stat-c" style="background:#dcf0e0;border:1px solid #8ec99a"><div class="stat-v" style="color:#1a5c26">R$4.2k</div><div class="stat-l" style="color:#1a5c26">Recebido</div></div>
-    <div class="stat-c" style="background:#fce8e8;border:1px solid #e8a0a0"><div class="stat-v" style="color:#8b1a1a">R$840</div><div class="stat-l" style="color:#8b1a1a">Em atraso</div></div>
-  </div>
-  <div class="lbl">Mensalidades — maio 2025</div>
-  <div class="cw" style="padding:6px 14px">
-    ${[['Kauan Telles','Sub-13','✓ pago','#1a5c26',false],
-       ['Mateus Torres','Sub-15','✓ pago','#1a5c26',false],
-       ['Lucas Ferreira','Sub-11','✓ pago','#1a5c26',false],
-       ['Pedro Alves','Sub-13','✗ atraso','#8b1a1a',true],
-       ['Rafael Costa','Sub-13','✗ atraso','#8b1a1a',true]
-    ].map(([nm,cat,st,cor2,btn])=>`
-    <div style="display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:10px">
-      <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--text)">${nm}</div><div style="font-size:9px;color:var(--text-3);margin-top:1px;font-weight:500">${cat} · venc. 01/05</div></div>
-      <div style="text-align:right">
-        <span style="font-size:12px;font-weight:700;color:${cor2}">${st} R$180</span>
-        ${btn?`<div><button class="btn-sm" style="margin-top:4px" onclick="showN('Cobrança enviada para o pai!')">Cobrar</button></div>`:''}
-      </div>
-    </div>`).join('')}
-  </div>
-  <button class="btn-g" style="background:${cor}" onclick="showN('✓ Cobrança enviada para todos em atraso!')">Cobrar todos os inadimplentes</button>
-  <div class="lbl" style="margin-top:12px">Saldo do mês</div>
-  <div style="background:#dcf0e0;border:1px solid #8ec99a;border-radius:var(--radius);padding:14px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow)">
-    <span style="font-size:12px;font-weight:700;color:#1a5c26">Receitas − Despesas</span>
-    <span style="font-family:var(--font-display);font-size:24px;color:#1a5c26;letter-spacing:.06em">+ R$2.550</span>
-  </div>`;
-}
+// renderFinanceiro removida — financeiro está em financeiro.js (montarFinanceiro)
 
 function renderConfig(cor){
   return `<div class="lbl">Dados do clube</div>
@@ -235,5 +204,38 @@ function renderConfig(cor){
     ${[['Relatório geral PDF','Toda a temporada'],['Lista de atletas Excel','Planilha completa'],['Backup completo','Todos os dados']].map(([l,s])=>`
     <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">${l}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">${s}</div></div><button class="btn-sm" onclick="showN('Exportado com sucesso!')">Exportar</button></div>`).join('')}
   </div>`;
+}
+
+// Resumo financeiro embutido na aba Financeiro do diretor
+// A gestão completa está em financeiro.js (montarFinanceiro)
+function renderFinResumoDiretor(cor){
+  const totalRec = Object.values(MENSALIDADES_ATLETAS).filter(m=>m.status==='pago').reduce((s,m)=>s+m.valor,0);
+  const totalAtr = Object.values(MENSALIDADES_ATLETAS).filter(m=>m.status==='atraso').reduce((s,m)=>s+m.valor,0);
+  return `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Financeiro</span>
+    <button class="btn-sm" onclick="entrar('financeiro')">Gestão completa</button>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-c" style="background:#dcf0e0;border:1px solid #8ec99a"><div class="stat-v" style="color:#1a5c26">R$${(totalRec/1000).toFixed(1)}k</div><div class="stat-l" style="color:#1a5c26">Recebido</div></div>
+    <div class="stat-c" style="background:#fce8e8;border:1px solid #e8a0a0"><div class="stat-v" style="color:#8b1a1a">R$${totalAtr}</div><div class="stat-l" style="color:#8b1a1a">Em atraso</div></div>
+  </div>
+  <div class="lbl">Mensalidades em atraso</div>
+  <div class="cw" style="padding:6px 14px">
+    ${Object.entries(MENSALIDADES_ATLETAS).filter(([,m])=>m.status==='atraso').map(([chave,m])=>{
+      const catKey = chave.replace(/^[A-Z]+/,'');
+      const cat = CATS_DATA[catKey];
+      const atleta = cat?.atletas.find(a=>chave.startsWith(a.sig));
+      const nome = atleta?.nome || chave;
+      return \`<div style="display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:10px">
+        <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--text)">\${nome}</div><div style="font-size:9px;color:var(--text-3);margin-top:1px;font-weight:500">\${cat?.nome||''} · venc. \${m.venc}</div></div>
+        <div style="text-align:right">
+          <span style="font-size:12px;font-weight:700;color:#8b1a1a">✗ atraso R$\${m.valor}</span>
+          <div><button class="btn-sm" style="margin-top:4px" onclick="showN('Cobrança enviada!')">Cobrar</button></div>
+        </div>
+      </div>\`;
+    }).join('')}
+  </div>
+  <button class="btn-g" style="background:${cor}" onclick="entrar('financeiro')">Abrir gestão financeira completa</button>`;
 }
 
