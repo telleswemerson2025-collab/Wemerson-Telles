@@ -33,8 +33,21 @@
 }
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface-2);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:20px 12px}
 
-/* PHONE FRAME */
+/* PHONE FRAME — mobile: tela cheia; desktop: moldura de celular centralizada */
 .phone{width:100%;max-width:390px;border-radius:36px;overflow:hidden;background:#fff;box-shadow:0 24px 80px rgba(0,0,0,.18),0 4px 16px rgba(0,0,0,.08),inset 0 0 0 1px rgba(255,255,255,.6);min-height:680px;display:flex;flex-direction:column;border:1.5px solid rgba(0,0,0,.08)}
+
+/* DESKTOP: layout lado a lado */
+@media(min-width:900px){
+  body{align-items:flex-start;padding:32px 40px;gap:40px;flex-direction:row}
+  .phone{min-height:820px;position:sticky;top:32px;flex-shrink:0}
+  #desktop-panel{flex:1;min-width:0;display:block}
+  #tela-inicial .tela-inner{padding:60px 40px 40px}
+}
+@media(max-width:899px){
+  #desktop-panel{display:none!important}
+  body{padding:0;align-items:stretch}
+  .phone{max-width:100%;border-radius:0;min-height:100vh;box-shadow:none;border:none}
+}
 
 /* STATUS BAR */
 .sbar{background:var(--color,#0d3d1a);padding:9px 20px 7px;display:flex;justify-content:space-between;align-items:center;transition:background .35s}
@@ -391,6 +404,46 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface-2);min-
   </div>
   <div id="screens" style="flex:1;overflow:hidden;display:flex;flex-direction:column;background:var(--surface)"></div>
   <div class="bnav" id="bnav"></div>
+</div>
+
+<!-- PAINEL DESKTOP -->
+<div id="desktop-panel" style="display:none">
+  <div style="background:#fff;border-radius:20px;padding:28px;box-shadow:var(--shadow-md);margin-bottom:20px;border:1px solid var(--border)">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.08em;color:var(--text);margin-bottom:4px">Votoraty Academy</div>
+    <div style="font-size:12px;color:var(--text-3);font-weight:500;margin-bottom:20px">Sistema de gestão da escolinha</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+      <div style="background:#dcf0e0;border:1px solid #8ec99a;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:#1a5c26">47</div>
+        <div style="font-size:10px;font-weight:700;color:#1a5c26;text-transform:uppercase;letter-spacing:.05em">Atletas ativos</div>
+      </div>
+      <div style="background:#dceaf8;border:1px solid #7eb3e8;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:#0e3d6e">5</div>
+        <div style="font-size:10px;font-weight:700;color:#0e3d6e;text-transform:uppercase;letter-spacing:.05em">Categorias</div>
+      </div>
+      <div style="background:#fdf3dc;border:1px solid #e8c97a;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:#7a4010">94%</div>
+        <div style="font-size:10px;font-weight:700;color:#7a4010;text-transform:uppercase;letter-spacing:.05em">Presença</div>
+      </div>
+      <div style="background:#ece9fd;border:1px solid #afa9ec;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:#3c2e9e">3</div>
+        <div style="font-size:10px;font-weight:700;color:#3c2e9e;text-transform:uppercase;letter-spacing:.05em">Camps. ativos</div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Acesso rápido</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button onclick="entrar('diretor')" style="padding:12px 16px;border-radius:12px;border:1px solid rgba(60,52,137,.2);background:rgba(60,52,137,.07);color:#3c3489;font-size:12px;font-weight:700;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px"><span style="font-size:18px">👑</span> Diretor / Admin</button>
+      <button onclick="entrar('professor')" style="padding:12px 16px;border-radius:12px;border:1px solid rgba(13,61,26,.2);background:rgba(13,61,26,.07);color:#0d3d1a;font-size:12px;font-weight:700;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px"><span style="font-size:18px">🏫</span> Professor / Técnico</button>
+      <button onclick="entrar('atleta')" style="padding:12px 16px;border-radius:12px;border:1px solid rgba(184,134,11,.3);background:rgba(184,134,11,.08);color:#7a5c00;font-size:12px;font-weight:700;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px"><span style="font-size:18px">🏃</span> Atleta / Família</button>
+    </div>
+  </div>
+  <div style="background:#fff;border-radius:20px;padding:20px 24px;box-shadow:var(--shadow);border:1px solid var(--border)">
+    <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Próximos eventos</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><div style="width:34px;height:34px;border-radius:9px;background:#dceaf8;display:flex;align-items:center;justify-content:center;font-size:16px">🏃</div><div><div style="font-size:12px;font-weight:700;color:var(--text)">Treino técnico</div><div style="font-size:10px;color:var(--text-3)">Sub-13 · Ter 03 Jun · 08h</div></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><div style="width:34px;height:34px;border-radius:9px;background:#fce8e8;display:flex;align-items:center;justify-content:center;font-size:16px">⚽</div><div><div style="font-size:12px;font-weight:700;color:var(--text)">vs Rapid FC</div><div style="font-size:10px;color:var(--text-3)">Sub-13 · Sáb 07 Jun · 09h</div></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0"><div style="width:34px;height:34px;border-radius:9px;background:#dceaf8;display:flex;align-items:center;justify-content:center;font-size:16px">🏃</div><div><div style="font-size:12px;font-weight:700;color:var(--text)">Treino tático</div><div style="font-size:10px;color:var(--text-3)">Sub-13 · Qui 05 Jun · 08h</div></div></div>
+    </div>
+  </div>
 </div>
 
 <!-- MODAIS -->
@@ -859,6 +912,12 @@ function carregarLS(){
 
 carregarLS();
 
+// Mostra painel lateral no desktop ao carregar
+window.addEventListener('DOMContentLoaded', function(){
+  const dp = document.getElementById('desktop-panel');
+  if(dp && window.innerWidth >= 900) dp.style.display='block';
+});
+
 let perfilAtual = null;
 let offline = false;
 let chamadas = {};
@@ -912,6 +971,8 @@ function entrar(perfil){
   perfilAtual = perfil;
   document.getElementById('tela-inicial').style.display='none';
   document.getElementById('app').style.display='flex';
+  const dp = document.getElementById('desktop-panel');
+  if(dp) dp.style.display='none';
   const cor = CORES[perfil.replace('prof_','')];
   setCor(cor);
   configurarPerfil(perfil, cor);
@@ -2250,6 +2311,8 @@ function toggleOff(){
 function sair(){
   document.getElementById('app').style.display='none';
   document.getElementById('tela-inicial').style.display='flex';
+  const dp = document.getElementById('desktop-panel');
+  if(dp && window.innerWidth >= 900) dp.style.display='block';
   chamadas={};golsV=2;offlineMode=false;
   // Remove mini avatar do header ao sair
   const mini = document.getElementById('header-mini-av');
