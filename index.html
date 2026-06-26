@@ -2544,10 +2544,13 @@ function renderFinPainel(){
   const presTrend = presAtual >= presAnterior ? '↑' : '↓';
   const presTrendColor = presAtual >= presAnterior ? '#1a5c26' : '#8b1a1a';
 
+  const _hpFluxo = HISTORICO_PRESENCA; // captura para os dois timeouts
   setTimeout(()=>{
     desenharGraficoReceitas('chart-receitas');
     desenharGraficoInadimplencia('chart-inadimplencia');
-    // Gráfico de fluxo de atletas
+  },0);
+  setTimeout(()=>{
+    // Gráfico de fluxo de atletas — timeout separado
     destruirGrafico('chart-fluxo-atletas');
     const ctx = document.getElementById('chart-fluxo-atletas')?.getContext('2d');
     if(ctx){
@@ -2566,11 +2569,12 @@ function renderFinPainel(){
         options:{
           responsive:true,maintainAspectRatio:false,
           plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:8,font:{size:9}}}},
-          scales:{y:{beginAtZero:true,max:10,ticks:{stepSize:2},title:{display:true,text:'Atletas presentes',font:{size:9}}}}
+          scales:{y:{beginAtZero:true,ticks:{stepSize:2},title:{display:true,text:'Atletas presentes',font:{size:9}}}}
         }
       });
+      CHART_INSTANCES['chart-fluxo-atletas'].resize();
     }
-  },0);
+  },50);
 
   return `
   <div class="fin-grid" style="margin-bottom:10px">
@@ -2621,7 +2625,7 @@ function renderFinPainel(){
         </div>`;
       }).join('')}
     </div>
-    <div class="chart-wrap"><canvas id="chart-fluxo-atletas"></canvas></div>
+    <div class="chart-wrap" style="height:200px"><canvas id="chart-fluxo-atletas"></canvas></div>
   </div>
 
   <div class="chart-card">
