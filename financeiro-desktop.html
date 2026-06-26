@@ -1540,29 +1540,117 @@ function cobrarIndividualArb(id, catKey) {
 }
 
 function renderFinCobrancas() {
-  const pend = [];
-  SOCIOS.filter(s => s.status !== 'pago').forEach(s => {
-    pend.push({tipo: 'Sócio', nome: s.nome, valor: s.valor, status: s.status, id: 's-' + s.id});
-  });
-  Object.entries(MENSALIDADES_ATLETAS).filter(([_, m]) => m.status !== 'pago').forEach(([id, m]) => {
-    const match = id.match(/([A-Z]+)([a-z0-9]+)/);
-    const sig = match?.[1] || '';
-    pend.push({tipo: 'Atleta', nome: sig, valor: m.valor, status: m.status, id: 'a-' + id});
-  });
+  let html = '';
 
-  const html = pend.length > 0 ? pend.map(p => `
-    <div class="av-row" data-status="${p.status}">
-      <div class="av">${iniciais(p.nome)}</div>
-      <div class="av-content">
-        <h5>${p.nome}</h5>
-        <p>${p.tipo} • ${fmtR$(p.valor)}</p>
+  // --- Grupo Sócios ---
+  const sociosPend = SOCIOS.filter(s => s.status !== 'pago');
+  const corSocios = '#1a3a5c';
+  html += `
+    <div style="margin-bottom:20px;border-radius:12px;overflow:hidden;border:1px solid #dde3ed">
+      <div style="background:${corSocios};color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <span style="font-size:15px;font-weight:700">🏅 Sócios · ${sociosPend.length} pendente${sociosPend.length!==1?'s':''}</span>
+        ${sociosPend.length > 0 ? `<button onclick="cobrarGrupoSocios()" style="padding:6px 14px;border-radius:8px;border:none;background:#fff;color:${corSocios};font-weight:700;font-size:12px;cursor:pointer">📲 Cobrar todos sócios</button>` : ''}
       </div>
-      <div class="av-act">
-        ${tagHtml(p.status)}
+      <div style="background:#f7f9fc">
+        ${sociosPend.length === 0
+          ? '<div style="text-align:center;padding:20px;color:#6b7280;font-size:13px">✓ Todos em dia</div>'
+          : sociosPend.map(s => `
+            <div class="av-row" data-status="${s.status}" style="border-bottom:1px solid #edf0f5;margin:0;padding:10px 14px">
+              <div class="av" style="background:${corSocios};color:#fff;min-width:36px;width:36px;height:36px;font-size:13px">${iniciais(s.nome)}</div>
+              <div class="av-content" style="flex:1">
+                <h5 style="margin:0;font-size:13px">${s.nome}</h5>
+                <p style="margin:0;font-size:11px;color:#6b7280">${s.plano} · ${fmtR$(s.valor)} · Venc. ${s.venc}</p>
+              </div>
+              <div class="av-act" style="display:flex;align-items:center;gap:8px">
+                ${tagHtml(s.status)}
+                <button onclick="cobrarIndividualCobranca('socio','${s.id}')" style="padding:5px 10px;border-radius:8px;border:none;background:#e67e22;color:#fff;font-size:12px;cursor:pointer">📲</button>
+              </div>
+            </div>
+          `).join('')
+        }
       </div>
     </div>
-  `).join('') : '<div style="text-align:center;padding:40px;color:var(--text-3)">Nenhum pendente</div>';
+  `;
+
+  // --- Grupos por categoria sub ---
+  const catKeys = ['sub7','sub9','sub11','sub13','sub15'];
+  catKeys.forEach(catKey => {
+    const cat = CATS_DATA[catKey] || {nome: catKey, emoji:'⚽', cor:'#555'};
+    const pendentes = Object.entries(MENSALIDADES_ATLETAS)
+      .filter(([id, m]) => id.toLowerCase().endsWith(catKey) && m.status !== 'pago');
+
+    html += `
+      <div style="margin-bottom:20px;border-radius:12px;overflow:hidden;border:1px solid #dde3ed">
+        <div style="background:${cat.cor};color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <span style="font-size:15px;font-weight:700">${cat.nome} ${cat.emoji} · ${pendentes.length} pendente${pendentes.length!==1?'s':''}</span>
+          ${pendentes.length > 0 ? `<button onclick="cobrarGrupoAtletas('${catKey}')" style="padding:6px 14px;border-radius:8px;border:none;background:#fff;color:${cat.cor};font-weight:700;font-size:12px;cursor:pointer">📲 Cobrar categoria</button>` : ''}
+        </div>
+        <div style="background:#f7f9fc">
+          ${pendentes.length === 0
+            ? '<div style="text-align:center;padding:20px;color:#6b7280;font-size:13px">✓ Todos em dia</div>'
+            : pendentes.map(([id, m]) => {
+                const sig = id.replace(new RegExp(catKey,'i'), '');
+                const atletaInfo = (cat.atletas || []).find(a => a.sig === sig) || {nome: sig, pos: ''};
+                return `
+                  <div class="av-row" data-status="${m.status}" style="border-bottom:1px solid #edf0f5;margin:0;padding:10px 14px">
+                    <div class="av" style="background:${cat.cor};color:#fff;min-width:36px;width:36px;height:36px;font-size:13px">${sig}</div>
+                    <div class="av-content" style="flex:1">
+                      <h5 style="margin:0;font-size:13px">${atletaInfo.nome}</h5>
+                      <p style="margin:0;font-size:11px;color:#6b7280">${cat.nome} · ${atletaInfo.pos} · ${fmtR$(m.valor)} · Venc. ${m.venc}</p>
+                    </div>
+                    <div class="av-act" style="display:flex;align-items:center;gap:8px">
+                      ${tagHtml(m.status)}
+                      <button onclick="cobrarIndividualCobranca('atleta','${id}')" style="padding:5px 10px;border-radius:8px;border:none;background:#e67e22;color:#fff;font-size:12px;cursor:pointer">📲</button>
+                    </div>
+                  </div>
+                `;
+              }).join('')
+          }
+        </div>
+      </div>
+    `;
+  });
+
   document.getElementById('tabela-pendentes').innerHTML = html;
+}
+
+function cobrarGrupoSocios() {
+  const pendentes = SOCIOS.filter(s => s.status !== 'pago');
+  if (pendentes.length === 0) return;
+  pendentes.forEach(s => { s.status = 'pago'; });
+  showToast(`📲 Cobrança enviada para ${pendentes.length} sócio${pendentes.length!==1?'s':''}!`, 'info');
+  renderFinCobrancas();
+  renderFinPainel();
+}
+
+function cobrarGrupoAtletas(catKey) {
+  const pendentes = Object.entries(MENSALIDADES_ATLETAS)
+    .filter(([id, m]) => id.toLowerCase().endsWith(catKey) && m.status !== 'pago');
+  if (pendentes.length === 0) return;
+  pendentes.forEach(([id]) => { MENSALIDADES_ATLETAS[id].status = 'pago'; });
+  try { localStorage.setItem('vot_mensalidades', JSON.stringify(MENSALIDADES_ATLETAS)); } catch(e) {}
+  const cat = CATS_DATA[catKey] || {nome: catKey};
+  showToast(`📲 Cobrança enviada para ${pendentes.length} atleta${pendentes.length!==1?'s':''} do ${cat.nome}!`, 'info');
+  renderFinCobrancas();
+  renderFinPainel();
+}
+
+function cobrarIndividualCobranca(tipo, id) {
+  if (tipo === 'socio') {
+    const s = SOCIOS.find(x => x.id === id);
+    if (!s) return;
+    s.status = 'pago';
+    showToast(`📲 Cobrança enviada para ${s.nome}!`, 'info');
+  } else {
+    const m = MENSALIDADES_ATLETAS[id];
+    if (!m) return;
+    m.status = 'pago';
+    try { localStorage.setItem('vot_mensalidades', JSON.stringify(MENSALIDADES_ATLETAS)); } catch(e) {}
+    const sig = id.replace(/sub\d+/i, '');
+    showToast(`📲 Cobrança enviada para ${sig}!`, 'info');
+  }
+  renderFinCobrancas();
+  renderFinPainel();
 }
 
 function marcarArbitragemPaga(id) {
