@@ -2643,6 +2643,10 @@ function renderFinPainel(){
 function renderFinSocios(){
   setTimeout(()=>desenharGraficoSocios('chart-socios-status'),0);
   return `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <span style="font-family:var(--font-display);font-size:18px;letter-spacing:.06em;color:var(--text)">Sócios</span>
+    <button class="btn-sm" onclick="abrirEditarSocio(null)">+ Novo Sócio</button>
+  </div>
   <div class="chart-card">
     <div class="chart-card-head"><h4>Status dos sócios</h4><span>${SOCIOS.length} ativos</span></div>
     <div class="chart-wrap" style="height:160px"><canvas id="chart-socios-status"></canvas></div>
@@ -2665,7 +2669,11 @@ function renderFinSocios(){
           <td style="padding:9px 8px">${s.plano}</td>
           <td style="padding:9px 8px">${fmtR$(s.valor)}</td>
           <td style="padding:9px 8px">${tagHtml(s.status)}</td>
-          <td style="padding:9px 8px">${s.status!=='pago'?`<button class="btn-sm" onclick="marcarSocioPago('${s.id}')">Marcar pago</button>`:''}</td>
+          <td style="padding:9px 8px;white-space:nowrap">
+            <button class="btn-sm" onclick="abrirEditarSocio('${s.id}')" style="margin-right:4px">✏️</button>
+            <button class="btn-sm" onclick="deletarSocio('${s.id}')" style="background:#fce8e8;color:#8b1a1a;border-color:#e8a0a0">🗑️</button>
+            ${s.status!=='pago'?`<br><button class="btn-sm" style="margin-top:4px" onclick="marcarSocioPago('${s.id}')">Marcar pago</button>`:''}
+          </td>
         </tr>`).join('')}
       </tbody>
     </table>
@@ -2697,7 +2705,10 @@ function renderFinMensalidades(){
             <td style="padding:8px">${fmtR$(m.valor)}</td>
             <td style="padding:8px">${m.venc}</td>
             <td style="padding:8px">${tagHtml(m.status)}</td>
-            <td style="padding:8px">${m.status!=='pago'?`<button class="btn-sm" onclick="marcarAtletaPago('${a.chave}')">Pago</button>`:''}</td>
+            <td style="padding:8px;white-space:nowrap">
+              <button class="btn-sm" onclick="abrirEditarMensalidade('${a.chave}','${a.nome}')" style="margin-bottom:3px">✏️</button>
+              ${m.status!=='pago'?`<br><button class="btn-sm" onclick="marcarAtletaPago('${a.chave}')">Pago</button>`:''}
+            </td>
           </tr>`;
         }).join('')}
       </tbody>
@@ -3410,6 +3421,278 @@ function fecharModal(id){document.getElementById(id).classList.remove('on');}
 document.querySelectorAll('.modal-overlay').forEach(m=>{
   m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on');});
 });
+
+// =====================
+// CRUD — SÓCIOS
+// =====================
+function abrirEditarSocio(id){
+  const s = id ? SOCIOS.find(x=>x.id===id) : null;
+  document.getElementById('med-socio-titulo').textContent = s ? 'Editar Sócio' : 'Novo Sócio';
+  document.getElementById('med-socio-id').value = s ? s.id : '';
+  document.getElementById('med-socio-nome').value = s ? s.nome : '';
+  document.getElementById('med-socio-plano').value = s ? s.plano : 'Sócio Torcedor';
+  document.getElementById('med-socio-valor').value = s ? s.valor : '';
+  document.getElementById('med-socio-venc').value = s ? s.venc : '';
+  document.getElementById('med-socio-status').value = s ? s.status : 'pago';
+  abrirModal('modal-editar-socio');
+}
+
+function salvarSocio(id){
+  const nome = document.getElementById('med-socio-nome').value.trim();
+  if(!nome){showN('⚠️ Informe o nome do sócio.',true);return;}
+  const dados = {
+    nome,
+    plano: document.getElementById('med-socio-plano').value,
+    valor: parseFloat(document.getElementById('med-socio-valor').value)||0,
+    venc: document.getElementById('med-socio-venc').value,
+    status: document.getElementById('med-socio-status').value,
+  };
+  if(id){
+    const idx = SOCIOS.findIndex(x=>x.id===id);
+    if(idx>=0) Object.assign(SOCIOS[idx], dados);
+    showN('✓ Sócio atualizado!');
+  } else {
+    dados.id = 's'+Date.now();
+    SOCIOS.push(dados);
+    showN('✓ Novo sócio cadastrado!');
+  }
+  salvarLS();
+  fecharModal('modal-editar-socio');
+  montarFinanceiro('#b8860b');
+}
+
+function deletarSocio(id){
+  if(!confirm('Excluir este sócio?')) return;
+  const idx = SOCIOS.findIndex(x=>x.id===id);
+  if(idx>=0) SOCIOS.splice(idx,1);
+  salvarLS();
+  showN('Sócio removido.');
+  montarFinanceiro('#b8860b');
+}
+
+// =====================
+// CRUD — ATLETAS
+// =====================
+function abrirEditarAtleta(sig, catKey){
+  const cat = CATS_DATA[catKey];
+  const a = sig ? cat?.atletas.find(x=>x.sig===sig) : null;
+  document.getElementById('med-atleta-titulo').textContent = a ? 'Editar Atleta' : 'Novo Atleta';
+  document.getElementById('med-atleta-oldsig').value = a ? sig : '';
+  document.getElementById('med-atleta-oldcat').value = catKey||'';
+  document.getElementById('med-atleta-nome').value = a ? a.nome : '';
+  document.getElementById('med-atleta-sig').value = a ? a.sig : '';
+  document.getElementById('med-atleta-pos').value = a ? a.pos : 'Meia';
+  document.getElementById('med-atleta-pres').value = a ? a.pres : '';
+  document.getElementById('med-atleta-gols').value = a ? a.gols : '0';
+  document.getElementById('med-atleta-nivel').value = a ? a.nivel : '5';
+  document.getElementById('med-atleta-cat').value = catKey||'sub13';
+  abrirModal('modal-editar-atleta');
+}
+
+function salvarAtleta(oldSig, oldCatKey){
+  const nome = document.getElementById('med-atleta-nome').value.trim();
+  if(!nome){showN('⚠️ Informe o nome.',true);return;}
+  const sig = document.getElementById('med-atleta-sig').value.trim().toUpperCase().slice(0,2);
+  if(!sig){showN('⚠️ Informe a sigla.',true);return;}
+  const newCatKey = document.getElementById('med-atleta-cat').value;
+  const dados = {
+    sig,
+    nome,
+    pos: document.getElementById('med-atleta-pos').value,
+    pres: parseInt(document.getElementById('med-atleta-pres').value)||85,
+    gols: parseInt(document.getElementById('med-atleta-gols').value)||0,
+    nivel: parseInt(document.getElementById('med-atleta-nivel').value)||5,
+  };
+  if(oldSig && oldCatKey){
+    // Remove da categoria antiga
+    const oldCat = CATS_DATA[oldCatKey];
+    if(oldCat){
+      const idx = oldCat.atletas.findIndex(x=>x.sig===oldSig);
+      if(idx>=0){
+        if(oldCatKey === newCatKey){
+          Object.assign(oldCat.atletas[idx], dados);
+        } else {
+          oldCat.atletas.splice(idx,1);
+          CATS_DATA[newCatKey].atletas.push(dados);
+        }
+      }
+    }
+    showN('✓ Atleta atualizado!');
+  } else {
+    CATS_DATA[newCatKey].atletas.push(dados);
+    showN('✓ Atleta cadastrado!');
+  }
+  fecharModal('modal-editar-atleta');
+  // Re-render current screen
+  const cor = CORES[perfilAtual?.replace('prof_','')||'sub13']||'#0d3d1a';
+  if(perfilAtual==='diretor') montarDiretor(CORES.diretor);
+  else if(perfilAtual && perfilAtual.startsWith('prof_')){
+    const catKey = perfilAtual.replace('prof_','');
+    montarProfessor(catKey, CATS_DATA[catKey], CORES[catKey]);
+  }
+}
+
+function deletarAtleta(sig, catKey){
+  if(!sig||!catKey){fecharModal('modal-editar-atleta');return;}
+  if(!confirm('Excluir este atleta?')) return;
+  const cat = CATS_DATA[catKey];
+  if(cat){
+    const idx = cat.atletas.findIndex(x=>x.sig===sig);
+    if(idx>=0) cat.atletas.splice(idx,1);
+  }
+  fecharModal('modal-editar-atleta');
+  showN('Atleta removido.');
+  if(perfilAtual==='diretor') montarDiretor(CORES.diretor);
+  else if(perfilAtual && perfilAtual.startsWith('prof_')){
+    const ck = perfilAtual.replace('prof_','');
+    montarProfessor(ck, CATS_DATA[ck], CORES[ck]);
+  }
+}
+
+// =====================
+// CRUD — DESPESAS
+// =====================
+function abrirEditarDespesa(idx){
+  const d = idx>=0 ? DESPESAS_CLUBE[idx] : null;
+  document.getElementById('med-despesa-titulo').textContent = d ? 'Editar Despesa' : 'Nova Despesa';
+  document.getElementById('med-despesa-idx').value = d ? idx : -1;
+  document.getElementById('med-despesa-desc').value = d ? d.descricao : '';
+  document.getElementById('med-despesa-valor').value = d ? d.valor : '';
+  abrirModal('modal-editar-despesa');
+}
+
+function salvarDespesa(idx){
+  const desc = document.getElementById('med-despesa-desc').value.trim();
+  if(!desc){showN('⚠️ Informe a descrição.',true);return;}
+  const valor = parseFloat(document.getElementById('med-despesa-valor').value)||0;
+  if(idx>=0 && idx<DESPESAS_CLUBE.length){
+    DESPESAS_CLUBE[idx] = {descricao:desc,valor};
+    showN('✓ Despesa atualizada!');
+  } else {
+    DESPESAS_CLUBE.push({descricao:desc,valor});
+    showN('✓ Despesa adicionada!');
+  }
+  salvarLS();
+  fecharModal('modal-editar-despesa');
+  montarFinanceiro('#b8860b');
+}
+
+function deletarDespesa(idx){
+  if(!confirm('Excluir esta despesa?')) return;
+  DESPESAS_CLUBE.splice(idx,1);
+  salvarLS();
+  showN('Despesa removida.');
+  montarFinanceiro('#b8860b');
+}
+
+// =====================
+// CRUD — MENSALIDADES
+// =====================
+function abrirEditarMensalidade(chave, nomeAtleta){
+  const m = MENSALIDADES_ATLETAS[chave]||{valor:180,venc:'05/06',status:'pago'};
+  document.getElementById('med-mens-chave').value = chave;
+  document.getElementById('med-mens-info').textContent = nomeAtleta||chave;
+  document.getElementById('med-mens-valor').value = m.valor;
+  document.getElementById('med-mens-venc').value = m.venc;
+  document.getElementById('med-mens-status').value = m.status;
+  abrirModal('modal-editar-mensalidade');
+}
+
+function salvarMensalidade(chave){
+  if(!chave){showN('⚠️ Erro: chave inválida.',true);return;}
+  MENSALIDADES_ATLETAS[chave] = {
+    valor: parseFloat(document.getElementById('med-mens-valor').value)||0,
+    venc: document.getElementById('med-mens-venc').value,
+    status: document.getElementById('med-mens-status').value,
+  };
+  salvarLS();
+  fecharModal('modal-editar-mensalidade');
+  showN('✓ Mensalidade atualizada!');
+  montarFinanceiro('#b8860b');
+}
+
+// =====================
+// CRUD — EVENTOS
+// =====================
+function abrirEditarEvento(idx){
+  const e = idx>=0 ? EVENTOS[idx] : null;
+  document.getElementById('med-evento-titulo').textContent = e ? 'Editar Evento' : 'Novo Evento';
+  document.getElementById('med-evento-idx').value = idx;
+  document.getElementById('med-evento-tipo').value = e ? e.tipo : 'treino';
+  document.getElementById('med-evento-data').value = e ? e.data : '';
+  document.getElementById('med-evento-hora').value = e ? e.hora : '08h';
+  document.getElementById('med-evento-label').value = e ? e.label : '';
+  document.getElementById('med-evento-cat').value = e ? e.cat : 'Sub-13';
+  abrirModal('modal-evento');
+}
+
+function salvarEvento(idx){
+  const label = document.getElementById('med-evento-label').value.trim();
+  if(!label){showN('⚠️ Informe a descrição.',true);return;}
+  const data = document.getElementById('med-evento-data').value;
+  if(!data){showN('⚠️ Informe a data.',true);return;}
+  const dados = {
+    tipo: document.getElementById('med-evento-tipo').value,
+    data,
+    hora: document.getElementById('med-evento-hora').value||'08h',
+    label,
+    cat: document.getElementById('med-evento-cat').value,
+  };
+  if(idx>=0 && idx<EVENTOS.length){
+    EVENTOS[idx] = dados;
+    showN('✓ Evento atualizado!');
+  } else {
+    EVENTOS.push(dados);
+    showN('✓ Evento adicionado!');
+  }
+  fecharModal('modal-evento');
+  // Re-render calendário se visível
+  const s5 = document.getElementById('s-5');
+  if(s5 && s5.classList.contains('on')){
+    const cor = getComputedStyle(document.documentElement).getPropertyValue('--color').trim()||'#0d3d1a';
+    s5.innerHTML = renderCalendario(cor);
+  }
+}
+
+function deletarEvento(idx){
+  if(!confirm('Excluir este evento?')) return;
+  EVENTOS.splice(idx,1);
+  showN('Evento removido.');
+  const s5 = document.getElementById('s-5');
+  if(s5){
+    const cor = getComputedStyle(document.documentElement).getPropertyValue('--color').trim()||'#0d3d1a';
+    s5.innerHTML = renderCalendario(cor);
+  }
+}
+
+// =====================
+// CRUD — PERFIL ATLETA
+// =====================
+function abrirEditarPerfil(){
+  document.getElementById('med-perfil-nome').value = ATLETA_DEFAULT.nome;
+  document.getElementById('med-perfil-pos').value = ATLETA_DEFAULT.pos;
+  document.getElementById('med-perfil-nivel').value = ATLETA_DEFAULT.nivel;
+  document.getElementById('med-perfil-cat').value = ATLETA_DEFAULT.cat;
+  abrirModal('modal-editar-perfil');
+}
+
+function salvarPerfil(){
+  const nome = document.getElementById('med-perfil-nome').value.trim();
+  if(!nome){showN('⚠️ Informe o nome.',true);return;}
+  ATLETA_DEFAULT.nome = nome;
+  ATLETA_DEFAULT.pos = document.getElementById('med-perfil-pos').value;
+  ATLETA_DEFAULT.nivel = parseInt(document.getElementById('med-perfil-nivel').value)||ATLETA_DEFAULT.nivel;
+  ATLETA_DEFAULT.cat = document.getElementById('med-perfil-cat').value;
+  fecharModal('modal-editar-perfil');
+  showN('✓ Perfil atualizado!');
+  // Update header
+  const cor = getComputedStyle(document.documentElement).getPropertyValue('--color').trim()||'#0d3d1a';
+  document.getElementById('hdr-title').textContent = ATLETA_DEFAULT.nome;
+  document.getElementById('hdr-sub').textContent = ATLETA_DEFAULT.pos+' · '+ATLETA_DEFAULT.cat+' · Nível '+ATLETA_DEFAULT.nivel;
+  // Re-render evolução if visible
+  const s1 = document.getElementById('s-1');
+  if(s1 && s1.classList.contains('on')) s1.innerHTML = renderEvolucao(cor);
+}
 </script>
 
 <script>
@@ -3422,6 +3705,154 @@ if('serviceWorker' in navigator){
   });
 }
 </script>
+<!-- MODAL EDITAR SÓCIO -->
+<div class="modal-overlay" id="modal-editar-socio">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="med-socio-titulo">Editar Sócio</div>
+    <input type="hidden" id="med-socio-id">
+    <div class="field"><label>Nome completo</label><input type="text" id="med-socio-nome" placeholder="Nome do sócio"></div>
+    <div class="field"><label>Plano</label>
+      <select id="med-socio-plano">
+        <option>Sócio Torcedor</option>
+        <option>Sócio Patrimonial</option>
+        <option>Sócio Benemérito</option>
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field"><label>Valor (R$)</label><input type="number" id="med-socio-valor" placeholder="0"></div>
+      <div class="field"><label>Vencimento (DD/MM)</label><input type="text" id="med-socio-venc" placeholder="05/06"></div>
+    </div>
+    <div class="field"><label>Status</label>
+      <select id="med-socio-status">
+        <option value="pago">Pago</option>
+        <option value="atraso">Em atraso</option>
+        <option value="pendente">A vencer</option>
+      </select>
+    </div>
+    <button class="btn-g" style="background:#b8860b" onclick="salvarSocio(document.getElementById('med-socio-id').value||null)">Salvar sócio</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-editar-socio')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL EDITAR ATLETA -->
+<div class="modal-overlay" id="modal-editar-atleta">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="med-atleta-titulo">Editar Atleta</div>
+    <input type="hidden" id="med-atleta-oldsig">
+    <input type="hidden" id="med-atleta-oldcat">
+    <div class="field"><label>Nome completo</label><input type="text" id="med-atleta-nome" placeholder="Nome do atleta"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field"><label>Sigla (2 letras)</label><input type="text" id="med-atleta-sig" placeholder="KT" maxlength="2" style="text-transform:uppercase"></div>
+      <div class="field"><label>Posição</label>
+        <select id="med-atleta-pos">
+          <option>Goleiro</option><option>Zagueiro</option><option>Lateral</option><option>Meia</option><option>Atacante</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <div class="field"><label>Presença %</label><input type="number" id="med-atleta-pres" min="0" max="100" placeholder="85"></div>
+      <div class="field"><label>Gols</label><input type="number" id="med-atleta-gols" min="0" placeholder="0"></div>
+      <div class="field"><label>Nível</label><input type="number" id="med-atleta-nivel" min="1" max="10" placeholder="5"></div>
+    </div>
+    <div class="field"><label>Categoria</label>
+      <select id="med-atleta-cat">
+        <option value="sub7">Sub-7</option>
+        <option value="sub9">Sub-9</option>
+        <option value="sub11">Sub-11</option>
+        <option value="sub13">Sub-13</option>
+        <option value="sub15">Sub-15</option>
+      </select>
+    </div>
+    <button class="btn-g" onclick="salvarAtleta(document.getElementById('med-atleta-oldsig').value,document.getElementById('med-atleta-oldcat').value)">Salvar atleta</button>
+    <button class="btn-sm" style="width:100%;margin-top:6px;text-align:center;background:#fce8e8;color:#8b1a1a;border-color:#e8a0a0" onclick="deletarAtleta(document.getElementById('med-atleta-oldsig').value,document.getElementById('med-atleta-oldcat').value)">🗑️ Excluir atleta</button>
+    <button class="btn-sm" style="width:100%;margin-top:6px;text-align:center" onclick="fecharModal('modal-editar-atleta')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL EDITAR DESPESA -->
+<div class="modal-overlay" id="modal-editar-despesa">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="med-despesa-titulo">Editar Despesa</div>
+    <input type="hidden" id="med-despesa-idx">
+    <div class="field"><label>Descrição</label><input type="text" id="med-despesa-desc" placeholder="Ex: Aluguel campo"></div>
+    <div class="field"><label>Valor (R$)</label><input type="number" id="med-despesa-valor" placeholder="0"></div>
+    <button class="btn-g" style="background:#b8860b" onclick="salvarDespesa(parseInt(document.getElementById('med-despesa-idx').value))">Salvar despesa</button>
+    <button class="btn-sm" style="width:100%;margin-top:6px;text-align:center" onclick="fecharModal('modal-editar-despesa')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL EDITAR MENSALIDADE -->
+<div class="modal-overlay" id="modal-editar-mensalidade">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Editar Mensalidade</div>
+    <input type="hidden" id="med-mens-chave">
+    <div id="med-mens-info" style="font-size:12px;color:var(--text-3);margin-bottom:12px;font-weight:500"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field"><label>Valor (R$)</label><input type="number" id="med-mens-valor" placeholder="0"></div>
+      <div class="field"><label>Vencimento (DD/MM)</label><input type="text" id="med-mens-venc" placeholder="05/06"></div>
+    </div>
+    <div class="field"><label>Status</label>
+      <select id="med-mens-status">
+        <option value="pago">Pago</option>
+        <option value="atraso">Em atraso</option>
+        <option value="pendente">A vencer</option>
+      </select>
+    </div>
+    <button class="btn-g" style="background:#b8860b" onclick="salvarMensalidade(document.getElementById('med-mens-chave').value)">Salvar mensalidade</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-editar-mensalidade')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL EVENTO/CALENDÁRIO -->
+<div class="modal-overlay" id="modal-evento">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="med-evento-titulo">Novo Evento</div>
+    <input type="hidden" id="med-evento-idx">
+    <div class="field"><label>Tipo</label>
+      <select id="med-evento-tipo">
+        <option value="treino">🏃 Treino</option>
+        <option value="jogo">⚽ Jogo</option>
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field"><label>Data</label><input type="date" id="med-evento-data"></div>
+      <div class="field"><label>Hora</label><input type="text" id="med-evento-hora" placeholder="08h"></div>
+    </div>
+    <div class="field"><label>Descrição</label><input type="text" id="med-evento-label" placeholder="Ex: Treino técnico / vs Rapid FC"></div>
+    <div class="field"><label>Categoria</label>
+      <select id="med-evento-cat">
+        <option>Sub-7</option><option>Sub-9</option><option>Sub-11</option><option selected>Sub-13</option><option>Sub-15</option>
+      </select>
+    </div>
+    <button class="btn-g" onclick="salvarEvento(parseInt(document.getElementById('med-evento-idx').value))">Salvar evento</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-evento')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL EDITAR PERFIL ATLETA -->
+<div class="modal-overlay" id="modal-editar-perfil">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Editar Meu Perfil</div>
+    <div class="field"><label>Nome completo</label><input type="text" id="med-perfil-nome" placeholder="Seu nome"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field"><label>Posição</label>
+        <select id="med-perfil-pos">
+          <option>Goleiro</option><option>Zagueiro</option><option>Lateral</option><option>Meia</option><option>Atacante</option>
+        </select>
+      </div>
+      <div class="field"><label>Nível</label><input type="number" id="med-perfil-nivel" min="1" max="10" placeholder="8"></div>
+    </div>
+    <div class="field"><label>Categoria</label><input type="text" id="med-perfil-cat" placeholder="Sub-13"></div>
+    <button class="btn-g" onclick="salvarPerfil()">Salvar perfil</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-editar-perfil')">Cancelar</button>
+  </div>
+</div>
 </body>
 </html>
 
