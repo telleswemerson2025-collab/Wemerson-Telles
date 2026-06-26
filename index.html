@@ -425,7 +425,12 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface-2);min-
 <!-- APP -->
 <div class="phone" id="app" style="display:none">
   <div class="sbar" id="sbar" style="--color:#0d3d1a;background:var(--color)">
-    <span style="font-weight:600;letter-spacing:.02em">9:41</span>
+    <div style="display:flex;align-items:center;gap:6px">
+      <button id="btn-voltar" onclick="goBack()" title="Voltar" style="display:none;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;transition:all .2s">
+        <i class="ti ti-arrow-left" style="font-size:14px;color:#fff"></i>
+      </button>
+      <span style="font-weight:600;letter-spacing:.02em">9:41</span>
+    </div>
     <span id="sbar-mid" style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.8">Votoraty Academy</span>
     <div style="display:flex;gap:8px;align-items:center">
       <span id="offline-dot" style="display:none;background:#d4a017;color:#fff;font-size:8px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:.04em">OFFLINE</span>
@@ -3278,6 +3283,7 @@ function salvarCheckin(tipo){
 }
 
 function montarNav(items, cor){
+  _resetNav(cor);
   document.getElementById('nav').innerHTML = items.map((nm,i)=>
     `<div class="nt${i===0?' on':''}" onclick="goTab(${i},'${cor}')" style="${i===0?'color:'+cor+';border-bottom-color:'+cor:''}">${nm}</div>`
   ).join('');
@@ -3292,18 +3298,52 @@ function montarBnav(items, cor){
   ).join('');
 }
 
-function goTab(idx, cor){
+let _navHistory = [];
+let _navCurrentIdx = 0;
+let _navCor = '#0d3d1a';
+
+function goTab(idx, cor, _push=true){
+  if(_push && idx !== _navCurrentIdx) _navHistory.push(_navCurrentIdx);
+  _navCurrentIdx = idx;
+  if(cor) _navCor = cor;
   document.querySelectorAll('[id^="s-"]').forEach((s,i)=>s.classList.toggle('on',i===idx));
   document.querySelectorAll('#nav .nt').forEach((t,i)=>{
     t.classList.toggle('on',i===idx);
-    t.style.color=i===idx?cor:'#bbb';
-    t.style.borderBottomColor=i===idx?cor:'transparent';
+    t.style.color=i===idx?_navCor:'#bbb';
+    t.style.borderBottomColor=i===idx?_navCor:'transparent';
   });
   document.querySelectorAll('#bnav .bi').forEach((t,i)=>{
     t.classList.toggle('on',i===idx);
-    t.querySelector('i').style.color=i===idx?cor:'#ccc';
-    t.querySelector('span').style.color=i===idx?cor:'#ccc';
+    t.querySelector('i').style.color=i===idx?_navCor:'#ccc';
+    t.querySelector('span').style.color=i===idx?_navCor:'#ccc';
   });
+  _atualizarBtnVoltar();
+}
+
+function goBack(){
+  if(_navHistory.length===0) return;
+  const prev = _navHistory.pop();
+  goTab(prev, _navCor, false);
+}
+
+function _resetNav(cor){
+  _navHistory = [];
+  _navCurrentIdx = 0;
+  _navCor = cor || '#0d3d1a';
+  _atualizarBtnVoltar();
+}
+
+function _atualizarBtnVoltar(){
+  const btn = document.getElementById('btn-voltar');
+  if(!btn) return;
+  if(_navHistory.length > 0){
+    btn.style.display = 'flex';
+    btn.style.background = _navCor + '22';
+    btn.style.borderColor = _navCor + '55';
+    btn.querySelector('i').style.color = _navCor;
+  } else {
+    btn.style.display = 'none';
+  }
 }
 
 function showN(txt,err){
