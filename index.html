@@ -1408,6 +1408,15 @@ function marcC(id,tipo,el,cor){
 // Histórico de presença acumulado (conecta chamada → financeiro)
 if(!window.PRESENCA_HIST) window.PRESENCA_HIST = {};
 
+// Status de arbitragem por categoria (conecta financeiro → professor)
+if(!window.ARBITRAGEM_STATUS) window.ARBITRAGEM_STATUS = {
+  sub7: [{sig:'AS',pago:true},{sig:'BL',pago:true},{sig:'DT',pago:false}],
+  sub9: [{sig:'EF',pago:true},{sig:'FA',pago:false},{sig:'HC',pago:true}],
+  sub11: [{sig:'LF',pago:true},{sig:'IN',pago:false},{sig:'JL',pago:true},{sig:'KP',pago:false}],
+  sub13: [{sig:'KT',pago:true},{sig:'PA',pago:false},{sig:'RC',pago:true},{sig:'TN',pago:true}],
+  sub15: [{sig:'MT',pago:true},{sig:'NF',pago:false},{sig:'OL',pago:true},{sig:'QR',pago:true}]
+};
+
 function salvarChamada(total){
   const p=Object.values(chamadas).filter(v=>v==='P').length;
   const f=Object.values(chamadas).filter(v=>v==='F').length;
@@ -3690,6 +3699,42 @@ function renderProfCat(catKey, cor){
       </div>`;
     }).join('')}
     <button style="background:${catCor};color:#fff;border:none;padding:11px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;width:100%;margin-top:5px" onclick="showN('✓ Chamada ${cat.nome} salva! Pais notificados.')">Salvar chamada</button>
+  </div>
+
+  <!-- ARBITRAGEM - STATUS DE PAGAMENTO -->
+  <div class="lbl" style="margin-top:12px">Arbitragem — Status de pagamento</div>
+  <div class="cw" style="padding:10px 14px">
+    ${(() => {
+      const statusAtual = window.ARBITRAGEM_STATUS?.[catKey] || [];
+      const nomesPorSig = {
+        'AS':'André Silva','BL':'Bruno Lima','CM':'Carlos Magno','DT':'Diego Torres',
+        'EF':'Eduardo Franco','FA':'Felipe Alves','GS':'Gustavo Silva','HC':'Hugo Costa',
+        'LF':'Leonardo Ferreira','IN':'Igor Neves','JL':'João Lima','KP':'Kevin Pereira',
+        'KT':'Kauan Telles','PA':'Pedro Alves','MT':'Marcos Teixeira','RC':'Ricardo Cruz','TN':'Thiago Neves',
+        'MT':'Matheus Teixeira','NF':'Neymar Ferreira','OL':'Otávio Lima','PM':'Paulo Marques','QR':'Quentin Rocha'
+      };
+
+      if(statusAtual.length === 0) return '<div style="font-size:11px;color:var(--text-3);text-align:center;padding:10px">Nenhum jogo agendado esta semana</div>';
+
+      const pagos = statusAtual.filter(a => a.pago).length;
+
+      return `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)">
+          <div style="font-size:11px;color:var(--text-3);font-weight:700">R$ 30 por atleta</div>
+          <div style="font-size:12px;font-weight:800;color:${pagos===statusAtual.length?'#1a5c26':'#b8860b'}">${pagos}/${statusAtual.length} pagos</div>
+        </div>
+        ${statusAtual.map(a => `
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0ede8">
+            <div class="av" style="width:30px;height:30px;font-size:10px;background:${catCor}">${a.sig}</div>
+            <div style="flex:1">
+              <div style="font-size:11px;font-weight:700;color:var(--text)">${nomesPorSig[a.sig] || a.sig}</div>
+              <div style="font-size:9px;color:var(--text-3)">${cat.nome} vs Flamengo · 15 Jun</div>
+            </div>
+            <span style="font-size:9px;font-weight:800;padding:2px 8px;border-radius:20px;${a.pago?'background:#dcf0e0;color:#1a5c26':'background:#fde8e8;color:#8b1a1a'}">${a.pago?'✓ Pago':'Pendente'}</span>
+          </div>
+        `).join('')}
+      `;
+    })()}
   </div>
 
   <!-- LISTA DE ATLETAS -->
