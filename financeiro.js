@@ -360,39 +360,78 @@ function renderFinSocios(){
 }
 
 function renderFinMensalidades(){
-  const atletasFlat=listarTodosAtletas();
-  setTimeout(()=>desenharGraficoMensalidadesCat('chart-mensalidades-cat'),0);
-  return `
-  <div class="chart-card">
-    <div class="chart-card-head"><h4>Mensalidade por categoria</h4><span>Pago · atraso · pendente</span></div>
-    <div class="chart-wrap"><canvas id="chart-mensalidades-cat"></canvas></div>
-  </div>
-  <div class="chips" id="chips-cat-fin">
-    <span class="chip on" onclick="filtrarFinCatDesktop('todas',this)">Todas</span>
-    ${Object.entries(CATS_DATA).map(([k,cd])=>`<span class="chip" onclick="filtrarFinCatDesktop('${k}',this)">${cd.emoji} ${cd.nome}</span>`).join('')}
-  </div>
-  <div class="card" style="padding:2px">
-    <table id="tbl-mensalidades" style="font-size:11px">
-      <thead><tr><th>Atleta</th><th>Cat.</th><th>Valor</th><th>Venc.</th><th>Status</th><th></th></tr></thead>
-      <tbody>
-        ${atletasFlat.map(a=>{
-          const m=MENSALIDADES_ATLETAS[a.chave]||{valor:0,status:'pendente',venc:'—'};
-          return `<tr data-cat="${a.catKey}">
-            <td style="padding:8px"><div class="av-row"><div class="av" style="width:26px;height:26px;font-size:9px">${a.sig}</div><span style="font-weight:700">${a.nome}</span></div></td>
-            <td style="padding:8px">${a.catEmoji} ${a.catNome}</td>
-            <td style="padding:8px">${fmtR$(m.valor)}</td>
-            <td style="padding:8px">${m.venc}</td>
-            <td style="padding:8px">${tagHtml(m.status)}</td>
-            <td style="padding:8px;white-space:nowrap">
-              <button class="btn-sm" onclick="abrirEditarMensalidade('${a.chave}','${a.nome}')" style="margin-bottom:3px">✏️</button>
-              ${m.status!=='pago'?`<br><button class="btn-sm" onclick="marcarAtletaPago('${a.chave}')">Pago</button>`:''}
-            </td>
-          </tr>`;
-        }).join('')}
-      </tbody>
-    </table>
-  </div>
-  <button class="btn-g" style="margin-top:8px;background:#b8860b" onclick="cobrarTodosAtletas()">📲 Cobrar atletas em atraso</button>`;
+  const CORES_CAT = {sub7:'#e67e22',sub9:'#27ae60',sub11:'#2980b9',sub13:'#8e44ad',sub15:'#c0392b'};
+
+  // Agrupar por categoria
+  const porCat = {};
+  Object.entries(CATS_DATA).forEach(([k]) => porCat[k] = []);
+  Object.entries(MENSALIDADES_ATLETAS).forEach(([id, m]) => {
+    const match = id.match(/^([A-Z]+)([a-z0-9]+)$/);
+    if (!match) return;
+    const sig = match[1], catKey = match[2];
+    if (porCat[catKey] !== undefined) porCat[catKey].push({ id, sig, catKey, m });
+  });
+
+  const cats = Object.entries(porCat).filter(([,a]) => a.length > 0);
+  if (cats.length === 0) return '<div style="text-align:center;padding:40px;color:var(--text-3)">Nenhuma mensalidade</div>';
+
+  return cats.map(([catKey, atletas]) => {
+    const cat = CATS_DATA[catKey] || { nome: catKey, emoji: '⚽' };
+    const cor = CORES_CAT[catKey] || '#555';
+    const pagos = atletas.filter(a => a.m.status === 'pago').length;
+    const pend = atletas.filter(a => a.m.status !== 'pago');
+    const totalPend = pend.reduce((s, a) => s + (a.m.valor || 0), 0);
+
+    return `
+    <div style="border:1.5px solid ${cor}33;border-radius:12px;margin-bottom:12px;overflow:hidden">
+      <!-- Cabeçalho categoria -->
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:${cor}12;border-bottom:1px solid ${cor}22">
+        <div style="width:32px;height:32px;border-radius:9px;background:${cor};display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">${cat.emoji}</div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:800;color:${cor}">${cat.nome}</div>
+          <div style="font-size:9px;color:var(--text-3)">${pagos} pagos · ${pend.length} pendentes${pend.length > 0 ? ' · ' + fmtR$(totalPend) : ''}</div>
+        </div>
+        ${pend.length > 0
+          ? `<button onclick="cobrarCategoriaMens('${catKey}')" style="font-size:9px;font-weight:800;padding:4px 10px;border-radius:20px;border:none;cursor:pointer;background:${cor};color:#fff">📲 Todos</button>`
+          : `<span style="font-size:9px;font-weight:700;color:#1a5c26">✓ Tudo pago</span>`}
+      </div>
+      <!-- Atletas -->
+      <div style="padding:0 12px">
+        ${atletas.map(({ id, sig, m }) => `
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f0ede8">
+          <div class="av" style="width:28px;height:28px;font-size:9px;background:${cor}">${sig}</div>
+          <div style="flex:1">
+            <div style="font-size:11px;font-weight:700">${sig}</div>
+            <div style="font-size:9px;color:var(--text-3)">${fmtR$(m.valor)} · Venc. ${m.venc} · ${m.status==='pago'?'<span style="color:#1a5c26;font-weight:700">✓ Pago</span>':'<span style="color:#b85c00">Pendente</span>'}</div>
+          </div>
+          <div style="display:flex;gap:4px;flex-shrink:0">
+            ${m.status !== 'pago' ? `<button onclick="cobrarIndMens('${id}')" style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;background:#e67e22;color:#fff">📲</button>` : ''}
+            <button onclick="marcarAtletaPago('${id}')" style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;${m.status==='pago'?'background:#dcf0e0;color:#1a5c26':'background:#fde8e8;color:#8b1a1a'}">
+              ${m.status === 'pago' ? '✓ Pago' : 'Confirmar'}
+            </button>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function cobrarCategoriaMens(catKey){
+  const pendentes = Object.entries(MENSALIDADES_ATLETAS)
+    .filter(([id, m]) => id.endsWith(catKey) && m.status !== 'pago');
+  pendentes.forEach(([id]) => MENSALIDADES_ATLETAS[id].status = 'pago');
+  salvarLS();
+  const sc = document.querySelector('#s-2');
+  if(sc) sc.innerHTML = renderFinMensalidades();
+  showN('📲 '+pendentes.length+' atleta(s) do '+(CATS_DATA[catKey]?.nome||catKey)+' cobrados!');
+}
+
+function cobrarIndMens(id){
+  const m = MENSALIDADES_ATLETAS[id];
+  if(!m || m.status === 'pago') return;
+  const sig = id.match(/^([A-Z]+)/)?.[1] || id;
+  const catKey = id.match(/([a-z0-9]+)$/)?.[1] || '';
+  showN('📲 Cobrança enviada para '+sig+' ('+(CATS_DATA[catKey]?.nome||catKey)+') — '+fmtR$(m.valor)+'. Use "Confirmar" quando receber.');
 }
 
 function renderFinCobrancas(){
