@@ -1,10 +1,15 @@
-const CACHE = 'votoraty-v2';
+const CACHE = 'votoraty-v3';
 const ASSETS = [
   '/',
   '/index.html',
   '/styles.css',
   '/data.js',
-  '/app.js',
+  '/auth.js',
+  '/professor.js',
+  '/diretor.js',
+  '/financeiro.js',
+  '/atleta.js',
+  '/utils.js',
   '/financeiro-desktop.html',
   '/manifest.json',
   'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap',
