@@ -2,6 +2,19 @@
 // ATLETA.JS — Perfil atleta: feed, evolução, saúde, estudos, álbum, calendário, comprovantes
 // =====================
 
+function atualizarHabilidadesAtleta(key){
+  const hab = HABILIDADES[key];
+  if(!hab) return;
+  Object.keys(HAB_LABELS||{}).forEach(k=>{
+    const val = hab[k] || 70;
+    const c = val>=75?'#0d3d1a':val>=50?'#b8860b':'#c0392b';
+    const bar = document.getElementById('ev-bar-'+k);
+    const valEl = document.getElementById('ev-val-'+k);
+    if(bar){ bar.style.width=val+'%'; bar.style.background=c; }
+    if(valEl){ valEl.textContent=val; valEl.style.color=c; }
+  });
+}
+
 
 // =====================
 // ATLETA
