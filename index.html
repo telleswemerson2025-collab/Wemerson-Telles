@@ -2342,32 +2342,65 @@ function renderDashboard(cor){
 }
 
 function renderDirAtletas(cor){
-  const todos = Object.entries(CATS_DATA).flatMap(([k,c])=>c.atletas.map(a=>({...a,cat:c.nome,cor:CORES[k],catKey:k})));
-  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-    <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Todos os atletas (${todos.length})</span>
+  const total = Object.values(CATS_DATA).reduce((s,c)=>s+(c.atletas||[]).length,0);
+  const cats = Object.entries(CATS_DATA);
+  return `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Atletas (${total})</span>
     <button class="btn-sm" onclick="abrirModal('modal-atleta')">+ Novo</button>
   </div>
-  <div class="cw" style="padding:6px 14px">
-  ${todos.map(a=>{
-    const pc=a.pres>=85?'#1a5c26':a.pres>=70?'#7a4010':'#8b1a1a';
-    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
-      <div class="av" style="width:34px;height:34px;font-size:11px;background:${a.cor}">${a.sig}</div>
-      <div style="flex:1">
-        <div style="font-size:12px;font-weight:700;color:var(--text)">${a.nome}</div>
-        <div style="font-size:9px;color:var(--text-3);font-weight:500">${a.pos} · ${a.cat} · ${a.gols} gols</div>
-        <div class="prog"><div class="prog-f" style="width:${a.pres}%;background:${pc}"></div></div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
-        <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;color:${pc};background:${pc}18">${a.pres}%</span>
-        <div style="display:flex;gap:3px">
-          <button onclick="abrirMsgDireta('${a.nome}','${a.sig}','${a.pos}','${a.cat}','${a.cor}')" style="background:${a.cor};color:#fff;border:none;padding:4px 9px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer;white-space:nowrap">✉️ Msg</button>
-          <button onclick="abrirEditarAtleta('${a.sig}','${a.catKey}')" style="background:#f0ede8;border:1px solid #e8e4dc;padding:4px 7px;border-radius:7px;font-size:9px;cursor:pointer">✏️</button>
-          <button onclick="deletarAtleta('${a.sig}','${a.catKey}')" style="background:#fce8e8;border:none;padding:4px 7px;border-radius:7px;font-size:9px;cursor:pointer;color:#8b1a1a">🗑️</button>
+  ${cats.map(([k,c])=>{
+    const catCor = CORES[k] || cor;
+    const presMedia = c.atletas.length ? Math.round(c.atletas.reduce((s,a)=>s+a.pres,0)/c.atletas.length) : 0;
+    const totalGols = c.atletas.reduce((s,a)=>s+a.gols,0);
+    return `
+    <div class="cw" style="padding:0;margin-bottom:10px;overflow:hidden;border:1.5px solid ${catCor}33">
+      <!-- Cabeçalho da categoria -->
+      <div onclick="toggleCat('cat-${k}')" style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:${catCor}12;cursor:pointer;border-bottom:1px solid ${catCor}22">
+        <div style="width:36px;height:36px;border-radius:10px;background:${catCor};display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 2px 8px ${catCor}44">${c.emoji}</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:800;color:${catCor}">${c.nome}</div>
+          <div style="font-size:9px;color:var(--text-3);margin-top:1px;font-weight:500">${c.atletas.length} atletas · ${totalGols} gols · ${presMedia}% presença</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <button onclick="event.stopPropagation();_perfilAnterior='diretor';entrar('prof_${k}')" style="background:${catCor};color:#fff;border:none;padding:5px 10px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">Ver aulas</button>
+          <i class="ti ti-chevron-down" id="chevron-${k}" style="font-size:14px;color:${catCor};transition:transform .25s"></i>
         </div>
       </div>
+      <!-- Lista de atletas -->
+      <div id="cat-${k}" style="padding:0 14px">
+        ${c.atletas.map(a=>{
+          const pc=a.pres>=85?'#1a5c26':a.pres>=70?'#7a4010':'#8b1a1a';
+          return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <div class="av" style="width:34px;height:34px;font-size:11px;background:${catCor}">${a.sig}</div>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:700;color:var(--text)">${a.nome}</div>
+              <div style="font-size:9px;color:var(--text-3);font-weight:500">${a.pos} · ${a.gols} gols</div>
+              <div class="prog"><div class="prog-f" style="width:${a.pres}%;background:${pc}"></div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;color:${pc};background:${pc}18">${a.pres}%</span>
+              <div style="display:flex;gap:3px">
+                <button onclick="abrirMsgDireta('${a.nome}','${a.sig}','${a.pos}','${c.nome}','${catCor}')" style="background:${catCor};color:#fff;border:none;padding:3px 7px;border-radius:6px;font-size:9px;font-weight:700;cursor:pointer">✉️</button>
+                <button onclick="abrirEditarAtleta('${a.sig}','${k}')" style="background:#f0ede8;border:1px solid #e8e4dc;padding:3px 6px;border-radius:6px;font-size:9px;cursor:pointer">✏️</button>
+                <button onclick="deletarAtleta('${a.sig}','${k}')" style="background:#fce8e8;border:none;padding:3px 6px;border-radius:6px;font-size:9px;cursor:pointer;color:#8b1a1a">🗑️</button>
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
     </div>`;
-  }).join('')}
-  </div>`;
+  }).join('')}`;
+}
+
+function toggleCat(id){
+  const el = document.getElementById(id);
+  const catKey = id.replace('cat-','');
+  const chev = document.getElementById('chevron-'+catKey);
+  if(!el) return;
+  const aberto = el.style.display !== 'none';
+  el.style.display = aberto ? 'none' : 'block';
+  if(chev) chev.style.transform = aberto ? 'rotate(-90deg)' : 'rotate(0deg)';
 }
 
 function renderJogos(cor){
