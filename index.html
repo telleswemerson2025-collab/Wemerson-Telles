@@ -2269,14 +2269,14 @@ function montarDiretor(cor){
   montarNav(navItems, cor);
   montarBnav(bnavItems, cor);
 
-  // Botão voltar à página principal — inserido no bnav como item extra
+  // Botão voltar ao Dashboard — inserido no bnav como item extra
   const bnav = document.getElementById('bnav');
   if(bnav){
     const btnHome = document.createElement('div');
-    btnHome.onclick = sair;
-    btnHome.title = 'Voltar à página principal';
-    btnHome.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 4px;border-radius:10px;cursor:pointer;background:rgba(139,26,26,.08);border:1.5px solid rgba(139,26,26,.18);margin-left:4px';
-    btnHome.innerHTML = `<i class="ti ti-home-2" style="font-size:18px;color:#8b1a1a"></i><span style="font-size:9px;font-weight:700;color:#8b1a1a">Sair</span>`;
+    btnHome.onclick = () => goTab(0, cor);
+    btnHome.title = 'Voltar ao Dashboard';
+    btnHome.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 4px;border-radius:10px;cursor:pointer;background:'+cor+'12;border:1.5px solid '+cor+'33;margin-left:4px';
+    btnHome.innerHTML = `<i class="ti ti-home-2" style="font-size:18px;color:${cor}"></i><span style="font-size:9px;font-weight:700;color:${cor}">Dashboard</span>`;
     bnav.appendChild(btnHome);
   }
 
