@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financeiro — Votoraty Academy</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+* {box-sizing: border-box; margin: 0; padding: 0}
+:root {
+  --g: #0d3d1a; --gd: #071f0d;
+  --gold: #b8860b; --gold-l: #f5c842;
+  --font-display: 'Bebas Neue', sans-serif;
+  --surface: #f8f7f4; --surface-2: #f0ede8;
+  --border: #e8e4dc;
+  --text: #111110; --text-2: #5c5a55; --text-3: #a8a59c;
+  --radius: 18px; --radius-sm: 12px; --radius-xs: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 24px rgba(0,0,0,.10), 0 1px 4px rgba(0,0,0,.06);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,.16), 0 2px 8px rgba(0,0,0,.08);
+}
+
+@keyframes fadeUp {from {opacity: 0; transform: translateY(12px)} to {opacity: 1; transform: translateY(0)}}
+@keyframes pulse {0%, 100% {opacity: 1} 50% {opacity: .6}}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: linear-gradient(135deg, #e8ebe4 0%, #edeae4 50%, #e4e8eb 100%);
+  min-height: 100vh;
+  padding: 32px 48px;
+  color: var(--text);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+.hdr {
+  padding: 24px 32px;
+  background: var(--g);
+  color: #fff;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.hdr::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.12) 0%, transparent 50%, rgba(0,0,0,.08) 100%);
+  pointer-events: none;
+}
+.hdr h1 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: .06em;
+  position: relative;
+  z-index: 1;
+}
+.hdr p {
+  font-size: 14px;
+  color: rgba(255,255,255,.7);
+  margin-top: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+/* NAV TABS */
+.nav-s {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 0 16px;
+  margin-bottom: 20px;
+}
+.nt {
+  padding: 14px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-3);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: all .25s;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  position: relative;
+}
+.nt.on {
+  color: var(--g);
+  border-bottom-color: var(--g);
+}
+
+/* SCREENS */
+.scr {
+  display: none;
+  animation: fadeUp .25s ease;
+}
+.scr.on {
+  display: block;
+}
+
+/* LABELS */
+.lbl {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin: 20px 0 12px;
+}
+.lbl:first-child {
+  margin-top: 0;
+}
+
+/* BUTTONS */
+.btn-g {
+  color: #fff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--g);
+  transition: all .22s;
+  letter-spacing: .03em;
+  box-shadow: 0 4px 16px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.12);
+  position: relative;
+  overflow: hidden;
+}
+.btn-g::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+.btn-g:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.15);
+}
+.btn-g:active {
+  transform: translateY(0);
+  filter: brightness(.97);
+}
+
+.btn-sm {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  color: var(--text-2);
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all .18s;
+  box-shadow: var(--shadow);
+  letter-spacing: .02em;
+}
+.btn-sm:hover {
+  border-color: var(--g);
+  color: var(--g);
+  background: color-mix(in srgb, var(--g) 6%, #fff);
+}
+
+/* CARDS */
+.fin-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.fin-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.fin-card-ic {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+  font-size: 15px;
+}
+
+.fin-card-head h4 {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.fin-mini-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.fin-mini-row:last-child {
+  border-bottom: none;
+}
+.fin-mini-row span:first-child {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 600;
+}
+.fin-mini-row span:last-child {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.fin-side-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  background: color-mix(in srgb, var(--surface) 100%, #fff 50%);
+  border-radius: 8px;
+}
+.fin-side-kpi-v {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: .04em;
+  color: var(--text);
+}
+.fin-side-kpi-l {
+  font-size: 9px;
+  color: var(--text-3);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.chart-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+
+.chart-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.chart-card-head h4 {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text);
+}
+.chart-card-head span {
+  font-size: 10px;
+  color: var(--text-3);
+  font-weight: 600;
+}
+
+.chart-wrap {
+  position: relative;
+  height: 200px;
+  margin: 8px -16px -14px;
+  padding: 0 16px 14px;
+}
+
+.fin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.av-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  background: #fff;
+}
+
+.av {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  background: var(--g);
+  font-size: 11px;
+  letter-spacing: .03em;
+}
+
+.av-content {
+  flex: 1;
+  min-width: 0;
+}
+.av-content h5 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.av-content p {
+  font-size: 10px;
+  color: var(--text-3);
+}
+
+.av-act {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.search-mini {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.search-mini input {
+  flex: 1;
+  font-size: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'DM Sans', system-ui;
+  transition: all .22s;
+}
+.search-mini input:focus {
+  outline: none;
+  border-color: var(--g);
+  background: #fff;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--g) 12%, transparent);
+}
+.search-mini select {
+  font-size: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'DM Sans', system-ui;
+  cursor: pointer;
+  transition: all .22s;
+}
+.search-mini select:focus {
+  outline: none;
+  border-color: var(--g);
+  background: #fff;
+}
+
+.tag {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  display: inline-block;
+}
+.tg {
+  background: #d4f0dc;
+  color: #166124;
+}
+.tb {
+  background: #d6eaf8;
+  color: #0a3d7a;
+}
+.ta {
+  background: #faebd7;
+  color: #7a4010;
+}
+.tr {
+  background: #fde8e8;
+  color: #8b1a1a;
+}
+.tp {
+  background: #eae8fd;
+  color: #3c2e9e;
+}
+
+@media (max-width: 1024px) {
+  .fin-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 640px) {
+  body {
+    padding: 16px;
+  }
+  .fin-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="hdr">
+    <h1>FINANCEIRO</h1>
+    <p>Gestão de receitas, despesas e inadimplência — Votoraty Academy</p>
+  </div>
+
+  <div class="nav-s">
+    <div class="nt on" onclick="selecionarTab(this, 'painel')">Painel</div>
+    <div class="nt" onclick="selecionarTab(this, 'socios')">Sócios</div>
+    <div class="nt" onclick="selecionarTab(this, 'mensalidades')">Mensalidades</div>
+    <div class="nt" onclick="selecionarTab(this, 'cobrancas')">Cobranças</div>
+  </div>
+
+  <!-- PAINEL -->
+  <div id="painel" class="scr on">
+    <div class="fin-grid" style="margin-bottom:10px">
+      <div class="fin-card">
+        <div class="fin-card-head"><div class="fin-card-ic" style="background:#1a5c26"><i class="ti ti-users"></i></div><h4>Receita — Sócios</h4></div>
+        <div class="fin-side-kpi">
+          <div class="fin-side-kpi-v" id="kpi-socios-v">R$ 0</div>
+          <div class="fin-side-kpi-l">mês atual</div>
+        </div>
+        <div class="fin-mini-row"><span>Média 6m:</span><span id="kpi-socios-m">R$ 0</span></div>
+        <div class="fin-mini-row"><span>Status:</span><span id="kpi-socios-s">—</span></div>
+      </div>
+
+      <div class="fin-card">
+        <div class="fin-card-head"><div class="fin-card-ic" style="background:#0e3d6e"><i class="ti ti-ball-football"></i></div><h4>Receita — Atletas</h4></div>
+        <div class="fin-side-kpi">
+          <div class="fin-side-kpi-v" id="kpi-atletas-v">R$ 0</div>
+          <div class="fin-side-kpi-l">mês atual</div>
+        </div>
+        <div class="fin-mini-row"><span>Média 6m:</span><span id="kpi-atletas-m">R$ 0</span></div>
+        <div class="fin-mini-row"><span>Status:</span><span id="kpi-atletas-s">—</span></div>
+      </div>
+
+      <div class="fin-card">
+        <div class="fin-card-head"><div class="fin-card-ic" style="background:#7a4010"><i class="ti ti-building-bank"></i></div><h4>Despesas</h4></div>
+        <div class="fin-side-kpi">
+          <div class="fin-side-kpi-v" id="kpi-despesas-v">R$ 0</div>
+          <div class="fin-side-kpi-l">mês atual</div>
+        </div>
+        <div class="fin-mini-row"><span>Média 6m:</span><span id="kpi-despesas-m">R$ 0</span></div>
+        <div class="fin-mini-row"><span>Status:</span><span id="kpi-despesas-s">—</span></div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-head"><h4>Receita por origem — últimos 6 meses</h4><span>Sócios vs. atletas</span></div>
+      <div class="chart-wrap"><canvas id="chartReceitas"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-head"><h4>Inadimplência — evolução mensal</h4><span>Valor em atraso</span></div>
+      <div class="chart-wrap"><canvas id="chartInadimplencia"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-head"><h4>Status dos sócios</h4><span id="stat-socios-n">0 ativos</span></div>
+      <div class="chart-wrap"><canvas id="chartSocios"></canvas></div>
+    </div>
+  </div>
+
+  <!-- SÓCIOS -->
+  <div id="socios" class="scr">
+    <div class="search-mini">
+      <input type="text" placeholder="Buscar sócio..." id="busca-socios" onkeyup="filtrarTabela('busca-socios', 'tabela-socios')">
+      <select id="filtro-socios-status" onchange="filtrarTabela('busca-socios', 'tabela-socios')">
+        <option value="">Todos</option>
+        <option value="pago">Pagos</option>
+        <option value="atraso">Atraso</option>
+        <option value="pendente">Pendente</option>
+      </select>
+    </div>
+    <button class="btn-g" onclick="cobrarTodosSocios()">Cobrar todos</button>
+    <div id="tabela-socios"></div>
+  </div>
+
+  <!-- MENSALIDADES -->
+  <div id="mensalidades" class="scr">
+    <div class="search-mini">
+      <input type="text" placeholder="Buscar atleta..." id="busca-atletas" onkeyup="filtrarTabela('busca-atletas', 'tabela-atletas')">
+      <select id="filtro-atletas-status" onchange="filtrarTabela('busca-atletas', 'tabela-atletas')">
+        <option value="">Todos</option>
+        <option value="pago">Pagos</option>
+        <option value="atraso">Atraso</option>
+        <option value="pendente">Pendente</option>
+      </select>
+    </div>
+    <button class="btn-g" onclick="cobrarTodosAtletas()">Cobrar todos</button>
+    <div id="tabela-atletas"></div>
+  </div>
+
+  <!-- COBRANÇAS -->
+  <div id="cobrancas" class="scr">
+    <p class="lbl">Pendentes de cobrança</p>
+    <div id="tabela-pendentes"></div>
+  </div>
+</div>
+
+<script>
+// DADOS
+const SOCIOS = [
+  {id:'s1',nome:'Marcos Vinícius Telles',plano:'Sócio Patrimonial',valor:120,status:'pago',venc:'05/06'},
+  {id:'s2',nome:'Helena Costa Ribeiro',plano:'Sócio Torcedor',valor:60,status:'pago',venc:'05/06'},
+  {id:'s3',nome:'Roberto Almeida Silva',plano:'Sócio Patrimonial',valor:120,status:'atraso',venc:'05/06'},
+  {id:'s4',nome:'Cláudia Ferreira Nunes',plano:'Sócio Torcedor',valor:60,status:'pago',venc:'05/06'},
+  {id:'s5',nome:'Paulo Sérgio Mendes',plano:'Sócio Benemérito',valor:250,status:'atraso',venc:'05/06'},
+  {id:'s6',nome:'Juliana Pacheco Rocha',plano:'Sócio Torcedor',valor:60,status:'pendente',venc:'10/06'},
+];
+
+const MENSALIDADES_ATLETAS = {
+  'ASsub7':{valor:150,status:'pago',venc:'05/06'},
+  'KTsub13':{valor:180,status:'pago',venc:'05/06'},
+  'LSu7':{valor:150,status:'pago',venc:'05/06'},
+  'JCp12':{valor:180,status:'atraso',venc:'05/06'},
+  'MVCp12':{valor:180,status:'pago',venc:'05/06'},
+  'AAp12':{valor:180,status:'pendente',venc:'10/06'},
+  'DRs11':{valor:150,status:'pago',venc:'05/06'},
+  'LRs11':{valor:150,status:'atraso',venc:'05/06'},
+  'CAp12':{valor:180,status:'pago',venc:'05/06'},
+  'MFu7':{valor:150,status:'pago',venc:'05/06'},
+  'BLu9':{valor:165,status:'pendente',venc:'10/06'},
+  'GCp12':{valor:180,status:'pago',venc:'05/06'},
+  'TPu7':{valor:150,status:'atraso',venc:'05/06'},
+  'RMu9':{valor:165,status:'pago',venc:'05/06'},
+  'FMs11':{valor:150,status:'pago',venc:'05/06'},
+  'JBs11':{valor:150,status:'pago',venc:'05/06'},
+  'CMp12':{valor:180,status:'atraso',venc:'05/06'},
+  'EDu9':{valor:165,status:'pago',venc:'05/06'},
+  'VHu7':{valor:150,status:'pendente',venc:'10/06'},
+  'WNs11':{valor:150,status:'pago',venc:'05/06'},
+  'YDs13':{valor:180,status:'pago',venc:'05/06'},
+  'ZAs11':{valor:150,status:'atraso',venc:'05/06'},
+};
+
+const DESPESAS_CLUBE = [
+  {descricao:'Aluguel campo',valor:1200},
+  {descricao:'Água/Luz',valor:380},
+  {descricao:'Internet',valor:120},
+  {descricao:'Material esportivo',valor:280},
+  {descricao:'Seguro',valor:420},
+];
+
+const HISTORICO_MESES = ['Jan','Fev','Mar','Abr','Mai','Jun'];
+const HISTORICO_RECEITA_SOCIOS  = [580,610,590,640,600,620];
+const HISTORICO_RECEITA_ATLETAS = [3150,3200,3100,3260,3180,3200];
+const HISTORICO_DESPESAS        = [2400,2980,2510,3100,2700,3170];
+const HISTORICO_INADIMPLENCIA   = [880,1040,760,1200,990,1060];
+const CHART_INSTANCES = {};
+
+const CATS_DATA = {
+  'sub7':{nome:'Sub-7',cor:'#1a5c26',atletas:[{sig:'AS'},{sig:'LS'},{sig:'MF'},{sig:'TP'}]},
+  'sub9':{nome:'Sub-9',cor:'#0e3d6e',atletas:[{sig:'BL'},{sig:'RM'},{sig:'ED'}]},
+  'sub11':{nome:'Sub-11',cor:'#7a4010',atletas:[{sig:'DR'},{sig:'LR'},{sig:'FB'},{sig:'WN'}]},
+  'sub13':{nome:'Sub-13',cor:'#6b4c9a',atletas:[{sig:'KT'},{sig:'JC'},{sig:'MVC'},{sig:'AA'},{sig:'GC'},{sig:'CM'},{sig:'YD'},{sig:'ZA'}]},
+  'p12':{nome:'Profissional -12',cor:'#c0392b',atletas:[{sig:'CA'}]},
+};
+
+// HELPERS
+function fmtR$(v) {
+  return 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function iniciais(s) {
+  return s.split(' ').map(p => p[0].toUpperCase()).join('');
+}
+
+function tagHtml(s) {
+  const tags = {pago:'tg',atraso:'tr',pendente:'ta'};
+  const labels = {pago:'Pago',atraso:'Atraso',pendente:'Pendente'};
+  return `<span class="tag ${tags[s]}">${labels[s]}</span>`;
+}
+
+function destruirGrafico(id) {
+  if (CHART_INSTANCES[id]) {
+    CHART_INSTANCES[id].destroy();
+    delete CHART_INSTANCES[id];
+  }
+}
+
+function chartOpcoesBase() {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {legend: {display: false}},
+  };
+}
+
+function finCalcs() {
+  const socios_pago = SOCIOS.filter(s => s.status === 'pago').reduce((a, s) => a + s.valor, 0);
+  const socios_med = HISTORICO_RECEITA_SOCIOS.reduce((a, v) => a + v, 0) / HISTORICO_RECEITA_SOCIOS.length;
+  const atletas_soma = Object.values(MENSALIDADES_ATLETAS).filter(m => m.status === 'pago').reduce((a, m) => a + m.valor, 0);
+  const atletas_med = HISTORICO_RECEITA_ATLETAS.reduce((a, v) => a + v, 0) / HISTORICO_RECEITA_ATLETAS.length;
+  const despesas_soma = DESPESAS_CLUBE.reduce((a, d) => a + d.valor, 0);
+  const despesas_med = HISTORICO_DESPESAS.reduce((a, v) => a + v, 0) / HISTORICO_DESPESAS.length;
+
+  return {socios_pago, socios_med, atletas_soma, atletas_med, despesas_soma, despesas_med};
+}
+
+function marcarSocioPago(id) {
+  const s = SOCIOS.find(s => s.id === id);
+  if (s) {
+    s.status = s.status === 'pago' ? 'atraso' : 'pago';
+    renderFinSocios();
+  }
+}
+
+function marcarAtletaPago(id) {
+  const m = MENSALIDADES_ATLETAS[id];
+  if (m) {
+    m.status = m.status === 'pago' ? 'atraso' : 'pago';
+    renderFinMensalidades();
+  }
+}
+
+function cobrarTodosSocios() {
+  SOCIOS.forEach(s => {if (s.status !== 'pago') s.status = 'pendente'});
+  renderFinSocios();
+}
+
+function cobrarTodosAtletas() {
+  Object.values(MENSALIDADES_ATLETAS).forEach(m => {if (m.status !== 'pago') m.status = 'pendente'});
+  renderFinMensalidades();
+}
+
+function filtrarTabela(inputId, tabelaId) {
+  const busca = document.getElementById(inputId)?.value.toLowerCase() || '';
+  const filtro = document.getElementById(inputId === 'busca-socios' ? 'filtro-socios-status' : 'filtro-atletas-status')?.value || '';
+
+  Array.from(document.getElementById(tabelaId).querySelectorAll('.av-row')).forEach(row => {
+    const txt = row.textContent.toLowerCase();
+    const status = row.getAttribute('data-status');
+    const match = (!busca || txt.includes(busca)) && (!filtro || status === filtro);
+    row.style.display = match ? '' : 'none';
+  });
+}
+
+// CHARTS
+function desenharGraficoReceitas() {
+  destruirGrafico('chartReceitas');
+  const ctx = document.getElementById('chartReceitas').getContext('2d');
+  CHART_INSTANCES['chartReceitas'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: HISTORICO_MESES,
+      datasets: [
+        {label: 'Sócios', data: HISTORICO_RECEITA_SOCIOS, backgroundColor: '#d4f0dc', borderColor: '#1a5c26', borderWidth: 1},
+        {label: 'Atletas', data: HISTORICO_RECEITA_ATLETAS, backgroundColor: '#d6eaf8', borderColor: '#0e3d6e', borderWidth: 1},
+      ],
+    },
+    options: {
+      ...chartOpcoesBase(),
+      scales: {y: {beginAtZero: true, ticks: {callback: v => 'R$ ' + v}}},
+      plugins: {legend: {display: true, position: 'bottom', labels: {boxWidth: 10, font: {size: 10}}}},
+    },
+  });
+}
+
+function desenharGraficoInadimplencia() {
+  destruirGrafico('chartInadimplencia');
+  const ctx = document.getElementById('chartInadimplencia').getContext('2d');
+  CHART_INSTANCES['chartInadimplencia'] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: HISTORICO_MESES,
+      datasets: [{label: 'Valor em atraso', data: HISTORICO_INADIMPLENCIA, borderColor: '#c0392b', backgroundColor: '#fde8e8', borderWidth: 2, fill: true, tension: .4}],
+    },
+    options: {
+      ...chartOpcoesBase(),
+      scales: {y: {beginAtZero: true, ticks: {callback: v => 'R$ ' + v}}},
+    },
+  });
+}
+
+function desenharGraficoSocios() {
+  destruirGrafico('chartSocios');
+  const pago = SOCIOS.filter(s => s.status === 'pago').length;
+  const atraso = SOCIOS.filter(s => s.status === 'atraso').length;
+  const pendente = SOCIOS.filter(s => s.status === 'pendente').length;
+
+  const ctx = document.getElementById('chartSocios').getContext('2d');
+  CHART_INSTANCES['chartSocios'] = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Pagos', 'Atraso', 'Pendente'],
+      datasets: [{data: [pago, atraso, pendente], backgroundColor: ['#d4f0dc', '#fde8e8', '#faebd7'], borderColor: ['#1a5c26', '#c0392b', '#7a4010'], borderWidth: 1}],
+    },
+    options: chartOpcoesBase(),
+  });
+}
+
+function desenharGraficoMensalidadesCat(cat) {
+  const atletas = CATS_DATA[cat].atletas;
+  const pago = atletas.filter(a => {
+    const m = MENSALIDADES_ATLETAS[a.sig + cat];
+    return m && m.status === 'pago';
+  }).length;
+  const atraso = atletas.filter(a => {
+    const m = MENSALIDADES_ATLETAS[a.sig + cat];
+    return m && m.status === 'atraso';
+  }).length;
+  const pendente = atletas.length - pago - atraso;
+
+  const destId = 'chart-' + cat;
+  if (!document.getElementById(destId)) return;
+
+  destruirGrafico(destId);
+  const ctx = document.getElementById(destId).getContext('2d');
+  CHART_INSTANCES[destId] = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Pagos', 'Atraso', 'Pendente'],
+      datasets: [{data: [pago, atraso, pendente], backgroundColor: ['#d4f0dc', '#fde8e8', '#faebd7'], borderColor: ['#1a5c26', '#c0392b', '#7a4010'], borderWidth: 1}],
+    },
+    options: chartOpcoesBase(),
+  });
+}
+
+// RENDER
+function renderFinPainel() {
+  const calc = finCalcs();
+  document.getElementById('kpi-socios-v').textContent = fmtR$(calc.socios_pago);
+  document.getElementById('kpi-socios-m').textContent = fmtR$(Math.round(calc.socios_med));
+  document.getElementById('kpi-socios-s').textContent = calc.socios_pago > 0 ? '✓ OK' : '⚠ Revisar';
+
+  document.getElementById('kpi-atletas-v').textContent = fmtR$(calc.atletas_soma);
+  document.getElementById('kpi-atletas-m').textContent = fmtR$(Math.round(calc.atletas_med));
+  document.getElementById('kpi-atletas-s').textContent = calc.atletas_soma > 0 ? '✓ OK' : '⚠ Revisar';
+
+  document.getElementById('kpi-despesas-v').textContent = fmtR$(calc.despesas_soma);
+  document.getElementById('kpi-despesas-m').textContent = fmtR$(Math.round(calc.despesas_med));
+  document.getElementById('kpi-despesas-s').textContent = '—';
+
+  document.getElementById('stat-socios-n').textContent = SOCIOS.length + ' ativos';
+
+  setTimeout(() => {
+    desenharGraficoReceitas();
+    desenharGraficoInadimplencia();
+    desenharGraficoSocios();
+  }, 100);
+}
+
+function renderFinSocios() {
+  const html = SOCIOS.map(s => `
+    <div class="av-row" data-status="${s.status}">
+      <div class="av">${iniciais(s.nome)}</div>
+      <div class="av-content">
+        <h5>${s.nome}</h5>
+        <p>${s.plano} • ${s.valor} • Venc. ${s.venc}</p>
+      </div>
+      <div class="av-act">
+        <button class="btn-sm" onclick="marcarSocioPago('${s.id}')">${s.status === 'pago' ? '✓ Pago' : 'Cobrar'}</button>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('tabela-socios').innerHTML = html;
+}
+
+function renderFinMensalidades() {
+  const html = Object.entries(MENSALIDADES_ATLETAS).map(([id, m]) => {
+    const match = id.match(/([A-Z]+)([a-z0-9]+)/);
+    const sig = match?.[1] || '';
+    const cat = match?.[2] || '';
+    const nome = sig;
+    return `
+      <div class="av-row" data-status="${m.status}">
+        <div class="av">${sig}</div>
+        <div class="av-content">
+          <h5>${nome}</h5>
+          <p>${CATS_DATA[cat]?.nome || 'Cat.'} • ${fmtR$(m.valor)} • Venc. ${m.venc}</p>
+        </div>
+        <div class="av-act">
+          <button class="btn-sm" onclick="marcarAtletaPago('${id}')">${m.status === 'pago' ? '✓ Pago' : 'Cobrar'}</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('tabela-atletas').innerHTML = html;
+}
+
+function renderFinCobrancas() {
+  const pend = [];
+  SOCIOS.filter(s => s.status !== 'pago').forEach(s => {
+    pend.push({tipo: 'Sócio', nome: s.nome, valor: s.valor, status: s.status, id: 's-' + s.id});
+  });
+  Object.entries(MENSALIDADES_ATLETAS).filter(([_, m]) => m.status !== 'pago').forEach(([id, m]) => {
+    const match = id.match(/([A-Z]+)([a-z0-9]+)/);
+    const sig = match?.[1] || '';
+    pend.push({tipo: 'Atleta', nome: sig, valor: m.valor, status: m.status, id: 'a-' + id});
+  });
+
+  const html = pend.map(p => `
+    <div class="av-row" data-status="${p.status}">
+      <div class="av">${iniciais(p.nome)}</div>
+      <div class="av-content">
+        <h5>${p.nome}</h5>
+        <p>${p.tipo} • ${fmtR$(p.valor)}</p>
+      </div>
+      <div class="av-act">
+        ${tagHtml(p.status)}
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('tabela-pendentes').innerHTML = html || '<p style="color: var(--text-3); padding: 20px;">Nenhum pendente</p>';
+}
+
+// TAB SELECTOR
+function selecionarTab(el, id) {
+  document.querySelectorAll('.nt').forEach(n => n.classList.remove('on'));
+  el.classList.add('on');
+
+  document.querySelectorAll('.scr').forEach(s => s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+
+  if (id === 'painel') renderFinPainel();
+  if (id === 'socios') renderFinSocios();
+  if (id === 'mensalidades') renderFinMensalidades();
+  if (id === 'cobrancas') renderFinCobrancas();
+}
+
+// INIT
+window.addEventListener('DOMContentLoaded', () => {
+  renderFinPainel();
+});
+</script>
+
+</body>
+</html>
