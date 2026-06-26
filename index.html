@@ -1061,6 +1061,7 @@ function salvarLS(){
   localStorage.setItem('vot_habilidades', JSON.stringify(HABILIDADES));
   localStorage.setItem('vot_fichas', JSON.stringify(FICHAS));
   localStorage.setItem('vot_jogos_agendados', JSON.stringify(JOGOS_AGENDADOS));
+  if(window.PRESENCA_HIST) localStorage.setItem('vot_presenca_hist', JSON.stringify(window.PRESENCA_HIST));
   salvarFirestore(); // sincroniza com Firebase quando disponível
 }
 
@@ -1074,6 +1075,8 @@ function carregarLS(){
     if(fic){ Object.assign(FICHAS, JSON.parse(fic)); }
     const jog = localStorage.getItem('vot_jogos_agendados');
     if(jog){ JOGOS_AGENDADOS.length=0; JSON.parse(jog).forEach(j=>JOGOS_AGENDADOS.push(j)); }
+    const ph = localStorage.getItem('vot_presenca_hist');
+    if(ph){ window.PRESENCA_HIST = JSON.parse(ph); }
   } catch(e){}
 }
 
