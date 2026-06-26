@@ -1405,12 +1405,22 @@ function marcC(id,tipo,el,cor){
   document.getElementById('prog-c').style.width=(t/all*100)+'%';
 }
 
+// Histórico de presença acumulado (conecta chamada → financeiro)
+if(!window.PRESENCA_HIST) window.PRESENCA_HIST = {};
+
 function salvarChamada(total){
   const p=Object.values(chamadas).filter(v=>v==='P').length;
   const f=Object.values(chamadas).filter(v=>v==='F').length;
   // Atualiza stats se for o atleta principal (GS)
   const gsPresente = chamadas['c0']==='P' || chamadas['KTsub13']==='P';
   if(p+f > 0) addTreino(gsPresente);
+
+  // Detecta categoria ativa e salva presença para o financeiro
+  const catAtiva = Object.keys(chamadas).find(k=>k.length>2)?.replace(/[A-Z]+/,'') || 'sub13';
+  const hoje = new Date().toISOString().split('T')[0];
+  if(!window.PRESENCA_HIST[catAtiva]) window.PRESENCA_HIST[catAtiva] = [];
+  window.PRESENCA_HIST[catAtiva].push({data: hoje, presentes: p, total: total});
+
   showN('✓ Chamada salva! '+p+' presentes · '+f+' faltas · Pais notificados');
 }
 
@@ -2440,10 +2450,57 @@ function desenharGraficoMensalidadesCat(id){
 function renderFinPainel(){
   const c=finCalcs();
   const atletasFlat=listarTodosAtletas();
+
+  // Dados de presença histórica por categoria (últimas 6 semanas)
+  const HISTORICO_PRESENCA = {
+    labels: ['Sem 1','Sem 2','Sem 3','Sem 4','Sem 5','Sem 6'],
+    sub7:   [4, 3, 4, 4, 3, 4],
+    sub9:   [3, 4, 3, 4, 4, 3],
+    sub11:  [4, 4, 3, 4, 3, 4],
+    sub13:  [7, 6, 8, 7, 8, 8],
+    sub15:  [4, 5, 4, 5, 5, 4],
+  };
+  const totalAtletasPorCat = {sub7:4,sub9:4,sub11:4,sub13:8,sub15:5};
+  const totalGeral = Object.values(totalAtletasPorCat).reduce((s,v)=>s+v,0);
+
+  // Presença mais recente (última semana)
+  const presAtual = Object.entries(HISTORICO_PRESENCA)
+    .filter(([k])=>k!=='labels')
+    .reduce((s,[,v])=>s+v[v.length-1],0);
+  const presAnterior = Object.entries(HISTORICO_PRESENCA)
+    .filter(([k])=>k!=='labels')
+    .reduce((s,[,v])=>s+v[v.length-2],0);
+  const presTrend = presAtual >= presAnterior ? '↑' : '↓';
+  const presTrendColor = presAtual >= presAnterior ? '#1a5c26' : '#8b1a1a';
+
   setTimeout(()=>{
     desenharGraficoReceitas('chart-receitas');
     desenharGraficoInadimplencia('chart-inadimplencia');
+    // Gráfico de fluxo de atletas
+    destruirGrafico('chart-fluxo-atletas');
+    const ctx = document.getElementById('chart-fluxo-atletas')?.getContext('2d');
+    if(ctx){
+      CHART_INSTANCES['chart-fluxo-atletas'] = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: HISTORICO_PRESENCA.labels,
+          datasets: [
+            {label:'Sub-7', data:HISTORICO_PRESENCA.sub7, borderColor:'#c45e10',backgroundColor:'transparent',borderWidth:2,tension:.4,pointRadius:3},
+            {label:'Sub-9', data:HISTORICO_PRESENCA.sub9, borderColor:'#0f8c6e',backgroundColor:'transparent',borderWidth:2,tension:.4,pointRadius:3},
+            {label:'Sub-11',data:HISTORICO_PRESENCA.sub11,borderColor:'#0d3d1a',backgroundColor:'transparent',borderWidth:2,tension:.4,pointRadius:3},
+            {label:'Sub-13',data:HISTORICO_PRESENCA.sub13,borderColor:'#0e3d6e',backgroundColor:'transparent',borderWidth:2,tension:.4,pointRadius:3},
+            {label:'Sub-15',data:HISTORICO_PRESENCA.sub15,borderColor:'#8a6200',backgroundColor:'transparent',borderWidth:2,tension:.4,pointRadius:3},
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:8,font:{size:9}}}},
+          scales:{y:{beginAtZero:true,max:10,ticks:{stepSize:2},title:{display:true,text:'Atletas presentes',font:{size:9}}}}
+        }
+      });
+    }
   },0);
+
   return `
   <div class="fin-grid" style="margin-bottom:10px">
     <div class="fin-card">
@@ -2472,6 +2529,30 @@ function renderFinPainel(){
     <hr>
     <div class="kpi-row"><span class="kpi-lbl">Saldo do mês</span><span class="kpi-val">${c.saldo>=0?'+':'-'} ${fmtR$(Math.abs(c.saldo))}</span></div>
   </div>
+
+  <!-- FLUXO DE ATLETAS POR CHAMADA -->
+  <div class="chart-card" style="margin-top:10px">
+    <div class="chart-card-head">
+      <h4>Fluxo de atletas — presença por treino</h4>
+      <span style="color:${presTrendColor};font-weight:700">${presTrend} ${presAtual}/${totalGeral} hoje</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px">
+      ${Object.entries(totalAtletasPorCat).map(([cat, total])=>{
+        const hist = HISTORICO_PRESENCA[cat];
+        const presente = hist[hist.length-1];
+        const pct = Math.round((presente/total)*100);
+        const cor2 = pct>=80?'#1a5c26':pct>=60?'#b8860b':'#8b1a1a';
+        const catNome = CATS_DATA[cat]?.nome || cat;
+        return `<div style="text-align:center;background:#f8f7f4;border-radius:8px;padding:8px 4px">
+          <div style="font-size:16px;font-weight:800;color:${cor2}">${presente}<span style="font-size:9px;color:#aaa">/${total}</span></div>
+          <div style="font-size:8px;color:var(--text-3);font-weight:700;margin-top:2px">${catNome}</div>
+          <div style="background:#e8e4dc;border-radius:3px;height:3px;margin-top:4px"><div style="width:${pct}%;height:3px;border-radius:3px;background:${cor2}"></div></div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="chart-wrap"><canvas id="chart-fluxo-atletas"></canvas></div>
+  </div>
+
   <div class="chart-card">
     <div class="chart-card-head"><h4>Receita por origem — últimos 6 meses</h4><span>Sócios vs. atletas</span></div>
     <div class="chart-wrap"><canvas id="chart-receitas"></canvas></div>
