@@ -960,6 +960,21 @@ function fmtR$(v) {
   return 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
+function showToast(msg, tipo) {
+  let t = document.getElementById('_toast_fin');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = '_toast_fin';
+    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:700;color:#fff;box-shadow:0 4px 18px #0003;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center';
+    document.body.appendChild(t);
+  }
+  t.style.background = tipo === 'success' ? '#1a5c26' : tipo === 'info' ? '#1565c0' : '#b85c00';
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._hide);
+  t._hide = setTimeout(() => t.style.opacity = '0', 3000);
+}
+
 function iniciais(s) {
   return s.split(' ').map(p => p[0].toUpperCase()).join('');
 }
@@ -1289,9 +1304,13 @@ function renderFinArbitragem() {
               <div class="av" style="background:${catCor}">${a.sig}</div>
               <div class="av-content">
                 <h5>${a.sig} · ${a.jogo || 'Arbitragem'}</h5>
-                <p>${fmtR$(a.valor)} · ${a.status === 'pago' ? 'Pago' : 'Pendente'}</p>
+                <p>${fmtR$(a.valor)} · ${a.status === 'pago' ? '<span style="color:#1a5c26;font-weight:700">✓ Pago</span>' : '<span style="color:#b85c00;font-weight:700">Pendente</span>'}</p>
               </div>
-              <div class="av-act">
+              <div class="av-act" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+                ${a.status !== 'pago' ? `<button class="btn-sm" onclick="cobrarIndividualArb('${a.id}','${catKey}')"
+                  style="background:#e67e22;color:#fff;border:none;font-size:10px">
+                  📲 Cobrar
+                </button>` : ''}
                 <button class="btn-sm" onclick="marcarArbitragemPaga('${a.id}')"
                   style="${a.status==='pago'?'color:#1a5c26;border-color:#8ec99a':'color:#7a4010;border-color:#e8c97a'}">
                   ${a.status === 'pago' ? '✓ Pago' : 'Confirmar'}
@@ -1308,9 +1327,49 @@ function renderFinArbitragem() {
 }
 
 function cobrarCategoria(catKey) {
-  ARBITRAGEM.filter(a => a.catKey === catKey && a.status === 'pendente').forEach(a => a.status = 'pago');
+  const pendentes = ARBITRAGEM.filter(a => a.catKey === catKey && a.status === 'pendente');
+  pendentes.forEach(a => a.status = 'pago');
   renderFinArbitragem();
   renderFinPainel();
+  const cat = CATS_DATA[catKey] || {nome: catKey};
+  showToast(`📲 Cobrança enviada para ${pendentes.length} atleta(s) do ${cat.nome}!`, 'success');
+}
+
+function cobrarIndividualArb(id, catKey) {
+  const a = ARBITRAGEM.find(x => x.id === id);
+  if (!a) return;
+  const cat = CATS_DATA[catKey] || {nome: catKey};
+  // Mostra modal de cobrança individual
+  let m = document.getElementById('_modal_arb_ind');
+  if (!m) {
+    m = document.createElement('div');
+    m.id = '_modal_arb_ind';
+    m.style.cssText = 'display:none;position:fixed;inset:0;background:#0006;z-index:9000;align-items:center;justify-content:center';
+    m.innerHTML = `<div style="background:#fff;border-radius:18px;padding:28px 24px;max-width:340px;width:90%;box-shadow:0 8px 40px #0003">
+      <div id="_mai_titulo" style="font-size:16px;font-weight:800;margin-bottom:6px"></div>
+      <div id="_mai_desc" style="font-size:13px;color:#555;margin-bottom:20px"></div>
+      <div style="display:flex;gap:10px">
+        <button onclick="document.getElementById('_modal_arb_ind').style.display='none'" style="flex:1;padding:10px;border-radius:12px;border:1.5px solid #ddd;background:#f5f5f5;cursor:pointer;font-weight:700">Cancelar</button>
+        <button id="_mai_btn_cobrar" style="flex:1;padding:10px;border-radius:12px;border:none;background:#e67e22;color:#fff;cursor:pointer;font-weight:700">📲 Cobrar</button>
+        <button id="_mai_btn_pago" style="flex:1;padding:10px;border-radius:12px;border:none;background:#1a5c26;color:#fff;cursor:pointer;font-weight:700">✓ Pago</button>
+      </div>
+    </div>`;
+    document.body.appendChild(m);
+  }
+  document.getElementById('_mai_titulo').textContent = `Arbitragem — ${a.sig}`;
+  document.getElementById('_mai_desc').textContent = `${cat.nome} · ${a.jogo || 'Jogo'} · R$ ${a.valor.toFixed(2).replace('.',',')}`;
+  m.style.display = 'flex';
+  document.getElementById('_mai_btn_cobrar').onclick = () => {
+    m.style.display = 'none';
+    showToast(`📲 Cobrança enviada para ${a.sig} (${cat.nome})!`, 'info');
+  };
+  document.getElementById('_mai_btn_pago').onclick = () => {
+    a.status = 'pago';
+    m.style.display = 'none';
+    renderFinArbitragem();
+    renderFinPainel();
+    showToast(`✓ ${a.sig} — arbitragem paga!`, 'success');
+  };
 }
 
 function renderFinCobrancas() {

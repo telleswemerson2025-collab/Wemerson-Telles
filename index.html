@@ -2590,11 +2590,19 @@ function cobrarTodosAtletas(){ showN('📲 Cobrança enviada para atletas em atr
 
 function cobrarCatArb(catKey){
   if(!window.ARBITRAGEM_STATUS?.[catKey]) return;
+  const pendentes = window.ARBITRAGEM_STATUS[catKey].filter(a => !a.pago);
   window.ARBITRAGEM_STATUS[catKey].forEach(a => a.pago = true);
   salvarLS();
   const sc = document.querySelector('#s-3');
   if(sc) sc.innerHTML = renderFinCobrancas();
-  showN('✓ Arbitragem '+( CATS_DATA[catKey]?.nome||catKey)+' — todos marcados como pagos!');
+  showN('📲 Cobrança enviada para '+pendentes.length+' atleta(s) do '+(CATS_DATA[catKey]?.nome||catKey)+'!');
+}
+
+function cobrarArbIndividual(sig, catKey){
+  if(!window.ARBITRAGEM_STATUS?.[catKey]) return;
+  const entrada = window.ARBITRAGEM_STATUS[catKey].find(a => a.sig === sig);
+  if(!entrada || entrada.pago) return;
+  showN('📲 Cobrança enviada para '+sig+' ('+(CATS_DATA[catKey]?.nome||catKey)+') — R$ 30,00. Use "Confirmar" quando receber.');
 }
 
 // CONEXÃO FINANCEIRO → PROFESSOR: confirmar pagamento de arbitragem
@@ -2950,16 +2958,22 @@ function renderFinCobrancas(){
         <!-- Atletas -->
         <div style="padding:0 12px">
           ${atletas.map(a => `
-          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0ede8">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f0ede8">
             <div class="av" style="width:28px;height:28px;font-size:9px;background:${catCor}">${a.sig}</div>
             <div style="flex:1">
               <div style="font-size:11px;font-weight:700">${a.sig}</div>
-              <div style="font-size:9px;color:var(--text-3)">R$ 30,00 · Arbitragem</div>
+              <div style="font-size:9px;color:var(--text-3)">R$ 30,00 · Arbitragem · ${a.pago?'<span style=\"color:#1a5c26;font-weight:700\">✓ Pago</span>':'<span style=\"color:#b85c00\">Pendente</span>'}</div>
             </div>
-            <button onclick="confirmarPagamentoArbitragem('${a.sig}','${catKey}')"
-              style="font-size:9px;font-weight:800;padding:4px 10px;border-radius:20px;border:none;cursor:pointer;${a.pago?'background:#dcf0e0;color:#1a5c26':'background:#fde8e8;color:#8b1a1a'}">
-              ${a.pago ? '✓ Pago' : 'Confirmar'}
-            </button>
+            <div style="display:flex;gap:5px;flex-shrink:0">
+              ${!a.pago ? `<button onclick="cobrarArbIndividual('${a.sig}','${catKey}')"
+                style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;background:#e67e22;color:#fff">
+                📲
+              </button>` : ''}
+              <button onclick="confirmarPagamentoArbitragem('${a.sig}','${catKey}')"
+                style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;${a.pago?'background:#dcf0e0;color:#1a5c26':'background:#fde8e8;color:#8b1a1a'}">
+                ${a.pago ? '✓ Pago' : 'Confirmar'}
+              </button>
+            </div>
           </div>`).join('')}
         </div>
       </div>`;
