@@ -2260,7 +2260,7 @@ function renderListaAtletas(cat, cor){
 function montarDiretor(cor){
   const navItems = ['Dashboard','Atletas','Jogos','Campeonatos','Financeiro','Avisos','Config'];
   const bnavItems = [
-    {icon:'ti-layout-dashboard',label:'Início'},
+    {icon:'ti-layout-dashboard',label:'Dashboard'},
     {icon:'ti-users',label:'Atletas'},
     {icon:'ti-ball-football',label:'Jogos'},
     {icon:'ti-currency-dollar',label:'Financ.'},
@@ -2268,6 +2268,18 @@ function montarDiretor(cor){
   ];
   montarNav(navItems, cor);
   montarBnav(bnavItems, cor);
+
+  // Botão voltar à página principal — inserido no bnav como item extra
+  const bnav = document.getElementById('bnav');
+  if(bnav){
+    const btnHome = document.createElement('div');
+    btnHome.onclick = sair;
+    btnHome.title = 'Voltar à página principal';
+    btnHome.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 4px;border-radius:10px;cursor:pointer;background:rgba(139,26,26,.08);border:1.5px solid rgba(139,26,26,.18);margin-left:4px';
+    btnHome.innerHTML = `<i class="ti ti-home-2" style="font-size:18px;color:#8b1a1a"></i><span style="font-size:9px;font-weight:700;color:#8b1a1a">Sair</span>`;
+    bnav.appendChild(btnHome);
+  }
+
   const sc = document.getElementById('screens');
   sc.innerHTML = `
   <div id="s-0" class="scr on" style="padding:11px 13px;overflow-y:auto">${renderDashboard(cor)}</div>
