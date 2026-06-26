@@ -227,13 +227,13 @@ function renderFinResumoDiretor(cor){
       const cat = CATS_DATA[catKey];
       const atleta = cat?.atletas.find(a=>chave.startsWith(a.sig));
       const nome = atleta?.nome || chave;
-      return \`<div style="display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:10px">
-        <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--text)">\${nome}</div><div style="font-size:9px;color:var(--text-3);margin-top:1px;font-weight:500">\${cat?.nome||''} · venc. \${m.venc}</div></div>
-        <div style="text-align:right">
-          <span style="font-size:12px;font-weight:700;color:#8b1a1a">✗ atraso R$\${m.valor}</span>
-          <div><button class="btn-sm" style="margin-top:4px" onclick="showN('Cobrança enviada!')">Cobrar</button></div>
-        </div>
-      </div>\`;
+      return '<div style="display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:10px">'
+        +'<div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--text)">'+nome+'</div>'
+        +'<div style="font-size:9px;color:var(--text-3);margin-top:1px;font-weight:500">'+(cat?.nome||'')+' · venc. '+m.venc+'</div></div>'
+        +'<div style="text-align:right">'
+        +'<span style="font-size:12px;font-weight:700;color:#8b1a1a">✗ atraso R$'+m.valor+'</span>'
+        +'<div><button class="btn-sm" style="margin-top:4px" onclick="showN(\'Cobrança enviada!\')">Cobrar</button></div>'
+        +'</div></div>';
     }).join('')}
   </div>
   <button class="btn-g" style="background:${cor}" onclick="entrar('financeiro')">Abrir gestão financeira completa</button>`;

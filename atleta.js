@@ -464,31 +464,9 @@ function salvarCheckin(tipo){
   showN('✓ Check-in de '+tipo+' salvo! +'+sel*10+' XP conquistados!');
 }
 
-function montarNav(items, cor){
-  _resetNav(cor);
-  const nav = document.getElementById('nav');
-  nav.setAttribute('role','navigation');
-  nav.setAttribute('aria-label','Navegação principal');
-  nav.innerHTML = items.map((nm,i)=>
-    `<div class="nt${i===0?' on':''}" onclick="goTab(${i},'${cor}')" style="${i===0?'color:'+cor+';border-bottom-color:'+cor:''}" role="button" aria-label="Ir para ${nm}"${i===0?' aria-current="page"':''} tabindex="0">${nm}</div>`
-  ).join('');
-}
+// montarNav e montarBnav definidas em utils.js
 
-function montarBnav(items, cor){
-  const bnav = document.getElementById('bnav');
-  bnav.setAttribute('role','navigation');
-  bnav.setAttribute('aria-label','Navegação inferior');
-  bnav.innerHTML = items.map((it,i)=>
-    `<div class="bi${i===0?' on':''}" onclick="goTab(${i},'${cor}')" role="button" aria-label="Ir para ${it.label}"${i===0?' aria-current="page"':''} tabindex="0">
-      <i class="ti ${it.icon}" style="color:${i===0?cor:'#ccc'}" aria-hidden="true"></i>
-      <span style="color:${i===0?cor:'#ccc'}">${it.label}</span>
-    </div>`
-  ).join('');
-}
-
-let _navHistory = [];
-let _navCurrentIdx = 0;
-let _navCor = '#0d3d1a';
+// _navHistory, _navCurrentIdx, _navCor definidos em utils.js
 
 function goTab(idx, cor, _push=true){
   if(_push && idx !== _navCurrentIdx) _navHistory.push(_navCurrentIdx);
@@ -514,25 +492,7 @@ function goBack(){
   goTab(prev, _navCor, false);
 }
 
-function _resetNav(cor){
-  _navHistory = [];
-  _navCurrentIdx = 0;
-  _navCor = cor || '#0d3d1a';
-  _atualizarBtnVoltar();
-}
-
-function _atualizarBtnVoltar(){
-  const btn = document.getElementById('btn-voltar');
-  if(!btn) return;
-  if(_navHistory.length > 0){
-    btn.style.display = 'flex';
-    btn.style.background = _navCor + '22';
-    btn.style.borderColor = _navCor + '55';
-    btn.querySelector('i').style.color = _navCor;
-  } else {
-    btn.style.display = 'none';
-  }
-}
+// _resetNav e _atualizarBtnVoltar definidas em utils.js
 
 function showN(txt,err){
   const el=document.getElementById('notif-el');
@@ -590,14 +550,7 @@ function cadastrarAtleta(){
   document.getElementById('m-nome').value='';
 }
 
-function abrirModal(id){
-  document.getElementById(id).classList.add('on');
-  document.body.style.overflow='hidden';
-  const sc = document.getElementById('screens');
-  if(sc) sc.style.overflow='hidden';
-  // Se for modal de jogo, popula a lista de convocação
-  if(id === 'modal-jogo') popularConvJogo();
-}
+// abrirModal definida em utils.js
 
 let unifSel = 1;
 let jogoConvSel = {};
@@ -784,25 +737,5 @@ function iniciarJogoAoVivo(id){
   if(placar) placar.closest('.card')?.scrollIntoView({behavior:'smooth'});
 }
 
-function fecharModal(id){
-  document.getElementById(id).classList.remove('on');
-  // Só restaura scroll se não houver outro modal aberto
-  if(!document.querySelector('.modal-overlay.on')){
-    document.body.style.overflow='';
-    const sc = document.getElementById('screens');
-    if(sc) sc.style.overflow='';
-  }
-}
-document.querySelectorAll('.modal-overlay').forEach(m=>{
-  m.addEventListener('click',e=>{
-    if(e.target===m){
-      m.classList.remove('on');
-      if(!document.querySelector('.modal-overlay.on')){
-        document.body.style.overflow='';
-        const sc = document.getElementById('screens');
-        if(sc) sc.style.overflow='';
-      }
-    }
-  });
-});
+// fecharModal definida em utils.js
 

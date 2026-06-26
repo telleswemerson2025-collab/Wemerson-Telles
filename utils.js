@@ -20,6 +20,11 @@ function setCor(cor){
 // ENTRAR
 // =====================
 function entrar(perfil){
+  // 'professor' redireciona para a visão unificada de todos os subs
+  if(perfil === 'professor'){
+    montarProfessorTodos('#166024');
+    return;
+  }
   perfilAtual = perfil;
   document.getElementById('tela-inicial').style.display='none';
   document.getElementById('app').style.display='flex';
@@ -368,6 +373,96 @@ function salvarPerfil(){
   if(s1 && s1.classList.contains('on')) s1.innerHTML = renderEvolucao(cor);
 }
 
+// =====================
+// ESTADO DE NAVEGAÇÃO (abas)
+// =====================
+let _navHistory = [];
+let _navCurrentIdx = 0;
+let _navCor = '#0d3d1a';
+
+function _resetNav(cor){
+  _navHistory = [];
+  _navCurrentIdx = 0;
+  _navCor = cor || '#0d3d1a';
+  _atualizarBtnVoltar();
+}
+
+function _atualizarBtnVoltar(){
+  const btn = document.getElementById('btn-voltar');
+  if(!btn) return;
+  if(_navHistory.length > 0){
+    btn.style.display = 'flex';
+    btn.style.background = _navCor + '22';
+    btn.style.borderColor = _navCor + '55';
+    btn.querySelector('i').style.color = _navCor;
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+// =====================
+// NAVEGAÇÃO — montarNav / montarBnav
+// =====================
+function montarNav(items, cor){
+  _resetNav(cor);
+  const nav = document.getElementById('nav');
+  nav.setAttribute('role','navigation');
+  nav.setAttribute('aria-label','Navegação principal');
+  nav.innerHTML = items.map((nm,i)=>
+    `<div class="nt${i===0?' on':''}" onclick="goTab(${i},'${cor}')" style="${i===0?'color:'+cor+';border-bottom-color:'+cor:''}" role="button" aria-label="Ir para ${nm}"${i===0?' aria-current="page"':''} tabindex="0">${nm}</div>`
+  ).join('');
+}
+
+function montarBnav(items, cor){
+  const bnav = document.getElementById('bnav');
+  bnav.setAttribute('role','navigation');
+  bnav.setAttribute('aria-label','Navegação inferior');
+  bnav.innerHTML = items.map((it,i)=>
+    `<div class="bi${i===0?' on':''}" onclick="goTab(${i},'${cor}')" role="button" aria-label="Ir para ${it.label}"${i===0?' aria-current="page"':''} tabindex="0">
+      <i class="ti ${it.icon}" style="color:${i===0?cor:'#ccc'}" aria-hidden="true"></i>
+      <span style="color:${i===0?cor:'#ccc'}">${it.label}</span>
+    </div>`
+  ).join('');
+}
+
+// =====================
+// MODAIS
+// =====================
+function abrirModal(id){
+  document.getElementById(id).classList.add('on');
+  document.body.style.overflow='hidden';
+  const sc = document.getElementById('screens');
+  if(sc) sc.style.overflow='hidden';
+  // Se for modal de jogo, popula a lista de convocação
+  if(id === 'modal-jogo') popularConvJogo();
+}
+
+function fecharModal(id){
+  document.getElementById(id).classList.remove('on');
+  // Só restaura scroll se não houver outro modal aberto
+  if(!document.querySelector('.modal-overlay.on')){
+    document.body.style.overflow='';
+    const sc = document.getElementById('screens');
+    if(sc) sc.style.overflow='';
+  }
+}
+
+// Fechar modal clicando fora
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.modal-overlay').forEach(m=>{
+    m.addEventListener('click',e=>{
+      if(e.target===m){
+        m.classList.remove('on');
+        if(!document.querySelector('.modal-overlay.on')){
+          document.body.style.overflow='';
+          const sc = document.getElementById('screens');
+          if(sc) sc.style.overflow='';
+        }
+      }
+    });
+  });
+});
+
 // === SERVICE WORKER REGISTRATION ===
 // Service Worker — PWA offline
 if('serviceWorker' in navigator){
@@ -379,23 +474,7 @@ if('serviceWorker' in navigator){
 }
 
 // === NAVEGAÇÃO / MODAIS / INIT ===
-// =====================
-// CORREÇÃO: Professor acessa TODOS os subs
-// A diferença entre Professor e Diretor agora é só:
-// Diretor: vê financeiro, configurações, gestão de professores
-// Professor: vê todos os atletas de todas as categorias, mas não vê financeiro/config
-// =====================
-
-// Sobrescreve a tela inicial para refletir a nova lógica
-// Sobrescreve entrar() para tratar 'professor' como acesso a todos os subs
-const _origEntrar = entrar;
-entrar = function(perfil){
-  if(perfil === 'professor'){
-    montarProfessorTodos('#166024');
-    return;
-  }
-  _origEntrar(perfil);
-};
+// Professor acessa TODOS os subs via montarProfessorTodos (integrado em entrar())
 
 function montarProfessorTodos(cor){
   perfilAtual = 'professor';
