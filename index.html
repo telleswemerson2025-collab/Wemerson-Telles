@@ -1102,6 +1102,7 @@ window.addEventListener('DOMContentLoaded', function(){
 });
 
 let perfilAtual = null;
+let _perfilAnterior = null;
 let offline = false; // alias — usar offlineMode
 let chamadas = {};
 
@@ -1214,7 +1215,17 @@ function entrar(perfil){
   if(perfil === 'atleta') iniciarListenerAtleta();
 }
 
+function voltarInicio(){
+  if(_perfilAnterior === 'diretor'){
+    _perfilAnterior = null;
+    entrar('diretor');
+  } else {
+    sair();
+  }
+}
+
 function trocarCategoria(catKey){
+  if(perfilAtual === 'diretor') _perfilAnterior = 'diretor';
   const cor = CORES[catKey] || '#0d3d1a';
   perfilAtual = 'prof_' + catKey;
   setCor(cor);
@@ -1288,11 +1299,11 @@ function montarProfessor(catKey, cat, cor){
   if(switcher && pillsEl){
     switcher.style.display = 'block';
     pillsEl.innerHTML =
-      `<button onclick="sair()" title="Voltar à página principal"
+      `<button onclick="voltarInicio()" title="Voltar"
         style="padding:4px 10px;border-radius:20px;border:1.5px solid rgba(255,255,255,.5);
         background:rgba(255,255,255,.15);color:#fff;font-size:10px;font-weight:700;
         cursor:pointer;display:inline-flex;align-items:center;gap:4px;letter-spacing:.03em">
-        <i class="ti ti-arrow-left" style="font-size:11px"></i> Início
+        <i class="ti ti-arrow-left" style="font-size:11px"></i> ${_perfilAnterior==='diretor'?'Diretor':'Início'}
       </button>` +
       Object.entries(CATS_DATA).map(([k, c]) => {
         const ativo = k === catKey;
@@ -2325,7 +2336,7 @@ function renderDashboard(cor){
     <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
       <div style="width:36px;height:36px;border-radius:10px;background:${CORES[k]};display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 3px 8px rgba(0,0,0,.15)">${c.emoji}</div>
       <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--text)">${c.nome}</div><div style="font-size:9px;color:var(--text-3);margin-top:1px;font-weight:500">${c.atletas.length} atletas · ${c.atletas.reduce((s,a)=>s+a.gols,0)} gols</div></div>
-      <button onclick="entrar('prof_${k}')" style="background:${CORES[k]};color:#fff;border:none;padding:6px 12px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);letter-spacing:.02em">Acessar</button>
+      <button onclick="_perfilAnterior='diretor';entrar('prof_${k}')" style="background:${CORES[k]};color:#fff;border:none;padding:6px 12px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);letter-spacing:.02em">Acessar</button>
     </div>`).join('')}
   </div>`;
 }
