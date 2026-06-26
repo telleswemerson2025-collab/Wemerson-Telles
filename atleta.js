@@ -42,6 +42,31 @@ function montarAtleta(cor){
   <div id="s-5" class="scr" style="padding:11px 13px;overflow-y:auto">${renderCalendario(cor)}</div>
   <div id="s-6" class="scr" style="padding:11px 13px;overflow-y:auto">${renderComprovantes(cor)}</div>`;
   setCor(cor);
+
+  // Adiciona aba Convocações (índice 7)
+  const nav = document.getElementById('nav');
+  const nt = document.createElement('div');
+  nt.style.cssText='flex-shrink:0;padding:9px 11px;font-size:10px;font-weight:600;color:#bbb;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap';
+  nt.textContent = 'Convocações';
+  nt.className = 'nt';
+  nt.onclick = function(){ goTab(7, cor); };
+  nav.appendChild(nt);
+
+  const scDiv = document.createElement('div');
+  scDiv.id = 's-7';
+  scDiv.className = 'scr';
+  scDiv.style.cssText = 'padding:11px 13px;overflow-y:auto';
+  scDiv.innerHTML = renderMuralConvocacoes(cor);
+  sc.appendChild(scDiv);
+
+  const bnav = document.getElementById('bnav');
+  const bi = document.createElement('div');
+  bi.className = 'bi';
+  bi.innerHTML = `<i class="ti ti-clipboard-list" style="font-size:18px;color:#ccc"></i><span style="font-size:8px;color:#ccc">Convoc.</span>`;
+  bi.onclick = function(){ goTab(7, cor); };
+  bnav.appendChild(bi);
+
+  injetarConvocacaoNoFeed(cor);
 }
 
 function renderFeed(cor){

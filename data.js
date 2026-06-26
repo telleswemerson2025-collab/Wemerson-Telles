@@ -322,40 +322,6 @@ const convocacoes_publicadas = [
   }
 ];
 
-// Injeta tela de Convocações Públicas no app do ATLETA
-const _origMontarAtleta = montarAtleta;
-montarAtleta = function(cor){
-  _origMontarAtleta(cor);
-
-  // Adiciona aba no nav
-  const nav = document.getElementById('nav');
-  const nt = document.createElement('div');
-  nt.style.cssText='flex-shrink:0;padding:9px 11px;font-size:10px;font-weight:600;color:#bbb;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap';
-  nt.textContent = 'Convocações';
-  nt.className = 'nt';
-  nt.onclick = function(){ goTab(7, cor); };
-  nav.appendChild(nt);
-
-  // Adiciona tela (índice 7, após s-6 Comprovantes)
-  const sc = document.getElementById('screens');
-  const div = document.createElement('div');
-  div.id = 's-7';
-  div.className = 'scr';
-  div.style.cssText = 'padding:11px 13px;overflow-y:auto';
-  div.innerHTML = renderMuralConvocacoes(cor);
-  sc.appendChild(div);
-
-  // Adiciona no bnav
-  const bnav = document.getElementById('bnav');
-  const bi = document.createElement('div');
-  bi.className = 'bi';
-  bi.innerHTML = `<i class="ti ti-clipboard-list" style="font-size:18px;color:#ccc"></i><span style="font-size:8px;color:#ccc">Convoc.</span>`;
-  bi.onclick = function(){ goTab(7, cor); };
-  bnav.appendChild(bi);
-
-  // Adiciona notificação de convocação no feed
-  injetarConvocacaoNoFeed(cor);
-};
 
 function injetarConvocacaoNoFeed(cor){
   setTimeout(()=>{
