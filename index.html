@@ -1567,7 +1567,7 @@ function salvarAvaliacoes(){
   const catAtiva = meta.catKey || 'sub13';
 
   // Persiste avaliação individual por atleta em FICHAS
-  if(meta.atletas){
+  if(meta && Array.isArray(meta.atletas) && meta.atletas.length > 0){
     meta.atletas.forEach((a, i) => {
       const badge = document.getElementById('avb-'+i);
       if(badge && badge.textContent !== 'pendente'){
@@ -1636,6 +1636,7 @@ function renderMensagem(catNome, isDir, cor){
 }
 
 function setMsgD(txt){const el=document.getElementById('msg-d-txt');if(el)el.value=txt;}
+function setMsgQ(txt){const el=document.getElementById('msg-txt');if(el)el.value=txt;}
 
 // =====================
 // HABILIDADES

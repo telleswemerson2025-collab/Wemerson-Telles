@@ -913,6 +913,15 @@ const CONVOCACOES = {
 
 let ARBITRAGEM = [];
 
+const DESPESAS_CLUBE = [
+  {descricao:'Aluguel do campo',valor:1200},
+  {descricao:'Material de treino',valor:400},
+  {descricao:'Energia elétrica',valor:320},
+  {descricao:'Água',valor:80},
+  {descricao:'Salário técnico',valor:1800},
+  {descricao:'Seguros',valor:150},
+];
+
 const CATS_DATA = {
   'sub7':{nome:'Sub-7',cor:'#1a5c26'},
   'sub9':{nome:'Sub-9',cor:'#0e3d6e'},
@@ -1030,7 +1039,8 @@ function filtrarTabela(inputId, tabelaId) {
 // CHARTS
 function desenharGraficoReceitas() {
   destruirGrafico('chartReceitas');
-  const ctx = document.getElementById('chartReceitas').getContext('2d');
+  const ctx = document.getElementById('chartReceitas')?.getContext('2d');
+  if(!ctx) return;
   CHART_INSTANCES['chartReceitas'] = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -1051,7 +1061,8 @@ function desenharGraficoReceitas() {
 
 function desenharGraficoInadimplencia() {
   destruirGrafico('chartInadimplencia');
-  const ctx = document.getElementById('chartInadimplencia').getContext('2d');
+  const ctx = document.getElementById('chartInadimplencia')?.getContext('2d');
+  if(!ctx) return;
   CHART_INSTANCES['chartInadimplencia'] = new Chart(ctx, {
     type: 'line',
     data: {
@@ -1106,7 +1117,8 @@ function desenharGraficoSocios() {
   const atraso = SOCIOS.filter(s => s.status === 'atraso').length;
   const pendente = SOCIOS.filter(s => s.status === 'pendente').length;
 
-  const ctx = document.getElementById('chartSocios').getContext('2d');
+  const ctx = document.getElementById('chartSocios')?.getContext('2d');
+  if(!ctx) return;
   CHART_INSTANCES['chartSocios'] = new Chart(ctx, {
     type: 'doughnut',
     data: {
@@ -1308,10 +1320,11 @@ function marcarArbitragemPaga(id) {
     // Sincroniza com localStorage para o index.html (Professor) ler
     try {
       const arb = JSON.parse(localStorage.getItem('vot_arbitragem') || '{}');
-      if(!arb[a.cat]) arb[a.cat] = [];
-      const entrada = arb[a.cat].find(x=>x.sig===a.sig);
-      if(entrada) entrada.pago = (a.status==='pago');
-      else arb[a.cat].push({sig:a.sig, pago:(a.status==='pago')});
+      const catKey = a.catKey || 'sub13';
+      if(!arb[catKey]) arb[catKey] = [];
+      const entrada = arb[catKey].find(x=>x.sig===a.sig);
+      if(entrada) entrada.status = a.status;
+      else arb[catKey].push({sig:a.sig, status:a.status});
       localStorage.setItem('vot_arbitragem', JSON.stringify(arb));
     } catch(e){}
     renderFinArbitragem();
@@ -1320,8 +1333,9 @@ function marcarArbitragemPaga(id) {
 }
 
 function cobrarTodasArbitragem() {
-  ARBITRAGEM.filter(a => a.status === 'pendente').forEach(a => a.status = 'pendente');
+  ARBITRAGEM.filter(a => a.status === 'pendente').forEach(a => a.status = 'pago');
   renderFinArbitragem();
+  renderFinPainel();
 }
 
 function filtrarTabelaArb() {
@@ -1550,7 +1564,7 @@ window.addEventListener('DOMContentLoaded', () => {
       Object.entries(arbData).forEach(([catKey, atletas]) => {
         atletas.forEach(a => {
           const entrada = ARBITRAGEM.find(x => x.sig === a.sig);
-          if(entrada && a.pago) entrada.pago = true;
+          if(entrada && a.status === 'pago') entrada.status = 'pago';
         });
       });
     }
