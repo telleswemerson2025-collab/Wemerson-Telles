@@ -1825,7 +1825,7 @@ function renderCalendario(cor){
       <div style="height:8px;display:flex;justify-content:center;align-items:center;gap:1px;margin-top:1px">${dots}</div>
     </div>`;
   }
-  const listaEventos=EVENTOS.map(e=>{
+  const listaEventos=EVENTOS.map((e,ei)=>{
     const d=parseInt(e.data.split('-')[2]);
     const ic=e.tipo==='jogo'?'⚽':'🏃';
     const bg=e.tipo==='jogo'?'#fce8e8':'#dceaf8';
@@ -1836,14 +1836,17 @@ function renderCalendario(cor){
         <div style="font-size:10px;color:var(--text-3);font-weight:500">${e.cat} · ${d} Jun · ${e.hora}</div>
       </div>
       <span class="tag ${e.tipo==='jogo'?'tr':'tb'}">${e.tipo==='jogo'?'Jogo':'Treino'}</span>
+      <button onclick="abrirEditarEvento(${ei})" style="background:none;border:none;cursor:pointer;font-size:13px;padding:2px 4px">✏️</button>
+      <button onclick="deletarEvento(${ei})" style="background:none;border:none;cursor:pointer;font-size:13px;padding:2px 4px">🗑️</button>
     </div>`;
   }).join('');
 
   return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
     <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">${nomeMes} ${ano}</span>
-    <div style="display:flex;gap:10px;align-items:center">
+    <div style="display:flex;gap:8px;align-items:center">
       <div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:50%;background:${cor}"></div><span style="font-size:9px;color:var(--text-3);font-weight:600">Treino</span></div>
       <div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:50%;background:#8b1a1a"></div><span style="font-size:9px;color:var(--text-3);font-weight:600">Jogo</span></div>
+      <button class="btn-sm" onclick="abrirEditarEvento(-1)">+ Evento</button>
     </div>
   </div>
   <div class="cw" style="padding:10px">
@@ -2166,6 +2169,7 @@ function renderListaAtletas(cat, cor){
           <button onclick="abrirFicha('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${catKey}','${cor}')" style="flex:1;background:${fichaBg};color:${fichaC};border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">🏥 Ficha</button>
           <button onclick="gerarRelatorio('${a.nome}','${a.sig}','${catKey}','${cor}')" style="flex:1;background:#fdf3dc;color:#7a4010;border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">📊 PDF</button>
           <button onclick="abrirMsgDireta('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${cor}')" style="flex:1;background:${cor};color:#fff;border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">✉️ Msg</button>
+          <button onclick="abrirEditarAtleta('${a.sig}','${catKey}')" style="flex:1;background:#f0ede8;color:var(--text-2);border:1px solid var(--border);padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">✏️</button>
         </div>
       </div>`;
     }).join('')}
@@ -2248,6 +2252,7 @@ function renderDirAtletas(cor){
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
         <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;color:${pc};background:${pc}18">${a.pres}%</span>
         <button onclick="abrirMsgDireta('${a.nome}','${a.sig}','${a.pos}','${a.cat}','${a.cor}')" style="background:${a.cor};color:#fff;border:none;padding:4px 9px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer;white-space:nowrap">✉️ Msg</button>
+        <button onclick="abrirEditarAtleta('${a.sig}','${Object.entries(CATS_DATA).find(([,c])=>c.nome===a.cat)?.[0]||\'sub13\'}')" style="background:#f0ede8;color:var(--text-2);border:1px solid var(--border);padding:4px 9px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">✏️</button>
       </div>
     </div>`;
   }).join('')}
@@ -2623,6 +2628,22 @@ function renderFinPainel(){
     <div class="chart-card-head"><h4>Inadimplência — evolução mensal</h4><span>Valor em atraso</span></div>
     <div class="chart-wrap"><canvas id="chart-inadimplencia"></canvas></div>
   </div>
+  <div class="lbl">Despesas do clube</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+    <span style="font-size:11px;color:var(--text-3);font-weight:600">${DESPESAS_CLUBE.length} itens · Total ${fmtR$(DESPESAS_CLUBE.reduce((s,d)=>s+d.valor,0))}</span>
+    <button class="btn-sm" onclick="abrirEditarDespesa(-1)">+ Nova</button>
+  </div>
+  <div class="cw" style="padding:6px 14px;margin-bottom:10px">
+    ${DESPESAS_CLUBE.map((d,i)=>`
+    <div style="display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);gap:8px">
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:700;color:var(--text)">${d.descricao}</div>
+      </div>
+      <span style="font-size:12px;font-weight:700;color:#8b1a1a">${fmtR$(d.valor)}</span>
+      <button class="btn-sm" onclick="abrirEditarDespesa(${i})">✏️</button>
+      <button class="btn-sm" onclick="deletarDespesa(${i})" style="background:#fce8e8;color:#8b1a1a;border-color:#e8a0a0">🗑️</button>
+    </div>`).join('')}
+  </div>
   <div class="lbl">Pendências recentes</div>
   <div class="card" style="padding:2px">
     <table style="font-size:11px">
@@ -2862,7 +2883,10 @@ function renderEvolucao(cor){
       </div>
 
       <div style="flex:1">
-        <div style="font-family:var(--font-display);font-size:18px;color:#fff;letter-spacing:.08em">${a.nome}</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="font-family:var(--font-display);font-size:18px;color:#fff;letter-spacing:.08em">${a.nome}</div>
+          <button onclick="abrirEditarPerfil()" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:10px;padding:3px 8px;border-radius:8px;cursor:pointer;font-weight:600">✏️ Editar</button>
+        </div>
         <div style="font-size:10px;color:rgba(255,255,255,.65);margin-top:1px;font-weight:500">${a.pos} · ${a.cat} · Nível ${nivel}</div>
         <div style="background:rgba(255,255,255,.15);border-radius:4px;height:4px;margin-top:6px;overflow:hidden">
           <div id="xp-bar" style="width:${xpAtual/10}%;height:4px;border-radius:4px;background:rgba(255,255,255,.7);transition:width .5s"></div>
