@@ -2169,7 +2169,8 @@ function renderListaAtletas(cat, cor){
           <button onclick="abrirFicha('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${catKey}','${cor}')" style="flex:1;background:${fichaBg};color:${fichaC};border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">🏥 Ficha</button>
           <button onclick="gerarRelatorio('${a.nome}','${a.sig}','${catKey}','${cor}')" style="flex:1;background:#fdf3dc;color:#7a4010;border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">📊 PDF</button>
           <button onclick="abrirMsgDireta('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${cor}')" style="flex:1;background:${cor};color:#fff;border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">✉️ Msg</button>
-          <button onclick="abrirEditarAtleta('${a.sig}','${catKey}')" style="flex:1;background:#f0ede8;color:var(--text-2);border:1px solid var(--border);padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">✏️</button>
+          <button onclick="abrirEditarAtleta('${a.sig}','${catKey}')" style="flex:1;background:#f0ede8;border:1px solid #e8e4dc;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">✏️</button>
+          <button onclick="deletarAtleta('${a.sig}','${catKey}')" style="flex:1;background:#fce8e8;border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer;color:#8b1a1a">🗑️</button>
         </div>
       </div>`;
     }).join('')}
@@ -2234,7 +2235,7 @@ function renderDashboard(cor){
 }
 
 function renderDirAtletas(cor){
-  const todos = Object.entries(CATS_DATA).flatMap(([k,c])=>c.atletas.map(a=>({...a,cat:c.nome,cor:CORES[k]})));
+  const todos = Object.entries(CATS_DATA).flatMap(([k,c])=>c.atletas.map(a=>({...a,cat:c.nome,cor:CORES[k],catKey:k})));
   return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
     <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Todos os atletas (${todos.length})</span>
     <button class="btn-sm" onclick="abrirModal('modal-atleta')">+ Novo</button>
@@ -2251,8 +2252,11 @@ function renderDirAtletas(cor){
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
         <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;color:${pc};background:${pc}18">${a.pres}%</span>
-        <button onclick="abrirMsgDireta('${a.nome}','${a.sig}','${a.pos}','${a.cat}','${a.cor}')" style="background:${a.cor};color:#fff;border:none;padding:4px 9px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer;white-space:nowrap">✉️ Msg</button>
-        <button onclick="abrirEditarAtleta('${a.sig}','${Object.entries(CATS_DATA).find(([,c])=>c.nome===a.cat)?.[0]||\'sub13\'}')" style="background:#f0ede8;color:var(--text-2);border:1px solid var(--border);padding:4px 9px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">✏️</button>
+        <div style="display:flex;gap:3px">
+          <button onclick="abrirMsgDireta('${a.nome}','${a.sig}','${a.pos}','${a.cat}','${a.cor}')" style="background:${a.cor};color:#fff;border:none;padding:4px 9px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer;white-space:nowrap">✉️ Msg</button>
+          <button onclick="abrirEditarAtleta('${a.sig}','${a.catKey}')" style="background:#f0ede8;border:1px solid #e8e4dc;padding:4px 7px;border-radius:7px;font-size:9px;cursor:pointer">✏️</button>
+          <button onclick="deletarAtleta('${a.sig}','${a.catKey}')" style="background:#fce8e8;border:none;padding:4px 7px;border-radius:7px;font-size:9px;cursor:pointer;color:#8b1a1a">🗑️</button>
+        </div>
       </div>
     </div>`;
   }).join('')}
