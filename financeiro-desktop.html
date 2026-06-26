@@ -1360,9 +1360,9 @@ function renderFinConvocacoes() {
     } else {
       atletasLista = Object.entries(MENSALIDADES_ATLETAS)
         .filter(([id]) => id.endsWith(catKey))
-        .map(([id]) => {
+        .map(([id, dados]) => {
           const sig = id.match(/^([A-Z]+)/)?.[1] || id;
-          return {sig, nome: sig, pos: ''};
+          return {sig, nome: dados.nome || sig, pos: dados.pos || ''};
         });
     }
 
