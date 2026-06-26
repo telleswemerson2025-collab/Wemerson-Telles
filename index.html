@@ -1420,15 +1420,22 @@ if(!window.ARBITRAGEM_STATUS) window.ARBITRAGEM_STATUS = {
 function salvarChamada(total){
   const p=Object.values(chamadas).filter(v=>v==='P').length;
   const f=Object.values(chamadas).filter(v=>v==='F').length;
-  // Atualiza stats se for o atleta principal (GS)
-  const gsPresente = chamadas['c0']==='P' || chamadas['KTsub13']==='P';
-  if(p+f > 0) addTreino(gsPresente);
 
-  // Detecta categoria ativa e salva presença para o financeiro
-  const catAtiva = Object.keys(chamadas).find(k=>k.length>2)?.replace(/[A-Z]+/,'') || 'sub13';
+  // CORRIGIDO: qualquer atleta presente atualiza stats (não só KT)
+  const algumPresente = p > 0;
+  if(p+f > 0) addTreino(algumPresente);
+
+  // Detecta categoria ativa pela chave dos atletas marcados
+  const primeiraChave = Object.keys(chamadas).find(k=>k.length>2) || '';
+  const catAtiva = primeiraChave.replace(/^[A-Z]+/, '') || 'sub13';
+
+  // CORRIGIDO: Salva presença no histórico e ALSO atualiza painel financeiro
   const hoje = new Date().toISOString().split('T')[0];
   if(!window.PRESENCA_HIST[catAtiva]) window.PRESENCA_HIST[catAtiva] = [];
   window.PRESENCA_HIST[catAtiva].push({data: hoje, presentes: p, total: total});
+
+  // Salva no localStorage para persistir entre sessões
+  salvarLS();
 
   showN('✓ Chamada salva! '+p+' presentes · '+f+' faltas · Pais notificados');
 }
@@ -2401,10 +2408,51 @@ function chartOpcoesBase({stacked,currency,suffix,yMax,singleSeries}={}){
     }
   };
 }
-function marcarSocioPago(id){ const s=SOCIOS.find(x=>x.id===id); if(s){s.status='pago';} salvarLS(); showN('✓ Sócio marcado como pago!'); montarFinanceiro('#b8860b'); }
-function marcarAtletaPago(chave){ if(MENSALIDADES_ATLETAS[chave]) MENSALIDADES_ATLETAS[chave].status='pago'; salvarLS(); showN('✓ Atleta marcado como pago!'); montarFinanceiro('#b8860b'); }
+function marcarSocioPago(id){
+  const s=SOCIOS.find(x=>x.id===id);
+  if(s){ s.status = s.status==='pago' ? 'atraso' : 'pago'; }
+  salvarLS();
+  showN(s?.status==='pago' ? '✓ Sócio marcado como pago!' : '↩ Sócio marcado como em atraso');
+  montarFinanceiro('#b8860b');
+}
+
+function marcarAtletaPago(chave){
+  if(MENSALIDADES_ATLETAS[chave]){
+    const atual = MENSALIDADES_ATLETAS[chave].status;
+    MENSALIDADES_ATLETAS[chave].status = atual==='pago' ? 'atraso' : 'pago';
+
+    // CONEXÃO: Atualiza status de arbitragem visível para o professor
+    const match = chave.match(/^([A-Z]+)(.+)$/);
+    if(match){
+      const sig = match[1], catKey = match[2];
+      if(window.ARBITRAGEM_STATUS?.[catKey]){
+        const entrada = window.ARBITRAGEM_STATUS[catKey].find(a=>a.sig===sig);
+        if(entrada) entrada.pago = MENSALIDADES_ATLETAS[chave].status === 'pago';
+      }
+    }
+  }
+  salvarLS();
+  showN(MENSALIDADES_ATLETAS[chave]?.status==='pago' ? '✓ Atleta marcado como pago! Professor notificado.' : '↩ Atleta marcado como em atraso');
+  montarFinanceiro('#b8860b');
+}
 function cobrarTodosSocios(){ showN('📲 Cobrança enviada para sócios inadimplentes!'); }
 function cobrarTodosAtletas(){ showN('📲 Cobrança enviada para atletas em atraso!'); }
+
+// CONEXÃO FINANCEIRO → PROFESSOR: confirmar pagamento de arbitragem
+function confirmarPagamentoArbitragem(sig, catKey){
+  if(!window.ARBITRAGEM_STATUS) window.ARBITRAGEM_STATUS = {};
+  if(!window.ARBITRAGEM_STATUS[catKey]) window.ARBITRAGEM_STATUS[catKey] = [];
+  const entrada = window.ARBITRAGEM_STATUS[catKey].find(a => a.sig === sig);
+  if(entrada){
+    entrada.pago = !entrada.pago;
+    showN(entrada.pago ? '✓ Arbitragem confirmada! Professor notificado.' : '↩ Arbitragem revertida');
+  } else {
+    window.ARBITRAGEM_STATUS[catKey].push({sig, pago: true});
+    showN('✓ Arbitragem confirmada! Professor notificado.');
+  }
+  salvarLS();
+  montarFinanceiro('#b8860b');
+}
 function filtrarFinCatDesktop(cat,el){
   document.querySelectorAll('#chips-cat-fin .chip').forEach(c=>c.classList.remove('on'));
   el.classList.add('on');
@@ -2460,16 +2508,20 @@ function renderFinPainel(){
   const c=finCalcs();
   const atletasFlat=listarTodosAtletas();
 
-  // Dados de presença histórica por categoria (últimas 6 semanas)
-  const HISTORICO_PRESENCA = {
-    labels: ['Sem 1','Sem 2','Sem 3','Sem 4','Sem 5','Sem 6'],
-    sub7:   [4, 3, 4, 4, 3, 4],
-    sub9:   [3, 4, 3, 4, 4, 3],
-    sub11:  [4, 4, 3, 4, 3, 4],
-    sub13:  [7, 6, 8, 7, 8, 8],
-    sub15:  [4, 5, 4, 5, 5, 4],
-  };
+  // CORRIGIDO: Dados de presença — lê do histórico real da chamada se disponível
   const totalAtletasPorCat = {sub7:4,sub9:4,sub11:4,sub13:8,sub15:5};
+  const BASE_PRESENCA = {
+    sub7:[4,3,4,4,3,4], sub9:[3,4,3,4,4,3],
+    sub11:[4,4,3,4,3,4], sub13:[7,6,8,7,8,8], sub15:[4,5,4,5,5,4]
+  };
+  // Injeta dados reais das chamadas salvas no histórico
+  const HISTORICO_PRESENCA = { labels:['Sem 1','Sem 2','Sem 3','Sem 4','Sem 5','Atual'] };
+  Object.keys(BASE_PRESENCA).forEach(cat => {
+    const hist = window.PRESENCA_HIST?.[cat] || [];
+    const base = [...BASE_PRESENCA[cat]];
+    if(hist.length > 0) base[base.length-1] = hist[hist.length-1].presentes;
+    HISTORICO_PRESENCA[cat] = base;
+  });
   const totalGeral = Object.values(totalAtletasPorCat).reduce((s,v)=>s+v,0);
 
   // Presença mais recente (última semana)
@@ -2680,7 +2732,28 @@ function renderFinCobrancas(){
       </tbody>
     </table>
   </div>
-  ${pend.length>0?`<button class="btn-g" style="margin-top:8px;background:#8b1a1a" onclick="showN('Cobranças enviadas em massa!')">📲 Cobrar todos em massa</button>`:''}`;
+  ${pend.length>0?`<button class="btn-g" style="margin-top:8px;background:#8b1a1a" onclick="showN('Cobranças enviadas em massa!')">📲 Cobrar todos em massa</button>`:''}
+
+  <!-- CONEXÃO FINANCEIRO → PROFESSOR: Arbitragem -->
+  <div class="lbl" style="margin-top:12px">Arbitragem — Confirmar pagamentos (→ Professor)</div>
+  <div class="cw" style="padding:8px 14px">
+    ${Object.entries(window.ARBITRAGEM_STATUS || {}).map(([catKey, atletas]) => {
+      const catNome = CATS_DATA[catKey]?.nome || catKey;
+      return atletas.map(a => `
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0ede8">
+          <div class="av" style="width:28px;height:28px;font-size:9px;background:${CORES[catKey]}">${a.sig}</div>
+          <div style="flex:1">
+            <div style="font-size:11px;font-weight:700">${a.sig} · ${catNome}</div>
+            <div style="font-size:9px;color:var(--text-3)">R$ 30,00 · Arbitragem</div>
+          </div>
+          <button onclick="confirmarPagamentoArbitragem('${a.sig}','${catKey}')"
+            style="font-size:9px;font-weight:800;padding:4px 10px;border-radius:20px;border:none;cursor:pointer;${a.pago?'background:#dcf0e0;color:#1a5c26':'background:#fde8e8;color:#8b1a1a'}">
+            ${a.pago ? '✓ Pago' : 'Confirmar'}
+          </button>
+        </div>
+      `).join('');
+    }).join('') || '<div style="font-size:11px;color:var(--text-3);padding:10px;text-align:center">Nenhuma cobrança de arbitragem pendente</div>'}
+  </div>`;
 }
 
 // =====================
