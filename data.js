@@ -154,8 +154,6 @@ function carregarLS(){
   } catch(e){}
 }
 
-carregarLS();
-
 // Mostra painel lateral no desktop ao carregar
 window.addEventListener('DOMContentLoaded', function(){
   const dp = document.getElementById('desktop-panel');
@@ -452,3 +450,6 @@ function confirmarPresenca(btn, tipo, cor){
     showN('⚠️ Ausência informada ao Técnico André.');
   }
 }
+
+// Carrega dados persistidos — DEVE ficar no final do arquivo (após todas as declarações const)
+carregarLS();

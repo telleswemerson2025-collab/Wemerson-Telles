@@ -41,7 +41,7 @@ self.addEventListener('fetch', e => {
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
         return res;
-      }).catch(()=>{});
+      }).catch(()=> caches.match('/index.html').then(f => f || new Response('Offline', {status:503, headers:{'Content-Type':'text/plain'}})));
       return cached || network;
     })
   );

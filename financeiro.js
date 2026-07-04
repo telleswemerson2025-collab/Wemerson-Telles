@@ -425,6 +425,8 @@ function cobrarCategoriaMens(catKey){
   salvarLS();
   const sc = document.querySelector('#s-2');
   if(sc) sc.innerHTML = renderFinMensalidades();
+  const sc3 = document.querySelector('#s-3');
+  if(sc3) sc3.innerHTML = renderFinCobrancas();
   showN('📲 '+pendentes.length+' atleta(s) do '+(CATS_DATA[catKey]?.nome||catKey)+' cobrados!');
 }
 

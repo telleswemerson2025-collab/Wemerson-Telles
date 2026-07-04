@@ -293,9 +293,11 @@ function marcC(id,tipo,el,cor){
   document.getElementById('cp-'+id).style.color = tipo==='P'?'#fff':'#27500a';
   document.getElementById('cf-'+id).classList.toggle('on',tipo==='F');
   const t=Object.keys(chamadas).length;
-  const all=document.querySelectorAll('.cr-item').length;
-  document.getElementById('cnt-c').textContent=t+'/'+all;
-  document.getElementById('prog-c').style.width=(t/all*100)+'%';
+  const all=document.querySelectorAll('.cr-item').length||1;
+  const cnt=document.getElementById('cnt-c');
+  if(cnt) cnt.textContent=t+'/'+all;
+  const pr=document.getElementById('prog-c')||document.getElementById('prog-'+id.replace(/\d+$/,''));
+  if(pr) pr.style.width=(t/all*100)+'%';
 }
 
 // PRESENCA_HIST e ARBITRAGEM_STATUS inicializados em data.js
@@ -660,7 +662,7 @@ function abrirFicha(nome, sig, pos, cat, catKey, cor){
 function salvarFicha(){
   const key = document.getElementById('ficha-nome').dataset.key;
   const nome = document.getElementById('ficha-nome').textContent;
-  FICHAS[key] = {
+  FICHAS[key] = Object.assign(FICHAS[key]||{}, {
     sangue:  document.getElementById('ficha-sangue').value,
     plano:   document.getElementById('ficha-plano').value,
     alergias:document.getElementById('ficha-alergias').value,
@@ -669,7 +671,7 @@ function salvarFicha(){
     enome:   document.getElementById('ficha-emerg-nome').value,
     ewpp:    document.getElementById('ficha-emerg-wpp').value,
     obs:     document.getElementById('ficha-obs').value,
-  };
+  });
   salvarLS();
   fecharModal('modal-ficha');
   showN('✓ Ficha médica de '+nome+' salva!');

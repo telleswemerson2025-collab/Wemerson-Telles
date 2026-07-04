@@ -921,8 +921,8 @@ const JOGOS_AGENDADOS = [
 // CONVOCAÇÕES: Apenas atletas convocados geram cobrança de arbitragem
 const CONVOCACOES = {
   'j1': ['AS','LS','MF','TP'],        // Sub-7: 4 atletas convocados
-  'j2': ['DR','LR','FB','WN','JB','CM'], // Sub-11: 6 atletas convocados
-  'j3': ['KT','JC','AA','GC','YD','ZA','MVD','CM'], // Sub-13: 8 atletas convocados
+  'j2': ['DR','LR','FM','WN','JB','ZA'], // Sub-11: 6 atletas convocados
+  'j3': ['KT','YD','MT','RC'],           // Sub-13: 4 atletas convocados
 };
 
 let ARBITRAGEM = [];
@@ -976,6 +976,9 @@ const CATS_DATA = {
 
 // Gera arbitragem automaticamente baseado em convocações
 function gerarArbitragemDeConvocacoes() {
+  // Preserva status já pagos ao regenerar (chave: jogoId+sig)
+  const statusAnterior = {};
+  ARBITRAGEM.forEach(a => { statusAnterior[a.jogoId + '|' + a.sig] = a.status; });
   ARBITRAGEM = [];
   let id = 1;
 
@@ -990,7 +993,7 @@ function gerarArbitragemDeConvocacoes() {
         sig: sig,
         catKey: catKey,
         valor: VALOR_ARBITRAGEM,
-        status: 'pendente'
+        status: statusAnterior[jogo.id + '|' + sig] || 'pendente'
       });
     });
   });
@@ -1083,7 +1086,7 @@ function marcarAtletaPago(id) {
         if(!arb[catKey]) arb[catKey] = [];
         const entrada = arb[catKey].find(x => x.sig === sig);
         if(entrada) entrada.pago = m.status === 'pago';
-        else arb[catKey].push({sig, pago: m.status === 'pago'});
+        else arb[catKey].push({sig, pago: m.status === 'pago', status: m.status === 'pago' ? 'pago' : 'pendente'});
         localStorage.setItem('vot_arbitragem', JSON.stringify(arb));
       }
     } catch(e){}
@@ -1091,6 +1094,20 @@ function marcarAtletaPago(id) {
     renderFinMensalidades();
     renderFinPainel();
   }
+}
+
+function abrirEditarMensalidade(id, sig) {
+  const m = MENSALIDADES_ATLETAS[id];
+  if (!m) return;
+  const valor = prompt('Valor da mensalidade de ' + sig + ' (R$):', m.valor);
+  if (valor === null) return;
+  const venc = prompt('Vencimento (ex: 05/07):', m.venc);
+  if (venc === null) return;
+  m.valor = parseFloat(valor) || m.valor;
+  m.venc = venc || m.venc;
+  salvarDesktopLS();
+  renderFinMensalidades();
+  renderFinPainel();
 }
 
 function cobrarTodosSocios() {
@@ -1229,7 +1246,8 @@ function renderFinPainel() {
 
   document.getElementById('kpi-recebido').textContent = fmtR$(calc.total_dia);
   document.getElementById('kpi-atraso').textContent = fmtR$(calc.total_atraso);
-  document.getElementById('kpi-saldo').textContent = (calc.total_dia - 3200 >= 0 ? '' : '- ') + fmtR$(Math.abs(calc.total_dia - 3200));
+  const despTotal = (typeof DESPESAS_CLUBE !== 'undefined') ? DESPESAS_CLUBE.reduce((s,d)=>s+d.valor,0) : 0;
+  document.getElementById('kpi-saldo').textContent = (calc.total_dia - despTotal >= 0 ? '' : '- ') + fmtR$(Math.abs(calc.total_dia - despTotal));
 
   document.getElementById('stat-socios-n').textContent = SOCIOS.length + ' ativos';
 
@@ -1927,7 +1945,7 @@ function renderRelatorioContador() {
         TDB(s.nome)+
         TD(s.plano,'left','#6b7280')+
         TDB(fmtR$(s.valor),'right')+
-        TD(s.vencimento||'—','center','#6b7280')+
+        TD(s.venc||'—','center','#6b7280')+
         `<td style="padding:9px 12px;text-align:center">${STATUS_BADGE(s.status)}</td>`
       , false, i%2===1?'#fafaf8':'').replace('<tr style=";','<tr style="')).join('')+
       `<tr style="background:#dcfce7;border-top:2px solid #16a34a">
@@ -2289,7 +2307,7 @@ window.addEventListener('DOMContentLoaded', () => {
           const entrada = ARBITRAGEM.find(x => x.sig === a.sig && x.catKey === catKey);
           if(entrada){
             const isPago = (a.pago === true) || (a.status === 'pago');
-            if(isPago) entrada.status = 'pago';
+            entrada.status = isPago ? 'pago' : 'pendente';
           }
         });
       });

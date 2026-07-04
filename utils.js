@@ -511,7 +511,7 @@ function montarProfessorTodos(cor){
     <div id="s-5" class="scr" style="padding:11px 13px;overflow-y:auto">${renderProfCat('sub15',cor)}</div>
     <div id="s-6" class="scr" style="padding:11px 13px;overflow-y:auto">${renderMensagemTodos(cor)}</div>
     <div id="s-7" class="scr" style="padding:11px 13px;overflow-y:auto">${renderJogosProfessor(CATS_DATA['sub13'], cor)}</div>
-    <div id="s-8" class="scr" style="padding:11px 13px;overflow-y:auto">${renderConvocacoesProfessor(cor)}</div>`;
+    <div id="s-8" class="scr" style="padding:11px 13px;overflow-y:auto">${renderConvocacoesTodos(cor)}</div>`;
 
   // Mapeia bnav para telas
   document.querySelectorAll('#bnav .bi').forEach((b,i)=>{
@@ -522,7 +522,7 @@ function montarProfessorTodos(cor){
   setCor(cor);
 }
 
-function renderConvocacoesProfessor(cor){
+function renderConvocacoesTodos(cor){
   const cats = Object.entries(CATS_DATA);
   const linhas = cats.map(([catKey, cat])=>{
     return cat.atletas.map(a=>{
@@ -535,7 +535,7 @@ function renderConvocacoesProfessor(cor){
           <div style="font-size:10px;color:#aaa">${a.pos} · ${cat.nome}</div>
         </div>
         <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:11px;font-weight:600;color:${cor}">
-          <input type="checkbox" id="conv-${ficKey}" ${convocado?'checked':''} onchange="toggleConvocado('${ficKey}',this.checked)" style="accent-color:${cor};width:16px;height:16px">
+          <input type="checkbox" id="conv-${ficKey}" ${convocado?'checked':''} onchange="toggleConvocadoTodos('${ficKey}',this.checked)" style="accent-color:${cor};width:16px;height:16px">
           Convocar
         </label>
       </div>`;
@@ -544,15 +544,15 @@ function renderConvocacoesProfessor(cor){
   return `<div style="font-size:13px;font-weight:700;margin-bottom:4px;color:#1a1a1a">Convocar atletas para o próximo jogo</div>
   <div style="font-size:10px;color:#aaa;margin-bottom:12px">Selecione os atletas convocados para o próximo jogo</div>
   ${linhas}
-  <button onclick="salvarConvocacoesProfessor()" style="width:100%;margin-top:16px;padding:13px;border-radius:12px;border:none;background:${cor};color:#fff;font-size:13px;font-weight:700;cursor:pointer">Confirmar convocação</button>`;
+  <button onclick="salvarConvocacoesTodos()" style="width:100%;margin-top:16px;padding:13px;border-radius:12px;border:none;background:${cor};color:#fff;font-size:13px;font-weight:700;cursor:pointer">Confirmar convocação</button>`;
 }
 
-function toggleConvocado(ficKey, val){
+function toggleConvocadoTodos(ficKey, val){
   if(!FICHAS[ficKey]) FICHAS[ficKey] = {};
   FICHAS[ficKey].convocado = val;
 }
 
-function salvarConvocacoesProfessor(){
+function salvarConvocacoesTodos(){
   salvarLS();
   const total = Object.values(FICHAS).filter(f=>f.convocado).length;
   showN('✓ Convocação salva! '+total+' atleta(s) convocado(s).');

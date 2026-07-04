@@ -14,6 +14,12 @@ function montarDiretor(cor){
   montarNav(navItems, cor);
   montarBnav(bnavItems, cor);
 
+  // bnav tem 5 itens mas há 7 telas — remapeia índices (Financ.→s-4, Config→s-6)
+  document.querySelectorAll('#bnav .bi').forEach((b,i)=>{
+    const mapa=[0,1,2,4,6];
+    b.onclick=function(){goTab(mapa[i]!==undefined?mapa[i]:i,cor);};
+  });
+
   // Botão voltar ao Dashboard — inserido no bnav como item extra
   const bnav = document.getElementById('bnav');
   if(bnav){

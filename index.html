@@ -533,6 +533,111 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="modal-editar-socio">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="med-socio-titulo">Novo Sócio</div>
+    <input type="hidden" id="med-socio-id">
+    <div class="field"><label>Nome completo</label><input type="text" id="med-socio-nome" placeholder="Nome do sócio"></div>
+    <div class="field"><label>Plano</label>
+      <select id="med-socio-plano">
+        <option>Sócio Torcedor</option><option>Sócio Prata</option><option>Sócio Ouro</option><option>Sócio Diamante</option>
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field"><label>Valor (R$)</label><input type="number" id="med-socio-valor" min="0" placeholder="50"></div>
+      <div class="field"><label>Vencimento</label><input type="text" id="med-socio-venc" placeholder="05/07"></div>
+    </div>
+    <div class="field"><label>Status</label>
+      <select id="med-socio-status"><option value="pago">Pago</option><option value="pendente">Pendente</option><option value="atrasado">Atrasado</option></select>
+    </div>
+    <button class="btn-g" onclick="salvarSocio(document.getElementById('med-socio-id').value||null)">Salvar sócio</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-editar-socio')">Cancelar</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-editar-despesa">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="med-despesa-titulo">Nova Despesa</div>
+    <input type="hidden" id="med-despesa-idx" value="-1">
+    <div class="field"><label>Descrição</label><input type="text" id="med-despesa-desc" placeholder="Ex: Material esportivo"></div>
+    <div class="field"><label>Valor (R$)</label><input type="number" id="med-despesa-valor" min="0" placeholder="300"></div>
+    <button class="btn-g" onclick="salvarDespesa(parseInt(document.getElementById('med-despesa-idx').value))">Salvar despesa</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-editar-despesa')">Cancelar</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-editar-atleta">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="med-atleta-titulo">Novo Atleta</div>
+    <input type="hidden" id="med-atleta-oldsig">
+    <input type="hidden" id="med-atleta-oldcat">
+    <div class="field"><label>Nome completo</label><input type="text" id="med-atleta-nome" placeholder="Nome do atleta"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field"><label>Sigla (2 letras)</label><input type="text" id="med-atleta-sig" maxlength="2" placeholder="KT"></div>
+      <div class="field"><label>Posição</label>
+        <select id="med-atleta-pos">
+          <option>Goleiro</option><option>Zagueiro</option><option>Lateral</option><option>Meia</option><option>Atacante</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <div class="field"><label>Presença %</label><input type="number" id="med-atleta-pres" min="0" max="100" placeholder="85"></div>
+      <div class="field"><label>Gols</label><input type="number" id="med-atleta-gols" min="0" placeholder="0"></div>
+      <div class="field"><label>Nível</label><input type="number" id="med-atleta-nivel" min="1" max="10" placeholder="5"></div>
+    </div>
+    <div class="field"><label>Categoria</label>
+      <select id="med-atleta-cat">
+        <option value="sub7">Sub-7</option><option value="sub9">Sub-9</option><option value="sub11">Sub-11</option><option value="sub13" selected>Sub-13</option><option value="sub15">Sub-15</option>
+      </select>
+    </div>
+    <button class="btn-g" onclick="salvarAtleta(document.getElementById('med-atleta-oldsig').value||null, document.getElementById('med-atleta-oldcat').value||null)">Salvar atleta</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center;color:#c0392b" onclick="deletarAtleta(document.getElementById('med-atleta-oldsig').value, document.getElementById('med-atleta-oldcat').value)">Excluir atleta</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-editar-atleta')">Cancelar</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-editar-mensalidade">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Editar Mensalidade</div>
+    <input type="hidden" id="med-mens-chave">
+    <div style="font-size:13px;font-weight:700;margin-bottom:10px" id="med-mens-info"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field"><label>Valor (R$)</label><input type="number" id="med-mens-valor" min="0" placeholder="180"></div>
+      <div class="field"><label>Vencimento</label><input type="text" id="med-mens-venc" placeholder="05/07"></div>
+    </div>
+    <div class="field"><label>Status</label>
+      <select id="med-mens-status"><option value="pago">Pago</option><option value="pendente">Pendente</option><option value="atrasado">Atrasado</option></select>
+    </div>
+    <button class="btn-g" onclick="salvarMensalidade(document.getElementById('med-mens-chave').value)">Salvar mensalidade</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-editar-mensalidade')">Cancelar</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-evento">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="med-evento-titulo">Novo Evento</div>
+    <input type="hidden" id="med-evento-idx" value="-1">
+    <div class="field"><label>Tipo</label>
+      <select id="med-evento-tipo"><option value="treino">Treino</option><option value="jogo">Jogo</option><option value="evento">Evento</option></select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field"><label>Data</label><input type="date" id="med-evento-data"></div>
+      <div class="field"><label>Hora</label><input type="text" id="med-evento-hora" placeholder="08h"></div>
+    </div>
+    <div class="field"><label>Descrição</label><input type="text" id="med-evento-label" placeholder="Ex: Treino tático"></div>
+    <div class="field"><label>Categoria</label>
+      <select id="med-evento-cat"><option>Sub-7</option><option>Sub-9</option><option>Sub-11</option><option selected>Sub-13</option><option>Sub-15</option></select>
+    </div>
+    <button class="btn-g" onclick="salvarEvento(parseInt(document.getElementById('med-evento-idx').value))">Salvar evento</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-evento')">Cancelar</button>
+  </div>
+</div>
+
 <!-- Scripts do app Votoraty (ordem importa: dados → auth → perfis → utils/init) -->
 <script src="data.js"></script>
 <script src="auth.js"></script>
