@@ -201,6 +201,7 @@ function salvarAtleta(oldSig, oldCatKey){
     CATS_DATA[newCatKey].atletas.push(dados);
     showN('✓ Atleta cadastrado!');
   }
+  salvarLS();
   fecharModal('modal-editar-atleta');
   // Re-render current screen
   const cor = CORES[perfilAtual?.replace('prof_','')||'sub13']||'#0d3d1a';
@@ -219,6 +220,7 @@ function deletarAtleta(sig, catKey){
     const idx = cat.atletas.findIndex(x=>x.sig===sig);
     if(idx>=0) cat.atletas.splice(idx,1);
   }
+  salvarLS();
   fecharModal('modal-editar-atleta');
   showN('Atleta removido.');
   if(perfilAtual==='diretor') montarDiretor(CORES.diretor);

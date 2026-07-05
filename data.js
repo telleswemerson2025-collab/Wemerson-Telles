@@ -128,6 +128,7 @@ function salvarLS(){
   localStorage.setItem('vot_jogos_agendados', JSON.stringify(JOGOS_AGENDADOS));
   localStorage.setItem('vot_mensalidades', JSON.stringify(MENSALIDADES_ATLETAS));
   localStorage.setItem('vot_socios', JSON.stringify(SOCIOS));
+  localStorage.setItem('vot_cats', JSON.stringify(CATS_DATA));
   if(window.PRESENCA_HIST) localStorage.setItem('vot_presenca_hist', JSON.stringify(window.PRESENCA_HIST));
   if(window.ARBITRAGEM_STATUS) localStorage.setItem('vot_arbitragem', JSON.stringify(window.ARBITRAGEM_STATUS));
   salvarFirestore();
@@ -145,6 +146,8 @@ function carregarLS(){
     if(jog){ JOGOS_AGENDADOS.length=0; JSON.parse(jog).forEach(j=>JOGOS_AGENDADOS.push(j)); }
     const mens = localStorage.getItem('vot_mensalidades');
     if(mens){ Object.assign(MENSALIDADES_ATLETAS, JSON.parse(mens)); }
+    const cats = localStorage.getItem('vot_cats');
+    if(cats){ const d=JSON.parse(cats); Object.keys(d).forEach(k=>{ if(CATS_DATA[k]) CATS_DATA[k].atletas = d[k].atletas; else CATS_DATA[k] = d[k]; }); }
     const soc = localStorage.getItem('vot_socios');
     if(soc){ const arr=JSON.parse(soc); arr.forEach(s=>{ const idx=SOCIOS.findIndex(x=>x.id===s.id); if(idx>=0) Object.assign(SOCIOS[idx],s); else SOCIOS.push(s); }); }
     const ph = localStorage.getItem('vot_presenca_hist');
