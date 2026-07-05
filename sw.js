@@ -1,4 +1,4 @@
-const CACHE = 'votoraty-v3';
+const CACHE = 'votoraty-v4';
 const ASSETS = [
   '/',
   '/index.html',
@@ -33,6 +33,28 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if(e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  const isLocal = url.origin === self.location.origin;
+
+  // Arquivos do app: rede primeiro (sempre pega a versão nova), cache como fallback offline
+  if(isLocal){
+    e.respondWith(
+      fetch(e.request).then(res => {
+        if(res && res.status === 200){
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+        }
+        return res;
+      }).catch(() =>
+        caches.match(e.request).then(cached =>
+          cached || caches.match('/index.html').then(f => f || new Response('Offline', {status:503, headers:{'Content-Type':'text/plain'}}))
+        )
+      )
+    );
+    return;
+  }
+
+  // CDNs (fontes, Chart.js, ícones): cache primeiro (não mudam)
   e.respondWith(
     caches.match(e.request).then(cached => {
       const network = fetch(e.request).then(res => {
@@ -41,7 +63,7 @@ self.addEventListener('fetch', e => {
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
         return res;
-      }).catch(()=> caches.match('/index.html').then(f => f || new Response('Offline', {status:503, headers:{'Content-Type':'text/plain'}})));
+      }).catch(()=> cached || new Response('', {status:503}));
       return cached || network;
     })
   );
