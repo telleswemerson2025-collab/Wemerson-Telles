@@ -85,6 +85,10 @@ function salvarFirestore(){
     habilidades: HABILIDADES,
     fichas: FICHAS,
     jogos_agendados: JOGOS_AGENDADOS,
+    mensalidades: MENSALIDADES_ATLETAS,
+    socios: SOCIOS,
+    presenca_hist: window.PRESENCA_HIST || {},
+    arbitragem: window.ARBITRAGEM_STATUS || {},
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   }, { merge:true }).catch(e=>console.warn('[Firestore] Erro ao salvar:', e));
 }
@@ -100,6 +104,10 @@ async function carregarFirestore(){
     if(d.habilidades)     Object.assign(HABILIDADES, d.habilidades);
     if(d.fichas)          Object.assign(FICHAS, d.fichas);
     if(d.jogos_agendados){ JOGOS_AGENDADOS.length=0; d.jogos_agendados.forEach(j=>JOGOS_AGENDADOS.push(j)); }
+    if(d.mensalidades)    Object.assign(MENSALIDADES_ATLETAS, d.mensalidades);
+    if(d.socios){ d.socios.forEach(s=>{ const idx=SOCIOS.findIndex(x=>x.id===s.id); if(idx>=0) Object.assign(SOCIOS[idx],s); else SOCIOS.push(s); }); }
+    if(d.presenca_hist)   window.PRESENCA_HIST = d.presenca_hist;
+    if(d.arbitragem)      window.ARBITRAGEM_STATUS = d.arbitragem;
     return true;
   } catch(e){ return false; }
 }
