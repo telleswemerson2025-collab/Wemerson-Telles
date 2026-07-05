@@ -635,13 +635,9 @@ function renderProfCat(catKey, cor){
   <div class="cw" style="padding:10px 14px">
     ${(() => {
       const statusAtual = window.ARBITRAGEM_STATUS?.[catKey] || [];
-      const nomesPorSig = {
-        'AS':'André Silva','BL':'Bruno Lima','CM':'Carlos Magno','DT':'Diego Torres',
-        'EF':'Eduardo Franco','FA':'Felipe Alves','GS':'Gustavo Silva','HC':'Hugo Costa',
-        'LF':'Leonardo Ferreira','IN':'Igor Neves','JL':'João Lima','KP':'Kevin Pereira',
-        'KT':'Kauan Telles','PA':'Pedro Alves','MT':'Marcos Teixeira','RC':'Ricardo Cruz','TN':'Thiago Neves',
-        'MT':'Matheus Teixeira','NF':'Neymar Ferreira','OL':'Otávio Lima','PM':'Paulo Marques','QR':'Quentin Rocha'
-      };
+      // Nomes reais direto do elenco da categoria (evita divergência com CATS_DATA)
+      const nomesPorSig = {};
+      (CATS_DATA[catKey]?.atletas || []).forEach(a => { nomesPorSig[a.sig] = a.nome; });
 
       if(statusAtual.length === 0) return '<div style="font-size:11px;color:var(--text-3);text-align:center;padding:10px">Nenhum jogo agendado esta semana</div>';
 

@@ -69,7 +69,10 @@ function marcarAtletaPago(chave){
       const sig = match[1], catKey = match[2];
       if(window.ARBITRAGEM_STATUS?.[catKey]){
         const entrada = window.ARBITRAGEM_STATUS[catKey].find(a=>a.sig===sig);
-        if(entrada) entrada.pago = MENSALIDADES_ATLETAS[chave].status === 'pago';
+        if(entrada){
+          entrada.pago = MENSALIDADES_ATLETAS[chave].status === 'pago';
+          entrada.status = entrada.pago ? 'pago' : 'pendente';
+        }
       }
     }
   }
@@ -84,11 +87,8 @@ function cobrarTodosAtletas(){ showN('📲 Cobrança enviada para atletas em atr
 function cobrarCatArb(catKey){
   if(!window.ARBITRAGEM_STATUS?.[catKey]) return;
   const pendentes = window.ARBITRAGEM_STATUS[catKey].filter(a => !a.pago);
-  window.ARBITRAGEM_STATUS[catKey].forEach(a => a.pago = true);
-  salvarLS();
-  const sc = document.querySelector('#s-3');
-  if(sc) sc.innerHTML = renderFinCobrancas();
-  showN('📲 Cobrança enviada para '+pendentes.length+' atleta(s) do '+(CATS_DATA[catKey]?.nome||catKey)+'!');
+  // Cobrar = notificar; o pagamento só é registrado via "Confirmar" (confirmarPagamentoArbitragem)
+  showN('📲 Cobrança enviada para '+pendentes.length+' atleta(s) do '+(CATS_DATA[catKey]?.nome||catKey)+'! Use "Confirmar" quando receber.');
 }
 
 function cobrarArbIndividual(sig, catKey){
@@ -112,7 +112,9 @@ function confirmarPagamentoArbitragem(sig, catKey){
     showN('✓ Arbitragem confirmada! Professor notificado.');
   }
   salvarLS();
-  montarFinanceiro('#b8860b');
+  // Re-renderiza só a aba Cobranças, mantendo o usuário onde está
+  const sc3 = document.querySelector('#s-3');
+  if(sc3) sc3.innerHTML = renderFinCobrancas();
 }
 function filtrarFinCatDesktop(cat,el){
   document.querySelectorAll('#chips-cat-fin .chip').forEach(c=>c.classList.remove('on'));

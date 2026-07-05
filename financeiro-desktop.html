@@ -1085,7 +1085,7 @@ function marcarAtletaPago(id) {
         const sig = match[1], catKey = match[2];
         if(!arb[catKey]) arb[catKey] = [];
         const entrada = arb[catKey].find(x => x.sig === sig);
-        if(entrada) entrada.pago = m.status === 'pago';
+        if(entrada){ entrada.pago = m.status === 'pago'; entrada.status = entrada.pago ? 'pago' : 'pendente'; }
         else arb[catKey].push({sig, pago: m.status === 'pago', status: m.status === 'pago' ? 'pago' : 'pendente'});
         localStorage.setItem('vot_arbitragem', JSON.stringify(arb));
       }
@@ -1539,12 +1539,10 @@ function renderFinArbitragem() {
 }
 
 function cobrarCategoria(catKey) {
+  // Cobrar = notificar; o pagamento é registrado individualmente em marcarArbitragemPaga
   const pendentes = ARBITRAGEM.filter(a => a.catKey === catKey && a.status === 'pendente');
-  pendentes.forEach(a => a.status = 'pago');
-  renderFinArbitragem();
-  renderFinPainel();
   const cat = CATS_DATA[catKey] || {nome: catKey};
-  showToast(`📲 Cobrança enviada para ${pendentes.length} atleta(s) do ${cat.nome}!`, 'success');
+  showToast(`📲 Cobrança enviada para ${pendentes.length} atleta(s) do ${cat.nome}! Confirme cada pagamento ao receber.`, 'success');
 }
 
 function cobrarIndividualArb(id, catKey) {
@@ -1722,9 +1720,9 @@ function marcarArbitragemPaga(id) {
 }
 
 function cobrarTodasArbitragem() {
-  ARBITRAGEM.filter(a => a.status === 'pendente').forEach(a => a.status = 'pago');
-  renderFinArbitragem();
-  renderFinPainel();
+  // Cobrar = notificar; o pagamento é registrado individualmente em marcarArbitragemPaga
+  const pendentes = ARBITRAGEM.filter(a => a.status === 'pendente');
+  showToast(`📲 Cobrança enviada para ${pendentes.length} atleta(s) pendente(s)! Confirme cada pagamento ao receber.`, 'success');
 }
 
 function filtrarTabelaArb() {
@@ -2295,7 +2293,17 @@ window.addEventListener('DOMContentLoaded', () => {
     if(jog){
       const jogos = JSON.parse(jog);
       // Sincroniza CONVOCACOES: mapeia id do jogo → array de sigs convocados
-      jogos.forEach(j => { if(j.id && j.conv) CONVOCACOES[j.id] = j.conv; });
+      jogos.forEach(j => {
+        if(j.id && j.conv){
+          CONVOCACOES[j.id] = j.conv;
+          // Adiciona jogos do mobile à lista do desktop para gerarem cobrança de arbitragem
+          if(!JOGOS_AGENDADOS.find(x => x.id === j.id)){
+            JOGOS_AGENDADOS.push({id: j.id, adv: j.adv || '?', cat: j.cat || '', data: j.data || '', hora: j.hora || '', local: j.local || ''});
+          }
+        }
+      });
+      // Regenera cobranças de arbitragem incluindo as convocações vindas do mobile (preserva pagos)
+      gerarArbitragemDeConvocacoes();
     }
     // Arbitragem status do professor/mobile
     // Suporta ambos os formatos: {pago:bool} (mobile) e {status:'pago'} (desktop legado)
