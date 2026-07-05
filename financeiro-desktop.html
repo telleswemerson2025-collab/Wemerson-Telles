@@ -1181,12 +1181,27 @@ function desenharGraficoFluxoAtletas() {
   const ph = (() => {
     try { return JSON.parse(localStorage.getItem('vot_presenca_hist') || 'null'); } catch(e){ return null; }
   })();
-  const labels = ph?.labels || HISTORICO_MESES;
-  const sub7   = ph?.sub7   || [0,0,0,0,0,0];
-  const sub9   = ph?.sub9   || [0,0,0,0,0,0];
-  const sub11  = ph?.sub11  || [0,0,0,0,0,0];
-  const sub13  = ph?.sub13  || [0,0,0,0,0,0];
-  const sub15  = ph?.sub15  || [0,0,0,0,0,0];
+  // Formato do mobile (professor): {sub13: [{data:'05/07/2026', presentes:4, faltas:1, total:5}, ...]}
+  // Converte para as séries do gráfico usando as últimas 6 chamadas
+  const CATS = ['sub7','sub9','sub11','sub13','sub15'];
+  const temDadosReais = ph && CATS.some(k => Array.isArray(ph[k]) && ph[k].length && typeof ph[k][0] === 'object');
+  let labels, series = {};
+  if(temDadosReais){
+    // Junta todas as datas registradas (ordem de inserção), pega as últimas 6
+    const todasDatas = [];
+    CATS.forEach(k => (ph[k]||[]).forEach(r => { if(r && r.data && !todasDatas.includes(r.data)) todasDatas.push(r.data); }));
+    labels = todasDatas.slice(-6);
+    CATS.forEach(k => {
+      series[k] = labels.map(d => {
+        const regs = (ph[k]||[]).filter(r => r && r.data === d);
+        return regs.length ? regs[regs.length-1].presentes : 0;
+      });
+    });
+  } else {
+    labels = ph?.labels || HISTORICO_MESES;
+    CATS.forEach(k => { series[k] = (Array.isArray(ph?.[k]) && typeof ph[k][0] === 'number') ? ph[k] : [0,0,0,0,0,0]; });
+  }
+  const sub7 = series.sub7, sub9 = series.sub9, sub11 = series.sub11, sub13 = series.sub13, sub15 = series.sub15;
   const ctx = document.getElementById('chartFluxoAtletas')?.getContext('2d');
   if(!ctx) return;
   CHART_INSTANCES['chartFluxoAtletas'] = new Chart(ctx, {
