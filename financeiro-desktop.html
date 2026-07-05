@@ -9,6 +9,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- Firebase (sincronização em nuvem com o app mobile) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
 * {box-sizing: border-box; margin: 0; padding: 0}
 :root {
@@ -1056,11 +1059,89 @@ function finCalcs() {
   };
 }
 
-function salvarDesktopLS() {
+// ===== FIREBASE — sincronização em nuvem com o app mobile =====
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyBf-n2LxXfYGh3Mz989Liq2mSs5C4zYfwg",
+  authDomain:        "votoratyautomaticsystem.firebaseapp.com",
+  projectId:         "votoratyautomaticsystem",
+  storageBucket:     "votoratyautomaticsystem.firebasestorage.app",
+  messagingSenderId: "73851236449",
+  appId:             "1:73851236449:web:54b28cfc6cc27a31fa7a20"
+};
+let _db = null;
+try {
+  firebase.initializeApp(FIREBASE_CONFIG);
+  _db = firebase.firestore();
+} catch(e){ console.warn('[Firebase] não inicializado:', e.message); }
+
+function salvarFirestoreDesktop(){
+  if(!_db) return;
+  let arb = {};
+  try { arb = JSON.parse(localStorage.getItem('vot_arbitragem') || '{}'); } catch(e){}
+  _db.collection('escola').doc('votoraty').set({
+    mensalidades: MENSALIDADES_ATLETAS,
+    socios: SOCIOS,
+    arbitragem: arb,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge:true }).catch(e=>console.warn('[Firestore] erro ao salvar:', e));
+}
+
+function aplicarDadosNuvem(d){
+  if(!d) return;
+  if(d.mensalidades) Object.assign(MENSALIDADES_ATLETAS, d.mensalidades);
+  if(d.socios) d.socios.forEach(s=>{ const idx=SOCIOS.findIndex(x=>x.id===s.id); if(idx>=0) Object.assign(SOCIOS[idx],s); else SOCIOS.push(s); });
+  if(d.jogos_agendados){
+    d.jogos_agendados.forEach(j => {
+      if(j.id && j.conv){
+        CONVOCACOES[j.id] = j.conv;
+        if(!JOGOS_AGENDADOS.find(x => x.id === j.id)){
+          JOGOS_AGENDADOS.push({id: j.id, adv: j.adv || '?', cat: j.cat || '', data: j.data || '', hora: j.hora || '', local: j.local || ''});
+        }
+      }
+    });
+    gerarArbitragemDeConvocacoes();
+  }
+  if(d.arbitragem){
+    Object.entries(d.arbitragem).forEach(([catKey, atletas]) => {
+      (atletas||[]).forEach(a => {
+        const entrada = ARBITRAGEM.find(x => x.sig === a.sig && x.catKey === catKey);
+        if(entrada){
+          const isPago = (a.pago === true) || (a.status === 'pago');
+          entrada.status = isPago ? 'pago' : 'pendente';
+        }
+      });
+    });
+    try { localStorage.setItem('vot_arbitragem', JSON.stringify(d.arbitragem)); } catch(e){}
+  }
+  if(d.presenca_hist){
+    try { localStorage.setItem('vot_presenca_hist', JSON.stringify(d.presenca_hist)); } catch(e){}
+  }
+}
+
+let _primeiraNuvem = true;
+function iniciarSyncNuvem(){
+  if(!_db) return;
+  // Tempo real: qualquer alteração feita no app mobile aparece aqui automaticamente
+  _db.collection('escola').doc('votoraty').onSnapshot(doc => {
+    if(!doc.exists) return;
+    aplicarDadosNuvem(doc.data());
+    salvarDesktopLSLocal();
+    // Re-renderiza a tela ativa
+    renderFinPainel(); renderFinSocios(); renderFinMensalidades(); renderFinCobrancas(); renderFinArbitragem();
+    if(_primeiraNuvem){ _primeiraNuvem = false; showToast('☁️ Sincronizado com a nuvem!', 'success'); }
+  }, e => console.warn('[Firestore] listener:', e));
+}
+
+function salvarDesktopLSLocal() {
   try {
     localStorage.setItem('vot_socios', JSON.stringify(SOCIOS));
     localStorage.setItem('vot_mensalidades', JSON.stringify(MENSALIDADES_ATLETAS));
   } catch(e){}
+}
+
+function salvarDesktopLS() {
+  salvarDesktopLSLocal();
+  salvarFirestoreDesktop();
 }
 
 function marcarSocioPago(id) {
@@ -1729,6 +1810,7 @@ function marcarArbitragemPaga(id) {
       else arb[catKey].push({sig:a.sig, pago: isPago, status: a.status});
       localStorage.setItem('vot_arbitragem', JSON.stringify(arb));
     } catch(e){}
+    salvarFirestoreDesktop();
     renderFinArbitragem();
     renderFinPainel();
   }
@@ -2338,6 +2420,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // Presença histórico já é lido em desenharGraficoFluxoAtletas()
   } catch(e){}
   renderFinPainel();
+  iniciarSyncNuvem();
   setTimeout(() => { const lo = document.getElementById('loading-overlay'); if(lo) lo.remove(); }, 600);
 });
 </script>
