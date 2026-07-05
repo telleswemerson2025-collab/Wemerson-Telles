@@ -13,12 +13,12 @@
 // Preencha com os dados do seu projeto Firebase:
 // Firebase Console → Configurações do projeto → Seus apps → SDK Config
 const FIREBASE_CONFIG = {
-  apiKey:            "SUA_API_KEY",
-  authDomain:        "SEU_PROJETO.firebaseapp.com",
-  projectId:         "SEU_PROJETO",
-  storageBucket:     "SEU_PROJETO.appspot.com",
-  messagingSenderId: "SEU_SENDER_ID",
-  appId:             "SEU_APP_ID"
+  apiKey:            "AIzaSyBf-n2LxXfYGh3Mz989Liq2mSs5C4zYfwg",
+  authDomain:        "votoratyautomaticsystem.firebaseapp.com",
+  projectId:         "votoratyautomaticsystem",
+  storageBucket:     "votoratyautomaticsystem.firebasestorage.app",
+  messagingSenderId: "73851236449",
+  appId:             "1:73851236449:web:54b28cfc6cc27a31fa7a20"
 };
 
 let _auth = null, _db = null, _listener = null;
