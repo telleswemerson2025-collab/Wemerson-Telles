@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Financeiro — Votoraty Academy</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.2.0/dist/tabler-icons.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1104,6 +1104,8 @@ function aplicarDadosNuvem(d){
         }
       }
     });
+    // Edições locais do desktop têm precedência sobre o snapshot vindo da nuvem
+    try { const convD = localStorage.getItem('vot_convocacoes'); if(convD) Object.assign(CONVOCACOES, JSON.parse(convD)); } catch(e){}
     gerarArbitragemDeConvocacoes();
   }
   if(d.arbitragem){
@@ -2304,7 +2306,7 @@ function renderCaixaClube() {
       <div style="background:#dcf0e0;border-radius:14px;padding:20px;border-left:4px solid #1a5c26">
         <div style="font-size:10px;font-weight:800;color:#1a5c26;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Entradas do mês</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#1a5c26">${fmtR$(totalEntradas)}</div>
-        <div style="font-size:10px;color:#1a5c26;margin-top:2px;opacity:.7">Mensalidades + Sócios</div>
+        <div style="font-size:10px;color:#1a5c26;margin-top:2px;opacity:.7">Mensalidades + Sócios + Arbitragem</div>
       </div>
       <div style="background:#fce8e8;border-radius:14px;padding:20px;border-left:4px solid #c0392b">
         <div style="font-size:10px;font-weight:800;color:#c0392b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Saídas do mês</div>
@@ -2378,9 +2380,6 @@ window.addEventListener('DOMContentLoaded', () => {
     // Despesas salvas pelo mobile
     const desp = localStorage.getItem('vot_despesas');
     if(desp){ const arr=JSON.parse(desp); DESPESAS_CLUBE.length=0; arr.forEach(d=>DESPESAS_CLUBE.push(d)); }
-    // Convocações editadas no próprio desktop (persistidas em vot_convocacoes)
-    const convD = localStorage.getItem('vot_convocacoes');
-    if(convD){ Object.assign(CONVOCACOES, JSON.parse(convD)); }
     // Convocações / jogos agendados
     const jog = localStorage.getItem('vot_jogos_agendados');
     if(jog){
@@ -2395,9 +2394,12 @@ window.addEventListener('DOMContentLoaded', () => {
           }
         }
       });
-      // Regenera cobranças de arbitragem incluindo as convocações vindas do mobile (preserva pagos)
-      gerarArbitragemDeConvocacoes();
     }
+    // Convocações editadas no próprio desktop têm precedência sobre o snapshot do mobile
+    const convD = localStorage.getItem('vot_convocacoes');
+    if(convD){ Object.assign(CONVOCACOES, JSON.parse(convD)); }
+    // Regenera cobranças de arbitragem (preserva pagos)
+    gerarArbitragemDeConvocacoes();
     // Arbitragem status do professor/mobile
     // Suporta ambos os formatos: {pago:bool} (mobile) e {status:'pago'} (desktop legado)
     const arb = localStorage.getItem('vot_arbitragem');

@@ -295,13 +295,14 @@ function marcC(id,tipo,el,cor){
   // Conta só os itens e marcas da tela/categoria atual (a visão "todos" tem várias telas no DOM)
   const scr = el.closest('.scr') || document;
   const all = scr.querySelectorAll('.cr-item').length || 1;
-  const catPrefix = id.replace(/\d+$/,'');
+  // Prefixo = chave real da categoria (ids são 'c'+i na visão única ou catKey+i na visão "todos")
+  const catPrefix = Object.keys(CATS_DATA).find(k => id.startsWith(k)) || '';
   const t = catPrefix
     ? Object.keys(chamadas).filter(k => k.startsWith(catPrefix)).length
-    : Object.keys(chamadas).length;
+    : Object.keys(chamadas).filter(k => /^c\d+$/.test(k)).length;
   const cnt=document.getElementById('cnt-c');
   if(cnt) cnt.textContent=t+'/'+all;
-  const pr=scr.querySelector('#prog-c')||document.getElementById('prog-'+catPrefix);
+  const pr=scr.querySelector('#prog-c')||(catPrefix && document.getElementById('prog-'+catPrefix));
   if(pr) pr.style.width=(Math.min(t,all)/all*100)+'%';
 }
 

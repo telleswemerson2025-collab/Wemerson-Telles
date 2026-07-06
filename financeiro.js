@@ -119,12 +119,6 @@ function confirmarPagamentoArbitragem(sig, catKey){
   const sc3 = document.querySelector('#s-3');
   if(sc3) sc3.innerHTML = renderFinCobrancas();
 }
-// (função morta filtrarFinCatDesktop removida — alvos #chips-cat-fin/#tbl-mensalidades não existem)
-function _filtrarFinCatDesktop_removida(cat,el){
-  document.querySelectorAll('#tbl-mensalidades tbody tr').forEach(tr=>{
-    tr.style.display=(cat==='todas'||tr.dataset.cat===cat)?'':'none';
-  });
-}
 function filtrarTabela(q,tblId){
   document.querySelectorAll('#'+tblId+' tbody tr').forEach(tr=>{
     tr.style.display=(tr.dataset.search||'').includes(q.toLowerCase())?'':'none';
