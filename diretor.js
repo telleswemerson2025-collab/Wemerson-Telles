@@ -223,6 +223,14 @@ function renderConfig(cor){
     ${[['Nome do clube','Votoraty Academy'],['Categorias','Sub-7, Sub-9, Sub-11, Sub-13, Sub-15'],['Dias de treino','Ter, Qui, Sáb'],['Mensalidade','R$ 180,00 / mês']].map(([l,v])=>`
     <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">${l}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">${v}</div></div><button class="btn-sm" onclick="showN('Dados atualizados!')">Editar</button></div>`).join('')}
   </div>
+  <div class="lbl">Notificações</div>
+  <div class="cw" style="padding:8px 14px">
+    <div class="config-row">
+      <div><div style="font-size:12px;font-weight:700;color:var(--text)">🔔 Som de notificações</div>
+      <div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">Toca um sinal sonoro a cada aviso do app</div></div>
+      <div class="toggle ${localStorage.getItem('vot_som')==='off'?'':'on'}" onclick="toggleSomNotificacao();this.classList.toggle('on');this.style.background=this.classList.contains('on')?'${cor}':'var(--border)'" style="${localStorage.getItem('vot_som')==='off'?'':'background:'+cor}"><div class="toggle-k"></div></div>
+    </div>
+  </div>
   <div class="lbl">Automações</div>
   <div class="cw" style="padding:8px 14px">
     ${[['Lembrete saúde diário','Todos os dias às 07h'],['Lembrete de estudos','Todos os dias às 07h'],['Alerta de faltas','Após 2 faltas seguidas'],['Cobrança automática','5 dias após vencimento'],['Relatório mensal','Todo dia 1º do mês'],['Figurinha anual','Todo 01 de dezembro']].map(([l,s])=>`

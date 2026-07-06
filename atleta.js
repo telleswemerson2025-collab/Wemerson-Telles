@@ -581,6 +581,36 @@ function goBack(){
 
 // _resetNav e _atualizarBtnVoltar definidas em utils.js
 
+// Sinal sonoro de notificação (Web Audio — sem arquivo externo)
+let _audioCtx = null;
+function tocarSomNotificacao(err){
+  if(localStorage.getItem('vot_som') === 'off') return; // usuário desativou
+  try {
+    if(!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(_audioCtx.state === 'suspended') _audioCtx.resume();
+    const agora = _audioCtx.currentTime;
+    // Sucesso: dois toques ascendentes (din-din). Erro: um tom grave.
+    const notas = err ? [[220, 0, .18]] : [[660, 0, .09], [880, .11, .12]];
+    notas.forEach(([freq, delay, dur]) => {
+      const osc = _audioCtx.createOscillator();
+      const gain = _audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.0001, agora + delay);
+      gain.gain.exponentialRampToValueAtTime(0.18, agora + delay + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, agora + delay + dur);
+      osc.connect(gain); gain.connect(_audioCtx.destination);
+      osc.start(agora + delay); osc.stop(agora + delay + dur + 0.05);
+    });
+  } catch(e){}
+}
+
+function toggleSomNotificacao(){
+  const off = localStorage.getItem('vot_som') === 'off';
+  localStorage.setItem('vot_som', off ? 'on' : 'off');
+  showN(off ? '🔔 Som de notificações ativado!' : '🔕 Som de notificações desativado.');
+}
+
 function showN(txt,err){
   const el=document.getElementById('notif-el');
   document.getElementById('notif-txt').textContent=txt;
@@ -588,6 +618,7 @@ function showN(txt,err){
   el.style.borderColor=err?'#e8a0a0':'#8ec99a';
   el.style.color=err?'#8b1a1a':'#1a5c26';
   document.getElementById('notif-wrap').style.display='block';
+  tocarSomNotificacao(err);
   setTimeout(()=>document.getElementById('notif-wrap').style.display='none',3200);
 }
 
