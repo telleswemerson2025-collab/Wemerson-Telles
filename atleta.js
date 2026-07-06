@@ -90,6 +90,89 @@ function renderFeed(cor){
   </div>`;
 }
 
+// Gera relatório completo do atleta em janela de impressão (o navegador salva como PDF)
+function baixarHistoricoPDF(){
+  const a = ATLETA_DEFAULT;
+  const catKey = (a.cat||'Sub-13').replace(/[^a-z0-9]/gi,'').toLowerCase();
+  const ficKey = a.sig + catKey;
+  const ficha = FICHAS[ficKey] || {};
+  const histPres = (ficha.hist_presenca || []).slice(-30).reverse();
+  const hab = HABILIDADES[ficKey] || {};
+  const conquistas = getConquistas();
+  const convs = JOGOS_AGENDADOS.filter(j => j.conv && j.conv.includes(a.sig));
+  const convsPub = (typeof convocacoes_publicadas !== 'undefined' ? convocacoes_publicadas : [])
+    .filter(c => (c.convocados||[]).some(x => x.sig === a.sig));
+  const hoje = new Date().toLocaleDateString('pt-BR');
+  const HAB_NOMES = {fin:'Finalização', dri:'Drible', vel:'Velocidade', pas:'Passe', mar:'Marcação', ati:'Atitude'};
+
+  const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+  <title>Histórico — ${a.nome}</title>
+  <style>
+    body{font-family:Arial,sans-serif;color:#222;max-width:720px;margin:0 auto;padding:24px;font-size:13px}
+    h1{color:#0d3d1a;border-bottom:3px solid #0d3d1a;padding-bottom:8px;font-size:22px}
+    h2{color:#0d3d1a;font-size:15px;margin-top:22px;border-bottom:1px solid #ccc;padding-bottom:4px}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{border:1px solid #ddd;padding:6px 9px;text-align:left;font-size:12px}
+    th{background:#eef3ee;color:#0d3d1a}
+    .grid{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .card{border:1px solid #ddd;border-radius:8px;padding:10px 14px;min-width:100px;text-align:center}
+    .card b{display:block;font-size:20px;color:#0d3d1a}
+    .p{color:#1a5c26;font-weight:700}.f{color:#8b1a1a;font-weight:700}
+    .rodape{margin-top:30px;font-size:10px;color:#888;text-align:center;border-top:1px solid #ccc;padding-top:8px}
+    @media print{ body{padding:0} }
+  </style></head><body>
+  <h1>⚽ VOTORATY ACADEMY — Histórico do Atleta</h1>
+  <p><b>${a.nome}</b> · ${a.pos} · ${a.cat} · Nível ${a.nivel}<br>Emitido em ${hoje}</p>
+
+  <h2>Estatísticas gerais</h2>
+  <div class="grid">
+    <div class="card"><b>${STATS.treinos}</b>Treinos</div>
+    <div class="card"><b>${calcPres()}%</b>Presença</div>
+    <div class="card"><b>${STATS.gols}</b>Gols</div>
+    <div class="card"><b>${STATS.xp}</b>XP</div>
+    <div class="card"><b>${conquistas.length}</b>Conquistas</div>
+  </div>
+
+  <h2>Habilidades (avaliação do técnico)</h2>
+  <table><tr><th>Habilidade</th><th>Nota (0-100)</th></tr>
+  ${Object.entries(hab).map(([k,v])=>`<tr><td>${HAB_NOMES[k]||k}</td><td>${v}</td></tr>`).join('') || '<tr><td colspan="2">Sem avaliações registradas</td></tr>'}
+  </table>
+
+  <h2>Histórico de presença (últimas ${histPres.length} chamadas)</h2>
+  <table><tr><th>Data</th><th>Status</th></tr>
+  ${histPres.map(h=>`<tr><td>${h.data}</td><td class="${h.status==='P'?'p':'f'}">${h.status==='P'?'✓ Presente':h.status==='F'?'✗ Falta':'— Não marcado'}</td></tr>`).join('') || '<tr><td colspan="2">Nenhuma chamada registrada ainda</td></tr>'}
+  </table>
+
+  <h2>Convocações</h2>
+  <table><tr><th>Jogo</th><th>Data</th><th>Local</th></tr>
+  ${convs.map(c=>`<tr><td>vs ${c.adv||'—'}</td><td>${c.data||'—'}</td><td>${c.local||'—'}</td></tr>`).join('')}
+  ${convsPub.map(c=>`<tr><td>${c.jogo}</td><td>${c.data}</td><td>${c.local}</td></tr>`).join('')}
+  ${(convs.length+convsPub.length)===0 ? '<tr><td colspan="3">Nenhuma convocação registrada</td></tr>' : ''}
+  </table>
+
+  <h2>Conquistas desbloqueadas</h2>
+  <table><tr><th>Conquista</th><th>Meta</th></tr>
+  ${conquistas.map(c=>`<tr><td>${c.icon} ${c.titulo}</td><td>${c.meta}</td></tr>`).join('') || '<tr><td colspan="2">Nenhuma conquista ainda</td></tr>'}
+  </table>
+
+  ${ficha.cond || ficha.alergias ? `<h2>Informações de saúde</h2>
+  <table>
+  ${ficha.sangue ? `<tr><th>Tipo sanguíneo</th><td>${ficha.sangue}</td></tr>` : ''}
+  ${ficha.alergias ? `<tr><th>Alergias</th><td>${ficha.alergias}</td></tr>` : ''}
+  ${ficha.cond ? `<tr><th>Condições</th><td>${ficha.cond}</td></tr>` : ''}
+  </table>` : ''}
+
+  <div class="rodape">Votoraty Academy — Sistema de Gestão Esportiva · Documento gerado automaticamente em ${hoje}</div>
+  <script>window.onload=function(){ setTimeout(function(){ window.print(); }, 300); }<\/script>
+  </body></html>`;
+
+  const w = window.open('', '_blank');
+  if(!w){ showN('⚠️ Permita pop-ups para gerar o PDF.', true); return; }
+  w.document.write(html);
+  w.document.close();
+  showN('📄 Relatório gerado! Escolha "Salvar como PDF" na impressão.');
+}
+
 function renderEvolucao(cor){
   const a=ATLETA_DEFAULT;
   const pres = calcPres();
@@ -99,6 +182,10 @@ function renderEvolucao(cor){
   return `
   <!-- Input oculto para foto -->
   <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="carregarFoto(event)">
+
+  <button onclick="baixarHistoricoPDF()" style="width:100%;margin-bottom:12px;padding:12px;border-radius:12px;border:1.5px solid ${cor};background:#fff;color:${cor};font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+    📄 Baixar histórico em PDF
+  </button>
 
   <div style="background:${cor};border-radius:var(--radius);padding:16px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:var(--shadow-md)">
     <div style="position:absolute;right:-10px;top:-10px;font-size:80px;opacity:.06;pointer-events:none">⚽</div>
