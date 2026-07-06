@@ -50,36 +50,39 @@ function chartOpcoesBase({stacked,currency,suffix,yMax,singleSeries}={}){
     }
   };
 }
+// Re-renderiza as telas do financeiro SEM resetar a aba ativa
+function refreshFinTelas(){
+  const telas = [
+    ['#s-0', typeof renderFinPainel === 'function' ? renderFinPainel : null],
+    ['#s-1', typeof renderFinSocios === 'function' ? renderFinSocios : null],
+    ['#s-2', typeof renderFinMensalidades === 'function' ? renderFinMensalidades : null],
+    ['#s-3', typeof renderFinCobrancas === 'function' ? renderFinCobrancas : null],
+  ];
+  telas.forEach(([sel, fn]) => {
+    const el = document.querySelector(sel);
+    if(el && fn){ try { el.innerHTML = fn(); } catch(e){} }
+  });
+}
+
 function marcarSocioPago(id){
   const s=SOCIOS.find(x=>x.id===id);
-  if(s){ s.status = s.status==='pago' ? 'atraso' : 'pago'; }
+  // Reverter volta para 'pendente' (não inventa atraso que não existia)
+  if(s){ s.status = s.status==='pago' ? 'pendente' : 'pago'; }
   salvarLS();
-  showN(s?.status==='pago' ? '✓ Sócio marcado como pago!' : '↩ Sócio marcado como em atraso');
-  montarFinanceiro('#b8860b');
+  showN(s?.status==='pago' ? '✓ Sócio marcado como pago!' : '↩ Pagamento revertido (pendente)');
+  refreshFinTelas();
 }
 
 function marcarAtletaPago(chave){
   if(MENSALIDADES_ATLETAS[chave]){
     const atual = MENSALIDADES_ATLETAS[chave].status;
-    MENSALIDADES_ATLETAS[chave].status = atual==='pago' ? 'atraso' : 'pago';
-
-    // CONEXÃO: Atualiza status de arbitragem visível para o professor
-    const match = chave.match(/^([A-Z]+)(.+)$/);
-    if(match){
-      const sig = match[1], catKey = match[2];
-      if(window.ARBITRAGEM_STATUS?.[catKey]){
-        const entrada = window.ARBITRAGEM_STATUS[catKey].find(a=>a.sig===sig);
-        if(entrada){
-          entrada.pago = MENSALIDADES_ATLETAS[chave].status === 'pago';
-          entrada.status = entrada.pago ? 'pago' : 'pendente';
-        }
-      }
-    }
+    // Reverter volta para 'pendente'; mensalidade e arbitragem são cobranças independentes
+    MENSALIDADES_ATLETAS[chave].status = atual==='pago' ? 'pendente' : 'pago';
   }
   salvarLS();
   localStorage.setItem('vot_mensalidades', JSON.stringify(MENSALIDADES_ATLETAS));
-  showN(MENSALIDADES_ATLETAS[chave]?.status==='pago' ? '✓ Atleta marcado como pago! Professor notificado.' : '↩ Atleta marcado como em atraso');
-  montarFinanceiro('#b8860b');
+  showN(MENSALIDADES_ATLETAS[chave]?.status==='pago' ? '✓ Mensalidade confirmada!' : '↩ Pagamento revertido (pendente)');
+  refreshFinTelas();
 }
 function cobrarTodosSocios(){ showN('📲 Cobrança enviada para sócios inadimplentes!'); }
 function cobrarTodosAtletas(){ showN('📲 Cobrança enviada para atletas em atraso!'); }
@@ -116,9 +119,8 @@ function confirmarPagamentoArbitragem(sig, catKey){
   const sc3 = document.querySelector('#s-3');
   if(sc3) sc3.innerHTML = renderFinCobrancas();
 }
-function filtrarFinCatDesktop(cat,el){
-  document.querySelectorAll('#chips-cat-fin .chip').forEach(c=>c.classList.remove('on'));
-  el.classList.add('on');
+// (função morta filtrarFinCatDesktop removida — alvos #chips-cat-fin/#tbl-mensalidades não existem)
+function _filtrarFinCatDesktop_removida(cat,el){
   document.querySelectorAll('#tbl-mensalidades tbody tr').forEach(tr=>{
     tr.style.display=(cat==='todas'||tr.dataset.cat===cat)?'':'none';
   });
@@ -172,7 +174,8 @@ function renderFinPainel(){
   const atletasFlat=listarTodosAtletas();
 
   // CORRIGIDO: Dados de presença — lê do histórico real da chamada se disponível
-  const totalAtletasPorCat = {sub7:4,sub9:4,sub11:4,sub13:8,sub15:5};
+  const totalAtletasPorCat = {};
+  Object.keys(CATS_DATA).forEach(k => { totalAtletasPorCat[k] = CATS_DATA[k].atletas.length; });
   const BASE_PRESENCA = {
     sub7:[4,3,4,4,3,4], sub9:[3,4,3,4,4,3],
     sub11:[4,4,3,4,3,4], sub13:[7,6,8,7,8,8], sub15:[4,5,4,5,5,4]
@@ -421,15 +424,10 @@ function renderFinMensalidades(){
 }
 
 function cobrarCategoriaMens(catKey){
+  // Cobrar = notificar; o pagamento só é registrado via "Confirmar" (marcarAtletaPago)
   const pendentes = Object.entries(MENSALIDADES_ATLETAS)
     .filter(([id, m]) => id.endsWith(catKey) && m.status !== 'pago');
-  pendentes.forEach(([id]) => MENSALIDADES_ATLETAS[id].status = 'pago');
-  salvarLS();
-  const sc = document.querySelector('#s-2');
-  if(sc) sc.innerHTML = renderFinMensalidades();
-  const sc3 = document.querySelector('#s-3');
-  if(sc3) sc3.innerHTML = renderFinCobrancas();
-  showN('📲 '+pendentes.length+' atleta(s) do '+(CATS_DATA[catKey]?.nome||catKey)+' cobrados!');
+  showN('📲 Cobrança enviada para '+pendentes.length+' atleta(s) do '+(CATS_DATA[catKey]?.nome||catKey)+'! Use "Confirmar" quando receber.');
 }
 
 function cobrarIndMens(id){

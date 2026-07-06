@@ -129,6 +129,9 @@ function salvarLS(){
   localStorage.setItem('vot_mensalidades', JSON.stringify(MENSALIDADES_ATLETAS));
   localStorage.setItem('vot_socios', JSON.stringify(SOCIOS));
   localStorage.setItem('vot_cats', JSON.stringify(CATS_DATA));
+  localStorage.setItem('vot_despesas', JSON.stringify(DESPESAS_CLUBE));
+  localStorage.setItem('vot_perfil', JSON.stringify(ATLETA_DEFAULT));
+  if(typeof EVENTOS !== 'undefined') localStorage.setItem('vot_eventos', JSON.stringify(EVENTOS));
   if(window.PRESENCA_HIST) localStorage.setItem('vot_presenca_hist', JSON.stringify(window.PRESENCA_HIST));
   if(window.ARBITRAGEM_STATUS) localStorage.setItem('vot_arbitragem', JSON.stringify(window.ARBITRAGEM_STATUS));
   salvarFirestore();
@@ -149,7 +152,12 @@ function carregarLS(){
     const cats = localStorage.getItem('vot_cats');
     if(cats){ const d=JSON.parse(cats); Object.keys(d).forEach(k=>{ if(CATS_DATA[k]) CATS_DATA[k].atletas = d[k].atletas; else CATS_DATA[k] = d[k]; }); }
     const soc = localStorage.getItem('vot_socios');
-    if(soc){ const arr=JSON.parse(soc); arr.forEach(s=>{ const idx=SOCIOS.findIndex(x=>x.id===s.id); if(idx>=0) Object.assign(SOCIOS[idx],s); else SOCIOS.push(s); }); }
+    // Substitui a lista inteira (merge faria sócios excluídos reaparecerem)
+    if(soc){ const arr=JSON.parse(soc); SOCIOS.length=0; arr.forEach(s=>SOCIOS.push(s)); }
+    const desp = localStorage.getItem('vot_despesas');
+    if(desp){ const arr=JSON.parse(desp); DESPESAS_CLUBE.length=0; arr.forEach(d=>DESPESAS_CLUBE.push(d)); }
+    const perf = localStorage.getItem('vot_perfil');
+    if(perf){ Object.assign(ATLETA_DEFAULT, JSON.parse(perf)); }
     const ph = localStorage.getItem('vot_presenca_hist');
     if(ph){ window.PRESENCA_HIST = JSON.parse(ph); }
     const arb = localStorage.getItem('vot_arbitragem');
@@ -456,3 +464,11 @@ function confirmarPresenca(btn, tipo, cor){
 
 // Carrega dados persistidos — DEVE ficar no final do arquivo (após todas as declarações const)
 carregarLS();
+
+// EVENTOS é declarado em professor.js (carrega depois) — carrega no DOMContentLoaded
+window.addEventListener('DOMContentLoaded', function(){
+  try {
+    const ev = localStorage.getItem('vot_eventos');
+    if(ev && typeof EVENTOS !== 'undefined'){ const arr=JSON.parse(ev); EVENTOS.length=0; arr.forEach(e=>EVENTOS.push(e)); }
+  } catch(e){}
+});

@@ -16,7 +16,7 @@
 <meta name="description" content="Gestão completa da escolinha Votoraty Academy.">
 
 <!-- Fonts & Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.2.0/dist/tabler-icons.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -541,7 +541,7 @@
     <div class="field"><label>Nome completo</label><input type="text" id="med-socio-nome" placeholder="Nome do sócio"></div>
     <div class="field"><label>Plano</label>
       <select id="med-socio-plano">
-        <option>Sócio Torcedor</option><option>Sócio Prata</option><option>Sócio Ouro</option><option>Sócio Diamante</option>
+        <option>Sócio Torcedor</option><option>Sócio Patrimonial</option><option>Sócio Benemérito</option>
       </select>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
@@ -549,7 +549,7 @@
       <div class="field"><label>Vencimento</label><input type="text" id="med-socio-venc" placeholder="05/07"></div>
     </div>
     <div class="field"><label>Status</label>
-      <select id="med-socio-status"><option value="pago">Pago</option><option value="pendente">Pendente</option><option value="atrasado">Atrasado</option></select>
+      <select id="med-socio-status"><option value="pago">Pago</option><option value="pendente">Pendente</option><option value="atraso">Atrasado</option></select>
     </div>
     <button class="btn-g" onclick="salvarSocio(document.getElementById('med-socio-id').value||null)">Salvar sócio</button>
     <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-editar-socio')">Cancelar</button>
@@ -610,7 +610,7 @@
       <div class="field"><label>Vencimento</label><input type="text" id="med-mens-venc" placeholder="05/07"></div>
     </div>
     <div class="field"><label>Status</label>
-      <select id="med-mens-status"><option value="pago">Pago</option><option value="pendente">Pendente</option><option value="atrasado">Atrasado</option></select>
+      <select id="med-mens-status"><option value="pago">Pago</option><option value="pendente">Pendente</option><option value="atraso">Atrasado</option></select>
     </div>
     <button class="btn-g" onclick="salvarMensalidade(document.getElementById('med-mens-chave').value)">Salvar mensalidade</button>
     <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-editar-mensalidade')">Cancelar</button>

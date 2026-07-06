@@ -72,8 +72,18 @@ function renderDashboard(cor){
   </div>
   <div class="alerta" style="background:#fdf3dc;border:1px solid #e8c97a">
     <div class="al-icon" style="background:#fac775"><i class="ti ti-currency-dollar" style="font-size:14px;color:#7a4010"></i></div>
-    <div><div style="font-size:11px;font-weight:700;color:#7a4010">3 mensalidades em atraso</div>
-    <div style="font-size:10px;color:#a05a10;margin-top:2px;font-weight:500">Rafael Costa, João Silva, Marcos Lima</div>
+    <div><div style="font-size:11px;font-weight:700;color:#7a4010">${(() => {
+      const atrasos = Object.entries(MENSALIDADES_ATLETAS).filter(([,m]) => m.status === 'atraso');
+      return atrasos.length + ' mensalidade' + (atrasos.length===1?'':'s') + ' em atraso';
+    })()}</div>
+    <div style="font-size:10px;color:#a05a10;margin-top:2px;font-weight:500">${(() => {
+      const nomes = Object.entries(MENSALIDADES_ATLETAS).filter(([,m]) => m.status === 'atraso').map(([id]) => {
+        const mm = id.match(/^([A-Z]+)([a-z0-9]+)$/);
+        const a = mm && CATS_DATA[mm[2]]?.atletas.find(x => x.sig === mm[1]);
+        return a ? a.nome : id;
+      });
+      return nomes.length ? nomes.join(', ') : 'Nenhum atraso no momento 🎉';
+    })()}</div>
     <button class="btn-sm" style="margin-top:6px" onclick="showN('Cobrança automática enviada!')">Enviar cobrança</button></div>
   </div>
   <div class="lbl">Categorias — acesso rápido</div>

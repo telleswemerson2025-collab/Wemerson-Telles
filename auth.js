@@ -34,6 +34,9 @@ let _auth = null, _db = null, _listener = null;
           const snap = await _db.collection('usuarios').doc(user.uid).get().catch(()=>null);
           if(snap && snap.exists){
             const role = snap.data().role;
+            if(!roleValido(role)){ console.warn('[Auth] role inválido:', role); return; }
+            // Carrega dados da nuvem ANTES de entrar (evita sobrescrever a nuvem com dados locais velhos)
+            await carregarFirestore();
             entrar(role);
           }
         }
@@ -41,6 +44,12 @@ let _auth = null, _db = null, _listener = null;
     }
   } catch(e){ console.warn('[Firebase] Não inicializado:', e.message); }
 })();
+
+function roleValido(role){
+  if(!role) return false;
+  const validos = ['diretor','financeiro','atleta','professor'].concat(Object.keys(CATS_DATA).map(k=>'prof_'+k));
+  return validos.includes(role);
+}
 
 async function loginFirebase(){
   const email = (document.getElementById('fb-email')||{}).value||'';
@@ -53,6 +62,7 @@ async function loginFirebase(){
     const snap = await _db.collection('usuarios').doc(cred.user.uid).get();
     if(!snap.exists){ mostrarErroLogin('Usuário sem perfil cadastrado. Fale com o administrador.'); await _auth.signOut(); return; }
     const role = snap.data().role;
+    if(!roleValido(role)){ mostrarErroLogin('Perfil inválido cadastrado ("'+role+'"). Fale com o administrador.'); await _auth.signOut(); return; }
     // Carrega dados do Firestore antes de entrar
     await carregarFirestore();
     entrar(role);
@@ -88,6 +98,9 @@ function salvarFirestore(){
     mensalidades: MENSALIDADES_ATLETAS,
     socios: SOCIOS,
     cats: CATS_DATA,
+    despesas: DESPESAS_CLUBE,
+    eventos: (typeof EVENTOS !== 'undefined') ? EVENTOS : [],
+    perfil_atleta: ATLETA_DEFAULT,
     presenca_hist: window.PRESENCA_HIST || {},
     arbitragem: window.ARBITRAGEM_STATUS || {},
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -107,7 +120,10 @@ async function carregarFirestore(){
     if(d.jogos_agendados){ JOGOS_AGENDADOS.length=0; d.jogos_agendados.forEach(j=>JOGOS_AGENDADOS.push(j)); }
     if(d.mensalidades)    Object.assign(MENSALIDADES_ATLETAS, d.mensalidades);
     if(d.cats){ Object.keys(d.cats).forEach(k=>{ if(CATS_DATA[k]) CATS_DATA[k].atletas = d.cats[k].atletas; else CATS_DATA[k] = d.cats[k]; }); }
-    if(d.socios){ d.socios.forEach(s=>{ const idx=SOCIOS.findIndex(x=>x.id===s.id); if(idx>=0) Object.assign(SOCIOS[idx],s); else SOCIOS.push(s); }); }
+    if(d.socios){ SOCIOS.length=0; d.socios.forEach(s=>SOCIOS.push(s)); }
+    if(d.despesas){ DESPESAS_CLUBE.length=0; d.despesas.forEach(x=>DESPESAS_CLUBE.push(x)); }
+    if(d.eventos && typeof EVENTOS !== 'undefined'){ EVENTOS.length=0; d.eventos.forEach(x=>EVENTOS.push(x)); }
+    if(d.perfil_atleta) Object.assign(ATLETA_DEFAULT, d.perfil_atleta);
     if(d.presenca_hist)   window.PRESENCA_HIST = d.presenca_hist;
     if(d.arbitragem)      window.ARBITRAGEM_STATUS = d.arbitragem;
     return true;

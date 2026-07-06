@@ -292,12 +292,17 @@ function marcC(id,tipo,el,cor){
   document.getElementById('cp-'+id).style.background = tipo==='P'?cor:'#eaf3de';
   document.getElementById('cp-'+id).style.color = tipo==='P'?'#fff':'#27500a';
   document.getElementById('cf-'+id).classList.toggle('on',tipo==='F');
-  const t=Object.keys(chamadas).length;
-  const all=document.querySelectorAll('.cr-item').length||1;
+  // Conta só os itens e marcas da tela/categoria atual (a visão "todos" tem várias telas no DOM)
+  const scr = el.closest('.scr') || document;
+  const all = scr.querySelectorAll('.cr-item').length || 1;
+  const catPrefix = id.replace(/\d+$/,'');
+  const t = catPrefix
+    ? Object.keys(chamadas).filter(k => k.startsWith(catPrefix)).length
+    : Object.keys(chamadas).length;
   const cnt=document.getElementById('cnt-c');
   if(cnt) cnt.textContent=t+'/'+all;
-  const pr=document.getElementById('prog-c')||document.getElementById('prog-'+id.replace(/\d+$/,''));
-  if(pr) pr.style.width=(t/all*100)+'%';
+  const pr=scr.querySelector('#prog-c')||document.getElementById('prog-'+catPrefix);
+  if(pr) pr.style.width=(Math.min(t,all)/all*100)+'%';
 }
 
 // PRESENCA_HIST e ARBITRAGEM_STATUS inicializados em data.js
@@ -306,12 +311,17 @@ function salvarChamada(total){
   const p=Object.values(chamadas).filter(v=>v==='P').length;
   const f=Object.values(chamadas).filter(v=>v==='F').length;
 
-  const algumPresente = p > 0;
-  if(p+f > 0) addTreino(algumPresente);
-
   const hoje = new Date().toISOString().split('T')[0];
   const meta = window._chamadaMeta || {};
   const catAtiva = meta.catKey || 'sub13';
+
+  // Stats pessoais do atleta (Kauan/sub13): só conta se a chamada é da categoria dele e usa a marca DELE
+  if(catAtiva === (ATLETA_DEFAULT.cat||'Sub-13').replace('-','').toLowerCase() || catAtiva === 'sub13'){
+    const idxKT = (meta.atletas||[]).findIndex(a => a.sig === ATLETA_DEFAULT.sig);
+    if(idxKT >= 0 && chamadas['c'+idxKT]){
+      addTreino(chamadas['c'+idxKT] === 'P');
+    }
+  }
 
   // Salva totais no PRESENCA_HIST (para gráfico financeiro)
   if(!window.PRESENCA_HIST[catAtiva]) window.PRESENCA_HIST[catAtiva] = [];

@@ -94,7 +94,7 @@ function renderEvolucao(cor){
   const a=ATLETA_DEFAULT;
   const pres = calcPres();
   const conq = getConquistas().length;
-  const nivel = Math.floor(STATS.xp/1000)+1;
+  const nivel = ATLETA_DEFAULT.nivel; // mesmo nível exibido no header (consistência)
   const xpAtual = STATS.xp%1000;
   return `
   <!-- Input oculto para foto -->
@@ -538,16 +538,34 @@ function sair(){
   document.getElementById('tela-inicial').style.display='flex';
   const dp = document.getElementById('desktop-panel');
   if(dp && window.innerWidth >= 900) dp.style.display='block';
-  chamadas={};golsV=2;offlineMode=false;
+  chamadas={};golsV=2;offlineMode=false;_perfilAnterior=null;
   const mini = document.getElementById('header-mini-av');
   if(mini) mini.remove();
 }
 
 function cadastrarAtleta(){
-  const nm=document.getElementById('m-nome').value||'Novo Atleta';
+  const nm=(document.getElementById('m-nome').value||'').trim();
+  if(!nm){ showN('⚠️ Informe o nome do atleta.', true); return; }
+  const pos = document.getElementById('m-pos')?.value || 'Meia';
+  const catNome = document.getElementById('m-cat')?.value || 'Sub-13';
+  const catKey = catNome.toLowerCase().replace(/[\s-]/g,'');
+  const cat = CATS_DATA[catKey] || CATS_DATA['sub13'];
+  // Gera sigla única a partir do nome
+  const partes = nm.split(' ');
+  let sig = (partes[0][0] + (partes[1]?.[0] || partes[0][1] || 'X')).toUpperCase();
+  let n = 2;
+  while(cat.atletas.find(a => a.sig === sig)){ sig = sig[0] + (n++); }
+  cat.atletas.push({sig, nome: nm, pos, pres: 100, gols: 0, nivel: 5});
+  salvarLS();
   fecharModal('modal-atleta');
-  showN('✓ '+nm+' cadastrado! Acesso enviado ao responsável.');
+  showN('✓ '+nm+' cadastrado no '+cat.nome+'! Acesso enviado ao responsável.');
   document.getElementById('m-nome').value='';
+  // Re-renderiza a lista de atletas da tela ativa
+  if(perfilAtual === 'diretor') montarDiretor(CORES.diretor);
+  else if(perfilAtual && perfilAtual.startsWith('prof_')){
+    const ck = perfilAtual.replace('prof_','');
+    montarProfessor(ck, CATS_DATA[ck], CORES[ck]);
+  }
 }
 
 // abrirModal definida em utils.js

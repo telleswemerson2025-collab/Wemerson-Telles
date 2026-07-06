@@ -137,7 +137,7 @@ function salvarSocio(id){
   }
   salvarLS();
   fecharModal('modal-editar-socio');
-  montarFinanceiro('#b8860b');
+  refreshFinTelas();
 }
 
 function deletarSocio(id){
@@ -146,7 +146,7 @@ function deletarSocio(id){
   if(idx>=0) SOCIOS.splice(idx,1);
   salvarLS();
   showN('Sócio removido.');
-  montarFinanceiro('#b8860b');
+  refreshFinTelas();
 }
 
 // =====================
@@ -255,7 +255,7 @@ function salvarDespesa(idx){
   }
   salvarLS();
   fecharModal('modal-editar-despesa');
-  montarFinanceiro('#b8860b');
+  refreshFinTelas();
 }
 
 function deletarDespesa(idx){
@@ -263,7 +263,7 @@ function deletarDespesa(idx){
   DESPESAS_CLUBE.splice(idx,1);
   salvarLS();
   showN('Despesa removida.');
-  montarFinanceiro('#b8860b');
+  refreshFinTelas();
 }
 
 // =====================
@@ -289,7 +289,7 @@ function salvarMensalidade(chave){
   salvarLS();
   fecharModal('modal-editar-mensalidade');
   showN('✓ Mensalidade atualizada!');
-  montarFinanceiro('#b8860b');
+  refreshFinTelas();
 }
 
 // =====================
@@ -326,6 +326,7 @@ function salvarEvento(idx){
     EVENTOS.push(dados);
     showN('✓ Evento adicionado!');
   }
+  salvarLS();
   fecharModal('modal-evento');
   // Re-render calendário se visível
   const s5 = document.getElementById('s-5');
@@ -338,6 +339,7 @@ function salvarEvento(idx){
 function deletarEvento(idx){
   if(!confirm('Excluir este evento?')) return;
   EVENTOS.splice(idx,1);
+  salvarLS();
   showN('Evento removido.');
   const s5 = document.getElementById('s-5');
   if(s5){
@@ -364,6 +366,7 @@ function salvarPerfil(){
   ATLETA_DEFAULT.pos = document.getElementById('med-perfil-pos').value;
   ATLETA_DEFAULT.nivel = parseInt(document.getElementById('med-perfil-nivel').value)||ATLETA_DEFAULT.nivel;
   ATLETA_DEFAULT.cat = document.getElementById('med-perfil-cat').value;
+  salvarLS();
   fecharModal('modal-editar-perfil');
   showN('✓ Perfil atualizado!');
   // Update header
@@ -480,6 +483,7 @@ if('serviceWorker' in navigator){
 
 function montarProfessorTodos(cor){
   perfilAtual = 'professor';
+  chamadas = {}; // limpa marcas de sessão/categoria anterior
   document.getElementById('tela-inicial').style.display='none';
   document.getElementById('app').style.display='flex';
   setCor(cor);
@@ -552,12 +556,40 @@ function renderConvocacoesTodos(cor){
 function toggleConvocadoTodos(ficKey, val){
   if(!FICHAS[ficKey]) FICHAS[ficKey] = {};
   FICHAS[ficKey].convocado = val;
+  salvarLS();
 }
 
 function salvarConvocacoesTodos(){
   salvarLS();
   const total = Object.values(FICHAS).filter(f=>f.convocado).length;
   showN('✓ Convocação salva! '+total+' atleta(s) convocado(s).');
+}
+
+// Salva a chamada de UMA categoria na visão "todos os subs" (chaves de chamadas = catKey+índice)
+function salvarChamadaTodos(catKey){
+  const cat = CATS_DATA[catKey];
+  if(!cat) return;
+  const marcas = Object.entries(chamadas).filter(([id]) => id.startsWith(catKey));
+  if(!marcas.length){ showN('⚠️ Marque a presença antes de salvar.', true); return; }
+  const p = marcas.filter(([,v]) => v==='P').length;
+  const f = marcas.filter(([,v]) => v==='F').length;
+  if(!window.PRESENCA_HIST[catKey]) window.PRESENCA_HIST[catKey] = [];
+  window.PRESENCA_HIST[catKey].push({data: new Date().toLocaleDateString('pt-BR'), presentes: p, faltas: f, total: cat.atletas.length});
+  if(window.PRESENCA_HIST[catKey].length > 30) window.PRESENCA_HIST[catKey] = window.PRESENCA_HIST[catKey].slice(-30);
+  // Histórico individual nas fichas
+  marcas.forEach(([id, v]) => {
+    const i = parseInt(id.replace(catKey,''));
+    const a = cat.atletas[i];
+    if(!a) return;
+    const key = a.sig + catKey;
+    if(!FICHAS[key]) FICHAS[key] = {};
+    if(!FICHAS[key].hist_presenca) FICHAS[key].hist_presenca = [];
+    FICHAS[key].hist_presenca.push({data: new Date().toLocaleDateString('pt-BR'), presente: v==='P'});
+  });
+  salvarLS();
+  // Limpa só as marcas desta categoria
+  marcas.forEach(([id]) => delete chamadas[id]);
+  showN('✓ Chamada '+cat.nome+' salva! '+p+' presente(s), '+f+' falta(s). Pais notificados.');
 }
 
 function renderProfGeral(cor){
@@ -571,7 +603,7 @@ function renderProfGeral(cor){
       <div style="width:36px;height:36px;border-radius:9px;background:${CORES[k]};display:flex;align-items:center;justify-content:center;font-size:18px">${c.emoji}</div>
       <div style="flex:1">
         <div style="font-size:13px;font-weight:700;color:#1a1a1a">${c.nome}</div>
-        <div style="font-size:10px;color:#aaa">${c.atletas.length} atletas · ${c.atletas.reduce((s,a)=>s+a.gols,0)} gols · ${Math.round(c.atletas.reduce((s,a)=>s+a.pres,0)/c.atletas.length)}% presença</div>
+        <div style="font-size:10px;color:#aaa">${c.atletas.length} atletas · ${c.atletas.reduce((s,a)=>s+a.gols,0)} gols · ${c.atletas.length ? Math.round(c.atletas.reduce((s,a)=>s+a.pres,0)/c.atletas.length) : 0}% presença</div>
       </div>
       <button onclick="goTab(${['sub7','sub9','sub11','sub13','sub15'].indexOf(k)+1},'${cor}')" style="background:${CORES[k]};color:#fff;border:none;padding:5px 12px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer">Acessar</button>
     </div>
@@ -627,7 +659,7 @@ function renderProfCat(catKey, cor){
         </div>
       </div>`;
     }).join('')}
-    <button style="background:${catCor};color:#fff;border:none;padding:11px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;width:100%;margin-top:5px" onclick="showN('✓ Chamada ${cat.nome} salva! Pais notificados.')">Salvar chamada</button>
+    <button style="background:${catCor};color:#fff;border:none;padding:11px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;width:100%;margin-top:5px" onclick="salvarChamadaTodos('${catKey}')">Salvar chamada</button>
   </div>
 
   <!-- ARBITRAGEM - STATUS DE PAGAMENTO -->
