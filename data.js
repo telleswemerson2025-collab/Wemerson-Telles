@@ -132,6 +132,7 @@ function salvarLS(){
   localStorage.setItem('vot_despesas', JSON.stringify(DESPESAS_CLUBE));
   localStorage.setItem('vot_perfil', JSON.stringify(ATLETA_DEFAULT));
   if(typeof EVENTOS !== 'undefined') localStorage.setItem('vot_eventos', JSON.stringify(EVENTOS));
+  localStorage.setItem('vot_conv_pub', JSON.stringify(convocacoes_publicadas));
   if(window.PRESENCA_HIST) localStorage.setItem('vot_presenca_hist', JSON.stringify(window.PRESENCA_HIST));
   if(window.ARBITRAGEM_STATUS) localStorage.setItem('vot_arbitragem', JSON.stringify(window.ARBITRAGEM_STATUS));
   salvarFirestore();
@@ -158,6 +159,8 @@ function carregarLS(){
     if(desp){ const arr=JSON.parse(desp); DESPESAS_CLUBE.length=0; arr.forEach(d=>DESPESAS_CLUBE.push(d)); }
     const perf = localStorage.getItem('vot_perfil');
     if(perf){ Object.assign(ATLETA_DEFAULT, JSON.parse(perf)); }
+    const cpub = localStorage.getItem('vot_conv_pub');
+    if(cpub){ const arr=JSON.parse(cpub); convocacoes_publicadas.length=0; arr.forEach(c=>convocacoes_publicadas.push(c)); }
     const ph = localStorage.getItem('vot_presenca_hist');
     if(ph){ window.PRESENCA_HIST = JSON.parse(ph); }
     const arb = localStorage.getItem('vot_arbitragem');

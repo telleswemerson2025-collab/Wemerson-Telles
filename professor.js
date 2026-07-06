@@ -223,15 +223,33 @@ function toggleConvocado(sig, catKey, convocado){
 function salvarConvocacoesProfessor(catKey){
   const cat = CATS_DATA[catKey];
   if(!cat) return;
-  let count = 0;
+  const convocados = [];
   (cat.atletas||[]).forEach(a => {
     const chk = document.getElementById('chk-conv-'+a.sig);
     if(!FICHAS[a.sig+catKey]) FICHAS[a.sig+catKey] = {};
     FICHAS[a.sig+catKey].convocado = chk ? chk.checked : false;
-    if(FICHAS[a.sig+catKey].convocado) count++;
+    if(FICHAS[a.sig+catKey].convocado) convocados.push({sig:a.sig, nome:a.nome, pos:a.pos});
+  });
+  if(convocados.length === 0){ showN('⚠️ Selecione pelo menos um atleta.', true); return; }
+  // Publica no mural de convocações do atleta
+  const proxJogo = JOGOS_AGENDADOS.find(j => j.cat === cat.nome && j.status === 'agendado');
+  convocacoes_publicadas.unshift({
+    id: 'conv_' + Date.now(),
+    jogo: proxJogo ? ('Votoraty Academy vs ' + proxJogo.adv) : ('Próximo jogo — ' + cat.nome),
+    data: proxJogo?.data || 'A confirmar',
+    hora: proxJogo?.hora || 'A confirmar',
+    local: proxJogo?.local || 'Campo do Votoraty',
+    campeonato: proxJogo?.camp || 'Amistoso',
+    fase: proxJogo?.fase || '',
+    categoria: cat.nome,
+    cor: CORES[catKey] || '#0d3d1a',
+    tecnico: 'Técnico André',
+    observacao: proxJogo?.obs || 'Chegue 30 minutos antes.',
+    convocados,
+    reservas: [],
   });
   salvarLS();
-  showN('✅ Convocação salva! '+count+' atleta(s) convocado(s) para o próximo jogo.');
+  showN('✅ Convocação publicada! '+convocados.length+' atleta(s) convocado(s) — os atletas já podem ver no mural.');
 }
 
 

@@ -101,6 +101,7 @@ function salvarFirestore(){
     despesas: DESPESAS_CLUBE,
     eventos: (typeof EVENTOS !== 'undefined') ? EVENTOS : [],
     perfil_atleta: ATLETA_DEFAULT,
+    conv_pub: convocacoes_publicadas,
     presenca_hist: window.PRESENCA_HIST || {},
     arbitragem: window.ARBITRAGEM_STATUS || {},
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -124,6 +125,7 @@ async function carregarFirestore(){
     if(d.despesas){ DESPESAS_CLUBE.length=0; d.despesas.forEach(x=>DESPESAS_CLUBE.push(x)); }
     if(d.eventos && typeof EVENTOS !== 'undefined'){ EVENTOS.length=0; d.eventos.forEach(x=>EVENTOS.push(x)); }
     if(d.perfil_atleta) Object.assign(ATLETA_DEFAULT, d.perfil_atleta);
+    if(d.conv_pub){ convocacoes_publicadas.length=0; d.conv_pub.forEach(c=>convocacoes_publicadas.push(c)); }
     if(d.presenca_hist)   window.PRESENCA_HIST = d.presenca_hist;
     if(d.arbitragem)      window.ARBITRAGEM_STATUS = d.arbitragem;
     return true;
