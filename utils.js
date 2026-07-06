@@ -196,6 +196,16 @@ function salvarAtleta(oldSig, oldCatKey){
         }
       }
     }
+    // Se editou o atleta titular do app (Kauan), sincroniza os stats pessoais dele
+    const catKeyAtleta = (ATLETA_DEFAULT.cat||'Sub-13').replace(/[^a-z0-9]/gi,'').toLowerCase();
+    if(oldSig === ATLETA_DEFAULT.sig && oldCatKey === catKeyAtleta){
+      STATS.gols = dados.gols;
+      ATLETA_DEFAULT.nome = dados.nome;
+      ATLETA_DEFAULT.pos = dados.pos;
+      ATLETA_DEFAULT.nivel = dados.nivel;
+      ATLETA_DEFAULT.gols = dados.gols;
+      ATLETA_DEFAULT.pres = dados.pres;
+    }
     showN('✓ Atleta atualizado!');
   } else {
     CATS_DATA[newCatKey].atletas.push(dados);

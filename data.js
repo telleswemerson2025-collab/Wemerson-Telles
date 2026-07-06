@@ -80,6 +80,11 @@ function addTreino(presente){
 function addGolAtleta(qtd){
   STATS.gols += qtd;
   STATS.xp += qtd * 50;
+  // Mantém o cadastro do elenco em sincronia (card do professor/diretor)
+  const catKeyKT = (ATLETA_DEFAULT.cat||'Sub-13').replace(/[^a-z0-9]/gi,'').toLowerCase();
+  const regKT = CATS_DATA[catKeyKT]?.atletas.find(a => a.sig === ATLETA_DEFAULT.sig);
+  if(regKT) regKT.gols = STATS.gols;
+  ATLETA_DEFAULT.gols = STATS.gols;
   verificarConquistas();
   atualizarStatsUI();
 }
