@@ -804,22 +804,31 @@ function renderCalendario(cor){
 function renderComprovantes(cor){
   const sig = ATLETA_DEFAULT.sig;
   const catKey = ATLETA_DEFAULT.cat.replace('-','').replace(' ','').toLowerCase();
-  const msgKey = sig + catKey;
+  const mensKey = sig + catKey;
 
-  const pagamentosAtleta = [
-    {id:'p1',tipo:'Mensalidade',categoria:ATLETA_DEFAULT.cat,valor:180,data:'05/06/2025',status:'pago'},
-    {id:'p2',tipo:'Arbitragem',categoria:'Sub-13 vs Flamengo',valor:30,data:'15/06/2025',status:'pago'},
-    {id:'p3',tipo:'Mensalidade',categoria:ATLETA_DEFAULT.cat,valor:180,data:'05/05/2025',status:'pago'},
-  ];
+  // Dados REAIS do sistema financeiro
+  const pagamentosAtleta = [];
+  const mens = MENSALIDADES_ATLETAS[mensKey];
+  if(mens){
+    pagamentosAtleta.push({id:'mens_'+mensKey, tipo:'Mensalidade', categoria:ATLETA_DEFAULT.cat,
+      valor:mens.valor, data:'Venc. '+(mens.venc||'—'), status:mens.status});
+  }
+  ((window.ARBITRAGEM_STATUS||{})[catKey]||[]).filter(a => a.sig === sig).forEach((a, i) => {
+    pagamentosAtleta.push({id:'arb_'+catKey+'_'+i, tipo:'Arbitragem', categoria:ATLETA_DEFAULT.cat+' · taxa de jogo',
+      valor:30, data:'Temporada atual', status:(a.pago || a.status==='pago') ? 'pago' : (a.status||'pendente')});
+  });
+
+  const pendencias = pagamentosAtleta.filter(p => p.status !== 'pago');
+  const emDia = pendencias.length === 0;
 
   return `
-  <div style="margin-bottom:16px;padding:12px;background:#d4f0dc;border-radius:12px;border-left:4px solid #1a5c26">
-    <div style="font-size:12px;font-weight:700;color:#1a5c26">✓ Tudo em dia</div>
-    <div style="font-size:11px;color:#1a5c26;margin-top:2px">Seus pagamentos estão em dia. Todos os comprovantes abaixo.</div>
+  <div style="margin-bottom:16px;padding:12px;background:${emDia?'#d4f0dc':'#fdf3dc'};border-radius:12px;border-left:4px solid ${emDia?'#1a5c26':'#b8860b'}">
+    <div style="font-size:12px;font-weight:700;color:${emDia?'#1a5c26':'#7a4010'}">${emDia?'✓ Tudo em dia':'⚠️ Você tem '+pendencias.length+' pendência(s)'}</div>
+    <div style="font-size:11px;color:${emDia?'#1a5c26':'#7a4010'};margin-top:2px">${emDia?'Seus pagamentos estão em dia. Comprovantes abaixo.':'Fale com o financeiro para regularizar. Comprovantes dos pagos abaixo.'}</div>
   </div>
 
-  <div class="lbl">Pagamentos recentes</div>
-  ${pagamentosAtleta.map(p => `
+  <div class="lbl">Pagamentos</div>
+  ${pagamentosAtleta.length === 0 ? '<div class="cw" style="padding:14px;text-align:center;color:var(--text-3);font-size:11px">Nenhum lançamento encontrado</div>' : pagamentosAtleta.map(p => `
   <div class="cw" style="padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
     <div style="flex:1">
       <div style="font-size:12px;font-weight:700;color:var(--text)">${p.tipo}</div>
@@ -827,11 +836,11 @@ function renderComprovantes(cor){
     </div>
     <div style="text-align:right;margin-right:12px">
       <div style="font-size:13px;font-weight:800;color:var(--text)">${fmtR$(p.valor)}</div>
-      <span class="tag tg" style="margin-top:4px;display:inline-block">${p.status}</span>
+      <span class="tag ${p.status==='pago'?'tg':'tr'}" style="margin-top:4px;display:inline-block">${p.status==='pago'?'pago':p.status==='atraso'?'em atraso':'pendente'}</span>
     </div>
-    <button class="btn-sm" onclick="gerarComprovanteAtleta('${p.id}','${p.tipo}','${p.categoria}',${p.valor},'${p.data}')">
+    ${p.status==='pago' ? `<button class="btn-sm" onclick="gerarComprovanteAtleta('${p.id}','${p.tipo}','${p.categoria.replace(/'/g,'')}',${p.valor},'${p.data.replace(/'/g,'')}')">
       <i class="ti ti-download"></i> PDF
-    </button>
+    </button>` : ''}
   </div>
   `).join('')}
 
