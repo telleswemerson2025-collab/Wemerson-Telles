@@ -45,6 +45,42 @@ let _auth = null, _db = null, _listener = null;
   } catch(e){ console.warn('[Firebase] Não inicializado:', e.message); }
 })();
 
+// Cria usuário no Firebase Auth + papel no Firestore SEM derrubar a sessão atual
+// (usa uma instância secundária do Firebase para não trocar o login de quem cria)
+async function criarUsuarioSistema(email, senha, role){
+  if(!_db){ showN('⚠️ Firebase não configurado.', true); return false; }
+  if(!email || !senha || senha.length < 6){ showN('⚠️ Informe e-mail e senha (mín. 6 caracteres).', true); return false; }
+  if(!roleValido(role)){ showN('⚠️ Função inválida.', true); return false; }
+  try {
+    let app2;
+    try { app2 = firebase.app('criador'); } catch(e){ app2 = firebase.initializeApp(FIREBASE_CONFIG, 'criador'); }
+    const cred = await app2.auth().createUserWithEmailAndPassword(email.trim(), senha);
+    await _db.collection('usuarios').doc(cred.user.uid).set({ role, email: email.trim(), criadoEm: firebase.firestore.FieldValue.serverTimestamp() });
+    await app2.auth().signOut();
+    showN('✓ Usuário '+email.trim()+' criado como "'+role+'"! Já pode fazer login.');
+    return true;
+  } catch(e){
+    const msg = e.code === 'auth/email-already-in-use' ? 'Este e-mail já está cadastrado.'
+              : e.code === 'auth/invalid-email' ? 'E-mail inválido.'
+              : e.code === 'auth/weak-password' ? 'Senha fraca — use 6+ caracteres.'
+              : 'Erro ao criar usuário: ' + (e.message || e.code);
+    showN('⚠️ ' + msg, true);
+    return false;
+  }
+}
+
+function criarUsuarioPeloForm(){
+  const email = (document.getElementById('nu-email')||{}).value || '';
+  const senha = (document.getElementById('nu-senha')||{}).value || '';
+  const role  = (document.getElementById('nu-role')||{}).value || '';
+  criarUsuarioSistema(email, senha, role).then(ok => {
+    if(ok){
+      document.getElementById('nu-email').value = '';
+      document.getElementById('nu-senha').value = '';
+    }
+  });
+}
+
 function roleValido(role){
   if(!role) return false;
   const validos = ['diretor','financeiro','atleta','professor'].concat(Object.keys(CATS_DATA).map(k=>'prof_'+k));

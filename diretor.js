@@ -223,6 +223,26 @@ function renderConfig(cor){
     ${[['Nome do clube','Votoraty Academy'],['Categorias','Sub-7, Sub-9, Sub-11, Sub-13, Sub-15'],['Dias de treino','Ter, Qui, Sáb'],['Mensalidade','R$ 180,00 / mês']].map(([l,v])=>`
     <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">${l}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">${v}</div></div><button class="btn-sm" onclick="showN('Dados atualizados!')">Editar</button></div>`).join('')}
   </div>
+  <div class="lbl">👥 Criar acesso de usuário</div>
+  <div class="cw" style="padding:12px 14px">
+    <div style="font-size:10px;color:var(--text-3);margin-bottom:10px;font-weight:500">Cadastre e-mail, senha e função — o acesso é criado na hora, sem precisar do console do Firebase.</div>
+    <div class="field"><label>E-mail</label><input type="email" id="nu-email" placeholder="atleta@votoraty.com"></div>
+    <div class="field"><label>Senha (mín. 6 caracteres)</label><input type="text" id="nu-senha" placeholder="senha123"></div>
+    <div class="field"><label>Função</label>
+      <select id="nu-role">
+        <option value="atleta">Atleta</option>
+        <option value="prof_sub7">Professor Sub-7</option>
+        <option value="prof_sub9">Professor Sub-9</option>
+        <option value="prof_sub11">Professor Sub-11</option>
+        <option value="prof_sub13">Professor Sub-13</option>
+        <option value="prof_sub15">Professor Sub-15</option>
+        <option value="professor">Professor (todos os subs)</option>
+        <option value="financeiro">Financeiro</option>
+        <option value="diretor">Diretor</option>
+      </select>
+    </div>
+    <button class="btn-g" style="background:${cor}" onclick="criarUsuarioPeloForm()">➕ Criar usuário</button>
+  </div>
   <div class="lbl">Notificações</div>
   <div class="cw" style="padding:8px 14px">
     <div class="config-row">
