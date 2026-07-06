@@ -584,7 +584,8 @@ function salvarChamadaTodos(catKey){
     const key = a.sig + catKey;
     if(!FICHAS[key]) FICHAS[key] = {};
     if(!FICHAS[key].hist_presenca) FICHAS[key].hist_presenca = [];
-    FICHAS[key].hist_presenca.push({data: new Date().toLocaleDateString('pt-BR'), presente: v==='P'});
+    // Mesmo formato do salvarChamada do professor: status 'P'/'F' (o app do atleta lê h.status)
+    FICHAS[key].hist_presenca.push({data: new Date().toISOString().split('T')[0], status: v});
   });
   salvarLS();
   // Limpa só as marcas desta categoria
