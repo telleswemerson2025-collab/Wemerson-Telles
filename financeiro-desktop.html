@@ -839,12 +839,12 @@ body {
       <div style="display:flex;gap:10px">
         <select id="rel-mes" onchange="renderRelatorioContador()" style="padding:10px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:12px;font-family:'DM Sans',sans-serif">
           <option value="0">Janeiro</option><option value="1">Fevereiro</option><option value="2">Março</option>
-          <option value="3">Abril</option><option value="4">Maio</option><option value="5" selected>Junho</option>
+          <option value="3">Abril</option><option value="4">Maio</option><option value="5">Junho</option>
           <option value="6">Julho</option><option value="7">Agosto</option><option value="8">Setembro</option>
           <option value="9">Outubro</option><option value="10">Novembro</option><option value="11">Dezembro</option>
         </select>
         <select id="rel-ano" onchange="renderRelatorioContador()" style="padding:10px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:12px;font-family:'DM Sans',sans-serif">
-          <option value="2024">2024</option><option value="2025" selected>2025</option>
+          <option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option>
         </select>
         <button class="btn-g" style="padding:10px 20px;margin:0" onclick="window.print()">
           <i class="ti ti-printer"></i> Exportar PDF
@@ -1923,8 +1923,13 @@ function atualizarConvocacao(jogoId, sig, isConvocado) {
 }
 
 function renderRelatorioContador() {
-  const mes = parseInt(document.getElementById('rel-mes')?.value ?? new Date().getMonth());
-  const ano = parseInt(document.getElementById('rel-ano')?.value ?? new Date().getFullYear());
+  // Na 1ª abertura, ajusta os seletores para o mês/ano ATUAL
+  const selMes = document.getElementById('rel-mes');
+  const selAno = document.getElementById('rel-ano');
+  if(selMes && !selMes.dataset.init){ selMes.value = String(new Date().getMonth()); selMes.dataset.init = '1'; }
+  if(selAno && !selAno.dataset.init){ const a = String(new Date().getFullYear()); if([...selAno.options].some(o=>o.value===a)) selAno.value = a; selAno.dataset.init = '1'; }
+  const mes = parseInt(selMes?.value ?? new Date().getMonth());
+  const ano = parseInt(selAno?.value ?? new Date().getFullYear());
   const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
   const mesNome = meses[mes];
   const hoje = new Date().toLocaleDateString('pt-BR');
