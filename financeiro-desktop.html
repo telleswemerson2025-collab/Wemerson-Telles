@@ -2389,6 +2389,19 @@ function renderCaixaClube() {
     movs.push({tipo:'Receita', desc:'Mensalidade ' + catNome + ' · ' + nome, valor: m.valor, cor:'#1a5c26', bg:'#dcf0e0'});
   });
 
+  // Arbitragem paga (por atleta, R$30) — lista para bater com o total de entradas
+  try {
+    const arb = JSON.parse(localStorage.getItem('vot_arbitragem') || '{}');
+    Object.entries(arb).forEach(([catKey, lista]) => {
+      (lista||[]).forEach(a => {
+        if(a.pago || a.status === 'pago'){
+          const nome = (CATS_DATA[catKey]?.atletas || []).find(x => x.sig === a.sig)?.nome || a.sig;
+          movs.push({tipo:'Receita', desc:'Arbitragem ' + (CATS_DATA[catKey]?.nome||catKey) + ' · ' + nome, valor: 30, cor:'#1a5c26', bg:'#dcf0e0'});
+        }
+      });
+    });
+  } catch(e){}
+
   // Despesas
   (typeof DESPESAS_CLUBE !== 'undefined' ? DESPESAS_CLUBE : []).forEach(d => {
     movs.push({tipo:'Despesa', desc:d.descricao, valor: d.valor, cor:'#c0392b', bg:'#fce8e8'});
