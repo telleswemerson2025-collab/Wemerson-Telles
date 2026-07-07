@@ -17,7 +17,9 @@ function montarDiretor(cor){
   // bnav tem 5 itens mas há 7 telas — remapeia índices (Financ.→s-4, Config→s-6)
   document.querySelectorAll('#bnav .bi').forEach((b,i)=>{
     const mapa=[0,1,2,4,6];
-    b.onclick=function(){goTab(mapa[i]!==undefined?mapa[i]:i,cor);};
+    const alvo = mapa[i]!==undefined?mapa[i]:i;
+    b.dataset.scr = alvo; // goTab usa isso para destacar o item certo
+    b.onclick=function(){goTab(alvo,cor);};
   });
 
   // Botão voltar ao Dashboard — inserido no bnav como item extra
@@ -68,7 +70,7 @@ function renderDashboard(cor){
     <div class="al-icon" style="background:#f5c5c5"><i class="ti ti-alert-triangle" style="font-size:14px;color:#8b1a1a"></i></div>
     <div style="flex:1"><div style="font-size:11px;font-weight:700;color:#8b1a1a">Pedro Alves — 4 faltas seguidas</div>
     <div style="font-size:10px;color:#b03030;margin-top:2px;font-weight:500">Sub-13 · pai ainda não respondeu</div>
-    <button class="btn-sm" style="margin-top:6px" onclick="showN('Mensagem enviada ao pai do Pedro!')">Enviar mensagem ao pai</button></div>
+    <button class="btn-sm" style="margin-top:6px" onclick="abrirMsgDireta('Pedro Alves','PA','Atacante','Sub-13','${cor}')">Enviar mensagem ao pai</button></div>
   </div>
   <div class="alerta" style="background:#fdf3dc;border:1px solid #e8c97a">
     <div class="al-icon" style="background:#fac775"><i class="ti ti-currency-dollar" style="font-size:14px;color:#7a4010"></i></div>
@@ -179,22 +181,65 @@ function renderJogos(cor){
     </div>
     <div style="display:flex;gap:6px;margin-top:10px">
       <button class="btn-sm" onclick="addGol()">+ Gol Votoraty</button>
-      <button class="btn-sm" onclick="showN('Gol adversário registrado.')">+ Gol adv.</button>
-      <button class="btn-sm" onclick="showN('Jogo encerrado! Resultado salvo.')">Encerrar</button>
+      <button class="btn-sm" onclick="addGolAdv()">+ Gol adv.</button>
+      <button class="btn-sm" onclick="encerrarJogoDiretor(cor='${cor}')">Encerrar</button>
     </div>
   </div>
   <div class="lbl">Próximos</div>
-  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:var(--text-3);font-weight:500">Sub-13 · Sáb 25/05 · 09h</span><span class="tag tb">agendado</span></div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span><span style="font-size:13px;color:var(--text-3)">vs</span><span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">Rapid FC</span></div></div>
-  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:var(--text-3);font-weight:500">Sub-15 · Dom 01/06 · 10h</span><span class="tag ta">final</span></div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span><span style="font-size:13px;color:var(--text-3)">vs</span><span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">Estrela FC</span></div></div>
+  ${JOGOS_AGENDADOS.filter(j=>j.status==='agendado').length === 0
+    ? '<div class="card" style="text-align:center;color:var(--text-3);font-size:11px">Nenhum jogo agendado</div>'
+    : JOGOS_AGENDADOS.filter(j=>j.status==='agendado').map(j=>`
+  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:var(--text-3);font-weight:500">${j.cat} · ${j.data} · ${j.hora}</span><span class="tag tb">agendado</span></div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span><span style="font-size:13px;color:var(--text-3)">vs</span><span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">${j.adv}</span></div></div>`).join('')}
   <div class="lbl">Últimos resultados</div>
-  <div class="card" style="border-left:3px solid #1a5c26"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:var(--text-3);font-weight:500">Sub-11 · 15/05</span><span class="tag tg">Vitória</span></div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span><span style="font-family:var(--font-display);font-size:28px;color:var(--text)">3</span><span style="font-size:14px;color:var(--text-3)">×</span><span style="font-family:var(--font-display);font-size:28px;color:var(--text)">0</span><span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">Estrela FC</span></div></div>`;
+  ${JOGOS_RESULTADOS.length === 0
+    ? '<div class="card" style="text-align:center;color:var(--text-3);font-size:11px">Nenhum resultado registrado</div>'
+    : JOGOS_RESULTADOS.slice(0,5).map(r=>`
+  <div class="card" style="border-left:3px solid ${r.resultado==='Vitória'?'#1a5c26':r.resultado==='Derrota'?'#8b1a1a':'#b8860b'}"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:var(--text-3);font-weight:500">${r.cat||''} · ${r.data||''}</span><span class="tag ${r.resultado==='Vitória'?'tg':r.resultado==='Derrota'?'tr':'ta'}">${r.resultado||''}</span></div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span><span style="font-family:var(--font-display);font-size:22px;color:var(--text)">${r.placar||''}</span><span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">${r.adv||''}</span></div></div>`).join('')}`;
 }
 
-let golsV=2;
-function addGol(){golsV++;const el=document.getElementById('gv');if(el)el.textContent=golsV;showN('✓ Gol do Votoraty! '+golsV+'×1');}
+let golsV=2, golsA=1;
+function addGol(){golsV++;const el=document.getElementById('gv');if(el)el.textContent=golsV;showN('✓ Gol do Votoraty! '+golsV+'×'+golsA);}
+function addGolAdv(){golsA++;showN('Gol adversário registrado. '+golsV+'×'+golsA);}
+function encerrarJogoDiretor(cor){
+  const resultado = golsV > golsA ? 'Vitória' : golsV < golsA ? 'Derrota' : 'Empate';
+  JOGOS_RESULTADOS.unshift({adv:'Atlético Jr', cat:'Sub-13', placar:golsV+'x'+golsA, resultado, data:new Date().toLocaleDateString('pt-BR')});
+  salvarLS();
+  showN('⏱️ Jogo encerrado! '+resultado+' '+golsV+'×'+golsA+' registrada.');
+  golsV=0; golsA=0;
+  // Re-renderiza a aba Jogos para mostrar o resultado
+  const s2 = document.getElementById('s-2');
+  if(s2) s2.innerHTML = renderJogos(cor||CORES.diretor);
+}
+
+// Campeonatos: lista padrão + criados pelo diretor (persistidos)
+function _listaCampeonatos(){
+  const base = [['tg','Camp. Municipal Sub-13','6 rodadas · Votoraty em 1º',80,'ativo'],
+    ['tb','Camp. Regional Sub-11','4 rodadas · Votoraty em 2º',50,'ativo'],
+    ['ta','Estadual Sub-15','Semifinal · fase final',90,'semifinal'],
+    ['tp','Sub-7 Amistoso','Encerrado · Votoraty campeão',100,'campeão']];
+  try {
+    const extras = JSON.parse(localStorage.getItem('vot_campeonatos')||'[]');
+    return extras.map(c => ['tb', c.nome, c.formato+' · '+c.times+' times', 5, 'novo']).concat(base);
+  } catch(e){ return base; }
+}
+function criarCampeonato(){
+  const nome = (document.getElementById('camp-nome')||{}).value || '';
+  if(!nome.trim()){ showN('⚠️ Informe o nome do campeonato.', true); return; }
+  const formato = (document.getElementById('camp-formato')||{}).value || 'Pontos corridos';
+  const times = ((document.getElementById('camp-times')||{}).value || '').split('\n').filter(t=>t.trim()).length || 1;
+  try {
+    const arr = JSON.parse(localStorage.getItem('vot_campeonatos')||'[]');
+    arr.unshift({nome: nome.trim(), formato, times, criadoEm: new Date().toLocaleDateString('pt-BR')});
+    localStorage.setItem('vot_campeonatos', JSON.stringify(arr));
+  } catch(e){}
+  fecharModal('modal-camp');
+  document.getElementById('camp-nome').value = '';
+  showN('✓ Campeonato "'+nome.trim()+'" criado!');
+  const s3 = document.getElementById('s-3');
+  if(s3) s3.innerHTML = renderCamps(CORES.diretor);
+}
 
 function renderCamps(cor){
   return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
@@ -202,11 +247,7 @@ function renderCamps(cor){
     <button class="btn-sm" onclick="abrirModal('modal-camp')">+ Criar</button>
   </div>
   <div class="cw" style="padding:6px 12px">
-    ${[['tg','Camp. Municipal Sub-13','6 rodadas · Votoraty em 1º',80,'ativo'],
-       ['tb','Camp. Regional Sub-11','4 rodadas · Votoraty em 2º',50,'ativo'],
-       ['ta','Estadual Sub-15','Semifinal · fase final',90,'semifinal'],
-       ['tp','Sub-7 Amistoso','Encerrado · Votoraty campeão',100,'campeão']
-    ].map(([tg,nm,sub,pct,st])=>`
+    ${_listaCampeonatos().map(([tg,nm,sub,pct,st])=>`
     <div style="display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid #f0eeea">
       <div style="width:30px;height:30px;border-radius:8px;background:#f9f9f7;border:1px solid #eee;display:flex;align-items:center;justify-content:center"><i class="ti ti-trophy" style="font-size:15px;color:#c8940a"></i></div>
       <div style="flex:1"><div style="font-size:12px;font-weight:700">${nm}</div><div style="font-size:9px;color:#aaa">${sub}</div><div class="prog" style="margin-top:4px"><div class="prog-f" style="width:${pct}%;background:${cor}"></div></div></div>
@@ -220,8 +261,12 @@ function renderCamps(cor){
 function renderConfig(cor){
   return `<div class="lbl">Dados do clube</div>
   <div class="cw" style="padding:8px 14px">
-    ${[['Nome do clube','Votoraty Academy'],['Categorias','Sub-7, Sub-9, Sub-11, Sub-13, Sub-15'],['Dias de treino','Ter, Qui, Sáb'],['Mensalidade','R$ 180,00 / mês']].map(([l,v])=>`
-    <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">${l}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">${v}</div></div><button class="btn-sm" onclick="showN('Dados atualizados!')">Editar</button></div>`).join('')}
+    ${(()=>{
+      let clube = {nome:'Votoraty Academy', cats:'Sub-7, Sub-9, Sub-11, Sub-13, Sub-15', dias:'Ter, Qui, Sáb', mens:'R$ 180,00 / mês'};
+      try { Object.assign(clube, JSON.parse(localStorage.getItem('vot_clube')||'{}')); } catch(e){}
+      return [['Nome do clube', clube.nome, 'nome'],['Categorias', clube.cats, 'cats'],['Dias de treino', clube.dias, 'dias'],['Mensalidade', clube.mens, 'mens']].map(([l,v,k])=>`
+    <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">${l}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">${v}</div></div><button class="btn-sm" onclick="editarDadoClube('${k}','${l}')">Editar</button></div>`).join('');
+    })()}
   </div>
   <div class="lbl">👥 Criar acesso de usuário</div>
   <div class="cw" style="padding:12px 14px">
@@ -254,13 +299,86 @@ function renderConfig(cor){
   <div class="lbl">Automações</div>
   <div class="cw" style="padding:8px 14px">
     ${[['Lembrete saúde diário','Todos os dias às 07h'],['Lembrete de estudos','Todos os dias às 07h'],['Alerta de faltas','Após 2 faltas seguidas'],['Cobrança automática','5 dias após vencimento'],['Relatório mensal','Todo dia 1º do mês'],['Figurinha anual','Todo 01 de dezembro']].map(([l,s])=>`
-    <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">${l}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">${s}</div></div><div class="toggle on" onclick="this.classList.toggle('on');this.style.background=this.classList.contains('on')?'${cor}':'var(--border)'"><div class="toggle-k"></div></div></div>`).join('')}
+    <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">${l}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">${s}</div></div><div class="toggle ${_autoOn(l)?'on':''}" onclick="toggleAutomacao(this,'${l}','${cor}')" style="${_autoOn(l)?'background:'+cor:''}"><div class="toggle-k"></div></div></div>`).join('')}
   </div>
   <div class="lbl">Exportar dados</div>
   <div class="cw" style="padding:8px 14px">
-    ${[['Relatório geral PDF','Toda a temporada'],['Lista de atletas Excel','Planilha completa'],['Backup completo','Todos os dados']].map(([l,s])=>`
-    <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">${l}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">${s}</div></div><button class="btn-sm" onclick="showN('Exportado com sucesso!')">Exportar</button></div>`).join('')}
+    <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">Relatório geral PDF</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">Toda a temporada</div></div><button class="btn-sm" onclick="exportarRelatorioGeral()">Exportar</button></div>
+    <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">Lista de atletas (CSV/Excel)</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">Planilha completa</div></div><button class="btn-sm" onclick="exportarAtletasCSV()">Exportar</button></div>
+    <div class="config-row"><div><div style="font-size:12px;font-weight:700;color:var(--text)">Backup completo</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;font-weight:500">Todos os dados (JSON)</div></div><button class="btn-sm" onclick="exportarBackup()">Exportar</button></div>
   </div>`;
+}
+
+// ===== Config: helpers reais =====
+function _autoOn(nome){
+  try { const a = JSON.parse(localStorage.getItem('vot_automacoes')||'{}'); return a[nome] !== false; } catch(e){ return true; }
+}
+function toggleAutomacao(el, nome, cor){
+  el.classList.toggle('on');
+  el.style.background = el.classList.contains('on') ? cor : 'var(--border)';
+  try {
+    const a = JSON.parse(localStorage.getItem('vot_automacoes')||'{}');
+    a[nome] = el.classList.contains('on');
+    localStorage.setItem('vot_automacoes', JSON.stringify(a));
+  } catch(e){}
+}
+function editarDadoClube(k, label){
+  let clube = {nome:'Votoraty Academy', cats:'Sub-7, Sub-9, Sub-11, Sub-13, Sub-15', dias:'Ter, Qui, Sáb', mens:'R$ 180,00 / mês'};
+  try { Object.assign(clube, JSON.parse(localStorage.getItem('vot_clube')||'{}')); } catch(e){}
+  const novo = prompt(label + ':', clube[k]);
+  if(novo === null || !novo.trim()) return;
+  clube[k] = novo.trim();
+  localStorage.setItem('vot_clube', JSON.stringify(clube));
+  showN('✓ ' + label + ' atualizado!');
+  const s6 = document.getElementById('s-6');
+  if(s6) s6.innerHTML = renderConfig(CORES.diretor);
+}
+function _baixarArquivo(nome, conteudo, tipo){
+  const blob = new Blob([conteudo], {type: tipo});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = nome;
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+}
+function exportarBackup(){
+  const dados = {
+    exportadoEm: new Date().toISOString(),
+    cats: CATS_DATA, mensalidades: MENSALIDADES_ATLETAS, socios: SOCIOS,
+    despesas: DESPESAS_CLUBE, jogos: JOGOS_AGENDADOS, resultados: JOGOS_RESULTADOS,
+    fichas: FICHAS, habilidades: HABILIDADES, presenca: window.PRESENCA_HIST||{},
+    arbitragem: window.ARBITRAGEM_STATUS||{}, convocacoes: convocacoes_publicadas, stats: STATS
+  };
+  _baixarArquivo('votoraty-backup-'+new Date().toISOString().split('T')[0]+'.json', JSON.stringify(dados, null, 2), 'application/json');
+  showN('✓ Backup completo baixado!');
+}
+function exportarAtletasCSV(){
+  let csv = 'Categoria;Sigla;Nome;Posição;Presença %;Gols;Nível\n';
+  Object.entries(CATS_DATA).forEach(([k,c]) => c.atletas.forEach(a => {
+    csv += `${c.nome};${a.sig};${a.nome};${a.pos};${a.pres};${a.gols};${a.nivel}\n`;
+  }));
+  _baixarArquivo('votoraty-atletas.csv', '﻿'+csv, 'text/csv;charset=utf-8');
+  showN('✓ Lista de atletas exportada (abre no Excel)!');
+}
+function exportarRelatorioGeral(){
+  const totalAtl = Object.values(CATS_DATA).reduce((s,c)=>s+c.atletas.length,0);
+  const totalRec = Object.values(MENSALIDADES_ATLETAS).filter(m=>m.status==='pago').reduce((s,m)=>s+m.valor,0);
+  const totalAtr = Object.values(MENSALIDADES_ATLETAS).filter(m=>m.status==='atraso').reduce((s,m)=>s+m.valor,0);
+  const w = window.open('', '_blank');
+  if(!w){ showN('⚠️ Permita pop-ups para gerar o PDF.', true); return; }
+  w.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Relatório Geral — Votoraty</title>
+  <style>body{font-family:Arial;max-width:720px;margin:0 auto;padding:24px;color:#222;font-size:13px}h1{color:#0d3d1a;border-bottom:3px solid #0d3d1a;padding-bottom:8px}h2{color:#0d3d1a;font-size:15px;margin-top:20px}table{width:100%;border-collapse:collapse;margin-top:8px}th,td{border:1px solid #ddd;padding:6px 9px;text-align:left;font-size:12px}th{background:#eef3ee}</style></head><body>
+  <h1>⚽ VOTORATY ACADEMY — Relatório Geral</h1>
+  <p>Emitido em ${new Date().toLocaleDateString('pt-BR')}</p>
+  <h2>Resumo</h2>
+  <table><tr><th>Total de atletas</th><td>${totalAtl}</td></tr><tr><th>Recebido (mensalidades)</th><td>R$ ${totalRec.toFixed(2)}</td></tr><tr><th>Em atraso</th><td>R$ ${totalAtr.toFixed(2)}</td></tr><tr><th>Jogos agendados</th><td>${JOGOS_AGENDADOS.filter(j=>j.status==='agendado').length}</td></tr><tr><th>Resultados registrados</th><td>${JOGOS_RESULTADOS.length}</td></tr></table>
+  <h2>Atletas por categoria</h2>
+  ${Object.entries(CATS_DATA).map(([k,c])=>`<h3 style="color:#0d3d1a;font-size:13px">${c.emoji} ${c.nome} — ${c.atletas.length} atletas</h3>
+  <table><tr><th>Nome</th><th>Posição</th><th>Presença</th><th>Gols</th><th>Nível</th></tr>
+  ${c.atletas.map(a=>`<tr><td>${a.nome}</td><td>${a.pos}</td><td>${a.pres}%</td><td>${a.gols}</td><td>${a.nivel}</td></tr>`).join('')}</table>`).join('')}
+  <script>window.onload=function(){setTimeout(function(){window.print();},300);}<\/script></body></html>`);
+  w.document.close();
+  showN('📄 Relatório gerado! Escolha "Salvar como PDF".');
 }
 
 // Resumo financeiro embutido na aba Financeiro do diretor
@@ -271,7 +389,7 @@ function renderFinResumoDiretor(cor){
   return `
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
     <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Financeiro</span>
-    <button class="btn-sm" onclick="entrar('financeiro')">Gestão completa</button>
+    <button class="btn-sm" onclick="_perfilAnterior='diretor';entrar('financeiro')">Gestão completa</button>
   </div>
   <div class="stat-grid">
     <div class="stat-c" style="background:#dcf0e0;border:1px solid #8ec99a"><div class="stat-v" style="color:#1a5c26">R$${(totalRec/1000).toFixed(1)}k</div><div class="stat-l" style="color:#1a5c26">Recebido</div></div>
@@ -293,6 +411,6 @@ function renderFinResumoDiretor(cor){
         +'</div></div>';
     }).join('')}
   </div>
-  <button class="btn-g" style="background:${cor}" onclick="entrar('financeiro')">Abrir gestão financeira completa</button>`;
+  <button class="btn-g" style="background:${cor}" onclick="_perfilAnterior='diretor';entrar('financeiro')">Abrir gestão financeira completa</button>`;
 }
 

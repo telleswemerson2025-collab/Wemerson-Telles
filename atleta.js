@@ -67,6 +67,7 @@ function montarAtleta(cor){
   bnav.appendChild(bi);
 
   injetarConvocacaoNoFeed(cor);
+  aplicarFotoSalva();
 }
 
 function renderFeed(cor){
@@ -528,7 +529,7 @@ function renderAlbum(cor){
           <div style="text-align:center"><div style="font-size:14px;font-weight:700;color:#c8940a">${v}</div><div style="font-size:7px;color:rgba(255,255,255,.5);text-transform:uppercase">${l}</div></div>`).join('')}
         </div>
       </div>
-      <button onclick="event.stopPropagation();showN('✓ PDF gerado! Pronto para imprimir.')"
+      <button onclick="event.stopPropagation();baixarHistoricoPDF()"
         style="background:#c8940a;color:#fff;border:none;padding:8px 14px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;flex-shrink:0">PDF</button>
     </div>
   </div>`;
@@ -547,8 +548,17 @@ function togChk(el,cor){
 }
 
 function salvarCheckin(tipo){
-  const sel=document.querySelectorAll('.chk.on').length;
-  showN('✓ Check-in de '+tipo+' salvo! +'+sel*10+' XP conquistados!');
+  // Conta só os checks da tela ativa (Saúde e Estudos coexistem no DOM)
+  const scr = document.querySelector('.scr.on') || document;
+  const marcados = scr.querySelectorAll('.chk.on');
+  if(marcados.length === 0){ showN('⚠️ Marque pelo menos um item antes de salvar.', true); return; }
+  const xp = marcados.length * 10;
+  STATS.xp += xp;
+  atualizarStatsUI(); // já chama salvarLS()
+  // Desmarca os itens salvos
+  marcados.forEach(b => { b.classList.remove('on'); b.style.background=''; b.style.borderColor='#ddd'; });
+  scr.querySelectorAll('.chk-lbl.done').forEach(l => l.classList.remove('done'));
+  showN('✓ Check-in de '+tipo+' salvo! +'+xp+' XP conquistados!');
 }
 
 // montarNav e montarBnav definidas em utils.js
@@ -566,9 +576,12 @@ function goTab(idx, cor, _push=true){
     t.style.borderBottomColor=i===idx?_navCor:'transparent';
   });
   document.querySelectorAll('#bnav .bi').forEach((t,i)=>{
-    t.classList.toggle('on',i===idx);
-    t.querySelector('i').style.color=i===idx?_navCor:'#ccc';
-    t.querySelector('span').style.color=i===idx?_navCor:'#ccc';
+    // Se o item tem data-scr (bnav remapeado do diretor/professor-todos), compara com a TELA destino
+    const alvo = t.dataset.scr !== undefined ? parseInt(t.dataset.scr) : i;
+    const ativo = alvo === idx;
+    t.classList.toggle('on', ativo);
+    const ic = t.querySelector('i'); if(ic) ic.style.color = ativo?_navCor:'#ccc';
+    const sp = t.querySelector('span'); if(sp) sp.style.color = ativo?_navCor:'#ccc';
   });
   _atualizarBtnVoltar();
 }
@@ -580,6 +593,26 @@ function goBack(){
 }
 
 // _resetNav e _atualizarBtnVoltar definidas em utils.js
+
+// Sino do header: resume as pendências REAIS do usuário atual
+function mostrarNotificacoes(){
+  const avisos = [];
+  // Convocações ainda sem resposta (perfil atleta)
+  if(perfilAtual === 'atleta'){
+    const pendentes = convocacoes_publicadas.filter(c =>
+      !c.resultado && (c.convocados||[]).some(x => x.sig === ATLETA_DEFAULT.sig) && !(c.confirmacoes||{})[ATLETA_DEFAULT.sig]);
+    if(pendentes.length) avisos.push('⚽ '+pendentes.length+' convocação(ões) aguardando sua confirmação');
+    const catKey = (ATLETA_DEFAULT.cat||'Sub-13').replace(/[^a-z0-9]/gi,'').toLowerCase();
+    const mens = MENSALIDADES_ATLETAS[ATLETA_DEFAULT.sig + catKey];
+    if(mens && mens.status === 'atraso') avisos.push('💰 Mensalidade em atraso — fale com o financeiro');
+  } else {
+    const atrasos = Object.values(MENSALIDADES_ATLETAS).filter(m => m.status === 'atraso').length;
+    if(atrasos) avisos.push('💰 '+atrasos+' mensalidade(s) em atraso');
+    const jogosProx = JOGOS_AGENDADOS.filter(j => j.status === 'agendado').length;
+    if(jogosProx) avisos.push('📅 '+jogosProx+' jogo(s) agendado(s)');
+  }
+  showN(avisos.length ? avisos.join(' · ') : '✓ Nenhuma notificação pendente!');
+}
 
 // Sinal sonoro de notificação (Web Audio — sem arquivo externo)
 let _audioCtx = null;
@@ -678,11 +711,12 @@ function cadastrarAtleta(){
   fecharModal('modal-atleta');
   showN('✓ '+nm+' cadastrado no '+cat.nome+'! Acesso enviado ao responsável.');
   document.getElementById('m-nome').value='';
-  // Re-renderiza a lista de atletas da tela ativa
-  if(perfilAtual === 'diretor') montarDiretor(CORES.diretor);
+  // Re-renderiza a lista de atletas mantendo o usuário na aba Atletas
+  if(perfilAtual === 'diretor'){ montarDiretor(CORES.diretor); goTab(1, CORES.diretor, false); }
   else if(perfilAtual && perfilAtual.startsWith('prof_')){
     const ck = perfilAtual.replace('prof_','');
     montarProfessor(ck, CATS_DATA[ck], CORES[ck]);
+    goTab(4, CORES[ck], false); // aba Atletas do professor
   }
 }
 

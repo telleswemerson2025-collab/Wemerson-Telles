@@ -85,6 +85,11 @@ function marcarAtletaPago(chave){
   refreshFinTelas();
 }
 function cobrarTodosSocios(){ showN('📲 Cobrança enviada para sócios inadimplentes!'); }
+function cobrarSocioIndividual(id){
+  const s = SOCIOS.find(x => x.id === id);
+  if(!s || s.status === 'pago') return;
+  showN('📲 Cobrança enviada para '+s.nome+' — '+fmtR$(s.valor)+'. Use "Confirmar" quando receber.');
+}
 function cobrarTodosAtletas(){ showN('📲 Cobrança enviada para atletas em atraso!'); }
 
 function cobrarCatArb(catKey){
@@ -263,9 +268,9 @@ function renderFinPainel(){
     </div>
     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px">
       ${Object.entries(totalAtletasPorCat).map(([cat, total])=>{
-        const hist = HISTORICO_PRESENCA[cat];
-        const presente = hist[hist.length-1];
-        const pct = Math.round((presente/total)*100);
+        const hist = HISTORICO_PRESENCA[cat] || [0];
+        const presente = hist[hist.length-1] || 0;
+        const pct = total ? Math.round((presente/total)*100) : 0;
         const cor2 = pct>=80?'#1a5c26':pct>=60?'#b8860b':'#8b1a1a';
         const catNome = CATS_DATA[cat]?.nome || cat;
         return `<div style="text-align:center;background:#f8f7f4;border-radius:8px;padding:8px 4px">
@@ -410,6 +415,7 @@ function renderFinMensalidades(){
             <button onclick="marcarAtletaPago('${id}')" style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;${m.status==='pago'?'background:#dcf0e0;color:#1a5c26':'background:#fde8e8;color:#8b1a1a'}">
               ${m.status === 'pago' ? '✓ Pago' : 'Confirmar'}
             </button>
+            <button onclick="abrirEditarMensalidade('${id}','${sig}')" style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:1px solid #ddd;cursor:pointer;background:#fff;color:#555">✏️</button>
           </div>
         </div>`).join('')}
       </div>
@@ -494,7 +500,7 @@ function renderFinCobrancas(){
             </div>
             <div style="display:flex;gap:4px;flex-shrink:0;align-items:center">
               ${tagHtml(s.status)}
-              <button onclick="cobrarTodosSocios()" style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;background:#b8860b;color:#fff">📲</button>
+              <button onclick="cobrarSocioIndividual('${s.id}')" style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;background:#b8860b;color:#fff">📲</button>
               <button onclick="marcarSocioPago('${s.id}')" style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;background:#fde8e8;color:#8b1a1a">Confirmar</button>
             </div>
           </div>`).join('')}
@@ -608,8 +614,11 @@ function montarFinanceiro(cor){
   montarNav(navItems, cor);
   montarBnav(bnavItems, cor);
   const sc = document.getElementById('screens');
+  // Botão de volta ao diretor quando veio de lá
+  const pillVoltar = (typeof _perfilAnterior !== 'undefined' && _perfilAnterior === 'diretor')
+    ? `<div onclick="voltarInicio()" style="display:inline-flex;align-items:center;gap:6px;background:#3c348915;border:1px solid #3c348940;color:#3c3489;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;margin-bottom:10px">← Voltar ao Diretor</div>` : '';
   sc.innerHTML = `
-  <div id="s-0" class="scr on" style="padding:11px 13px;overflow-y:auto">${renderFinPainel()}</div>
+  <div id="s-0" class="scr on" style="padding:11px 13px;overflow-y:auto">${pillVoltar}${renderFinPainel()}</div>
   <div id="s-1" class="scr" style="padding:11px 13px;overflow-y:auto">${renderFinSocios()}</div>
   <div id="s-2" class="scr" style="padding:11px 13px;overflow-y:auto">${renderFinMensalidades()}</div>
   <div id="s-3" class="scr" style="padding:11px 13px;overflow-y:auto">${renderFinCobrancas()}</div>`;

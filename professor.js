@@ -122,7 +122,7 @@ function renderJogosProfessor(cat, cor){
 
     <!-- TEMPO -->
     <div style="display:flex;gap:6px">
-      <button onclick="showN('⏱️ Jogo encerrado! Resultado salvo e atletas notificados.')" style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text-2);padding:8px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer">Encerrar jogo</button>
+      <button onclick="encerrarJogoAoVivo('${cat.nome}','${cor}')" style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text-2);padding:8px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer">Encerrar jogo</button>
       <button onclick="showN('📢 Intervalo! Recado enviado aos atletas.')" style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text-2);padding:8px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer">Intervalo</button>
     </div>
   </div>
@@ -256,6 +256,22 @@ function salvarConvocacoesProfessor(catKey){
 // === PROFESSOR — chamada, avaliação, treino, mensagem ===
 // Controle do placar ao vivo
 let placarV = 2, placarA = 1;
+// Encerra o jogo ao vivo: grava resultado REAL em JOGOS_RESULTADOS e persiste
+function encerrarJogoAoVivo(catNome, cor){
+  const resultado = placarV > placarA ? 'Vitória' : placarV < placarA ? 'Derrota' : 'Empate';
+  JOGOS_RESULTADOS.unshift({
+    adv: 'Rapid FC', cat: catNome,
+    placar: placarV + 'x' + placarA,
+    resultado,
+    data: new Date().toLocaleDateString('pt-BR')
+  });
+  salvarLS();
+  showN('⏱️ Jogo encerrado! ' + resultado + ' ' + placarV + '×' + placarA + ' registrada. Atletas notificados.');
+  placarV = 0; placarA = 0;
+  const ev = document.getElementById('placar-v'); if(ev) ev.textContent = 0;
+  const ea = document.getElementById('placar-a'); if(ea) ea.textContent = 0;
+}
+
 function ajustarPlacar(time, delta){
   if(time==='v') placarV = Math.max(0, placarV+delta);
   else placarA = Math.max(0, placarA+delta);
@@ -266,12 +282,8 @@ function ajustarPlacar(time, delta){
 }
 
 function registrarGolAtleta(nome, sig, pos, cat, cor){
-  placarV++;
-  const el = document.getElementById('placar-v');
-  if(el) el.textContent = placarV;
-  // Abre modal para confirmar quantos gols
+  // Só abre o modal — o placar e o crédito acontecem no "Confirmar" (evita placar fantasma se cancelar)
   abrirLancarGol(nome, sig, pos, cat, cor);
-  showN('⚽ Gol de '+nome+'! Placar: '+placarV+'×'+placarA);
 }
 
 function renderChamada(cat, cor){
@@ -327,6 +339,7 @@ function marcC(id,tipo,el,cor){
 // PRESENCA_HIST e ARBITRAGEM_STATUS inicializados em data.js
 
 function salvarChamada(total){
+  if(Object.keys(chamadas).length === 0){ showN('⚠️ Marque a presença antes de salvar.', true); return; }
   const p=Object.values(chamadas).filter(v=>v==='P').length;
   const f=Object.values(chamadas).filter(v=>v==='F').length;
 
@@ -631,6 +644,8 @@ function carregarFoto(event){
   const reader = new FileReader();
   reader.onload = function(e){
     fotoAtleta = e.target.result;
+    // Persiste a foto (sobrevive ao reload)
+    try { localStorage.setItem('vot_foto', fotoAtleta); } catch(err){ /* foto muito grande p/ localStorage */ }
     // Atualiza o avatar na tela de evolução
     const av = document.getElementById('atleta-av');
     if(av){
@@ -648,6 +663,23 @@ function carregarFoto(event){
     showN('✓ Foto atualizada! Aparece no perfil e nas figurinhas.');
   };
   reader.readAsDataURL(file);
+}
+
+// Restaura a foto salva e aplica nos avatares (chamado ao montar o perfil do atleta)
+function aplicarFotoSalva(){
+  try {
+    const f = localStorage.getItem('vot_foto');
+    if(!f) return;
+    fotoAtleta = f;
+    const av = document.getElementById('atleta-av');
+    if(av) av.innerHTML = `<img src="${f}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    document.querySelectorAll('.stk-foto').forEach(el=>{
+      el.innerHTML = `<img src="${f}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    });
+    const dica = document.getElementById('foto-dica');
+    if(dica) dica.style.display = 'none';
+    atualizarHeaderFoto();
+  } catch(e){}
 }
 
 function atualizarHeaderFoto(){
@@ -676,14 +708,15 @@ function abrirFicha(nome, sig, pos, cat, catKey, cor){
   document.getElementById('ficha-nome').textContent = nome;
   document.getElementById('ficha-info').textContent = pos+' · '+cat;
   document.getElementById('ficha-btn').style.background = cor;
-  if(ficha.sangue)  document.getElementById('ficha-sangue').value = ficha.sangue;
-  if(ficha.plano)   document.getElementById('ficha-plano').value  = ficha.plano;
-  if(ficha.alergias)document.getElementById('ficha-alergias').value = ficha.alergias;
-  if(ficha.meds)    document.getElementById('ficha-meds').value   = ficha.meds;
-  if(ficha.cond)    document.getElementById('ficha-cond').value   = ficha.cond;
-  if(ficha.enome)   document.getElementById('ficha-emerg-nome').value = ficha.enome;
-  if(ficha.ewpp)    document.getElementById('ficha-emerg-wpp').value  = ficha.ewpp;
-  if(ficha.obs)     document.getElementById('ficha-obs').value    = ficha.obs;
+  // SEMPRE seta (com fallback vazio) — senão a ficha do atleta anterior "vaza" para o próximo
+  document.getElementById('ficha-sangue').value     = ficha.sangue || 'Não informado';
+  document.getElementById('ficha-plano').value      = ficha.plano || '';
+  document.getElementById('ficha-alergias').value   = ficha.alergias || '';
+  document.getElementById('ficha-meds').value       = ficha.meds || '';
+  document.getElementById('ficha-cond').value       = ficha.cond || '';
+  document.getElementById('ficha-emerg-nome').value = ficha.enome || '';
+  document.getElementById('ficha-emerg-wpp').value  = ficha.ewpp || '';
+  document.getElementById('ficha-obs').value        = ficha.obs || '';
   document.getElementById('ficha-nome').dataset.key = key;
   abrirModal('modal-ficha');
 }
@@ -858,6 +891,7 @@ function gerarComprovanteAtleta(id, tipo, categoria, valor, data){
   const cat = ATLETA_DEFAULT.cat;
 
   const win = window.open('','_blank');
+  if(!win){ showN('⚠️ Permita pop-ups para gerar o comprovante.', true); return; }
   win.document.write(`<!DOCTYPE html><html><head>
   <meta charset="UTF-8"><title>Comprovante de Pagamento</title>
   <style>
@@ -1034,6 +1068,7 @@ let golNomeAtual = '';
 function abrirLancarGol(nome, sig, pos, cat, cor){
   golsModal = 0;
   golNomeAtual = nome;
+  window._golAlvo = { sig, catKey: (cat||'Sub-13').replace(/[^a-z0-9]/gi,'').toLowerCase() };
   document.getElementById('gol-av').textContent = sig;
   document.getElementById('gol-av').style.background = cor;
   document.getElementById('gol-nome').textContent = nome;
@@ -1051,9 +1086,21 @@ function ajustarGol(delta){
 
 function confirmarGols(){
   if(golsModal === 0){showN('⚠️ Nenhum gol para lançar.',true);return;}
-  addGolAtleta(golsModal);
+  // Placar acompanha a quantidade confirmada
+  placarV += golsModal;
+  const elP = document.getElementById('placar-v');
+  if(elP) elP.textContent = placarV;
+  // Credita ao atleta CERTO (não sempre ao Kauan)
+  const alvo = window._golAlvo || {};
+  if(alvo.sig === ATLETA_DEFAULT.sig){
+    addGolAtleta(golsModal); // Kauan: stats pessoais + elenco + conquistas
+  } else {
+    const reg = CATS_DATA[alvo.catKey]?.atletas.find(a => a.sig === alvo.sig);
+    if(reg) reg.gols = (reg.gols||0) + golsModal;
+    salvarLS();
+  }
   fecharModal('modal-gol');
-  showN('✓ '+golsModal+' gol(s) lançado(s) para '+golNomeAtual+'! Total: '+STATS.gols);
+  showN('✓ '+golsModal+' gol(s) lançado(s) para '+golNomeAtual+'! Placar: '+placarV+'×'+placarA);
 }
 
 function abrirMsgDireta(nome, sig, pos, cat, cor){
@@ -1090,6 +1137,11 @@ function selDest(el){document.querySelectorAll('#dest-chips .chip').forEach(c=>c
 function enviarMsg(){
   const txt=document.getElementById('msg-txt');
   if(!txt||!txt.value.trim()){showN('⚠️ Escreva a mensagem antes de enviar.',true);return;}
+  // Persiste no histórico de mensagens e injeta no feed do atleta (se visível)
+  if(!window.MENSAGENS_ENVIADAS) window.MENSAGENS_ENVIADAS = [];
+  window.MENSAGENS_ENVIADAS.unshift({texto: txt.value.trim(), data: new Date().toLocaleString('pt-BR'), dest: window._msgDest || 'Todas'});
+  try { localStorage.setItem('vot_mensagens', JSON.stringify(window.MENSAGENS_ENVIADAS.slice(0,50))); } catch(e){}
+  if(typeof injetarFeed === 'function'){ try { injetarFeed(txt.value.trim()); } catch(e){} }
   showN('✓ Mensagem enviada! Atletas e pais notificados.');
   txt.value='';
 }

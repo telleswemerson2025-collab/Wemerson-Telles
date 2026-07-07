@@ -654,7 +654,7 @@ body {
 
   <div class="sidebar-section sidebar-bottom">
     <div class="sidebar-menu">
-      <div class="sidebar-item">
+      <div class="sidebar-item" onclick="location.href='index.html'">
         <i class="ti ti-logout"></i>
         <span>Trocar de perfil</span>
       </div>
@@ -670,8 +670,8 @@ body {
       <p>Visão geral de receitas, inadimplência e caixa</p>
     </div>
     <div class="header-top-right">
-      <input type="text" class="search-box" placeholder="Buscar atleta, sócio...">
-      <div class="header-icon"><i class="ti ti-bell"></i></div>
+      <input type="text" class="search-box" placeholder="Buscar atleta, sócio..." oninput="buscaGlobalDesktop(this.value)">
+      <div class="header-icon" onclick="mostrarNotificacoesDesktop()" style="cursor:pointer"><i class="ti ti-bell"></i></div>
       <div class="profile-badge">F</div>
     </div>
   </div>
@@ -993,6 +993,7 @@ function gerarArbitragemDeConvocacoes() {
       ARBITRAGEM.push({
         id: 'a' + id++,
         jogoId: jogo.id,
+        jogo: 'vs ' + (jogo.adv || '?'),
         sig: sig,
         catKey: catKey,
         valor: VALOR_ARBITRAGEM,
@@ -1079,6 +1080,8 @@ function salvarFirestoreDesktop(){
   const payload = {
     mensalidades: MENSALIDADES_ATLETAS,
     socios: SOCIOS,
+    despesas: DESPESAS_CLUBE,
+    convocacoes_desktop: CONVOCACOES,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   };
   // Só envia arbitragem se houver dados locais — evita apagar o status salvo pelo mobile
@@ -1104,7 +1107,8 @@ function aplicarDadosNuvem(d){
         }
       }
     });
-    // Edições locais do desktop têm precedência sobre o snapshot vindo da nuvem
+    // Convocações editadas em outro desktop (nuvem) e depois edições locais (precedência local)
+    if(d.convocacoes_desktop) Object.assign(CONVOCACOES, d.convocacoes_desktop);
     try { const convD = localStorage.getItem('vot_convocacoes'); if(convD) Object.assign(CONVOCACOES, JSON.parse(convD)); } catch(e){}
     gerarArbitragemDeConvocacoes();
   }
@@ -1133,8 +1137,10 @@ function iniciarSyncNuvem(){
     if(!doc.exists) return;
     aplicarDadosNuvem(doc.data());
     salvarDesktopLSLocal();
-    // Re-renderiza a tela ativa
+    // Re-renderiza todas as telas (containers existem mesmo ocultos)
     renderFinPainel(); renderFinSocios(); renderFinMensalidades(); renderFinCobrancas(); renderFinArbitragem();
+    renderFinConvocacoes(); renderCaixaClube();
+    try { renderRelatorioContador(); } catch(e){}
     if(_primeiraNuvem){ _primeiraNuvem = false; showToast('☁️ Sincronizado com a nuvem!', 'success'); }
   }, e => console.warn('[Firestore] listener:', e));
 }
@@ -1149,6 +1155,24 @@ function salvarDesktopLSLocal() {
 function salvarDesktopLS() {
   salvarDesktopLSLocal();
   salvarFirestoreDesktop();
+}
+
+// Busca do header: filtra as linhas da seção visível
+function buscaGlobalDesktop(q){
+  const busca = (q||'').toLowerCase();
+  const ativa = document.querySelector('.scr.on') || document;
+  ativa.querySelectorAll('.av-row').forEach(row => {
+    row.style.display = (!busca || row.textContent.toLowerCase().includes(busca)) ? '' : 'none';
+  });
+}
+
+function mostrarNotificacoesDesktop(){
+  const atrasoS = SOCIOS.filter(s => s.status === 'atraso').length;
+  const atrasoA = Object.values(MENSALIDADES_ATLETAS).filter(m => m.status === 'atraso').length;
+  const arbPend = ARBITRAGEM.filter(a => a.status === 'pendente').length;
+  const total = atrasoS + atrasoA + arbPend;
+  if(total === 0){ showToast('🔔 Nenhuma pendência no momento!', 'success'); return; }
+  showToast('🔔 ' + atrasoS + ' sócio(s) em atraso · ' + atrasoA + ' mensalidade(s) em atraso · ' + arbPend + ' arbitragem(ns) pendente(s)', 'info');
 }
 
 function marcarSocioPago(id) {
@@ -1558,6 +1582,7 @@ function salvarConvocacaoJogo(jogoId) {
   const count = (CONVOCACOES[jogoId] || []).length;
   gerarArbitragemDeConvocacoes();
   try { localStorage.setItem('vot_convocacoes', JSON.stringify(CONVOCACOES)); } catch(e){}
+  salvarFirestoreDesktop(); // sobe convocações à nuvem
   showToast(`✅ Convocação salva! ${count} atleta(s) — arbitragem gerada.`, 'success');
 }
 
@@ -1833,6 +1858,7 @@ function atualizarConvocacao(jogoId, sig, isConvocado) {
   try { localStorage.setItem('vot_convocacoes', JSON.stringify(CONVOCACOES)); } catch(e){}
   renderFinArbitragem();
   renderFinPainel();
+  renderFinConvocacoes(); // atualiza o contador "X/Y convocados" na própria tela
 }
 
 function renderRelatorioContador() {

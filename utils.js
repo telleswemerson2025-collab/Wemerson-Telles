@@ -213,12 +213,12 @@ function salvarAtleta(oldSig, oldCatKey){
   }
   salvarLS();
   fecharModal('modal-editar-atleta');
-  // Re-render current screen
-  const cor = CORES[perfilAtual?.replace('prof_','')||'sub13']||'#0d3d1a';
-  if(perfilAtual==='diretor') montarDiretor(CORES.diretor);
+  // Re-render mantendo o usuário na aba Atletas
+  if(perfilAtual==='diretor'){ montarDiretor(CORES.diretor); goTab(1, CORES.diretor, false); }
   else if(perfilAtual && perfilAtual.startsWith('prof_')){
     const catKey = perfilAtual.replace('prof_','');
     montarProfessor(catKey, CATS_DATA[catKey], CORES[catKey]);
+    goTab(4, CORES[catKey], false);
   }
 }
 
@@ -233,10 +233,11 @@ function deletarAtleta(sig, catKey){
   salvarLS();
   fecharModal('modal-editar-atleta');
   showN('Atleta removido.');
-  if(perfilAtual==='diretor') montarDiretor(CORES.diretor);
+  if(perfilAtual==='diretor'){ montarDiretor(CORES.diretor); goTab(1, CORES.diretor, false); }
   else if(perfilAtual && perfilAtual.startsWith('prof_')){
     const ck = perfilAtual.replace('prof_','');
     montarProfessor(ck, CATS_DATA[ck], CORES[ck]);
+    goTab(4, CORES[ck], false);
   }
 }
 
@@ -494,6 +495,8 @@ if('serviceWorker' in navigator){
 function montarProfessorTodos(cor){
   perfilAtual = 'professor';
   chamadas = {}; // limpa marcas de sessão/categoria anterior
+  const sw = document.getElementById('cat-switcher');
+  if(sw) sw.style.display = 'none';
   document.getElementById('tela-inicial').style.display='none';
   document.getElementById('app').style.display='flex';
   setCor(cor);
@@ -506,10 +509,11 @@ function montarProfessorTodos(cor){
 
   // Nav com abas por categoria + geral
   const navItems = ['Geral','Sub-7','Sub-9','Sub-11','Sub-13','Sub-15','Mensagem','Jogos','Convocações'];
+  // Rótulos coerentes com o destino real (mapa [0,1,2,6,7,8])
   const bnavItems = [
     {icon:'ti-layout-dashboard',label:'Geral'},
-    {icon:'ti-users',label:'Atletas'},
-    {icon:'ti-ball-football',label:'Treino'},
+    {icon:'ti-users',label:'Sub-7'},
+    {icon:'ti-users',label:'Sub-9'},
     {icon:'ti-message',label:'Mensagem'},
     {icon:'ti-trophy',label:'Jogos'},
     {icon:'ti-flag',label:'Convocar'}
@@ -532,7 +536,9 @@ function montarProfessorTodos(cor){
   // Mapeia bnav para telas
   document.querySelectorAll('#bnav .bi').forEach((b,i)=>{
     const mapa=[0,1,2,6,7,8];
-    b.onclick=function(){goTab(mapa[i]||i,cor);};
+    const alvo = mapa[i]!==undefined?mapa[i]:i;
+    b.dataset.scr = alvo; // goTab destaca o item certo
+    b.onclick=function(){goTab(alvo,cor);};
   });
 
   setCor(cor);
@@ -570,9 +576,27 @@ function toggleConvocadoTodos(ficKey, val){
 }
 
 function salvarConvocacoesTodos(){
+  // Publica no mural do atleta, por categoria (mesma lógica da visão single)
+  let totalGeral = 0;
+  Object.entries(CATS_DATA).forEach(([catKey, cat]) => {
+    const convocados = (cat.atletas||[]).filter(a => FICHAS[a.sig+catKey]?.convocado)
+      .map(a => ({sig:a.sig, nome:a.nome, pos:a.pos}));
+    if(convocados.length === 0) return;
+    totalGeral += convocados.length;
+    const proxJogo = JOGOS_AGENDADOS.find(j => j.cat === cat.nome && j.status === 'agendado');
+    convocacoes_publicadas.unshift({
+      id: 'conv_' + Date.now() + '_' + catKey,
+      jogo: proxJogo ? ('Votoraty Academy vs ' + proxJogo.adv) : ('Próximo jogo — ' + cat.nome),
+      data: proxJogo?.data || 'A confirmar', hora: proxJogo?.hora || 'A confirmar',
+      local: proxJogo?.local || 'Campo do Votoraty', campeonato: proxJogo?.camp || 'Amistoso',
+      fase: proxJogo?.fase || '', categoria: cat.nome, cor: CORES[catKey] || '#0d3d1a',
+      tecnico: 'Técnico André', observacao: proxJogo?.obs || 'Chegue 30 minutos antes.',
+      convocados, reservas: [],
+    });
+  });
+  if(totalGeral === 0){ showN('⚠️ Selecione pelo menos um atleta.', true); return; }
   salvarLS();
-  const total = Object.values(FICHAS).filter(f=>f.convocado).length;
-  showN('✓ Convocação salva! '+total+' atleta(s) convocado(s).');
+  showN('✅ Convocação publicada! '+totalGeral+' atleta(s) — os atletas já veem no mural.');
 }
 
 // Salva a chamada de UMA categoria na visão "todos os subs" (chaves de chamadas = catKey+índice)
@@ -736,13 +760,49 @@ function renderProfCat(catKey, cor){
 }
 
 function mostrarPainel(catKey, tipo, cor){
-  const paineis = {
-    chamada: `Chamada marcada para ${CATS_DATA[catKey].nome}`,
-    avaliacao: `Avaliação do ${CATS_DATA[catKey].nome} aberta`,
-    treino: `Registrar treino do ${CATS_DATA[catKey].nome}`,
-    convocar: `Convocação do ${CATS_DATA[catKey].nome} aberta`
-  };
-  showN('✓ '+paineis[tipo]);
+  // Troca de verdade o painel da categoria (era só um toast antes)
+  const painel = document.getElementById('painel-'+catKey);
+  const cat = CATS_DATA[catKey];
+  if(!painel || !cat) return;
+  const catCor = CORES[catKey] || cor;
+  if(tipo === 'chamada'){
+    painel.innerHTML = `
+    <div class="lbl">Chamada — ${cat.nome} · hoje</div>
+    <div style="background:#eee;border-radius:3px;height:4px;margin-bottom:8px"><div id="prog-${catKey}" style="height:4px;border-radius:3px;background:${catCor};width:0;transition:width .3s"></div></div>
+    ${cat.atletas.map((a,i)=>{
+      const pc=a.pres>=85?'#27500a':a.pres>=70?'#854f0b':'#a32d2d';
+      return `<div class="cr-item">
+        <div class="av" style="width:30px;height:30px;font-size:10px;background:${catCor}">${a.sig}</div>
+        <div style="flex:1"><div style="font-size:12px;font-weight:700">${a.nome}</div>
+        <div style="font-size:9px;color:#aaa">${a.pos} · <span style="color:${pc}">${a.pres}%</span> · ${a.gols} gols</div></div>
+        <div style="display:flex;gap:4px">
+          <button class="crb crb-p" onclick="marcC('${catKey}${i}','P',this,'${catCor}')" id="cp-${catKey}${i}">P</button>
+          <button class="crb crb-f" onclick="marcC('${catKey}${i}','F',this,'${catCor}')" id="cf-${catKey}${i}">F</button>
+        </div>
+      </div>`;
+    }).join('')}
+    <button style="background:${catCor};color:#fff;border:none;padding:11px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;width:100%;margin-top:5px" onclick="salvarChamadaTodos('${catKey}')">Salvar chamada</button>`;
+  } else if(tipo === 'avaliacao'){
+    painel.innerHTML = `<div class="lbl">Avaliação pós-treino — ${cat.nome}</div>` + renderAvaliacao(cat, catCor);
+  } else if(tipo === 'convocar'){
+    painel.innerHTML = renderConvocacoesProfessor(catKey, cat, catCor);
+  } else if(tipo === 'treino'){
+    painel.innerHTML = `<div class="lbl">Registro de treino — ${cat.nome}</div>
+    <div class="cw" style="padding:12px 14px">
+      <div class="field"><label>O que foi treinado hoje</label><textarea id="treino-desc-${catKey}" rows="3" placeholder="Ex: Finalização, posse de bola, jogadas ensaiadas..." style="width:100%;border:1px solid #ddd;border-radius:8px;padding:8px;font-size:12px"></textarea></div>
+      <button class="btn-g" style="background:${catCor}" onclick="salvarTreinoTodos('${catKey}')">Salvar treino</button>
+    </div>`;
+  }
+}
+
+function salvarTreinoTodos(catKey){
+  const desc = (document.getElementById('treino-desc-'+catKey)||{}).value || '';
+  if(!desc.trim()){ showN('⚠️ Descreva o treino antes de salvar.', true); return; }
+  if(!window.TREINOS_REG) window.TREINOS_REG = [];
+  window.TREINOS_REG.push({catKey, desc: desc.trim(), data: new Date().toLocaleDateString('pt-BR')});
+  try { localStorage.setItem('vot_treinos', JSON.stringify(window.TREINOS_REG)); } catch(e){}
+  showN('✓ Treino do '+(CATS_DATA[catKey]?.nome||catKey)+' registrado!');
+  document.getElementById('treino-desc-'+catKey).value = '';
 }
 
 function renderMensagemTodos(cor){

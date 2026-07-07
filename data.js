@@ -138,6 +138,7 @@ function salvarLS(){
   localStorage.setItem('vot_perfil', JSON.stringify(ATLETA_DEFAULT));
   if(typeof EVENTOS !== 'undefined') localStorage.setItem('vot_eventos', JSON.stringify(EVENTOS));
   localStorage.setItem('vot_conv_pub', JSON.stringify(convocacoes_publicadas));
+  localStorage.setItem('vot_jogos_result', JSON.stringify(JOGOS_RESULTADOS));
   if(window.PRESENCA_HIST) localStorage.setItem('vot_presenca_hist', JSON.stringify(window.PRESENCA_HIST));
   if(window.ARBITRAGEM_STATUS) localStorage.setItem('vot_arbitragem', JSON.stringify(window.ARBITRAGEM_STATUS));
   salvarFirestore();
@@ -166,6 +167,8 @@ function carregarLS(){
     if(perf){ Object.assign(ATLETA_DEFAULT, JSON.parse(perf)); }
     const cpub = localStorage.getItem('vot_conv_pub');
     if(cpub){ const arr=JSON.parse(cpub); convocacoes_publicadas.length=0; arr.forEach(c=>convocacoes_publicadas.push(c)); }
+    const jres = localStorage.getItem('vot_jogos_result');
+    if(jres){ const arr=JSON.parse(jres); JOGOS_RESULTADOS.length=0; arr.forEach(j=>JOGOS_RESULTADOS.push(j)); }
     const ph = localStorage.getItem('vot_presenca_hist');
     if(ph){ window.PRESENCA_HIST = JSON.parse(ph); }
     const arb = localStorage.getItem('vot_arbitragem');
@@ -439,11 +442,13 @@ function renderMuralConvocacoes(cor){
       </div>
 
       <!-- Confirmação de presença -->
-      ${!conv.resultado ? `
-      <div style="display:flex;gap:7px;margin-top:10px">
-        <button onclick="confirmarPresenca(this,'sim','${conv.cor}')" style="flex:1;background:#eaf3de;color:#27500a;border:none;padding:9px;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer">✓ Confirmar presença</button>
-        <button onclick="confirmarPresenca(this,'nao','${conv.cor}')" style="flex:1;background:#fcebeb;color:#791f1f;border:none;padding:9px;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer">✗ Não poderei ir</button>
-      </div>` : `
+      ${!conv.resultado ? (
+        (conv.confirmacoes||{})[ATLETA_DEFAULT.sig] ?
+        `<div style="background:${(conv.confirmacoes||{})[ATLETA_DEFAULT.sig]==='sim'?'#eaf3de':'#faeeda'};border-radius:8px;padding:9px;margin-top:10px;text-align:center;font-size:11px;font-weight:700;color:${(conv.confirmacoes||{})[ATLETA_DEFAULT.sig]==='sim'?'#27500a':'#633806'}">${(conv.confirmacoes||{})[ATLETA_DEFAULT.sig]==='sim'?'✓ Presença confirmada! Técnico foi notificado.':'⚠️ Ausência informada. Técnico foi notificado.'}</div>` :
+        `<div style="display:flex;gap:7px;margin-top:10px">
+        <button onclick="confirmarPresenca(this,'sim','${conv.cor}','${conv.id}')" style="flex:1;background:#eaf3de;color:#27500a;border:none;padding:9px;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer">✓ Confirmar presença</button>
+        <button onclick="confirmarPresenca(this,'nao','${conv.cor}','${conv.id}')" style="flex:1;background:#fcebeb;color:#791f1f;border:none;padding:9px;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer">✗ Não poderei ir</button>
+      </div>`) : `
       <div style="background:#eaf3de;border-radius:8px;padding:8px 10px;margin-top:10px;text-align:center;font-size:11px;font-weight:700;color:#27500a">
         ✓ Jogo encerrado · ${conv.resultado}
       </div>`}
@@ -453,13 +458,37 @@ function renderMuralConvocacoes(cor){
 
   <!-- BOTÃO VER TODAS -->
   <div style="text-align:center;padding:8px 0">
-    <button onclick="showN('Carregando histórico completo de convocações...')" style="background:none;border:1px solid #ddd;color:#666;padding:8px 20px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer">
+    <button onclick="verHistoricoConvocacoes(this)" style="background:none;border:1px solid #ddd;color:#666;padding:8px 20px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer">
       Ver histórico completo
     </button>
   </div>`;
 }
 
-function confirmarPresenca(btn, tipo, cor){
+// Substitui o botão pela lista real de resultados/jogos passados
+function verHistoricoConvocacoes(btn){
+  const wrap = btn.parentElement;
+  const itens = (typeof JOGOS_RESULTADOS !== 'undefined' ? JOGOS_RESULTADOS : []);
+  if(itens.length === 0){
+    wrap.innerHTML = '<div style="font-size:11px;color:#aaa;padding:8px">Nenhum jogo encerrado registrado ainda.</div>';
+    return;
+  }
+  wrap.innerHTML = '<div style="font-size:12px;font-weight:700;margin-bottom:8px;text-align:left">Jogos encerrados</div>' +
+    itens.slice(0,10).map(r => `
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid #eee;border-radius:10px;margin-bottom:6px;background:#fff;text-align:left">
+      <div style="width:30px;height:30px;border-radius:8px;background:${r.resultado==='Vitória'?'#dcf0e0':r.resultado==='Derrota'?'#fde8e8':'#fdf3dc'};display:flex;align-items:center;justify-content:center;font-size:14px">${r.resultado==='Vitória'?'🏆':r.resultado==='Derrota'?'❌':'🤝'}</div>
+      <div style="flex:1"><div style="font-size:11px;font-weight:700">vs ${r.adv||'—'} · ${r.placar||''}</div>
+      <div style="font-size:9px;color:#aaa">${r.cat||''} · ${r.data||''} · ${r.resultado||''}</div></div>
+    </div>`).join('');
+}
+
+function confirmarPresenca(btn, tipo, cor, convId){
+  // Persiste a resposta na convocação (o professor pode consultar e sobrevive ao reload)
+  const conv = convocacoes_publicadas.find(c => c.id === convId);
+  if(conv){
+    if(!conv.confirmacoes) conv.confirmacoes = {};
+    conv.confirmacoes[ATLETA_DEFAULT.sig] = tipo;
+    salvarLS();
+  }
   const row = btn.parentElement;
   if(tipo==='sim'){
     row.innerHTML=`<div style="background:#eaf3de;border-radius:8px;padding:9px;text-align:center;font-size:11px;font-weight:700;color:#27500a;width:100%">✓ Presença confirmada! Técnico foi notificado.</div>`;

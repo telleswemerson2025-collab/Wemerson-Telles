@@ -126,7 +126,7 @@
       </div>
       <div style="display:flex;gap:10px;align-items:center;padding-top:6px">
         <button onclick="toggleOff()" id="btn-off" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.85);font-size:9px;padding:3px 8px;border-radius:6px;cursor:pointer;font-weight:600;letter-spacing:.04em">OFFLINE</button>
-        <div style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="showN('Sem notificações pendentes.')">
+        <div style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="mostrarNotificacoes()">
           <i class="ti ti-bell" style="color:rgba(255,255,255,.9);font-size:17px"></i>
         </div>
       </div>
@@ -301,6 +301,7 @@
     <div class="field"><label>Nome completo</label><input type="text" id="m-nome" placeholder="Nome do atleta"></div>
     <div class="field"><label>Data de nascimento</label><input type="date" id="m-nasc"></div>
     <div class="field"><label>Posição</label><select id="m-pos"><option>Goleiro</option><option>Zagueiro</option><option>Lateral</option><option>Meia</option><option>Atacante</option></select></div>
+    <div class="field"><label>Categoria</label><select id="m-cat"><option>Sub-7</option><option>Sub-9</option><option>Sub-11</option><option selected>Sub-13</option><option>Sub-15</option></select></div>
     <div class="field"><label>Responsável</label><input type="text" id="m-resp" placeholder="Nome do pai/mãe/responsável"></div>
     <div class="field"><label>WhatsApp do responsável</label><input type="tel" id="m-wpp" placeholder="(11) 99999-9999"></div>
     <button class="btn-g" onclick="cadastrarAtleta()">Cadastrar atleta</button>
@@ -401,10 +402,10 @@
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-title">Criar campeonato</div>
-    <div class="field"><label>Nome</label><input type="text" placeholder="Ex: Camp. Municipal 2025"></div>
-    <div class="field"><label>Formato</label><select><option>Pontos corridos</option><option>Mata-mata</option><option>Grupos + mata-mata</option></select></div>
-    <div class="field"><label>Times participantes</label><textarea placeholder="Um time por linha&#10;Votoraty Academy&#10;Atlético Jr&#10;..."></textarea></div>
-    <button class="btn-g" onclick="fecharModal('modal-camp');showN('Campeonato criado!')">Criar campeonato</button>
+    <div class="field"><label>Nome</label><input type="text" id="camp-nome" placeholder="Ex: Camp. Municipal 2025"></div>
+    <div class="field"><label>Formato</label><select id="camp-formato"><option>Pontos corridos</option><option>Mata-mata</option><option>Grupos + mata-mata</option></select></div>
+    <div class="field"><label>Times participantes</label><textarea id="camp-times" placeholder="Um time por linha&#10;Votoraty Academy&#10;Atlético Jr&#10;..."></textarea></div>
+    <button class="btn-g" onclick="criarCampeonato()">Criar campeonato</button>
     <button class="btn-sm" style="width:100%;margin-top:8px;text-align:center" onclick="fecharModal('modal-camp')">Cancelar</button>
   </div>
 </div>
