@@ -32,13 +32,14 @@ let _auth = null, _db = null, _listener = null;
       _auth.onAuthStateChanged(async user => {
         if(user && !perfilAtual){
           const snap = await _db.collection('usuarios').doc(user.uid).get().catch(()=>null);
-          if(snap && snap.exists){
-            const role = snap.data().role;
-            if(!roleValido(role)){ console.warn('[Auth] role inválido:', role); return; }
-            // Carrega dados da nuvem ANTES de entrar (evita sobrescrever a nuvem com dados locais velhos)
-            await carregarFirestore();
-            entrar(role);
+          let role = (snap && snap.exists) ? snap.data().role : undefined;
+          if(!roleValido(role)){
+            role = ROLES_CONHECIDOS[(user.email||'').toLowerCase()];
+            if(role){ try { await _db.collection('usuarios').doc(user.uid).set({role, email:user.email}, {merge:true}); } catch(e){} }
           }
+          if(!roleValido(role)){ console.warn('[Auth] sem role para', user.email); return; }
+          await carregarFirestore();
+          entrar(role);
         }
       });
     }
@@ -91,6 +92,14 @@ function criarUsuarioPeloForm(){
   });
 }
 
+// E-mails conhecidos → papel (usado para auto-corrigir documentos sem 'role')
+const ROLES_CONHECIDOS = {
+  'diretor@votoraty.com': 'diretor',
+  'professor@votoraty.com': 'prof_sub13',
+  'financeiro@votoraty.com': 'financeiro',
+  'kauan@votoraty.com': 'atleta'
+};
+
 function roleValido(role){
   if(!role) return false;
   const validos = ['diretor','financeiro','atleta','professor'].concat(Object.keys(CATS_DATA).map(k=>'prof_'+k));
@@ -106,9 +115,18 @@ async function loginFirebase(){
   try {
     const cred = await _auth.signInWithEmailAndPassword(email, pass);
     const snap = await _db.collection('usuarios').doc(cred.user.uid).get();
-    if(!snap.exists){ mostrarErroLogin('Usuário sem perfil cadastrado. Fale com o administrador.'); await _auth.signOut(); return; }
-    const role = snap.data().role;
-    if(!roleValido(role)){ mostrarErroLogin('Perfil inválido cadastrado ("'+role+'"). Fale com o administrador.'); await _auth.signOut(); return; }
+    let role = snap.exists ? snap.data().role : undefined;
+    // Auto-correção: se o papel está faltando/errado, usa o mapa de e-mails conhecidos e conserta o documento
+    if(!roleValido(role)){
+      const inferido = ROLES_CONHECIDOS[email];
+      if(inferido){
+        role = inferido;
+        try { await _db.collection('usuarios').doc(cred.user.uid).set({role, email}, {merge:true}); } catch(e){}
+      } else {
+        mostrarErroLogin('Perfil não configurado para este e-mail. Peça ao diretor para criar o acesso.');
+        await _auth.signOut(); return;
+      }
+    }
     // Carrega dados do Firestore antes de entrar
     await carregarFirestore();
     entrar(role);
