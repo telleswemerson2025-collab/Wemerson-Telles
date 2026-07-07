@@ -824,6 +824,9 @@ function agendarJogo(){
   };
   JOGOS_AGENDADOS.unshift(novoJogo);
 
+  // Gera cobrança de arbitragem (R$30, pendente) para cada atleta convocado
+  gerarArbitragemConvocados(cat, conv);
+
   // Ordena por data
   JOGOS_AGENDADOS.sort((a,b)=>a.data.localeCompare(b.data));
   salvarLS();

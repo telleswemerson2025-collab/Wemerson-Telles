@@ -595,6 +595,8 @@ function salvarConvocacoesTodos(){
       tecnico: 'Técnico André', observacao: proxJogo?.obs || 'Chegue 30 minutos antes.',
       convocados, reservas: [],
     });
+    // Gera cobrança de arbitragem (R$30, pendente) para os convocados desta categoria
+    gerarArbitragemConvocados(catKey, convocados.map(a => a.sig));
   });
   if(totalGeral === 0){ showN('⚠️ Selecione pelo menos um atleta.', true); return; }
   salvarLS();

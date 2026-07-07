@@ -248,8 +248,10 @@ function salvarConvocacoesProfessor(catKey){
     convocados,
     reservas: [],
   });
+  // Gera cobrança de arbitragem (R$30, pendente) para os convocados
+  gerarArbitragemConvocados(catKey, convocados.map(a => a.sig));
   salvarLS();
-  showN('✅ Convocação publicada! '+convocados.length+' atleta(s) convocado(s) — os atletas já podem ver no mural.');
+  showN('✅ Convocação publicada! '+convocados.length+' atleta(s) convocado(s) — mural + arbitragem gerada.');
 }
 
 
