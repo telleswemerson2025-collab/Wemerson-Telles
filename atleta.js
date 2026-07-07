@@ -709,7 +709,7 @@ function cadastrarAtleta(){
   cat.atletas.push({sig, nome: nm, pos, pres: 100, gols: 0, nivel: 5});
   salvarLS();
   fecharModal('modal-atleta');
-  showN('✓ '+nm+' cadastrado no '+cat.nome+'! Acesso enviado ao responsável.');
+  showN('✓ '+nm+' adicionado ao elenco do '+cat.nome+'! Para criar o LOGIN dele, use Config → Criar acesso de usuário.');
   document.getElementById('m-nome').value='';
   // Re-renderiza a lista de atletas mantendo o usuário na aba Atletas
   if(perfilAtual === 'diretor'){ montarDiretor(CORES.diretor); goTab(1, CORES.diretor, false); }
