@@ -1094,7 +1094,7 @@ function salvarFirestoreDesktop(){
 
 function aplicarDadosNuvem(d){
   if(!d) return;
-  if(d.cats){ Object.keys(d.cats).forEach(k=>{ if(CATS_DATA[k]) CATS_DATA[k].atletas = d.cats[k].atletas; else CATS_DATA[k] = d.cats[k]; }); }
+  if(d.cats){ Object.keys(CATS_DATA).forEach(k=>{ if(CATS_DATA[k]) CATS_DATA[k].atletas = []; }); Object.keys(d.cats).forEach(k=>{ if(CATS_DATA[k]) CATS_DATA[k].atletas = d.cats[k].atletas; else CATS_DATA[k] = d.cats[k]; }); }
   // SUBSTITUI (não mescla): senão o elenco-fantasma embutido no desktop soma com o do mobile (42 vs 23)
   if(d.mensalidades && Object.keys(d.mensalidades).length){
     Object.keys(MENSALIDADES_ATLETAS).forEach(k => delete MENSALIDADES_ATLETAS[k]);
@@ -1362,7 +1362,8 @@ function renderFinPainel() {
   document.getElementById('atletas-dia').textContent = fmtR$(calc.atletas_dia);
   document.getElementById('atletas-atraso').textContent = fmtR$(calc.atletas_atraso);
   document.getElementById('atletas-vencer').textContent = fmtR$(calc.atletas_vencer);
-  document.getElementById('atletas-total').textContent = Object.keys(MENSALIDADES_ATLETAS).length;
+  // Conta pelo ELENCO (CATS_DATA), igual ao mobile — não pelas mensalidades (que podem ter fantasmas)
+  document.getElementById('atletas-total').textContent = Object.values(CATS_DATA).reduce((s,c)=>s+((c.atletas&&c.atletas.length)||0),0);
 
   document.getElementById('kpi-recebido').textContent = fmtR$(calc.total_dia);
   document.getElementById('kpi-atraso').textContent = fmtR$(calc.total_atraso);
@@ -2400,7 +2401,12 @@ window.addEventListener('DOMContentLoaded', () => {
   try {
     // Elenco unificado: usa o CATS_DATA salvo pelo mobile (evita elencos divergentes)
     const cats = localStorage.getItem('vot_cats');
-    if(cats){ const d=JSON.parse(cats); Object.keys(d).forEach(k=>{ if(CATS_DATA[k]) CATS_DATA[k].atletas = d[k].atletas; else CATS_DATA[k] = d[k]; }); }
+    if(cats){
+      const d=JSON.parse(cats);
+      // SUBSTITUI o elenco-fantasma embutido: zera os atletas de cada categoria antes de preencher com os do mobile
+      Object.keys(CATS_DATA).forEach(k => { if(CATS_DATA[k]) CATS_DATA[k].atletas = []; });
+      Object.keys(d).forEach(k=>{ if(CATS_DATA[k]) CATS_DATA[k].atletas = d[k].atletas; else CATS_DATA[k] = d[k]; });
+    }
     // Mensalidades do mobile — SUBSTITUI o elenco-fantasma embutido (não mescla)
     const mens = localStorage.getItem('vot_mensalidades');
     if(mens){ const nm = JSON.parse(mens); if(Object.keys(nm).length){ Object.keys(MENSALIDADES_ATLETAS).forEach(k=>delete MENSALIDADES_ATLETAS[k]); Object.assign(MENSALIDADES_ATLETAS, nm); } }
