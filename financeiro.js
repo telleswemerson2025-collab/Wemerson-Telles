@@ -368,14 +368,15 @@ function renderFinSocios(){
 function renderFinMensalidades(){
   const CORES_CAT = {sub7:'#e67e22',sub9:'#27ae60',sub11:'#2980b9',sub13:'#8e44ad',sub15:'#c0392b'};
 
-  // Agrupar por categoria
+  // Agrupar pelo ELENCO REAL (CATS_DATA) — mostra atletas novos e ignora chaves-fantasma
   const porCat = {};
-  Object.entries(CATS_DATA).forEach(([k]) => porCat[k] = []);
-  Object.entries(MENSALIDADES_ATLETAS).forEach(([id, m]) => {
-    const match = id.match(/^([A-Z]+)([a-z0-9]+)$/);
-    if (!match) return;
-    const sig = match[1], catKey = match[2];
-    if (porCat[catKey] !== undefined) porCat[catKey].push({ id, sig, catKey, m });
+  Object.entries(CATS_DATA).forEach(([catKey, cat]) => {
+    porCat[catKey] = (cat.atletas || []).map(a => {
+      const id = a.sig + catKey;
+      let m = MENSALIDADES_ATLETAS[id];
+      if (!m) { m = { valor: 180, status: 'pendente', venc: '05/07' }; MENSALIDADES_ATLETAS[id] = m; } // cria mensalidade p/ atleta novo
+      return { id, sig: a.sig, catKey, m };
+    });
   });
 
   const cats = Object.entries(porCat).filter(([,a]) => a.length > 0);

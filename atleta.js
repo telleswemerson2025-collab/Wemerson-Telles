@@ -707,6 +707,8 @@ function cadastrarAtleta(){
   let n = 2;
   while(cat.atletas.find(a => a.sig === sig)){ sig = sig[0] + (n++); }
   cat.atletas.push({sig, nome: nm, pos, pres: 100, gols: 0, nivel: 5});
+  // Cria a mensalidade do atleta novo — assim ele aparece no financeiro
+  MENSALIDADES_ATLETAS[sig + catKey] = {valor: 180, status: 'pendente', venc: '05/07'};
   salvarLS();
   fecharModal('modal-atleta');
   showN('✓ '+nm+' adicionado ao elenco do '+cat.nome+'! Para criar o LOGIN dele, use Config → Criar acesso de usuário.');

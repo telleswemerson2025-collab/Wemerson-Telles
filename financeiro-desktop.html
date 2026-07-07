@@ -1048,9 +1048,13 @@ function finCalcs() {
   const socios_atraso = SOCIOS.filter(s => s.status === 'atraso').reduce((a, s) => a + s.valor, 0);
   const socios_vencer = SOCIOS.filter(s => s.status === 'pendente').reduce((a, s) => a + s.valor, 0);
 
-  const atletas_dia = Object.values(MENSALIDADES_ATLETAS).filter(m => m.status === 'pago').reduce((a, m) => a + m.valor, 0);
-  const atletas_atraso = Object.values(MENSALIDADES_ATLETAS).filter(m => m.status === 'atraso').reduce((a, m) => a + m.valor, 0);
-  const atletas_vencer = Object.values(MENSALIDADES_ATLETAS).filter(m => m.status === 'pendente').reduce((a, m) => a + m.valor, 0);
+  // Considera SÓ atletas do elenco real (ignora chaves-fantasma que possam ter vindo da nuvem)
+  const chavesReais = new Set();
+  Object.entries(CATS_DATA).forEach(([catKey, cat]) => (cat.atletas||[]).forEach(a => chavesReais.add(a.sig + catKey)));
+  const mensReais = Object.entries(MENSALIDADES_ATLETAS).filter(([id]) => chavesReais.has(id)).map(([,m]) => m);
+  const atletas_dia = mensReais.filter(m => m.status === 'pago').reduce((a, m) => a + m.valor, 0);
+  const atletas_atraso = mensReais.filter(m => m.status === 'atraso').reduce((a, m) => a + m.valor, 0);
+  const atletas_vencer = mensReais.filter(m => m.status === 'pendente').reduce((a, m) => a + m.valor, 0);
 
   return {
     socios_dia, socios_atraso, socios_vencer,
@@ -1403,14 +1407,16 @@ function renderFinSocios() {
 function renderFinMensalidades() {
   const CORES_CAT = {sub7:'#e67e22',sub9:'#27ae60',sub11:'#2980b9',sub13:'#8e44ad',sub15:'#c0392b'};
 
-  // Agrupar por categoria
+  // Agrupar pelo ELENCO REAL — mostra atletas novos e ignora chaves-fantasma
   const porCat = {};
-  Object.entries(MENSALIDADES_ATLETAS).forEach(([id, m]) => {
-    const match = id.match(/^([A-Z]+)([a-z0-9]+)$/);
-    if (!match) return;
-    const sig = match[1], catKey = match[2];
-    if (!porCat[catKey]) porCat[catKey] = [];
-    porCat[catKey].push({ id, sig, catKey, m });
+  Object.entries(CATS_DATA).forEach(([catKey, cat]) => {
+    (cat.atletas || []).forEach(a => {
+      const id = a.sig + catKey;
+      let m = MENSALIDADES_ATLETAS[id];
+      if (!m) { m = { valor: 180, status: 'pendente', venc: '05/07' }; MENSALIDADES_ATLETAS[id] = m; }
+      if (!porCat[catKey]) porCat[catKey] = [];
+      porCat[catKey].push({ id, sig: a.sig, catKey, m });
+    });
   });
 
   let html = '';

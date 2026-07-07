@@ -211,6 +211,8 @@ function salvarAtleta(oldSig, oldCatKey){
     CATS_DATA[newCatKey].atletas.push(dados);
     showN('✓ Atleta cadastrado!');
   }
+  // Garante mensalidade para o atleta (aparece no financeiro)
+  if(!MENSALIDADES_ATLETAS[sig + newCatKey]) MENSALIDADES_ATLETAS[sig + newCatKey] = {valor: 180, status: 'pendente', venc: '05/07'};
   salvarLS();
   fecharModal('modal-editar-atleta');
   // Re-render mantendo o usuário na aba Atletas
