@@ -33,8 +33,12 @@ function finCalcs(){
   let recAtl=0,atAtl=0,penAtl=0;
   atletasFlat.forEach(a=>{ const m=MENSALIDADES_ATLETAS[a.chave]; if(!m)return; if(m.status==='pago') recAtl+=m.valor; else if(m.status==='atraso') atAtl+=m.valor; else penAtl+=m.valor; });
   const despesas = DESPESAS_CLUBE.reduce((s,d)=>s+d.valor,0);
+  // Arbitragem paga também é receita (mesma conta do desktop) — mantém saldo idêntico nos dois
+  let arbPago = 0;
+  const arb = window.ARBITRAGEM_STATUS || {};
+  Object.values(arb).forEach(lista => (lista||[]).forEach(a => { if(a.pago || a.status==='pago') arbPago += 30; }));
   const recebido = recSoc+recAtl, emAtraso = atSoc+atAtl, pendente = penSoc+penAtl;
-  return {recebido,emAtraso,pendente,despesas,saldo:recebido-despesas};
+  return {recebido,emAtraso,pendente,despesas,arbPago,saldo:recebido+arbPago-despesas};
 }
 function destruirGrafico(id){ if(CHART_INSTANCES[id]){ CHART_INSTANCES[id].destroy(); delete CHART_INSTANCES[id]; } }
 function chartOpcoesBase({stacked,currency,suffix,yMax,singleSeries}={}){
