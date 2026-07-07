@@ -48,22 +48,32 @@ let _auth = null, _db = null, _listener = null;
 // Cria usuário no Firebase Auth + papel no Firestore SEM derrubar a sessão atual
 // (usa uma instância secundária do Firebase para não trocar o login de quem cria)
 async function criarUsuarioSistema(email, senha, role){
-  if(!_db){ showN('⚠️ Firebase não configurado.', true); return false; }
+  if(!_db || !_auth){ showN('⚠️ Firebase não configurado. Faça login real (não Modo Demo) para criar usuários.', true); return false; }
+  email = (email||'').trim().toLowerCase();
   if(!email || !senha || senha.length < 6){ showN('⚠️ Informe e-mail e senha (mín. 6 caracteres).', true); return false; }
   if(!roleValido(role)){ showN('⚠️ Função inválida.', true); return false; }
   try {
+    // App secundário isolado — não derruba a sessão de quem está criando
     let app2;
     try { app2 = firebase.app('criador'); } catch(e){ app2 = firebase.initializeApp(FIREBASE_CONFIG, 'criador'); }
-    const cred = await app2.auth().createUserWithEmailAndPassword(email.trim(), senha);
-    await _db.collection('usuarios').doc(cred.user.uid).set({ role, email: email.trim(), criadoEm: firebase.firestore.FieldValue.serverTimestamp() });
+    // 1) Cria a conta de login
+    const cred = await app2.auth().createUserWithEmailAndPassword(email, senha);
+    const uid = cred.user.uid;
+    // 2) Grava o papel no Firestore (com o app secundário, já autenticado como o novo usuário)
+    await app2.firestore().collection('usuarios').doc(uid).set({ role, email, criadoEm: firebase.firestore.FieldValue.serverTimestamp() });
+    // 3) VERIFICA se o papel foi realmente salvo (se não, o login falharia depois)
+    const check = await app2.firestore().collection('usuarios').doc(uid).get();
     await app2.auth().signOut();
-    showN('✓ Usuário '+email.trim()+' criado como "'+role+'"! Já pode fazer login.');
+    if(!check.exists){ showN('⚠️ Conta criada, mas o perfil não salvou. Tente de novo.', true); return false; }
+    showN('✓ Usuário criado! Login: '+email+' · Função: '+role+'. Já pode entrar.');
     return true;
   } catch(e){
-    const msg = e.code === 'auth/email-already-in-use' ? 'Este e-mail já está cadastrado.'
-              : e.code === 'auth/invalid-email' ? 'E-mail inválido.'
+    const msg = e.code === 'auth/email-already-in-use' ? 'Este e-mail JÁ está cadastrado. Use outro ou faça login com ele.'
+              : e.code === 'auth/invalid-email' ? 'E-mail inválido (verifique se não tem espaços).'
               : e.code === 'auth/weak-password' ? 'Senha fraca — use 6+ caracteres.'
-              : 'Erro ao criar usuário: ' + (e.message || e.code);
+              : e.code === 'auth/operation-not-allowed' ? 'Ative E-mail/Senha no Firebase (Authentication).'
+              : e.code === 'permission-denied' ? 'Sem permissão no Firestore. Verifique as regras (modo teste).'
+              : 'Erro: ' + (e.code || e.message);
     showN('⚠️ ' + msg, true);
     return false;
   }
@@ -88,13 +98,13 @@ function roleValido(role){
 }
 
 async function loginFirebase(){
-  const email = (document.getElementById('fb-email')||{}).value||'';
+  const email = ((document.getElementById('fb-email')||{}).value||'').trim().toLowerCase();
   const pass  = (document.getElementById('fb-pass')||{}).value||'';
   if(!_auth){ mostrarErroLogin('Firebase não configurado. Use o Modo Demo abaixo.'); return; }
   if(!email||!pass){ mostrarErroLogin('Preencha email e senha.'); return; }
   setLoginLoading(true);
   try {
-    const cred = await _auth.signInWithEmailAndPassword(email.trim(), pass);
+    const cred = await _auth.signInWithEmailAndPassword(email, pass);
     const snap = await _db.collection('usuarios').doc(cred.user.uid).get();
     if(!snap.exists){ mostrarErroLogin('Usuário sem perfil cadastrado. Fale com o administrador.'); await _auth.signOut(); return; }
     const role = snap.data().role;
