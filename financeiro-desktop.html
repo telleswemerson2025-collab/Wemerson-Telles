@@ -746,9 +746,10 @@ body {
 
         <div class="chart-card" style="margin-top:0">
           <div class="chart-card-head">
-            <h4>Fluxo de atletas — presença por categoria</h4>
-            <span>Dados salvos na chamada do professor</span>
+            <h4>Fluxo de atletas — presença por treino</h4>
+            <span id="fluxo-hoje">— hoje</span>
           </div>
+          <div id="fluxo-tiles" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px"></div>
           <div class="chart-wrap" style="height:200px"><canvas id="chartFluxoAtletas"></canvas></div>
         </div>
       </div>
@@ -1043,6 +1044,26 @@ function destruirGrafico(id) {
   }
 }
 
+// Helpers de consistência com o mobile (ignoram fantasmas / dedupe de arbitragem)
+function _chavesReaisAtletas(){
+  const set = new Set();
+  Object.entries(CATS_DATA).forEach(([catKey, cat]) => (cat.atletas||[]).forEach(a => set.add(a.sig + catKey)));
+  return set;
+}
+function _mensReais(){
+  const set = _chavesReaisAtletas();
+  return Object.entries(MENSALIDADES_ATLETAS).filter(([id]) => set.has(id));
+}
+// Arbitragem paga: R$30 por ATLETA (dedupe por sig+cat), igual ao mobile — não por convocação
+function _arbPagoDedup(){
+  try {
+    const arb = JSON.parse(localStorage.getItem('vot_arbitragem') || '{}');
+    let total = 0;
+    Object.values(arb).forEach(lista => (lista||[]).forEach(a => { if(a.pago || a.status==='pago') total += 30; }));
+    return total;
+  } catch(e){ return 0; }
+}
+
 function finCalcs() {
   const socios_dia = SOCIOS.filter(s => s.status === 'pago').reduce((a, s) => a + s.valor, 0);
   const socios_atraso = SOCIOS.filter(s => s.status === 'atraso').reduce((a, s) => a + s.valor, 0);
@@ -1079,8 +1100,15 @@ try {
   _db = firebase.firestore();
 } catch(e){ console.warn('[Firebase] não inicializado:', e.message); }
 
+// Remove mensalidades-fantasma (chaves sem atleta no elenco real)
+function sanearMensalidadesDesktop(){
+  const reais = _chavesReaisAtletas();
+  Object.keys(MENSALIDADES_ATLETAS).forEach(id => { if(!reais.has(id)) delete MENSALIDADES_ATLETAS[id]; });
+}
+
 function salvarFirestoreDesktop(){
   if(!_db) return;
+  sanearMensalidadesDesktop(); // nunca sobe chaves-fantasma para a nuvem
   const payload = {
     mensalidades: MENSALIDADES_ATLETAS,
     socios: SOCIOS,
@@ -1104,6 +1132,7 @@ function aplicarDadosNuvem(d){
     Object.keys(MENSALIDADES_ATLETAS).forEach(k => delete MENSALIDADES_ATLETAS[k]);
     Object.assign(MENSALIDADES_ATLETAS, d.mensalidades);
   }
+  sanearMensalidadesDesktop(); // limpa fantasmas que a nuvem possa ter trazido
   if(d.socios){ SOCIOS.length=0; d.socios.forEach(s=>SOCIOS.push(s)); }
   if(d.despesas){ DESPESAS_CLUBE.length=0; d.despesas.forEach(x=>DESPESAS_CLUBE.push(x)); }
   if(d.jogos_agendados){
@@ -1176,7 +1205,7 @@ function buscaGlobalDesktop(q){
 
 function mostrarNotificacoesDesktop(){
   const atrasoS = SOCIOS.filter(s => s.status === 'atraso').length;
-  const atrasoA = Object.values(MENSALIDADES_ATLETAS).filter(m => m.status === 'atraso').length;
+  const atrasoA = _mensReais().filter(([,m]) => m.status === 'atraso').length;
   const arbPend = ARBITRAGEM.filter(a => a.status === 'pendente').length;
   const total = atrasoS + atrasoA + arbPend;
   if(total === 0){ showToast('🔔 Nenhuma pendência no momento!', 'success'); return; }
@@ -1311,6 +1340,27 @@ function desenharGraficoFluxoAtletas() {
     CATS.forEach(k => { series[k] = (Array.isArray(ph?.[k]) && typeof ph[k][0] === 'number') ? ph[k] : [0,0,0,0,0,0]; });
   }
   const sub7 = series.sub7, sub9 = series.sub9, sub11 = series.sub11, sub13 = series.sub13, sub15 = series.sub15;
+
+  // Tiles "presente/total" por categoria + indicador "X/Y hoje" (igual ao mobile)
+  const nomesCat = {sub7:'Sub-7',sub9:'Sub-9',sub11:'Sub-11',sub13:'Sub-13',sub15:'Sub-15'};
+  const tiles = document.getElementById('fluxo-tiles');
+  if(tiles){
+    let somaPres = 0, somaTot = 0;
+    tiles.innerHTML = CATS.map(k => {
+      const s = series[k] || [0];
+      const pres = s[s.length-1] || 0;
+      const tot = (CATS_DATA[k]?.atletas?.length) || 0;
+      somaPres += pres; somaTot += tot;
+      const pct = tot ? Math.round(pres/tot*100) : 0;
+      const cor2 = pct>=80?'#1a5c26':pct>=60?'#b8860b':'#8b1a1a';
+      return `<div style="border:1px solid #eee;border-radius:10px;padding:8px;text-align:center">
+        <div style="font-size:18px;font-weight:800;color:${cor2}">${pres}<span style="font-size:11px;color:#aaa">/${tot}</span></div>
+        <div style="font-size:9px;color:#888;margin-top:2px">${nomesCat[k]}</div></div>`;
+    }).join('');
+    const hj = document.getElementById('fluxo-hoje');
+    if(hj) hj.textContent = somaPres + '/' + somaTot + ' hoje';
+  }
+
   const ctx = document.getElementById('chartFluxoAtletas')?.getContext('2d');
   if(!ctx) return;
   CHART_INSTANCES['chartFluxoAtletas'] = new Chart(ctx, {
@@ -1373,7 +1423,7 @@ function renderFinPainel() {
   document.getElementById('kpi-atraso').textContent = fmtR$(calc.total_atraso);
   const despTotal = (typeof DESPESAS_CLUBE !== 'undefined') ? DESPESAS_CLUBE.reduce((s,d)=>s+d.valor,0) : 0;
   // Inclui arbitragens pagas — mesma fórmula do Relatório Contador (DRE)
-  const arbPagoTotal = ARBITRAGEM.filter(a => a.status === 'pago').reduce((s,a)=>s+a.valor,0);
+  const arbPagoTotal = _arbPagoDedup();
   const saldoMes = calc.total_dia + arbPagoTotal - despTotal;
   document.getElementById('kpi-saldo').textContent = (saldoMes >= 0 ? '' : '- ') + fmtR$(Math.abs(saldoMes));
 
@@ -1888,16 +1938,17 @@ function renderRelatorioContador() {
   const socios_atraso  = SOCIOS.filter(s => s.status === 'atraso');
   const socios_todos   = SOCIOS;
 
-  const atletas_pago   = Object.entries(MENSALIDADES_ATLETAS).filter(([,m]) => m.status === 'pago');
-  const atletas_atraso = Object.entries(MENSALIDADES_ATLETAS).filter(([,m]) => m.status === 'atraso');
-  const atletas_todos  = Object.entries(MENSALIDADES_ATLETAS);
+  const mensReais      = _mensReais(); // só elenco real
+  const atletas_pago   = mensReais.filter(([,m]) => m.status === 'pago');
+  const atletas_atraso = mensReais.filter(([,m]) => m.status === 'atraso');
+  const atletas_todos  = mensReais;
 
   const arb_pago  = ARBITRAGEM.filter(a => a.status === 'pago');
   const arb_pend  = ARBITRAGEM.filter(a => a.status !== 'pago');
 
   const totalReceitaSocios  = socios_pago.reduce((s, x) => s + x.valor, 0);
   const totalReceitaAtletas = atletas_pago.reduce((s, [,m]) => s + m.valor, 0);
-  const totalReceitaArb     = arb_pago.reduce((s, a) => s + a.valor, 0);
+  const totalReceitaArb     = _arbPagoDedup(); // R$30 por atleta pago, igual ao mobile
   const totalReceitas       = totalReceitaSocios + totalReceitaAtletas + totalReceitaArb;
 
   const totalDespesas = DESPESAS_CLUBE.reduce((s, d) => s + d.valor, 0);
@@ -2308,8 +2359,8 @@ function renderCaixaClube() {
   const totalDespesas = (typeof DESPESAS_CLUBE !== 'undefined' ? DESPESAS_CLUBE : []).reduce((s, d) => s + d.valor, 0);
 
   const totalSociosPago = SOCIOS.filter(s => s.status === 'pago').reduce((s, x) => s + x.valor, 0);
-  const totalAtletasPago = Object.values(MENSALIDADES_ATLETAS).filter(m => m.status === 'pago').reduce((s, m) => s + m.valor, 0);
-  const totalArbPago = ARBITRAGEM.filter(a => a.status === 'pago').reduce((s, a) => s + a.valor, 0);
+  const totalAtletasPago = _mensReais().filter(([,m]) => m.status === 'pago').reduce((s, [,m]) => s + m.valor, 0);
+  const totalArbPago = _arbPagoDedup();
   const totalEntradas = totalSociosPago + totalAtletasPago + totalArbPago;
   const saldo = totalEntradas - totalDespesas;
   const saldoPositivo = saldo >= 0;
@@ -2322,8 +2373,8 @@ function renderCaixaClube() {
     movs.push({tipo:'Receita', desc:'Sócio · ' + s.nome, valor: s.valor, cor:'#1a5c26', bg:'#dcf0e0'});
   });
 
-  // Atletas pagos
-  Object.entries(MENSALIDADES_ATLETAS).filter(([,m]) => m.status === 'pago').forEach(([id, m]) => {
+  // Atletas pagos (só elenco real)
+  _mensReais().filter(([,m]) => m.status === 'pago').forEach(([id, m]) => {
     const match = id.match(/^([A-Z]+)([a-z0-9]+)$/);
     const sig = match?.[1] || id;
     const catKey = match?.[2] || '';

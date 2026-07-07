@@ -176,30 +176,32 @@ function renderFinPainel(){
   const c=finCalcs();
   const atletasFlat=listarTodosAtletas();
 
-  // CORRIGIDO: Dados de presença — lê do histórico real da chamada se disponível
+  // Presença REAL das chamadas (mesma lógica do desktop — sem dados fictícios)
   const totalAtletasPorCat = {};
   Object.keys(CATS_DATA).forEach(k => { totalAtletasPorCat[k] = CATS_DATA[k].atletas.length; });
-  const BASE_PRESENCA = {
-    sub7:[4,3,4,4,3,4], sub9:[3,4,3,4,4,3],
-    sub11:[4,4,3,4,3,4], sub13:[7,6,8,7,8,8], sub15:[4,5,4,5,5,4]
-  };
-  // Injeta dados reais das chamadas salvas no histórico
-  const HISTORICO_PRESENCA = { labels:['Sem 1','Sem 2','Sem 3','Sem 4','Sem 5','Atual'] };
-  Object.keys(BASE_PRESENCA).forEach(cat => {
-    const hist = window.PRESENCA_HIST?.[cat] || [];
-    const base = [...BASE_PRESENCA[cat]];
-    if(hist.length > 0) base[base.length-1] = hist[hist.length-1].presentes;
-    HISTORICO_PRESENCA[cat] = base;
-  });
+  const CATS_P = ['sub7','sub9','sub11','sub13','sub15'];
+  const ph = window.PRESENCA_HIST || {};
+  const temReais = CATS_P.some(k => Array.isArray(ph[k]) && ph[k].length);
+  const HISTORICO_PRESENCA = {};
+  if(temReais){
+    const todasDatas = [];
+    CATS_P.forEach(k => (ph[k]||[]).forEach(r => { if(r && r.data && !todasDatas.includes(r.data)) todasDatas.push(r.data); }));
+    HISTORICO_PRESENCA.labels = todasDatas.slice(-6);
+    CATS_P.forEach(k => {
+      HISTORICO_PRESENCA[k] = HISTORICO_PRESENCA.labels.map(d => {
+        const regs = (ph[k]||[]).filter(r => r && r.data === d);
+        return regs.length ? regs[regs.length-1].presentes : 0;
+      });
+    });
+  } else {
+    HISTORICO_PRESENCA.labels = ['—'];
+    CATS_P.forEach(k => { HISTORICO_PRESENCA[k] = [0]; });
+  }
   const totalGeral = Object.values(totalAtletasPorCat).reduce((s,v)=>s+v,0);
 
-  // Presença mais recente (última semana)
-  const presAtual = Object.entries(HISTORICO_PRESENCA)
-    .filter(([k])=>k!=='labels')
-    .reduce((s,[,v])=>s+v[v.length-1],0);
-  const presAnterior = Object.entries(HISTORICO_PRESENCA)
-    .filter(([k])=>k!=='labels')
-    .reduce((s,[,v])=>s+(v.length>=2?v[v.length-2]:0),0);
+  // Presença mais recente
+  const presAtual = CATS_P.reduce((s,k)=>{ const v=HISTORICO_PRESENCA[k]; return s+(v[v.length-1]||0); },0);
+  const presAnterior = CATS_P.reduce((s,k)=>{ const v=HISTORICO_PRESENCA[k]; return s+(v.length>=2?(v[v.length-2]||0):0); },0);
   const presTrend = presAtual >= presAnterior ? '↑' : '↓';
   const presTrendColor = presAtual >= presAnterior ? '#1a5c26' : '#8b1a1a';
 

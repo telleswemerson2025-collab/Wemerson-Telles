@@ -606,7 +606,9 @@ function mostrarNotificacoes(){
     const mens = MENSALIDADES_ATLETAS[ATLETA_DEFAULT.sig + catKey];
     if(mens && mens.status === 'atraso') avisos.push('💰 Mensalidade em atraso — fale com o financeiro');
   } else {
-    const atrasos = Object.values(MENSALIDADES_ATLETAS).filter(m => m.status === 'atraso').length;
+    const chavesReais = new Set();
+    Object.entries(CATS_DATA).forEach(([ck,c]) => (c.atletas||[]).forEach(a => chavesReais.add(a.sig+ck)));
+    const atrasos = Object.entries(MENSALIDADES_ATLETAS).filter(([id,m]) => chavesReais.has(id) && m.status === 'atraso').length;
     if(atrasos) avisos.push('💰 '+atrasos+' mensalidade(s) em atraso');
     const jogosProx = JOGOS_AGENDADOS.filter(j => j.status === 'agendado').length;
     if(jogosProx) avisos.push('📅 '+jogosProx+' jogo(s) agendado(s)');

@@ -192,6 +192,7 @@ async function carregarFirestore(){
     if(d.conv_pub){ convocacoes_publicadas.length=0; d.conv_pub.forEach(c=>convocacoes_publicadas.push(c)); }
     if(d.presenca_hist)   window.PRESENCA_HIST = d.presenca_hist;
     if(d.arbitragem)      window.ARBITRAGEM_STATUS = d.arbitragem;
+    if(typeof sanearMensalidades === 'function') sanearMensalidades(); // remove chaves-fantasma vindas da nuvem
     return true;
   } catch(e){ return false; }
 }

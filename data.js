@@ -126,7 +126,17 @@ const FICHAS = {};
 // =====================
 // PERSISTÊNCIA
 // =====================
+// Remove mensalidades-fantasma (chaves sem atleta no elenco real) — evita poluição na nuvem
+function sanearMensalidades(){
+  try {
+    const reais = new Set();
+    Object.entries(CATS_DATA).forEach(([catKey, cat]) => (cat.atletas||[]).forEach(a => reais.add(a.sig + catKey)));
+    Object.keys(MENSALIDADES_ATLETAS).forEach(id => { if(!reais.has(id)) delete MENSALIDADES_ATLETAS[id]; });
+  } catch(e){}
+}
+
 function salvarLS(){
+  sanearMensalidades();
   localStorage.setItem('vot_stats', JSON.stringify(STATS));
   localStorage.setItem('vot_habilidades', JSON.stringify(HABILIDADES));
   localStorage.setItem('vot_fichas', JSON.stringify(FICHAS));
@@ -174,6 +184,7 @@ function carregarLS(){
     const arb = localStorage.getItem('vot_arbitragem');
     if(arb){ window.ARBITRAGEM_STATUS = JSON.parse(arb); }
   } catch(e){}
+  sanearMensalidades();
 }
 
 // Mostra painel lateral no desktop ao carregar
