@@ -2408,6 +2408,23 @@ function renderCaixaClube() {
       </div>
     </div>
 
+    <div style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:13px;font-weight:800;color:var(--text)">🧾 Despesas do clube</span>
+        <button onclick="adicionarDespesaDesktop()" style="padding:6px 14px;border-radius:8px;border:none;background:#c0392b;color:#fff;font-weight:700;font-size:12px;cursor:pointer">+ Nova despesa</button>
+      </div>
+      ${(DESPESAS_CLUBE||[]).length === 0
+        ? '<div style="text-align:center;padding:24px;color:var(--text-3);font-size:12px">Nenhuma despesa cadastrada</div>'
+        : DESPESAS_CLUBE.map((d,i) => `
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border)">
+            <div style="flex:1;font-size:12px;font-weight:700;color:var(--text)">${d.descricao}</div>
+            <div style="font-size:13px;font-weight:800;color:#c0392b;font-family:'Courier New',monospace">−${fmtR$(d.valor)}</div>
+            <button onclick="editarDespesaDesktop(${i})" style="border:1px solid #ddd;background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11px">✏️</button>
+            <button onclick="excluirDespesaDesktop(${i})" style="border:1px solid #f0c0c0;background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11px;color:#c0392b">🗑️</button>
+          </div>`).join('')
+      }
+    </div>
+
     <div style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden">
       <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
         <span style="font-size:13px;font-weight:800;color:var(--text)">Movimentações</span>
@@ -2432,6 +2449,39 @@ function renderCaixaClube() {
   `;
 
   document.getElementById('caixa-corpo').innerHTML = html;
+}
+
+// ===== Gestão de despesas no desktop (persiste local + nuvem) =====
+function adicionarDespesaDesktop(){
+  const desc = prompt('Descrição da despesa:');
+  if(!desc || !desc.trim()) return;
+  const valor = parseFloat((prompt('Valor (R$):','0')||'').replace(',','.'));
+  if(isNaN(valor) || valor <= 0){ showToast('Valor inválido.', 'error'); return; }
+  DESPESAS_CLUBE.push({descricao: desc.trim(), valor});
+  _salvarDespesasDesktop();
+  renderCaixaClube(); renderFinPainel();
+  showToast('✓ Despesa adicionada!', 'success');
+}
+function editarDespesaDesktop(i){
+  const d = DESPESAS_CLUBE[i]; if(!d) return;
+  const desc = prompt('Descrição:', d.descricao); if(desc === null) return;
+  const valor = parseFloat((prompt('Valor (R$):', d.valor)||'').replace(',','.'));
+  d.descricao = desc.trim() || d.descricao;
+  if(!isNaN(valor) && valor > 0) d.valor = valor;
+  _salvarDespesasDesktop();
+  renderCaixaClube(); renderFinPainel();
+  showToast('✓ Despesa atualizada!', 'success');
+}
+function excluirDespesaDesktop(i){
+  if(!confirm('Excluir esta despesa?')) return;
+  DESPESAS_CLUBE.splice(i,1);
+  _salvarDespesasDesktop();
+  renderCaixaClube(); renderFinPainel();
+  showToast('Despesa removida.', 'info');
+}
+function _salvarDespesasDesktop(){
+  try { localStorage.setItem('vot_despesas', JSON.stringify(DESPESAS_CLUBE)); } catch(e){}
+  salvarFirestoreDesktop();
 }
 
 // SIDEBAR
