@@ -846,9 +846,21 @@ function renderComprovantes(cor){
     pagamentosAtleta.push({id:'mens_'+mensKey, tipo:'Mensalidade', categoria:ATLETA_DEFAULT.cat,
       valor:mens.valor, data:'Venc. '+(mens.venc||'—'), status:mens.status});
   }
-  ((window.ARBITRAGEM_STATUS||{})[catKey]||[]).filter(a => a.sig === sig).forEach((a, i) => {
+  // Lê a arbitragem de AMBAS as fontes: memória (mobile) e localStorage (gravado pelo desktop)
+  let arbFonte = (window.ARBITRAGEM_STATUS||{})[catKey] || [];
+  try {
+    const arbLS = JSON.parse(localStorage.getItem('vot_arbitragem')||'{}')[catKey] || [];
+    // Mescla por sig, dando precedência ao status "pago" de qualquer fonte
+    const mapa = {};
+    arbFonte.concat(arbLS).forEach(a => {
+      const pago = mapa[a.sig]?.pago || a.pago || a.status==='pago';
+      mapa[a.sig] = {sig:a.sig, pago};
+    });
+    arbFonte = Object.values(mapa);
+  } catch(e){}
+  arbFonte.filter(a => a.sig === sig).forEach((a, i) => {
     pagamentosAtleta.push({id:'arb_'+catKey+'_'+i, tipo:'Arbitragem', categoria:ATLETA_DEFAULT.cat+' · taxa de jogo',
-      valor:30, data:'Temporada atual', status:(a.pago || a.status==='pago') ? 'pago' : (a.status||'pendente')});
+      valor:30, data:'Temporada atual', status:(a.pago || a.status==='pago') ? 'pago' : 'pendente'});
   });
 
   const pendencias = pagamentosAtleta.filter(p => p.status !== 'pago');

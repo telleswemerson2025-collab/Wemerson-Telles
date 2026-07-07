@@ -508,4 +508,18 @@ window.addEventListener('DOMContentLoaded', function(){
     const ev = localStorage.getItem('vot_eventos');
     if(ev && typeof EVENTOS !== 'undefined'){ const arr=JSON.parse(ev); EVENTOS.length=0; arr.forEach(e=>EVENTOS.push(e)); }
   } catch(e){}
+  iniciarRelogio();
 });
+
+// Relógio real do cabeçalho — hora do aparelho, atualiza a cada segundo
+function iniciarRelogio(){
+  function tick(){
+    const el = document.getElementById('hdr-relogio');
+    if(el){
+      const agora = new Date();
+      el.textContent = agora.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+    }
+  }
+  tick();
+  setInterval(tick, 1000);
+}

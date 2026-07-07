@@ -1095,7 +1095,11 @@ function salvarFirestoreDesktop(){
 function aplicarDadosNuvem(d){
   if(!d) return;
   if(d.cats){ Object.keys(d.cats).forEach(k=>{ if(CATS_DATA[k]) CATS_DATA[k].atletas = d.cats[k].atletas; else CATS_DATA[k] = d.cats[k]; }); }
-  if(d.mensalidades) Object.assign(MENSALIDADES_ATLETAS, d.mensalidades);
+  // SUBSTITUI (não mescla): senão o elenco-fantasma embutido no desktop soma com o do mobile (42 vs 23)
+  if(d.mensalidades && Object.keys(d.mensalidades).length){
+    Object.keys(MENSALIDADES_ATLETAS).forEach(k => delete MENSALIDADES_ATLETAS[k]);
+    Object.assign(MENSALIDADES_ATLETAS, d.mensalidades);
+  }
   if(d.socios){ SOCIOS.length=0; d.socios.forEach(s=>SOCIOS.push(s)); }
   if(d.despesas){ DESPESAS_CLUBE.length=0; d.despesas.forEach(x=>DESPESAS_CLUBE.push(x)); }
   if(d.jogos_agendados){
@@ -2397,9 +2401,9 @@ window.addEventListener('DOMContentLoaded', () => {
     // Elenco unificado: usa o CATS_DATA salvo pelo mobile (evita elencos divergentes)
     const cats = localStorage.getItem('vot_cats');
     if(cats){ const d=JSON.parse(cats); Object.keys(d).forEach(k=>{ if(CATS_DATA[k]) CATS_DATA[k].atletas = d[k].atletas; else CATS_DATA[k] = d[k]; }); }
-    // Mensalidades de atletas salvas pelo mobile (financeiro.js / data.js)
+    // Mensalidades do mobile — SUBSTITUI o elenco-fantasma embutido (não mescla)
     const mens = localStorage.getItem('vot_mensalidades');
-    if(mens){ Object.assign(MENSALIDADES_ATLETAS, JSON.parse(mens)); }
+    if(mens){ const nm = JSON.parse(mens); if(Object.keys(nm).length){ Object.keys(MENSALIDADES_ATLETAS).forEach(k=>delete MENSALIDADES_ATLETAS[k]); Object.assign(MENSALIDADES_ATLETAS, nm); } }
     // Sócios salvos pelo mobile — substitui a lista (merge faria excluídos reaparecerem)
     const soc = localStorage.getItem('vot_socios');
     if(soc){ const arr=JSON.parse(soc); SOCIOS.length=0; arr.forEach(s=>SOCIOS.push(s)); }
