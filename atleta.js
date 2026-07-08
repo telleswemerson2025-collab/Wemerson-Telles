@@ -598,10 +598,9 @@ function goBack(){
 
 // _resetNav e _atualizarBtnVoltar definidas em utils.js
 
-// Sino do header: resume as pendências REAIS do usuário atual
-function mostrarNotificacoes(){
+// Lista as pendências REAIS do usuário atual (usada pelo sino e pelo badge)
+function listarNotificacoes(){
   const avisos = [];
-  // Convocações ainda sem resposta (perfil atleta)
   if(perfilAtual === 'atleta'){
     const pendentes = convocacoes_publicadas.filter(c =>
       !c.resultado && (c.convocados||[]).some(x => x.sig === ATLETA_DEFAULT.sig) && !(c.confirmacoes||{})[ATLETA_DEFAULT.sig]);
@@ -617,7 +616,56 @@ function mostrarNotificacoes(){
     const jogosProx = JOGOS_AGENDADOS.filter(j => j.status === 'agendado').length;
     if(jogosProx) avisos.push('📅 '+jogosProx+' jogo(s) agendado(s)');
   }
+  return avisos;
+}
+
+// Sino do header: abre a lista e zera o badge
+function mostrarNotificacoes(){
+  const avisos = listarNotificacoes();
   showN(avisos.length ? avisos.join(' · ') : '✓ Nenhuma notificação pendente!');
+  _notifLidas = avisos.length;
+  atualizarBadgeSino();
+}
+
+// Badge (bolinha vermelha) no sino + toque + notificação no sistema quando surge algo novo
+let _notifLidas = 0;
+function atualizarBadgeSino(novaAlerta){
+  const n = listarNotificacoes().length;
+  const badge = document.getElementById('sino-badge');
+  if(badge){
+    if(n > 0){ badge.textContent = n; badge.style.display = 'flex'; }
+    else { badge.style.display = 'none'; }
+  }
+  // Surgiu algo novo desde a última checagem → toca, pisca e notifica no sistema
+  if(n > _notifLidas){
+    const icon = document.getElementById('sino-icon');
+    if(icon){ icon.style.animation = 'none'; void icon.offsetWidth; icon.style.animation = 'sinoShake .5s ease 3'; }
+    tocarSomNotificacao(false);
+    const msgs = listarNotificacoes();
+    if(msgs.length && novaAlerta !== false) notificarSistema('🔔 Votoraty Academy', msgs[0]);
+  }
+  _notifLidas = Math.max(_notifLidas, 0);
+}
+
+// Notificação no sistema (aparece na tela do celular, como outros apps) via Notification API
+function pedirPermissaoNotif(){
+  try { if('Notification' in window && Notification.permission === 'default') Notification.requestPermission(); } catch(e){}
+}
+function notificarSistema(titulo, corpo){
+  try {
+    if(!('Notification' in window) || Notification.permission !== 'granted') return;
+    const n = new Notification(titulo, { body: corpo, icon: '/icon-192.png', badge: '/icon-192.png', tag: 'votoraty' });
+    n.onclick = function(){ window.focus(); n.close(); };
+  } catch(e){}
+}
+
+// Verifica notificações periodicamente (pega mudanças que vieram da nuvem)
+let _notifTimer = null;
+function iniciarMonitorNotif(){
+  pedirPermissaoNotif();
+  atualizarBadgeSino(false); // primeira carga: só mostra badge, sem tocar
+  if(_notifTimer) clearInterval(_notifTimer);
+  _notifTimer = setInterval(() => { if(perfilAtual) atualizarBadgeSino(); }, 20000);
 }
 
 // Sinal sonoro de notificação (Web Audio — sem arquivo externo)

@@ -211,6 +211,11 @@ function iniciarListenerAtleta(){
     if(d.jogos_agendados){
       JOGOS_AGENDADOS.length=0; d.jogos_agendados.forEach(j=>JOGOS_AGENDADOS.push(j));
     }
+    // Convocações publicadas pelo professor chegam aqui em tempo real
+    if(d.conv_pub){ convocacoes_publicadas.length=0; d.conv_pub.forEach(c=>convocacoes_publicadas.push(c)); }
+    if(d.mensalidades) Object.assign(MENSALIDADES_ATLETAS, d.mensalidades);
+    // Dispara sino/som/notificação se surgiu algo novo (ex.: nova convocação)
+    if(typeof atualizarBadgeSino === 'function') atualizarBadgeSino();
   });
 }
 

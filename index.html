@@ -126,8 +126,9 @@
       </div>
       <div style="display:flex;gap:10px;align-items:center;padding-top:6px">
         <button onclick="toggleOff()" id="btn-off" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.85);font-size:9px;padding:3px 8px;border-radius:6px;cursor:pointer;font-weight:600;letter-spacing:.04em">OFFLINE</button>
-        <div style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="mostrarNotificacoes()">
-          <i class="ti ti-bell" style="color:rgba(255,255,255,.9);font-size:17px"></i>
+        <div id="sino-wrap" style="position:relative;width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="mostrarNotificacoes()">
+          <i class="ti ti-bell" id="sino-icon" style="color:rgba(255,255,255,.9);font-size:17px"></i>
+          <span id="sino-badge" style="display:none;position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;padding:0 4px;border-radius:9px;background:#e53935;color:#fff;font-size:9px;font-weight:800;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.4)">0</span>
         </div>
       </div>
     </div>

@@ -35,6 +35,8 @@ function entrar(perfil){
   configurarPerfil(perfil, cor);
   // Listener em tempo real para atleta (dados sincronizados do professor)
   if(perfil === 'atleta') iniciarListenerAtleta();
+  // Monitor de notificações (badge no sino + som + notificação no sistema)
+  if(typeof iniciarMonitorNotif === 'function') iniciarMonitorNotif();
 }
 
 function voltarInicio(){
@@ -544,6 +546,7 @@ function montarProfessorTodos(cor){
   });
 
   setCor(cor);
+  if(typeof iniciarMonitorNotif === 'function') iniciarMonitorNotif();
 }
 
 function renderConvocacoesTodos(cor){

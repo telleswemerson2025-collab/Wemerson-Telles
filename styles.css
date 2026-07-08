@@ -322,3 +322,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface-2);min-
 .av-row{display:flex;align-items:center;gap:8px}
 .search-mini{display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:7px 11px;margin-bottom:10px}
 .search-mini input{border:none;background:none;outline:none;font-size:12px;width:100%;font-family:'DM Sans',sans-serif}
+
+/* Sino balança ao chegar notificação */
+@keyframes sinoShake { 0%,100% { transform: rotate(0); } 20% { transform: rotate(18deg); } 40% { transform: rotate(-14deg); } 60% { transform: rotate(10deg); } 80% { transform: rotate(-6deg); } }
