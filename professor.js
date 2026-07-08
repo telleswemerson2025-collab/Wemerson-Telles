@@ -189,7 +189,7 @@ function renderConvocacoesProfessor(catKey, cat, cor){
       <div class="av" style="width:32px;height:32px;font-size:11px;background:${cor}">${a.sig}</div>
       <div style="flex:1">
         <div style="font-size:12px;font-weight:700">${a.nome}</div>
-        <div style="font-size:9px;color:var(--text-3)">${a.pos} · ${a.pres}% presença</div>
+        <div style="font-size:9px;color:var(--text-3)">${a.pos} · ${calcPresAtleta(a.sig,catKey,a.pres)}% presença</div>
       </div>
       <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
         <input type="checkbox" id="chk-conv-${a.sig}" ${convocado?'checked':''} onchange="toggleConvocado('${a.sig}','${catKey}',this.checked)"
@@ -274,6 +274,15 @@ function salvarConvocacoesProfessor(catKey){
 
 
 // === PROFESSOR — chamada, avaliação, treino, mensagem ===
+// Calcula a presença REAL do atleta a partir do histórico de chamadas (FICHAS.hist_presenca).
+// Se ainda não há chamadas registradas, usa o valor inicial do cadastro (fallback).
+function calcPresAtleta(sig, catKey, fallback){
+  const hist = (FICHAS[sig + catKey] || {}).hist_presenca || [];
+  if(!hist.length) return (fallback != null ? fallback : 100);
+  const presentes = hist.filter(h => h.status === 'P' || h.presente === true).length;
+  return Math.round(presentes / hist.length * 100);
+}
+
 // Controle do placar ao vivo
 let placarV = 2, placarA = 1;
 // Encerra o jogo ao vivo: grava resultado REAL em JOGOS_RESULTADOS e persiste
@@ -313,14 +322,15 @@ function renderChamada(cat, cor){
   window._chamadaMeta = { catKey, atletas: cat.atletas.map(a=>({sig:a.sig, nome:a.nome})) };
 
   let rows = cat.atletas.map((a,i)=>{
-    const pc = a.pres>=85?'#27500a':a.pres>=70?'#854f0b':'#a32d2d';
+    const pres = calcPresAtleta(a.sig, catKey, a.pres);
+    const pc = pres>=85?'#27500a':pres>=70?'#854f0b':'#a32d2d';
     const fichaKey = a.sig + catKey;
     const temCondicaoMedica = FICHAS[fichaKey]?.cond;
     return `<div class="cr-item">
       <div class="av" style="width:32px;height:32px;font-size:11px;background:${cor}">${a.sig}</div>
       <div style="flex:1">
         <div style="font-size:12px;font-weight:700">${a.nome}${temCondicaoMedica ? ` <span style="color:#e74c3c;cursor:help" title="Atenção: condição médica — ver ficha">⚕️</span>` : ''}</div>
-        <div style="font-size:9px;color:#aaa">${a.pos} · <span style="color:${pc}">${a.pres}% presença</span></div>
+        <div style="font-size:9px;color:#aaa">${a.pos} · <span style="color:${pc}">${pres}% presença</span></div>
       </div>
       <div style="display:flex;gap:4px">
         <button class="crb crb-p" onclick="marcC('c${i}','P',this,'${cor}')" id="cp-c${i}">P</button>
@@ -1233,7 +1243,8 @@ function renderListaAtletas(cat, cor){
   </div>
   <div class="cw" style="padding:6px 14px">
     ${cat.atletas.map(a=>{
-      const pc=a.pres>=85?'#1a5c26':a.pres>=70?'#7a4010':'#8b1a1a';
+      const presReal=calcPresAtleta(a.sig,catKey,a.pres);
+      const pc=presReal>=85?'#1a5c26':presReal>=70?'#7a4010':'#8b1a1a';
       const _fk=a.sig+catKey;
       const temFicha=typeof FICHAS!=='undefined'&&FICHAS[_fk]&&FICHAS[_fk].sangue;
       const fichaBg=temFicha?'#dcf0e0':'#fce8e8';
@@ -1244,9 +1255,9 @@ function renderListaAtletas(cat, cor){
           <div style="flex:1">
             <div style="font-size:12px;font-weight:700;color:var(--text)">${a.nome}</div>
             <div style="font-size:9px;color:var(--text-3);font-weight:500">${a.pos} · ${a.gols} gols · Nível ${a.nivel}</div>
-            <div class="prog"><div class="prog-f" style="width:${a.pres}%;background:${pc}"></div></div>
+            <div class="prog"><div class="prog-f" style="width:${presReal}%;background:${pc}"></div></div>
           </div>
-          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;color:${pc};background:${pc}18">${a.pres}%</span>
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;color:${pc};background:${pc}18">${presReal}%</span>
         </div>
         <div style="display:flex;gap:5px;padding-left:44px">
           <button onclick="abrirHabilidades('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${catKey}','${cor}')" style="flex:1;background:${cor}18;color:${cor};border:1px solid ${cor}33;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">⭐ Hab</button>
