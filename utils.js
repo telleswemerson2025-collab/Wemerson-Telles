@@ -787,6 +787,8 @@ function mostrarPainel(catKey, tipo, cor){
     }).join('')}
     <button style="background:${catCor};color:#fff;border:none;padding:11px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;width:100%;margin-top:5px" onclick="salvarChamadaTodos('${catKey}')">Salvar chamada</button>`;
   } else if(tipo === 'avaliacao'){
+    // Define o alvo para salvarAvaliacoes gravar na categoria certa (senão perde/troca dados)
+    window._chamadaMeta = { catKey, atletas: cat.atletas.map(a=>({sig:a.sig, nome:a.nome})) };
     painel.innerHTML = `<div class="lbl">Avaliação pós-treino — ${cat.nome}</div>` + renderAvaliacao(cat, catCor);
   } else if(tipo === 'convocar'){
     painel.innerHTML = renderConvocacoesProfessor(catKey, cat, catCor);
@@ -867,4 +869,5 @@ function selDestProf(el){
   el.classList.add('on');
   el.style.background='#eaf3de'; el.style.color='#27500a';
   el.style.borderColor='#97c459'; el.style.fontWeight='700';
+  window._msgDest = (el.textContent||'Todas').trim();
 }

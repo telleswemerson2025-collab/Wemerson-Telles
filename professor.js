@@ -263,6 +263,7 @@ function encerrarJogoAoVivo(catNome, cor){
   const resultado = placarV > placarA ? 'Vitória' : placarV < placarA ? 'Derrota' : 'Empate';
   JOGOS_RESULTADOS.unshift({
     adv: 'Rapid FC', cat: catNome,
+    gv: placarV, ga: placarA,
     placar: placarV + 'x' + placarA,
     resultado,
     data: new Date().toLocaleDateString('pt-BR')
@@ -477,26 +478,26 @@ function injetarFeed(cor, titulo, corpo, rodape){
 }
 
 function salvarAvaliacoes(){
-  const badges = document.querySelectorAll('[id^="avb-"]');
-  const avs = [];
-  badges.forEach(b=>{
-    if(b.textContent !== 'pendente') avs.push(b.textContent);
-  });
-  const resumo = avs.length > 0 ? avs.join(' · ') : 'Sem avaliações preenchidas';
   const hoje = new Date().toISOString().split('T')[0];
   const meta = window._chamadaMeta || {};
   const catAtiva = meta.catKey || 'sub13';
+  // Escopa ao painel da categoria ativa (na visão "todos" há vários painéis com ids iguais no DOM)
+  const escopo = document.getElementById('painel-'+catAtiva) || document;
+  const badges = escopo.querySelectorAll('[id^="avb-"]');
+  const avs = [];
+  badges.forEach(b=>{ if(b.textContent !== 'pendente') avs.push(b.textContent); });
+  const resumo = avs.length > 0 ? avs.join(' · ') : 'Sem avaliações preenchidas';
 
   // Persiste avaliação individual por atleta em FICHAS
   if(meta && Array.isArray(meta.atletas) && meta.atletas.length > 0){
     meta.atletas.forEach((a, i) => {
-      const badge = document.getElementById('avb-'+i);
+      const badge = escopo.querySelector('#avb-'+i);
       if(badge && badge.textContent !== 'pendente'){
         const ficKey = a.sig + catAtiva;
         if(!FICHAS[ficKey]) FICHAS[ficKey] = {};
         if(!FICHAS[ficKey].hist_avaliacoes) FICHAS[ficKey].hist_avaliacoes = [];
-        const chips = [...document.querySelectorAll('#avd-'+i+' .chip.on')].map(c=>c.textContent);
-        const nota = document.querySelector('#avd-'+i+' textarea')?.value?.trim() || '';
+        const chips = [...escopo.querySelectorAll('#avd-'+i+' .chip.on')].map(c=>c.textContent);
+        const nota = escopo.querySelector('#avd-'+i+' textarea')?.value?.trim() || '';
         FICHAS[ficKey].hist_avaliacoes.push({ data: hoje, conceito: badge.textContent, chips, nota });
       }
     });
@@ -1155,7 +1156,6 @@ function enviarMsg(){
   if(!window.MENSAGENS_ENVIADAS) window.MENSAGENS_ENVIADAS = [];
   window.MENSAGENS_ENVIADAS.unshift({texto: txt.value.trim(), data: new Date().toLocaleString('pt-BR'), dest: window._msgDest || 'Todas'});
   try { localStorage.setItem('vot_mensagens', JSON.stringify(window.MENSAGENS_ENVIADAS.slice(0,50))); } catch(e){}
-  if(typeof injetarFeed === 'function'){ try { injetarFeed(txt.value.trim()); } catch(e){} }
   showN('✓ Mensagem enviada! Atletas e pais notificados.');
   txt.value='';
 }

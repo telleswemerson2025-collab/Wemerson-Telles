@@ -337,7 +337,7 @@ function renderSaude(cor){
   <div class="lbl">Check-in de saúde de hoje</div>
   <div class="cw" style="padding:6px 11px">
     ${[['Bebi 2 litros de água',10],['Comi fruta hoje',10],['Dormi 8 horas',10],['Me alonguei',5],['Evitei refrigerante e salgadinho',10]].map(([l,x])=>`
-    <div class="check-item" onclick="togChk(this,'${cor}')">
+    <div class="check-item" data-xp="${x}" onclick="togChk(this,'${cor}')">
       <div class="chk"><i class="ti ti-check" style="font-size:10px;color:#fff"></i></div>
       <span class="chk-lbl">${l}</span>
       <span class="xp-tag">+${x} XP</span>
@@ -357,7 +357,7 @@ function renderEstudos(cor){
   <div class="lbl">Check-in de estudos de hoje</div>
   <div class="cw" style="padding:6px 11px">
     ${[['Fui à escola hoje',15],['Fiz o dever de casa',15],['Estudei 30 minutos',15],['Li alguma coisa hoje',10],['Não faltei à escola sem motivo',15]].map(([l,x])=>`
-    <div class="check-item" onclick="togChk(this,'#185fa5')">
+    <div class="check-item" data-xp="${x}" onclick="togChk(this,'#185fa5')">
       <div class="chk"><i class="ti ti-check" style="font-size:10px;color:#fff"></i></div>
       <span class="chk-lbl">${l}</span>
       <span class="xp-tag">+${x} XP</span>
@@ -548,16 +548,19 @@ function togChk(el,cor){
 }
 
 function salvarCheckin(tipo){
-  // Conta só os checks da tela ativa (Saúde e Estudos coexistem no DOM)
+  // Conta só os itens da tela ativa (Saúde e Estudos coexistem no DOM)
   const scr = document.querySelector('.scr.on') || document;
-  const marcados = scr.querySelectorAll('.chk.on');
-  if(marcados.length === 0){ showN('⚠️ Marque pelo menos um item antes de salvar.', true); return; }
-  const xp = marcados.length * 10;
+  const itens = Array.from(scr.querySelectorAll('.check-item')).filter(it => it.querySelector('.chk.on'));
+  if(itens.length === 0){ showN('⚠️ Marque pelo menos um item antes de salvar.', true); return; }
+  // Soma o XP REAL de cada item marcado (data-xp), não um valor fixo
+  const xp = itens.reduce((s, it) => s + (parseInt(it.dataset.xp) || 10), 0);
   STATS.xp += xp;
   atualizarStatsUI(); // já chama salvarLS()
   // Desmarca os itens salvos
-  marcados.forEach(b => { b.classList.remove('on'); b.style.background=''; b.style.borderColor='#ddd'; });
-  scr.querySelectorAll('.chk-lbl.done').forEach(l => l.classList.remove('done'));
+  itens.forEach(it => {
+    const b = it.querySelector('.chk'); if(b){ b.classList.remove('on'); b.style.background=''; b.style.borderColor='#ddd'; }
+    const l = it.querySelector('.chk-lbl.done'); if(l) l.classList.remove('done');
+  });
   showN('✓ Check-in de '+tipo+' salvo! +'+xp+' XP conquistados!');
 }
 
@@ -835,6 +838,8 @@ function agendarJogo(){
 
   // Atualiza a tela de jogos se estiver visível
   atualizarListaJogos();
+  // Diretor: re-renderiza a aba Jogos (o layout dele não tem #lista-jogos-agendados)
+  if(perfilAtual === 'diretor'){ const s2=document.getElementById('s-2'); if(s2) s2.innerHTML = renderJogos(CORES.diretor); }
 
   // Injeta no feed do atleta
   const [ano,mes,dia] = data.split('-');

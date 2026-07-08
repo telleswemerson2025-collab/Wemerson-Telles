@@ -124,9 +124,8 @@ function confirmarPagamentoArbitragem(sig, catKey){
     showN('✓ Arbitragem confirmada! Professor notificado.');
   }
   salvarLS();
-  // Re-renderiza só a aba Cobranças, mantendo o usuário onde está
-  const sc3 = document.querySelector('#s-3');
-  if(sc3) sc3.innerHTML = renderFinCobrancas();
+  // Re-renderiza todas as telas (Painel também, p/ o Saldo somar a arbitragem) sem trocar de aba
+  refreshFinTelas();
 }
 function filtrarTabela(q,tblId){
   document.querySelectorAll('#'+tblId+' tbody tr').forEach(tr=>{

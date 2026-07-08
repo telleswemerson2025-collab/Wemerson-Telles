@@ -174,15 +174,15 @@ function renderJogos(cor){
     </div>
     <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0">
       <span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span>
-      <span style="font-family:var(--font-display);font-size:28px;color:var(--text);letter-spacing:.06em" id="gv">2</span>
+      <span style="font-family:var(--font-display);font-size:28px;color:var(--text);letter-spacing:.06em" id="gv">${golsV}</span>
       <span style="font-size:14px;color:var(--text-3)">×</span>
-      <span style="font-family:var(--font-display);font-size:28px;color:var(--text);letter-spacing:.06em">1</span>
+      <span style="font-family:var(--font-display);font-size:28px;color:var(--text);letter-spacing:.06em" id="ga">${golsA}</span>
       <span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">Atlético Jr</span>
     </div>
     <div style="display:flex;gap:6px;margin-top:10px">
       <button class="btn-sm" onclick="addGol()">+ Gol Votoraty</button>
       <button class="btn-sm" onclick="addGolAdv()">+ Gol adv.</button>
-      <button class="btn-sm" onclick="encerrarJogoDiretor(cor='${cor}')">Encerrar</button>
+      <button class="btn-sm" onclick="encerrarJogoDiretor('${cor}')">Encerrar</button>
     </div>
   </div>
   <div class="lbl">Próximos</div>
@@ -196,7 +196,7 @@ function renderJogos(cor){
     ? '<div class="card" style="text-align:center;color:var(--text-3);font-size:11px">Nenhum resultado registrado</div>'
     : JOGOS_RESULTADOS.slice(0,5).map(r=>`
   <div class="card" style="border-left:3px solid ${r.resultado==='Vitória'?'#1a5c26':r.resultado==='Derrota'?'#8b1a1a':'#b8860b'}"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:var(--text-3);font-weight:500">${r.cat||''} · ${r.data||''}</span><span class="tag ${r.resultado==='Vitória'?'tg':r.resultado==='Derrota'?'tr':'ta'}">${r.resultado||''}</span></div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span><span style="font-family:var(--font-display);font-size:22px;color:var(--text)">${r.placar||''}</span><span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">${r.adv||''}</span></div></div>`).join('')}`;
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span><span style="font-family:var(--font-display);font-size:22px;color:var(--text)">${r.placar || ((r.gv!=null&&r.ga!=null)?r.gv+'×'+r.ga:'')}</span><span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">${r.adv||''}</span></div></div>`).join('')}`;
 }
 
 let golsV=2, golsA=1;
@@ -204,7 +204,7 @@ function addGol(){golsV++;const el=document.getElementById('gv');if(el)el.textCo
 function addGolAdv(){golsA++;showN('Gol adversário registrado. '+golsV+'×'+golsA);}
 function encerrarJogoDiretor(cor){
   const resultado = golsV > golsA ? 'Vitória' : golsV < golsA ? 'Derrota' : 'Empate';
-  JOGOS_RESULTADOS.unshift({adv:'Atlético Jr', cat:'Sub-13', placar:golsV+'x'+golsA, resultado, data:new Date().toLocaleDateString('pt-BR')});
+  JOGOS_RESULTADOS.unshift({adv:'Atlético Jr', cat:'Sub-13', gv:golsV, ga:golsA, placar:golsV+'x'+golsA, resultado, data:new Date().toLocaleDateString('pt-BR')});
   salvarLS();
   showN('⏱️ Jogo encerrado! '+resultado+' '+golsV+'×'+golsA+' registrada.');
   golsV=0; golsA=0;

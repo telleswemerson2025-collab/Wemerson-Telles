@@ -380,7 +380,9 @@ function injetarConvocacaoNoFeed(cor){
   setTimeout(()=>{
     const feed = document.getElementById('feed-msgs');
     if(!feed) return;
-    const conv = convocacoes_publicadas[0];
+    // Só mostra "VOCÊ FOI CONVOCADO" se o atleta REALMENTE está na convocação mais recente dele
+    const conv = convocacoes_publicadas.find(c => !c.resultado && (c.convocados||[]).some(x => x.sig === ATLETA_DEFAULT.sig));
+    if(!conv) return;
     const item = document.createElement('div');
     item.style.cssText='background:linear-gradient(160deg,#e6f4ec,#d4edd9);border:1.5px solid #97c459;border-radius:11px;padding:12px 13px;margin-bottom:9px';
     item.innerHTML=`
@@ -468,8 +470,9 @@ function renderMuralConvocacoes(cor){
         <div style="font-size:11px;color:#633806;line-height:1.5">${conv.observacao}</div>
       </div>
 
-      <!-- Confirmação de presença -->
-      ${!conv.resultado ? (
+      <!-- Confirmação de presença — só para quem está na lista de convocados -->
+      ${!(conv.convocados||[]).some(x => x.sig === ATLETA_DEFAULT.sig) ? '' :
+        !conv.resultado ? (
         (conv.confirmacoes||{})[ATLETA_DEFAULT.sig] ?
         `<div style="background:${(conv.confirmacoes||{})[ATLETA_DEFAULT.sig]==='sim'?'#eaf3de':'#faeeda'};border-radius:8px;padding:9px;margin-top:10px;text-align:center;font-size:11px;font-weight:700;color:${(conv.confirmacoes||{})[ATLETA_DEFAULT.sig]==='sim'?'#27500a':'#633806'}">${(conv.confirmacoes||{})[ATLETA_DEFAULT.sig]==='sim'?'✓ Presença confirmada! Técnico foi notificado.':'⚠️ Ausência informada. Técnico foi notificado.'}</div>` :
         `<div style="display:flex;gap:7px;margin-top:10px">
