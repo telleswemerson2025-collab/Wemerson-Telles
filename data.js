@@ -408,6 +408,38 @@ function injetarConvocacaoNoFeed(cor){
   }, 200);
 }
 
+// Publica uma convocação no mural do atleta a partir de um jogo real + sigs convocados.
+// Substitui a convocação anterior do mesmo jogo (não duplica).
+function publicarConvocacaoMural(jogo, sigs){
+  if(!jogo || !sigs || !sigs.length) return;
+  const catKey = (jogo.cat||'').replace(/[^a-z0-9]/gi,'').toLowerCase();
+  const cat = CATS_DATA[catKey];
+  const convocados = sigs.map(sig => {
+    const a = (cat?.atletas||[]).find(x => x.sig === sig);
+    return a ? {sig:a.sig, nome:a.nome, pos:a.pos} : {sig, nome:sig, pos:''};
+  });
+  // Remove convocação anterior do mesmo jogo
+  for(let i = convocacoes_publicadas.length-1; i >= 0; i--){
+    if(convocacoes_publicadas[i].jogoId === jogo.id) convocacoes_publicadas.splice(i,1);
+  }
+  convocacoes_publicadas.unshift({
+    id: 'conv_' + Date.now(),
+    jogoId: jogo.id,
+    jogo: 'Votoraty Academy vs ' + (jogo.adv||'?'),
+    data: jogo.data || 'A confirmar',
+    hora: jogo.hora || 'A confirmar',
+    local: jogo.local || 'Campo do Votoraty',
+    campeonato: jogo.camp || 'Amistoso',
+    fase: jogo.fase || '',
+    categoria: cat?.nome || jogo.cat || '',
+    cor: CORES[catKey] || '#0d3d1a',
+    tecnico: 'Técnico André',
+    observacao: jogo.obs || 'Chegue 30 minutos antes.',
+    convocados,
+    reservas: [],
+  });
+}
+
 // Formata a data da convocação: ISO/aaaa-mm-dd → dd/mm/aaaa; datas inválidas → "A confirmar"
 function fmtDataConv(d){
   if(!d || d === 'A confirmar') return 'A confirmar';
@@ -420,11 +452,18 @@ function fmtDataConv(d){
 }
 
 function renderMuralConvocacoes(cor){
+  // Minhas convocações ativas (fui convocado e o jogo não acabou) — vão primeiro, destacadas
+  const minhas = convocacoes_publicadas.filter(c => !c.resultado && (c.convocados||[]).some(x => x.sig === ATLETA_DEFAULT.sig));
+  const outras = convocacoes_publicadas.filter(c => !minhas.includes(c));
+  const ordenadas = minhas.concat(outras);
+  const aviso = minhas.length
+    ? `<div style="background:#166024;color:#fff;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px;font-weight:700">⚽ Você tem ${minhas.length} convocação(ões) — confirme sua presença abaixo!</div>`
+    : `<div style="background:#f0eeea;color:#888;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px">Nenhuma convocação ativa no momento. Quando o professor te convocar, aparece aqui.</div>`;
   return `
   <div style="font-size:13px;font-weight:700;margin-bottom:4px;color:#1a1a1a">Convocações oficiais</div>
   <div style="font-size:11px;color:#aaa;margin-bottom:12px">Lista pública — todos os atletas podem ver</div>
-
-  ${convocacoes_publicadas.map((conv,idx)=>`
+  ${aviso}
+  ${ordenadas.map((conv,idx)=>`
   <div style="border:1.5px solid ${conv.resultado?'#97c459':conv.cor};border-radius:14px;overflow:hidden;margin-bottom:12px">
 
     <!-- Header da convocação -->

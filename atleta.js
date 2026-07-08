@@ -891,6 +891,11 @@ function agendarJogo(){
   // Gera cobrança de arbitragem (R$30, pendente) POR JOGO para cada convocado
   gerarArbitragemConvocados(cat, conv, novoJogo.id, 'vs '+adv+(data?(' · '+data.split('-').reverse().join('/')):''));
 
+  // Publica a convocação no mural do atleta JÁ ao agendar (com os dados reais do jogo)
+  if(conv.length && typeof publicarConvocacaoMural === 'function'){
+    publicarConvocacaoMural(novoJogo, conv);
+  }
+
   // Ordena por data
   JOGOS_AGENDADOS.sort((a,b)=>a.data.localeCompare(b.data));
   salvarLS();
