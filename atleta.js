@@ -977,12 +977,13 @@ function renderListaJogosAgendados(){
     // Formata data para exibição
     const [ano,mes,dia] = j.data.split('-');
     const meses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-    const dataFmt = dia+' '+meses[parseInt(mes)-1];
-    const horaFmt = j.hora.replace(':','h');
+    const dataInvalida = (!ano || ano==='0001' || ano<'2020');
+    const dataFmt = dataInvalida ? 'A confirmar' : (dia+' '+meses[parseInt(mes)-1]);
+    const horaFmt = (dataInvalida || !j.hora || j.hora==='00:00') ? '' : ' · '+j.hora.replace(':','h');
     return `<div class="card" id="jogo-card-${j.id}">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
         <div>
-          <div style="font-size:12px;font-weight:700;color:var(--text-3)">${j.cat} · ${dataFmt} · ${horaFmt}</div>
+          <div style="font-size:12px;font-weight:700;color:var(--text-3)">${j.cat} · ${dataFmt}${horaFmt}</div>
           <div style="font-size:10px;color:var(--text-3);font-weight:500">📍 ${j.local} · ${j.camp} · ${j.fase}</div>
         </div>
         <span class="tag tb">agendado</span>

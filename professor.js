@@ -135,9 +135,11 @@ function renderJogosProfessor(cat, cor){
       : jogosCat.map(j=>{
           const conv = j.conv || [];
           const convStr = conv.length ? conv.join(', ') : 'Nenhum';
+          const dataFmt = (typeof fmtDataConv==='function') ? fmtDataConv(j.data) : j.data;
+          const horaFmt = (j.hora && j.hora!=='00:00') ? ' · '+j.hora : '';
           return `<div class="card" style="margin-bottom:8px">
             <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-              <span style="font-size:10px;color:var(--text-3);font-weight:500">${j.cat} · ${j.data} · ${j.hora}</span>
+              <span style="font-size:10px;color:var(--text-3);font-weight:500">${j.cat} · ${dataFmt}${horaFmt}</span>
               <span class="tag tb">${j.status||'agendado'}</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px">
