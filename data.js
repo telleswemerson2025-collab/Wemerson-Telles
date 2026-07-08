@@ -126,18 +126,21 @@ const FICHAS = {};
 // =====================
 // PERSISTÊNCIA
 // =====================
-// Gera entradas de arbitragem (R$30, pendente) para os atletas convocados de uma categoria.
-// catNome = 'Sub-13' (ou catKey 'sub13'); sigs = array de siglas convocadas.
-function gerarArbitragemConvocados(catNome, sigs){
+// Gera cobrança de arbitragem (R$30, pendente) POR JOGO para cada atleta convocado.
+// Modelo por jogo: o mesmo atleta paga R$30 em cada jogo que é convocado.
+// catNome='Sub-13'/catKey; sigs=siglas; jogoId=id do jogo; jogoLabel='vs Adversário · data'.
+function gerarArbitragemConvocados(catNome, sigs, jogoId, jogoLabel){
   if(!sigs || !sigs.length) return;
   const catKey = (catNome||'').replace(/[^a-z0-9]/gi,'').toLowerCase();
   if(!catKey) return;
   if(!window.ARBITRAGEM_STATUS) window.ARBITRAGEM_STATUS = {};
   if(!window.ARBITRAGEM_STATUS[catKey]) window.ARBITRAGEM_STATUS[catKey] = [];
   const lista = window.ARBITRAGEM_STATUS[catKey];
+  const jid = jogoId || 'avulso';
   sigs.forEach(sig => {
-    if(!lista.find(a => a.sig === sig)){
-      lista.push({sig, pago: false, status: 'pendente'});
+    // Dedup por JOGO+atleta: um atleta pode ter várias cobranças (uma por jogo)
+    if(!lista.find(a => a.sig === sig && (a.jogoId||'avulso') === jid)){
+      lista.push({sig, jogoId: jid, jogo: jogoLabel || '', pago: false, status: 'pendente'});
     }
   });
 }

@@ -248,8 +248,8 @@ function salvarConvocacoesProfessor(catKey){
     convocados,
     reservas: [],
   });
-  // Gera cobrança de arbitragem (R$30, pendente) para os convocados
-  gerarArbitragemConvocados(catKey, convocados.map(a => a.sig));
+  // Gera cobrança de arbitragem (R$30, pendente) por jogo para os convocados
+  gerarArbitragemConvocados(catKey, convocados.map(a => a.sig), proxJogo?.id, proxJogo ? ('vs '+proxJogo.adv) : ('Convocação '+cat.nome));
   salvarLS();
   showN('✅ Convocação publicada! '+convocados.length+' atleta(s) convocado(s) — mural + arbitragem gerada.');
 }
@@ -849,21 +849,22 @@ function renderComprovantes(cor){
     pagamentosAtleta.push({id:'mens_'+mensKey, tipo:'Mensalidade', categoria:ATLETA_DEFAULT.cat,
       valor:mens.valor, data:'Venc. '+(mens.venc||'—'), status:mens.status});
   }
-  // Lê a arbitragem de AMBAS as fontes: memória (mobile) e localStorage (gravado pelo desktop)
+  // Lê a arbitragem de AMBAS as fontes (memória + localStorage), uma cobrança POR JOGO
   let arbFonte = (window.ARBITRAGEM_STATUS||{})[catKey] || [];
   try {
     const arbLS = JSON.parse(localStorage.getItem('vot_arbitragem')||'{}')[catKey] || [];
-    // Mescla por sig, dando precedência ao status "pago" de qualquer fonte
+    // Mescla por JOGO+atleta (não por atleta), preservando o status pago
     const mapa = {};
     arbFonte.concat(arbLS).forEach(a => {
-      const pago = mapa[a.sig]?.pago || a.pago || a.status==='pago';
-      mapa[a.sig] = {sig:a.sig, pago};
+      const chave = a.sig + '|' + (a.jogoId||'avulso');
+      const pago = mapa[chave]?.pago || a.pago || a.status==='pago';
+      mapa[chave] = {sig:a.sig, jogoId:a.jogoId||'avulso', jogo:a.jogo||mapa[chave]?.jogo||'', pago};
     });
     arbFonte = Object.values(mapa);
   } catch(e){}
   arbFonte.filter(a => a.sig === sig).forEach((a, i) => {
-    pagamentosAtleta.push({id:'arb_'+catKey+'_'+i, tipo:'Arbitragem', categoria:ATLETA_DEFAULT.cat+' · taxa de jogo',
-      valor:30, data:'Temporada atual', status:(a.pago || a.status==='pago') ? 'pago' : 'pendente'});
+    pagamentosAtleta.push({id:'arb_'+catKey+'_'+i, tipo:'Arbitragem', categoria:ATLETA_DEFAULT.cat+' · '+(a.jogo||'taxa de jogo'),
+      valor:30, data:a.jogo||'Jogo', status:(a.pago || a.status==='pago') ? 'pago' : 'pendente'});
   });
 
   const pendencias = pagamentosAtleta.filter(p => p.status !== 'pago');

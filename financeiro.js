@@ -103,24 +103,24 @@ function cobrarCatArb(catKey){
   showN('📲 Cobrança enviada para '+pendentes.length+' atleta(s) do '+(CATS_DATA[catKey]?.nome||catKey)+'! Use "Confirmar" quando receber.');
 }
 
-function cobrarArbIndividual(sig, catKey){
+function cobrarArbIndividual(sig, catKey, jogoId){
   if(!window.ARBITRAGEM_STATUS?.[catKey]) return;
-  const entrada = window.ARBITRAGEM_STATUS[catKey].find(a => a.sig === sig);
+  const entrada = window.ARBITRAGEM_STATUS[catKey].find(a => a.sig === sig && (a.jogoId||'avulso') === (jogoId||'avulso'));
   if(!entrada || entrada.pago) return;
-  showN('📲 Cobrança enviada para '+sig+' ('+(CATS_DATA[catKey]?.nome||catKey)+') — R$ 30,00. Use "Confirmar" quando receber.');
+  showN('📲 Cobrança enviada para '+sig+' ('+(CATS_DATA[catKey]?.nome||catKey)+') — R$ 30,00 · '+(entrada.jogo||'jogo')+'. Use "Confirmar" quando receber.');
 }
 
-// CONEXÃO FINANCEIRO → PROFESSOR: confirmar pagamento de arbitragem
-function confirmarPagamentoArbitragem(sig, catKey){
+// CONEXÃO FINANCEIRO → PROFESSOR: confirmar pagamento de arbitragem (do jogo específico)
+function confirmarPagamentoArbitragem(sig, catKey, jogoId){
   if(!window.ARBITRAGEM_STATUS) window.ARBITRAGEM_STATUS = {};
   if(!window.ARBITRAGEM_STATUS[catKey]) window.ARBITRAGEM_STATUS[catKey] = [];
-  const entrada = window.ARBITRAGEM_STATUS[catKey].find(a => a.sig === sig);
+  const entrada = window.ARBITRAGEM_STATUS[catKey].find(a => a.sig === sig && (a.jogoId||'avulso') === (jogoId||'avulso'));
   if(entrada){
     entrada.pago = !entrada.pago;
     entrada.status = entrada.pago ? 'pago' : 'pendente';
     showN(entrada.pago ? '✓ Arbitragem confirmada! Professor notificado.' : '↩ Arbitragem revertida');
   } else {
-    window.ARBITRAGEM_STATUS[catKey].push({sig, pago: true, status: 'pago'});
+    window.ARBITRAGEM_STATUS[catKey].push({sig, jogoId: jogoId||'avulso', pago: true, status: 'pago'});
     showN('✓ Arbitragem confirmada! Professor notificado.');
   }
   salvarLS();
@@ -582,24 +582,27 @@ function renderFinCobrancas(){
           ${pendentes > 0 ? `<button onclick="cobrarCatArb('${catKey}')" style="font-size:9px;font-weight:800;padding:4px 10px;border-radius:20px;border:none;cursor:pointer;background:${catCor};color:#fff">Cobrar todos</button>` : `<span style="font-size:9px;font-weight:700;color:#1a5c26">✓ Tudo pago</span>`}
         </div>
         <div style="padding:0 12px">
-          ${atletas.map(a => `
+          ${atletas.map(a => {
+            const nome = (CATS_DATA[catKey]?.atletas||[]).find(x=>x.sig===a.sig)?.nome || a.sig;
+            const jid = a.jogoId || 'avulso';
+            return `
           <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f0ede8">
             <div class="av" style="width:28px;height:28px;font-size:9px;background:${catCor}">${a.sig}</div>
             <div style="flex:1">
-              <div style="font-size:11px;font-weight:700">${a.sig}</div>
-              <div style="font-size:9px;color:var(--text-3)">R$ 30,00 · Arbitragem · ${a.pago?'<span style=\"color:#1a5c26;font-weight:700\">✓ Pago</span>':'<span style=\"color:#b85c00\">Pendente</span>'}</div>
+              <div style="font-size:11px;font-weight:700">${nome}</div>
+              <div style="font-size:9px;color:var(--text-3)">R$ 30,00 · ${a.jogo||'Arbitragem'} · ${a.pago?'<span style=\"color:#1a5c26;font-weight:700\">✓ Pago</span>':'<span style=\"color:#b85c00\">Pendente</span>'}</div>
             </div>
             <div style="display:flex;gap:5px;flex-shrink:0">
-              ${!a.pago ? `<button onclick="cobrarArbIndividual('${a.sig}','${catKey}')"
+              ${!a.pago ? `<button onclick="cobrarArbIndividual('${a.sig}','${catKey}','${jid}')"
                 style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;background:#e67e22;color:#fff">
                 📲
               </button>` : ''}
-              <button onclick="confirmarPagamentoArbitragem('${a.sig}','${catKey}')"
+              <button onclick="confirmarPagamentoArbitragem('${a.sig}','${catKey}','${jid}')"
                 style="font-size:8px;font-weight:800;padding:3px 8px;border-radius:20px;border:none;cursor:pointer;${a.pago?'background:#dcf0e0;color:#1a5c26':'background:#fde8e8;color:#8b1a1a'}">
                 ${a.pago ? '✓ Pago' : 'Confirmar'}
               </button>
             </div>
-          </div>`).join('')}
+          </div>`; }).join('')}
         </div>
       </div>`;
     }).join('');

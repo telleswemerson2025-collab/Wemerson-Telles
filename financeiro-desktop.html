@@ -1152,11 +1152,12 @@ function aplicarDadosNuvem(d){
   if(d.arbitragem){
     Object.entries(d.arbitragem).forEach(([catKey, atletas]) => {
       (atletas||[]).forEach(a => {
-        const entrada = ARBITRAGEM.find(x => x.sig === a.sig && x.catKey === catKey);
-        if(entrada){
-          const isPago = (a.pago === true) || (a.status === 'pago');
-          entrada.status = isPago ? 'pago' : 'pendente';
-        }
+        const isPago = (a.pago === true) || (a.status === 'pago');
+        // Casa por JOGO+atleta quando há jogoId; senão por sig+categoria (compatibilidade)
+        const entrada = a.jogoId
+          ? ARBITRAGEM.find(x => x.sig === a.sig && x.catKey === catKey && (x.jogoId||'avulso') === a.jogoId)
+          : ARBITRAGEM.find(x => x.sig === a.sig && x.catKey === catKey);
+        if(entrada){ entrada.status = isPago ? 'pago' : 'pendente'; }
       });
     });
     try { localStorage.setItem('vot_arbitragem', JSON.stringify(d.arbitragem)); } catch(e){}
@@ -1875,11 +1876,13 @@ function marcarArbitragemPaga(id) {
     try {
       const arb = JSON.parse(localStorage.getItem('vot_arbitragem') || '{}');
       const catKey = a.catKey || 'sub13';
+      const jid = a.jogoId || 'avulso';
       if(!arb[catKey]) arb[catKey] = [];
-      const entrada = arb[catKey].find(x=>x.sig===a.sig);
+      // Casa por JOGO+atleta (modelo por jogo)
+      const entrada = arb[catKey].find(x=>x.sig===a.sig && (x.jogoId||'avulso')===jid);
       const isPago = a.status === 'pago';
       if(entrada){ entrada.pago = isPago; entrada.status = a.status; }
-      else arb[catKey].push({sig:a.sig, pago: isPago, status: a.status});
+      else arb[catKey].push({sig:a.sig, jogoId: jid, jogo: a.jogo||'', pago: isPago, status: a.status});
       localStorage.setItem('vot_arbitragem', JSON.stringify(arb));
     } catch(e){}
     salvarFirestoreDesktop();
