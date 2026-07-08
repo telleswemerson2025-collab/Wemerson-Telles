@@ -71,13 +71,29 @@ function montarAtleta(cor){
 }
 
 function renderFeed(cor){
+  const cards = [];
+  const catKey = (ATLETA_DEFAULT.cat||'Sub-13').replace(/[^a-z0-9]/gi,'').toLowerCase();
+
+  // TREINO real — último registrado pelo professor para a categoria do atleta
+  const treinos = (window.TREINOS_REG||[]).filter(t => t.catKey === catKey);
+  if(treinos.length){
+    const t = treinos[treinos.length-1];
+    cards.push(['#185fa5','⚽ TREINO · Técnico André', t.desc, t.data+' · registrado pelo técnico']);
+  }
+
+  // CONQUISTA real — última conquista desbloqueada de verdade (não inventada)
+  const conqs = (typeof getConquistas === 'function') ? getConquistas() : [];
+  if(conqs.length){
+    const c = conqs[conqs.length-1];
+    cards.push(['#27500a','⭐ CONQUISTA DESBLOQUEADA', ATLETA_DEFAULT.nome+' desbloqueou '+c.icon+' '+c.titulo+' ('+c.meta+')! Parabéns!','automático']);
+  }
+
+  // Lembretes diários (genéricos, mas reais — fazem parte do incentivo do app)
+  cards.push(['#c8940a','💧 SAÚDE · lembrete diário','Beba pelo menos 2 litros hoje. Leve garrafinha pro treino. Corpo hidratado rende mais!','lembrete automático']);
+  cards.push(['#185fa5','📚 ESTUDOS · lembrete diário','Atleta bom dentro e fora do campo! Separa 30 min pra estudar.','lembrete automático']);
+
   return `<div id="feed-msgs">
-  ${[
-    ['#185fa5','⚽ TREINO DE HOJE · Técnico André','Treino técnico com intensidade média. Habilidades: passe curto, finalização, drible. Balanço: ótimo!','agora · automático'],
-    ['#c8940a','💧 SAÚDE · lembrete automático','Beba pelo menos 2 litros hoje. Leve garrafinha pro treino. Corpo hidratado rende mais!','07h00 · automático'],
-    ['#185fa5','📚 ESTUDOS · lembrete automático','Atleta bom dentro e fora do campo! Separa 30 min pra estudar. "O estudo dura mais que o futebol." — Pelé','07h00 · automático'],
-    ['#27500a','⭐ CONQUISTA DESBLOQUEADA','Kauan Telles desbloqueou a figurinha Épica #004 — Hat-trick! Parabéns!','3h · automático'],
-  ].map(([bc,titulo,corpo,footer])=>`
+  ${cards.map(([bc,titulo,corpo,footer])=>`
   <div class="card" style="border-left:3px solid ${bc};margin-bottom:8px">
     <div style="font-size:9px;font-weight:700;color:${bc};margin-bottom:3px">${titulo}</div>
     <div style="font-size:11px;color:#333;line-height:1.6">${corpo}</div>
