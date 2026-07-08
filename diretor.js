@@ -164,7 +164,7 @@ function toggleCat(id){
 function renderJogos(cor){
   return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
     <span style="font-family:var(--font-display);font-size:20px;letter-spacing:.06em;color:var(--text)">Jogos</span>
-    <button class="btn-sm" onclick="abrirModal('modal-jogo')">+ Agendar</button>
+    <span style="font-size:9px;color:var(--text-3);font-style:italic;text-align:right">Agendar e convocar:<br>pelo Professor</span>
   </div>
   <div class="lbl">Ao vivo</div>
   <div class="card" style="border-color:#e8a0a0;border-left:3px solid #c0392b">
@@ -190,7 +190,9 @@ function renderJogos(cor){
     ? '<div class="card" style="text-align:center;color:var(--text-3);font-size:11px">Nenhum jogo agendado</div>'
     : JOGOS_AGENDADOS.filter(j=>j.status==='agendado').map(j=>`
   <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:var(--text-3);font-weight:500">${j.cat} · ${j.data} · ${j.hora}</span><span class="tag tb">agendado</span></div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span><span style="font-size:13px;color:var(--text-3)">vs</span><span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">${j.adv}</span></div></div>`).join('')}
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;flex:1;color:var(--text)">Votoraty</span><span style="font-size:13px;color:var(--text-3)">vs</span><span style="font-size:12px;font-weight:700;flex:1;text-align:right;color:var(--text)">${j.adv}</span></div>
+    ${(j.conv&&j.conv.length) ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)"><div style="font-size:9px;font-weight:700;color:var(--text-3);text-transform:uppercase;margin-bottom:4px">👥 ${j.conv.length} convocados (pelo professor)</div><div style="font-size:10px;color:var(--text-2);line-height:1.5">${j.conv.map(sig=>{const a=CATS_DATA[(j.cat||'').replace(/[^a-z0-9]/gi,'').toLowerCase()]?.atletas.find(x=>x.sig===sig);return a?a.nome.split(' ')[0]:sig;}).join(', ')}</div></div>` : '<div style="margin-top:6px;font-size:9px;color:var(--text-3);font-style:italic">Sem convocados ainda</div>'}
+  </div>`).join('')}
   <div class="lbl">Últimos resultados</div>
   ${JOGOS_RESULTADOS.length === 0
     ? '<div class="card" style="text-align:center;color:var(--text-3);font-size:11px">Nenhum resultado registrado</div>'
