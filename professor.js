@@ -410,12 +410,19 @@ function salvarChamada(total){
 }
 
 function renderAvaliacao(cat, cor){
-  return cat.atletas.map((a,i)=>`
+  const catKey = Object.entries(CATS_DATA).find(([k,c])=>c===cat||c.nome===cat.nome)?.[0] || 'sub13';
+  const estilos = {'Ótimo':['#eaf3de','#27500a'],'Bem':['#e6f1fb','#0c447c'],'Atenção':['#faeeda','#633806']};
+  return cat.atletas.map((a,i)=>{
+    // Último conceito REAL avaliado (se houver); senão "pendente"
+    const hist = (FICHAS[a.sig+catKey]||{}).hist_avaliacoes || [];
+    const ult = hist.length ? hist[hist.length-1].conceito : null;
+    const [bg,fg] = ult ? (estilos[ult]||['#f0eeea','#555']) : ['#fcebeb','#791f1f'];
+    return `
   <div style="border:1px solid #eee;border-radius:10px;margin-bottom:8px;overflow:hidden">
     <div style="display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;background:#fff" onclick="togAv(${i})">
       <div class="av" style="width:30px;height:30px;font-size:10px;background:${cor}">${a.sig}</div>
       <div style="flex:1"><div style="font-size:12px;font-weight:700">${a.nome}</div><div style="font-size:9px;color:#aaa">${a.pos}</div></div>
-      <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;background:#fcebeb;color:#791f1f" id="avb-${i}">pendente</span>
+      <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;background:${bg};color:${fg}" id="avb-${i}">${ult||'pendente'}</span>
     </div>
     <div id="avd-${i}" style="display:none;padding:10px 12px;border-top:1px solid #eee;background:#fafaf9">
       <div class="bav-row">
@@ -435,7 +442,8 @@ function renderAvaliacao(cat, cor){
       </div>
       <textarea style="width:100%;font-size:11px;padding:6px 9px;border-radius:7px;border:1px solid #ddd;background:#fff;resize:none;height:44px;font-family:system-ui" placeholder="Nota livre (opcional)..."></textarea>
     </div>
-  </div>`).join('')
+  </div>`;
+  }).join('')
   + `<button class="btn-g" onclick="salvarAvaliacoes()">Salvar avaliações</button>`;
 }
 
