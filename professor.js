@@ -132,7 +132,8 @@ function renderJogosProfessor(cat, cor){
   <div id="lista-jogos-agendados">
     ${jogosCat.length === 0
       ? `<div style="color:var(--text-3);font-size:12px;padding:10px 0">Nenhum jogo agendado para ${cat.nome}.</div>`
-      : jogosCat.map(j=>{
+      : jogosCat.map((j,idx)=>{
+          if(!j.id) j.id = 'leg_'+idx+'_'+(j.adv||'').replace(/[^a-z0-9]/gi,'');
           const conv = j.conv || [];
           const convStr = conv.length ? conv.join(', ') : 'Nenhum';
           const dataFmt = (typeof fmtDataConv==='function') ? fmtDataConv(j.data) : j.data;
@@ -150,6 +151,7 @@ function renderJogosProfessor(cat, cor){
             <div style="font-size:9px;color:var(--text-3);margin-top:2px">📍 ${j.local||'—'} · ${j.camp||'—'}</div>
             <div style="font-size:9px;color:var(--text-3);margin-top:2px">👕 ${j.unif||'—'}</div>
             <div style="font-size:9px;color:var(--text-3);margin-top:2px">🚩 Convocados: ${convStr}</div>
+            <button onclick="deletarJogo('${j.id}','${cat.nome}','${cor}')" style="margin-top:8px;width:100%;background:#fce8e8;color:#8b1a1a;border:none;padding:6px;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer">🗑️ Excluir jogo</button>
           </div>`;
         }).join('')
     }
@@ -1305,6 +1307,27 @@ function renderListaAtletas(cat, cor){
   </div>`;
 }
 
+
+// Excluir jogo agendado (professor) — remove jogo fantasma/de teste
+function deletarJogo(id, catNome, cor){
+  const j = JOGOS_AGENDADOS.find(x=>x.id===id);
+  const nomeAdv = j ? (j.adv||'jogo') : 'este jogo';
+  if(!confirm('Excluir o jogo Votoraty vs '+nomeAdv+'? Esta ação não pode ser desfeita.')) return;
+  const idx = JOGOS_AGENDADOS.findIndex(x=>x.id===id);
+  if(idx>-1) JOGOS_AGENDADOS.splice(idx,1);
+  // remove convocação vinculada ao jogo, se houver
+  if(j && typeof convocacoes_publicadas!=='undefined'){
+    for(let i=convocacoes_publicadas.length-1;i>=0;i--){
+      if(convocacoes_publicadas[i].jogoId===id) convocacoes_publicadas.splice(i,1);
+    }
+  }
+  if(typeof salvarLS==='function') salvarLS();
+  if(typeof salvarFirestore==='function') salvarFirestore();
+  if(typeof showN==='function') showN('🗑️ Jogo excluído.');
+  const catKey = (catNome||'').replace(/[^a-z0-9]/gi,'').toLowerCase();
+  const el = document.getElementById('s-5');
+  if(el && CATS_DATA[catKey]) el.innerHTML = renderJogosProfessor(CATS_DATA[catKey], cor);
+}
 
 // === DIRETOR / FINANCEIRO / ATLETA ===
 // =====================
