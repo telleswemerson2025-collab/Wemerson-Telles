@@ -29,6 +29,7 @@
 
 @keyframes fadeUp {from {opacity: 0; transform: translateY(12px)} to {opacity: 1; transform: translateY(0)}}
 @keyframes spin { to { transform: rotate(360deg) } }
+@keyframes sinoShakeDesk { 0%,100% { transform: rotate(0); } 20% { transform: rotate(18deg); } 40% { transform: rotate(-14deg); } 60% { transform: rotate(10deg); } 80% { transform: rotate(-6deg); } }
 
 body {
   font-family: 'DM Sans', system-ui, sans-serif;
@@ -671,7 +672,7 @@ body {
     </div>
     <div class="header-top-right">
       <input type="text" class="search-box" placeholder="Buscar atleta, sócio..." oninput="buscaGlobalDesktop(this.value)">
-      <div class="header-icon" onclick="mostrarNotificacoesDesktop()" style="cursor:pointer"><i class="ti ti-bell"></i></div>
+      <div class="header-icon" id="sino-desk" onclick="mostrarNotificacoesDesktop()" style="cursor:pointer;position:relative"><i class="ti ti-bell" id="sino-desk-icon"></i><span id="sino-desk-badge" style="display:none;position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;padding:0 4px;border-radius:9px;background:#e53935;color:#fff;font-size:9px;font-weight:800;align-items:center;justify-content:center">0</span></div>
       <div class="profile-badge">F</div>
     </div>
   </div>
@@ -1179,6 +1180,7 @@ function iniciarSyncNuvem(){
     renderFinPainel(); renderFinSocios(); renderFinMensalidades(); renderFinCobrancas(); renderFinArbitragem();
     renderFinConvocacoes(); renderCaixaClube();
     try { renderRelatorioContador(); } catch(e){}
+    atualizarSinoDesktop(); // sino balança se chegou nova pendência da nuvem
     if(_primeiraNuvem){ _primeiraNuvem = false; showToast('☁️ Sincronizado com a nuvem!', 'success'); }
   }, e => console.warn('[Firestore] listener:', e));
 }
@@ -1204,13 +1206,38 @@ function buscaGlobalDesktop(q){
   });
 }
 
-function mostrarNotificacoesDesktop(){
+// Conta as pendências REAIS do financeiro
+function _contarNotifDesktop(){
   const atrasoS = SOCIOS.filter(s => s.status === 'atraso').length;
   const atrasoA = _mensReais().filter(([,m]) => m.status === 'atraso').length;
   const arbPend = ARBITRAGEM.filter(a => a.status === 'pendente').length;
-  const total = atrasoS + atrasoA + arbPend;
-  if(total === 0){ showToast('🔔 Nenhuma pendência no momento!', 'success'); return; }
-  showToast('🔔 ' + atrasoS + ' sócio(s) em atraso · ' + atrasoA + ' mensalidade(s) em atraso · ' + arbPend + ' arbitragem(ns) pendente(s)', 'info');
+  return { atrasoS, atrasoA, arbPend, total: atrasoS + atrasoA + arbPend };
+}
+
+let _notifLidasDesk = 0;
+// Atualiza o badge; se surgiu algo novo, balança o sino (e opcionalmente toca)
+function atualizarSinoDesktop(silencioso){
+  const c = _contarNotifDesktop();
+  const badge = document.getElementById('sino-desk-badge');
+  if(badge){
+    if(c.total > 0){ badge.textContent = c.total; badge.style.display = 'flex'; }
+    else { badge.style.display = 'none'; }
+  }
+  if(c.total > _notifLidasDesk && !silencioso){
+    const icon = document.getElementById('sino-desk-icon');
+    if(icon){ icon.style.animation = 'none'; void icon.offsetWidth; icon.style.animation = 'sinoShakeDesk .5s ease 3'; }
+  }
+}
+
+function mostrarNotificacoesDesktop(){
+  const c = _contarNotifDesktop();
+  // Ao ABRIR: marca como lidas (o badge zera até surgir algo novo)
+  _notifLidasDesk = c.total;
+  atualizarSinoDesktop(true);
+  const badge = document.getElementById('sino-desk-badge');
+  if(badge) badge.style.display = 'none';
+  if(c.total === 0){ showToast('🔔 Nenhuma pendência no momento!', 'success'); return; }
+  showToast('🔔 ' + c.atrasoS + ' sócio(s) em atraso · ' + c.atrasoA + ' mensalidade(s) em atraso · ' + c.arbPend + ' arbitragem(ns) pendente(s)', 'info');
 }
 
 function marcarSocioPago(id) {
@@ -2583,6 +2610,7 @@ window.addEventListener('DOMContentLoaded', () => {
   } catch(e){}
   renderFinPainel();
   iniciarSyncNuvem();
+  atualizarSinoDesktop(true); // primeira carga: mostra badge sem balançar
   setTimeout(() => { const lo = document.getElementById('loading-overlay'); if(lo) lo.remove(); }, 600);
 });
 </script>
