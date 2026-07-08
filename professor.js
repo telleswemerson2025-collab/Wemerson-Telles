@@ -637,6 +637,46 @@ function atualizarHabilidadesAtleta(key){
 // =====================
 let fotoAtleta = null;
 
+// Menu de foto: 1ª etapa = escolher origem; 2ª etapa = câmera ou galeria
+function abrirMenuFoto(){
+  let m = document.getElementById('menu-foto');
+  if(!m){
+    m = document.createElement('div');
+    m.id = 'menu-foto';
+    m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9500;display:flex;align-items:flex-end;justify-content:center';
+    m.onclick = (e)=>{ if(e.target===m) m.style.display='none'; };
+    m.innerHTML = `
+      <div style="background:#fff;border-radius:18px 18px 0 0;width:100%;max-width:440px;padding:18px 16px 24px">
+        <div style="width:40px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 14px"></div>
+        <div style="font-size:14px;font-weight:800;text-align:center;margin-bottom:14px;color:#1a1a1a">Foto do perfil</div>
+        <button onclick="document.getElementById('menu-foto').style.display='none';document.getElementById('foto-camera').click()" style="width:100%;display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #eee;border-radius:12px;background:#fff;cursor:pointer;font-size:14px;font-weight:600;margin-bottom:10px">
+          <span style="font-size:22px">📷</span> Tirar foto agora
+        </button>
+        <button onclick="document.getElementById('menu-foto').style.display='none';document.getElementById('foto-input').click()" style="width:100%;display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #eee;border-radius:12px;background:#fff;cursor:pointer;font-size:14px;font-weight:600;margin-bottom:10px">
+          <span style="font-size:22px">🖼️</span> Escolher da galeria
+        </button>
+        <button onclick="removerFotoPerfil()" style="width:100%;display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #f0d0d0;border-radius:12px;background:#fff;cursor:pointer;font-size:14px;font-weight:600;color:#c0392b;margin-bottom:10px">
+          <span style="font-size:22px">🗑️</span> Remover foto
+        </button>
+        <button onclick="document.getElementById('menu-foto').style.display='none'" style="width:100%;padding:12px;border:none;border-radius:12px;background:#f5f5f5;cursor:pointer;font-size:13px;font-weight:700;color:#666">Cancelar</button>
+      </div>`;
+    document.body.appendChild(m);
+  }
+  m.style.display = 'flex';
+}
+
+function removerFotoPerfil(){
+  const menu = document.getElementById('menu-foto'); if(menu) menu.style.display='none';
+  fotoAtleta = null;
+  try { localStorage.removeItem('vot_foto'); } catch(e){}
+  const av = document.getElementById('atleta-av');
+  if(av) av.innerHTML = ATLETA_DEFAULT.sig;
+  document.querySelectorAll('.stk-foto').forEach(el=>{ el.innerHTML = ATLETA_DEFAULT.sig; });
+  const mini = document.getElementById('header-mini-av'); if(mini) mini.remove();
+  const dica = document.getElementById('foto-dica'); if(dica) dica.style.display='';
+  if(typeof showN==='function') showN('Foto removida.');
+}
+
 function carregarFoto(event){
   const file = event.target.files[0];
   if(!file) return;

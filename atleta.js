@@ -181,8 +181,9 @@ function renderEvolucao(cor){
   const nivel = ATLETA_DEFAULT.nivel; // mesmo nível exibido no header (consistência)
   const xpAtual = STATS.xp%1000;
   return `
-  <!-- Input oculto para foto -->
+  <!-- Inputs ocultos: câmera (capture) e galeria (sem capture) -->
   <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="carregarFoto(event)">
+  <input type="file" id="foto-camera" accept="image/*" capture="user" style="display:none" onchange="carregarFoto(event)">
 
   <button onclick="baixarHistoricoPDF()" style="width:100%;margin-bottom:12px;padding:12px;border-radius:12px;border:1.5px solid ${cor};background:#fff;color:${cor};font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
     📄 Baixar histórico em PDF
@@ -193,7 +194,7 @@ function renderEvolucao(cor){
     <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
 
       <!-- AVATAR COM FOTO -->
-      <div onclick="document.getElementById('foto-input').click()" style="position:relative;cursor:pointer;flex-shrink:0">
+      <div onclick="abrirMenuFoto()" style="position:relative;cursor:pointer;flex-shrink:0">
         <div id="atleta-av" style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;overflow:hidden;letter-spacing:.03em">${a.sig}</div>
         <div style="position:absolute;bottom:0;right:0;width:20px;height:20px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.2)">
           <i class="ti ti-camera" style="font-size:11px;color:${cor}"></i>
@@ -220,7 +221,7 @@ function renderEvolucao(cor){
     </div>
 
     <!-- DICA foto -->
-    <div id="foto-dica" style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border-radius:8px;padding:6px 10px;cursor:pointer" onclick="document.getElementById('foto-input').click()">
+    <div id="foto-dica" style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border-radius:8px;padding:6px 10px;cursor:pointer" onclick="abrirMenuFoto()">
       <i class="ti ti-camera" style="font-size:13px;color:rgba(255,255,255,.7)"></i>
       <span style="font-size:10px;color:rgba(255,255,255,.7);font-weight:500">Toque para adicionar sua foto de perfil</span>
     </div>
