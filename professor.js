@@ -1297,8 +1297,6 @@ function renderListaAtletas(cat, cor){
           <button onclick="abrirFicha('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${catKey}','${cor}')" style="flex:1;background:${fichaBg};color:${fichaC};border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">🏥 Ficha</button>
           <button onclick="gerarRelatorio('${a.nome}','${a.sig}','${catKey}','${cor}')" style="flex:1;background:#fdf3dc;color:#7a4010;border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">📊 PDF</button>
           <button onclick="abrirMsgDireta('${a.nome}','${a.sig}','${a.pos}','${cat.nome}','${cor}')" style="flex:1;background:${cor};color:#fff;border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">✉️ Msg</button>
-          <button onclick="abrirEditarAtleta('${a.sig}','${catKey}')" style="flex:1;background:#f0ede8;border:1px solid #e8e4dc;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer">✏️</button>
-          <button onclick="deletarAtleta('${a.sig}','${catKey}')" style="flex:1;background:#fce8e8;border:none;padding:5px 4px;border-radius:7px;font-size:9px;font-weight:700;cursor:pointer;color:#8b1a1a">🗑️</button>
         </div>
       </div>`;
     }).join('')}
