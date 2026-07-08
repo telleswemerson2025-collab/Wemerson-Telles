@@ -605,6 +605,7 @@ function salvarConvocacoesTodos(){
   });
   if(totalGeral === 0){ showN('⚠️ Selecione pelo menos um atleta.', true); return; }
   salvarLS();
+  if(typeof salvarFirestore === 'function') salvarFirestore(); // sincroniza mural + arbitragem com nuvem/desktop
   showN('✅ Convocação publicada! '+totalGeral+' atleta(s) — os atletas já veem no mural.');
 }
 

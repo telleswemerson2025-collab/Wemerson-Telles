@@ -940,6 +940,7 @@ function agendarJogo(){
   // Ordena por data
   JOGOS_AGENDADOS.sort((a,b)=>a.data.localeCompare(b.data));
   salvarLS();
+  if(typeof salvarFirestore === 'function') salvarFirestore(); // sincroniza jogo + mural + arbitragem com nuvem/desktop
   fecharModal('modal-jogo');
   showN('✓ Jogo vs '+adv+' agendado! '+conv.length+' atletas convocados e notificados.');
 

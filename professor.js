@@ -273,6 +273,7 @@ function salvarConvocacoesProfessor(catKey){
   // Gera cobrança de arbitragem (R$30, pendente) por jogo para os convocados
   gerarArbitragemConvocados(catKey, convocados.map(a => a.sig), proxJogo?.id, proxJogo ? ('vs '+proxJogo.adv) : ('Convocação '+cat.nome));
   salvarLS();
+  if(typeof salvarFirestore === 'function') salvarFirestore(); // sincroniza mural + arbitragem com nuvem/desktop
   showN('✅ Convocação publicada! '+convocados.length+' atleta(s) convocado(s) — mural + arbitragem gerada.');
 }
 
