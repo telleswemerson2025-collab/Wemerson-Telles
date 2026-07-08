@@ -398,7 +398,7 @@ function injetarConvocacaoNoFeed(cor){
         <span style="margin-left:auto;font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;background:#166024;color:#fff">novo</span>
       </div>
       <div style="font-size:12px;font-weight:700;color:#1a1a1a;margin-bottom:3px">${conv.jogo}</div>
-      <div style="font-size:10px;color:#3b6d11;margin-bottom:5px">${conv.data} · ${conv.hora} · ${conv.local}</div>
+      <div style="font-size:10px;color:#3b6d11;margin-bottom:5px">${fmtDataConv(conv.data)} · ${conv.hora||''} · ${conv.local}</div>
       <div style="font-size:11px;color:#173404;line-height:1.5;background:rgba(22,96,36,.08);padding:6px 9px;border-radius:7px;margin-bottom:8px">
         📋 <strong>${conv.convocados.length} convocados:</strong> ${conv.convocados.map(c=>c.nome.split(' ')[0]).join(', ')}
       </div>
@@ -406,6 +406,17 @@ function injetarConvocacaoNoFeed(cor){
       <div style="font-size:9px;color:#3b6d11;margin-top:6px;text-align:right">agora · automático</div>`;
     feed.insertBefore(item, feed.firstChild);
   }, 200);
+}
+
+// Formata a data da convocação: ISO/aaaa-mm-dd → dd/mm/aaaa; datas inválidas → "A confirmar"
+function fmtDataConv(d){
+  if(!d || d === 'A confirmar') return 'A confirmar';
+  const m = String(d).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(m){
+    if(m[1] === '0001' || m[1] < '2020') return 'A confirmar'; // data quebrada
+    return m[3]+'/'+m[2]+'/'+m[1];
+  }
+  return d; // já está em outro formato legível
 }
 
 function renderMuralConvocacoes(cor){
@@ -421,7 +432,7 @@ function renderMuralConvocacoes(cor){
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
         <div>
           <div style="font-size:13px;font-weight:700;color:${conv.resultado?'#173404':'#fff'}">${conv.jogo}</div>
-          <div style="font-size:10px;color:${conv.resultado?'#3b6d11':'rgba(255,255,255,.8)'};margin-top:2px">${conv.data} · ${conv.hora}</div>
+          <div style="font-size:10px;color:${conv.resultado?'#3b6d11':'rgba(255,255,255,.8)'};margin-top:2px">${fmtDataConv(conv.data)} · ${conv.hora||''}</div>
           <div style="font-size:10px;color:${conv.resultado?'#3b6d11':'rgba(255,255,255,.75)'}">📍 ${conv.local}</div>
         </div>
         ${conv.resultado

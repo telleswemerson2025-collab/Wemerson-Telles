@@ -209,7 +209,18 @@ function renderConvocacoesProfessor(catKey, cat, cor){
   </div>
   <button class="btn-g" style="background:${cor}" onclick="salvarConvocacoesProfessor('${catKey}')">
     ✅ Confirmar convocação
+  </button>
+  <button class="btn-sm" style="width:100%;margin-top:8px;color:#8b1a1a;border-color:#e8a0a0" onclick="limparConvocacoes()">
+    🗑️ Limpar convocações antigas/de teste
   </button>`;
+}
+
+// Apaga TODAS as convocações publicadas (para limpar dados de teste)
+function limparConvocacoes(){
+  if(!confirm('Apagar TODAS as convocações do mural? (os atletas deixam de ver as antigas)')) return;
+  convocacoes_publicadas.length = 0;
+  salvarLS();
+  showN('✓ Convocações antigas removidas. Publique uma nova a partir de um jogo agendado.');
 }
 
 function toggleConvocado(sig, catKey, convocado){
@@ -231,20 +242,27 @@ function salvarConvocacoesProfessor(catKey){
     if(FICHAS[a.sig+catKey].convocado) convocados.push({sig:a.sig, nome:a.nome, pos:a.pos});
   });
   if(convocados.length === 0){ showN('⚠️ Selecione pelo menos um atleta.', true); return; }
-  // Publica no mural de convocações do atleta
+  // Exige um jogo REAL agendado (senão a convocação fica sem data/adversário)
   const proxJogo = JOGOS_AGENDADOS.find(j => j.cat === cat.nome && j.status === 'agendado');
+  if(!proxJogo){ showN('⚠️ Agende o jogo primeiro (aba Jogos → + Agendar) e depois convoque.', true); return; }
+  // Remove convocação anterior do MESMO jogo (evita duplicar no mural)
+  for(let i = convocacoes_publicadas.length-1; i >= 0; i--){
+    if(convocacoes_publicadas[i].jogoId === proxJogo.id) convocacoes_publicadas.splice(i,1);
+  }
+  // Publica no mural de convocações do atleta
   convocacoes_publicadas.unshift({
     id: 'conv_' + Date.now(),
-    jogo: proxJogo ? ('Votoraty Academy vs ' + proxJogo.adv) : ('Próximo jogo — ' + cat.nome),
-    data: proxJogo?.data || 'A confirmar',
-    hora: proxJogo?.hora || 'A confirmar',
-    local: proxJogo?.local || 'Campo do Votoraty',
-    campeonato: proxJogo?.camp || 'Amistoso',
-    fase: proxJogo?.fase || '',
+    jogoId: proxJogo.id,
+    jogo: 'Votoraty Academy vs ' + proxJogo.adv,
+    data: proxJogo.data || 'A confirmar',
+    hora: proxJogo.hora || 'A confirmar',
+    local: proxJogo.local || 'Campo do Votoraty',
+    campeonato: proxJogo.camp || 'Amistoso',
+    fase: proxJogo.fase || '',
     categoria: cat.nome,
     cor: CORES[catKey] || '#0d3d1a',
     tecnico: 'Técnico André',
-    observacao: proxJogo?.obs || 'Chegue 30 minutos antes.',
+    observacao: proxJogo.obs || 'Chegue 30 minutos antes.',
     convocados,
     reservas: [],
   });
