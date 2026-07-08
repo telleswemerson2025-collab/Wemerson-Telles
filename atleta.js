@@ -519,16 +519,22 @@ function renderAlbum(cor){
     {tp:'Lendária', bg:'linear-gradient(155deg,#7a5200,#c8940a,#f5c842)', st:'★★★★★', ev:'14 gols'},
   ];
 
+  // Nome curto do atleta (ex.: "K. Telles") e contagem real de conquistas
+  const ano = new Date().getFullYear();
+  const partesNome = (ATLETA_DEFAULT.nome||'Atleta').split(' ');
+  const nomeCurto = partesNome[0][0]+'. '+(partesNome.slice(-1)[0]||'');
+  const nConq = (typeof getConquistas === 'function') ? getConquistas().length : 0;
+  const temLendaria = (STATS.gols||0) >= 14;
   return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
     <div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em;color:var(--text)">Álbum — ${ATLETA_DEFAULT.nome}</div>
-      <div style="font-size:10px;color:var(--text-3);font-weight:500">6 figurinhas · 1 lendária</div>
+      <div style="font-size:10px;color:var(--text-3);font-weight:500">${nConq} conquista(s)${temLendaria?' · 1 lendária':''}</div>
     </div>
-    <span class="tag ta">Sub-13 · 2025</span>
+    <span class="tag ta">${ATLETA_DEFAULT.cat||'Sub-13'} · ${ano}</span>
   </div>
 
   <div class="stk-grid">
-    ${cards.map(c=>mkCard(c.tp,c.bg,c.st,c.ev,'K. Telles',true)).join('')}
+    ${cards.map(c=>mkCard(c.tp,c.bg,c.st,c.ev,nomeCurto,true)).join('')}
   </div>
 
   <div style="border:2px dashed var(--border);border-radius:14px;padding:18px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80px;margin-bottom:12px;opacity:.5">
