@@ -1,8 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --g:#0d3d1a;--gd:#071f0d;
   --gold:#b8860b;--gold-l:#f5c842;
+  /* Paleta oficial única — verde/dourado/vermelho/azul + pares de etiqueta */
+  --blue:#0e3d6e;--red:#8b1a1a;--amber:#b8860b;
+  --ok-bg:#dcf0e0;--ok-tx:#1a5c26;
+  --bad-bg:#fde8e8;--bad-tx:#8b1a1a;
+  --warn-bg:#faeeda;--warn-tx:#8a6200;
+  --info-bg:#e6effa;--info-tx:#0e3d6e;
   --font-display:'Bebas Neue',sans-serif;
   --surface:#f8f7f4;--surface-2:#f0ede8;
   --border:#e8e4dc;
@@ -22,7 +27,7 @@
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface-2);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:20px 12px}
 
 /* PHONE FRAME */
-.phone{width:100%;max-width:393px;border-radius:44px;overflow:hidden;background:var(--surface);box-shadow:0 32px 100px rgba(0,0,0,.22),0 6px 20px rgba(0,0,0,.1),inset 0 0 0 1px rgba(255,255,255,.7);min-height:700px;display:flex;flex-direction:column;border:1.5px solid rgba(0,0,0,.06)}
+.phone{width:100%;max-width:393px;border-radius:44px;overflow:hidden;background:var(--surface);box-shadow:0 24px 70px rgba(0,0,0,.15),0 4px 14px rgba(0,0,0,.07),inset 0 0 0 1px rgba(255,255,255,.7);min-height:700px;display:flex;flex-direction:column;border:1.5px solid rgba(0,0,0,.06)}
 
 /* DESKTOP */
 @media(min-width:900px){
@@ -79,9 +84,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface-2);min-
 .cw{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow)}
 
 /* BUTTONS PREMIUM */
-.btn-g{color:#fff;border:none;padding:15px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-top:8px;background:var(--color,#0d3d1a);transition:all .22s;letter-spacing:.03em;box-shadow:0 4px 16px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.12);position:relative;overflow:hidden}
+.btn-g{color:#fff;border:none;padding:15px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-top:8px;background:var(--color,#0d3d1a);transition:all .22s;letter-spacing:.03em;box-shadow:0 3px 11px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.12);position:relative;overflow:hidden}
 .btn-g::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,transparent 60%);pointer-events:none}
-.btn-g:hover{filter:brightness(1.1);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.15)}
+.btn-g:hover{filter:brightness(1.1);transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.17),inset 0 1px 0 rgba(255,255,255,.15)}
 .btn-g:active{transform:translateY(0);filter:brightness(.97)}
 .btn-blue{background:#185fa5;color:#fff;border:none;padding:12px 16px;border-radius:var(--radius-sm);font-size:12px;font-weight:700;cursor:pointer;width:100%;margin-top:6px;box-shadow:0 4px 12px rgba(24,95,165,.3)}
 .btn-sm{background:#fff;border:1.5px solid var(--border);color:var(--text-2);padding:6px 13px;border-radius:20px;font-size:10px;cursor:pointer;font-weight:700;transition:all .18s;box-shadow:var(--shadow);letter-spacing:.02em}
@@ -213,10 +218,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface-2);min-
   background:rgba(0,0,0,.28);
 }
 .stk-name{
-  font-size:15px;font-weight:900;
+  font-size:19px;font-weight:400;
   color:#fff;
-  letter-spacing:.06em;
-  font-family:Impact,'Arial Narrow',sans-serif;
+  letter-spacing:.08em;
+  font-family:var(--font-display);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   text-shadow:0 1px 4px rgba(0,0,0,.5);
   line-height:1.1;

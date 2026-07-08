@@ -1,4 +1,4 @@
-const CACHE = 'votoraty-v7';
+const CACHE = 'votoraty-v8';
 const ASSETS = [
   '/',
   '/index.html',
