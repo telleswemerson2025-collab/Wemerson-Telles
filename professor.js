@@ -470,7 +470,7 @@ function renderTreino(cor){
     </div>`).join('')}
   </div>
   <div class="lbl">Intensidade</div>
-  <div style="display:flex;gap:6px;margin-bottom:10px">
+  <div id="treino-intens" style="display:flex;gap:6px;margin-bottom:10px">
     <button class="bav" style="background:#e6f1fb;color:#0c447c" onclick="selIntT(this,'${cor}')">Leve</button>
     <button class="bav" style="background:#eaf3de;color:#27500a" onclick="selIntT(this,'${cor}')">Médio</button>
     <button class="bav" style="background:#fcebeb;color:#791f1f" onclick="selIntT(this,'${cor}')">Intenso</button>
@@ -480,12 +480,12 @@ function renderTreino(cor){
     ${['Passe curto','Passe longo','Finalização','Drible','Domínio','Cabeceio','Marcação','Posicionamento','Velocidade','Bola parada','Transição','Trabalho em equipe'].map(h=>`<span class="chip" onclick="this.classList.toggle('on')">${h}</span>`).join('')}
   </div>
   <div class="lbl">Como foi o treino?</div>
-  <div style="display:flex;gap:6px;margin-bottom:10px">
+  <div id="treino-comofoi" style="display:flex;gap:6px;margin-bottom:10px">
     <button class="bav" style="background:#eaf3de;color:#27500a" onclick="selIntT(this,'${cor}')">Ótimo</button>
     <button class="bav" style="background:#e6f1fb;color:#0c447c" onclick="selIntT(this,'${cor}')">Bom</button>
     <button class="bav" style="background:#faeeda;color:#633806" onclick="selIntT(this,'${cor}')">Regular</button>
   </div>
-  <div class="field"><label>Observação (opcional)</label><textarea placeholder="Ex: Grupo focado. Evoluiu no passe curto..."></textarea></div>
+  <div class="field"><label>Observação (opcional)</label><textarea id="treino-obs" placeholder="Ex: Grupo focado. Evoluiu no passe curto..."></textarea></div>
   <button class="btn-g" style="background:${cor}" onclick="publicarTreino('${cor}')">Publicar treino</button>`;
 }
 
@@ -547,18 +547,30 @@ function salvarAvaliacoes(){
 }
 
 function publicarTreino(cor){
-  // Coleta tipo de treino selecionado
+  // Categoria atual (prof_subX → subX)
+  const catKey = (perfilAtual||'').startsWith('prof_') ? perfilAtual.replace('prof_','') : (window._chamadaMeta?.catKey || 'sub13');
+  const catNome = CATS_DATA[catKey]?.nome || 'Sub-13';
+  // Tipo de treino selecionado (borda com scale)
   const tipoEl = document.querySelector('[id^="tc-"][style*="scale"]');
-  const tipo = tipoEl ? tipoEl.querySelector('span')?.textContent || 'Treino' : 'Treino';
-  // Coleta intensidade selecionada
-  const intEl = document.querySelector('.bav[style*="font-weight: 700"], .bav[style*="font-weight:700"]');
-  const intens = intEl ? intEl.textContent.trim() : '';
-  // Coleta habilidades selecionadas
+  const tipo = tipoEl ? (tipoEl.querySelector('span')?.textContent || 'Treino') : 'Treino';
+  // Intensidade (row escopado) e Como foi (row escopado) — sem ambiguidade
+  const selDe = (id) => { const el = document.querySelector('#'+id+' .bav[style*="font-weight: 700"], #'+id+' .bav[style*="font-weight:700"]'); return el ? el.textContent.trim() : ''; };
+  const intens = selDe('treino-intens');
+  const comoFoi = selDe('treino-comofoi');
+  // Habilidades marcadas
   const chips = [...document.querySelectorAll('.chip.on')].map(c=>c.textContent).filter(t=>t.length<20);
-  const habStr = chips.length > 0 ? chips.slice(0,3).join(', ') : 'variadas';
-  const corpo = `<strong>${tipo}</strong>${intens?' · '+intens:''} · Habilidades trabalhadas: ${habStr}.`;
-  injetarFeed(cor, '⚽ TREINO DE HOJE · Técnico', corpo, 'agora · publicado pelo técnico');
-  showN('✓ Treino publicado! Atletas e pais notificados.');
+  const habStr = chips.length ? chips.join(', ') : 'variadas';
+  const obs = (document.getElementById('treino-obs')?.value || '').trim();
+  // Monta a descrição do treino
+  let desc = tipo + (intens?' · intensidade '+intens:'') + '. Habilidades: '+habStr + '.';
+  if(comoFoi) desc += ' Balanço: '+comoFoi+'.';
+  if(obs) desc += ' '+obs;
+  // SALVA de verdade — o atleta vê no feed (renderFeed lê TREINOS_REG)
+  if(!window.TREINOS_REG) window.TREINOS_REG = [];
+  window.TREINOS_REG.push({catKey, desc, data: new Date().toLocaleDateString('pt-BR')});
+  try { localStorage.setItem('vot_treinos', JSON.stringify(window.TREINOS_REG.slice(-50))); } catch(e){}
+  salvarLS();
+  showN('✓ Treino do '+catNome+' publicado! Os atletas veem no Feed.');
 }
 
 function renderMensagem(catNome, isDir, cor){

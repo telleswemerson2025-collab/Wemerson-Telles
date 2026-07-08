@@ -590,6 +590,8 @@ window.addEventListener('DOMContentLoaded', function(){
   try {
     const ev = localStorage.getItem('vot_eventos');
     if(ev && typeof EVENTOS !== 'undefined'){ const arr=JSON.parse(ev); EVENTOS.length=0; arr.forEach(e=>EVENTOS.push(e)); }
+    const tr = localStorage.getItem('vot_treinos');
+    if(tr){ window.TREINOS_REG = JSON.parse(tr); }
   } catch(e){}
   iniciarRelogio();
 });
