@@ -250,12 +250,22 @@ function renderEvolucao(cor){
   </div>
 
   <div class="lbl">Foco desta semana</div>
-  <div style="background:#fdf3dc;border:1px solid #e8c97a;border-left:3px solid #b8860b;border-radius:var(--radius-sm);padding:10px 12px;font-size:11px;color:#7a4010;line-height:1.6;margin-bottom:12px"><strong style="font-weight:700">Técnico André:</strong> Foque no passe curto e na marcação. Sua finalização está excelente!</div>
+  ${(() => {
+    // Foco REAL: destaca a habilidade mais forte e a que precisa melhorar (dados reais)
+    const habKey = ATLETA_DEFAULT.sig + (ATLETA_DEFAULT.cat||'Sub-13').replace(/[^a-z0-9]/gi,'').toLowerCase();
+    const h = HABILIDADES[habKey] || HABILIDADES['KTsub13'] || {};
+    const entradas = Object.entries(HAB_LABELS).map(([k,label]) => [label, h[k] || 70]);
+    let melhor = entradas[0], pior = entradas[0];
+    entradas.forEach(e => { if(e[1] > melhor[1]) melhor = e; if(e[1] < pior[1]) pior = e; });
+    const txt = 'Foque em <strong>'+pior[0]+'</strong> ('+pior[1]+'). Seu ponto forte é <strong>'+melhor[0]+'</strong> ('+melhor[1]+') — continue assim!';
+    return `<div style="background:#fdf3dc;border:1px solid #e8c97a;border-left:3px solid #b8860b;border-radius:var(--radius-sm);padding:10px 12px;font-size:11px;color:#7a4010;line-height:1.6;margin-bottom:12px"><strong style="font-weight:700">Técnico André:</strong> ${txt}</div>`;
+  })()}
 
   <div class="lbl">Habilidades</div>
   <div class="cw" style="padding:12px 14px" id="ev-hab-container">
     ${Object.entries(HAB_LABELS).map(([k,label])=>{
-      const val = (HABILIDADES['KTsub13']||{})[k] || 70;
+      const habKeyA = ATLETA_DEFAULT.sig + (ATLETA_DEFAULT.cat||'Sub-13').replace(/[^a-z0-9]/gi,'').toLowerCase();
+      const val = (HABILIDADES[habKeyA]||HABILIDADES['KTsub13']||{})[k] || 70;
       const c = val>=75?'#0d3d1a':val>=50?'#b8860b':'#c0392b';
       return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
         <span style="font-size:10px;color:var(--text-2);width:76px;font-weight:500">${label}</span>
