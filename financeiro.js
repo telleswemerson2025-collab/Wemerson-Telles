@@ -172,6 +172,7 @@ function desenharGraficoMensalidadesCat(id){
 
 // Render views
 function renderFinPainel(){
+  if(typeof registrarSnapshotFin==='function') registrarSnapshotFin();
   const c=finCalcs();
   const atletasFlat=listarTodosAtletas();
 

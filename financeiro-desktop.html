@@ -910,11 +910,32 @@ const MENSALIDADES_ATLETAS = {
   'CMsub15':{valor:200,status:'atraso', venc:'05/06'},
 };
 
-const HISTORICO_MESES = ['Jan','Fev','Mar','Abr','Mai','Jun'];
-const HISTORICO_RECEITA_SOCIOS  = [580,610,590,640,600,620];
-const HISTORICO_RECEITA_ATLETAS = [3150,3200,3100,3260,3180,3200];
-const HISTORICO_INADIMPLENCIA   = [880,1040,760,1200,990,1060];
+// Histórico financeiro REAL — snapshots mensais (mesmo esquema do mobile, chave vot_hist_fin).
+let HISTORICO_FIN = {};
+try { const _hf = localStorage.getItem('vot_hist_fin'); if(_hf) HISTORICO_FIN = JSON.parse(_hf); } catch(e){}
+let HISTORICO_MESES = [];
+let HISTORICO_RECEITA_SOCIOS  = [];
+let HISTORICO_RECEITA_ATLETAS = [];
+let HISTORICO_INADIMPLENCIA   = [];
 const CHART_INSTANCES = {};
+
+// Reconstrói os arrays dos gráficos a partir dos snapshots reais (últimos 6 meses).
+function registrarSnapshotFin(){
+  let socios = 0, inadSoc = 0;
+  SOCIOS.forEach(s=>{ if(s.status==='pago') socios += s.valor||0; else if(s.status==='atraso') inadSoc += s.valor||0; });
+  let atletas = 0, inadAtl = 0;
+  _mensReais().forEach(([,m])=>{ if(!m) return; if(m.status==='pago') atletas += m.valor||0; else if(m.status==='atraso') inadAtl += m.valor||0; });
+  const d = new Date();
+  const ym = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  HISTORICO_FIN[ym] = { socios, atletas, inadimplencia: inadSoc + inadAtl };
+  try { localStorage.setItem('vot_hist_fin', JSON.stringify(HISTORICO_FIN)); } catch(e){}
+  const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const chaves = Object.keys(HISTORICO_FIN).sort().slice(-6);
+  HISTORICO_MESES           = chaves.map(k=>meses[parseInt(k.split('-')[1])-1]);
+  HISTORICO_RECEITA_SOCIOS  = chaves.map(k=>HISTORICO_FIN[k].socios||0);
+  HISTORICO_RECEITA_ATLETAS = chaves.map(k=>HISTORICO_FIN[k].atletas||0);
+  HISTORICO_INADIMPLENCIA   = chaves.map(k=>HISTORICO_FIN[k].inadimplencia||0);
+}
 
 const VALOR_ARBITRAGEM = 30;
 const JOGOS_AGENDADOS = [
@@ -1302,6 +1323,7 @@ function filtrarTabela(inputId, tabelaId) {
 
 // CHARTS
 function desenharGraficoReceitas() {
+  if(typeof registrarSnapshotFin==='function') registrarSnapshotFin();
   destruirGrafico('chartReceitas');
   const ctx = document.getElementById('chartReceitas')?.getContext('2d');
   if(!ctx) return;
@@ -1324,6 +1346,7 @@ function desenharGraficoReceitas() {
 }
 
 function desenharGraficoInadimplencia() {
+  if(typeof registrarSnapshotFin==='function') registrarSnapshotFin();
   destruirGrafico('chartInadimplencia');
   const ctx = document.getElementById('chartInadimplencia')?.getContext('2d');
   if(!ctx) return;

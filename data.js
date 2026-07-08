@@ -311,11 +311,47 @@ const DESPESAS_CLUBE = [
   {descricao:'Manutenção',valor:180},
 ];
 
-const HISTORICO_MESES           = ['Jan','Fev','Mar','Abr','Mai','Jun'];
-const HISTORICO_RECEITA_SOCIOS  = [580,610,590,640,600,620];
-const HISTORICO_RECEITA_ATLETAS = [3150,3200,3100,3260,3180,3200];
-const HISTORICO_DESPESAS        = [2400,2980,2510,3100,2700,3170];
-const HISTORICO_INADIMPLENCIA   = [880,1040,760,1200,990,1060];
+// Histórico financeiro REAL — snapshots mensais gravados a cada abertura do financeiro.
+// Começa vazio (só o mês atual) e cresce mês a mês. Nada é inventado.
+let HISTORICO_FIN = {}; // { 'YYYY-MM': {socios, atletas, inadimplencia} }
+try { const _hf = localStorage.getItem('vot_hist_fin'); if(_hf) HISTORICO_FIN = JSON.parse(_hf); } catch(e){}
+
+let HISTORICO_MESES           = [];
+let HISTORICO_RECEITA_SOCIOS  = [];
+let HISTORICO_RECEITA_ATLETAS = [];
+let HISTORICO_INADIMPLENCIA   = [];
+
+// Calcula os valores REAIS do mês corrente a partir de SOCIOS + MENSALIDADES.
+function snapshotFinAtual(){
+  let socios = 0, inadSoc = 0;
+  (typeof SOCIOS!=='undefined'?SOCIOS:[]).forEach(s=>{
+    if(s.status==='pago') socios += s.valor||0;
+    else if(s.status==='atraso') inadSoc += s.valor||0;
+  });
+  let atletas = 0, inadAtl = 0;
+  const M = (typeof MENSALIDADES_ATLETAS!=='undefined')?MENSALIDADES_ATLETAS:{};
+  Object.values(M).forEach(m=>{
+    if(!m) return;
+    if(m.status==='pago') atletas += m.valor||0;
+    else if(m.status==='atraso') inadAtl += m.valor||0;
+  });
+  return { socios, atletas, inadimplencia: inadSoc + inadAtl };
+}
+
+// Grava o snapshot do mês atual e reconstrói os arrays dos gráficos (últimos 6 meses reais).
+function registrarSnapshotFin(){
+  const d = new Date();
+  const ym = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  HISTORICO_FIN[ym] = snapshotFinAtual();
+  try { localStorage.setItem('vot_hist_fin', JSON.stringify(HISTORICO_FIN)); } catch(e){}
+  const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const chaves = Object.keys(HISTORICO_FIN).sort().slice(-6);
+  HISTORICO_MESES           = chaves.map(k=>meses[parseInt(k.split('-')[1])-1]);
+  HISTORICO_RECEITA_SOCIOS  = chaves.map(k=>HISTORICO_FIN[k].socios||0);
+  HISTORICO_RECEITA_ATLETAS = chaves.map(k=>HISTORICO_FIN[k].atletas||0);
+  HISTORICO_INADIMPLENCIA   = chaves.map(k=>HISTORICO_FIN[k].inadimplencia||0);
+}
+
 const CHART_INSTANCES = {};
 
 // =====================
