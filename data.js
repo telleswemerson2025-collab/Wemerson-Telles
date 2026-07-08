@@ -592,6 +592,8 @@ window.addEventListener('DOMContentLoaded', function(){
     if(ev && typeof EVENTOS !== 'undefined'){ const arr=JSON.parse(ev); EVENTOS.length=0; arr.forEach(e=>EVENTOS.push(e)); }
     const tr = localStorage.getItem('vot_treinos');
     if(tr){ window.TREINOS_REG = JSON.parse(tr); }
+    const mg = localStorage.getItem('vot_mensagens');
+    if(mg){ window.MENSAGENS_ENVIADAS = JSON.parse(mg); }
   } catch(e){}
   iniciarRelogio();
 });

@@ -74,6 +74,15 @@ function renderFeed(cor){
   const cards = [];
   const catKey = (ATLETA_DEFAULT.cat||'Sub-13').replace(/[^a-z0-9]/gi,'').toLowerCase();
 
+  const catNome = ATLETA_DEFAULT.cat || 'Sub-13';
+
+  // MENSAGENS reais do professor (destinadas a "Todas" ou à categoria do atleta) — mais recentes primeiro
+  (window.MENSAGENS_ENVIADAS||[]).slice(0,5).forEach(m => {
+    if(m.dest === 'Todas' || m.dest === catNome){
+      cards.push(['#0d3d1a','📢 RECADO DO TÉCNICO', m.texto, (m.data||'')+' · '+(m.dest||'Todas')]);
+    }
+  });
+
   // TREINO real — último registrado pelo professor para a categoria do atleta
   const treinos = (window.TREINOS_REG||[]).filter(t => t.catKey === catKey);
   if(treinos.length){

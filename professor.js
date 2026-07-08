@@ -597,12 +597,19 @@ function renderMensagem(catNome, isDir, cor){
     <label for="cc-pais" style="font-size:11px;color:#555">Enviar também para os pais</label>
   </div>
   <button class="btn-g" style="background:${cor}" onclick="enviarMsg()">Enviar mensagem</button>
-  <div class="lbl" style="margin-top:10px">Último enviado</div>
-  <div class="card" style="padding:9px 11px">
-    <div style="font-size:10px;font-weight:700;color:${cor};margin-bottom:3px">${catNome}</div>
-    <div style="font-size:11px;color:#333">Treino confirmado para sábado às 08h. Não faltem!</div>
-    <div style="font-size:9px;color:#aaa;margin-top:4px">2h · 47 receberam</div>
-  </div>`;
+  <div class="lbl" style="margin-top:10px">Últimas enviadas</div>
+  <div id="msg-ultimas">${renderUltimasMensagens(cor)}</div>`;
+}
+
+// Lista real das últimas mensagens enviadas pelo professor
+function renderUltimasMensagens(cor){
+  const msgs = (window.MENSAGENS_ENVIADAS||[]).slice(0,5);
+  if(!msgs.length) return '<div class="card" style="padding:9px 11px;font-size:10px;color:#aaa">Nenhuma mensagem enviada ainda.</div>';
+  return msgs.map(m => `<div class="card" style="padding:9px 11px;margin-bottom:6px">
+    <div style="font-size:10px;font-weight:700;color:${cor};margin-bottom:3px">${m.dest||'Todas'}</div>
+    <div style="font-size:11px;color:#333">${m.texto}</div>
+    <div style="font-size:9px;color:#aaa;margin-top:4px">${m.data||''}</div>
+  </div>`).join('');
 }
 
 function setMsgD(txt){const el=document.getElementById('msg-d-txt');if(el)el.value=txt;}
@@ -1247,12 +1254,18 @@ function selDest(el){document.querySelectorAll('#dest-chips .chip').forEach(c=>c
 function enviarMsg(){
   const txt=document.getElementById('msg-txt');
   if(!txt||!txt.value.trim()){showN('⚠️ Escreva a mensagem antes de enviar.',true);return;}
-  // Persiste no histórico de mensagens e injeta no feed do atleta (se visível)
+  // Destino: categoria selecionada (diretor) ou a categoria do professor atual
+  let dest = window._msgDest;
+  if(!dest){ const ck=(perfilAtual||'').replace('prof_',''); dest = CATS_DATA[ck]?.nome || 'Todas'; }
   if(!window.MENSAGENS_ENVIADAS) window.MENSAGENS_ENVIADAS = [];
-  window.MENSAGENS_ENVIADAS.unshift({texto: txt.value.trim(), data: new Date().toLocaleString('pt-BR'), dest: window._msgDest || 'Todas'});
+  window.MENSAGENS_ENVIADAS.unshift({texto: txt.value.trim(), data: new Date().toLocaleString('pt-BR'), dest});
   try { localStorage.setItem('vot_mensagens', JSON.stringify(window.MENSAGENS_ENVIADAS.slice(0,50))); } catch(e){}
-  showN('✓ Mensagem enviada! Atletas e pais notificados.');
+  salvarLS(); // sobe à nuvem → o atleta recebe no feed
+  showN('✓ Mensagem enviada! Os atletas veem no Feed.');
   txt.value='';
+  // Atualiza a lista de "últimas enviadas" na tela
+  const ul = document.getElementById('msg-ultimas');
+  if(ul){ const cor = getComputedStyle(document.documentElement).getPropertyValue('--color').trim()||'#0d3d1a'; ul.innerHTML = renderUltimasMensagens(cor); }
 }
 
 function renderListaAtletas(cat, cor){

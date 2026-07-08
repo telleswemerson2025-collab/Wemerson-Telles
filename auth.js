@@ -168,6 +168,8 @@ function salvarFirestore(){
     conv_pub: convocacoes_publicadas,
     presenca_hist: window.PRESENCA_HIST || {},
     arbitragem: window.ARBITRAGEM_STATUS || {},
+    treinos: window.TREINOS_REG || [],
+    mensagens: window.MENSAGENS_ENVIADAS || [],
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   }, { merge:true }).catch(e=>console.warn('[Firestore] Erro ao salvar:', e));
 }
@@ -192,6 +194,8 @@ async function carregarFirestore(){
     if(d.conv_pub){ convocacoes_publicadas.length=0; d.conv_pub.forEach(c=>convocacoes_publicadas.push(c)); }
     if(d.presenca_hist)   window.PRESENCA_HIST = d.presenca_hist;
     if(d.arbitragem)      window.ARBITRAGEM_STATUS = d.arbitragem;
+    if(d.treinos)         window.TREINOS_REG = d.treinos;
+    if(d.mensagens)       window.MENSAGENS_ENVIADAS = d.mensagens;
     if(typeof sanearMensalidades === 'function') sanearMensalidades(); // remove chaves-fantasma vindas da nuvem
     return true;
   } catch(e){ return false; }
@@ -247,6 +251,8 @@ function iniciarListenerAtleta(){
     // Convocações publicadas pelo professor chegam aqui em tempo real
     if(d.conv_pub){ convocacoes_publicadas.length=0; d.conv_pub.forEach(c=>convocacoes_publicadas.push(c)); }
     if(d.mensalidades) Object.assign(MENSALIDADES_ATLETAS, d.mensalidades);
+    if(d.treinos)   window.TREINOS_REG = d.treinos;
+    if(d.mensagens) window.MENSAGENS_ENVIADAS = d.mensagens;
     // Dispara sino/som/notificação se surgiu algo novo (ex.: nova convocação)
     if(typeof atualizarBadgeSino === 'function') atualizarBadgeSino();
   });
