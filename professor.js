@@ -820,6 +820,8 @@ const EVENTOS = [
 ];
 
 function renderCalendario(cor){
+  // O atleta só VISUALIZA a agenda; professor/diretor podem editar
+  const podeEditar = (typeof perfilAtual !== 'undefined') && perfilAtual !== 'atleta';
   const hoje = new Date();
   const ano = hoje.getFullYear();
   const mes = hoje.getMonth();
@@ -863,19 +865,22 @@ function renderCalendario(cor){
       <div style="height:8px;display:flex;justify-content:center;align-items:center;gap:1px;margin-top:1px">${dots}</div>
     </div>`;
   }
+  const abrevMes=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
   const listaEventos=EVENTOS.map((e,ei)=>{
-    const d=parseInt(e.data.split('-')[2]);
+    const partes=(e.data||'').split('-');
+    const d=parseInt(partes[2])||'';
+    const mesEv=abrevMes[parseInt(partes[1])-1]||'';
     const ic=e.tipo==='jogo'?'⚽':'🏃';
     const bg=e.tipo==='jogo'?'#fce8e8':'#dceaf8';
     return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
       <div style="width:34px;height:34px;border-radius:9px;background:${bg};display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${ic}</div>
       <div style="flex:1">
         <div style="font-size:12px;font-weight:700;color:var(--text)">${e.label}</div>
-        <div style="font-size:10px;color:var(--text-3);font-weight:500">${e.cat} · ${d} Jun · ${e.hora}</div>
+        <div style="font-size:10px;color:var(--text-3);font-weight:500">${e.cat} · ${d} ${mesEv} · ${e.hora}</div>
       </div>
       <span class="tag ${e.tipo==='jogo'?'tr':'tb'}">${e.tipo==='jogo'?'Jogo':'Treino'}</span>
-      <button onclick="abrirEditarEvento(${ei})" style="background:none;border:none;cursor:pointer;font-size:13px;padding:2px 4px">✏️</button>
-      <button onclick="deletarEvento(${ei})" style="background:none;border:none;cursor:pointer;font-size:13px;padding:2px 4px">🗑️</button>
+      ${podeEditar ? `<button onclick="abrirEditarEvento(${ei})" style="background:none;border:none;cursor:pointer;font-size:13px;padding:2px 4px">✏️</button>
+      <button onclick="deletarEvento(${ei})" style="background:none;border:none;cursor:pointer;font-size:13px;padding:2px 4px">🗑️</button>` : ''}
     </div>`;
   }).join('');
 
@@ -884,7 +889,7 @@ function renderCalendario(cor){
     <div style="display:flex;gap:8px;align-items:center">
       <div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:50%;background:${cor}"></div><span style="font-size:9px;color:var(--text-3);font-weight:600">Treino</span></div>
       <div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:50%;background:#8b1a1a"></div><span style="font-size:9px;color:var(--text-3);font-weight:600">Jogo</span></div>
-      <button class="btn-sm" onclick="abrirEditarEvento(-1)">+ Evento</button>
+      ${podeEditar ? `<button class="btn-sm" onclick="abrirEditarEvento(-1)">+ Evento</button>` : ''}
     </div>
   </div>
   <div class="cw" style="padding:10px">
