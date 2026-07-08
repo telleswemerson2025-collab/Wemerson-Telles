@@ -1165,7 +1165,7 @@ function renderListaAtletas(cat, cor){
   const catKey = Object.entries(CATS_DATA).find(([k,c])=>c.nome===cat.nome)?.[0]||'sub13';
   return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
     <span style="font-family:var(--font-display);font-size:18px;letter-spacing:.06em;color:var(--text)">Atletas — ${cat.nome}</span>
-    <button class="btn-sm" onclick="abrirModal('modal-atleta')">+ Novo</button>
+    <span style="font-size:9px;color:var(--text-3);font-style:italic">Cadastro de atletas: só o Diretor</span>
   </div>
   <div class="cw" style="padding:6px 14px">
     ${cat.atletas.map(a=>{

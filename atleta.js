@@ -716,8 +716,20 @@ function cadastrarAtleta(){
   MENSALIDADES_ATLETAS[sig + catKey] = {valor: 180, status: 'pendente', venc: '05/07'};
   salvarLS();
   fecharModal('modal-atleta');
-  showN('✓ '+nm+' adicionado ao elenco do '+cat.nome+'! Para criar o LOGIN dele, use Config → Criar acesso de usuário.');
+  // Se preencheu e-mail + senha, cria o LOGIN do atleta no mesmo passo
+  const email = (document.getElementById('m-email')?.value || '').trim();
+  const senha = (document.getElementById('m-senha')?.value || '').trim();
+  if(email && senha && typeof criarUsuarioSistema === 'function'){
+    criarUsuarioSistema(email, senha, 'atleta').then(ok => {
+      showN(ok ? ('✓ '+nm+' cadastrado no '+cat.nome+' + login criado ('+email+')!')
+               : ('✓ '+nm+' cadastrado no elenco! (o login não foi criado — veja o aviso acima)'));
+    });
+  } else {
+    showN('✓ '+nm+' adicionado ao elenco do '+cat.nome+'! (login não informado — pode criar depois)');
+  }
   document.getElementById('m-nome').value='';
+  if(document.getElementById('m-email')) document.getElementById('m-email').value='';
+  if(document.getElementById('m-senha')) document.getElementById('m-senha').value='';
   // Re-renderiza a lista de atletas mantendo o usuário na aba Atletas
   if(perfilAtual === 'diretor'){ montarDiretor(CORES.diretor); goTab(1, CORES.diretor, false); }
   else if(perfilAtual && perfilAtual.startsWith('prof_')){
