@@ -37,6 +37,8 @@ function entrar(perfil){
   if(perfil === 'atleta') iniciarListenerAtleta();
   // Monitor de notificações (badge no sino + som + notificação no sistema)
   if(typeof iniciarMonitorNotif === 'function') iniciarMonitorNotif();
+  // Push com app fechado (FCM) — registra o token deste aparelho
+  if(typeof initFCM === 'function') initFCM(perfil);
 }
 
 function voltarInicio(){

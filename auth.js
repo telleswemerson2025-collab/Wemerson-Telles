@@ -197,6 +197,39 @@ async function carregarFirestore(){
   } catch(e){ return false; }
 }
 
+// ===== FIREBASE CLOUD MESSAGING (push com app fechado) =====
+// Cole aqui a chave "Par de chaves da Web Push" (VAPID) do Firebase Console:
+// Config. do projeto → Cloud Messaging → Configuração da Web → Certificados push da Web
+const FCM_VAPID_KEY = "COLE_A_CHAVE_VAPID_AQUI";
+let _messaging = null;
+
+async function initFCM(role, email){
+  try {
+    if(!FCM_VAPID_KEY || FCM_VAPID_KEY.startsWith('COLE_')) return; // ainda não configurado
+    if(!('serviceWorker' in navigator) || !firebase.messaging) return;
+    if(!('Notification' in window)) return;
+    const perm = await Notification.requestPermission();
+    if(perm !== 'granted') return;
+    const swReg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+    if(!_messaging) _messaging = firebase.messaging();
+    const token = await _messaging.getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: swReg });
+    if(!token) return;
+    // Salva o token no Firestore para o servidor poder enviar push a este aparelho
+    if(_db){
+      await _db.collection('fcm_tokens').doc(token).set({
+        token, role: role||'', email: email||'', atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge:true });
+    }
+    // Notificação recebida com o app ABERTO (primeiro plano)
+    _messaging.onMessage(payload => {
+      const n = payload.notification || {};
+      if(typeof notificarSistema === 'function') notificarSistema(n.title || '🔔 Votoraty Academy', n.body || '');
+      if(typeof showN === 'function' && n.body) showN('🔔 '+n.body);
+    });
+    console.log('[FCM] push ativado');
+  } catch(e){ console.warn('[FCM] não ativado:', e.message); }
+}
+
 // Listener em tempo real para o atleta — atualiza habilidades e jogos ao vivo
 function iniciarListenerAtleta(){
   if(!_db || _listener) return;
