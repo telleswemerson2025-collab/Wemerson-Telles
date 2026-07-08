@@ -926,8 +926,9 @@ function renderComprovantes(cor){
     arbFonte = Object.values(mapa);
   } catch(e){}
   arbFonte.filter(a => a.sig === sig).forEach((a, i) => {
-    pagamentosAtleta.push({id:'arb_'+catKey+'_'+i, tipo:'Arbitragem', categoria:ATLETA_DEFAULT.cat+' · '+(a.jogo||'taxa de jogo'),
-      valor:30, data:a.jogo||'Jogo', status:(a.pago || a.status==='pago') ? 'pago' : 'pendente'});
+    // categoria = "Sub-13 · Taxa de arbitragem"; data = o jogo (sem duplicar)
+    pagamentosAtleta.push({id:'arb_'+catKey+'_'+i, tipo:'Arbitragem', categoria:ATLETA_DEFAULT.cat+' · Taxa de arbitragem',
+      valor:30, data:(a.jogo||'Jogo'), status:(a.pago || a.status==='pago') ? 'pago' : 'pendente'});
   });
 
   const pendencias = pagamentosAtleta.filter(p => p.status !== 'pago');
@@ -958,9 +959,9 @@ function renderComprovantes(cor){
 
   <div class="lbl" style="margin-top:16px">Informações úteis</div>
   <div class="cw" style="padding:12px 14px;font-size:11px;color:var(--text-3);line-height:1.6">
-    <div>📧 <strong>Email de confirmação:</strong> Você recebe um email com o comprovante em até 2h após o pagamento.</div>
-    <div style="margin-top:8px">💳 <strong>Método de pagamento:</strong> Contacte o financeiro para opções de parcelamento.</div>
-    <div style="margin-top:8px">❓ <strong>Dúvidas:</strong> Envie mensagem ao responsável pelo financeiro.</div>
+    <div>📄 <strong>Comprovante em PDF:</strong> toque no botão PDF de cada pagamento pago para baixar/imprimir o recibo.</div>
+    <div style="margin-top:8px">💳 <strong>Pagamento:</strong> fale com o responsável pelo financeiro do clube.</div>
+    <div style="margin-top:8px">❓ <strong>Dúvidas:</strong> procure o técnico ou o financeiro da Votoraty.</div>
   </div>`;
 }
 
