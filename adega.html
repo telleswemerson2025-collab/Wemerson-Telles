@@ -154,6 +154,77 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
 .scan-res-prod{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 14px;margin-bottom:12px}
 .code-tag{display:inline-block;font-size:10px;font-weight:700;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);padding:2px 8px;border-radius:6px;font-family:ui-monospace,monospace;letter-spacing:.02em}
 
+/* ═══════════ CAIXA / PDV ═══════════ */
+#scr-caixa{padding:0;display:none;flex-direction:column}
+#scr-caixa.on{display:flex}
+.caixa-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.cart{flex:1;overflow-y:auto;padding:14px 16px 4px;min-height:120px}
+.cart-item{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:9px 11px;margin-bottom:7px}
+.cart-item .nm{flex:1;min-width:0;font-size:12.5px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cart-item .nm small{display:block;font-size:10px;color:var(--text-2);font-weight:600;margin-top:1px}
+.stepper{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.stepper button{width:26px;height:26px;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-size:16px;font-weight:800;color:var(--wine);cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.stepper button:active{background:var(--surface-2)}
+.stepper .q{font-size:14px;font-weight:800;min-width:20px;text-align:center;font-variant-numeric:tabular-nums}
+.cart-item .sub{font-size:13px;font-weight:800;color:var(--text);min-width:74px;text-align:right;font-variant-numeric:tabular-nums;flex-shrink:0}
+.cart-item .del{background:none;border:none;color:var(--text-3);font-size:15px;cursor:pointer;padding:2px 4px;flex-shrink:0}
+.cart-empty{text-align:center;color:var(--text-3);padding:30px 20px;font-size:12.5px;font-weight:600}
+.cart-empty .big{font-size:34px;margin-bottom:8px}
+
+.total-bar{background:linear-gradient(135deg,var(--wine),var(--wine-d));color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 -6px 24px rgba(0,0,0,.12)}
+.total-bar .lab{font-size:10px;font-weight:800;letter-spacing:.1em;opacity:.7;text-transform:uppercase}
+.total-bar .val{font-size:27px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;margin-top:2px}
+.total-bar .cnt{font-size:10.5px;opacity:.75;margin-top:3px;font-weight:600}
+.total-bar .fin{background:var(--gold);color:#3a2400;border:none;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.25);letter-spacing:.02em}
+.total-bar .fin:disabled{opacity:.5;cursor:default}
+.total-bar .fin:not(:disabled):active{transform:translateY(1px)}
+
+.caixa-tools{background:#fff;border-top:1px solid var(--border);padding:12px 16px}
+.caixa-search-row{display:flex;gap:8px;margin-bottom:10px}
+.caixa-search-row .search{margin-bottom:0;flex:1}
+.caixa-scan{flex-shrink:0;width:46px;border:1.5px solid var(--border);background:var(--surface);border-radius:24px;font-size:19px;cursor:pointer}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;max-height:198px;overflow-y:auto}
+.pbtn{background:var(--surface);border:1.5px solid var(--border);border-radius:11px;padding:9px 8px;cursor:pointer;text-align:left;font-family:inherit;transition:all .12s;display:flex;flex-direction:column;gap:3px;min-height:64px;justify-content:space-between}
+.pbtn:active{border-color:var(--wine);background:#fff;transform:scale(.97)}
+.pbtn .e{font-size:17px}
+.pbtn .pn{font-size:10.5px;font-weight:700;color:var(--text);line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pbtn .pp{font-size:11px;font-weight:800;color:var(--wine)}
+.pbtn.off{opacity:.45;pointer-events:none}
+.pbtn .pz{font-size:8.5px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.04em}
+.caixa-hint{font-size:10.5px;color:var(--text-3);font-weight:600;text-align:center;padding:8px 0 2px}
+.avulso-open{width:100%;margin-top:9px;background:var(--surface-2);border:1.5px dashed var(--border);color:var(--text-2);padding:10px;border-radius:10px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit}
+
+/* CALCULADORA / TECLADO */
+.calc-disp{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;text-align:right;font-size:26px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;margin-bottom:10px;min-height:52px}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.keys button{padding:15px 0;border-radius:11px;border:1.5px solid var(--border);background:#fff;font-size:19px;font-weight:800;color:var(--text);cursor:pointer;font-family:inherit}
+.keys button:active{background:var(--surface-2)}
+.keys .k-op{background:var(--surface);color:var(--wine)}
+.keys .k-eq{background:var(--wine);color:#fff;border-color:var(--wine)}
+
+/* PAGAMENTO */
+.pay-total{text-align:center;padding:6px 0 16px}
+.pay-total .l{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--text-3);text-transform:uppercase}
+.pay-total .v{font-size:40px;font-weight:800;color:var(--wine);line-height:1;font-variant-numeric:tabular-nums;margin-top:4px}
+.pay-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.pm{padding:13px 6px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-family:inherit;text-align:center;font-size:11px;font-weight:800;color:var(--text-2);transition:all .15s}
+.pm .i{font-size:20px;display:block;margin-bottom:4px}
+.pm.on{border-color:var(--wine);background:#fff;color:var(--wine);box-shadow:0 0 0 3px rgba(92,18,36,.09)}
+.troco-box{background:var(--green-bg);border:1px solid #bfe3ca;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.troco-box .tl{font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.05em}
+.troco-box .tv{font-size:22px;font-weight:800;color:var(--green);font-variant-numeric:tabular-nums}
+
+/* TELA FINAL PRO CLIENTE */
+.cust-overlay{display:none;position:fixed;inset:0;z-index:80;background:linear-gradient(160deg,var(--wine) 0%,var(--wine-d) 100%);color:#fff;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center}
+.cust-overlay.show{display:flex}
+.cust-overlay .ok{font-size:56px;margin-bottom:6px}
+.cust-overlay .tit{font-size:15px;font-weight:700;opacity:.8;letter-spacing:.03em}
+.cust-overlay .big-total{font-size:64px;font-weight:800;line-height:1;margin:10px 0 4px;font-variant-numeric:tabular-nums}
+.cust-overlay .sub{font-size:13px;opacity:.85;margin-top:8px;font-weight:500}
+.cust-overlay .troco-line{margin-top:18px;background:rgba(255,255,255,.14);border-radius:14px;padding:14px 22px;font-size:15px;font-weight:600}
+.cust-overlay .troco-line b{font-size:26px;font-weight:800;display:block;margin-top:2px;color:var(--gold-l)}
+.cust-overlay .nova{margin-top:28px;background:#fff;color:var(--wine);border:none;padding:15px 34px;border-radius:26px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+
 /* ═══════════ DESKTOP ═══════════ */
 @media(min-width:900px){
   body{padding:28px 20px}
@@ -173,6 +244,12 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
   #lista-estoque .card,#lista-estoque .empty{margin-bottom:0}
   #lista-estoque .empty{grid-column:1/-1}
   .search{max-width:420px}
+  #scr-caixa{grid-row:2;grid-column:2}
+  .caixa-wrap{flex-direction:row;gap:0}
+  .caixa-left{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--border)}
+  .caixa-tools{flex:0 0 340px;border-top:none;overflow-y:auto}
+  .pgrid{max-height:none}
+  .cust-overlay .big-total{font-size:88px}
 }
 </style>
 </head>
@@ -201,6 +278,31 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
 
     <div class="lbl">Últimas movimentações</div>
     <div id="dash-movs"></div>
+  </div>
+
+  <!-- ══════════ CAIXA / PDV ══════════ -->
+  <div class="scr" id="scr-caixa">
+    <div class="caixa-wrap">
+      <div class="caixa-left">
+        <div class="cart" id="cart-lista"></div>
+        <div class="total-bar">
+          <div>
+            <div class="lab">Total</div>
+            <div class="val" id="caixa-total">R$ 0,00</div>
+            <div class="cnt" id="caixa-cnt">0 itens</div>
+          </div>
+          <button class="fin" id="caixa-fin" onclick="abrirPagamento()" disabled>Finalizar ➔</button>
+        </div>
+      </div>
+      <div class="caixa-tools">
+        <div class="caixa-search-row">
+          <input class="search" id="caixa-busca" placeholder="🔍 Buscar produto..." oninput="renderCaixaGrid()">
+          <button class="caixa-scan" onclick="abrirScanner('caixa')" title="Escanear código">📷</button>
+        </div>
+        <div class="pgrid" id="caixa-grid"></div>
+        <button class="avulso-open" onclick="abrirAvulso()">🔢 Valor avulso (calculadora)</button>
+      </div>
+    </div>
   </div>
 
   <!-- ══════════ ESTOQUE ══════════ -->
@@ -292,6 +394,7 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
   <!-- BOTTOM NAV -->
   <div class="bnav">
     <button class="bi on" data-scr="dash" onclick="nav(this)"><span class="ic">📊</span><span>Resumo</span></button>
+    <button class="bi" data-scr="caixa" onclick="nav(this)"><span class="ic">🛒</span><span>Caixa</span></button>
     <button class="bi" data-scr="estoque" onclick="nav(this)"><span class="ic">🍾</span><span>Estoque</span></button>
     <button class="bi" data-scr="entrada" onclick="nav(this)"><span class="ic">⬇️</span><span>Entrada</span></button>
     <button class="bi" data-scr="saida" onclick="nav(this)"><span class="ic">⬆️</span><span>Saída</span></button>
@@ -336,6 +439,53 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
     <button class="btn" onclick="salvarProduto()">Salvar produto</button>
     <button class="btn-sm" style="width:100%;margin-top:8px" onclick="fecharModal()">Cancelar</button>
   </div>
+</div>
+
+<!-- MODAL VALOR AVULSO (calculadora) -->
+<div class="modal-bg" id="modal-avulso">
+  <div class="modal">
+    <h3>🔢 Valor avulso</h3>
+    <div class="calc-disp" id="calc-disp">0</div>
+    <div class="keys">
+      <button onclick="calcNum('7')">7</button><button onclick="calcNum('8')">8</button><button onclick="calcNum('9')">9</button>
+      <button onclick="calcNum('4')">4</button><button onclick="calcNum('5')">5</button><button onclick="calcNum('6')">6</button>
+      <button onclick="calcNum('1')">1</button><button onclick="calcNum('2')">2</button><button onclick="calcNum('3')">3</button>
+      <button onclick="calcNum('0')">0</button><button onclick="calcNum('00')">00</button><button class="k-op" onclick="calcBack()">⌫</button>
+      <button class="k-op" onclick="calcClear()">C</button><button class="k-op" onclick="calcPlus()">+</button><button class="k-eq" onclick="calcAddAvulso()">➕ Add</button>
+    </div>
+    <div class="caixa-hint" id="calc-hint" style="min-height:14px"></div>
+    <button class="btn-sm" style="width:100%;margin-top:6px" onclick="fecharAvulso()">Fechar</button>
+  </div>
+</div>
+
+<!-- MODAL PAGAMENTO -->
+<div class="modal-bg" id="modal-pay">
+  <div class="modal">
+    <h3>Pagamento</h3>
+    <div class="pay-total"><div class="l">Total a pagar</div><div class="v" id="pay-total">R$ 0,00</div></div>
+    <div class="pay-methods">
+      <button class="pm on" data-m="Dinheiro" onclick="selPagto(this)"><span class="i">💵</span>Dinheiro</button>
+      <button class="pm" data-m="Cartão" onclick="selPagto(this)"><span class="i">💳</span>Cartão</button>
+      <button class="pm" data-m="Pix" onclick="selPagto(this)"><span class="i">📱</span>Pix</button>
+    </div>
+    <div id="pay-dinheiro">
+      <div class="field"><label>Valor recebido (R$)</label>
+        <input type="number" id="pay-recebido" min="0" step="0.01" placeholder="0,00" inputmode="decimal" oninput="calcTroco()"></div>
+      <div class="troco-box"><span class="tl">Troco</span><span class="tv" id="pay-troco">R$ 0,00</span></div>
+    </div>
+    <button class="btn green" onclick="confirmarVenda()">✅ Confirmar venda</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px" onclick="fecharPagamento()">Cancelar</button>
+  </div>
+</div>
+
+<!-- TELA FINAL PRO CLIENTE -->
+<div class="cust-overlay" id="cust-final">
+  <div class="ok">✅</div>
+  <div class="tit">Venda concluída</div>
+  <div class="big-total" id="cust-total">R$ 0,00</div>
+  <div class="sub" id="cust-sub"></div>
+  <div class="troco-line" id="cust-troco" style="display:none">Troco<b id="cust-troco-v">R$ 0,00</b></div>
+  <button class="nova" onclick="novaVenda()">🛒 Nova venda</button>
 </div>
 
 <!-- MODAL SCANNER -->
@@ -516,7 +666,7 @@ let catFiltro = 'Todas';
 let histFiltro = 'todos';
 
 function renderTudo(){
-  renderDash(); renderEstoque(); renderSelects(); renderEntradas(); renderSaidas(); renderHist();
+  renderDash(); renderCaixa(); renderEstoque(); renderSelects(); renderEntradas(); renderSaidas(); renderHist();
 }
 
 function renderDash(){
@@ -597,15 +747,17 @@ function renderSelects(){
 
 function movHTML(m){
   const p = prodPorId(m.prodId);
+  const nome = p ? p.nome : (m.nome || '(produto excluído)');
+  const un = p ? p.un : (m.un || '');
   const total = m.qtd * (m.valor||0);
   return `<div class="card mov ${m.tipo==='entrada'?'in':'out'}">
     <div class="arrow">${m.tipo==='entrada'?'⬇':'⬆'}</div>
     <div class="info">
-      <div class="nm">${esc(p?p.nome:'(produto excluído)')}</div>
+      <div class="nm">${esc(nome)}</div>
       <div class="meta">${esc(m.motivo)}${m.obs?' · '+esc(m.obs):''} · ${fmtData(m.ts)}</div>
     </div>
     <div class="amt">
-      <div class="q">${m.tipo==='entrada'?'+':'-'}${m.qtd} ${p?p.un:''}</div>
+      <div class="q">${m.tipo==='entrada'?'+':'-'}${m.qtd} ${un}</div>
       ${total>0?`<div class="m">${fmt(total)}</div>`:''}
     </div>
   </div>`;
@@ -633,6 +785,160 @@ function renderHist(){
   if(histFiltro!=='todos') l = l.filter(m=>m.tipo===histFiltro);
   document.getElementById('lista-hist').innerHTML = l.length ? l.map(movHTML).join('')
     : `<div class="empty"><div class="big">🕓</div><p>Nenhuma movimentação.</p></div>`;
+}
+
+/* ═══════════════ CAIXA / PDV ═══════════════ */
+let carrinho = []; // {prodId|null, nome, un, preco, qtd}
+
+function renderCaixa(){ renderCaixaGrid(); renderCarrinho(); }
+
+function renderCaixaGrid(){
+  const q = (document.getElementById('caixa-busca').value||'').toLowerCase();
+  let lista = db.produtos.filter(p => !q || p.nome.toLowerCase().includes(q) || (p.codigo||'').includes(q));
+  lista.sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
+  const grid = document.getElementById('caixa-grid');
+  grid.innerHTML = lista.length ? lista.map(p=>{
+    const noCarr = carrinho.filter(i=>i.prodId===p.id).reduce((s,i)=>s+i.qtd,0);
+    const esgotado = p.estoque - noCarr <= 0;
+    return `<button class="pbtn ${esgotado?'off':''}" onclick="addProdutoCaixa('${p.id}')">
+      <span class="e">${CAT_EMOJI[p.cat]||'📦'}</span>
+      <span class="pn">${esc(p.nome)}</span>
+      ${esgotado?'<span class="pz">esgotado</span>':`<span class="pp">${fmt(p.venda)}</span>`}
+    </button>`;
+  }).join('') : `<div class="cart-empty" style="grid-column:1/-1;padding:18px">${db.produtos.length?'Nenhum produto encontrado.':'Cadastre produtos no Estoque para vender aqui.'}</div>`;
+}
+
+function addProdutoCaixa(prodId){
+  const p = prodPorId(prodId); if(!p) return;
+  const noCarr = carrinho.filter(i=>i.prodId===prodId).reduce((s,i)=>s+i.qtd,0);
+  if(noCarr + 1 > p.estoque){ toast(`❌ Estoque insuficiente (${p.estoque} ${p.un})`); return; }
+  const item = carrinho.find(i=>i.prodId===prodId);
+  if(item) item.qtd++;
+  else carrinho.push({prodId, nome:p.nome, un:p.un, preco:p.venda, qtd:1});
+  if(navigator.vibrate) navigator.vibrate(15);
+  renderCaixa();
+}
+
+function abrirAvulso(){ document.getElementById('modal-avulso').classList.add('show'); calcClear(); }
+function fecharAvulso(){ document.getElementById('modal-avulso').classList.remove('show'); }
+
+/* mini calculadora: soma valores digitados */
+let calcAtual = '0', calcAcum = 0;
+function calcRender(){ document.getElementById('calc-disp').textContent = 'R$ ' + (Number(calcAtual)/100).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function calcNum(n){ calcAtual = String((calcAtual==='0'?'':calcAtual) + n).replace(/^0+/,'').slice(0,9) || '0'; calcRender(); }
+function calcBack(){ calcAtual = calcAtual.length>1 ? calcAtual.slice(0,-1) : '0'; calcRender(); }
+function calcClear(){ calcAtual='0'; calcAcum=0; document.getElementById('calc-hint').textContent=''; calcRender(); }
+function calcPlus(){ // acumula o valor atual e zera o visor para somar o próximo
+  calcAcum += Number(calcAtual)/100; calcAtual='0';
+  document.getElementById('calc-hint').textContent = 'Subtotal acumulado: ' + fmt(calcAcum) + ' — digite o próximo e toque + ou Add';
+  calcRender();
+}
+function calcAddAvulso(){
+  const valor = calcAcum + Number(calcAtual)/100;
+  if(valor <= 0){ toast('⚠️ Digite um valor'); return; }
+  carrinho.push({prodId:null, nome:'Item avulso', un:'un', preco:valor, qtd:1});
+  fecharAvulso(); renderCaixa();
+  toast('➕ ' + fmt(valor) + ' adicionado');
+}
+
+function renderCarrinho(){
+  const el = document.getElementById('cart-lista');
+  if(!carrinho.length){
+    el.innerHTML = `<div class="cart-empty"><div class="big">🛒</div>Toque nos produtos abaixo<br>para montar a venda.</div>`;
+  }else{
+    el.innerHTML = carrinho.map((i,ix)=>`
+      <div class="cart-item">
+        <div class="nm">${esc(i.nome)}<small>${fmt(i.preco)} cada</small></div>
+        <div class="stepper">
+          <button onclick="mudarQtd(${ix},-1)">−</button>
+          <span class="q">${i.qtd}</span>
+          <button onclick="mudarQtd(${ix},1)">+</button>
+        </div>
+        <div class="sub">${fmt(i.preco*i.qtd)}</div>
+        <button class="del" onclick="removerItem(${ix})">✕</button>
+      </div>`).join('');
+  }
+  const total = carrinho.reduce((s,i)=>s+i.preco*i.qtd,0);
+  const nItens = carrinho.reduce((s,i)=>s+i.qtd,0);
+  document.getElementById('caixa-total').textContent = fmt(total);
+  document.getElementById('caixa-cnt').textContent = nItens + (nItens===1?' item':' itens');
+  document.getElementById('caixa-fin').disabled = nItens===0;
+}
+
+function mudarQtd(ix, d){
+  const i = carrinho[ix]; if(!i) return;
+  if(d>0 && i.prodId){
+    const p = prodPorId(i.prodId);
+    const noCarr = carrinho.filter(x=>x.prodId===i.prodId).reduce((s,x)=>s+x.qtd,0);
+    if(p && noCarr+1 > p.estoque){ toast(`❌ Só há ${p.estoque} ${p.un} em estoque`); return; }
+  }
+  i.qtd += d;
+  if(i.qtd <= 0) carrinho.splice(ix,1);
+  renderCaixa();
+}
+function removerItem(ix){ carrinho.splice(ix,1); renderCaixa(); }
+
+/* ── Pagamento ── */
+let pagtoSel = 'Dinheiro';
+function abrirPagamento(){
+  if(!carrinho.length) return;
+  const total = carrinho.reduce((s,i)=>s+i.preco*i.qtd,0);
+  document.getElementById('pay-total').textContent = fmt(total);
+  document.getElementById('pay-recebido').value = '';
+  document.getElementById('pay-troco').textContent = fmt(0);
+  pagtoSel = 'Dinheiro';
+  document.querySelectorAll('.pm').forEach(b=>b.classList.toggle('on', b.dataset.m==='Dinheiro'));
+  document.getElementById('pay-dinheiro').style.display = 'block';
+  document.getElementById('modal-pay').classList.add('show');
+}
+function fecharPagamento(){ document.getElementById('modal-pay').classList.remove('show'); }
+function selPagto(btn){
+  pagtoSel = btn.dataset.m;
+  document.querySelectorAll('.pm').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('pay-dinheiro').style.display = pagtoSel==='Dinheiro' ? 'block' : 'none';
+}
+function calcTroco(){
+  const total = carrinho.reduce((s,i)=>s+i.preco*i.qtd,0);
+  const rec = parseFloat(document.getElementById('pay-recebido').value) || 0;
+  document.getElementById('pay-troco').textContent = fmt(Math.max(0, rec - total));
+}
+
+function confirmarVenda(){
+  const total = carrinho.reduce((s,i)=>s+i.preco*i.qtd,0);
+  const rec = parseFloat(document.getElementById('pay-recebido').value) || 0;
+  if(pagtoSel==='Dinheiro' && rec>0 && rec < total){
+    toast('⚠️ Valor recebido menor que o total'); return;
+  }
+  // baixa de estoque + movimentos
+  const ts = Date.now();
+  carrinho.forEach(i=>{
+    if(i.prodId){ const p = prodPorId(i.prodId); if(p) p.estoque = Math.max(0, p.estoque - i.qtd); }
+    db.movimentos.push({id:uid(), tipo:'saida', prodId:i.prodId, nome:i.nome, un:i.un,
+      qtd:i.qtd, valor:i.preco, motivo:'Venda', obs:'Caixa · '+pagtoSel, ts});
+  });
+  salvar();
+  const troco = pagtoSel==='Dinheiro' ? Math.max(0, rec-total) : 0;
+  fecharPagamento();
+  mostrarFinalCliente(total, pagtoSel, troco);
+  carrinho = [];
+  renderTudo();
+}
+
+function mostrarFinalCliente(total, forma, troco){
+  document.getElementById('cust-total').textContent = fmt(total);
+  document.getElementById('cust-sub').textContent = 'Pagamento: ' + forma + ' · ' + new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const tl = document.getElementById('cust-troco');
+  if(troco > 0){ document.getElementById('cust-troco-v').textContent = fmt(troco); tl.style.display='block'; }
+  else tl.style.display='none';
+  document.getElementById('cust-final').classList.add('show');
+  if(navigator.vibrate) navigator.vibrate([40,60,40]);
+}
+function novaVenda(){
+  document.getElementById('cust-final').classList.remove('show');
+  navTo('caixa');
+  document.getElementById('caixa-busca').value='';
+  renderCaixa();
 }
 
 /* ═══════════════ SCANNER (QR + código de barras) ═══════════════ */
@@ -729,6 +1035,13 @@ function codigoDetectado(code){
   }
 
   const p = db.produtos.find(x => x.codigo === code);
+
+  if(scanDestino === 'caixa'){
+    if(p){ addProdutoCaixa(p.id); toast('🛒 ' + p.nome + ' adicionado'); }
+    else { mostrarResultadoScan(code, null); }
+    return;
+  }
+
   mostrarResultadoScan(code, p);
 }
 
@@ -814,6 +1127,12 @@ document.getElementById('modal-scan').addEventListener('click', e=>{
 });
 document.getElementById('modal-scan-res').addEventListener('click', e=>{
   if(e.target.id==='modal-scan-res') fecharScanRes();
+});
+document.getElementById('modal-avulso').addEventListener('click', e=>{
+  if(e.target.id==='modal-avulso') fecharAvulso();
+});
+document.getElementById('modal-pay').addEventListener('click', e=>{
+  if(e.target.id==='modal-pay') fecharPagamento();
 });
 </script>
 </body>
