@@ -139,6 +139,41 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
 .row-between{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .actions{display:flex;gap:6px;margin-top:10px}
 .hr{border:none;border-top:1px solid var(--border);margin:10px 0}
+
+/* SCAN BUTTON (header) */
+.scan-btn{position:absolute;top:18px;right:16px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:11.5px;font-weight:800;padding:9px 14px;border-radius:20px;cursor:pointer;font-family:inherit;letter-spacing:.02em;backdrop-filter:blur(6px);transition:all .2s}
+.scan-btn:hover{background:rgba(255,255,255,.24)}
+
+/* SCANNER */
+.scan-box{position:relative;width:100%;aspect-ratio:4/3;background:#111;border-radius:12px;overflow:hidden;margin-bottom:10px}
+.scan-box video{width:100%;height:100%;object-fit:cover;display:block}
+.scan-frame{position:absolute;inset:14%;border:2.5px solid rgba(240,201,106,.9);border-radius:12px;pointer-events:none;box-shadow:0 0 0 999px rgba(0,0,0,.28)}
+#scan-status{font-size:11.5px;color:var(--text-2);font-weight:600;text-align:center;margin-bottom:12px;min-height:16px}
+
+/* SCAN RESULT */
+.scan-res-prod{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 14px;margin-bottom:12px}
+.code-tag{display:inline-block;font-size:10px;font-weight:700;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);padding:2px 8px;border-radius:6px;font-family:ui-monospace,monospace;letter-spacing:.02em}
+
+/* ═══════════ DESKTOP ═══════════ */
+@media(min-width:900px){
+  body{padding:28px 20px}
+  .app{max-width:1160px;display:grid;grid-template-columns:230px 1fr;grid-template-rows:auto 1fr;border-radius:20px;min-height:calc(100vh - 56px)}
+  .hdr{grid-column:1/-1;padding:22px 28px 18px}
+  .hdr h1{font-size:23px}
+  .scan-btn{top:22px;right:28px;font-size:12.5px;padding:10px 18px}
+  .bnav{grid-row:2;grid-column:1;flex-direction:column;justify-content:flex-start;gap:4px;border-top:none;border-right:1px solid var(--border);padding:16px 12px;background:var(--surface)}
+  .bi{flex:0 0 auto;flex-direction:row;justify-content:flex-start;gap:12px;padding:12px 16px;border-radius:10px;width:100%}
+  .bi span{font-size:12.5px;text-transform:none;letter-spacing:0}
+  .bi.on{background:#fff;box-shadow:var(--shadow)}
+  .scr{grid-row:2;grid-column:2;padding:24px 28px}
+  .stats{grid-template-columns:repeat(4,1fr)}
+  .stat .v{font-size:24px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+  #lista-estoque{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  #lista-estoque .card,#lista-estoque .empty{margin-bottom:0}
+  #lista-estoque .empty{grid-column:1/-1}
+  .search{max-width:420px}
+}
 </style>
 </head>
 <body>
@@ -147,6 +182,7 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
   <div class="hdr">
     <h1><span class="glass">🍷</span> MINHA ADEGA</h1>
     <p>Controle de estoque — entradas, saídas e inventário</p>
+    <button class="scan-btn" onclick="abrirScanner()">📷 Escanear</button>
     <div class="gold-line"></div>
   </div>
 
@@ -177,6 +213,8 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
 
   <!-- ══════════ ENTRADA ══════════ -->
   <div class="scr" id="scr-entrada">
+   <div class="cols">
+   <div>
     <div class="lbl">Registrar entrada (compra / reposição)</div>
     <div class="card">
       <div class="field"><label>Produto</label>
@@ -193,12 +231,18 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
         <input type="text" id="ent-obs" placeholder="Ex.: NF 1234"></div>
       <button class="btn green" onclick="registrarEntrada()">⬇ Confirmar entrada</button>
     </div>
+   </div>
+   <div>
     <div class="lbl">Entradas recentes</div>
     <div id="lista-entradas"></div>
+   </div>
+   </div>
   </div>
 
   <!-- ══════════ SAÍDA ══════════ -->
   <div class="scr" id="scr-saida">
+   <div class="cols">
+   <div>
     <div class="lbl">Registrar saída (venda / perda / consumo)</div>
     <div class="card">
       <div class="field"><label>Produto</label>
@@ -221,8 +265,12 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
         <input type="text" id="sai-obs" placeholder="Ex.: cliente João"></div>
       <button class="btn red" onclick="registrarSaida()">⬆ Confirmar saída</button>
     </div>
+   </div>
+   <div>
     <div class="lbl">Saídas recentes</div>
     <div id="lista-saidas"></div>
+   </div>
+   </div>
   </div>
 
   <!-- ══════════ HISTÓRICO ══════════ -->
@@ -258,6 +306,11 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
     <input type="hidden" id="p-id">
     <div class="field"><label>Nome</label>
       <input type="text" id="p-nome" placeholder="Ex.: Vinho Malbec Reserva 750ml"></div>
+    <div class="field"><label>Código de barras / QR (opcional)</label>
+      <div style="display:flex;gap:6px">
+        <input type="text" id="p-cod" placeholder="Ex.: 7891234567890" style="flex:1" inputmode="numeric">
+        <button class="btn-sm" style="flex-shrink:0" onclick="scanParaCadastro()">📷</button>
+      </div></div>
     <div class="frow">
       <div class="field"><label>Categoria</label>
         <select id="p-cat">
@@ -283,6 +336,27 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
     <button class="btn" onclick="salvarProduto()">Salvar produto</button>
     <button class="btn-sm" style="width:100%;margin-top:8px" onclick="fecharModal()">Cancelar</button>
   </div>
+</div>
+
+<!-- MODAL SCANNER -->
+<div class="modal-bg" id="modal-scan">
+  <div class="modal">
+    <h3>📷 Escanear código</h3>
+    <div class="scan-box"><video id="scan-video" playsinline muted></video><div class="scan-frame"></div></div>
+    <div id="scan-status"></div>
+    <div style="display:flex;gap:6px;align-items:flex-end">
+      <div class="field" style="margin-bottom:0;flex:1"><label>Ou digite o código</label>
+        <input type="text" id="scan-manual" placeholder="Ex.: 7891234567890" inputmode="numeric"
+          onkeydown="if(event.key==='Enter')codigoManual()"></div>
+      <button class="btn" style="width:auto;margin-top:0;padding:11px 18px;flex-shrink:0" onclick="codigoManual()">OK</button>
+    </div>
+    <button class="btn-sm" style="width:100%;margin-top:12px" onclick="fecharScanner()">Fechar</button>
+  </div>
+</div>
+
+<!-- MODAL RESULTADO DO SCAN -->
+<div class="modal-bg" id="modal-scan-res">
+  <div class="modal" id="scan-res-body"></div>
 </div>
 
 <div id="toast"></div>
@@ -329,11 +403,12 @@ function nav(btn){
 }
 
 /* ═══════════════ PRODUTOS ═══════════════ */
-function abrirProduto(id){
+function abrirProduto(id, codigoPre){
   const p = id ? prodPorId(id) : null;
   document.getElementById('modal-titulo').textContent = p ? 'Editar produto' : 'Cadastrar produto';
   document.getElementById('p-id').value   = p ? p.id : '';
   document.getElementById('p-nome').value = p ? p.nome : '';
+  document.getElementById('p-cod').value  = p ? (p.codigo||'') : (codigoPre||'');
   document.getElementById('p-cat').value  = p ? p.cat : 'Vinho tinto';
   document.getElementById('p-un').value   = p ? p.un : 'un';
   document.getElementById('p-custo').value= p ? p.custo : '';
@@ -348,6 +423,7 @@ function fecharModal(){ document.getElementById('modal-prod').classList.remove('
 function salvarProduto(){
   const id    = document.getElementById('p-id').value;
   const nome  = document.getElementById('p-nome').value.trim();
+  const codigo= document.getElementById('p-cod').value.trim();
   const cat   = document.getElementById('p-cat').value;
   const un    = document.getElementById('p-un').value;
   const custo = parseFloat(document.getElementById('p-custo').value) || 0;
@@ -355,13 +431,16 @@ function salvarProduto(){
   const est   = Math.max(0, parseInt(document.getElementById('p-est').value) || 0);
   const min   = Math.max(0, parseInt(document.getElementById('p-min').value) || 0);
   if(!nome){ toast('⚠️ Informe o nome do produto'); return; }
+  if(codigo && db.produtos.some(p=>p.codigo===codigo && p.id!==id)){
+    toast('⚠️ Já existe outro produto com este código'); return;
+  }
 
   if(id){
     const p = prodPorId(id);
-    Object.assign(p, {nome, cat, un, custo, venda, min});
+    Object.assign(p, {nome, codigo, cat, un, custo, venda, min});
     toast('✅ Produto atualizado');
   }else{
-    const p = {id: uid(), nome, cat, un, custo, venda, min, estoque: est};
+    const p = {id: uid(), nome, codigo, cat, un, custo, venda, min, estoque: est};
     db.produtos.push(p);
     if(est > 0) db.movimentos.push({id: uid(), tipo:'entrada', prodId: p.id, qtd: est,
       valor: custo, motivo:'Estoque inicial', obs:'', ts: Date.now()});
@@ -477,7 +556,7 @@ function renderEstoque(){
   const q = (document.getElementById('busca').value||'').toLowerCase();
   let lista = db.produtos.filter(p =>
     (catFiltro==='Todas' || p.cat===catFiltro) &&
-    (!q || p.nome.toLowerCase().includes(q)));
+    (!q || p.nome.toLowerCase().includes(q) || (p.codigo||'').includes(q)));
   lista.sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
 
   document.getElementById('lista-estoque').innerHTML = lista.length ? lista.map(p=>`
@@ -487,6 +566,7 @@ function renderEstoque(){
         <div class="info">
           <div class="nm">${esc(p.nome)}</div>
           <div class="meta"><span class="badge cat">${esc(p.cat)}</span>
+            ${p.codigo?`<span class="code-tag">${esc(p.codigo)}</span>`:''}
             &nbsp;custo ${fmt(p.custo)} · venda ${fmt(p.venda)}</div>
         </div>
         <div class="qty ${p.estoque===0?'zero':(p.estoque<=p.min?'low':'')}">
@@ -555,6 +635,149 @@ function renderHist(){
     : `<div class="empty"><div class="big">🕓</div><p>Nenhuma movimentação.</p></div>`;
 }
 
+/* ═══════════════ SCANNER (QR + código de barras) ═══════════════ */
+let scanStream = null, scanRAF = null, zxingReader = null, scanDestino = null, ultimoCodigo = '';
+
+function navTo(nome){ nav(document.querySelector(`.bi[data-scr="${nome}"]`)); }
+
+async function abrirScanner(destino){
+  scanDestino = destino || null; // 'cadastro' preenche o campo do produto
+  document.getElementById('modal-scan').classList.add('show');
+  document.getElementById('scan-manual').value = '';
+  const st = document.getElementById('scan-status');
+  const v = document.getElementById('scan-video');
+  st.textContent = 'Abrindo câmera...';
+
+  try{
+    if('BarcodeDetector' in window){
+      scanStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+      v.srcObject = scanStream;
+      await v.play();
+      st.textContent = 'Aponte a câmera para o QR code ou código de barras';
+      const det = new BarcodeDetector({formats:['qr_code','ean_13','ean_8','upc_a','upc_e','code_128','code_39','itf']});
+      const tick = async () => {
+        if(!scanStream) return;
+        try{
+          const codes = await det.detect(v);
+          if(codes.length){ codigoDetectado(codes[0].rawValue); return; }
+        }catch(e){/* frame ainda não pronto */}
+        scanRAF = requestAnimationFrame(tick);
+      };
+      scanRAF = requestAnimationFrame(tick);
+    }else{
+      st.textContent = 'Carregando leitor de códigos...';
+      await carregarZXing();
+      zxingReader = new ZXing.BrowserMultiFormatReader();
+      await zxingReader.decodeFromVideoDevice(undefined, 'scan-video', (result) => {
+        if(result) codigoDetectado(result.getText());
+      });
+      st.textContent = 'Aponte a câmera para o QR code ou código de barras';
+    }
+  }catch(e){
+    st.textContent = '⚠️ Câmera indisponível. Abra pelo link https (GitHub Pages) e permita o acesso à câmera — ou digite o código abaixo.';
+  }
+}
+
+function carregarZXing(){
+  if(window.ZXing) return Promise.resolve();
+  return new Promise((ok, err) => {
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/@zxing/library@0.21.3/umd/index.min.js';
+    s.onload = ok; s.onerror = () => err(new Error('sem internet'));
+    document.head.appendChild(s);
+  });
+}
+
+function pararCamera(){
+  if(scanRAF){ cancelAnimationFrame(scanRAF); scanRAF = null; }
+  if(scanStream){ scanStream.getTracks().forEach(t=>t.stop()); scanStream = null; }
+  if(zxingReader){ try{ zxingReader.reset(); }catch(e){} zxingReader = null; }
+  const v = document.getElementById('scan-video');
+  v.srcObject = null;
+}
+
+function fecharScanner(){
+  pararCamera();
+  document.getElementById('modal-scan').classList.remove('show');
+}
+
+function codigoManual(){
+  const c = document.getElementById('scan-manual').value.trim();
+  if(!c){ toast('⚠️ Digite um código'); return; }
+  codigoDetectado(c);
+}
+
+function scanParaCadastro(){
+  fecharModal();
+  abrirScanner('cadastro');
+}
+
+function codigoDetectado(code){
+  code = String(code).trim();
+  ultimoCodigo = code;
+  fecharScanner();
+  if(navigator.vibrate) navigator.vibrate(80);
+
+  if(scanDestino === 'cadastro'){
+    const idAtual = document.getElementById('p-id').value;
+    document.getElementById('modal-prod').classList.add('show');
+    document.getElementById('p-cod').value = code;
+    const dono = db.produtos.find(p=>p.codigo===code && p.id!==idAtual);
+    if(dono) toast(`⚠️ Código já usado em "${dono.nome}"`);
+    else toast('✅ Código capturado: ' + code);
+    return;
+  }
+
+  const p = db.produtos.find(x => x.codigo === code);
+  mostrarResultadoScan(code, p);
+}
+
+function mostrarResultadoScan(code, p){
+  const body = document.getElementById('scan-res-body');
+  if(p){
+    body.innerHTML = `
+      <h3>Produto encontrado</h3>
+      <div class="scan-res-prod">
+        <div class="emoji" style="width:44px;height:44px;border-radius:10px;background:linear-gradient(140deg,var(--wine),var(--wine-l));display:flex;align-items:center;justify-content:center;font-size:20px">${CAT_EMOJI[p.cat]||'📦'}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:800">${esc(p.nome)}</div>
+          <div style="font-size:11px;color:var(--text-2);margin-top:3px">
+            <span class="code-tag">${esc(code)}</span> · estoque: <b>${p.estoque} ${p.un}</b>
+            ${p.estoque<=p.min?' <span class="badge low">baixo</span>':''}</div>
+        </div>
+      </div>
+      <button class="btn red" onclick="scanIrSaida('${p.id}')">⬆ Registrar saída (venda)</button>
+      <button class="btn green" style="margin-top:8px" onclick="scanIrEntrada('${p.id}')">⬇ Registrar entrada</button>
+      <button class="btn-sm" style="width:100%;margin-top:10px" onclick="fecharScanRes();abrirProduto('${p.id}')">✏️ Editar produto</button>
+      <button class="btn-sm" style="width:100%;margin-top:8px" onclick="fecharScanRes()">Fechar</button>`;
+  }else{
+    body.innerHTML = `
+      <h3>Código não cadastrado</h3>
+      <p style="font-size:12px;color:var(--text-2);margin-bottom:14px">
+        Nenhum produto usa o código <span class="code-tag">${esc(code)}</span>.</p>
+      <button class="btn" onclick="fecharScanRes();abrirProduto(null,ultimoCodigo)">+ Cadastrar produto com este código</button>
+      <button class="btn-sm" style="width:100%;margin-top:10px" onclick="fecharScanRes();abrirScanner()">📷 Escanear de novo</button>
+      <button class="btn-sm" style="width:100%;margin-top:8px" onclick="fecharScanRes()">Fechar</button>`;
+  }
+  document.getElementById('modal-scan-res').classList.add('show');
+}
+
+function fecharScanRes(){ document.getElementById('modal-scan-res').classList.remove('show'); }
+
+function scanIrSaida(prodId){
+  fecharScanRes();
+  navTo('saida');
+  document.getElementById('sai-prod').value = prodId;
+  atualizaDisponivel();
+  document.getElementById('sai-qtd').focus();
+}
+function scanIrEntrada(prodId){
+  fecharScanRes();
+  navTo('entrada');
+  document.getElementById('ent-prod').value = prodId;
+  document.getElementById('ent-qtd').focus();
+}
+
 /* ═══════════════ BACKUP ═══════════════ */
 function exportarDados(){
   const blob = new Blob([JSON.stringify(db, null, 2)], {type:'application/json'});
@@ -585,6 +808,12 @@ carregar();
 renderTudo();
 document.getElementById('modal-prod').addEventListener('click', e=>{
   if(e.target.id==='modal-prod') fecharModal();
+});
+document.getElementById('modal-scan').addEventListener('click', e=>{
+  if(e.target.id==='modal-scan') fecharScanner();
+});
+document.getElementById('modal-scan-res').addEventListener('click', e=>{
+  if(e.target.id==='modal-scan-res') fecharScanRes();
 });
 </script>
 </body>
