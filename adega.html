@@ -258,6 +258,27 @@ body{font-family:var(--font);background:var(--surface-2);min-height:100vh;displa
 .cust-overlay .rb.wa{background:#25d366;border-color:#25d366;color:#062b14}
 .cust-overlay .nova{margin-top:14px;background:#fff;color:var(--wine);border:none;padding:15px 40px;border-radius:26px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(0,0,0,.3)}
 
+/* ═══════════ FLUXO / GRÁFICO ═══════════ */
+.seg{display:flex;background:var(--surface-2);border:1.5px solid var(--border);border-radius:11px;padding:3px;gap:2px;margin-bottom:10px}
+.seg button{flex:1;border:none;background:none;padding:8px 4px;border-radius:8px;font-size:11px;font-weight:800;color:var(--text-2);cursor:pointer;font-family:inherit;transition:all .15s;letter-spacing:.01em}
+.seg button.on{background:#fff;color:var(--wine);box-shadow:var(--shadow)}
+.metric-seg{margin-bottom:14px}
+.metric-seg button.on{background:var(--wine);color:#fff}
+.insight{background:linear-gradient(135deg,var(--wine),var(--wine-d));color:#fff;border-radius:12px;padding:13px 15px;margin-bottom:14px;display:flex;align-items:center;gap:11px}
+.insight .ic{font-size:24px;flex-shrink:0}
+.insight .tx{font-size:12px;line-height:1.35;font-weight:500;opacity:.92}
+.insight .tx b{font-weight:800;opacity:1}
+.chart-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 12px 10px;box-shadow:var(--shadow);margin-bottom:10px}
+.chart-title{font-size:11px;font-weight:800;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;padding:0 4px 8px;display:flex;justify-content:space-between;align-items:center}
+.chart-title .peak-dot{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;color:var(--text-3);text-transform:none;letter-spacing:0;font-weight:700}
+.chart-title .peak-dot i{width:9px;height:9px;border-radius:2px;background:var(--gold);display:inline-block;border:1px solid #b8862f}
+.chart-wrap{position:relative;width:100%}
+.chart-wrap canvas{display:block;width:100%;height:auto;touch-action:none}
+.chart-tip{position:absolute;pointer-events:none;background:var(--text);color:#fff;font-size:11px;font-weight:700;padding:6px 9px;border-radius:8px;white-space:nowrap;transform:translate(-50%,-115%);opacity:0;transition:opacity .12s;box-shadow:var(--shadow-md);z-index:5}
+.chart-tip.show{opacity:1}
+.chart-tip small{display:block;font-weight:500;opacity:.75;font-size:9.5px}
+.flux-stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:4px}
+
 /* ═══════════ DESKTOP ═══════════ */
 @media(min-width:900px){
   body{padding:28px 20px}
@@ -336,6 +357,31 @@ body{font-family:var(--font);background:var(--surface-2);min-height:100vh;displa
         <button class="avulso-open" onclick="abrirAvulso()">🔢 Valor avulso (calculadora)</button>
       </div>
     </div>
+  </div>
+
+  <!-- ══════════ FLUXO / GRÁFICO ══════════ -->
+  <div class="scr" id="scr-fluxo">
+    <div class="lbl">Fluxo de clientes</div>
+    <div class="seg" id="fluxo-periodo">
+      <button class="on" data-p="hora" onclick="setFluxoPeriodo(this)">Hora</button>
+      <button data-p="dia" onclick="setFluxoPeriodo(this)">Dia</button>
+      <button data-p="semana" onclick="setFluxoPeriodo(this)">Semana</button>
+      <button data-p="mes" onclick="setFluxoPeriodo(this)">Mês</button>
+    </div>
+    <div class="seg metric-seg" id="fluxo-metric">
+      <button class="on" data-m="clientes" onclick="setFluxoMetric(this)">👥 Clientes</button>
+      <button data-m="faturamento" onclick="setFluxoMetric(this)">💰 Faturamento</button>
+    </div>
+    <div id="fluxo-insight"></div>
+    <div class="chart-card">
+      <div class="chart-title"><span id="chart-title-txt">Clientes por hora</span>
+        <span class="peak-dot"><i></i> pico</span></div>
+      <div class="chart-wrap">
+        <canvas id="fluxo-canvas"></canvas>
+        <div class="chart-tip" id="fluxo-tip"></div>
+      </div>
+    </div>
+    <div class="flux-stats" id="fluxo-stats"></div>
   </div>
 
   <!-- ══════════ ESTOQUE ══════════ -->
@@ -428,6 +474,7 @@ body{font-family:var(--font);background:var(--surface-2);min-height:100vh;displa
   <div class="bnav">
     <button class="bi on" data-scr="dash" onclick="nav(this)"><span class="ic">📊</span><span>Resumo</span></button>
     <button class="bi" data-scr="caixa" onclick="nav(this)"><span class="ic">🛒</span><span>Caixa</span></button>
+    <button class="bi" data-scr="fluxo" onclick="nav(this)"><span class="ic">📈</span><span>Fluxo</span></button>
     <button class="bi" data-scr="estoque" onclick="nav(this)"><span class="ic">🍾</span><span>Estoque</span></button>
     <button class="bi" data-scr="entrada" onclick="nav(this)"><span class="ic">⬇️</span><span>Entrada</span></button>
     <button class="bi" data-scr="saida" onclick="nav(this)"><span class="ic">⬆️</span><span>Saída</span></button>
@@ -730,7 +777,7 @@ let catFiltro = 'Todas';
 let histFiltro = 'todos';
 
 function renderTudo(){
-  renderDash(); renderCaixa(); renderEstoque(); renderSelects(); renderEntradas(); renderSaidas(); renderHist();
+  renderDash(); renderCaixa(); renderFluxo(); renderEstoque(); renderSelects(); renderEntradas(); renderSaidas(); renderHist();
 }
 
 function renderDash(){
@@ -1107,6 +1154,156 @@ function novaVenda(){
   renderCaixa();
 }
 
+/* ═══════════════ FLUXO / GRÁFICO ═══════════════ */
+let fluxoPeriodo = 'hora', fluxoMetric = 'clientes', fluxoBars = [], fluxoDadosCache = null;
+
+function setFluxoPeriodo(btn){
+  fluxoPeriodo = btn.dataset.p;
+  document.querySelectorAll('#fluxo-periodo button').forEach(b=>b.classList.toggle('on', b===btn));
+  renderFluxo();
+}
+function setFluxoMetric(btn){
+  fluxoMetric = btn.dataset.m;
+  document.querySelectorAll('#fluxo-metric button').forEach(b=>b.classList.toggle('on', b===btn));
+  renderFluxo();
+}
+
+/* agrupa movimentos de venda em atendimentos (1 por ts) */
+function vendasList(){
+  const map = new Map();
+  db.movimentos.forEach(m=>{
+    if(m.tipo==='saida' && m.motivo==='Venda'){
+      const cur = map.get(m.ts) || {ts:m.ts, total:0};
+      cur.total += m.qtd*(m.valor||0);
+      map.set(m.ts, cur);
+    }
+  });
+  return [...map.values()];
+}
+const fmtMetricCurto = v => fluxoMetric==='clientes' ? String(Math.round(v)) : 'R$ '+Math.round(v).toLocaleString('pt-BR');
+
+function fluxoDados(){
+  const vendas = vendasList();
+  const mv = v => fluxoMetric==='clientes' ? 1 : v.total;
+  const now = new Date();
+  let labels=[], full=[], vals=[];
+  if(fluxoPeriodo==='hora'){
+    vals=Array(24).fill(0);
+    vendas.forEach(v=>{ vals[new Date(v.ts).getHours()] += mv(v); });
+    labels=vals.map((_,h)=> h%3===0 ? h+'h' : '');
+    full=vals.map((_,h)=> `${String(h).padStart(2,'0')}h–${String((h+1)%24).padStart(2,'0')}h`);
+  }else if(fluxoPeriodo==='dia'){
+    const nm=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    const fn=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+    vals=Array(7).fill(0);
+    vendas.forEach(v=>{ vals[new Date(v.ts).getDay()] += mv(v); });
+    labels=nm; full=fn;
+  }else if(fluxoPeriodo==='semana'){
+    const N=8; vals=Array(N).fill(0);
+    const seg = d=>{ const x=new Date(d); const dw=(x.getDay()+6)%7; x.setDate(x.getDate()-dw); x.setHours(0,0,0,0); return x; };
+    const starts=[]; const cur=seg(now);
+    for(let i=N-1;i>=0;i--){ const s=new Date(cur); s.setDate(s.getDate()-i*7); starts.push(s); }
+    vendas.forEach(v=>{ const s=seg(v.ts).getTime(); const idx=starts.findIndex(x=>x.getTime()===s); if(idx>=0) vals[idx]+=mv(v); });
+    labels=starts.map(s=> s.getDate()+'/'+(s.getMonth()+1));
+    full=starts.map(s=> 'Semana de '+s.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}));
+  }else{
+    const N=12; vals=Array(N).fill(0);
+    const nm=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    const base=[]; for(let i=N-1;i>=0;i--) base.push(new Date(now.getFullYear(), now.getMonth()-i, 1));
+    vendas.forEach(v=>{ const d=new Date(v.ts); const idx=base.findIndex(x=>x.getFullYear()===d.getFullYear()&&x.getMonth()===d.getMonth()); if(idx>=0) vals[idx]+=mv(v); });
+    labels=base.map(d=> nm[d.getMonth()]);
+    full=base.map(d=> nm[d.getMonth()]+'/'+d.getFullYear());
+  }
+  return {labels, full, vals, nVendas:vendas.length, fatTotal:vendas.reduce((s,v)=>s+v.total,0)};
+}
+
+function roundRectTop(ctx,x,y,w,h,r){
+  r=Math.max(0,Math.min(r,w/2,h));
+  ctx.beginPath();
+  ctx.moveTo(x,y+h); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h); ctx.closePath(); ctx.fill();
+}
+
+function drawFluxo(d){
+  const canvas=document.getElementById('fluxo-canvas');
+  const wrap=canvas.parentElement;
+  const cssW=wrap.clientWidth;
+  if(!cssW) return;                       // tela oculta
+  const cssH=210;
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=cssW*dpr; canvas.height=cssH*dpr; canvas.style.height=cssH+'px';
+  const ctx=canvas.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,cssW,cssH);
+  const padL=8,padR=8,padT=22,padB=24;
+  const plotW=cssW-padL-padR, plotH=cssH-padT-padB;
+  const {vals,labels,full}=d;
+  const n=vals.length, max=Math.max(1,...vals), anyData=vals.some(v=>v>0);
+  // grade recessiva
+  ctx.strokeStyle='rgba(0,0,0,.055)'; ctx.lineWidth=1;
+  for(let i=0;i<=3;i++){ const y=padT+plotH*(i/3); ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(cssW-padR,y); ctx.stroke(); }
+  ctx.strokeStyle='rgba(0,0,0,.16)'; ctx.beginPath(); ctx.moveTo(padL,padT+plotH); ctx.lineTo(cssW-padR,padT+plotH); ctx.stroke();
+  const slot=plotW/n, gap=n>12?3:6, bw=Math.max(3,slot-gap);
+  const peakIdx = anyData ? vals.indexOf(max) : -1;
+  fluxoBars=[];
+  vals.forEach((v,i)=>{
+    const x=padL + i*slot + (slot-bw)/2;
+    const h = plotH*(v/max);
+    const y = padT+plotH-h;
+    const isPeak = i===peakIdx && v>0;
+    ctx.fillStyle = isPeak ? '#c9973a' : '#5c1224';
+    if(h>0) roundRectTop(ctx,x,y,bw,h,4);
+    fluxoBars.push({x,y,w:bw,h,idx:i,val:v,full:full[i]});
+    if(isPeak){ ctx.fillStyle='#8a6410'; ctx.font='700 10px system-ui,sans-serif'; ctx.textAlign='center'; ctx.fillText(fmtMetricCurto(v), x+bw/2, y-6); }
+    if(labels[i]){ ctx.fillStyle='#aca69c'; ctx.font='9px system-ui,sans-serif'; ctx.textAlign='center'; ctx.fillText(labels[i], x+bw/2, cssH-8); }
+  });
+}
+
+function renderFluxo(){
+  const scr=document.getElementById('scr-fluxo'); if(!scr) return;
+  const d = fluxoDadosCache = fluxoDados();
+  const nomeP = {hora:'por hora',dia:'por dia da semana',semana:'por semana',mes:'por mês'}[fluxoPeriodo];
+  document.getElementById('chart-title-txt').textContent =
+    (fluxoMetric==='clientes'?'Clientes ':'Faturamento ') + nomeP;
+  drawFluxo(d);
+
+  // insight (pico)
+  const ins=document.getElementById('fluxo-insight');
+  const max=Math.max(...d.vals);
+  if(!d.vals.some(v=>v>0)){
+    ins.innerHTML = `<div class="insight"><span class="ic">📈</span><span class="tx">Ainda não há vendas registradas. Assim que você vender pelo <b>Caixa</b>, o gráfico mostra seus horários e dias de maior movimento.</span></div>`;
+  }else{
+    const idx=d.vals.indexOf(max);
+    const qtd = fluxoMetric==='clientes' ? `${Math.round(max)} cliente(s)` : fmt(max);
+    ins.innerHTML = `<div class="insight"><span class="ic">🔥</span><span class="tx">Maior movimento: <b>${esc(d.full[idx])}</b> — ${qtd}. Reforce o estoque e a equipe nesse período.</span></div>`;
+  }
+
+  // stats
+  const ticket = d.nVendas ? d.fatTotal/d.nVendas : 0;
+  document.getElementById('fluxo-stats').innerHTML = `
+    <div class="stat"><div class="v">${d.nVendas}</div><div class="k">Atendimentos (total)</div></div>
+    <div class="stat"><div class="v">${fmt(ticket)}</div><div class="k">Ticket médio</div></div>`;
+}
+
+/* tooltip do gráfico */
+function fluxoTip(ev){
+  const canvas=document.getElementById('fluxo-canvas');
+  const tip=document.getElementById('fluxo-tip');
+  const r=canvas.getBoundingClientRect();
+  const px=(ev.touches?ev.touches[0].clientX:ev.clientX)-r.left;
+  const py=(ev.touches?ev.touches[0].clientY:ev.clientY)-r.top;
+  let hit=null;
+  for(const b of fluxoBars){ if(px>=b.x-3 && px<=b.x+b.w+3){ hit=b; break; } }
+  if(hit){
+    const val = fluxoMetric==='clientes' ? `${Math.round(hit.val)} cliente(s)` : fmt(hit.val);
+    tip.innerHTML = `${val}<small>${esc(hit.full)}</small>`;
+    tip.style.left = (hit.x+hit.w/2)+'px';
+    tip.style.top = Math.max(hit.y, py-4)+'px';
+    tip.classList.add('show');
+  }else tip.classList.remove('show');
+}
+function fluxoTipOut(){ document.getElementById('fluxo-tip').classList.remove('show'); }
+
 /* ═══════════════ SCANNER (QR + código de barras) ═══════════════ */
 let scanStream = null, scanRAF = null, zxingReader = null, scanDestino = null, ultimoCodigo = '';
 
@@ -1297,6 +1494,16 @@ document.getElementById('modal-scan-res').addEventListener('click', e=>{
 document.getElementById('modal-avulso').addEventListener('click', e=>{
   if(e.target.id==='modal-avulso') fecharAvulso();
 });
+(function(){
+  const c=document.getElementById('fluxo-canvas');
+  c.addEventListener('mousemove', fluxoTip);
+  c.addEventListener('mouseleave', fluxoTipOut);
+  c.addEventListener('touchstart', fluxoTip, {passive:true});
+  c.addEventListener('touchmove', fluxoTip, {passive:true});
+  c.addEventListener('touchend', fluxoTipOut);
+})();
+let _fluxoRz;
+window.addEventListener('resize', ()=>{ clearTimeout(_fluxoRz); _fluxoRz=setTimeout(()=>{ if(document.getElementById('scr-fluxo').classList.contains('on') && fluxoDadosCache) drawFluxo(fluxoDadosCache); }, 150); });
 document.getElementById('modal-pay').addEventListener('click', e=>{
   if(e.target.id==='modal-pay') fecharPagamento();
 });
