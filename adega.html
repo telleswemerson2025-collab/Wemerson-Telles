@@ -213,6 +213,20 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
 .troco-box{background:var(--green-bg);border:1px solid #bfe3ca;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
 .troco-box .tl{font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.05em}
 .troco-box .tv{font-size:22px;font-weight:800;color:var(--green);font-variant-numeric:tabular-nums}
+/* teclado de pagamento */
+.pay-recv{display:flex;gap:9px;margin-bottom:10px}
+.pay-recv>div{flex:1;border:1.5px solid var(--border);border-radius:12px;padding:9px 12px;background:var(--surface)}
+.pay-recv .l{font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text-3)}
+.pay-recv .rv{font-size:20px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;margin-top:2px}
+.pay-recv .troco-cell{background:var(--green-bg);border-color:#bfe3ca}
+.pay-recv .troco-cell .l{color:var(--green)}
+.pay-recv .troco-cell .rv{color:var(--green)}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:9px}
+.quick button{padding:11px 4px;border-radius:10px;border:1.5px solid var(--border);background:#fff;font-size:12px;font-weight:800;color:var(--wine);cursor:pointer;font-family:inherit}
+.quick button:active{background:var(--surface-2)}
+.quick button.exato{grid-column:1/-1;background:var(--surface)}
+.pay-keys{margin-bottom:14px}
+.pay-keys button{padding:14px 0}
 
 /* TELA FINAL PRO CLIENTE */
 .cust-overlay{display:none;position:fixed;inset:0;z-index:80;background:linear-gradient(160deg,var(--wine) 0%,var(--wine-d) 100%);color:#fff;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center}
@@ -469,9 +483,22 @@ body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background
       <button class="pm" data-m="Pix" onclick="selPagto(this)"><span class="i">📱</span>Pix</button>
     </div>
     <div id="pay-dinheiro">
-      <div class="field"><label>Valor recebido (R$)</label>
-        <input type="number" id="pay-recebido" min="0" step="0.01" placeholder="0,00" inputmode="decimal" oninput="calcTroco()"></div>
-      <div class="troco-box"><span class="tl">Troco</span><span class="tv" id="pay-troco">R$ 0,00</span></div>
+      <div class="pay-recv">
+        <div><div class="l">Recebido</div><div class="rv" id="pay-recv-disp">R$ 0,00</div></div>
+        <div class="troco-cell"><div class="l">Troco</div><div class="rv" id="pay-troco">R$ 0,00</div></div>
+      </div>
+      <div class="quick">
+        <button class="exato" onclick="payExato()">💰 Valor exato (sem troco)</button>
+        <button onclick="payCedula(20)">+ R$ 20</button>
+        <button onclick="payCedula(50)">+ R$ 50</button>
+        <button onclick="payCedula(100)">+ R$ 100</button>
+      </div>
+      <div class="keys pay-keys">
+        <button onclick="payNum('7')">7</button><button onclick="payNum('8')">8</button><button onclick="payNum('9')">9</button>
+        <button onclick="payNum('4')">4</button><button onclick="payNum('5')">5</button><button onclick="payNum('6')">6</button>
+        <button onclick="payNum('1')">1</button><button onclick="payNum('2')">2</button><button onclick="payNum('3')">3</button>
+        <button class="k-op" onclick="payClear()">C</button><button onclick="payNum('0')">0</button><button class="k-op" onclick="payBack()">⌫</button>
+      </div>
     </div>
     <button class="btn green" onclick="confirmarVenda()">✅ Confirmar venda</button>
     <button class="btn-sm" style="width:100%;margin-top:8px" onclick="fecharPagamento()">Cancelar</button>
@@ -880,13 +907,14 @@ function removerItem(ix){ carrinho.splice(ix,1); renderCaixa(); }
 
 /* ── Pagamento ── */
 let pagtoSel = 'Dinheiro';
+let payBase = 0, payDigits = '0', payTotal = 0;
+
 function abrirPagamento(){
   if(!carrinho.length) return;
-  const total = carrinho.reduce((s,i)=>s+i.preco*i.qtd,0);
-  document.getElementById('pay-total').textContent = fmt(total);
-  document.getElementById('pay-recebido').value = '';
-  document.getElementById('pay-troco').textContent = fmt(0);
+  payTotal = carrinho.reduce((s,i)=>s+i.preco*i.qtd,0);
+  document.getElementById('pay-total').textContent = fmt(payTotal);
   pagtoSel = 'Dinheiro';
+  payBase = 0; payDigits = '0'; payUpdate();
   document.querySelectorAll('.pm').forEach(b=>b.classList.toggle('on', b.dataset.m==='Dinheiro'));
   document.getElementById('pay-dinheiro').style.display = 'block';
   document.getElementById('modal-pay').classList.add('show');
@@ -898,15 +926,23 @@ function selPagto(btn){
   btn.classList.add('on');
   document.getElementById('pay-dinheiro').style.display = pagtoSel==='Dinheiro' ? 'block' : 'none';
 }
-function calcTroco(){
-  const total = carrinho.reduce((s,i)=>s+i.preco*i.qtd,0);
-  const rec = parseFloat(document.getElementById('pay-recebido').value) || 0;
-  document.getElementById('pay-troco').textContent = fmt(Math.max(0, rec - total));
+
+/* teclado do pagamento (recebido em dinheiro → troco automático) */
+function payCurrent(){ return payBase + Number(payDigits)/100; }
+function payUpdate(){
+  const rec = payCurrent();
+  document.getElementById('pay-recv-disp').textContent = fmt(rec);
+  document.getElementById('pay-troco').textContent = fmt(Math.max(0, rec - payTotal));
 }
+function payNum(n){ payDigits = String((payDigits==='0'?'':payDigits) + n).replace(/^0+/,'').slice(0,9) || '0'; payUpdate(); }
+function payBack(){ payDigits = payDigits.length>1 ? payDigits.slice(0,-1) : '0'; payUpdate(); }
+function payClear(){ payBase = 0; payDigits = '0'; payUpdate(); }
+function payCedula(v){ payBase = payCurrent() + v; payDigits = '0'; payUpdate(); }
+function payExato(){ payBase = payTotal; payDigits = '0'; payUpdate(); }
 
 function confirmarVenda(){
   const total = carrinho.reduce((s,i)=>s+i.preco*i.qtd,0);
-  const rec = parseFloat(document.getElementById('pay-recebido').value) || 0;
+  const rec = pagtoSel==='Dinheiro' ? payCurrent() : 0;
   if(pagtoSel==='Dinheiro' && rec>0 && rec < total){
     toast('⚠️ Valor recebido menor que o total'); return;
   }
