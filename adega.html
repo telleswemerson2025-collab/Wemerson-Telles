@@ -81,6 +81,19 @@ body{font-family:var(--font);background:#e7e7ee;min-height:100vh;display:flex;al
 .balanco .bl-lucro.pos .bv{color:var(--green)}
 .balanco .bl-lucro.neg .bv{color:var(--red)}
 
+/* FORMAS DE PAGAMENTO */
+.forma-row{display:flex;align-items:center;gap:11px}
+.forma-row .fico{width:38px;height:38px;border-radius:11px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.forma-row .finfo{flex:1;min-width:0}
+.forma-row .fnm{font-size:13px;font-weight:700;color:var(--text)}
+.forma-row .fsub{font-size:10.5px;color:var(--text-2);margin-top:2px;font-variant-numeric:tabular-nums}
+.forma-row .fsub .pos{color:var(--green);font-weight:800}
+.forma-row .fsub .neg{color:var(--red);font-weight:800}
+.forma-row .fsaldo{text-align:right;flex-shrink:0;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+.forma-row .fsaldo.pos{color:var(--green)}
+.forma-row .fsaldo.neg{color:var(--red)}
+.forma-row .fsaldo .fl{display:block;font-size:8.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em}
+
 /* DESPESAS */
 .desp{display:flex;align-items:center;gap:11px}
 .desp .dico{width:38px;height:38px;border-radius:11px;background:var(--red-bg);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
@@ -386,6 +399,9 @@ body{font-family:var(--font);background:#e7e7ee;min-height:100vh;display:flex;al
 
     <div class="lbl">💰 Balanço do mês</div>
     <div class="card balanco" id="balanco"></div>
+
+    <div class="lbl">💳 Onde está o dinheiro (mês)</div>
+    <div id="formas-pagto"></div>
 
     <div class="lbl lbl-row"><span>🧾 Despesas do mês</span>
       <button class="btn-sm" onclick="abrirDespesa()">+ Adicionar</button></div>
@@ -980,6 +996,7 @@ function renderDash(){
     : `<div class="empty"><div class="big">🍷</div><p>Sem movimentações ainda.<br>Cadastre produtos e registre entradas.</p></div>`;
 
   renderBalanco();
+  renderFormas();
   renderDespesas();
 }
 
@@ -1054,6 +1071,50 @@ function renderBalanco(){
     <div class="bl-row neg"><span>Despesas</span><span class="bv">− ${fmt(despesas)}</span></div>
     <div class="bl-row bl-lucro ${lucro>=0?'pos':'neg'}">
       <span class="lbl-lucro">Lucro do mês</span><span class="bv">${fmt(lucro)}</span></div>`;
+}
+
+/* ── Onde está o dinheiro: fluxo por forma de pagamento ── */
+const FORMA_EMOJI = {'Dinheiro':'💵','Pix':'📱','Cartão':'💳','Boleto':'🧾','Transferência':'🔁','Débito automático':'🏦'};
+const ORDEM_FORMA = ['Dinheiro','Pix','Cartão','Boleto','Transferência','Débito automático'];
+
+function formaVenda(m){
+  if(m.forma) return m.forma;
+  const o = m.obs || '';
+  if(/pix/i.test(o)) return 'Pix';
+  if(/cart/i.test(o)) return 'Cartão';
+  return 'Dinheiro';
+}
+
+function renderFormas(){
+  const el = document.getElementById('formas-pagto'); if(!el) return;
+  const ref = Date.now();
+  const map = {};
+  const get = f => map[f] || (map[f] = {entrou:0, saiu:0});
+  db.movimentos.filter(m=>m.tipo==='saida' && m.motivo==='Venda' && mesmoMes(m.ts, ref))
+    .forEach(m=>{ get(formaVenda(m)).entrou += m.qtd*(m.valor||0); });
+  despesasDoMes(ref).forEach(d=>{ get(d.forma||'Dinheiro').saiu += valorMensal(d); });
+
+  const formas = Object.keys(map).sort((a,b)=>{
+    const ia=ORDEM_FORMA.indexOf(a), ib=ORDEM_FORMA.indexOf(b);
+    return (ia<0?99:ia)-(ib<0?99:ib);
+  });
+  if(!formas.length){
+    el.innerHTML = `<div class="card" style="text-align:center;color:var(--text-3);font-size:12px;font-weight:600">Sem entradas nem despesas neste mês ainda.</div>`;
+    return;
+  }
+  el.innerHTML = formas.map(f=>{
+    const {entrou, saiu} = map[f];
+    const saldo = entrou - saiu;
+    const nomeSaldo = f==='Dinheiro' ? 'em caixa' : 'saldo';
+    return `<div class="card forma-row">
+      <div class="fico">${FORMA_EMOJI[f]||'💳'}</div>
+      <div class="finfo">
+        <div class="fnm">${esc(f)}</div>
+        <div class="fsub">entrou <span class="pos">${fmt(entrou)}</span> · saiu <span class="neg">${fmt(saiu)}</span></div>
+      </div>
+      <div class="fsaldo ${saldo>=0?'pos':'neg'}"><span class="fl">${nomeSaldo}</span>${fmt(saldo)}</div>
+    </div>`;
+  }).join('');
 }
 
 function renderDespesas(){
@@ -1404,7 +1465,7 @@ function confirmarVenda(){
   carrinho.forEach(i=>{
     if(i.prodId){ const p = prodPorId(i.prodId); if(p) p.estoque = Math.max(0, p.estoque - i.qtd); }
     db.movimentos.push({id:uid(), tipo:'saida', prodId:i.prodId, nome:i.nome, un:i.un,
-      qtd:i.qtd, valor:Math.round(i.preco*fator*100)/100, motivo:'Venda',
+      qtd:i.qtd, valor:Math.round(i.preco*fator*100)/100, motivo:'Venda', forma:pagtoSel,
       obs:'Caixa · '+pagtoSel+(desconto>0?' · desc '+fmt(desconto):''), ts});
   });
   salvar();
