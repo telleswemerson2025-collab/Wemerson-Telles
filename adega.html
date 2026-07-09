@@ -278,6 +278,19 @@ body{font-family:var(--font);background:var(--surface-2);min-height:100vh;displa
 .chart-tip.show{opacity:1}
 .chart-tip small{display:block;font-weight:500;opacity:.75;font-size:9.5px}
 .flux-stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:4px}
+/* ranking de produtos */
+.rank-filters{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+.rank-item{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.rank-pos{width:24px;height:24px;border-radius:7px;background:var(--surface-2);color:var(--text-2);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rank-item:first-child .rank-pos{background:var(--gold);color:#3a2400}
+.rank-body{flex:1;min-width:0}
+.rank-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;font-weight:700;margin-bottom:5px;gap:8px}
+.rank-top .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+.rank-top .vl{color:var(--text-2);flex-shrink:0;font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+.rank-track{height:9px;background:var(--surface-2);border-radius:5px;overflow:hidden}
+.rank-fill{height:100%;background:var(--wine);border-radius:5px;transition:width .3s}
+.rank-item:first-child .rank-fill{background:var(--gold)}
+.rank-empty{text-align:center;color:var(--text-3);font-size:12px;font-weight:600;padding:20px}
 
 /* ═══════════ DESKTOP ═══════════ */
 @media(min-width:900px){
@@ -382,6 +395,22 @@ body{font-family:var(--font);background:var(--surface-2);min-height:100vh;displa
       </div>
     </div>
     <div class="flux-stats" id="fluxo-stats"></div>
+
+    <div class="lbl">🏆 Produtos mais vendidos</div>
+    <div class="rank-filters">
+      <div class="field"><label>Dia da semana</label>
+        <select id="rank-dia" onchange="rankDia=this.value;renderRanking()">
+          <option value="">Todos os dias</option>
+          <option value="0">Domingo</option><option value="1">Segunda</option>
+          <option value="2">Terça</option><option value="3">Quarta</option>
+          <option value="4">Quinta</option><option value="5">Sexta</option>
+          <option value="6">Sábado</option>
+        </select></div>
+      <div class="field"><label>Horário</label>
+        <select id="rank-hora" onchange="rankHora=this.value;renderRanking()"></select></div>
+    </div>
+    <div id="rank-insight"></div>
+    <div id="rank-lista"></div>
   </div>
 
   <!-- ══════════ ESTOQUE ══════════ -->
@@ -1283,6 +1312,65 @@ function renderFluxo(){
   document.getElementById('fluxo-stats').innerHTML = `
     <div class="stat"><div class="v">${d.nVendas}</div><div class="k">Atendimentos (total)</div></div>
     <div class="stat"><div class="v">${fmt(ticket)}</div><div class="k">Ticket médio</div></div>`;
+
+  renderRanking();
+}
+
+/* ── Ranking de produtos por dia/hora ── */
+let rankDia = '', rankHora = '';
+const DIAS_NM = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+
+function initRankHora(){
+  const sel = document.getElementById('rank-hora');
+  if(sel.options.length) return;
+  let o = '<option value="">Todos os horários</option>';
+  for(let h=0;h<24;h++) o += `<option value="${h}">${String(h).padStart(2,'0')}h – ${String((h+1)%24).padStart(2,'0')}h</option>`;
+  sel.innerHTML = o;
+}
+
+function rankingProdutos(){
+  const agg = new Map();
+  db.movimentos.forEach(m=>{
+    if(m.tipo!=='saida' || m.motivo!=='Venda') return;
+    const d = new Date(m.ts);
+    if(rankDia!=='' && d.getDay()!==+rankDia) return;
+    if(rankHora!=='' && d.getHours()!==+rankHora) return;
+    const nome = m.prodId ? ((prodPorId(m.prodId)||{}).nome || m.nome || 'Produto') : (m.nome || 'Item avulso');
+    const cur = agg.get(nome) || {nome, qtd:0, fat:0};
+    cur.qtd += m.qtd; cur.fat += m.qtd*(m.valor||0);
+    agg.set(nome, cur);
+  });
+  return [...agg.values()].sort((a,b)=> b.qtd-a.qtd || b.fat-a.fat);
+}
+
+function contextoRank(){
+  const dia = rankDia==='' ? 'todos os dias' : DIAS_NM[+rankDia] + (+rankDia>=1 && +rankDia<=5 ? '-feira' : '');
+  const hora = rankHora==='' ? '' : ' · ' + String(rankHora).padStart(2,'0') + 'h';
+  return dia + hora;
+}
+
+function renderRanking(){
+  if(!document.getElementById('rank-lista')) return;
+  initRankHora();
+  const lista = rankingProdutos();
+  const ins = document.getElementById('rank-insight');
+  const el = document.getElementById('rank-lista');
+  if(!lista.length){
+    ins.innerHTML = '';
+    el.innerHTML = `<div class="rank-empty">Nenhuma venda ${rankDia||rankHora?'nesse período':'registrada'} ainda.<br>As vendas do Caixa alimentam este ranking.</div>`;
+    return;
+  }
+  const camp = lista[0];
+  ins.innerHTML = `<div class="insight"><span class="ic">🏆</span><span class="tx">Campeão ${esc(contextoRank())}: <b>${esc(camp.nome)}</b> — ${camp.qtd} un · ${fmt(camp.fat)}. Garanta esse produto sempre abastecido no pico.</span></div>`;
+  const max = lista[0].qtd || 1;
+  el.innerHTML = lista.slice(0,8).map((p,i)=>`
+    <div class="rank-item">
+      <div class="rank-pos">${i+1}</div>
+      <div class="rank-body">
+        <div class="rank-top"><span class="nm">${esc(p.nome)}</span><span class="vl">${p.qtd} un · ${fmt(p.fat)}</span></div>
+        <div class="rank-track"><div class="rank-fill" style="width:${Math.max(6,Math.round(p.qtd/max*100))}%"></div></div>
+      </div>
+    </div>`).join('');
 }
 
 /* tooltip do gráfico */
