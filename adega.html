@@ -419,6 +419,7 @@ body{font-family:var(--font);background:var(--surface-2);min-height:100vh;displa
     <div class="chips" id="chips-cat"></div>
     <div id="lista-estoque"></div>
     <button class="btn" onclick="abrirProduto()">+ Cadastrar produto</button>
+    <button class="btn-sm" style="width:100%;margin-top:8px" onclick="seedEstoqueSemana()">📦 Carregar estoque de exemplo (1 semana)</button>
   </div>
 
   <!-- ══════════ ENTRADA ══════════ -->
@@ -737,6 +738,54 @@ function salvarProduto(){
     toast('✅ Produto cadastrado');
   }
   salvar(); fecharModal(); renderTudo();
+}
+
+/* ── Estoque de exemplo (1 semana) ── */
+const CATALOGO_SEMANA = [
+  // Vinhos e espumantes
+  {nome:'Vinho Tinto Seco 750ml',        cat:'Vinho tinto',   custo:15, venda:32,  estoque:24, min:8},
+  {nome:'Vinho Tinto Malbec 750ml',      cat:'Vinho tinto',   custo:28, venda:55,  estoque:18, min:6},
+  {nome:'Vinho Tinto Cabernet 750ml',    cat:'Vinho tinto',   custo:25, venda:49,  estoque:18, min:6},
+  {nome:'Vinho Branco Chardonnay 750ml', cat:'Vinho branco',  custo:26, venda:52,  estoque:12, min:4},
+  {nome:'Vinho Rosé 750ml',              cat:'Vinho rosé',    custo:24, venda:48,  estoque:12, min:4},
+  {nome:'Espumante Brut 750ml',          cat:'Espumante',     custo:22, venda:45,  estoque:12, min:4},
+  {nome:'Espumante Moscatel 750ml',      cat:'Espumante',     custo:20, venda:42,  estoque:12, min:4},
+  // Cervejas
+  {nome:'Cerveja Pilsen Lata 350ml',     cat:'Cerveja',       custo:2.5,venda:5,   estoque:120,min:48},
+  {nome:'Cerveja Puro Malte Lata 350ml', cat:'Cerveja',       custo:3,  venda:6,   estoque:96, min:36},
+  {nome:'Cerveja Long Neck 355ml',       cat:'Cerveja',       custo:4,  venda:9,   estoque:72, min:24},
+  {nome:'Cerveja IPA 473ml',             cat:'Cerveja',       custo:7,  venda:15,  estoque:48, min:12},
+  {nome:'Heineken Long Neck 330ml',      cat:'Cerveja',       custo:5,  venda:11,  estoque:60, min:24},
+  // Destilados
+  {nome:'Whisky 8 anos 1L',              cat:'Destilado',     custo:45, venda:89,  estoque:12, min:3},
+  {nome:'Whisky 12 anos 1L',             cat:'Destilado',     custo:90, venda:169, estoque:6,  min:2},
+  {nome:'Vodka 1L',                      cat:'Destilado',     custo:30, venda:59,  estoque:12, min:3},
+  {nome:'Gin 750ml',                     cat:'Destilado',     custo:55, venda:99,  estoque:8,  min:3},
+  {nome:'Cachaça Artesanal 700ml',       cat:'Destilado',     custo:20, venda:39,  estoque:12, min:4},
+  {nome:'Tequila 750ml',                 cat:'Destilado',     custo:70, venda:139, estoque:6,  min:2},
+  {nome:'Licor 750ml',                   cat:'Licor',         custo:28, venda:55,  estoque:6,  min:2},
+  // Não alcoólicos / mixers
+  {nome:'Energético 473ml',              cat:'Não alcoólico', custo:6,  venda:13,  estoque:72, min:24},
+  {nome:'Energético Lata 250ml',         cat:'Não alcoólico', custo:4,  venda:9,   estoque:96, min:36},
+  {nome:'Água Tônica 350ml',             cat:'Não alcoólico', custo:3,  venda:7,   estoque:48, min:18},
+  {nome:'Refrigerante Lata 350ml',       cat:'Não alcoólico', custo:2.5,venda:6,   estoque:72, min:24},
+  {nome:'Água Mineral 500ml',            cat:'Não alcoólico', custo:1,  venda:3,   estoque:60, min:24},
+  {nome:'Gelo 2kg',                      cat:'Outros',        custo:3,  venda:8,   estoque:40, min:15},
+];
+
+function seedEstoqueSemana(){
+  if(db.produtos.length &&
+     !confirm(`Isto vai adicionar ${CATALOGO_SEMANA.length} produtos de exemplo ao seu estoque atual. Continuar?`)) return;
+  const ts = Date.now();
+  CATALOGO_SEMANA.forEach((c,i)=>{
+    const p = {id:uid(), nome:c.nome, codigo:'', cat:c.cat, un:'un', custo:c.custo, venda:c.venda, min:c.min, estoque:c.estoque};
+    db.produtos.push(p);
+    db.movimentos.push({id:uid(), tipo:'entrada', prodId:p.id, qtd:c.estoque, valor:c.custo,
+      motivo:'Estoque inicial', obs:'Exemplo 1 semana', ts:ts+i});
+  });
+  salvar(); renderTudo();
+  nav(document.querySelector('.bi[data-scr="estoque"]'));
+  toast(`📦 ${CATALOGO_SEMANA.length} produtos adicionados ao estoque!`);
 }
 
 function excluirProduto(id){
