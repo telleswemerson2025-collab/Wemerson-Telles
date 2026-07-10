@@ -612,7 +612,7 @@ body{font-family:var(--font);background:#e7e7ee;min-height:100vh;display:flex;al
         <input type="number" id="p-venda" min="0" step="0.01" placeholder="0,00"></div>
     </div>
     <div class="frow">
-      <div class="field"><label>Estoque inicial</label>
+      <div class="field"><label id="p-est-label">Estoque inicial</label>
         <input type="number" id="p-est" min="0" step="1" placeholder="0"></div>
       <div class="field"><label>Estoque mínimo</label>
         <input type="number" id="p-min" min="0" step="1" placeholder="0"></div>
@@ -817,7 +817,8 @@ function abrirProduto(id, codigoPre){
   document.getElementById('p-custo').value= p ? p.custo : '';
   document.getElementById('p-venda').value= p ? p.venda : '';
   document.getElementById('p-est').value  = p ? p.estoque : '';
-  document.getElementById('p-est').disabled = !!p; // estoque só muda por entrada/saída
+  document.getElementById('p-est').disabled = false;   // sempre editável — ajustes ficam salvos
+  document.getElementById('p-est-label').textContent = p ? 'Estoque atual' : 'Estoque inicial';
   document.getElementById('p-min').value  = p ? p.min : '';
   document.getElementById('modal-prod').classList.add('show');
 }
@@ -840,7 +841,12 @@ function salvarProduto(){
 
   if(id){
     const p = prodPorId(id);
-    Object.assign(p, {nome, codigo, cat, un, custo, venda, min});
+    const diff = est - p.estoque;                       // ajuste manual de estoque
+    Object.assign(p, {nome, codigo, cat, un, custo, venda, min, estoque: est});
+    if(diff !== 0){
+      db.movimentos.push({id: uid(), tipo: diff>0?'entrada':'saida', prodId: p.id,
+        qtd: Math.abs(diff), valor: diff>0?custo:0, motivo:'Ajuste de estoque', obs:'Edição manual', ts: Date.now()});
+    }
     toast('✅ Produto atualizado');
   }else{
     const p = {id: uid(), nome, codigo, cat, un, custo, venda, min, estoque: est};
