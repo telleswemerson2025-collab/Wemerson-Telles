@@ -40,6 +40,9 @@ body{font-family:var(--font);background:#e7e7ee;min-height:100vh;display:flex;al
 .hdr h1 .glass{font-size:20px;width:40px;height:40px;border-radius:12px;background:linear-gradient(140deg,var(--wine),var(--wine-d));display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(185,29,71,.45);flex-shrink:0}
 .hdr p{font-size:11.5px;color:rgba(255,255,255,.6);margin-top:8px;letter-spacing:0;padding-left:51px}
 .hdr .gold-line{position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--wine),var(--wine-l),transparent)}
+.hdr-clock{display:inline-flex;align-items:center;gap:7px;margin:10px 0 0 51px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;color:#fff;letter-spacing:.01em;font-variant-numeric:tabular-nums}
+.hdr-clock .ci{font-size:13px}
+.hdr-clock b{font-weight:800}
 
 /* NAV */
 .bnav{display:flex;border-top:1px solid var(--border);background:#fff;flex-shrink:0;padding:8px 6px 10px;gap:2px}
@@ -380,6 +383,7 @@ body{font-family:var(--font);background:#e7e7ee;min-height:100vh;display:flex;al
   <div class="hdr">
     <h1><span class="glass">🍷</span> MINHA ADEGA</h1>
     <p>Controle de estoque — entradas, saídas e inventário</p>
+    <div class="hdr-clock" id="hdr-clock"><span class="ci">🕐</span><span id="hdr-clock-txt">—</span></div>
     <div class="hdr-actions">
       <button class="bell-btn" id="bell-btn" onclick="abrirAlertaEstoque()" title="Alertas de estoque">🔔<span class="bell-badge" id="bell-badge" style="display:none">0</span></button>
       <button class="scan-btn" onclick="abrirScanner()">📷 Escanear</button>
@@ -1949,9 +1953,20 @@ function importarDados(input){
   input.value = '';
 }
 
+/* ═══════════════ RELÓGIO ═══════════════ */
+function tickRelogio(){
+  const el = document.getElementById('hdr-clock-txt'); if(!el) return;
+  const d = new Date();
+  let dia = d.toLocaleDateString('pt-BR', {weekday:'short', day:'2-digit', month:'2-digit', year:'numeric'});
+  dia = dia.charAt(0).toUpperCase() + dia.slice(1);          // Qui., 10/07/2026
+  const hora = d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  el.innerHTML = `${esc(dia)} · <b>${hora}</b>`;
+}
+
 /* ═══════════════ INIT ═══════════════ */
 carregar();
 renderTudo();
+tickRelogio(); setInterval(tickRelogio, 1000);
 document.getElementById('modal-prod').addEventListener('click', e=>{
   if(e.target.id==='modal-prod') fecharModal();
 });
