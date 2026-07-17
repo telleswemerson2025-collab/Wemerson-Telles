@@ -40,10 +40,15 @@ memory/learnings.md    # aprendizado acumulado (incremental, alimentado pelo FEE
 - [x] `.claude/commands/*` — comandos slash de cada agente
 - [x] `lib/fetch_data.py` — **modo manual** (lê/valida `00_data.json`; API real stubada, desligada)
 
+**Fase 3 — orquestração + gate manual:** ✅
+- [x] `lib/render_chart.py` (gera `02_chart.png` + `02_chart_meta.json`) · `lib/validate.py` (valida artefatos vs. schema)
+- [x] `run_cycle.sh` (01→04: valida cada etapa, reconcilia números, impõe o Gate 1, para no Gate 2) · `publish.sh` (só publica com `STATUS: approved`) · `collect.sh` (06 após +48h)
+- [x] Ciclo **real** `2026-07-16-mvrv-01` rodado 01→04 com dado real de MVRV — parado no Gate 2 aguardando aprovação do Mr. G
+
 **Bloqueado (depende do Gui):**
 - [ ] `knowledge/indicators.md` — definições técnicas de **EIPI** e **Whale-to-Book Lag** (não existem em fonte pública)
 - [ ] Fase 2 (API real de dados) — token da API VantageNode + bug no endpoint de MVRV
 
 **Fase de teste:** os dados entram por **transferência manual** da aba VantageNode (Mr. G) → `cycles/<id>/00_data.json`. Nada de API real por enquanto.
 
-**Próximos:** `run_cycle.sh` / `publish.sh` / `collect.sh` (orquestração) · `lib/render_chart.py` · rodar um ciclo mock 01→04 de ponta a ponta.
+**Próximos:** decidir o Gate 2 do ciclo MVRV (Mr. G) e publicar (canal manual) · testar o caminho de **bloqueio** do GATEKEEPER · Fase 4 (automação de publicação via API do X) quando fizer sentido.
