@@ -1,0 +1,5 @@
+# VantageNode-X — dependências de execução (fase de teste)
+matplotlib>=3.8        # render_chart.py — gera 02_chart.png
+# jsonschema é opcional: se presente, fetch_data.py valida contra os schemas;
+# se ausente, cai numa checagem mínima de campos obrigatórios.
+jsonschema>=4.0

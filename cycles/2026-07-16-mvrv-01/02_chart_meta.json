@@ -1,0 +1,47 @@
+{
+  "cycle_id": "2026-07-16-mvrv-01",
+  "indicator": "MVRV",
+  "unit": "ratio",
+  "title": "MVRV em 1,208 — faixa historicamente baixa",
+  "subtitle": "mercado 20,8% acima do custo-base realizado · maxima da janela 30D (16/07/2026)",
+  "as_of": "2026-07-16",
+  "latest_value": 1.208,
+  "decimals": 3,
+  "numbers_plotted": [
+    {
+      "t": "2026-06-18",
+      "v": 1.176
+    },
+    {
+      "t": "2026-06-22",
+      "v": 1.196
+    },
+    {
+      "t": "2026-07-02",
+      "v": 1.156
+    },
+    {
+      "t": "2026-07-04",
+      "v": 1.189
+    },
+    {
+      "t": "2026-07-08",
+      "v": 1.174
+    },
+    {
+      "t": "2026-07-13",
+      "v": 1.168
+    },
+    {
+      "t": "2026-07-16",
+      "v": 1.208
+    }
+  ],
+  "source": {
+    "name": "VantageNode",
+    "url": "https://vantagenode.io/terminal#metric=878185e596",
+    "captured_by": "Mr. G — transferência manual da aba VantageNode",
+    "captured_at": "2026-07-17T00:00:00+00:00"
+  },
+  "data_ref": "cycles/2026-07-16-mvrv-01/00_data.json"
+}

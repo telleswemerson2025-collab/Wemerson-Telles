@@ -1,0 +1,21 @@
+{
+  "cycle_id": "2026-07-16-mvrv-01",
+  "post": {
+    "text": "MVRV em 1,208. O mercado agregado está 20,8% acima do custo-base realizado — faixa historicamente baixa, mais perto de acumulação do que de euforia. Na janela de 30D saiu de 1,156 (02/07) para a máxima atual. O holder médio mal está no lucro: leitura de custo-base, não de topo.",
+    "char_count": 278
+  },
+  "reply": {
+    "text": "Fonte e série completa (MVRV Ratio, 30D): https://vantagenode.io/terminal#metric=878185e596 — MVRV = valor de mercado / valor realizado; ~1 significa o preço médio pago pelo mercado. Não é sinal de compra nem previsão.",
+    "link": "https://vantagenode.io/terminal#metric=878185e596"
+  },
+  "numbers": [
+    { "value": 1.208, "unit": "ratio", "where": "post", "claim": "MVRV em 1,208" },
+    { "value": 20.8, "unit": "%", "where": "post", "claim": "20,8% acima do custo-base realizado (derivado de 1,208 − 1)" },
+    { "value": 1.156, "unit": "ratio", "where": "post", "claim": "na janela de 30D saiu de 1,156 (02/07) para a máxima atual" }
+  ],
+  "reading": "MVRV a 1,208 indica que, na média, o mercado está pouco acima do custo de aquisição agregado — um regime de valor comprimido, historicamente distante de zonas de euforia. A recuperação para a máxima da janela de 30D não altera o nível estrutural baixo; muda apenas o ponto dentro da faixa.",
+  "single_idea": true,
+  "link_in_reply_only": true,
+  "bookmark_test": "Sim — um analista salvaria como referência do nível de MVRV e do enquadramento de custo-base neste momento do ciclo.",
+  "no_hype_check": true
+}

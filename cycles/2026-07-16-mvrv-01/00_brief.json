@@ -18,6 +18,9 @@
     "Manter uma ideia só: o regime de custo-base, sem enfiar previsão ou comparação com outros indicadores (invariante 1)."
   ],
   "gate1": {
-    "status": "pending"
+    "status": "approved",
+    "note": "Ângulo factual, sem direção de preço, uma ideia só — de acordo com os invariantes.",
+    "decided_by": "Mr. G",
+    "decided_at": "2026-07-17T00:00:00+00:00"
   }
 }
