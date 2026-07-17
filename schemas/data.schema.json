@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vantagenode-x/schemas/data.schema.json",
+  "title": "Dado de entrada — transferência manual da VantageNode",
+  "description": "Fonte-de-verdade dos números de um ciclo. Durante a fase de teste NÃO integramos a API real: Mr. G transfere os valores da aba VantageNode para 00_data.json. O GATEKEEPER cruza texto = gráfico = ESTA fonte (invariante 6).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cycle_id", "indicator", "source", "as_of", "unit", "latest_value", "series"],
+  "properties": {
+    "cycle_id": { "type": "string" },
+    "indicator": {
+      "type": "string",
+      "description": "Nome do indicador, ex.: 'MVRV'. Indicadores proprietários (EIPI, Whale-to-Book Lag) só podem entrar aqui depois de definidos em knowledge/indicators.md."
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "captured_by", "captured_at"],
+      "properties": {
+        "name": { "type": "string", "default": "VantageNode" },
+        "url": { "type": "string" },
+        "captured_by": { "type": "string", "description": "Ex.: 'Mr. G — transferência manual da aba VantageNode'." },
+        "captured_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "as_of": { "type": "string", "format": "date", "description": "Data de referência do dado." },
+    "unit": { "type": "string", "description": "Unidade do valor, ex.: 'ratio', 'USD', 'BTC'." },
+    "latest_value": { "type": "number", "description": "Leitura mais recente — o número que tende a virar manchete do post." },
+    "series": {
+      "type": "array",
+      "minItems": 2,
+      "description": "Série temporal para o gráfico. Todo gráfico acompanha uma leitura (invariante 4).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["t", "v"],
+        "properties": {
+          "t": { "type": "string", "format": "date" },
+          "v": { "type": "number" }
+        }
+      }
+    },
+    "notes": { "type": "string", "description": "Contexto opcional trazido junto do dado (ex.: 'endpoint de MVRV com bug conhecido; valor conferido na tela')." }
+  }
+}

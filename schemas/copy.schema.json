@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vantagenode-x/schemas/copy.schema.json",
+  "title": "03_copy.json — saída do VOICE (03)",
+  "description": "Texto do post + primeiro reply (onde vai o link). Voz de terminal analítico, sem emoji/hype (invariante 8).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cycle_id", "post", "reply", "numbers", "reading", "single_idea", "link_in_reply_only", "no_hype_check"],
+  "properties": {
+    "cycle_id": { "type": "string" },
+    "post": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "char_count"],
+      "properties": {
+        "text": { "type": "string", "maxLength": 280, "description": "Corpo do post. NUNCA contém link (invariante 3)." },
+        "char_count": { "type": "integer", "maximum": 280 }
+      }
+    },
+    "reply": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text"],
+      "properties": {
+        "text": { "type": "string", "maxLength": 280 },
+        "link": { "type": "string", "description": "O link vive AQUI, no primeiro reply (invariante 3). Ausente se não houver link." }
+      }
+    },
+    "numbers": {
+      "type": "array",
+      "description": "Todo número afirmado no texto, para o GATEKEEPER cruzar com gráfico e fonte (invariante 6).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["value", "unit", "where", "claim"],
+        "properties": {
+          "value": { "type": "number" },
+          "unit": { "type": "string" },
+          "where": { "type": "string", "enum": ["post", "reply", "chart"] },
+          "claim": { "type": "string", "description": "A afirmação em que o número aparece." }
+        }
+      }
+    },
+    "reading": { "type": "string", "description": "A leitura/interpretação que acompanha o dado (invariante 4). Nunca dado cru." },
+    "single_idea": { "type": "boolean", "description": "Invariante 1." },
+    "link_in_reply_only": { "type": "boolean", "description": "Autoverificação da invariante 3." },
+    "bookmark_test": { "type": "string", "description": "Resposta à pergunta 'um analista salvaria isto?' (invariante 2)." },
+    "no_hype_check": { "type": "boolean", "description": "Sem emoji, sem hype, sem jargão de lua/pump (invariante 8)." }
+  }
+}

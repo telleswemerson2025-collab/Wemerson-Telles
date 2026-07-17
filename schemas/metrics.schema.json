@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vantagenode-x/schemas/metrics.schema.json",
+  "title": "06_metrics.json — saída do FEEDBACK (06)",
+  "description": "Coleta de desempenho +48h do post publicado. KPI real é bookmark, não like (invariante 2). Gera também uma entrada incremental para memory/learnings.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cycle_id", "collected_at", "window_hours", "kpi", "learning"],
+  "properties": {
+    "cycle_id": { "type": "string" },
+    "collected_at": { "type": "string", "format": "date-time" },
+    "window_hours": { "type": "number", "default": 48 },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bookmarks": { "type": "integer" },
+        "likes": { "type": "integer" },
+        "replies": { "type": "integer" },
+        "reposts": { "type": "integer" },
+        "impressions": { "type": "integer" },
+        "profile_clicks": { "type": "integer" },
+        "link_clicks": { "type": "integer" }
+      }
+    },
+    "kpi": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary", "value", "analyst_saved"],
+      "properties": {
+        "primary": { "type": "string", "const": "bookmarks" },
+        "value": { "type": "integer" },
+        "analyst_saved": { "type": "boolean", "description": "O post passou no teste 'um analista salvaria isto?' na prática?" }
+      }
+    },
+    "learning": {
+      "type": "string",
+      "description": "Insight acionável que o FEEDBACK acrescenta a memory/learnings.md (incremental, nunca reescreve o arquivo)."
+    }
+  }
+}

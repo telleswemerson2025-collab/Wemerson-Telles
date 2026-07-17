@@ -9,5 +9,6 @@ Prompt de comportamento de cada agente do pipeline. Um arquivo por agente:
 - `05-broadcast.md` — lê pacote aprovado (`STATUS: approved`), escreve `05_published.json`
 - `06-feedback.md` — lê post publicado (+48h), escreve `06_metrics.json` + atualiza `memory/learnings.md`
 
-> **Status:** a portar do material original (chat "VantageNode · Pipeline de Conteúdo para X").
-> Os 6 prompts existem lá prontos; falta trazê-los para cá na forma real (arquivos versionados).
+> **Status:** ✅ os 6 prompts foram redigidos a partir do fluxo detalhado do CLAUDE.md (o material
+> original só existia como resumo). São versões de trabalho — Mr. G pode ajustar qualquer um editando o
+> markdown.

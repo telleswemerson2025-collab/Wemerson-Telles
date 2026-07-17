@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vantagenode-x/schemas/brief.schema.json",
+  "title": "00_brief.json — saída do SCOUT (01)",
+  "description": "Proposta de direção editorial: qual indicador, qual tensão/ângulo, por que agora. Passa pelo Gate 1 (Mr. G aprova a direção, não escreve o ângulo).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cycle_id", "created_at", "indicator", "data_ref", "angle", "why_now", "target_reader", "single_idea", "gate1"],
+  "properties": {
+    "cycle_id": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "indicator": { "type": "string" },
+    "data_ref": { "type": "string", "description": "Caminho do 00_data.json que embasa o brief." },
+    "headline_number": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit", "label"],
+      "properties": {
+        "value": { "type": "number" },
+        "unit": { "type": "string" },
+        "label": { "type": "string" }
+      }
+    },
+    "angle": {
+      "type": "string",
+      "description": "A tese/tensão do post. Contra-consenso é permitido; irresponsabilidade não (invariante 5). Uma ideia só (invariante 1)."
+    },
+    "why_now": { "type": "string", "description": "Por que este dado merece um post hoje." },
+    "target_reader": { "type": "string", "description": "Ex.: 'analista onchain que salvaria o post' (invariante 2)." },
+    "single_idea": { "type": "boolean", "description": "Autoverificação da invariante 1: 1 post = 1 ideia." },
+    "risk_flags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Pontos que o GATEKEEPER deve olhar de perto (ex.: afirmação que beira previsão de preço)."
+    },
+    "gate1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string", "enum": ["pending", "approved", "revise"], "default": "pending" },
+        "note": { "type": "string" },
+        "decided_by": { "type": "string" },
+        "decided_at": { "type": "string", "format": "date-time" }
+      },
+      "description": "Gate 1. Só o Mr. G altera status. O pipeline não avança para PLOT com status != approved."
+    }
+  }
+}

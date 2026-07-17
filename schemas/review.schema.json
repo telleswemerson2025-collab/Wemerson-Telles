@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vantagenode-x/schemas/review.schema.json",
+  "title": "04_review.json — saída do GATEKEEPER (04)",
+  "description": "Revisão de risco do pacote (dados + gráfico + copy). Verifica os 9 invariantes e reconcilia números. NUNCA marca aprovação humana (invariante 7) — só produz veredito e gera APPROVAL.md em STATUS: pending.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cycle_id", "reviewed_at", "verdict", "invariants", "numbers_reconciliation"],
+  "properties": {
+    "cycle_id": { "type": "string" },
+    "reviewed_at": { "type": "string", "format": "date-time" },
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "block"],
+      "description": "'pass' = pacote coerente, segue para o Gate 2 humano. 'block' = para o ciclo aqui."
+    },
+    "invariants": {
+      "type": "array",
+      "minItems": 9,
+      "description": "Um item por invariante do CLAUDE.md (1..9).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status"],
+        "properties": {
+          "id": { "type": "integer", "minimum": 1, "maximum": 9 },
+          "name": { "type": "string" },
+          "status": { "type": "string", "enum": ["ok", "violation", "na"] },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "numbers_reconciliation": {
+      "type": "array",
+      "description": "Invariante 6: número no texto = número no gráfico = número na fonte. Qualquer 'matches:false' força verdict 'block'.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "in_text", "matches"],
+        "properties": {
+          "claim": { "type": "string" },
+          "in_text": { "type": ["number", "string"] },
+          "in_chart": { "type": ["number", "string", "null"] },
+          "in_source": { "type": ["number", "string", "null"] },
+          "matches": { "type": "boolean" }
+        }
+      }
+    },
+    "blocks": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Motivos de bloqueio (preenchido quando verdict = 'block')."
+    },
+    "notes": { "type": "string" }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vantagenode-x/schemas/published.schema.json",
+  "title": "05_published.json — saída do BROADCAST (05)",
+  "description": "Registro da publicação. Só é gerado quando APPROVAL.md tem STATUS: approved (invariante 7). A API do X é dependência frágil: publicação manual é um canal de primeira classe (invariante 9).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cycle_id", "status", "channel", "approval_ref"],
+  "properties": {
+    "cycle_id": { "type": "string" },
+    "status": { "type": "string", "enum": ["published", "failed", "skipped"] },
+    "published_at": { "type": "string", "format": "date-time" },
+    "channel": {
+      "type": "string",
+      "enum": ["x_api", "manual"],
+      "description": "'manual' = Mr. G publicou à mão e colou os IDs/URL. 'x_api' = automação (Fase 4)."
+    },
+    "post_url": { "type": "string" },
+    "post_id": { "type": "string" },
+    "reply_id": { "type": "string", "description": "ID do primeiro reply, que carrega o link (invariante 3)." },
+    "approval_ref": { "type": "string", "description": "Caminho do APPROVAL.md que autorizou esta publicação." },
+    "error": { "type": "string", "description": "Preenchido quando status = 'failed'." }
+  }
+}
