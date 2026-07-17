@@ -1,0 +1,25 @@
+# Segredos — NUNCA versionar (ver .env.example para o template)
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Artefatos de ciclo que não devem ir pro git por padrão.
+# Estado de cada post vive em cycles/<id>/ — descomente se quiser mantê-los
+# fora do versionamento (ex.: imagens grandes, dados brutos).
+# cycles/**/*.png
+# cycles/**/*_raw.json
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

@@ -1,0 +1,2 @@
+# Estado de cada post vive aqui, em cycles/<id-do-ciclo>/.
+# Vazio por enquanto — o primeiro ciclo real é criado pelo run_cycle.sh.
