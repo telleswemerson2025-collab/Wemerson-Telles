@@ -45,10 +45,11 @@ memory/learnings.md    # aprendizado acumulado (incremental, alimentado pelo FEE
 - [x] `run_cycle.sh` (01→04: valida cada etapa, reconcilia números, impõe o Gate 1, para no Gate 2) · `publish.sh` (só publica com `STATUS: approved`) · `collect.sh` (06 após +48h)
 - [x] Ciclo **real** `2026-07-16-mvrv-01` rodado 01→04 com dado real de MVRV — parado no Gate 2 aguardando aprovação do Mr. G
 
-**Bloqueado (depende do Gui):**
-- [ ] `knowledge/indicators.md` — definições técnicas de **EIPI** e **Whale-to-Book Lag** (não existem em fonte pública)
-- [ ] Fase 2 (API real de dados) — token da API VantageNode + bug no endpoint de MVRV
+**Bloqueado (depende do Gui) — único bloqueio real:**
+- [ ] `knowledge/indicators.md` — definições técnicas de **EIPI** e **Whale-to-Book Lag** (não existem em fonte pública). Ver `docs/pendencias-gui.md`.
 
-**Fase de teste:** os dados entram por **transferência manual** da aba VantageNode (Mr. G) → `cycles/<id>/00_data.json`. Nada de API real por enquanto.
+**Fora de escopo nesta fase (proposital — NÃO é trabalho faltando):**
+- **Fase 2 — API real de dados** (token VantageNode + bug no MVRV): adiada por decisão. A **coleta manual é o fluxo padrão**, não um contorno: para cada ciclo, o Mr. G traz os valores da aba VantageNode (hover no tooltip etc.) → `cycles/<id>/00_data.json`, que é a fonte-de-verdade.
+- **Fase 4 — Automação de publicação (API do X)**: 0% deliberado. Nesta fase não se posta sozinho; o BROADCAST usa canal **manual** (Mr. G publica, cola URL/IDs).
 
-**Próximos:** decidir o Gate 2 do ciclo MVRV (Mr. G) e publicar (canal manual) · testar o caminho de **bloqueio** do GATEKEEPER · Fase 4 (automação de publicação via API do X) quando fizer sentido.
+**Próximos:** decidir o Gate 2 do ciclo MVRV (Mr. G) → publicar (canal manual) → +48h → FEEDBACK (1ª entrada em `learnings.md`) · testar o caminho de **bloqueio** do GATEKEEPER.
