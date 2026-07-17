@@ -8,10 +8,31 @@ tem definição aqui, o ciclo **não passa** — não se publica métrica sem de
 
 ## Indicadores públicos padrão
 
-<!-- Ex.: MVRV, SOPR, Realized Cap, Exchange Netflow, etc. A portar do material original
-     e/ou documentar com fonte pública. -->
+Indicadores de definição pública e auditável. Podem ser citados no pipeline sem depender do Gui.
 
-_(a preencher)_
+### MVRV (Market Value to Realized Value)
+
+- **O que mede:** relação entre o valor de mercado e o valor realizado do ativo — um proxy do lucro/prejuízo
+  não realizado agregado do mercado. Em outras palavras, o quanto o preço atual está acima (ou abaixo) do
+  custo-base médio de quem detém o ativo.
+- **Fórmula:** `MVRV = Market Value / Realized Value`, onde
+  - **Market Value (MV):** preço atual × oferta em circulação (a capitalização de mercado).
+  - **Realized Value (RV):** soma de cada unidade (ex.: cada BTC) avaliada ao preço em que se moveu pela
+    última vez on-chain (a *realized cap*). Aproxima o custo-base agregado do mercado.
+- **Unidade:** `ratio` (adimensional, um múltiplo). MVRV ≈ 1 significa que, na média, o mercado está no
+  próprio custo-base; leitura derivada útil: `(MVRV − 1) × 100` = % acima/abaixo do custo-base.
+- **Interpretação (heurística histórica, NÃO sinal):**
+  - **Baixo / próximo de 1 ou abaixo:** mercado perto do custo-base agregado — historicamente associado a
+    zonas de valor/capitulação.
+  - **Alto (historicamente na casa de ~3,5–4+):** grande lucro não realizado — historicamente associado a
+    zonas de euforia/topo.
+  - As faixas são referências históricas, **não gatilhos de compra/venda**. Nunca afirmar direção de preço a
+    partir do MVRV (invariante 5).
+- **Fonte no pipeline:** durante a fase de teste, valores vêm por transferência manual da VantageNode
+  (`00_data.json`). A definição oficial da VantageNode para MVRV está registrada como confirmação **menor**
+  em `docs/pendencias-gui.md` (caso usem alguma variação do padrão) — não bloqueia o uso do MVRV.
+- **Cuidados de linguagem:** descrever nível/regime ("faixa historicamente baixa", "custo-base"), nunca
+  prever preço nem chamar de "fundo"/"topo" como certeza.
 
 ---
 
