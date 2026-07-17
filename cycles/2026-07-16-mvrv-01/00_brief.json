@@ -1,0 +1,23 @@
+{
+  "cycle_id": "2026-07-16-mvrv-01",
+  "created_at": "2026-07-17T00:00:00+00:00",
+  "indicator": "MVRV",
+  "data_ref": "cycles/2026-07-16-mvrv-01/00_data.json",
+  "headline_number": {
+    "value": 1.208,
+    "unit": "ratio",
+    "label": "MVRV Ratio (VantageNode, 16/07/2026)"
+  },
+  "angle": "MVRV em 1,208: o mercado agregado está apenas ~21% acima do custo-base realizado — um regime historicamente baixo, mais perto da faixa de acumulação do que de euforia. O ponto de tensão: o valor subiu para a máxima da janela de 30D (de 1,156 em 02/07 para 1,208 em 16/07), mas o nível absoluto continua comprimido. A leitura contra o ruído de curto prazo é que o holder médio mal está no lucro — o que muda onde está o risco assimétrico, sem dizer nada sobre a direção do preço.",
+  "why_now": "O MVRV recuperou para o topo da faixa de 30D justamente quando a atenção está no movimento de preço. É a hora de enquadrar o nível estrutural (custo-base) que o ruído de preço esconde.",
+  "target_reader": "analista onchain que salvaria a leitura do regime de MVRV para referência futura",
+  "single_idea": true,
+  "risk_flags": [
+    "Não afirmar que 1,208 é 'fundo' nem sugerir que o preço vai subir (invariante 5).",
+    "MVRV baixo já ocorreu antes de quedas adicionais — evitar linguagem de garantia; falar em faixa histórica, não em gatilho.",
+    "Manter uma ideia só: o regime de custo-base, sem enfiar previsão ou comparação com outros indicadores (invariante 1)."
+  ],
+  "gate1": {
+    "status": "pending"
+  }
+}
