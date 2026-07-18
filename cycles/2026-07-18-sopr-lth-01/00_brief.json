@@ -1,0 +1,24 @@
+{
+  "cycle_id": "2026-07-18-sopr-lth-01",
+  "created_at": "2026-07-18T00:00:00+00:00",
+  "indicator": "SOPR-LTH",
+  "data_ref": "cycles/2026-07-18-sopr-lth-01/00_data.json",
+  "headline_number": {
+    "value": 0.8529,
+    "unit": "ratio",
+    "label": "SOPR-LTH, último fechamento (17/07/2026)"
+  },
+  "angle": "O que importa não é o número de um dia, é o regime: nos últimos 30 dias o SOPR de long-term holders fechou abaixo de 1 em 26 de 29 dias (média 0,82). Ou seja, o coorte de longo prazo — que quase sempre vende no lucro — está realizando prejuízo de forma persistente há um mês inteiro, não pontualmente. A tensão: o preço recuperou para ~$64K (de ~$58K em 29/06) e a leitura de superfície é 'voltou o fôlego', mas on-chain quem segura há mais tempo segue vendendo no vermelho. Preço e convicção de longo prazo apontando para lados opostos.",
+  "why_now": "A recuperação do preço cria a narrativa de alívio; é o momento de mostrar o que o gráfico de preço esconde — que a realização de prejuízo dos LTH não é um susto de um dia, é o padrão do mês.",
+  "target_reader": "analista onchain que distingue ruído diário de regime e salvaria a leitura de coorte (LTH vs STH)",
+  "single_idea": true,
+  "risk_flags": [
+    "NÃO ancorar no intraday de hoje (0,7114, ainda em formação): é frágil e, pior, está dentro da faixa normal da série (há vários dias ~0,71). A tese é o regime de 30D, não esse ponto.",
+    "SOPR-LTH é ruidoso (varia de 0,62 a 1,34 no mês): nunca tratar um único dia como sinal. Usar a estatística agregada (26/29 dias < 1).",
+    "Não chamar de 'fundo'/'capitulação final' nem prever reversão de preço (invariante 5). Descrever comportamento de realização, não direção futura.",
+    "Uma ideia só: regime de realização de prejuízo do LTH. SOPR agregado/STH entram no máximo como uma frase de contexto, não como segundo insight (invariante 1)."
+  ],
+  "gate1": {
+    "status": "pending"
+  }
+}
