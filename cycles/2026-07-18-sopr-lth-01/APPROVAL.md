@@ -1,6 +1,6 @@
 # APPROVAL — Ciclo 2026-07-18-sopr-lth-01
 
-STATUS: pending
+STATUS: approved
 
 <!--
   GATE 2 — INVIOLÁVEL (invariante 7).
@@ -22,13 +22,13 @@ _(264/280 caracteres)_
 
 ## Primeiro reply (com o link)
 ```
-SOPR-LTH: razão entre preço de venda e de aquisição das moedas movidas por holders de longo prazo. Abaixo de 1 = realização no prejuízo. Série (30D) e fonte: https://vantagenode.io/terminal — não é previsão de preço.
+SOPR-LTH: razão entre preço de venda e de aquisição das moedas movidas por holders de longo prazo. Abaixo de 1 = realização no prejuízo. Série (30D) e fonte: https://vantagenode.io/terminal#metric=fb7651e934&range=30D&mscale=log&pscale=log — não é previsão de preço.
 ```
 
 ## Veredito do GATEKEEPER
 - **Resultado:** pass — 9/9 invariantes ok
 - **Reconciliação:** 26/29 dias < 1 e média 0,82 conferem com a série; âncora 0,8529 = último fechamento; intraday 0,71 corretamente NÃO usado como manchete
-- **⚠️ Antes de publicar:** trocar o link do reply pela **permalink exata do SOPR-LTH** (hoje está o terminal genérico). Pendência menor: registrar SOPR em `knowledge/indicators.md`.
+- **Link do reply:** ✅ permalink exata do SOPR-LTH aplicada (`#metric=fb7651e934`). Pendência menor remanescente: registrar SOPR em `knowledge/indicators.md`.
 
 ## Decisão do Mr. G
 Edite o campo `STATUS:` no topo:
@@ -36,7 +36,7 @@ Edite o campo `STATUS:` no topo:
 - `revise`   → devolve ao pipeline; escreva a nota abaixo.
 - `rejected` → descarta o ciclo.
 
-**Nota (opcional):**
+**Nota (opcional):** Aprovado pelo Mr. G em 2026-07-18 para publicação manual na conta @VantageNodvt. Permalink exata do SOPR-LTH fornecida e aplicada ao reply.
 
 ---
 _Gráfico do ciclo: 02_chart.png_

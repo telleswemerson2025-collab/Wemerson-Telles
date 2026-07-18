@@ -5,8 +5,8 @@
     "char_count": 264
   },
   "reply": {
-    "text": "SOPR-LTH: razão entre preço de venda e de aquisição das moedas movidas por holders de longo prazo. Abaixo de 1 = realização no prejuízo. Série (30D) e fonte: https://vantagenode.io/terminal — não é previsão de preço.",
-    "link": "https://vantagenode.io/terminal"
+    "text": "SOPR-LTH: razão entre preço de venda e de aquisição das moedas movidas por holders de longo prazo. Abaixo de 1 = realização no prejuízo. Série (30D) e fonte: https://vantagenode.io/terminal#metric=fb7651e934&range=30D&mscale=log&pscale=log — não é previsão de preço.",
+    "link": "https://vantagenode.io/terminal#metric=fb7651e934&range=30D&mscale=log&pscale=log"
   },
   "numbers": [
     {
