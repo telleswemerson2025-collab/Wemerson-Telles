@@ -1,0 +1,28 @@
+{
+  "cycle_id": "mock-block-test-01",
+  "reviewed_at": "2026-07-17T00:00:00+00:00",
+  "verdict": "block",
+  "invariants": [
+    { "id": 1, "name": "1 post = 1 ideia", "status": "violation", "note": "Post cita MVRV e SOPR — dois insights empacotados." },
+    { "id": 2, "name": "KPI é bookmark", "status": "violation", "note": "Texto de hype/isca ('não perca'), não a leitura que um analista salvaria." },
+    { "id": 3, "name": "Link fora do corpo", "status": "violation", "note": "URL da VantageNode está no corpo do post, não no reply." },
+    { "id": 4, "name": "Gráfico com leitura", "status": "violation", "note": "Não há leitura do dado; o texto é promocional." },
+    { "id": 5, "name": "Responsabilidade (sem certeza de preço)", "status": "violation", "note": "'o preço vai dobrar até agosto, garantido' e 'vai explodir' — previsão/promessa proibida." },
+    { "id": 6, "name": "Número texto = gráfico = fonte", "status": "violation", "note": "Texto afirma MVRV 1,45; fonte e gráfico dizem 1,15. Divergência dura." },
+    { "id": 7, "name": "Gate humano inviolável", "status": "ok", "note": "Nenhum APPROVAL.md aprovado foi gerado; o bloqueio impede o ciclo de chegar ao Gate 2." },
+    { "id": 8, "name": "Sem emoji/hype/jargão", "status": "violation", "note": "Emoji 🚀 e termos de hype ('explodir', 'não perca')." },
+    { "id": 9, "name": "Indicador válido/definido", "status": "ok", "note": "MVRV é público/definido. (SOPR aparece solto no texto, sem dado — sintoma da violação do invariante 1.)" }
+  ],
+  "numbers_reconciliation": [
+    { "claim": "MVRV em 1,45", "in_text": 1.45, "in_chart": 1.15, "in_source": 1.15, "matches": false }
+  ],
+  "blocks": [
+    "Inv 6: número no texto (1,45) diverge da fonte e do gráfico (1,15).",
+    "Inv 5: afirmação de preço com certeza / promessa de retorno ('vai dobrar até agosto, garantido').",
+    "Inv 3: link no corpo do post (deveria estar no primeiro reply).",
+    "Inv 8: emoji e linguagem de hype.",
+    "Inv 1: dois insights (MVRV e SOPR) no mesmo post.",
+    "Integridade: char_count declarado (190) diverge do real (194)."
+  ],
+  "notes": "FIXTURE DE TESTE. Copy propositalmente quebrada para exercitar o caminho de bloqueio. verdict=block: o ciclo para aqui e volta para correção (VOICE). Note que os autochecks da copy (no_hype_check/link_in_reply_only/single_idea = true) eram falsos — o GATEKEEPER verificou de forma independente e não confiou na autodeclaração."
+}

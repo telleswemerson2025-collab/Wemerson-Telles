@@ -1,0 +1,18 @@
+{
+  "cycle_id": "mock-block-test-01",
+  "created_at": "2026-07-17T00:00:00+00:00",
+  "indicator": "MVRV",
+  "data_ref": "cycles/mock-block-test-01/00_data.json",
+  "headline_number": { "value": 1.15, "unit": "ratio", "label": "MVRV (mock)" },
+  "angle": "MOCK: brief mínimo só para permitir chegar ao GATEKEEPER no teste de bloqueio.",
+  "why_now": "teste",
+  "target_reader": "teste",
+  "single_idea": true,
+  "risk_flags": ["fixture de teste — a copy foi propositalmente quebrada"],
+  "gate1": {
+    "status": "approved",
+    "note": "auto-aprovado no mock só para o teste (não é ciclo real)",
+    "decided_by": "MOCK",
+    "decided_at": "2026-07-17T00:00:00+00:00"
+  }
+}

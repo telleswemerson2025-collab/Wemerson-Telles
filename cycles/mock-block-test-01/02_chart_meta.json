@@ -1,0 +1,31 @@
+{
+  "cycle_id": "mock-block-test-01",
+  "indicator": "MVRV",
+  "unit": "ratio",
+  "title": "MVRV (mock de teste)",
+  "subtitle": "",
+  "as_of": "2026-07-17",
+  "latest_value": 1.15,
+  "decimals": 2,
+  "numbers_plotted": [
+    {
+      "t": "2026-07-10",
+      "v": 1.1
+    },
+    {
+      "t": "2026-07-13",
+      "v": 1.12
+    },
+    {
+      "t": "2026-07-17",
+      "v": 1.15
+    }
+  ],
+  "source": {
+    "name": "VantageNode",
+    "url": "https://vantagenode.io/terminal#metric=878185e596",
+    "captured_by": "MOCK — fixture de teste do GATEKEEPER (não é dado real)",
+    "captured_at": "2026-07-17T00:00:00+00:00"
+  },
+  "data_ref": "cycles/mock-block-test-01/00_data.json"
+}

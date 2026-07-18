@@ -1,0 +1,18 @@
+{
+  "cycle_id": "mock-block-test-01",
+  "post": {
+    "text": "MVRV em 1,45 e o Bitcoin vai explodir 🚀 o preço vai dobrar até agosto, garantido. Além disso o SOPR também virou de vez. Não perca, veja tudo em https://vantagenode.io/terminal#metric=878185e596",
+    "char_count": 190
+  },
+  "reply": {
+    "text": "sobe demais, não fica de fora"
+  },
+  "numbers": [
+    { "value": 1.45, "unit": "ratio", "where": "post", "claim": "MVRV em 1,45" }
+  ],
+  "reading": "MOCK: sem leitura real; texto propositalmente irresponsável para o teste.",
+  "single_idea": true,
+  "link_in_reply_only": true,
+  "bookmark_test": "MOCK",
+  "no_hype_check": true
+}
