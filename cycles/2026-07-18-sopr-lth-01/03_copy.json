@@ -1,0 +1,36 @@
+{
+  "cycle_id": "2026-07-18-sopr-lth-01",
+  "post": {
+    "text": "SOPR de long-term holders fechou abaixo de 1 em 26 dos últimos 29 dias (média 0,82). O coorte que quase sempre realiza no lucro está vendendo no prejuízo há um mês. O preço recuperou; a convicção de quem segura há mais tempo, não. Não é ruído de um dia — é regime.",
+    "char_count": 264
+  },
+  "reply": {
+    "text": "SOPR-LTH: razão entre preço de venda e de aquisição das moedas movidas por holders de longo prazo. Abaixo de 1 = realização no prejuízo. Série (30D) e fonte: https://vantagenode.io/terminal — não é previsão de preço.",
+    "link": "https://vantagenode.io/terminal"
+  },
+  "numbers": [
+    {
+      "value": 26,
+      "unit": "dias",
+      "where": "post",
+      "claim": "fechou abaixo de 1 em 26 dos últimos 29 dias"
+    },
+    {
+      "value": 29,
+      "unit": "dias",
+      "where": "post",
+      "claim": "dos últimos 29 dias"
+    },
+    {
+      "value": 0.82,
+      "unit": "ratio",
+      "where": "post",
+      "claim": "média 0,82 (média da série SOPR-LTH 30D)"
+    }
+  ],
+  "reading": "O SOPR-LTH persistentemente abaixo de 1 (26/29 dias, média 0,82) indica que long-term holders estão realizando prejuízo de forma sustentada, não pontual — comportamento incomum para um coorte que costuma vender no lucro. Contrasta com a recuperação do preço, expondo divergência entre preço e disposição de quem segura há mais tempo.",
+  "single_idea": true,
+  "link_in_reply_only": true,
+  "bookmark_test": "Sim — leitura de coorte (LTH) que o gráfico de preço não mostra; um analista salvaria como marcador do regime de realização.",
+  "no_hype_check": true
+}

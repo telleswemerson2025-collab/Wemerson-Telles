@@ -54,7 +54,8 @@ def _parse_date(s: str) -> date:
     return datetime.strptime(s, "%Y-%m-%d").date()
 
 
-def render_chart(cycle_id: str, title: str, subtitle: str | None = None) -> Path:
+def render_chart(cycle_id: str, title: str, subtitle: str | None = None,
+                 hline: float | None = None, hline_label: str | None = None) -> Path:
     data = load_cycle_data(cycle_id)  # já valida contra data.schema.json
 
     series = data["series"]
@@ -69,6 +70,14 @@ def render_chart(cycle_id: str, title: str, subtitle: str | None = None) -> Path
     fig, ax = plt.subplots(figsize=(10, 5.6), dpi=130)
     fig.patch.set_facecolor(BG)
     ax.set_facecolor(BG)
+
+    # Linha de referência opcional (ex.: breakeven em 1,0 para SOPR)
+    if hline is not None:
+        ax.axhline(y=hline, color=MUTED, linestyle="--", linewidth=1.1, alpha=0.8, zorder=1)
+        if hline_label:
+            ax.annotate(hline_label, xy=(xs[0], hline), xytext=(0, 4),
+                        textcoords="offset points", color=MUTED, fontsize=9,
+                        fontfamily="monospace", va="bottom", ha="left")
 
     # Linha + pontos
     ax.plot(xs, ys, color=LINE, linewidth=2.2, marker="o", markersize=4,
@@ -139,9 +148,11 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("cycle_id")
     p.add_argument("--title", required=True, help="Título = a leitura (não o nome do indicador).")
     p.add_argument("--subtitle", default=None)
+    p.add_argument("--hline", type=float, default=None, help="linha de referência horizontal (ex.: 1.0 = breakeven do SOPR)")
+    p.add_argument("--hline-label", default=None, help="rótulo da linha de referência")
     args = p.parse_args(argv)
     try:
-        png = render_chart(args.cycle_id, args.title, args.subtitle)
+        png = render_chart(args.cycle_id, args.title, args.subtitle, args.hline, args.hline_label)
     except DataError as exc:
         print(f"ERRO: {exc}", file=sys.stderr)
         return 1

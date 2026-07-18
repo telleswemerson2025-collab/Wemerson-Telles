@@ -1,0 +1,23 @@
+{
+  "cycle_id": "2026-07-18-sopr-lth-01",
+  "reviewed_at": "2026-07-18T00:00:00+00:00",
+  "verdict": "pass",
+  "invariants": [
+    { "id": 1, "name": "1 post = 1 ideia", "status": "ok", "note": "Uma tese: regime de realização de prejuízo do LTH. SOPR agregado/STH nem entraram no texto." },
+    { "id": 2, "name": "KPI é bookmark", "status": "ok", "note": "Leitura de coorte (LTH) que o gráfico de preço não mostra — material de referência." },
+    { "id": 3, "name": "Link fora do corpo", "status": "ok", "note": "post.text sem URL (verificado); link no reply." },
+    { "id": 4, "name": "Gráfico com leitura", "status": "ok", "note": "Título do 02_chart.png é a leitura ('26 de 29 dias < 1'); linha de breakeven em 1,0 ancora a interpretação." },
+    { "id": 5, "name": "Responsabilidade (sem certeza de preço)", "status": "ok", "note": "Descreve realização de prejuízo, não direção futura. Sem 'fundo'/'topo'/previsão. Reply reforça 'não é previsão de preço'." },
+    { "id": 6, "name": "Número texto = gráfico = fonte", "status": "ok", "note": "26 e 29 conferem com a contagem da série (26/29 dias < 1); média 0,82 = média exata (0,8218) da série; âncora 0,8529 = último fechamento. Intraday 0,71 corretamente NÃO usado." },
+    { "id": 7, "name": "Gate humano inviolável", "status": "ok", "note": "APPROVAL.md em STATUS: pending. Sem auto-aprovação." },
+    { "id": 8, "name": "Sem emoji/hype/jargão", "status": "ok", "note": "Varredura limpa. Voz de terminal." },
+    { "id": 9, "name": "Indicador válido/definido", "status": "ok", "note": "SOPR é público/definido; o reply traz a definição de SOPR-LTH. (Recomendação: registrar SOPR/SOPR-LTH em knowledge/indicators.md — pendência menor, não bloqueia.)" }
+  ],
+  "numbers_reconciliation": [
+    { "claim": "abaixo de 1 em 26 dos últimos 29 dias", "in_text": 26, "in_chart": 26, "in_source": 26, "matches": true },
+    { "claim": "dos últimos 29 dias (nº de fechamentos)", "in_text": 29, "in_chart": 29, "in_source": 29, "matches": true },
+    { "claim": "média 0,82", "in_text": 0.82, "in_chart": 0.82, "in_source": 0.8218, "matches": true }
+  ],
+  "blocks": [],
+  "notes": "Pacote coerente — segue para o Gate 2. PENDÊNCIA NÃO-BLOQUEANTE mas relevante: o link do reply é o terminal genérico (https://vantagenode.io/terminal). Antes de publicar, substituir pela PERMALINK EXATA do SOPR-LTH (Mr. G pega na aba aberta), para o leitor cair direto no indicador citado. Segunda pendência menor: registrar SOPR/SOPR-LTH em knowledge/indicators.md."
+}

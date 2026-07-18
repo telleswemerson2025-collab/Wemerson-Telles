@@ -19,6 +19,9 @@
     "Uma ideia só: regime de realização de prejuízo do LTH. SOPR agregado/STH entram no máximo como uma frase de contexto, não como segundo insight (invariante 1)."
   ],
   "gate1": {
-    "status": "pending"
+    "status": "approved",
+    "note": "Aprovado o ângulo do regime (26/29 dias < 1). Não usar o 0,71 intraday como manchete.",
+    "decided_by": "Mr. G",
+    "decided_at": "2026-07-18T00:00:00+00:00"
   }
 }
