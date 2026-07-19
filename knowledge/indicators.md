@@ -34,17 +34,43 @@ Indicadores de definição pública e auditável. Podem ser citados no pipeline 
 - **Cuidados de linguagem:** descrever nível/regime ("faixa historicamente baixa", "custo-base"), nunca
   prever preço nem chamar de "fundo"/"topo" como certeza.
 
+### SOPR (Spent Output Profit Ratio)
+
+- **O que mede:** para as moedas que se movem on-chain num período, a razão entre o preço de venda e o
+  preço de aquisição — ou seja, se o mercado está, na média, realizando **lucro** (>1) ou **prejuízo** (<1).
+- **Fórmula:** `SOPR = valor de venda (USD) / valor na aquisição (USD)` dos outputs gastos.
+- **Cortes por idade (usados no pipeline):**
+  - **SOPR-LTH** (long-term holders): moedas movidas por quem segura há muito tempo.
+  - **SOPR-STH** (short-term holders): moedas movidas por quem comprou recentemente.
+- **Unidade:** `ratio`. Referência: **1,0 = breakeven** (venda no zero a zero). Abaixo de 1 = realização
+  no prejuízo; acima de 1 = no lucro.
+- **Interpretação (heurística, NÃO sinal):** SOPR-LTH abaixo de 1 é incomum (o coorte de longo prazo
+  costuma vender no lucro) — sustentado, sugere regime de realização de prejuízo. É ruidoso no dia a dia;
+  usar a leitura agregada da janela, nunca um único dia. Nunca prever preço a partir dele (invariante 5).
+- **Usado em:** ciclo `2026-07-18-sopr-lth-01`.
+
+### Candidatos legítimos (públicos na VantageNode — a documentar quando forem usados)
+
+Indicadores que o Gui usa e que **são públicos** na plataforma — podem virar ciclos futuros. Definição
+formal (fórmula/interpretação) a ser preenchida aqui no primeiro uso, com dados por transferência manual:
+
+- **Addresses by Size** — distribuição de endereços por faixa de saldo (ex.: acumulação de faixas grandes).
+- **Realized Price STH** — preço realizado (custo-base) dos short-term holders.
+
 ---
 
-## Indicadores proprietários — ⛔ BLOQUEADO
+## Indicadores proprietários / internos — ⛔ BLOQUEADO
 
-> **Bloqueador conhecido.** Os dois indicadores proprietários abaixo precisam de definição técnica
-> que **só o dono do produto (Mr. G / Gui) pode fornecer**. Não existem em nenhuma documentação
-> pública nem na própria plataforma VantageNode — já foi verificado diretamente no terminal da
-> VantageNode que não há métrica com esses nomes lá. Enquanto ficarem sem definição, **nenhum ciclo
-> pode citá-los**: o GATEKEEPER deve bloquear qualquer post que os referencie.
+> **Regra geral (invariante 9).** Nenhum indicador desta seção pode ser citado no pipeline: não temos
+> acesso real aos dados nem à definição de cálculo. O GATEKEEPER deve **bloquear** qualquer post que os
+> referencie, e **nunca** se deve fabricar valor ou definição para eles.
 
-### EIPI
+### Categoria A — proprietários que o produto pretende usar (aguardando definição do Gui)
+
+Só o dono do produto (Mr. G / Gui) pode fornecer a definição técnica. Não existem em fonte pública nem no
+terminal da VantageNode (verificado). Destravam quando o Gui definir (ver `docs/pendencias-gui.md`).
+
+#### EIPI
 
 Necessário do Gui, antes de qualquer uso em produção:
 
@@ -56,7 +82,7 @@ Necessário do Gui, antes de qualquer uso em produção:
 
 _Status: aguardando definição do Gui._
 
-### Whale-to-Book Lag
+#### Whale-to-Book Lag
 
 Necessário do Gui, antes de qualquer uso em produção:
 
@@ -67,3 +93,22 @@ Necessário do Gui, antes de qualquer uso em produção:
 - **Cuidados de linguagem** ao citá-lo.
 
 _Status: aguardando definição do Gui._
+
+### Categoria B — ferramentas internas de engenharia de dados do Gui/equipe (off-limits)
+
+Indicadores identificados em vídeos do canal do Gui Telles que **NÃO** fazem parte dos planos pagos
+públicos da VantageNode — são ferramentas internas, de acesso exclusivo do Gui e da equipe dele. Mesma
+categoria de EIPI/Whale quanto ao bloqueio: **sem acesso aos dados, sem definição de cálculo → não usar,
+não fabricar.** Diferença: não são (por ora) algo que o pipeline pretende publicar, então não estão na
+lista de pendências do Gui — estão listados aqui para o GATEKEEPER e o SCOUT os reconhecerem e evitarem.
+
+- Supply LTH
+- Realized Loss STH
+- ETF Cost Basis
+- Drawdown Risk (incl. a versão **"V3"**, a mais recorrente nos vídeos)
+- STH Cost Basis Heatmap
+- Realized Loss by Age
+- Capitulation Zone (painel)
+
+_Status: off-limits. Se algum dia o produto quiser usá-los, passam a exigir o mesmo tratamento da
+Categoria A (definição fornecida pelo Gui)._
