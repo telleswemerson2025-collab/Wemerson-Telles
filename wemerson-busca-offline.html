@@ -1,0 +1,574 @@
+<title>Wemerson AI Desktop — Busca offline</title>
+<style>
+  :root {
+    --bg:#0F1512; --panel:#141C18; --border:#223028; --text:#EDEFEC;
+    --subtext:#9CA69F; --faint:#5E6A62; --inputBg:#1B2620;
+    --accentGreen:#3E7A57; --accentGreenBg:#1E3A2A; --accentGreenText:#7BE0A0;
+    --accentRed:#7A3E3E; --accentRedBg:#3A1E1E; --accentRedText:#E08A8A;
+    --scrollbar:#2A332E;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  :root[data-app-theme="light"] {
+    --bg:#F5F6F3; --panel:#FFFFFF; --border:#DCE3DD; --text:#1B2620;
+    --subtext:#5B6660; --faint:#8A9590; --inputBg:#EFF2EE;
+    --accentGreen:#3E7A57; --accentGreenBg:#DCF0E2; --accentGreenText:#276B45;
+    --accentRed:#B23B3B; --accentRedBg:#FBE4E4; --accentRedText:#A02F2F;
+    --scrollbar:#D3D9D2;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; }
+  #root { min-height:100vh; background:var(--bg); color:var(--text); font-family:var(--sans); display:flex; flex-direction:column; align-items:center; padding:32px 16px; transition:background .2s, color .2s; }
+  ::placeholder { color:var(--faint); }
+  ::-webkit-scrollbar { width:8px; }
+  ::-webkit-scrollbar-thumb { background:var(--scrollbar); border-radius:8px; }
+  .wrap { width:100%; max-width:780px; }
+  .row { display:flex; }
+  h1 { font-size:26px; font-weight:700; margin:0; line-height:1.3; }
+  .eyebrow { font-family:var(--mono); font-size:12px; letter-spacing:2px; color:#7BA88F; text-transform:uppercase; margin-bottom:8px; }
+  .lede { color:var(--subtext); font-size:14px; margin-top:6px; line-height:1.5; max-width:480px; }
+  .banner { border:1px solid var(--border); border-radius:12px; padding:10px 14px; font-size:12.5px; line-height:1.5; margin-bottom:16px; background:var(--accentGreenBg); color:var(--accentGreenText); }
+  button { font-family:inherit; }
+  .themebtn { background:var(--panel); border:1px solid var(--border); color:var(--text); border-radius:10px; padding:8px 12px; font-size:13px; cursor:pointer; white-space:nowrap; }
+  .modebtn { flex:1; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background:var(--panel); color:var(--subtext); font-weight:600; font-size:14px; cursor:pointer; }
+  .modebtn.active-green { background:var(--accentGreenBg); color:var(--accentGreenText); }
+  .modebtn.active-red { background:var(--accentRedBg); color:var(--accentRedText); }
+  .badge { display:inline-flex; align-items:center; gap:6px; padding:3px 10px 3px 6px; border-radius:999px; font-size:12px; font-weight:600; font-family:var(--mono); }
+  .badge .dot { width:18px; height:18px; border-radius:50%; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; }
+  .pill { background:transparent; border:1px solid var(--border); border-radius:8px; padding:6px 12px; font-size:13px; cursor:pointer; }
+  .panel { background:var(--panel); border:1px solid var(--border); border-radius:12px; }
+  .field { background:var(--inputBg); border:1px solid var(--border); border-radius:8px; padding:8px 10px; color:var(--text); font-size:13px; outline:none; font-family:inherit; }
+  .chat { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:18px; min-height:220px; max-height:460px; overflow-y:auto; margin-bottom:14px; }
+  .q-bubble { font-size:14px; border-radius:10px; padding:10px 14px; margin-bottom:8px; white-space:pre-wrap; }
+  .rescard { border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-bottom:8px; background:var(--inputBg); }
+  .answer { font-size:14.5px; line-height:1.6; white-space:pre-wrap; position:relative; padding-right:34px; }
+  .copybtn { position:absolute; right:0; top:0; background:transparent; border:1px solid var(--border); color:var(--subtext); border-radius:6px; font-size:11px; padding:3px 8px; cursor:pointer; }
+  .composer { gap:10px; align-items:flex-end; background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:10px; }
+  .composer textarea { flex:1; resize:none; background:transparent; border:none; outline:none; color:var(--text); font-size:14.5px; font-family:inherit; line-height:1.5; padding:6px 8px; }
+  .sendbtn { border:none; border-radius:10px; padding:10px 18px; font-size:14px; font-weight:600; white-space:nowrap; }
+  a { color:var(--accentGreenText); }
+  :focus-visible { outline:2px solid var(--accentGreenText); outline-offset:2px; }
+</style>
+
+<div id="root"><div class="wrap" id="app"></div></div>
+
+<script>
+(function () {
+  "use strict";
+  var INTERNAL_PASSWORD = "kauan";
+
+  /* ===================== KNOWLEDGE BASE (buscável) ===================== */
+  /* Cada item: agent, title (assunto), answer (texto pronto p/ copiar), keys (palavras-chave/sinônimos) */
+  var KB = [
+    { agent:"BlockCapital AI", title:"Reembolso", keys:"reembolso estorno devolucao devolver cancelar cancelamento arrependimento dinheiro de volta garantia 7 dias",
+      answer:"O reembolso pode ser solicitado em até 7 dias corridos a partir da liberação do acesso, conforme o Código de Defesa do Consumidor. A renovação é automática ao fim do período contratado, e o reembolso vale apenas para a transação inicial dentro desses 7 dias. Qualquer dúvida sobre o processo, é só falar com o suporte: suporte@theblockcapital.net" },
+    { agent:"BlockCapital AI", title:"Planos e valores", keys:"plano planos preco valor quanto custa custo anual vitalicio assinatura mensalidade investimento inicial",
+      answer:"Temos o plano Anual (valor de referência ~R$1.997,00) e o plano Vitalício (valor de referência ~R$6.997,00), com descontos promocionais eventuais. Os valores são de referência e podem variar conforme a campanha. Se quiser, te passo o link de checkout atualizado." },
+    { agent:"BlockCapital AI", title:"Formas de pagamento", keys:"pagar pagamento hotmart pix boleto cartao cripto usdt btc bitcoin comprovante txid como pago",
+      answer:"O pagamento pode ser feito pela Hotmart (cartão, boleto ou Pix) ou em cripto: USDT na rede BSC/BEP-20 (0x2538e340d59345cfd316e516f93df7965de11868) ou BTC na rede nativa (1PgtkygvP75gMkwrz6KVEZmjr64FKGnTo7). No caso de cripto, envie o comprovante/TXID para a liberação manual do acesso." },
+    { agent:"BlockCapital AI", title:"Suporte e contato", keys:"suporte contato email ajuda atendimento falar com problema acesso login",
+      answer:"Pode falar com a gente pelo e-mail de suporte: suporte@theblockcapital.net. Retornamos o mais rápido possível para resolver o seu caso." },
+    { agent:"BlockCapital AI", title:"O que é a CRM (Carteira Rumo ao Milhão)", keys:"crm carteira rumo ao milhao o que e como funciona programa metodo",
+      answer:"A CRM (Carteira Rumo ao Milhão) é a carteira principal, com gestão 100% manual do Gui Telles. Ele acompanha o mercado diariamente e publica cada decisão em vídeos de gerenciamento (geralmente às 18h), explicando os movimentos. A filosofia é preservar capital e construir posição quando a relação risco-retorno é favorável." },
+    { agent:"BlockCapital AI", title:"Quando a CRM começou", keys:"inicio comecou quando data marco 2023 historia primeiro aporte fundacao",
+      answer:"O primeiro aporte da CRM foi em março de 2023, quando o BTC ainda estava em bear market, tendo recuperado só um pouco da mínima do ciclo anterior. A filosofia do Gui é montar posição de forma gradual antes da confirmação de um novo bull market, para proteger o patrimônio." },
+    { agent:"BlockCapital AI", title:"Aportes da CRM", keys:"aporte aportar aportes quanto investir semanal 200 dolares segunda-feira deposito depositar frequencia",
+      answer:"Os aportes são semanais, de US$200, às segundas-feiras, direcionados a USDT ou diretamente ao ativo em foco conforme a fase da estratégia. A gestão é sempre manual — não há aporte automático." },
+    { agent:"BlockCapital AI", title:"Ativos operados na CRM", keys:"ativos moedas quais btc bitcoin eth ethereum sol solana paxg ouro opera negocia",
+      answer:"A CRM já operou BTC (principal), ETH, SOL (posições táticas menores) e PAXG/ouro (posição defensiva). O Gui nunca faz operações vendidas ('short nem na praia'). No PAXG, os stops são sempre por ordem limite, nunca a mercado, por causa da baixa liquidez do book." },
+    { agent:"BlockCapital AI", title:"Tipos de stop usados", keys:"stop stop loss stop gain stop zero take profit alvo protecao lucro",
+      answer:"O Gui usa três tipos de stop: Stop Loss, Stop Zero (zero a zero, sem lucro nem prejuízo) e Stop Gain (protege o lucro acumulado e sobe conforme o preço avança). Cada operação é gerenciada manualmente." },
+    { agent:"BlockCapital AI", title:"Ordem limite x ordem a mercado", keys:"ordem limite ordem a mercado diferenca stop limite market slippage deslizamento paxg ouro liquidez book execucao",
+      answer:"Ordem a mercado executa na hora, pelo melhor preço disponível no momento — e pode ter deslizamento (slippage) quando a liquidez está baixa. Ordem limite só executa no preço que você definir (ou melhor). Por isso, nos stops do PAXG (ouro) usamos sempre ordem limite, nunca ordem a mercado: o book tem baixa liquidez e uma ordem a mercado poderia ser executada num preço ruim." },
+    { agent:"BlockCapital AI", title:"Tem stop ou take profit no BTC agora?", keys:"stop btc take profit btc tem stop programado alvo agora bitcoin gerenciamento zero a zero",
+      answer:"Os stops são definidos operação a operação, conforme o gerenciamento de risco do momento — por exemplo, numa entrada recente foi programado um stop 'zero a zero' em torno de US$61.220. Não existe stop ou alvo fixo permanente: a definição vigente é sempre a última comunicada oficialmente na CRM, no vídeo de gerenciamento (18h). Vale confirmar sempre por lá." },
+    { agent:"BlockCapital AI", title:"Vão abrir um novo trade (long) no BTC?", keys:"novo trade comprar btc entrar long posicao entrada pullback 60000 60 mil bitcoin nova compra assimetria",
+      answer:"A estratégia é construir posição de forma gradual quando a relação risco/retorno é favorável, sem perseguir preço e aproveitando pullbacks — um fechamento semanal do BTC acima de US$60.000 é visto como sinal técnico relevante. As entradas e saídas acontecem conforme o cenário, e os parâmetros de cada operação (entrada, stop, gerenciamento de risco) são sempre publicados oficialmente na CRM. A posição vigente é a última comunicada por lá." },
+    { agent:"BlockCapital AI", title:"USDT ou USDC — devo migrar?", keys:"usdt usdc stablecoin migrar trocar stable qual melhor mudar",
+      answer:"A escolha entre USDT e USDC é uma decisão pessoal de cada cliente. O Gui não fez nenhuma recomendação oficial de migrar de USDT para USDC. Se houver qualquer mudança de estratégia, ela será comunicada oficialmente na CRM." },
+    { agent:"BlockCapital AI", title:"Corretora recomendada", keys:"corretora exchange bitget onde comprar operar plataforma",
+      answer:"A corretora recomendada é a Bitget. Lembrando que nunca recomendamos alavancagem ou dívida para investir." },
+    { agent:"BlockCapital AI", title:"Alavancagem", keys:"alavancagem alavancar margem futuros divida emprestimo risco alavancado",
+      answer:"Nunca recomendamos alavancagem nem o uso de dívida para investir. A estratégia é sempre com capital próprio e foco em preservação de patrimônio." },
+    { agent:"BlockCapital AI", title:"Comprar BTC via Pix (app Velo)", keys:"velo velopix comprar bitcoin pix sem cadastro app rapido",
+      answer:"Para comprar BTC via Pix de forma simples, você pode usar o app Velo: https://www.velopix.app/" },
+    { agent:"BlockCapital AI", title:"Patrimônio atual da CRM", keys:"patrimonio quanto tem rendimento resultado performance ganho lucro atual 55 mil grafico curva de capital",
+      answer:"O patrimônio não é divulgado como número em tempo real. Como referência de contexto recente, esteve próximo de US$55 mil. A performance da CRM tem sido consistentemente superior à do BTC no período. A sugestão de um gráfico de curva de capital no site foi encaminhada à equipe para avaliação." },
+    { agent:"BlockCapital AI", title:"Fiquei alguns dias sem ver vídeos do Gui", keys:"video videos sumiu nao postou dias sem cade o gui parou live gravacao",
+      answer:"Fica tranquilo: eventuais pausas acontecem por compromissos pessoais do Gui e a programação é retomada normalmente. Estar em caixa/USDT também faz parte da estratégia de proteção — como ele mesmo diz nesses momentos: 'relaxa, ainda seguimos 100% em Caixa'." },
+    { agent:"BlockCapital AI", title:"Notificações do app", keys:"notificacao notificacoes avisos alertas desativar configurar receber decisoes",
+      answer:"Recomendamos desativar os ícones de notificação no app para receber apenas as decisões do Gui Telles, sem ruído." },
+    { agent:"BlockCapital AI", title:"Risco da Strategy/MSTR", keys:"mstr strategy saylor risco quebrar tesouraria bitcoin venda forcada sistemico",
+      answer:"O Gui monitora a alavancagem da Strategy/MSTR em torno das ~845 mil BTC em tesouraria. Ele não acredita que a MSTR vá quebrar, mas acompanha o risco de uma eventual venda forçada de BTC. O relatório oficial está em theblockcapital.com/publico/strategy-bitcoin" },
+    { agent:"BlockCapital AI", title:"Como acessar os conteúdos e vídeos", keys:"acessar acesso onde assistir ver videos decisoes plataforma guitelles academy themembers dashboard entrar login area de membros conteudo aulas",
+      answer:"Depois que o acesso é liberado, você entra pela área de membros. A CRM fica em www.guitelles.academy e o painel em dashboard.themembers.com.br. Se tiver qualquer dificuldade para entrar, é só chamar o suporte: suporte@theblockcapital.net" },
+    { agent:"BlockCapital AI", title:"Diferença entre plano Anual e Vitalício", keys:"diferenca plano anual vitalicio qual escolher comparar incluso carteira ia beneficios melhor plano",
+      answer:"O plano Anual dá acesso por 12 meses (valor de referência ~R$1.997,00). O plano Vitalício dá acesso contínuo (valor de referência ~R$6.997,00) e já inclui a Carteira IA. Os valores são de referência e podem variar conforme a campanha. Se quiser, te ajudo a escolher conforme o seu objetivo." },
+    { agent:"BlockCapital AI", title:"Renovação automática e como cancelar", keys:"renovacao renovar automatica cancelar assinatura nao renovar desativar cobranca recorrente parar pagamento",
+      answer:"O plano Anual tem renovação automática ao fim do período contratado. Se você não quiser renovar, é só avisar o suporte (suporte@theblockcapital.net) antes da data de renovação para interromper a cobrança. Lembrando que o reembolso vale apenas para a transação inicial, dentro dos 7 dias da liberação do acesso." },
+    { agent:"BlockCapital AI", title:"Prazo de liberação do acesso", keys:"prazo liberacao quando libera acesso demora ativar pagamento aprovado comprovante liberar",
+      answer:"No pagamento pela Hotmart (cartão, boleto ou Pix), a liberação segue a confirmação do pagamento. No pagamento em cripto (USDT ou BTC), a liberação é manual: envie o comprovante/TXID para o suporte e liberamos o acesso o mais rápido possível." },
+    { agent:"BlockCapital AI", title:"Horário das decisões e vídeos", keys:"horario que horas video decisao publicada sai quando posta gerenciamento 18h tarde",
+      answer:"O Gui publica as decisões e os vídeos de gerenciamento normalmente às 18h, explicando cada movimento. Vale deixar as notificações do app configuradas para receber essas decisões assim que saírem." },
+    { agent:"BlockCapital AI", title:"A carteira garante lucro ou rentabilidade?", keys:"garante lucro rentabilidade retorno garantido promessa quanto rende ganho certo seguro risco",
+      answer:"Não trabalhamos com promessa de retorno — o mercado tem riscos e nenhum resultado é garantido. A filosofia da CRM é preservar capital e construir posição quando a relação risco-retorno é favorável. Como o Gui diz, 'preservar capital também é performance'. A gestão é feita de forma transparente, com cada decisão explicada." },
+    { agent:"BlockCapital AI", title:"Por que a carteira não opera vendida (short)", keys:"short vendido vendida vender operar contra queda lucrar na queda posicao vendida por que nao",
+      answer:"A CRM nunca faz operações vendidas — como o Gui costuma dizer, 'short nem na praia'. A estratégia é comprar bons ativos com boa relação risco-retorno e proteger o capital, não apostar na queda. Quando o cenário não favorece, a posição fica em caixa (USDT)." },
+    { agent:"BlockCapital AI", title:"O que é o PAXG (ouro) na carteira", keys:"paxg ouro gold posicao defensiva por que ouro protecao metal reserva",
+      answer:"O PAXG é um token lastreado em ouro, usado como posição defensiva na carteira. Por ter baixa liquidez no book, os stops de PAXG são sempre feitos por ordem limite, nunca a mercado, para evitar execução em preço ruim." },
+    { agent:"BlockCapital AI", title:"Filosofia e estratégia do Gui", keys:"filosofia estrategia por que paciencia caixa esperar metodo como pensa disciplina preservar capital",
+      answer:"A estratégia é baseada em paciência e preservação de capital. Algumas frases que resumem bem: 'o dinheiro é feito na compra, mas a sobrevivência do investidor é garantida pela paciência', 'saber vender é mais importante que saber comprar' e 'compre aos sons dos canhões e venda aos sons dos violinos'. Por isso, ficar em caixa quando o risco não compensa faz parte do plano." },
+    { agent:"BlockCapital AI", title:"Evento de desalavancagem do mercado", keys:"desalavancagem liquidacao bilhoes crash queda forte mercado protegida caixa evento liquidados",
+      answer:"Num evento de desalavancagem em que cerca de US$9,5 bilhões foram liquidados em poucas horas, a CRM estava 100% protegida (fora do mercado, em caixa). É um exemplo prático da importância de estar posicionado de forma defensiva quando o risco aumenta." },
+    { agent:"BlockCapital AI", title:"Consigo começar com pouco dinheiro?", keys:"pouco dinheiro valor minimo comecar quanto preciso iniciar investir pequeno aporte inicial baixo",
+      answer:"Você acompanha as decisões do Gui e replica no valor que fizer sentido para o seu bolso. A referência de aporte da CRM é de US$200 por semana, mas o mais importante é seguir o gerenciamento e nunca usar dinheiro que você não pode deixar investido. Nunca recomendamos alavancagem ou dívida para investir." },
+    { agent:"BlockCapital AI", title:"É para iniciantes? Como acompanho as decisões?", keys:"iniciante iniciantes novato leigo consigo acompanhar dificil facil entendo replicar seguir passo a passo comeco do zero",
+      answer:"Dá para acompanhar mesmo começando agora. Cada decisão é publicada com um vídeo explicando o porquê do movimento, então você entende e replica os passos na sua própria conta. A gestão da estratégia é feita pelo Gui; você acompanha e executa." },
+    { agent:"BlockCapital AI", title:"Como está a carteira agora (alocação atual)", keys:"posicao atual alocacao atual como esta a carteira agora quanto btc usdt caixa exposicao hoje situacao vigente esta comprado posicionado",
+      answer:"A alocação muda conforme o gerenciamento diário, então a posição vigente é sempre a última comunicada oficialmente na CRM (vídeo das 18h). Como referência do que foi decidido recentemente: após um período 100% em caixa, houve entradas graduais em BTC e a carteira chegou a ficar em torno de BTC 40% / USDT 60%. Para o número exato de agora, confirme sempre a última decisão publicada na CRM." },
+    { agent:"BlockCapital AI", title:"Histórico recente de decisões da carteira", keys:"historico decisoes recentes operacoes movimentos linha do tempo timeline o que foi feito ultimas decisoes trades entradas saidas resumo canal decisoes",
+      answer:"Resumo das decisões recentes (as posições mudam; a vigente é sempre a última publicada na CRM):\n• ~22/06: aporte semanal de US$200 (acumulado US$3.400).\n• ~24/06: follow-up sobre agravamento da Strategy/STRC e risco de venda forçada de BTC; postura defensiva mesmo com BTC acima de US$60.000.\n• ~29/06: aporte semanal de US$200 (acumulado US$3.600).\n• ~02/07: nova entrada de 20% em BTC a ~US$61.222 (entrada gradual); Bear Market ainda não dado por encerrado. Carteira: BTC 0%→20%, USDT 100%→80%.\n• ~06/07: programado stop 'zero a zero' em US$61.220 (notícia de possíveis vendas da Strategy); aporte de US$200 (acumulado US$3.800).\n• ~07/07: encerrada a posição de 20% em BTC a US$63.000; carteira volta a 100% em caixa. BTC 20%→0%, USDT 80%→100%.\n• ~13/07: aporte semanal de US$200 (acumulado US$4.000); carteira 100% em caixa, preservação patrimonial.\n• ~15/07: follow-up — CPI trouxe estrutura de alta no curto prazo; buscar entradas em pullbacks; possível região de US$67.000; fechamento semanal acima de US$60.000 confirmaria divergência bullish.\n• ~17/07: nova entrada de 30% em BTC a ~US$64.155. BTC 0%→30%, USDT 100%→70%.\n• ~18/07: reforço de +10% em BTC a ~US$64.300. BTC 30%→40%, USDT 70%→60%.\nO fio condutor é sempre o mesmo: entradas graduais quando o risco/retorno é favorável, stops de proteção, volta ao caixa quando o cenário pede, e aportes semanais com disciplina." },
+    { agent:"BlockCapital AI", title:"Qual foi a última compra/entrada em BTC", keys:"ultima compra ultima entrada ultimo trade ultima operacao ultima decisao ultimo movimento recente comprou entrou aumentou reforcou posicao btc bitcoin nova compra o que foi comprado ultimo",
+      answer:"A compra mais recente foi uma entrada de 10% em BTC a ~US$64.300, que deixou a carteira em torno de BTC 40% / USDT 60% (decisão mais recente). Antes disso, houve uma entrada de 30% em BTC a ~US$64.155. Como as posições mudam com o gerenciamento diário, confirme sempre a última decisão publicada na CRM (vídeo das 18h)." },
+    { agent:"BlockCapital AI", title:"Quais criptos tem na carteira CRM", keys:"quais criptos moedas ativos tem na carteira crm composicao alocacao o que tem btc usdt bitcoin quanto de cada distribuicao esta investido comprado em que",
+      answer:"Pela decisão mais recente, a carteira está em torno de BTC 40% / USDT 60%. A CRM opera principalmente BTC como ativo de risco e mantém o restante em USDT (caixa); em fases defensivas já usou também PAXG (ouro). A composição muda conforme o gerenciamento — a alocação vigente é sempre a última comunicada oficialmente na CRM." },
+
+    { agent:"Carteira IA AI", title:"O que é a Carteira IA", keys:"carteira ia tese stack de ia do eletron ao agente inteligencia artificial o que e",
+      answer:"A Carteira IA segue a tese 'Do Elétron ao Agente', com foco na base física da infraestrutura de IA: energia, memória, cooling e data centers. Ela tem a aba 'Tese' (mapa/relatório) e a aba 'Decisões' (execução real). Relatório público: theblockcapital.com/publico/stack-de-ia" },
+    { agent:"Carteira IA AI", title:"Ativos e camadas da Carteira IA", keys:"ativos camadas memoria energia cooling reit datacenter mu sndk wdc be ceg vst etn vrt mod aph lite eqix dlr alocacao percentual peso",
+      answer:"As camadas da Carteira IA são: Memória e Armazenamento (~22%: MU, SNDK, WDC); Energia e Geração (~33%: BE, CEG, VST, ETN); Cooling e Infraestrutura Física (~23%: VRT, MOD, APH, LITE); REITs de Datacenter (~14%: EQIX, DLR); e caixa tático ~8%. Chips/semicondutores ficam de fora. Horizonte de 18 a 36 meses, com rebalanceamento semestral." },
+    { agent:"Carteira IA AI", title:"Como adquirir a Carteira IA", keys:"adquirir comprar contratar carteira ia vitalicio avulsa individual como ter acesso",
+      answer:"A Carteira IA pode ser adquirida junto ao Plano Vitalício (onde já vem incluída) ou de forma avulsa/individual, sem o vitalício." },
+    { agent:"Carteira IA AI", title:"Como operar a Carteira IA (Brasil)", keys:"como operar opero opera operacao carteira ia bdr etf b3 avenue ibkr schwab internacional comprar acoes eua bolsa americana onde comprar",
+      answer:"Ordem de preferência para clientes no Brasil: 1) Tem BDR? Opere pela B3. 2) Não tem BDR mas tem ETF do tema? Use o ETF. 3) Sem BDR nem ETF? Corretora internacional (Avenue, IBKR, Schwab). 4) Já tem conta nos EUA? Direto na bolsa americana. A VRT já está tokenizada na Bitget e a CEG pode ser acessada via BDR na B3 ou direto nos EUA." },
+    { agent:"Carteira IA AI", title:"Aportes da Carteira IA são separados da CRM?", keys:"separado independente misturar mesma carteira aportes carteira ia crm capital de fora percentual diferente",
+      answer:"Sim, são totalmente independentes. Cada carteira tem sua própria estratégia, tese e gerenciamento, por isso os valores e percentuais de aporte são separados. O capital da Carteira IA deve vir de fora da CRM." },
+    { agent:"Carteira IA AI", title:"Gráfico de pizza da alocação", keys:"grafico pizza alocacao percentual visual mostrar distribuicao",
+      answer:"A Carteira IA já mostra as recomendações de percentual de alocação por ativo. A sugestão de exibir isso também em formato de gráfico de pizza foi encaminhada à equipe para avaliação." },
+    { agent:"Carteira IA AI", title:"Indicador CVDD", keys:"cvdd indicador metrica onchain sugestao",
+      answer:"A sugestão do indicador CVDD foi agradecida e encaminhada ao Gui para avaliação. Até o momento não há uma definição técnica oficial divulgada sobre ele." },
+
+    { agent:"VantageNode AI", title:"O que é o VantageNode", keys:"vantagenode vantage node onchain order flow derivativos macroeconomia terminal indicadores plano pro plano team engine room",
+      answer:"O VantageNode é focado em Onchain, Bitcoin, Order Flow, Derivativos e Macroeconomia, com Terminal e Indicadores. Há os planos Pro e Team. A Engine Room é exclusiva da equipe de engenharia. (Não prometemos funcionalidades que ainda não existem.)" }
+  ];
+
+  var AGENT_COLORS = {
+    "BlockCapital AI":       { color:"#2F6F4E", bg:"#EAF4EE", label:"BC" },
+    "Carteira IA AI":        { color:"#5B4B8A", bg:"#EFEBF7", label:"IA" },
+    "VantageNode AI":        { color:"#1E5A8A", bg:"#E9F1F8", label:"VN" },
+    "Wemerson Supervisor AI":{ color:"#8A5A1E", bg:"#F8F1E6", label:"SV" },
+    "Interno":               { color:"#B23B3B", bg:"#FBEAEA", label:"EU" }
+  };
+
+  var SEED_CREDENTIALS = [
+    { label:"TheMembers Dashboard", login:"blockcapitaltime@gmail.com", senha:"Omelhortrabalhodomundo01@", nota:"dashboard.themembers.com.br" },
+    { label:"CRM guitelles.academy", login:"blockcapitaltime@gmail.com", senha:"Omelhortrabalhodomundo01@", nota:"www.guitelles.academy" },
+    { label:"E-mail suporte", login:"suporte@theblockcapital.net", senha:"Omelhortrabalhodomundo01@", nota:"" },
+    { label:"E-mail tutoria", login:"blockcapitaltutoria@gmail.com", senha:"Omelhortrabalhodomundo01@", nota:"acessos via accounts.google.com" },
+    { label:"TheMembers (alt.)", login:"blockcapitaltime@gmail.com", senha:"Blockcapital01@", nota:"registrado em 16/09/2025" },
+    { label:"Plataforma teste Netlify", login:"guitelles", senha:"blockcapital2026", nota:"scintillating-moonbeam-78ab21.netlify.app" }
+  ];
+
+  /* ===================== BUSCA (fuzzy + sinônimos) ===================== */
+  var STOP = {};
+  "de da do das dos a o as os e ou um uma que qual quais como onde quando por para pra com sem no na nos nas em ao aos se sobre meu minha meus minhas eu voce vc ele ela isso esse essa este esta ser tem ter fazer posso pode devo quero e-mail email".split(" ").forEach(function (w) { STOP[w] = 1; });
+
+  /* grupos de sinônimos (tokens normalizados equivalentes) */
+  var SYN_GROUPS = [
+    ["reembolso","estorno","devolucao","devolver","reembolsar","arrependimento","cancelamento","cancelar"],
+    ["preco","valor","custa","custo","quanto"],
+    ["plano","planos","assinatura","assinar"],
+    ["pagar","pagamento","comprar","adquirir","contratar"],
+    ["btc","bitcoin"],
+    ["eth","ethereum"],
+    ["sol","solana"],
+    ["aporte","aportar","aportes","depositar","deposito","investir","investimento"],
+    ["video","videos","live","gravacao","gravacoes"],
+    ["suporte","ajuda","contato","atendimento","falar"],
+    ["corretora","exchange"],
+    ["alavancagem","alavancar","alavancado","margem"],
+    ["sumiu","sumido","desapareceu","parou"],
+    ["patrimonio","rendimento","resultado","performance","lucro","ganho"],
+    ["notificacao","notificacoes","avisos","alertas","alerta"],
+    ["separado","separados","independente","independentes"],
+    ["comeco","comecou","inicio","iniciou"],
+    ["stop","stoploss"],
+    ["moeda","moedas","ativo","ativos","cripto","criptos","criptomoeda","criptomoedas"],
+    ["ultima","ultimo","ultimas","ultimos","recente","recentes"],
+    ["renovacao","renovar","renova","renovacoes"],
+    ["acessar","acesso","logar","plataforma","assistir","entrar"],
+    ["iniciante","iniciantes","novato","leigo","comecando"],
+    ["short","vendido","vendida","vendidas"],
+    ["garante","garantido","garantia","rentabilidade"],
+    ["horario","horas"],
+    ["posicao","alocacao","exposicao","posicionado","comprado"],
+    ["atual","agora","hoje","vigente"],
+    ["historico","timeline","decisoes"]
+  ];
+  var SYN_MAP = {};
+  SYN_GROUPS.forEach(function (g, gi) { g.forEach(function (w) { SYN_MAP[w] = gi; }); });
+
+  function norm(s) {
+    return String(s == null ? "" : s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
+  }
+  function tokenize(s) {
+    return norm(s).split(" ").filter(function (w) { return w.length >= 2 && !STOP[w]; });
+  }
+  function lev(a, b) {
+    var m = a.length, n = b.length;
+    if (!m) return n; if (!n) return m;
+    var prev = [], cur = [], i, j;
+    for (j = 0; j <= n; j++) prev[j] = j;
+    for (i = 1; i <= m; i++) {
+      cur[0] = i;
+      for (j = 1; j <= n; j++) {
+        var cost = a.charCodeAt(i - 1) === b.charCodeAt(j - 1) ? 0 : 1;
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+      }
+      for (j = 0; j <= n; j++) prev[j] = cur[j];
+    }
+    return prev[n];
+  }
+  function simil(a, b) {
+    if (!a || !b) return 0;
+    var mx = Math.max(a.length, b.length);
+    return 1 - lev(a, b) / mx;
+  }
+  function sameSyn(a, b) { return SYN_MAP[a] !== undefined && SYN_MAP[a] === SYN_MAP[b]; }
+
+  function tokenScore(qt, et) {
+    if (qt === et) return 1;
+    if (sameSyn(qt, et)) return 0.95;
+    if (qt.length >= 4 && et.length >= 4 && (et.indexOf(qt) >= 0 || qt.indexOf(et) >= 0)) return 0.85;
+    var s = simil(qt, et);
+    return s >= 0.74 ? s * 0.9 : 0;
+  }
+  function scoreEntry(qTokens, qNorm, entry) {
+    var total = 0, matched = 0, strong = false, strongCount = 0, longestStrong = 0, bestTok = 0, k;
+    for (k = 0; k < qTokens.length; k++) {
+      var qt = qTokens[k], best = 0;
+      for (var j = 0; j < entry._tokens.length; j++) {
+        var s = tokenScore(qt, entry._tokens[j]);
+        if (s > best) best = s;
+      }
+      if (best >= 0.9) {                 /* acerto forte: palavra exata ou sinônimo */
+        strong = true; strongCount++;
+        if (qt.length > longestStrong) longestStrong = qt.length;
+      }
+      if (best > bestTok) bestTok = best;
+      if (best >= 0.6) matched++;
+      total += best;
+    }
+    if (qNorm.length >= 5 && entry._hay.indexOf(qNorm) >= 0) { total += 1.6; strong = true; strongCount++; if (qNorm.length > longestStrong) longestStrong = qNorm.length; }
+    var cov = qTokens.length ? total / qTokens.length : 0;   /* cobertura média da frase */
+    return { score: total, matched: matched, strong: strong, strongCount: strongCount, longestStrong: longestStrong, bestTok: bestTok, cov: cov };
+  }
+  function prepEntry(e) {
+    if (e._tokens) return e;
+    var base = (e.keys || "") + " " + (e.title || "");
+    e._tokens = tokenize(base);
+    e._hay = norm((e.title || "") + " " + (e.answer || "") + " " + (e.keys || ""));
+    return e;
+  }
+  function buildSearchable(mode) {
+    var list = [];
+    if (mode === "interno") {
+      S.credentials.forEach(function (c) {
+        list.push(prepEntry({
+          agent: "Interno", title: "Credencial: " + c.label,
+          answer: "Login: " + c.login + (c.senha ? "\nSenha: " + c.senha : "") + (c.nota ? "\nNota: " + c.nota : ""),
+          keys: c.label + " " + c.login + " " + (c.nota || "") + " credencial senha login acesso"
+        }));
+      });
+    }
+    KB.forEach(function (e) { list.push(prepEntry(e)); });
+    S.learned.forEach(function (l) {
+      if (l.agent === mode || (mode === "cliente" && l.agent !== "interno")) {
+        var ag = mode === "interno" ? "Interno" : "Wemerson Supervisor AI";
+        list.push(prepEntry({ agent: ag, title: "Aprendido: " + l.question, answer: l.answer, keys: l.question }));
+      }
+    });
+    return list;
+  }
+  function runSearch(query, mode) {
+    var qNorm = norm(query), qTokens = tokenize(query);
+    /* deduplica termos repetidos (ex.: "ordem ... ordem" não pontua em dobro) */
+    var seen = {}, uniq = [];
+    qTokens.forEach(function (t) { if (!seen[t]) { seen[t] = 1; uniq.push(t); } });
+    if (!uniq.length) return [];
+    var scored = buildSearchable(mode).map(function (e) {
+      return { e: e, r: scoreEntry(uniq, qNorm, e) };
+    }).filter(function (x) {
+      var r = x.r;
+      if (r.matched < 1) return false;
+      /* Aceita só com confiança real. Um acerto ISOLADO numa palavra genérica
+         (ex.: "tempo" em "previsão do tempo") NÃO basta numa frase com vários
+         termos. Vale quando:
+         (a) a busca é de UMA palavra e o melhor termo está próximo (tolera typo), OU
+         (b) busca com várias palavras, boa cobertura e pelo menos 2 termos casados, OU
+         (c) dois ou mais acertos fortes (palavra exata/sinônimo), OU
+         (d) um único acerto forte porém em termo específico (palavra longa). */
+      var single = uniq.length === 1;
+      return (single && r.bestTok >= 0.66)
+        || (!single && r.cov >= 0.5 && r.bestTok >= 0.66 && r.matched >= 2)
+        || (r.strongCount >= 2 && r.score >= 1.5)
+        || (r.strong && r.longestStrong >= 7 && r.score >= 0.9);
+    }).sort(function (a, b) { return b.r.score - a.r.score; });
+    if (!scored.length) return [];
+    var top = scored[0].r.score;
+    return scored.filter(function (x) { return x.r.score >= top * 0.6; })
+      .slice(0, 4).map(function (x) { return { agent: x.e.agent, title: x.e.title, answer: x.e.answer }; });
+  }
+
+  /* ===================== STATE ===================== */
+  function load(key, fb) { try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : fb; } catch (e) { return fb; } }
+  function save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+  function loadRaw(key, fb) { try { var v = localStorage.getItem(key); return v == null ? fb : v; } catch (e) { return fb; } }
+  function saveRaw(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+
+  var S = {
+    themeName: loadRaw("wemerson-theme", "dark"),
+    mode: "cliente",
+    input: "",
+    history: load("wemerson-history-busca", []),
+    credentials: load("wemerson-credentials", null) || SEED_CREDENTIALS,
+    learned: load("wemerson-learned", []),
+    pending: load("wemerson-pending", []),
+    error: "",
+    showCreds: false,
+    showPending: false,
+    newCred: { label:"", login:"", senha:"", nota:"" },
+    unlocked: false,
+    pinInput: "",
+    pinError: "",
+    answerDrafts: {}
+  };
+  if (!load("wemerson-credentials", null)) save("wemerson-credentials", S.credentials);
+
+  var app = document.getElementById("app");
+
+  function esc(s) { return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function badge(label) {
+    var c = AGENT_COLORS[label] || AGENT_COLORS["Wemerson Supervisor AI"];
+    return '<span class="badge" style="background:' + c.bg + ';color:' + c.color + '"><span class="dot" style="background:' + c.color + '">' + c.label + '</span>' + esc(label) + '</span>';
+  }
+  function applyTheme() { document.documentElement.setAttribute("data-app-theme", S.themeName); }
+
+  function render() {
+    applyTheme();
+    var isLocked = S.mode === "interno-locked";
+    var h = "";
+
+    h += '<div class="row" style="justify-content:space-between;align-items:flex-start;margin-bottom:20px">';
+    h += '<div><div class="eyebrow">Wemerson AI Desktop · Busca</div><h1>Central de perguntas e respostas</h1>';
+    h += '<p class="lede">Busca inteligente na base de conhecimento — entende sinônimos e erros de digitação. Sem IA, sem chave, sem custo. Tudo salvo neste navegador.</p></div>';
+    h += '<button class="themebtn" data-action="theme" title="Alternar tema">' + (S.themeName === "dark" ? "☀️ Claro" : "🌙 Escuro") + '</button>';
+    h += '</div>';
+
+    h += '<div class="banner">🔍 <strong>Modo busca (offline).</strong> Escreva a d&uacute;vida do cliente e o app mostra as respostas oficiais j&aacute; cadastradas, prontas para copiar. Nenhuma chamada de IA &eacute; feita.</div>';
+
+    h += '<div class="row" style="gap:8px;margin-bottom:16px">';
+    h += '<button class="modebtn ' + (S.mode === "cliente" ? "active-green" : "") + '" data-action="mode" data-mode="cliente">💬 Resposta ao Cliente</button>';
+    h += '<button class="modebtn ' + ((S.mode === "interno" || isLocked) ? "active-red" : "") + '" data-action="mode" data-mode="interno">🔒 Resposta Interna (s&oacute; eu)</button>';
+    h += '</div>';
+
+    if (isLocked) {
+      h += '<div class="panel" style="padding:20px;margin-bottom:16px;text-align:center">';
+      h += '<div style="font-size:14px;color:var(--accentRedText);margin-bottom:10px;font-weight:600">&Aacute;rea interna protegida</div>';
+      h += '<div style="font-size:13px;color:var(--subtext);margin-bottom:14px">Digite a senha para acessar.</div>';
+      h += '<div class="row" style="gap:8px;justify-content:center">';
+      h += '<input class="field" type="password" data-model="pin" value="' + esc(S.pinInput) + '" placeholder="Senha" style="width:160px;text-align:center" data-enter="pin" autofocus>';
+      h += '<button data-action="checkpin" style="background:var(--accentRed);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer">Entrar</button>';
+      h += '</div>';
+      if (S.pinError) h += '<div style="color:var(--accentRedText);font-size:12px;margin-top:10px">' + esc(S.pinError) + '</div>';
+      h += '</div>';
+    }
+
+    if (S.mode === "cliente") {
+      h += '<div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:16px">';
+      ["BlockCapital AI","Carteira IA AI","VantageNode AI","Wemerson Supervisor AI"].forEach(function (a) { h += badge(a); });
+      h += '</div>';
+    }
+
+    if (!isLocked) {
+      h += '<div class="row" style="gap:8px;margin-bottom:16px;flex-wrap:wrap">';
+      if (S.mode === "interno") {
+        h += '<button class="pill" data-action="togglecreds" style="color:var(--accentRedText)">' + (S.showCreds ? "Ocultar credenciais" : "Credenciais (" + S.credentials.length + ")") + '</button>';
+      }
+      h += '<button class="pill" data-action="togglepending" style="color:var(--subtext)">' + (S.showPending ? "Ocultar pend&ecirc;ncias" : "Perguntas sem resposta (" + S.pending.length + ")") + '</button>';
+      h += '<span style="align-self:center;font-size:12px;color:var(--faint);font-family:var(--mono)">📚 ' + KB.length + ' respostas na base' + (S.learned.length ? " · 🧠 " + S.learned.length + " aprendidas" : "") + '</span>';
+      h += '</div>';
+    }
+
+    if (S.showPending && !isLocked) {
+      h += '<div class="panel" style="padding:14px;margin-bottom:16px">';
+      if (S.pending.length === 0) h += '<div style="color:var(--faint);font-size:13px">Nenhuma pergunta pendente. 🎉</div>';
+      S.pending.forEach(function (p, i) {
+        var last = i === S.pending.length - 1;
+        h += '<div style="margin-bottom:14px;padding-bottom:14px;' + (last ? "" : "border-bottom:1px solid var(--border)") + '">';
+        h += '<div style="font-size:13px;margin-bottom:6px;font-weight:600">' + esc(p.question) + '</div>';
+        h += '<textarea class="field" data-model="draft" data-idx="' + i + '" rows="2" placeholder="Escreva a resposta oficial aqui para o app aprender..." style="width:100%;resize:vertical;margin-bottom:6px">' + esc(S.answerDrafts[i] || "") + '</textarea>';
+        h += '<div class="row" style="gap:8px">';
+        h += '<button data-action="resolve" data-idx="' + i + '" style="background:var(--accentGreen);color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer">Salvar na base</button>';
+        h += '<button data-action="dismiss" data-idx="' + i + '" style="background:none;border:1px solid var(--border);color:var(--subtext);border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer">Descartar</button>';
+        h += '</div></div>';
+      });
+      h += '</div>';
+    }
+
+    if (S.mode === "interno" && S.showCreds) {
+      h += '<div class="panel" style="padding:14px;margin-bottom:16px">';
+      S.credentials.forEach(function (c, i) {
+        var last = i === S.credentials.length - 1;
+        h += '<div class="row" style="justify-content:space-between;align-items:flex-start;padding:8px 0;font-size:13px;' + (last ? "" : "border-bottom:1px solid var(--border)") + '">';
+        h += '<div><div style="font-weight:600">' + esc(c.label) + '</div><div style="color:var(--subtext)">' + esc(c.login) + (c.senha ? " &middot; " + esc(c.senha) : "") + '</div>';
+        if (c.nota) h += '<div style="color:var(--faint);font-size:12px">' + esc(c.nota) + '</div>';
+        h += '</div><button data-action="removecred" data-idx="' + i + '" style="background:none;border:none;color:var(--accentRedText);cursor:pointer;font-size:12px">remover</button></div>';
+      });
+      h += '<div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+      h += '<input class="field" data-model="cred.label" placeholder="Nome/label" value="' + esc(S.newCred.label) + '">';
+      h += '<input class="field" data-model="cred.login" placeholder="Login/e-mail" value="' + esc(S.newCred.login) + '">';
+      h += '<input class="field" data-model="cred.senha" placeholder="Senha" value="' + esc(S.newCred.senha) + '">';
+      h += '<input class="field" data-model="cred.nota" placeholder="Nota (opcional)" value="' + esc(S.newCred.nota) + '"></div>';
+      h += '<button data-action="addcred" style="margin-top:8px;background:var(--accentRedBg);color:var(--accentRedText);border:none;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer">+ Adicionar credencial</button>';
+      h += '</div>';
+    }
+
+    if (!isLocked) {
+      h += '<div class="chat" id="chat">';
+      if (S.history.length === 0) h += '<div style="color:var(--faint);font-size:14px;padding:20px 4px">Nenhuma busca ainda. Escreva a d&uacute;vida abaixo e busque.</div>';
+      S.history.forEach(function (item, i) {
+        h += '<div style="margin-bottom:22px">';
+        var qbg = item.mode === "interno" ? "var(--accentRedBg)" : "var(--inputBg)";
+        h += '<div class="q-bubble" style="background:' + qbg + '">' + esc(item.question) + '</div>';
+        if (item.noMatch) {
+          h += '<div style="padding-left:4px"><div style="font-size:13.5px;color:var(--subtext);line-height:1.6">Nenhuma resposta encontrada na base para essa busca. Voc&ecirc; pode cadastrar a resposta oficial para as pr&oacute;ximas vezes.</div>';
+          h += '<button data-action="topending" data-idx="' + i + '" style="margin-top:8px;background:var(--accentGreen);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">Adicionar &agrave;s pend&ecirc;ncias</button></div>';
+        } else {
+          (item.results || []).forEach(function (r, ri) {
+            h += '<div class="rescard">';
+            h += '<div style="margin-bottom:6px;display:flex;align-items:center;gap:8px">' + badge(r.agent) + '<span style="font-size:12px;color:var(--faint);font-family:var(--mono)">' + esc(r.title) + '</span></div>';
+            h += '<div class="answer">' + esc(r.answer) + '<button class="copybtn" data-action="copy" data-idx="' + i + '" data-ri="' + ri + '" title="Copiar">copiar</button></div>';
+            h += '</div>';
+          });
+        }
+        h += '</div>';
+      });
+      h += '</div>';
+    }
+
+    if (S.error) h += '<div style="color:var(--accentRedText);font-size:13px;margin-bottom:10px">' + esc(S.error) + '</div>';
+
+    if (!isLocked) {
+      var canSend = !!S.input.trim();
+      var sendBg = canSend ? (S.mode === "cliente" ? "var(--accentGreen)" : "var(--accentRed)") : "var(--inputBg)";
+      var sendColor = canSend ? "#fff" : "var(--faint)";
+      h += '<div class="row composer">';
+      h += '<textarea data-model="input" data-enter="send" rows="2" placeholder="' + (S.mode === "cliente" ? "Escreva a dúvida do cliente e busque..." : "Busque credencial ou informação interna...") + '">' + esc(S.input) + '</textarea>';
+      h += '<button class="sendbtn" data-action="send" ' + (canSend ? "" : "disabled") + ' style="background:' + sendBg + ';color:' + sendColor + ';cursor:' + (canSend ? "pointer" : "default") + '">🔍 Buscar</button>';
+      h += '</div>';
+      if (S.history.length > 0) h += '<div style="text-align:right;margin-top:10px"><button data-action="clear" style="background:none;border:none;color:var(--faint);font-size:12px;cursor:pointer;text-decoration:underline">limpar hist&oacute;rico</button></div>';
+    }
+
+    app.innerHTML = h;
+    var chat = document.getElementById("chat");
+    if (chat) chat.scrollTop = chat.scrollHeight;
+    var f = app.querySelector("[autofocus]");
+    if (f) f.focus();
+  }
+
+  function doSearch() {
+    var q = S.input.trim();
+    if (!q) return;
+    S.error = "";
+    var mode = S.mode;
+    var results = runSearch(q, mode);
+    S.history = S.history.concat([{ question: q, mode: mode, results: results, noMatch: results.length === 0 }]);
+    S.input = "";
+    save("wemerson-history-busca", S.history);
+    render();
+  }
+
+  app.addEventListener("click", function (e) {
+    var el = e.target.closest("[data-action]");
+    if (!el) return;
+    var a = el.getAttribute("data-action");
+    var idx = el.getAttribute("data-idx");
+    if (a === "theme") { S.themeName = S.themeName === "dark" ? "light" : "dark"; saveRaw("wemerson-theme", S.themeName); render(); }
+    else if (a === "mode") {
+      var target = el.getAttribute("data-mode");
+      if (target === "interno" && !S.unlocked) { S.pinInput = ""; S.pinError = ""; S.mode = "interno-locked"; }
+      else S.mode = target;
+      render();
+    }
+    else if (a === "checkpin") {
+      if (S.pinInput === INTERNAL_PASSWORD) { S.unlocked = true; S.mode = "interno"; S.pinError = ""; }
+      else S.pinError = "Senha incorreta.";
+      render();
+    }
+    else if (a === "togglecreds") { S.showCreds = !S.showCreds; render(); }
+    else if (a === "togglepending") { S.showPending = !S.showPending; render(); }
+    else if (a === "send") { doSearch(); }
+    else if (a === "clear") { S.history = []; save("wemerson-history-busca", S.history); render(); }
+    else if (a === "copy") {
+      var it = S.history[+idx]; var ri = +el.getAttribute("data-ri");
+      if (it && it.results && it.results[ri] && navigator.clipboard) navigator.clipboard.writeText(it.results[ri].answer);
+    }
+    else if (a === "topending") {
+      var itm = S.history[+idx];
+      if (itm) { S.pending = S.pending.concat([{ question: itm.question, mode: itm.mode, date: new Date().toISOString() }]); save("wemerson-pending", S.pending); S.showPending = true; render(); }
+    }
+    else if (a === "addcred") {
+      if (!S.newCred.label.trim()) return;
+      S.credentials = S.credentials.concat([Object.assign({}, S.newCred)]);
+      save("wemerson-credentials", S.credentials);
+      S.newCred = { label:"", login:"", senha:"", nota:"" }; render();
+    }
+    else if (a === "removecred") { S.credentials = S.credentials.filter(function (_, i) { return i !== +idx; }); save("wemerson-credentials", S.credentials); render(); }
+    else if (a === "resolve") {
+      var pItem = S.pending[+idx]; var ans = (S.answerDrafts[+idx] || "").trim();
+      if (!ans) return;
+      S.learned = S.learned.concat([{ question: pItem.question, answer: ans, agent: pItem.mode }]);
+      S.pending = S.pending.filter(function (_, i) { return i !== +idx; });
+      delete S.answerDrafts[+idx];
+      save("wemerson-learned", S.learned); save("wemerson-pending", S.pending); render();
+    }
+    else if (a === "dismiss") { S.pending = S.pending.filter(function (_, i) { return i !== +idx; }); save("wemerson-pending", S.pending); render(); }
+  });
+
+  app.addEventListener("input", function (e) {
+    var el = e.target.closest("[data-model]");
+    if (!el) return;
+    var m = el.getAttribute("data-model"); var v = el.value;
+    if (m === "input") S.input = v;
+    else if (m === "pin") S.pinInput = v;
+    else if (m === "draft") S.answerDrafts[+el.getAttribute("data-idx")] = v;
+    else if (m.indexOf("cred.") === 0) S.newCred[m.slice(5)] = v;
+    if (m === "input") {
+      var btn = app.querySelector('[data-action="send"]');
+      if (btn) {
+        var can = !!v.trim();
+        btn.disabled = !can;
+        btn.style.background = can ? (S.mode === "cliente" ? "var(--accentGreen)" : "var(--accentRed)") : "var(--inputBg)";
+        btn.style.color = can ? "#fff" : "var(--faint)";
+        btn.style.cursor = can ? "pointer" : "default";
+      }
+    }
+  });
+
+  app.addEventListener("keydown", function (e) {
+    var el = e.target.closest("[data-enter]");
+    if (!el) return;
+    var kind = el.getAttribute("data-enter");
+    if (kind === "send" && e.key === "Enter" && !e.shiftKey) { e.preventDefault(); doSearch(); }
+    else if (kind === "pin" && e.key === "Enter") {
+      if (S.pinInput === INTERNAL_PASSWORD) { S.unlocked = true; S.mode = "interno"; S.pinError = ""; }
+      else S.pinError = "Senha incorreta.";
+      render();
+    }
+  });
+
+  render();
+})();
+</script>
