@@ -1,0 +1,19 @@
+{
+  "cycle_id": "2026-07-16-mvrv-01",
+  "collected_at": "2026-07-20T11:58:40+00:00",
+  "window_hours": 60,
+  "metrics": {
+    "bookmarks": 1,
+    "likes": 1,
+    "replies": 1,
+    "reposts": 0,
+    "impressions": 36,
+    "profile_clicks": 0
+  },
+  "kpi": {
+    "primary": "bookmarks",
+    "value": 1,
+    "analyst_saved": false
+  },
+  "learning": "Alcance foi o fator dominante, não o conteúdo: 36 impressões é distribuição quase nula (conta nova/pequena), então 1 bookmark não valida nem invalida a tese editorial — amostra pequena demais. Bookmark rate ~2,8% (1/36) e bookmarks = likes, o que no nosso KPI é levemente favorável, mas sem significância estatística. A única reply foi a nossa (link) = 0 replies orgânicos. Ação: (1) NÃO ajustar ângulo/voz com base nesses números — o gargalo é audiência/reach, não a copy; (2) acompanhar bookmark RATE ao longo de vários ciclos antes de concluir sobre conteúdo."
+}
