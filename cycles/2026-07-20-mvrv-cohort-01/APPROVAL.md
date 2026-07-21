@@ -1,6 +1,6 @@
 # APPROVAL — Ciclo 2026-07-20-mvrv-cohort-01
 
-STATUS: pending
+STATUS: approved
 
 <!--
   GATE 2 — INVIOLÁVEL (invariante 7).
@@ -37,7 +37,7 @@ Edite o campo `STATUS:` no topo:
 - `revise`   → devolve ao pipeline; escreva a nota abaixo.
 - `rejected` → descarta o ciclo.
 
-**Nota (opcional):**
+**Nota (opcional):** Texto final confirmado pelo Mr. G em 2026-07-20 (após os 2 ajustes). Publicação manual na @VantageNodvt; canal manual.
 
 ---
 _Gráfico do ciclo: 02_chart.png (barras por coorte)_
