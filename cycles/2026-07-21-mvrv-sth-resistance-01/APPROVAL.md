@@ -1,6 +1,6 @@
 # APPROVAL — Ciclo 2026-07-21-mvrv-sth-resistance-01
 
-STATUS: pending
+STATUS: approved
 
 <!--
   GATE 2 — INVIOLÁVEL (invariante 7).
@@ -38,7 +38,7 @@ Edite o campo `STATUS:` no topo:
 - `revise`   → devolve ao pipeline; escreva a nota abaixo.
 - `rejected` → descarta o ciclo.
 
-**Nota (opcional):**
+**Nota (opcional):** Aprovado pelo Mr. G em 2026-07-21 com o gráfico gerado (render_cohort). Publicação manual pelo Mr. G na @VantageNodvt; publish.sh NÃO executado por instrução dele.
 
 ---
 _Gráfico do ciclo: 02_chart.png (barras por coorte, breakeven em 1,0)_
