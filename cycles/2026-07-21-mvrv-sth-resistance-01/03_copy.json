@@ -1,0 +1,42 @@
+{
+  "cycle_id": "2026-07-21-mvrv-sth-resistance-01",
+  "post": {
+    "text": "MVRV-STH em 0,957: o preço está ~4,3% abaixo do custo-base de quem comprou recentemente. Esse custo, logo acima, historicamente tende a agir como resistência — reencontrá-lo transforma o breakeven do curto prazo em oferta. Repique dentro de bear testando teto, não base ampla.",
+    "char_count": 276
+  },
+  "reply": {
+    "text": "MVRV-STH = valor de mercado ÷ custo-base do short-term holder; abaixo de 1 = preço sob o custo. Coorte: agregado 1,231, LTH 1,304 — força nas mãos antigas. Fonte: https://vantagenode.io/terminal#metric=5b84739a00. Não é previsão de preço nem recomendação.",
+    "link": "https://vantagenode.io/terminal#metric=5b84739a00"
+  },
+  "numbers": [
+    {
+      "value": 0.957,
+      "unit": "ratio",
+      "where": "post",
+      "claim": "MVRV-STH em 0,957"
+    },
+    {
+      "value": 4.3,
+      "unit": "%",
+      "where": "post",
+      "claim": "~4,3% abaixo do custo-base (derivado de 1 − 0,957)"
+    },
+    {
+      "value": 1.231,
+      "unit": "ratio",
+      "where": "reply",
+      "claim": "agregado 1,231"
+    },
+    {
+      "value": 1.304,
+      "unit": "ratio",
+      "where": "reply",
+      "claim": "LTH 1,304"
+    }
+  ],
+  "reading": "MVRV-STH em 0,957: o custo-base do short-term holder está logo acima do preço (~4,3%). Historicamente esse custo funciona como zona de oferta/resistência — ao ser reencontrado, holders no breakeven tendem a vender. Com o agregado (1,231) e o LTH (1,304) em lucro, a força do mercado está nas mãos antigas, não no dinheiro novo: caracteriza repique dentro de bear encontrando teto, não base ampla. Descrição de comportamento de custo, sem afirmar direção de preço.",
+  "single_idea": true,
+  "link_in_reply_only": true,
+  "bookmark_test": "Sim — dá ao analista uma zona de oferta concreta (custo do STH) que o gráfico de preço não nomeia; material de referência.",
+  "no_hype_check": true
+}

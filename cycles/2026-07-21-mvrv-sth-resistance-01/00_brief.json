@@ -1,0 +1,28 @@
+{
+  "cycle_id": "2026-07-21-mvrv-sth-resistance-01",
+  "created_at": "2026-07-21T00:00:00+00:00",
+  "indicator": "MVRV",
+  "data_ref": "cycles/2026-07-21-mvrv-sth-resistance-01/00_data.json",
+  "headline_number": {
+    "value": 0.957,
+    "unit": "ratio",
+    "label": "MVRV-STH (21/07/2026)"
+  },
+  "angle": "O custo do investidor de curto prazo como resistência. MVRV-STH em 0,957 significa que o preço está ~4,3% abaixo do custo-base médio de quem comprou recentemente — esse custo fica logo acima do preço e, historicamente, tende a funcionar como resistência (ao ser reencontrado, o breakeven do STH vira oferta). Enquanto o STH segue abaixo do custo e a força está nas mãos antigas (agregado 1,231, LTH 1,304), a leitura é de repique dentro de bear encontrando teto — não de base ampla/reversão de ciclo.",
+  "why_now": "O preço reergueu e a narrativa de superfície é de recuperação; o custo do STH logo acima é justamente o obstáculo que o gráfico de preço não nomeia.",
+  "target_reader": "analista onchain que usa custo-base de coorte como zona de oferta/resistência",
+  "single_idea": true,
+  "risk_flags": [
+    "Invariante 5: NÃO prever preço. 'Resistência' e 'repique dentro de bear' são caracterização de comportamento/oferta baseada em custo-base, com hedge ('historicamente tende a'); jamais afirmar que o preço vai parar/cair. Incluir disclaimer explícito.",
+    "Uma ideia só: o custo do STH como resistência. Agregado/LTH entram como contexto de coorte, não como segundo insight (invariante 1).",
+    "Categoria B off-limits: NÃO citar 'indicador de risco'/'capitulação'/Drawdown Risk. Ancorar apenas em MVRV por coorte, que a VantageNode mede.",
+    "Vídeo do Gui é só inspiração de ângulo: não copiar frases nem números dele; usar exclusivamente os valores verificados no terminal.",
+    "MVRV-STH é ruidoso: descrever o nível atual (custo logo acima), não tratar como gatilho."
+  ],
+  "gate1": {
+    "status": "approved",
+    "note": "Ângulo aprovado por Mr. G: custo do STH como resistência — repique dentro de bear, não reversão. Ancorar em MVRV por coorte (não em indicador de risco/capitulação).",
+    "decided_by": "Mr. G",
+    "decided_at": "2026-07-21T00:00:00+00:00"
+  }
+}

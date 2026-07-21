@@ -1,0 +1,19 @@
+{
+  "cycle_id": "2026-07-21-mvrv-sth-resistance-01",
+  "indicator": "MVRV",
+  "source": {
+    "name": "VantageNode",
+    "url": "https://vantagenode.io/terminal#metric=5b84739a00",
+    "captured_by": "Mr. G — leitura direta no terminal VantageNode",
+    "captured_at": "2026-07-21T00:00:00+00:00"
+  },
+  "as_of": "2026-07-21",
+  "unit": "ratio",
+  "reference": { "value": 1.0, "label": "breakeven (custo-base)" },
+  "cohorts": [
+    { "name": "LTH (long-term)", "value": 1.304, "note": "long-term holders em lucro" },
+    { "name": "Agregado", "value": 1.231, "note": "mercado como um todo" },
+    { "name": "STH (short-term)", "value": 0.957, "note": "short-term holders ~4,3% abaixo do custo — custo logo acima do preço" }
+  ],
+  "notes": "Valores verificados agora no terminal VantageNode (invariante 6): MVRV-STH 0,957, MVRV-LTH 1,304, MVRV agregado 1,231 — 3 casas decimais. Snapshot de coortes (série diária não extraível do SVG). Inspiração editorial: vídeo do Gui Telles (21/07/2026) sobre o custo do STH como resistência — usado só como ângulo, sem copiar frases nem números. URL da fonte = permalink do MVRV-STH (metric=5b84739a00, confirmada pelo Mr. G)."
+}

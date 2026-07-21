@@ -59,10 +59,18 @@ if [ -f "$CDIR/02_chart_meta.json" ]; then
 import json, sys
 c = sys.argv[1]
 d = json.load(open(c + "/00_data.json")); m = json.load(open(c + "/02_chart_meta.json"))
-src = {p["t"]: float(p["v"]) for p in d["series"]}
-plotted = {p["t"]: float(p["v"]) for p in m["numbers_plotted"]}
-assert float(m["latest_value"]) == float(d["latest_value"]), "latest_value diverge"
-assert all(plotted.get(t) == v for t, v in src.items()), "ponto plotado diverge da fonte"
+if "series" in d:  # ciclo de série temporal
+    src = {p["t"]: float(p["v"]) for p in d["series"]}
+    plotted = {p["t"]: float(p["v"]) for p in m["numbers_plotted"]}
+    assert float(m["latest_value"]) == float(d["latest_value"]), "latest_value diverge"
+    assert all(plotted.get(t) == v for t, v in src.items()), "ponto plotado diverge da fonte"
+elif "cohorts" in d:  # ciclo de coorte (comparação categórica)
+    src = {x["name"]: float(x["value"]) for x in d["cohorts"]}
+    plotted = {x["name"]: float(x["value"]) for x in m["numbers_plotted"]}
+    assert src == plotted, "coorte plotada diverge da fonte"
+    assert float(m["reference"]["value"]) == float(d["reference"]["value"]), "referência diverge"
+else:
+    raise SystemExit("00_data.json sem 'series' nem 'cohorts'")
 PY
   okmsg "gráfico reconciliado com a fonte (invariante 6)"
 fi

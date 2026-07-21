@@ -1,0 +1,24 @@
+{
+  "cycle_id": "2026-07-21-mvrv-sth-resistance-01",
+  "reviewed_at": "2026-07-21T00:00:00+00:00",
+  "verdict": "pass",
+  "invariants": [
+    { "id": 1, "name": "1 post = 1 ideia", "status": "ok", "note": "Uma tese: o custo-base do STH logo acima do preço como resistência. No corpo só MVRV-STH; agregado (1,231) e LTH (1,304) ficam no reply como contexto de coorte, não como segundo insight." },
+    { "id": 2, "name": "KPI é bookmark", "status": "ok", "note": "Entrega uma zona de oferta concreta (custo do STH) que o gráfico de preço não nomeia — referência que um analista salva." },
+    { "id": 3, "name": "Link fora do corpo", "status": "ok", "note": "post.text sem URL; link (permalink do MVRV-STH) no reply." },
+    { "id": 4, "name": "Gráfico com leitura", "status": "ok", "note": "Barras por coorte com breakeven em 1,0; título é a leitura ('Custo do curto prazo logo acima: MVRV-STH em 0,957'). STH em âmbar abaixo da linha." },
+    { "id": 5, "name": "Responsabilidade (sem certeza de preço)", "status": "ok", "note": "Ângulo contra-consenso (bear, não reversão) — PERMITIDO. Nenhuma previsão/promessa: 'resistência' e 'repique testando teto' descrevem comportamento de oferta baseado em custo-base, com hedge ('historicamente tende a'). Disclaimer explícito no reply ('não é previsão de preço nem recomendação')." },
+    { "id": 6, "name": "Número texto = gráfico = fonte", "status": "ok", "note": "0,957 confere com fonte e gráfico; 4,3% = (1−0,957)×100 exato; 1,231 e 1,304 (reply) conferem com as coortes. Mesma casa decimal (3) no texto e no gráfico." },
+    { "id": 7, "name": "Gate humano inviolável", "status": "ok", "note": "APPROVAL.md em STATUS: pending. Nenhuma auto-aprovação — Gate 2 é do Mr. G." },
+    { "id": 8, "name": "Sem emoji/hype/jargão", "status": "ok", "note": "Varredura limpa. 'bear' é termo de regime de mercado, não hype/lua-pump. Voz de terminal." },
+    { "id": 9, "name": "Indicador válido/definido", "status": "ok", "note": "MVRV/MVRV-STH públicos e definidos (indicators.md). NENHUM indicador de Categoria B (indicador de risco/capitulação/Drawdown Risk) usado — âncora só em MVRV por coorte, que a VantageNode mede. Vídeo do Gui usado só como inspiração de ângulo (sem frases/números copiados)." }
+  ],
+  "numbers_reconciliation": [
+    { "claim": "MVRV-STH em 0,957", "in_text": 0.957, "in_chart": 0.957, "in_source": 0.957, "matches": true },
+    { "claim": "~4,3% abaixo do custo (derivado de 1 − 0,957)", "in_text": 4.3, "in_chart": null, "in_source": 4.3, "matches": true },
+    { "claim": "agregado 1,231 (reply)", "in_text": 1.231, "in_chart": 1.231, "in_source": 1.231, "matches": true },
+    { "claim": "LTH 1,304 (reply)", "in_text": 1.304, "in_chart": 1.304, "in_source": 1.304, "matches": true }
+  ],
+  "blocks": [],
+  "notes": "Pacote coerente — segue para o Gate 2 (STATUS: pending). Atenção especial ao invariante 5 dado o ângulo contra-consenso: aprovado porque a linguagem caracteriza oferta/resistência com hedge e traz disclaimer, sem prever preço. run_cycle.sh estendido para reconciliar ciclos de coorte (antes só série temporal)."
+}
