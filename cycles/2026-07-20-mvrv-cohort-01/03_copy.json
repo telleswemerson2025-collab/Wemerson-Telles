@@ -1,12 +1,12 @@
 {
   "cycle_id": "2026-07-20-mvrv-cohort-01",
   "post": {
-    "text": "O MVRV agregado em 1,208 sugere 'mercado no lucro' — mas por coorte a leitura se divide. Long-term holders: 1,284, no azul. Short-term holders: 0,933, cerca de 6,7% abaixo do custo. O lucro está nas mãos antigas; quem comprou recente está no vermelho há semanas.",
-    "char_count": 262
+    "text": "O MVRV agregado em 1,208 sugere 'mercado no lucro' — mas por coorte a leitura se divide. Long-term holders: 1,284, no azul. Short-term holders: 0,933, cerca de 6,7% abaixo do custo. O lucro está nas mãos antigas; quem comprou recente está no vermelho.",
+    "char_count": 251
   },
   "reply": {
-    "text": "MVRV por coorte = valor de mercado ÷ custo-base de cada grupo. Abaixo de 1 = no prejuízo. O lado STH é confirmado por NUPL-STH (−0,072) e SOPR-STH (0,9849). Fonte (MVRV, VantageNode): https://vantagenode.io/terminal — não é previsão de preço.",
-    "link": "https://vantagenode.io/terminal"
+    "text": "MVRV por coorte = valor de mercado ÷ custo-base de cada grupo. Abaixo de 1 = no prejuízo. O lado STH é confirmado por NUPL-STH (−0,072) e SOPR-STH (0,9849). Fonte (MVRV, VantageNode): https://vantagenode.io/terminal#metric=5b84739a00 — não é previsão de preço.",
+    "link": "https://vantagenode.io/terminal#metric=5b84739a00"
   },
   "numbers": [
     {

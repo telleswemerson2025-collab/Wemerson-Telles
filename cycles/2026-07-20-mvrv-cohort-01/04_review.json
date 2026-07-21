@@ -22,5 +22,5 @@
     { "claim": "SOPR-STH 0,9849 (reply)", "in_text": 0.9849, "in_chart": null, "in_source": 0.9849, "matches": true }
   ],
   "blocks": [],
-  "notes": "Pacote coerente — segue para o Gate 2. DUAS RESSALVAS: (1) o link do reply é o terminal genérico; se houver permalink exata do MVRV-STH/coorte, trocar antes de publicar. (2) A afirmação 'há semanas' se apoia na leitura qualitativa do Mr. G no terminal (MVRV-STH plano ~0,9 no 30D) — a série diária não é extraível por máquina (SVG sem tooltip). É caracterização do operador, não série auditável; a âncora exata é 0,933. Se preferir evitar o qualitativo, dá para remover 'há semanas' na revisão."
+  "notes": "Pacote coerente. Ajustes do Mr. G aplicados e re-reconciliados: (1) link do reply trocado pela permalink exata do MVRV-STH (#metric=5b84739a00); (2) 'há semanas' removido do post — a frase final passou a 'quem comprou recente está no vermelho' (só o dado exato 0,933, sem caracterização qualitativa). POST 251/280. Aguardando confirmação final do Mr. G antes de publicar (STATUS permanece pending)."
 }
