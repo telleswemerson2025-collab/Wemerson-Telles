@@ -1,0 +1,19 @@
+{
+  "cycle_id": "2026-07-18-sopr-lth-01",
+  "collected_at": "2026-07-21T07:27:09+00:00",
+  "window_hours": 59,
+  "metrics": {
+    "bookmarks": 0,
+    "likes": 1,
+    "replies": 1,
+    "reposts": 0,
+    "impressions": 33,
+    "profile_clicks": 1
+  },
+  "kpi": {
+    "primary": "bookmarks",
+    "value": 0,
+    "analyst_saved": false
+  },
+  "learning": "Alcance segue quase nulo (33 impressões) — 0 bookmark é ruído estatístico, não veredito sobre a copy. Números verificados no Post Analytics; placeholder '2/41' do X ignorado. Com 2 posts, bookmark rate: MVRV 2.78% (1/36) vs SOPR-LTH 0% (0/33); blended 1.45% (1/69). Sinal de 'lean-in' maior no SOPR-LTH (5 detail expands vs 2, 1 profile visit vs 0, engagements 19 vs 11) apesar de 0 bookmark — mas n~33 = 1-3 eventos, hipótese a observar, NÃO conclusão. Ação: confirma o 1º aprendizado — gargalo é distribuição, não conteúdo; não otimizar copy com <~100 impressões/post; seguir acumulando bookmark RATE por vários ciclos."
+}

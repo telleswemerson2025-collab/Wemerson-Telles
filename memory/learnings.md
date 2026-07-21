@@ -19,6 +19,12 @@ não apenas registrar métricas.
 
 -->
 
+## 2026-07-21 — ciclo 2026-07-18-sopr-lth-01 (SOPR-LTH)
+- **Post:** SOPR-LTH abaixo de 1 em 26/29 dias — regime de realização de prejuízo dos long-term holders.
+- **Sinal (+48h/59h):** impressões 33 · **bookmarks 0** (KPI) · likes 1 · replies 1 (só a nossa/link) · reposts 0 · profile visits 1 · detail expands 5 · engagements 19. _(Verificado no Post Analytics; placeholder "2/41" do X ignorado.)_
+- **Leitura:** Alcance ainda quase nulo (33 impressões) → 0 bookmark é ruído estatístico, não veredito da copy. **2 medições agora → bookmark rate:** MVRV 2,8% (1/36) vs SOPR-LTH 0% (0/33); blended 1,4% (1/69). O SOPR-LTH teve MAIS sinais de "lean-in" (5 detail expands vs 2; 1 profile visit vs 0; engagements 19 vs 11) apesar de 0 bookmark — mas n~33 = 1–3 eventos, **hipótese a observar, não conclusão**.
+- **Ação:** Confirma o 1º aprendizado — o gargalo é **distribuição/reach, não conteúdo**. Não otimizar copy com <~100 impressões/post. Seguir acumulando bookmark RATE por vários ciclos; hipótese a testar quando houver reach: posts analíticos (regime/coorte) podem gerar mais expands/visitas mesmo sem bookmark imediato.
+
 ## 2026-07-20 — ciclo 2026-07-16-mvrv-01 (MVRV)
 - **Post:** MVRV 1,208 — regime de custo-base historicamente baixo (leitura de nível, sem previsão).
 - **Sinal (+48h/60h):** impressões 36 · **bookmarks 1** (KPI) · likes 1 · replies 1 (só a nossa, com link → 0 orgânicos) · reposts 0 · profile visits 0. Reply teve 35 views.
