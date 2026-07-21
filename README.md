@@ -49,7 +49,7 @@ memory/learnings.md    # aprendizado acumulado (incremental, alimentado pelo FEE
 - [ ] `knowledge/indicators.md` — definições técnicas de **EIPI** e **Whale-to-Book Lag** (não existem em fonte pública). Ver `docs/pendencias-gui.md`.
 
 **Fora de escopo nesta fase (proposital — NÃO é trabalho faltando):**
-- **Fase 2 — API real de dados** (token VantageNode + bug no MVRV): adiada por decisão. A **coleta manual é o fluxo padrão**, não um contorno: para cada ciclo, o Mr. G traz os valores da aba VantageNode (hover no tooltip etc.) → `cycles/<id>/00_data.json`, que é a fonte-de-verdade.
+- **Fase 2 — API real de dados** (token VantageNode + bug no MVRV): adiada por decisão. A **coleta manual é o fluxo padrão**, não um contorno: para cada ciclo, o Mr. G traz os valores da aba VantageNode (hover no tooltip etc.) → `cycles/<id>/00_data.json`, que é a fonte-de-verdade. **Regra de captação:** toda solicitação via Claude Chrome deve pedir para acessar a aba da VantageNode e trazer TODOS os gráficos necessários, não só os números (ver `docs/data-sourcing.md`).
 - **Fase 4 — Automação de publicação (API do X)**: 0% deliberado. Nesta fase não se posta sozinho; o BROADCAST usa canal **manual** (Mr. G publica, cola URL/IDs).
 
 **Próximos:** decidir o Gate 2 do ciclo MVRV (Mr. G) → publicar (canal manual) → +48h → FEEDBACK (1ª entrada em `learnings.md`) · testar o caminho de **bloqueio** do GATEKEEPER.
