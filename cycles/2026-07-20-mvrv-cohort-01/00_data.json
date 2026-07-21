@@ -1,0 +1,24 @@
+{
+  "cycle_id": "2026-07-20-mvrv-cohort-01",
+  "indicator": "MVRV",
+  "source": {
+    "name": "VantageNode",
+    "url": "",
+    "captured_by": "Mr. G — leitura direta no terminal VantageNode",
+    "captured_at": "2026-07-20T00:00:00+00:00"
+  },
+  "as_of": "2026-07-20",
+  "unit": "ratio",
+  "reference": { "value": 1.0, "label": "breakeven (custo-base)" },
+  "cohorts": [
+    { "name": "LTH (long-term)", "value": 1.284, "note": "long-term holders em lucro" },
+    { "name": "Agregado", "value": 1.208, "note": "mercado como um todo" },
+    { "name": "STH (short-term)", "value": 0.933, "note": "short-term holders ~6,7% abaixo do custo-base" }
+  ],
+  "context": [
+    { "indicator": "NUPL", "cohort": "STH", "value": -0.072, "note": "lucro/prejuízo não realizado do STH — negativo = no prejuízo" },
+    { "indicator": "SOPR", "cohort": "STH", "value": 0.9849, "note": "STH realizando levemente no prejuízo" },
+    { "indicator": "NUPL", "cohort": "LTH", "value": 0.221, "note": "LTH em lucro não realizado (confirma o outro lado)" }
+  ],
+  "notes": "Terminal renderiza em SVG sem tooltip/série via DOM: série diária NÃO extraível por máquina — por isso o artefato é snapshot de coortes, não série temporal (não se inventou nenhum ponto). Mr. G confirmou no terminal que o MVRV-STH está plano ~0,9 no range 30D (abaixo do custo há semanas, não é ruído de um dia). Âncora = valor atual 0,933. O vídeo do Gui Telles é contexto de leitura de mercado, NÃO fonte do post."
+}

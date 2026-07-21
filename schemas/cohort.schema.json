@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vantagenode-x/schemas/cohort.schema.json",
+  "title": "Snapshot de coortes — comparação categórica (não série temporal)",
+  "description": "Usado quando o evento é uma comparação entre coortes/grupos (ex.: MVRV por idade: LTH vs STH) e a série temporal NÃO é extraível da fonte. Fonte-de-verdade dos números; o GATEKEEPER cruza texto = gráfico = ESTA fonte (invariante 6). Nunca preencher com valor inventado.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cycle_id", "indicator", "source", "as_of", "unit", "reference", "cohorts"],
+  "properties": {
+    "cycle_id": { "type": "string" },
+    "indicator": { "type": "string" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "captured_by", "captured_at"],
+      "properties": {
+        "name": { "type": "string" },
+        "url": { "type": "string" },
+        "captured_by": { "type": "string" },
+        "captured_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "as_of": { "type": "string", "format": "date" },
+    "unit": { "type": "string" },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "label"],
+      "description": "Linha de referência da leitura (ex.: 1,0 = breakeven/custo-base).",
+      "properties": {
+        "value": { "type": "number" },
+        "label": { "type": "string" }
+      }
+    },
+    "cohorts": {
+      "type": "array",
+      "minItems": 2,
+      "description": "As coortes comparadas do mesmo indicador.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "value"],
+        "properties": {
+          "name": { "type": "string" },
+          "value": { "type": "number" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "context": {
+      "type": "array",
+      "description": "Leituras de outros indicadores que CONFIRMAM a mesma tese (uma frase de apoio, não segundo insight — invariante 1).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["indicator", "cohort", "value"],
+        "properties": {
+          "indicator": { "type": "string" },
+          "cohort": { "type": "string" },
+          "value": { "type": "number" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}

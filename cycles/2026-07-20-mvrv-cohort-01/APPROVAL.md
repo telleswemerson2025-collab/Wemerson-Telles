@@ -1,0 +1,43 @@
+# APPROVAL — Ciclo 2026-07-20-mvrv-cohort-01
+
+STATUS: pending
+
+<!--
+  GATE 2 — INVIOLÁVEL (invariante 7).
+  Somente o Mr. G altera STATUS para: approved | revise | rejected
+  Nenhum agente marca 'approved' em nome do humano. O BROADCAST (05) só publica com STATUS: approved.
+-->
+
+## Resumo
+- **Indicador:** MVRV por coorte (LTH / Agregado / STH)
+- **Ângulo:** O MVRV agregado (1,208) esconde a divergência de coorte — long-term holders em lucro (1,284), short-term holders abaixo do custo (0,933, ~6,7% no vermelho). O lucro está nas mãos antigas; quem comprou recente está no prejuízo.
+- **Número-âncora:** MVRV-STH 0,933 (20/07/2026)
+- **Fonte:** 00_data.json (leitura direta do terminal VantageNode, Mr. G)
+
+## Post (corpo — sem link)
+```
+O MVRV agregado em 1,208 sugere 'mercado no lucro' — mas por coorte a leitura se divide. Long-term holders: 1,284, no azul. Short-term holders: 0,933, cerca de 6,7% abaixo do custo. O lucro está nas mãos antigas; quem comprou recente está no vermelho há semanas.
+```
+_(262/280 caracteres)_
+
+## Primeiro reply (com o link)
+```
+MVRV por coorte = valor de mercado ÷ custo-base de cada grupo. Abaixo de 1 = no prejuízo. O lado STH é confirmado por NUPL-STH (−0,072) e SOPR-STH (0,9849). Fonte (MVRV, VantageNode): https://vantagenode.io/terminal — não é previsão de preço.
+```
+
+## Veredito do GATEKEEPER
+- **Resultado:** pass — 9/9 invariantes ok
+- **Reconciliação:** 1,208 / 1,284 / 0,933 conferem com fonte e gráfico; 6,7% derivado exato; NUPL-STH −0,072 e SOPR-STH 0,9849 conferem
+- **Categoria B respeitada:** nenhum indicador interno do Gui (ex.: "indicador de risco/zona amarela") no texto
+- **⚠️ Antes de publicar:** (1) trocar o link do reply pela **permalink exata do MVRV-STH/coorte**, se houver; (2) "há semanas" apoia-se na leitura qualitativa do terminal (série diária não extraível) — dá para remover na revisão se preferir só o dado exato 0,933.
+
+## Decisão do Mr. G
+Edite o campo `STATUS:` no topo:
+- `approved` → libera o BROADCAST (canal manual).
+- `revise`   → devolve ao pipeline; escreva a nota abaixo.
+- `rejected` → descarta o ciclo.
+
+**Nota (opcional):**
+
+---
+_Gráfico do ciclo: 02_chart.png (barras por coorte)_

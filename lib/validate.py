@@ -54,6 +54,17 @@ def _validate_one(data: dict, schema: dict) -> None:
         raise ValidationError(msg) from exc
 
 
+def _schema_for(name: str, data: dict) -> str:
+    """
+    Resolve o schema de um artefato. Para 00_data.json há dois formatos possíveis:
+    série temporal (data.schema) ou snapshot de coortes (cohort.schema), escolhidos
+    pelo conteúdo — 'cohorts' presente => cohort.schema.
+    """
+    if name == "00_data.json" and "cohorts" in data and "series" not in data:
+        return "cohort.schema.json"
+    return SCHEMA_MAP[name]
+
+
 def validate_artifact(cycle_id: str, name: str) -> None:
     """Valida um artefato. Lança ValidationError se inválido ou ausente."""
     if name not in SCHEMA_MAP:
@@ -65,7 +76,7 @@ def validate_artifact(cycle_id: str, name: str) -> None:
         data = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise ValidationError(f"JSON inválido em {name}: {exc}") from exc
-    schema = json.loads((SCHEMAS_DIR / SCHEMA_MAP[name]).read_text(encoding="utf-8"))
+    schema = json.loads((SCHEMAS_DIR / _schema_for(name, data)).read_text(encoding="utf-8"))
     _validate_one(data, schema)
 
 

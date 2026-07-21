@@ -1,0 +1,34 @@
+{
+  "cycle_id": "2026-07-20-mvrv-cohort-01",
+  "indicator": "MVRV",
+  "unit": "ratio",
+  "chart_type": "cohort_bars",
+  "title": "MVRV agregado esconde a divisão: compradores recentes no vermelho",
+  "subtitle": "MVRV por coorte · abaixo de 1,0 = abaixo do custo-base · VantageNode, 20/07/2026",
+  "as_of": "2026-07-20",
+  "reference": {
+    "value": 1.0,
+    "label": "breakeven (custo-base)"
+  },
+  "numbers_plotted": [
+    {
+      "name": "LTH (long-term)",
+      "value": 1.284
+    },
+    {
+      "name": "Agregado",
+      "value": 1.208
+    },
+    {
+      "name": "STH (short-term)",
+      "value": 0.933
+    }
+  ],
+  "source": {
+    "name": "VantageNode",
+    "url": "",
+    "captured_by": "Mr. G — leitura direta no terminal VantageNode",
+    "captured_at": "2026-07-20T00:00:00+00:00"
+  },
+  "data_ref": "cycles/2026-07-20-mvrv-cohort-01/00_data.json"
+}
