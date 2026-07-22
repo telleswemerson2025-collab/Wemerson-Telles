@@ -1,0 +1,18 @@
+{
+  "cycle_id": "2026-07-22-sth-cost-convergence-01",
+  "indicator": "Realized Price STH",
+  "source": {
+    "name": "VantageNode",
+    "url": "https://vantagenode.io/terminal#metric=27463c1a65",
+    "captured_by": "Mr. G / Claude no Chrome — leitura no terminal VantageNode",
+    "captured_at": "2026-07-22T00:00:00+00:00"
+  },
+  "as_of": "2026-07-21",
+  "unit": "USD",
+  "latest_value": 69000,
+  "series": [
+    { "t": "2026-06-23", "v": 75000 },
+    { "t": "2026-07-21", "v": 69000 }
+  ],
+  "notes": "Realized Price STH (custo-base do short-term holder), range ~30D (15/jun→21/jul). O tooltip ARREDONDA a Realized Price STH ao milhar (75K, 69K) — por isso os percentuais de gap são aproximados; o BTC price vem exato. BTC: $62.645 (23/jun) → $66.516 (21/jul). Gap preço vs custo STH: ~-16,5% (23/jun) → ~-3,6% (21/jul), coerente com MVRV-STH 0,957 (~-4,3%) de 21/07. A linha do custo STH caiu de ~$77K (topo do período) para ~$69K. Sidebar: Realized Price agregado ~$53K, LTH ~$50K. IMAGEM DO POST = gráfico ORIGINAL da VantageNode capturado pelo Mr. G (decisão A) — nada renderizado pelo Claude. Permalink #metric=27463c1a65."
+}

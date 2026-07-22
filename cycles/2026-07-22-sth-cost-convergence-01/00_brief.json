@@ -1,0 +1,24 @@
+{
+  "cycle_id": "2026-07-22-sth-cost-convergence-01",
+  "created_at": "2026-07-22T00:00:00+00:00",
+  "indicator": "Realized Price STH",
+  "data_ref": "cycles/2026-07-22-sth-cost-convergence-01/00_data.json",
+  "headline_number": {
+    "value": 69000,
+    "unit": "USD",
+    "label": "Realized Price STH ~$69K (21/07/2026), vs BTC ~$66,5K"
+  },
+  "angle": "A convergência com o custo do curto prazo. Em ~30 dias, o gap entre o preço e o custo-base do STH desabou de ~16% para ~4% — e fechou pelos dois lados: o preço subiu (~$58K → ~$66,5K) e o próprio custo-base do STH caiu (~$77K → ~$69K). O mercado está chegando ao teste da linha de custo do short-term holder. Não é mais 'há uma resistência acima' (retrato de ontem); é 'estamos quase nela, e ela desce para nos encontrar'.",
+  "why_now": "A convergência é a informação nova: o teste da linha de custo do STH está próximo AGORA. Um retrato estático do nível não capturaria isso; a trajetória de 30D, sim.",
+  "target_reader": "analista que acompanha linhas de custo-base como suporte/resistência e mudanças de regime",
+  "single_idea": true,
+  "risk_flags": [
+    "Invariante 5: NÃO prever o rompimento nem a direção. Enquadrar como 'aproximação de um teste/ponto de decisão', descrevendo a convergência — nunca o desfecho. Disclaimer no reply.",
+    "Rounding: a Realized Price STH é arredondada ao milhar no tooltip (~$75K, ~$69K). Usar percentuais APROXIMADOS (~16%, ~4%), nunca precisos. O BTC price é exato ($62.645, $66.516). O robusto é a magnitude da convergência (~16% → ~4%), não o decimal.",
+    "REPETIÇÃO (decisão do Mr. G no Gate 1): é o 2º dia seguido no tema do custo-base do STH. O diferencial é a DINÂMICA (convergência + custo caindo), não o nível. Se você achar próximo demais de ontem, pivotamos para SOPR (agregado/STH). Sua chamada.",
+    "Uma ideia só: a convergência/teste. Agregado/LTH ($53K/$50K) entram no máximo como uma frase de contexto no reply, não como segundo insight."
+  ],
+  "gate1": {
+    "status": "pending"
+  }
+}
