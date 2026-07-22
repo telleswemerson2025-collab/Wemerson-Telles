@@ -1,24 +1,59 @@
 {
   "cycle_id": "2026-07-22-sth-cost-convergence-01",
-  "chart_type": "vantagenode_original",
   "indicator": "Realized Price STH",
-  "permalink": "https://vantagenode.io/terminal#metric=27463c1a65",
-  "range": "30D (SMA-30 ativo)",
+  "unit": "USD",
+  "title": "Custo do curto prazo em queda: Realized Price STH ~$69K",
+  "subtitle": "Custo-base do short-term holder · 30D · o preco (~$66,5K) se aproxima por baixo",
   "as_of": "2026-07-21",
-  "captured_by": "Mr. G — screenshot do terminal VantageNode",
-  "watermark": "VantageNode (nativa)",
-  "claude_marks": false,
-  "visual_check": {
-    "done": true,
-    "line_is": "SMA-30 (suavizada)",
-    "sth_on_chart_last_point": "~$69K (21/jul) — coerente com o post",
-    "sth_raw_sidebar": "~$68K (não plotado)",
-    "observed": "linha vermelha (custo STH) ~$77K->~$69K; linha cinza (preço) ~$58K->~$66,5K; convergindo. Sidebar agregado $53K / LTH $50K conferem.",
-    "crop_caveats": [
-      "Recorte sem rótulos: não mostra nome da métrica, legenda (custo x preço) nem eixo de datas — depende do texto.",
-      "Mínima ~$58K não aparece clara: eixo inferior é $61K e o fundo da linha de preço fica perto de ~$61K. A decidir: confirmar $58K na imagem ou suavizar o texto (invariante 6)."
-    ]
+  "latest_value": 69000.0,
+  "decimals": 0,
+  "numbers_plotted": [
+    {
+      "t": "2026-06-15",
+      "v": 76000.0
+    },
+    {
+      "t": "2026-06-19",
+      "v": 75000.0
+    },
+    {
+      "t": "2026-06-23",
+      "v": 75000.0
+    },
+    {
+      "t": "2026-06-26",
+      "v": 74000.0
+    },
+    {
+      "t": "2026-06-30",
+      "v": 73000.0
+    },
+    {
+      "t": "2026-07-04",
+      "v": 72000.0
+    },
+    {
+      "t": "2026-07-08",
+      "v": 71000.0
+    },
+    {
+      "t": "2026-07-12",
+      "v": 70000.0
+    },
+    {
+      "t": "2026-07-16",
+      "v": 70000.0
+    },
+    {
+      "t": "2026-07-21",
+      "v": 69000.0
+    }
+  ],
+  "source": {
+    "name": "VantageNode",
+    "url": "https://vantagenode.io/terminal#metric=27463c1a65",
+    "captured_by": "Mr. G / Claude no Chrome — hover no terminal VantageNode",
+    "captured_at": "2026-07-22T00:00:00+00:00"
   },
-  "note": "Imagem original da VantageNode agora ARMAZENADA no ciclo (upload do Mr. G). 2 ressalvas de qualidade pendentes de decisão do Mr. G (ver crop_caveats).",
-  "stored_as": "02_chart.png (773x277, upload do Mr. G)"
+  "data_ref": "cycles/2026-07-22-sth-cost-convergence-01/00_data.json"
 }

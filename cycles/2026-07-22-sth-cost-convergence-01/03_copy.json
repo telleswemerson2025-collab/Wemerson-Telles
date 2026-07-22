@@ -1,8 +1,8 @@
 {
   "cycle_id": "2026-07-22-sth-cost-convergence-01",
   "post": {
-    "text": "Realized Price STH — o custo-base de quem comprou recentemente — caiu para ~$69K, e o preço subiu de ~$58K a ~$66,5K. Em um mês, o gap entre preço e esse custo encolheu de ~16% para ~4%, fechando pelos dois lados. O mercado se aproxima do teste dessa linha de custo.",
-    "char_count": 266
+    "text": "Realized Price STH — o custo-base de quem comprou recentemente — caiu de ~$76K para ~$69K em um mês. No fundo de junho o preço estava ~20% abaixo desse custo; com a recuperação a ~$66,5K, o gap encolheu para ~4%. O mercado se aproxima do teste da linha de custo do curto prazo.",
+    "char_count": 277
   },
   "reply": {
     "text": "Realized Price STH = custo-base médio do short-term holder; preço abaixo dela = curto prazo no vermelho. A linha cai quando moedas de custo alto capitulam. Contexto: agregado ~$53K, LTH ~$50K. Fonte: https://vantagenode.io/terminal#metric=27463c1a65. Não é previsão de preço.",
@@ -10,40 +10,40 @@
   },
   "numbers": [
     {
+      "value": 76000,
+      "unit": "USD",
+      "where": "post",
+      "claim": "caiu de ~$76K (início da série, no gráfico)"
+    },
+    {
       "value": 69000,
       "unit": "USD",
       "where": "post",
-      "claim": "Realized Price STH caiu para ~$69K (arredondado ao milhar)"
+      "claim": "para ~$69K (ponto final verde, no gráfico)"
     },
     {
-      "value": 58000,
-      "unit": "USD",
+      "value": 20,
+      "unit": "%",
       "where": "post",
-      "claim": "preço subiu de ~$58K"
+      "claim": "~20% abaixo no fundo de jun (derivado: BTC 58.524 vs custo 73.000, NÃO no gráfico)"
     },
     {
       "value": 66500,
       "unit": "USD",
       "where": "post",
-      "claim": "a ~$66,5K (BTC exato 66.516)"
-    },
-    {
-      "value": 16,
-      "unit": "%",
-      "where": "post",
-      "claim": "gap ~16% (23/jun, aprox — derivado de 62.645 vs ~75K)"
+      "claim": "recuperação a ~$66,5K (BTC exato 66.516, NÃO no gráfico)"
     },
     {
       "value": 4,
       "unit": "%",
       "where": "post",
-      "claim": "gap ~4% (21/jul, aprox — derivado de 66.516 vs ~69K)"
+      "claim": "~4% agora (derivado: BTC 66.516 vs custo 69.000, NÃO no gráfico)"
     },
     {
       "value": 53000,
       "unit": "USD",
       "where": "reply",
-      "claim": "custo agregado ~$53K"
+      "claim": "agregado ~$53K"
     },
     {
       "value": 50000,
@@ -52,9 +52,9 @@
       "claim": "LTH ~$50K"
     }
   ],
-  "reading": "A Realized Price STH (~$69K) e o preço (~$66,5K) convergiram: em ~30 dias o gap caiu de ~16% para ~4%, fechando pelos dois lados (preço subindo de ~$58K, custo STH caindo de ~$77K). O mercado se aproxima de testar a linha de custo do curto prazo. Percentuais aproximados (Realized Price STH é arredondada ao milhar). Descreve a aproximação de um teste, sem prever o desfecho (invariante 5).",
+  "reading": "A linha do Realized Price STH cai de ~$76K a ~$69K (custo do curto prazo recuando). No texto, a convergência: o preço saiu de ~20% abaixo desse custo (fundo de jun, ~$58,5K) para ~4% (~$66,5K), fechando pelos dois lados. Aproxima-se um teste da linha de custo. Percentuais aproximados (arredondamento ao milhar); descreve a aproximação, sem prever o desfecho (invariante 5).",
   "single_idea": true,
   "link_in_reply_only": true,
-  "bookmark_test": "Sim — dá ao analista o nível concreto (custo STH) e a dinâmica de convergência que o gráfico de preço sozinho não mostra.",
+  "bookmark_test": "Sim — a linha do custo do STH caindo + a distância ao preço fechando dão ao analista um nível e uma dinâmica concretos.",
   "no_hype_check": true
 }

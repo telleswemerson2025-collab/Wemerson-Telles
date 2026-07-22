@@ -3,112 +3,25 @@
   "reviewed_at": "2026-07-22T00:00:00+00:00",
   "verdict": "pass",
   "invariants": [
-    {
-      "id": 1,
-      "name": "1 post = 1 ideia",
-      "status": "ok",
-      "note": "Uma tese: a convergência preço × custo-base do STH (teste se aproximando). Agregado/LTH ($53K/$50K) só no reply, como contexto."
-    },
-    {
-      "id": 2,
-      "name": "KPI é bookmark",
-      "status": "ok",
-      "note": "Nível concreto (custo STH) + a dinâmica de convergência que o gráfico de preço não mostra — referência que um analista salva."
-    },
-    {
-      "id": 3,
-      "name": "Link fora do corpo",
-      "status": "ok",
-      "note": "post.text sem URL; link (permalink Realized Price STH) no reply."
-    },
-    {
-      "id": 4,
-      "name": "Gráfico com leitura",
-      "status": "ok",
-      "note": "A leitura vai no texto (decisão A: imagem = gráfico ORIGINAL da VantageNode, sem título/marcação do Claude)."
-    },
-    {
-      "id": 5,
-      "name": "Responsabilidade (sem certeza de preço)",
-      "status": "ok",
-      "note": "'Se aproxima do teste' descreve a convergência, NÃO o desfecho. Nenhuma previsão de rompimento/direção. Disclaimer no reply ('não é previsão de preço')."
-    },
-    {
-      "id": 6,
-      "name": "Número texto = gráfico = fonte",
-      "status": "ok",
-      "note": "Todos os números rastreáveis em 00_data.json e COERENTES com a imagem. Conferência VISUAL concluída: a linha plotada é SMA-30 e mostra ~$69K no último ponto (21/jul) — é o número que o espectador vê, por isso o post usa ~$69K. O $68K da sidebar é o valor CRU diário, que NÃO aparece na linha. BTC ~$66,5K (exato 66.516), ~$58K (mínima jun), ~16%/~4% (aprox), agg $53K/LTH $50K (sidebar) — todos batem visualmente. Valores STH/percentuais aproximados (arredondamento ao milhar), usados com '~'."
-    },
-    {
-      "id": 7,
-      "name": "Gate humano inviolável",
-      "status": "ok",
-      "note": "APPROVAL.md em STATUS: pending. Sem auto-aprovação."
-    },
-    {
-      "id": 8,
-      "name": "Sem emoji/hype/jargão",
-      "status": "ok",
-      "note": "Varredura limpa. Voz de terminal."
-    },
-    {
-      "id": 9,
-      "name": "Indicador válido/definido",
-      "status": "ok",
-      "note": "Realized Price STH é público e listado em indicators.md (seção candidatos); o reply traz a definição. Pendência menor não-bloqueante: registrar a definição formal em indicators.md no primeiro uso (é agora)."
-    }
+    { "id": 1, "name": "1 post = 1 ideia", "status": "ok", "note": "Uma tese: o custo do STH caindo e a convergência com o preço. O gráfico plota a linha do custo STH; o preço/agregado/LTH ficam no texto/reply como contexto." },
+    { "id": 2, "name": "KPI é bookmark", "status": "ok", "note": "Linha de custo do STH caindo + distância ao preço fechando = nível e dinâmica concretos que um analista salva." },
+    { "id": 3, "name": "Link fora do corpo", "status": "ok", "note": "post.text sem URL; link (permalink Realized Price STH) no reply." },
+    { "id": 4, "name": "Gráfico com leitura", "status": "ok", "note": "Gráfico RENDERIZADO no template VantageNode-X (render_chart.py), plotando só a série real do Realized Price STH — sem sinal/linha inventada. Título = a leitura ('Custo do curto prazo em queda'). Decisão A revista: o padrão dos posts no ar é o template renderizado, não o screenshot." },
+    { "id": 5, "name": "Responsabilidade (sem certeza de preço)", "status": "ok", "note": "'Se aproxima do teste' descreve a convergência, NÃO o desfecho. Sem previsão de rompimento/direção. Disclaimer no reply." },
+    { "id": 6, "name": "Número texto = gráfico = fonte", "status": "ok", "note": "~$76K (início) e ~$69K (ponto final verde) ESTÃO plotados no gráfico e batem com a série de 00_data.json. Preço/percentuais (~20%, ~$66,5K, ~4%) são contexto do texto — linha única, não plotados; rastreáveis em 00_data.json (BTC 62.645/58.524/66.516). Aproximados por arredondamento ao milhar (usados com '~')." },
+    { "id": 7, "name": "Gate humano inviolável", "status": "ok", "note": "APPROVAL.md volta a STATUS: pending — mudaram gráfico e texto, precisa de re-aprovação. Sem auto-aprovação." },
+    { "id": 8, "name": "Sem emoji/hype/jargão", "status": "ok", "note": "Varredura limpa. Voz de terminal." },
+    { "id": 9, "name": "Indicador válido/definido", "status": "ok", "note": "Realized Price STH com definição completa em knowledge/indicators.md (inclui a nuance SMA-30)." }
   ],
   "numbers_reconciliation": [
-    {
-      "claim": "Realized Price STH ~$69K",
-      "in_text": "~$69K",
-      "in_chart": "visual OK (linha SMA-30)",
-      "in_source": 69000,
-      "matches": true
-    },
-    {
-      "claim": "BTC ~$66,5K (exato 66.516)",
-      "in_text": "~$66,5K",
-      "in_chart": "visual OK (linha SMA-30)",
-      "in_source": 66516,
-      "matches": true
-    },
-    {
-      "claim": "mínima ~$58K (fim jun)",
-      "in_text": "~$58K",
-      "in_chart": "visual OK (linha SMA-30)",
-      "in_source": "~58K",
-      "matches": true
-    },
-    {
-      "claim": "gap ~16% (23/jun)",
-      "in_text": 16,
-      "in_chart": null,
-      "in_source": 16.5,
-      "matches": true
-    },
-    {
-      "claim": "gap ~4% (21/jul)",
-      "in_text": 4,
-      "in_chart": null,
-      "in_source": 3.6,
-      "matches": true
-    },
-    {
-      "claim": "custo agregado ~$53K (reply)",
-      "in_text": "~$53K",
-      "in_chart": null,
-      "in_source": 53000,
-      "matches": true
-    },
-    {
-      "claim": "LTH ~$50K (reply)",
-      "in_text": "~$50K",
-      "in_chart": null,
-      "in_source": 50000,
-      "matches": true
-    }
+    { "claim": "~$76K (início da série)", "in_text": "~$76K", "in_chart": 76000, "in_source": 76000, "matches": true },
+    { "claim": "~$69K (ponto final verde)", "in_text": "~$69K", "in_chart": 69000, "in_source": 69000, "matches": true },
+    { "claim": "~20% abaixo no fundo de jun", "in_text": 20, "in_chart": null, "in_source": 19.8, "matches": true },
+    { "claim": "recuperação a ~$66,5K (BTC 66.516)", "in_text": "~$66,5K", "in_chart": null, "in_source": 66516, "matches": true },
+    { "claim": "gap ~4% agora", "in_text": 4, "in_chart": null, "in_source": 3.6, "matches": true },
+    { "claim": "agregado ~$53K (reply)", "in_text": "~$53K", "in_chart": null, "in_source": 53000, "matches": true },
+    { "claim": "LTH ~$50K (reply)", "in_text": "~$50K", "in_chart": null, "in_source": 50000, "matches": true }
   ],
   "blocks": [],
-  "notes": "PASS completo — reconciliação numérica, invariantes E conferência visual do gráfico concluídas. A imagem é o gráfico ORIGINAL da VantageNode (marca d'água nativa, sem marca do Claude). Nuance registrada: linha = SMA-30 (~$69K, coerente com o post) vs sidebar cru (~$68K). Pendência menor não-bloqueante: registrar Realized Price STH em knowledge/indicators.md. Pronto para o Gate 2 do Mr. G (STATUS: pending)."
+  "notes": "PASS. Imagem = gráfico RENDERIZADO no template VantageNode-X (render_chart.py, formatação $K), plotando só a série real do custo STH. O ~$58K de versões anteriores era o BTC no fundo (30/jun 58.524), não o Realized Price — corrigido. STATUS: pending para re-aprovação do Mr. G (gráfico + texto mudaram)."
 }

@@ -28,6 +28,7 @@ import matplotlib
 matplotlib.use("Agg")  # sem display no ambiente
 import matplotlib.pyplot as plt  # noqa: E402
 import matplotlib.dates as mdates  # noqa: E402
+import matplotlib.ticker as mticker  # noqa: E402
 
 from fetch_data import load_cycle_data, cycle_dir, DataError  # noqa: E402
 
@@ -55,7 +56,8 @@ def _parse_date(s: str) -> date:
 
 
 def render_chart(cycle_id: str, title: str, subtitle: str | None = None,
-                 hline: float | None = None, hline_label: str | None = None) -> Path:
+                 hline: float | None = None, hline_label: str | None = None,
+                 value_scale: float = 1.0, value_prefix: str = "", value_suffix: str = "") -> Path:
     data = load_cycle_data(cycle_id)  # já valida contra data.schema.json
 
     series = data["series"]
@@ -64,8 +66,11 @@ def render_chart(cycle_id: str, title: str, subtitle: str | None = None,
     unit = data.get("unit", "")
     as_of = data.get("as_of", "")
     latest = float(data["latest_value"])
-    dec = _decimals(ys + [latest])
-    fmt = lambda v: f"{v:.{dec}f}"  # noqa: E731
+    _sv = [v / value_scale for v in ys + [latest]]
+    dec = 0 if all(abs(x - round(x)) < 1e-9 for x in _sv) else _decimals(_sv)
+    # Formatação do valor: escala + prefixo/sufixo (ex.: scale=1000, prefix='$', suffix='K' -> "$69K").
+    fmt = lambda v: f"{value_prefix}{v / value_scale:.{dec}f}{value_suffix}"  # noqa: E731
+    money = bool(value_prefix or value_suffix)
 
     fig, ax = plt.subplots(figsize=(10, 5.6), dpi=130)
     fig.patch.set_facecolor(BG)
@@ -86,7 +91,8 @@ def render_chart(cycle_id: str, title: str, subtitle: str | None = None,
     # Destaque do último ponto (latest_value)
     ax.scatter([xs[-1]], [ys[-1]], s=90, color=HILITE, zorder=4,
                edgecolor=BG, linewidth=1.5)
-    ax.annotate(f"{fmt(ys[-1])} {unit}".strip(),
+    label_txt = fmt(ys[-1]) if money else f"{fmt(ys[-1])} {unit}".strip()
+    ax.annotate(label_txt,
                 xy=(xs[-1], ys[-1]), xytext=(8, 10), textcoords="offset points",
                 color=HILITE, fontsize=12, fontfamily="monospace", fontweight="bold")
 
@@ -99,6 +105,7 @@ def render_chart(cycle_id: str, title: str, subtitle: str | None = None,
     for lbl in ax.get_xticklabels() + ax.get_yticklabels():
         lbl.set_fontfamily("monospace")
     ax.grid(axis="y", color=GRID, linewidth=0.7, alpha=0.6)
+    ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda v, _: fmt(v)))
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%d/%m"))
     ax.margins(x=0.03, y=0.18)
 
@@ -150,9 +157,13 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--subtitle", default=None)
     p.add_argument("--hline", type=float, default=None, help="linha de referência horizontal (ex.: 1.0 = breakeven do SOPR)")
     p.add_argument("--hline-label", default=None, help="rótulo da linha de referência")
+    p.add_argument("--value-scale", type=float, default=1.0, help="divisor dos valores (ex.: 1000 para exibir em milhares)")
+    p.add_argument("--value-prefix", default="", help="prefixo do valor (ex.: '$')")
+    p.add_argument("--value-suffix", default="", help="sufixo do valor (ex.: 'K')")
     args = p.parse_args(argv)
     try:
-        png = render_chart(args.cycle_id, args.title, args.subtitle, args.hline, args.hline_label)
+        png = render_chart(args.cycle_id, args.title, args.subtitle, args.hline, args.hline_label,
+                           args.value_scale, args.value_prefix, args.value_suffix)
     except DataError as exc:
         print(f"ERRO: {exc}", file=sys.stderr)
         return 1

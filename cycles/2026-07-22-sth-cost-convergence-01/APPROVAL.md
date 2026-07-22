@@ -1,24 +1,23 @@
 # APPROVAL — Ciclo 2026-07-22-sth-cost-convergence-01
 
-STATUS: approved
+STATUS: pending
 
 <!--
-  GATE 2 — INVIOLÁVEL (invariante 7).
-  Somente o Mr. G altera STATUS para: approved | revise | rejected
-  Nenhum agente marca 'approved' em nome do humano. O BROADCAST (05) só publica com STATUS: approved.
+  GATE 2 — INVIOLÁVEL (invariante 7). Somente o Mr. G altera STATUS: approved | revise | rejected.
+  RE-APROVAÇÃO: gráfico e texto mudaram (template renderizado + correção do ~$58K). Aprovação anterior invalidada.
 -->
 
 ## Resumo
 - **Indicador:** Realized Price STH (custo-base do short-term holder)
-- **Ângulo:** A convergência — o gap preço × custo STH caiu de ~16% para ~4% em ~30D, fechando pelos dois lados (preço subindo ~$58K→~$66,5K, custo STH caindo ~$77K→~$69K). O mercado se aproxima do teste da linha de custo do curto prazo.
-- **Número-âncora:** Realized Price STH ~$69K vs BTC ~$66,5K (21/07/2026)
-- **Fonte:** 00_data.json (leitura via Claude no Chrome no terminal VantageNode)
+- **Ângulo:** O custo do curto prazo em queda (~$76K → ~$69K em 30D) e convergindo com o preço — o gap caiu de ~20% (fundo de jun) para ~4%. Aproxima-se um teste da linha de custo do STH.
+- **Número-âncora:** Realized Price STH ~$69K (21/07/2026)
+- **Imagem:** gráfico **RENDERIZADO no template VantageNode-X** (render_chart.py, linha âmbar, ponto final verde ~$69K), plotando só a série real da VantageNode.
 
 ## Post (corpo — sem link)
 ```
-Realized Price STH — o custo-base de quem comprou recentemente — caiu para ~$69K, e o preço subiu de ~$58K a ~$66,5K. Em um mês, o gap entre preço e esse custo encolheu de ~16% para ~4%, fechando pelos dois lados. O mercado se aproxima do teste dessa linha de custo.
+Realized Price STH — o custo-base de quem comprou recentemente — caiu de ~$76K para ~$69K em um mês. No fundo de junho o preço estava ~20% abaixo desse custo; com a recuperação a ~$66,5K, o gap encolheu para ~4%. O mercado se aproxima do teste da linha de custo do curto prazo.
 ```
-_(266/280 caracteres)_
+_(277/280 caracteres)_
 
 ## Primeiro reply (com o link)
 ```
@@ -27,15 +26,12 @@ Realized Price STH = custo-base médio do short-term holder; preço abaixo dela 
 _(275/280 caracteres)_
 
 ## Veredito do GATEKEEPER
-- **Resultado:** pass — 9/9 invariantes (reconciliação numérica ok)
-- **Percentuais aproximados** (Realized Price STH arredondada ao milhar) — usados com "~"; sem previsão de preço (invariante 5)
-- **Conferência visual:** ✅ **concluída**. Imagem = gráfico ORIGINAL da VantageNode (marca d'água nativa, sem marca do Claude). Nuance: a linha é **SMA-30** e mostra **~$69K** no último ponto (coerente com o post); o `$68K` da sidebar é o valor **cru diário**, que não aparece na linha. Números batem visualmente.
-- **Pendência menor** (não bloqueia): registrar Realized Price STH em `knowledge/indicators.md`.
-
-## Imagem do post
-Gráfico **ORIGINAL da VantageNode** capturado pelo Mr. G (Realized Price STH, 30D, permalink `#metric=27463c1a65`). Decisão A: nada renderizado pelo Claude.
+- **Resultado:** pass — 9/9
+- **Reconciliação:** ~$76K e ~$69K **estão no gráfico** (série real) e batem com a fonte; preço/percentuais (~20%, ~$66,5K, ~4%) são contexto do texto (linha única, não plotados), rastreáveis na fonte
+- **Correção:** o ~$58K era o **BTC no fundo** (30/jun, 58.524), não o Realized Price — resolvido
+- **Gráfico:** renderizado no template (decisão A revista) — sem sinal do Claude, só dados reais
 
 ## Decisão do Mr. G
-Edite o campo `STATUS:` no topo: `approved` | `revise` | `rejected`.
+Edite o `STATUS:` no topo: `approved` | `revise` | `rejected`.
 
-**Nota (opcional):** Aprovado pelo Mr. G em 2026-07-22, mantendo ~$69K e ~4% (coerentes com a linha SMA-30 do gráfico anexado). Publicação manual na @VantageNodvt; imagem = gráfico original da VantageNode.
+**Nota (opcional):**

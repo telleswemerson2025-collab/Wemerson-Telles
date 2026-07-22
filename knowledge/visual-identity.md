@@ -2,13 +2,13 @@
 
 Editável pelo Mr. G.
 
-> **ATENÇÃO (Mr. G, 2026-07-21):** desde a decisão A, a **imagem publicada (`02_chart.png`) é o gráfico
-> ORIGINAL da VantageNode** — o Claude não renderiza o gráfico do post nem acrescenta marcação própria
-> (ver `docs/data-sourcing.md`). Portanto **esta identidade visual NÃO se aplica à imagem publicada**;
-> vale apenas para gráficos **internos/de apoio** feitos com `lib/render_*.py` (verificação, exploração),
-> que nunca vão ao post.
+> **ATENÇÃO (Mr. G, 2026-07-22 — decisão A revista):** a **imagem publicada (`02_chart.png`) é o gráfico
+> RENDERIZADO no template VantageNode-X** (`lib/render_*.py`), plotando só dados reais da VantageNode
+> (ver `docs/data-sourcing.md`). Portanto **esta identidade visual SE APLICA à imagem publicada.** O Claude
+> nunca fabrica dado nem desenha sinal inventado; o template (título/leitura, marcadores, ponto verde,
+> eixos, rodapé "Fonte: VantageNode · data") é apresentação da marca — é o que os posts no ar já fazem.
 
-Objetivo (para os gráficos internos): legível e no espírito "terminal analítico".
+Objetivo: legível, no espírito "terminal analítico", e coerente com os posts já publicados.
 
 > **Nota:** os valores concretos abaixo (cores hex, fonte) são um ponto de partida. Mr. G ajusta
 > livremente — é markdown, não código.

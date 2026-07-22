@@ -6,9 +6,10 @@ Integração externa: acesso à API de dados (VantageNode), render de gráficos 
   preenchida à mão) e tem `scaffold` para gerar o template em branco. Caminho da API real stubado, desligado.
   - `python lib/fetch_data.py scaffold <id> --indicator MVRV` → cria o `00_data.json` para preencher.
   - `python lib/fetch_data.py load <id>` → valida e resume.
-- `render_chart.py` / `render_cohort.py` — **uso INTERNO/verificação apenas** desde a decisão A (2026-07-21):
-  a imagem publicada é o gráfico ORIGINAL da VantageNode (ver `docs/data-sourcing.md`). Estes renderizadores
-  NÃO produzem mais o `02_chart.png` que vai ao post; servem para o Claude conferir números ou explorar.
+- `render_chart.py` / `render_cohort.py` — **produzem o `02_chart.png` publicado** (decisão A revista,
+  2026-07-22): a imagem do post é renderizada no template VantageNode-X, plotando só dados reais da
+  VantageNode. `render_chart.py` aceita `--value-scale/--value-prefix/--value-suffix` (ex.: exibir `$69K`)
+  e `--hline` (linha de referência definicional, ex.: breakeven do SOPR).
 - `publish.py` — publica no X (post + link no primeiro reply) _(Fase 4)_
 
 > **Status:** `fetch_data.py` roda sem token nem dependências externas (usa `jsonschema` se disponível,
