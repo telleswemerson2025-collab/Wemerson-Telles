@@ -1,6 +1,6 @@
 # APPROVAL — Ciclo 2026-07-22-sth-cost-convergence-01
 
-STATUS: pending
+STATUS: approved
 
 <!--
   GATE 2 — INVIOLÁVEL (invariante 7).
@@ -38,4 +38,4 @@ Gráfico **ORIGINAL da VantageNode** capturado pelo Mr. G (Realized Price STH, 3
 ## Decisão do Mr. G
 Edite o campo `STATUS:` no topo: `approved` | `revise` | `rejected`.
 
-**Nota (opcional):**
+**Nota (opcional):** Aprovado pelo Mr. G em 2026-07-22, mantendo ~$69K e ~4% (coerentes com a linha SMA-30 do gráfico anexado). Publicação manual na @VantageNodvt; imagem = gráfico original da VantageNode.

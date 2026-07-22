@@ -49,13 +49,30 @@ Indicadores de definição pública e auditável. Podem ser citados no pipeline 
   usar a leitura agregada da janela, nunca um único dia. Nunca prever preço a partir dele (invariante 5).
 - **Usado em:** ciclo `2026-07-18-sopr-lth-01`.
 
+### Realized Price STH (custo-base do short-term holder)
+
+- **O que mede:** o preço médio de aquisição (custo-base), em USD, das moedas em mãos de **short-term
+  holders**. É a *realized price* restrita ao coorte STH.
+- **Cálculo:** realized cap do coorte STH ÷ oferta do coorte STH (preço médio ponderado a que as moedas do
+  STH se moveram pela última vez). Ligada ao MVRV-STH: **MVRV-STH = preço / Realized Price STH** (≈1 quando
+  preço = custo do STH).
+- **Unidade:** USD. Cortes disponíveis na VantageNode: agregado, LTH e STH (sidebar mostra os três).
+- **Interpretação (heurística, NÃO sinal):** preço **abaixo** da Realized Price STH = compradores recentes,
+  na média, no prejuízo. Essa linha costuma atuar como **zona de custo/oferta** (suporte/resistência).
+  Nunca prever rompimento nem direção de preço a partir dela (invariante 5).
+- **⚠️ Nuance de leitura na VantageNode:** no range **30D o gráfico aplica SMA-30** — a **linha plotada é
+  média móvel suavizada** (o valor do último ponto no tooltip), enquanto a **sidebar mostra o valor cru
+  diário** (podem diferir ~$1K). Para coerência texto↔imagem (invariante 6), **cite o valor da LINHA** que
+  o leitor vê no gráfico anexado, não o cru da sidebar. O tooltip arredonda ao milhar → use "~" nos valores.
+- **Usado em:** ciclo `2026-07-22-sth-cost-convergence-01`.
+
 ### Candidatos legítimos (públicos na VantageNode — a documentar quando forem usados)
 
 Indicadores que o Gui usa e que **são públicos** na plataforma — podem virar ciclos futuros. Definição
 formal (fórmula/interpretação) a ser preenchida aqui no primeiro uso, com dados por transferência manual:
 
 - **Addresses by Size** — distribuição de endereços por faixa de saldo (ex.: acumulação de faixas grandes).
-- **Realized Price STH** — preço realizado (custo-base) dos short-term holders.
+  _(Avaliado no SCOUT de 22/07 e descartado como pauta: contagem de endereços ≠ moedas — ver `memory/learnings.md`.)_
 
 ---
 
