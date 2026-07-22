@@ -1,6 +1,6 @@
 # APPROVAL — Ciclo 2026-07-22-sth-cost-convergence-01
 
-STATUS: pending
+STATUS: approved
 
 <!--
   GATE 2 — INVIOLÁVEL (invariante 7). Somente o Mr. G altera STATUS: approved | revise | rejected.
@@ -34,4 +34,4 @@ _(275/280 caracteres)_
 ## Decisão do Mr. G
 Edite o `STATUS:` no topo: `approved` | `revise` | `rejected`.
 
-**Nota (opcional):**
+**Nota (opcional):** Re-aprovado pelo Mr. G em 2026-07-22 com o gráfico renderizado no template e o texto corrigido (~$58K = BTC no fundo). Publicação manual na @VantageNodvt.
