@@ -19,6 +19,9 @@
     "Uma ideia só: a convergência/teste. Agregado/LTH ($53K/$50K) entram no máximo como uma frase de contexto no reply, não como segundo insight."
   ],
   "gate1": {
-    "status": "pending"
+    "status": "approved",
+    "note": "Aprovado por Mr. G: ângulo da convergência (gap ~16%→~4%, teste do custo STH se aproximando). Usar percentuais aproximados; sem prever rompimento. Imagem = gráfico original da VantageNode capturado pelo Mr. G.",
+    "decided_by": "Mr. G",
+    "decided_at": "2026-07-22T00:00:00+00:00"
   }
 }

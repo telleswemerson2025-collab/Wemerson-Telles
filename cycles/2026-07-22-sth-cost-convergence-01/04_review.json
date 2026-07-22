@@ -1,0 +1,27 @@
+{
+  "cycle_id": "2026-07-22-sth-cost-convergence-01",
+  "reviewed_at": "2026-07-22T00:00:00+00:00",
+  "verdict": "pass",
+  "invariants": [
+    { "id": 1, "name": "1 post = 1 ideia", "status": "ok", "note": "Uma tese: a convergência preço × custo-base do STH (teste se aproximando). Agregado/LTH ($53K/$50K) só no reply, como contexto." },
+    { "id": 2, "name": "KPI é bookmark", "status": "ok", "note": "Nível concreto (custo STH) + a dinâmica de convergência que o gráfico de preço não mostra — referência que um analista salva." },
+    { "id": 3, "name": "Link fora do corpo", "status": "ok", "note": "post.text sem URL; link (permalink Realized Price STH) no reply." },
+    { "id": 4, "name": "Gráfico com leitura", "status": "ok", "note": "A leitura vai no texto (decisão A: imagem = gráfico ORIGINAL da VantageNode, sem título/marcação do Claude)." },
+    { "id": 5, "name": "Responsabilidade (sem certeza de preço)", "status": "ok", "note": "'Se aproxima do teste' descreve a convergência, NÃO o desfecho. Nenhuma previsão de rompimento/direção. Disclaimer no reply ('não é previsão de preço')." },
+    { "id": 6, "name": "Número texto = gráfico = fonte", "status": "ok", "note": "Todos os números rastreáveis em 00_data.json: ~$69K (Realized Price STH, arredondado ao milhar), BTC ~$66,5K (exato 66.516), ~$58K (mínima fim jun), ~16%/~4% (derivados aproximados), agg ~$53K/LTH ~$50K (sidebar). Percentuais e valores STH aproximados por causa do arredondamento do tooltip — usados com '~'. Lado in_chart = conferência VISUAL, pendente da imagem capturada pelo Mr. G." },
+    { "id": 7, "name": "Gate humano inviolável", "status": "ok", "note": "APPROVAL.md em STATUS: pending. Sem auto-aprovação." },
+    { "id": 8, "name": "Sem emoji/hype/jargão", "status": "ok", "note": "Varredura limpa. Voz de terminal." },
+    { "id": 9, "name": "Indicador válido/definido", "status": "ok", "note": "Realized Price STH é público e listado em indicators.md (seção candidatos); o reply traz a definição. Pendência menor não-bloqueante: registrar a definição formal em indicators.md no primeiro uso (é agora)." }
+  ],
+  "numbers_reconciliation": [
+    { "claim": "Realized Price STH ~$69K", "in_text": "~$69K", "in_chart": "visual (pendente imagem)", "in_source": 69000, "matches": true },
+    { "claim": "BTC ~$66,5K (exato 66.516)", "in_text": "~$66,5K", "in_chart": "visual (pendente imagem)", "in_source": 66516, "matches": true },
+    { "claim": "mínima ~$58K (fim jun)", "in_text": "~$58K", "in_chart": "visual (pendente imagem)", "in_source": "~58K", "matches": true },
+    { "claim": "gap ~16% (23/jun)", "in_text": 16, "in_chart": null, "in_source": 16.5, "matches": true },
+    { "claim": "gap ~4% (21/jul)", "in_text": 4, "in_chart": null, "in_source": 3.6, "matches": true },
+    { "claim": "custo agregado ~$53K (reply)", "in_text": "~$53K", "in_chart": null, "in_source": 53000, "matches": true },
+    { "claim": "LTH ~$50K (reply)", "in_text": "~$50K", "in_chart": null, "in_source": 50000, "matches": true }
+  ],
+  "blocks": [],
+  "notes": "Reconciliação numérica e invariantes: PASS. FALTA a conferência VISUAL do gráfico (invariante 6, lado in_chart): a imagem publicada é o gráfico ORIGINAL da VantageNode capturado pelo Mr. G — ainda não recebida/armazenada como 02_chart.png. Antes de publicar: (1) Mr. G envia a imagem, confirmo que é o original da VantageNode (sem marca do Claude) e que os números batem visualmente; (2) registrar Realized Price STH em knowledge/indicators.md (pendência menor)."
+}
