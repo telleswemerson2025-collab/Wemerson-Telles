@@ -12,6 +12,14 @@ Vale para o SCOUT (01, intake de dados) e o PLOT (02, gráfico).
 Ou seja: ao pedir insumo para um ciclo, não peça só "o valor do MVRV-STH". Peça também os
 **gráficos originais** da(s) métrica(s) relevante(s), direto da aba aberta da VantageNode.
 
+### Mecanismo — sob demanda (Mr. G, 2026-07-21)
+
+O Claude Code (esta sessão) **não** acessa a VantageNode sozinho. Sempre que precisar de qualquer
+informação ou gráfico, basta **pedir aqui, em texto**: o **Claude no Chrome** acessa a aba da VantageNode
+(logada no Mr. G) e traz os dados/gráficos. É **sob demanda** — só acontece quando o Claude Code pede ou o
+operador solicita explicitamente; nunca automaticamente. Formule o pedido de forma auto-suficiente (métrica,
+range, `as_of`, permalink, e "traga todos os gráficos relevantes").
+
 ## O que sempre incluir no pedido
 
 1. **Valores exatos** da(s) métrica(s), com casas decimais como aparecem na tela (invariante 6).
