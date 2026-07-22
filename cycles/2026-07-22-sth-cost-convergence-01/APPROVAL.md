@@ -29,7 +29,8 @@ _(275/280 caracteres)_
 ## Veredito do GATEKEEPER
 - **Resultado:** pass — 9/9 invariantes (reconciliação numérica ok)
 - **Percentuais aproximados** (Realized Price STH arredondada ao milhar) — usados com "~"; sem previsão de preço (invariante 5)
-- **⚠️ Antes de publicar:** (1) Mr. G envia a **imagem do gráfico original** capturado → confirmo que é o original da VantageNode (sem marca do Claude) e que os números batem visualmente (invariante 6, lado in_chart); (2) registrar Realized Price STH em `knowledge/indicators.md` (pendência menor)
+- **Conferência visual:** ✅ **concluída**. Imagem = gráfico ORIGINAL da VantageNode (marca d'água nativa, sem marca do Claude). Nuance: a linha é **SMA-30** e mostra **~$69K** no último ponto (coerente com o post); o `$68K` da sidebar é o valor **cru diário**, que não aparece na linha. Números batem visualmente.
+- **Pendência menor** (não bloqueia): registrar Realized Price STH em `knowledge/indicators.md`.
 
 ## Imagem do post
 Gráfico **ORIGINAL da VantageNode** capturado pelo Mr. G (Realized Price STH, 30D, permalink `#metric=27463c1a65`). Decisão A: nada renderizado pelo Claude.

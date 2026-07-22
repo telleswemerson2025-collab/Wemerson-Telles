@@ -1,0 +1,19 @@
+{
+  "cycle_id": "2026-07-22-sth-cost-convergence-01",
+  "chart_type": "vantagenode_original",
+  "indicator": "Realized Price STH",
+  "permalink": "https://vantagenode.io/terminal#metric=27463c1a65",
+  "range": "30D (SMA-30 ativo)",
+  "as_of": "2026-07-21",
+  "captured_by": "Mr. G — screenshot do terminal VantageNode",
+  "watermark": "VantageNode (nativa)",
+  "claude_marks": false,
+  "visual_check": {
+    "done": true,
+    "line_is": "SMA-30 (suavizada)",
+    "sth_on_chart_last_point": "~$69K (21/jul) — coerente com o post",
+    "sth_raw_sidebar": "~$68K (não plotado)",
+    "observed": "linha vermelha (custo STH) ~$77K->~$69K; linha cinza (preço) ~$58K->~$66,5K; convergindo. Sidebar agregado $53K / LTH $50K conferem."
+  },
+  "note": "Imagem original capturada pelo Mr. G, colada no chat (sem file path para salvar como PNG no repo). Mr. G anexa o original na publicação (fluxo manual)."
+}
