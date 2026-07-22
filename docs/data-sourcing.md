@@ -20,13 +20,25 @@ Ou seja: ao pedir insumo para um ciclo, não peça só "o valor do MVRV-STH". Pe
 3. **Janela/range** usado (ex.: 30D) e a **data de referência** (`as_of`).
 4. A **permalink** exata da métrica (o `#metric=...`) para o link do reply.
 
-## Como os gráficos entram no ciclo
+## Regra do gráfico publicado — DECISÃO (Mr. G, 2026-07-21)
 
-- **Gráfico da VantageNode (original):** insumo de análise e/ou imagem do post. Se virar a imagem do
-  post, lembrar que ele não carrega a leitura no título — a leitura vai no texto do post (invariante 4).
-- **Gráfico próprio (`render_chart.py` / `render_cohort.py`):** continua válido — carrega a leitura no
-  título e a identidade visual. O original da VantageNode pode ser usado como **verificação** dos números
-  ou como imagem alternativa, conforme a decisão do Mr. G no ciclo.
+> **A imagem do post (`02_chart.png`) é SEMPRE o gráfico ORIGINAL da VantageNode.**
+> O Claude NÃO gera o gráfico publicado, e **NUNCA** acrescenta sinal, dado, indicador, linha, cor de
+> alerta, título-leitura ou qualquer marcação própria à imagem. **Gráficos carregam apenas sinais/dados
+> da VantageNode — nunca do Claude.**
+
+Consequências no pipeline:
+
+- **PLOT (02):** obtém o gráfico original da métrica na VantageNode (via Claude Chrome) e o salva como
+  `02_chart.png`, **sem editar/anotar/re-renderizar por cima**. Traz todos os gráficos relevantes.
+- **A leitura/interpretação vai 100% no TEXTO do post** (VOICE, 03) — nunca embutida na imagem. O
+  invariante 4 ("todo gráfico acompanha uma leitura") é satisfeito pelo texto que acompanha o gráfico.
+- **`lib/render_chart.py` e `lib/render_cohort.py` viram uso INTERNO/verificação apenas** — podem ajudar
+  o Claude a conferir os números ou explorar, mas **não produzem a imagem publicada**.
+- **GATEKEEPER (04):** como a imagem original não é "parseável" por máquina, a reconciliação do gráfico
+  (invariante 6) é **conferência visual** — o número no texto tem de bater com o número visível no
+  gráfico da VantageNode e com `00_data.json`. Deve também confirmar que a imagem é o original da
+  VantageNode, sem marcação do Claude.
 
 ## Por quê
 

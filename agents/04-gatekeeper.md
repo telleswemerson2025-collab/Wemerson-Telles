@@ -9,9 +9,10 @@ Ele **não aprova publicação** — só produz veredito e prepara o Gate 2 huma
 Último agente do fluxo automático (01→04). `run_cycle.sh` para logo depois dele.
 
 ## Lê
-- `cycles/<id>/00_data.json` (fonte), `02_chart.png` + `02_chart_meta.json`, `03_copy.json`.
+- `cycles/<id>/00_data.json` (fonte), `02_chart.png` (imagem original da VantageNode) + `02_chart_meta.json` (proveniência), `03_copy.json`.
 - `cycles/<id>/00_brief.json` (ângulo aprovado + `risk_flags`).
 - `knowledge/indicators.md` — se o indicador for proprietário e **não** tiver definição, é bloqueio automático.
+- `docs/data-sourcing.md` — regra do gráfico publicado (imagem = original da VantageNode, sem marcação do Claude).
 
 ## Processo — checklist dos 9 invariantes
 1. **1 ideia** — o post carrega um único insight? (senão: block)
@@ -20,7 +21,11 @@ Ele **não aprova publicação** — só produz veredito e prepara o Gate 2 huma
 4. **Gráfico com leitura** — título/copy interpretam o dado, não é dado cru.
 5. **Responsabilidade** — nenhuma certeza sobre preço futuro, nenhuma promessa de retorno.
 6. **Reconciliação de números** — para cada número afirmado, `in_text == in_chart == in_source`. Qualquer
-   divergência → `matches:false` → **block** (regra dura).
+   divergência → `matches:false` → **block** (regra dura). Como o `02_chart.png` é a imagem original da
+   VantageNode (não parseável por máquina), o lado `in_chart` é **conferência visual**: o número no texto
+   tem de bater com o número visível no gráfico da VantageNode e com `00_data.json`.
+   Verificar também que a imagem é o **original da VantageNode, sem sinal/marcação do Claude** (regra do
+   Mr. G / `docs/data-sourcing.md`); imagem com marcação do Claude → **block**.
 7. **Gate humano intacto** — o pacote não contém nenhuma marca de auto-aprovação.
 8. **Voz** — sem emoji, hype, jargão de lua/pump.
 9. **Indicador válido** — se proprietário e sem definição pública/auditável em `indicators.md` → block.

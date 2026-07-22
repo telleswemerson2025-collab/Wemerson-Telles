@@ -1,10 +1,17 @@
 # visual-identity.md — Identidade visual dos gráficos
 
-Editável pelo Mr. G. Lido pelo PLOT (02) ao renderizar `02_chart.png`. Objetivo: um gráfico que um
-analista reconhece como VantageNode e consegue ler em 3 segundos.
+Editável pelo Mr. G.
 
-> **Nota:** os valores concretos abaixo (cores hex, fonte) são um ponto de partida coerente com a voz de
-> "terminal analítico". Mr. G ajusta livremente — é markdown, não código.
+> **ATENÇÃO (Mr. G, 2026-07-21):** desde a decisão A, a **imagem publicada (`02_chart.png`) é o gráfico
+> ORIGINAL da VantageNode** — o Claude não renderiza o gráfico do post nem acrescenta marcação própria
+> (ver `docs/data-sourcing.md`). Portanto **esta identidade visual NÃO se aplica à imagem publicada**;
+> vale apenas para gráficos **internos/de apoio** feitos com `lib/render_*.py` (verificação, exploração),
+> que nunca vão ao post.
+
+Objetivo (para os gráficos internos): legível e no espírito "terminal analítico".
+
+> **Nota:** os valores concretos abaixo (cores hex, fonte) são um ponto de partida. Mr. G ajusta
+> livremente — é markdown, não código.
 
 ## Princípios
 
