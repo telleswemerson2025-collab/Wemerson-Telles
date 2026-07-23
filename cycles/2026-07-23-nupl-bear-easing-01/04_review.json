@@ -37,7 +37,7 @@
       "id": 6,
       "name": "Número texto = gráfico = fonte",
       "status": "ok",
-      "note": "0,199 (atual), ~0,13 (fundo) e >0,6 (pico 2024) rastreáveis em 00_data.json e visíveis no gráfico; NUPL-STH -0,032 no reply (fonte). Pico/fundo aproximados (leitura de gráfico), usados com ~/>. Lado in_chart = conferência VISUAL, pendente do arquivo do screenshot."
+      "note": "0,199 (atual), ~0,13 (fundo) e >0,6 (pico 2024) rastreáveis em 00_data.json E confirmados VISUALMENTE no screenshot real (verde ~0,6 -> laranja ~0,13 -> ~0,2 agora); NUPL-STH -0,032 no reply. Enquadramento correto (cabeçalho + gráfico, sem toolbar/sidebar, marca d'água). Pico/fundo aproximados (~/>)."
     },
     {
       "id": 7,
@@ -62,21 +62,21 @@
     {
       "claim": "NUPL em 0,199 (atual)",
       "in_text": 0.199,
-      "in_chart": "visual (pendente arquivo)",
+      "in_chart": "visual OK (screenshot real)",
       "in_source": 0.199,
       "matches": true
     },
     {
       "claim": "fundo ~0,13 (out/nov 2025)",
       "in_text": 0.13,
-      "in_chart": "visual (pendente arquivo)",
+      "in_chart": "visual OK (screenshot real)",
       "in_source": 0.13,
       "matches": true
     },
     {
       "claim": "pico >0,6 (2024)",
       "in_text": 0.6,
-      "in_chart": "visual (pendente arquivo)",
+      "in_chart": "visual OK (screenshot real)",
       "in_source": 0.6,
       "matches": true
     },
@@ -89,5 +89,5 @@
     }
   ],
   "blocks": [],
-  "notes": "PASS em números/invariantes. FALTA a conferência VISUAL do gráfico (invariante 6): a imagem é o screenshot REAL do terminal (decisão final) — Mr. G anexa como ARQUIVO para virar 02_chart.png e eu confirmo enquadramento (cabeçalho+gráfico, sem toolbar/sidebar, marca d'água) e os valores visíveis. Pendência menor: registrar NUPL em indicators.md."
+  "notes": "PASS completo — números, invariantes E conferência visual do gráfico concluídos (imagem vista e conferida). OBS: o PNG não pôde ser salvo como 02_chart.png (imagem inline não acessível como arquivo); Mr. G anexa o print na publicação. Pendência menor: registrar NUPL em knowledge/indicators.md. Pronto para o Gate 2."
 }

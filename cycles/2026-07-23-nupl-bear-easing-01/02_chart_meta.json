@@ -1,0 +1,20 @@
+{
+  "cycle_id": "2026-07-23-nupl-bear-easing-01",
+  "chart_type": "vantagenode_original_screenshot",
+  "indicator": "NUPL",
+  "permalink": "https://vantagenode.io/terminal#metric=dc6a42e746",
+  "range": "~3 anos (Jun/23 → now, brush; URL range=ALL)",
+  "sma": 7,
+  "as_of": "2026-07-23",
+  "captured_by": "Mr. G — screenshot do terminal VantageNode",
+  "watermark": "VantageNode (nativa)",
+  "claude_marks": false,
+  "framing_ok": true,
+  "visual_check": {
+    "done": true,
+    "enquadramento": "cabeçalho (logo + breadcrumb Studio/NUPL) + gráfico; SEM toolbar, SEM legenda de zonas, SEM sidebar",
+    "observed": "linha NUPL (eixo dir. 0,1–0,6): verde ~0,6 em 2024 -> laranja/vermelho ~0,13 fim 2025 -> recupera ~0,2 agora. Preço (cinza, eixo esq. $24K–$135K). Bate com 0,199 / ~0,13 / >0,6.",
+    "conclusao": "OK — enquadramento e valores conferem"
+  },
+  "note": "Imagem VISTA pelo Claude e conferida, mas NÃO salva como 02_chart.png (a imagem não chegou como arquivo acessível no ambiente; só o upload antigo está em disco). Mr. G anexa o print na publicação manual."
+}
