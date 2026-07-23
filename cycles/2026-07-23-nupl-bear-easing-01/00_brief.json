@@ -19,6 +19,9 @@
     "Pico (>0,6) e fundo (~0,13) são leituras aproximadas de gráfico — usar '~' e 'acima de'. Atual 0,199 exato."
   ],
   "gate1": {
-    "status": "pending"
+    "status": "approved",
+    "note": "Aprovado por Mr. G: 'NUPL saiu do fundo, mas segue em zona de bear'. NUPL como tradução pública do risco (sem indicador proprietário).",
+    "decided_by": "Mr. G",
+    "decided_at": "2026-07-23T00:00:00+00:00"
   }
 }

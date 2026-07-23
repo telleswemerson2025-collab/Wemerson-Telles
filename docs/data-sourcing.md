@@ -46,6 +46,8 @@ range, `as_of`, permalink, e "traga todos os gráficos relevantes").
 - **NÃO incluir:** a barra/painel de **ferramentas** (SMA / 7D / 14D / 30D, ferramentas de desenho,
   Y LOG / BTC LOG) **nem a aba/painel lateral** de métricas.
 - **Marca d'água VantageNode visível** no gráfico. É o **mesmo enquadramento da view em tela cheia**.
+- **Entrega:** Mr. G anexa o screenshot **como ARQUIVO** (não como paste no chat) — só assim o Claude salva
+  como `02_chart.png`. (Combinado 2026-07-23: não precisa ser lembrado disso a cada vez.)
 
 ### Consequências no pipeline
 

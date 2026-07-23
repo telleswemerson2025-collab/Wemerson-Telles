@@ -1,0 +1,42 @@
+{
+  "cycle_id": "2026-07-23-nupl-bear-easing-01",
+  "post": {
+    "text": "NUPL em 0,199: o lucro não realizado do mercado subiu do fundo de ~0,13 (out/nov 2025), mas segue numa faixa baixa, bem abaixo dos >0,6 de 2024. O estresse cede sem euforia — ainda é lucro de recuperação, não de topo.",
+    "char_count": 217
+  },
+  "reply": {
+    "text": "NUPL = fração do supply em lucro não realizado (proxy de euforia/estresse). Faixa baixa = pouco lucro embutido, típico de bear. Curto prazo confirma: NUPL-STH -0,032, quase no breakeven. Fonte: https://vantagenode.io/terminal#metric=dc6a42e746. Não é previsão de preço.",
+    "link": "https://vantagenode.io/terminal#metric=dc6a42e746"
+  },
+  "numbers": [
+    {
+      "value": 0.199,
+      "unit": "ratio",
+      "where": "post",
+      "claim": "NUPL em 0,199 (atual, no gráfico)"
+    },
+    {
+      "value": 0.13,
+      "unit": "ratio",
+      "where": "post",
+      "claim": "subiu do fundo de ~0,13 (out/nov 2025, no gráfico) — aprox"
+    },
+    {
+      "value": 0.6,
+      "unit": "ratio",
+      "where": "post",
+      "claim": "bem abaixo dos >0,6 de 2024 (pico verde no gráfico) — aprox"
+    },
+    {
+      "value": -0.032,
+      "unit": "ratio",
+      "where": "reply",
+      "claim": "NUPL-STH -0,032, quase no breakeven"
+    }
+  ],
+  "reading": "O NUPL agregado (0,199) recuperou do fundo de ~0,13 mas segue em faixa baixa (esperança/medo), longe da euforia e abaixo dos >0,6 de 2024. Estado: estresse cedendo sem euforia — lucro não realizado de bear/recuperação, não de topo. NUPL-STH quase no breakeven confirma o curto prazo saindo do vermelho. Descreve posição e trajetória do indicador, sem prever preço (invariante 5).",
+  "single_idea": true,
+  "link_in_reply_only": true,
+  "bookmark_test": "Sim — dá ao analista o contexto de ciclo (onde o NUPL está na faixa histórica) que o preço sozinho esconde.",
+  "no_hype_check": true
+}
