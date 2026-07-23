@@ -1,37 +1,37 @@
 # PLOT (02) — Cartógrafo do dado
 
 ## Papel
-Renderizar o gráfico que ancora o post, no **template VantageNode-X**, plotando **somente dados reais da
-VantageNode**. É o padrão dos posts no ar (título grande = a leitura, linha âmbar com marcadores, ponto
-final destacado em verde, eixos rotulados, rodapé "Fonte: VantageNode · data"). O Claude **nunca fabrica
-dado** nem desenha sinal inventado (linha de tese, seta, indicador inexistente).
+Prover a imagem que ancora o post. **DECISÃO FINAL (Mr. G, 2026-07-23): a imagem é um PRINT REAL do
+terminal VantageNode** (com a marca d'água nativa), em range de **2 anos**, enquadrado como cabeçalho +
+gráfico — **não** um gráfico renderizado pelo Claude. Ver a recipe de captura em `docs/data-sourcing.md`.
+A leitura/interpretação vai no TEXTO do post (VOICE), não na imagem.
 
 ## Quando roda
 Depois do Gate 1 aprovado (`00_brief.json` com `gate1.status: approved`).
 
 ## Lê
 - `cycles/<id>/00_brief.json` — o ângulo aprovado.
-- `cycles/<id>/00_data.json` — a série real a plotar (fonte-de-verdade).
-- `knowledge/visual-identity.md`; `docs/data-sourcing.md` (regra do gráfico publicado).
+- `cycles/<id>/00_data.json` — os números de referência (para conferir o que aparece no print).
+- `docs/data-sourcing.md` — a recipe de captura (range 2Y, enquadramento cabeçalho + gráfico, sem
+  toolbar/sidebar, marca d'água visível).
 
 ## Processo
-1. Plotar a série de `00_data.json` no template, via `lib/render_chart.py` (linha única) ou
-   `lib/render_cohort.py` (comparação de coortes). Para métricas em USD, usar `--value-scale 1000
-   --value-prefix '$' --value-suffix 'K'` (exibe "$69K").
-2. **Título = a leitura** (invariante 4), não o nome do indicador.
-3. Ponto final destacado em verde com o valor anotado; rodapé com fonte e `as_of`.
-4. Emitir `02_chart_meta.json` (o render já faz) listando cada número plotado, para o GATEKEEPER cruzar
-   (invariante 6).
+1. Obter o **screenshot real** da métrica na VantageNode (via Claude Chrome, na aba logada do Mr. G),
+   **em 2 anos** e enquadrado conforme a recipe.
+2. Salvar como `cycles/<id>/02_chart.png`, **sem editar, anotar ou re-renderizar**.
+3. Conferir que os números visíveis no print batem com `00_data.json` e com o texto (invariante 6).
+4. (Opcional) emitir `02_chart_meta.json` com a **proveniência** (métrica, permalink, range 2Y, `as_of`).
 
 ## Escreve
-- `cycles/<id>/02_chart.png` (renderizado no template)
-- `cycles/<id>/02_chart_meta.json`
+- `cycles/<id>/02_chart.png` — o **screenshot real** da VantageNode.
+- (opcional) `cycles/<id>/02_chart_meta.json` — proveniência.
 
 ## Regras
-- Plotar **só dados reais da VantageNode**; nunca fabricar ponto nem inventar linha de sinal.
-- Todo número no gráfico bate com `00_data.json` (invariante 6). Zero emoji/decoração (invariante 8).
-- Se a métrica tem duas leituras (ex.: linha SMA vs valor cru), usar a que o número do texto cita —
-  registrar a nuance em `00_data.json`/`indicators.md`.
+- A imagem é o print real da VantageNode, não do Claude. **Nunca** editar/anotar/renderizar.
+- Enquadramento: **cabeçalho (logo + breadcrumb) + gráfico**, sem barra de ferramentas nem aba lateral;
+  marca d'água visível; range **2 anos**.
+- Os renderizadores `lib/render_chart.py` / `render_cohort.py` são **uso interno/verificação apenas** —
+  não produzem a imagem publicada.
 
 ## Para / segue
 Sem gate aqui. Ao terminar, o ciclo segue para o VOICE (03).

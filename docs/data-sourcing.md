@@ -28,29 +28,35 @@ range, `as_of`, permalink, e "traga todos os gráficos relevantes").
 3. **Janela/range** usado (ex.: 30D) e a **data de referência** (`as_of`).
 4. A **permalink** exata da métrica (o `#metric=...`) para o link do reply.
 
-## Regra do gráfico publicado — DECISÃO REVISTA (Mr. G, 2026-07-22)
+## Regra do gráfico publicado — DECISÃO FINAL (Mr. G, 2026-07-23)
 
-> Corrige a regra anterior (que mandava usar o screenshot cru do terminal). Conferindo os posts já
-> publicados (MVRV, SOPR-LTH), o padrão da conta é o **gráfico RENDERIZADO no template VantageNode-X**,
-> não o print do terminal.
+> Histórico das voltas: screenshot cru → template renderizado → **SCREENSHOT REAL (final)**. A imagem do
+> post é o **PRINT REAL do terminal VantageNode** (com a marca d'água nativa), **não** um gráfico
+> renderizado pelo Claude.
 >
-> **A imagem do post (`02_chart.png`) é o gráfico RENDERIZADO no template** (`lib/render_chart.py` /
-> `lib/render_cohort.py`), **plotando SOMENTE dados reais da VantageNode**. O Claude **nunca fabrica dado**
-> nem desenha **sinal inventado** (linha de tese, seta de compra/venda, indicador inexistente). O template
-> — título (a leitura), marcadores, ponto final destacado em verde, eixos rotulados, rodapé "Fonte:
-> VantageNode · data" — é **apresentação da marca**, não sinal. É o que os posts no ar já fazem.
+> **`02_chart.png` = screenshot real do terminal VantageNode.** O Claude NÃO gera a imagem publicada nem a
+> edita/anota. Os `render_*.py` voltam a ser **uso interno/verificação apenas**.
 
-Consequências no pipeline:
+### Recipe de captura (Claude Chrome / Mr. G) — seguir à risca
 
-- **Captação (Claude Chrome):** traga a **SÉRIE** da métrica (hover em vários pontos, ~8–12) — é o que
-  alimenta o render. Pode trazer o gráfico original como referência/verificação, mas a imagem publicada é
-  a nossa (renderizada).
-- **PLOT (02):** renderiza a série real com `render_chart.py` (linha única, ex.: `--value-scale 1000
-  --value-prefix '$' --value-suffix 'K'` para métricas em USD) ou `render_cohort.py` (coortes). Título = a
-  leitura. Salva `02_chart.png`.
-- **GATEKEEPER (04):** reconciliação normal texto = gráfico (`02_chart_meta.json`) = fonte (`00_data.json`).
-- **Proibido no gráfico:** dado fabricado; indicador/linha de sinal inventada. A linha de referência
-  **definicional** (ex.: breakeven 1,0 do SOPR) é permitida — é propriedade do próprio indicador, não sinal.
+- **Range: 2 anos (2Y).** Contexto de ciclo — só num range longo "historicamente baixo/alto" faz sentido.
+- **Enquadrar SOMENTE:** a **faixa de cabeçalho do topo** (logo VantageNode + breadcrumb, ex.:
+  `Studio / Market Value to Realized Value (MVRV) / MVRV · STH`) **+ o gráfico logo abaixo**.
+- **NÃO incluir:** a barra/painel de **ferramentas** (SMA / 7D / 14D / 30D, ferramentas de desenho,
+  Y LOG / BTC LOG) **nem a aba/painel lateral** de métricas.
+- **Marca d'água VantageNode visível** no gráfico. É o **mesmo enquadramento da view em tela cheia**.
+
+### Consequências no pipeline
+
+- **Captação:** o screenshot (2Y, enquadrado) vem do Claude Chrome / Mr. G. O Claude não captura o terminal.
+- **PLOT (02):** salva o screenshot recebido como `02_chart.png`, **sem editar/anotar/re-renderizar**.
+- **A leitura vai 100% no TEXTO do post** (o screenshot não traz título-leitura do Claude). Invariante 4
+  satisfeito pelo texto.
+- **GATEKEEPER (04):** reconciliação do gráfico = **conferência VISUAL** (imagem não parseável): o número do
+  texto bate com o visível no gráfico e com `00_data.json`; confirma que é o **print real** (marca d'água,
+  enquadramento correto: cabeçalho + gráfico, sem toolbar/sidebar), sem edição do Claude.
+- **Ângulo:** com 2 anos no gráfico, os posts tendem a **leituras de contexto de ciclo** (onde estamos na
+  faixa histórica), não micro-movimentos de 30D.
 
 ## Por quê
 
