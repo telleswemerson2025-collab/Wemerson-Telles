@@ -1,0 +1,24 @@
+{
+  "cycle_id": "2026-07-23-nupl-bear-easing-01",
+  "indicator": "NUPL",
+  "source": {
+    "name": "VantageNode",
+    "url": "https://vantagenode.io/terminal#metric=dc6a42e746&range=ALL&mscale=linear&pscale=log&sma=7",
+    "captured_by": "Mr. G / Claude no Chrome — leitura no terminal VantageNode",
+    "captured_at": "2026-07-23T23:37:19+00:00"
+  },
+  "as_of": "2026-07-23",
+  "unit": "ratio",
+  "latest_value": 0.199,
+  "series": [
+    {
+      "t": "2025-11-01",
+      "v": 0.13
+    },
+    {
+      "t": "2026-07-23",
+      "v": 0.199
+    }
+  ],
+  "notes": "NUPL agregado (Net Unrealized Profit/Loss). Atual 0,199, RECUPERANDO do fundo ~0,13 (out/nov 2025); pico >0,6 em 2024 (zona euforia/otimismo, verde). Zona atual BAIXA (esperança/medo, <0,25), longe da euforia (>0,75). Contexto (curto prazo): NUPL-STH -0,032 (levemente negativo, quase breakeven — saindo do vermelho). Valores de pico/fundo aproximados (leitura de gráfico); atual 0,199 e STH -0,032 lidos no tooltip. RANGE: ~3 anos via brush manual (Jun/23→now); o terminal não tem botão 3Y (só 30D/90D/180D/1Y/5Y/ALL), então a URL mostra range=ALL — o enquadramento real é ~3 anos. IMAGEM = screenshot REAL do terminal (decisão final), enquadramento da recipe. Permalink #metric=dc6a42e746."
+}

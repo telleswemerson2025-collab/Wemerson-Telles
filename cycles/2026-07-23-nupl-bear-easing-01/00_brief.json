@@ -1,0 +1,24 @@
+{
+  "cycle_id": "2026-07-23-nupl-bear-easing-01",
+  "created_at": "2026-07-23T23:37:19+00:00",
+  "indicator": "NUPL",
+  "data_ref": "cycles/2026-07-23-nupl-bear-easing-01/00_data.json",
+  "headline_number": {
+    "value": 0.199,
+    "unit": "ratio",
+    "label": "NUPL agregado (atual)"
+  },
+  "angle": "NUPL saiu do fundo, mas segue em zona de bear. O NUPL agregado está em 0,199 — recuperou do fundo de ~0,13 (out/nov 2025), mas continua numa faixa baixa (esperança/medo), longe da euforia (>0,75) e bem abaixo dos >0,6 de 2024. Leitura: o estresse está cedendo, sem euforia — o lucro não realizado do mercado ainda é de bear/recuperação, não de topo. É a tradução em dado público do 'ainda bear, mas risco de curto prazo diminuindo'.",
+  "why_now": "O preço repicou e a narrativa de superfície é de recuperação; o NUPL num range de 3 anos mostra o que o preço esconde — ainda estamos na parte baixa do ciclo, só saindo do fundo.",
+  "target_reader": "analista que usa NUPL como termômetro de euforia/estresse e contexto de ciclo",
+  "single_idea": true,
+  "risk_flags": [
+    "Invariante 5: NÃO prever preço nem dizer que o bear acabou/vai continuar. Descrever a POSIÇÃO e a TRAJETÓRIA do NUPL, com hedge. Disclaimer.",
+    "NÃO usar o 'indicador de risco'/Drawdown Risk do Gui (Categoria B). NUPL é a nossa tradução pública de 'risco/euforia'.",
+    "Uma ideia só: o estado do NUPL agregado (recuperando + ainda baixo). NUPL-STH entra como UMA frase de contexto no reply, não como 2º insight.",
+    "Pico (>0,6) e fundo (~0,13) são leituras aproximadas de gráfico — usar '~' e 'acima de'. Atual 0,199 exato."
+  ],
+  "gate1": {
+    "status": "pending"
+  }
+}
