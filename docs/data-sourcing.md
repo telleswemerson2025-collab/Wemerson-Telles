@@ -39,7 +39,8 @@ range, `as_of`, permalink, e "traga todos os gráficos relevantes").
 
 ### Recipe de captura (Claude Chrome / Mr. G) — seguir à risca
 
-- **Range: 2 anos (2Y).** Contexto de ciclo — só num range longo "historicamente baixo/alto" faz sentido.
+- **Range: 3 anos (3Y).** Contexto de ciclo — só num range longo "historicamente baixo/alto" faz sentido.
+- **SMA:** deixar como está (**SMA = 7**); ajustar **só o range** para 3 anos (o "7 dias" é a média móvel, não o range).
 - **Enquadrar SOMENTE:** a **faixa de cabeçalho do topo** (logo VantageNode + breadcrumb, ex.:
   `Studio / Market Value to Realized Value (MVRV) / MVRV · STH`) **+ o gráfico logo abaixo**.
 - **NÃO incluir:** a barra/painel de **ferramentas** (SMA / 7D / 14D / 30D, ferramentas de desenho,
@@ -55,7 +56,7 @@ range, `as_of`, permalink, e "traga todos os gráficos relevantes").
 - **GATEKEEPER (04):** reconciliação do gráfico = **conferência VISUAL** (imagem não parseável): o número do
   texto bate com o visível no gráfico e com `00_data.json`; confirma que é o **print real** (marca d'água,
   enquadramento correto: cabeçalho + gráfico, sem toolbar/sidebar), sem edição do Claude.
-- **Ângulo:** com 2 anos no gráfico, os posts tendem a **leituras de contexto de ciclo** (onde estamos na
+- **Ângulo:** com 3 anos no gráfico, os posts tendem a **leituras de contexto de ciclo** (onde estamos na
   faixa histórica), não micro-movimentos de 30D.
 
 ## Por quê

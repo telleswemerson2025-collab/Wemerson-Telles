@@ -3,7 +3,7 @@
 Editável pelo Mr. G.
 
 > **ATENÇÃO (Mr. G, 2026-07-23 — DECISÃO FINAL):** a **imagem publicada (`02_chart.png`) é um PRINT REAL
-> do terminal VantageNode** (range 2 anos; enquadramento cabeçalho + gráfico; marca d'água nativa) — ver
+> do terminal VantageNode** (range 3 anos; enquadramento cabeçalho + gráfico; marca d'água nativa) — ver
 > `docs/data-sourcing.md`. Portanto **esta identidade visual NÃO se aplica à imagem publicada** (que é a
 > cara do próprio terminal). Vale apenas para gráficos **internos/de apoio** feitos com `lib/render_*.py`,
 > que não vão ao post.
