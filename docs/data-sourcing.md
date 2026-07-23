@@ -49,7 +49,7 @@ range, `as_of`, permalink, e "traga todos os gráficos relevantes").
 
 ### Consequências no pipeline
 
-- **Captação:** o screenshot (2Y, enquadrado) vem do Claude Chrome / Mr. G. O Claude não captura o terminal.
+- **Captação:** o screenshot (3Y, enquadrado) vem do Claude Chrome / Mr. G. O Claude não captura o terminal.
 - **PLOT (02):** salva o screenshot recebido como `02_chart.png`, **sem editar/anotar/re-renderizar**.
 - **A leitura vai 100% no TEXTO do post** (o screenshot não traz título-leitura do Claude). Invariante 4
   satisfeito pelo texto.
