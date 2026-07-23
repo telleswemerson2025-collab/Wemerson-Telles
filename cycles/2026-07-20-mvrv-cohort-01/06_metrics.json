@@ -1,0 +1,18 @@
+{
+  "cycle_id": "2026-07-20-mvrv-cohort-01",
+  "collected_at": "2026-07-23T13:43:43+00:00",
+  "window_hours": 60,
+  "metrics": {
+    "bookmarks": 0,
+    "likes": 0,
+    "replies": 1,
+    "reposts": 0,
+    "impressions": 20
+  },
+  "kpi": {
+    "primary": "bookmarks",
+    "value": 0,
+    "analyst_saved": false
+  },
+  "learning": "3ª medição. Impressões 20 (post) — e a série de alcance está CAINDO: 36 -> 33 -> 20 nos 3 posts. 0 bookmark. Bookmark rate acumulado: MVRV 2,78% (1/36), SOPR-LTH 0% (0/33), coorte 0% (0/20); blended 1.12% (1/89). n minúsculo -> nada conclui sobre a copy. O sinal repetido e agora mais forte: o gargalo é DISTRIBUIÇÃO/ALCANCE, e o alcance encolhe, não cresce. Ação: o problema não é o texto — é reach/audiência. Postar diariamente sozinho não constrói alcance; o próximo passo é fora da linha editorial (engajamento, interação com outras contas, timing), não ajustar copy. A única reply foi a nossa (link)."
+}

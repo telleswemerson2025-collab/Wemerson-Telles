@@ -19,6 +19,12 @@ não apenas registrar métricas.
 
 -->
 
+## 2026-07-23 — ciclo 2026-07-20-mvrv-cohort-01 (MVRV por coorte)
+- **Post:** MVRV agregado esconde a divisão — STH abaixo do custo, LTH em lucro (divergência de coorte).
+- **Sinal (+48h/60h):** impressões 20 · **bookmarks 0** (KPI) · likes 0 · replies 1 (só a nossa/link) · reposts 0. Reply teve 16 views.
+- **Leitura:** ⚠️ **o alcance está CAINDO: 36 → 33 → 20 impressões** nos 3 posts. **3 medições → bookmark rate:** MVRV 2,8% (1/36), SOPR-LTH 0% (0/33), coorte 0% (0/20); blended 1,1% (1/89). n minúsculo → nada conclui sobre a copy. O sinal repetido e agora mais forte: **o gargalo é distribuição/alcance — e o alcance encolhe, não cresce.**
+- **Ação:** o problema **não é o texto**; é **reach/audiência**. Postar diariamente sozinho não está construindo alcance. O próximo passo é **fora da linha editorial** (engajar/interagir com outras contas, timing, replies em terceiros) — não ajustar copy. Manter a disciplina de conteúdo, mas reconhecer que sem distribuição o experimento não gera dado.
+
 ## 2026-07-21 — ciclo 2026-07-18-sopr-lth-01 (SOPR-LTH)
 - **Post:** SOPR-LTH abaixo de 1 em 26/29 dias — regime de realização de prejuízo dos long-term holders.
 - **Sinal (+48h/59h):** impressões 33 · **bookmarks 0** (KPI) · likes 1 · replies 1 (só a nossa/link) · reposts 0 · profile visits 1 · detail expands 5 · engagements 19. _(Verificado no Post Analytics; placeholder "2/41" do X ignorado.)_
