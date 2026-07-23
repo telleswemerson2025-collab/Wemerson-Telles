@@ -66,6 +66,20 @@ Indicadores de definição pública e auditável. Podem ser citados no pipeline 
   o leitor vê no gráfico anexado, não o cru da sidebar. O tooltip arredonda ao milhar → use "~" nos valores.
 - **Usado em:** ciclo `2026-07-22-sth-cost-convergence-01`.
 
+### NUPL (Net Unrealized Profit/Loss)
+
+- **O que mede:** a fração do valor da oferta que é **lucro (ou prejuízo) não realizado** — um termômetro
+  agregado de **euforia × estresse** do mercado.
+- **Fórmula:** `NUPL = (Market Value − Realized Value) / Market Value`. Equivale a `1 − 1/MVRV`.
+- **Unidade:** `ratio` (adimensional). Na prática oscila de levemente negativo (capitulação) a ~0,75+ (euforia).
+- **Zonas (heurística, NÃO sinal):** `< 0` capitulação · `0–0,25` esperança/medo · `0,25–0,5` otimismo/ansiedade ·
+  `0,5–0,75` crença/ganância · `> 0,75` euforia. **Baixo** = pouco lucro embutido (bear/recuperação); **alto** =
+  muito lucro não realizado (risco de topo). Descrever posição/trajetória, nunca prever preço (invariante 5).
+- **Cortes:** agregado, LTH, STH.
+- **Nuance na VantageNode:** a linha é **colorida por zona** (verde alto → laranja/vermelho baixo). No range longo
+  o gráfico usa **SMA = 7**. Ver a recipe de captura em `docs/data-sourcing.md` (range 3 anos, cabeçalho + gráfico).
+- **Usado em:** ciclo `2026-07-23-nupl-bear-easing-01`.
+
 ### Candidatos legítimos (públicos na VantageNode — a documentar quando forem usados)
 
 Indicadores que o Gui usa e que **são públicos** na plataforma — podem virar ciclos futuros. Definição

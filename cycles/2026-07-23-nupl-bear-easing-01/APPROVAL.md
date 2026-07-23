@@ -1,6 +1,6 @@
 # APPROVAL — Ciclo 2026-07-23-nupl-bear-easing-01
 
-STATUS: pending
+STATUS: approved
 
 <!-- GATE 2 — INVIOLÁVEL (invariante 7). Só o Mr. G altera STATUS: approved | revise | rejected. -->
 
@@ -29,4 +29,4 @@ _(269/280)_
 ## Decisão do Mr. G
 Edite o `STATUS:` no topo: `approved` | `revise` | `rejected`.
 
-**Nota (opcional):**
+**Nota (opcional):** Aprovado pelo Mr. G em 2026-07-23. Publicação manual na @VantageNodvt; Mr. G anexa o print (NUPL 3 anos) no X.
