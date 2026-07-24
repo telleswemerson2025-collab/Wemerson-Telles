@@ -39,8 +39,10 @@ range, `as_of`, permalink, e "traga todos os gráficos relevantes").
 
 ### Recipe de captura (Claude Chrome / Mr. G) — seguir à risca
 
-- **Range: 3 anos (3Y).** Contexto de ciclo — só num range longo "historicamente baixo/alto" faz sentido.
-- **SMA:** deixar como está (**SMA = 7**); ajustar **só o range** para 3 anos (o "7 dias" é a média móvel, não o range).
+- **Range: botão `5Y`** (padrão — reproduzível e mostra contexto de ciclo; use `ALL` se a métrica tiver
+  menos histórico). **Não existe botão "3 anos"**; se quiser enquadrar o ciclo mais de perto, ajuste o
+  slider para ~3 anos manualmente (opcional).
+- **SMA:** deixar como está (**SMA = 7**); ajustar **só o range** (o "7 dias" é a média móvel, não o range).
 - **Enquadrar SOMENTE:** a **faixa de cabeçalho do topo** (logo VantageNode + breadcrumb, ex.:
   `Studio / Market Value to Realized Value (MVRV) / MVRV · STH`) **+ o gráfico logo abaixo**.
 - **NÃO incluir:** a barra/painel de **ferramentas** (SMA / 7D / 14D / 30D, ferramentas de desenho,
@@ -51,15 +53,15 @@ range, `as_of`, permalink, e "traga todos os gráficos relevantes").
 
 ### Consequências no pipeline
 
-- **Captação:** o screenshot (3Y, enquadrado) vem do Claude Chrome / Mr. G. O Claude não captura o terminal.
+- **Captação:** o screenshot (5Y, enquadrado) vem do Claude Chrome / Mr. G. O Claude não captura o terminal.
 - **PLOT (02):** salva o screenshot recebido como `02_chart.png`, **sem editar/anotar/re-renderizar**.
 - **A leitura vai 100% no TEXTO do post** (o screenshot não traz título-leitura do Claude). Invariante 4
   satisfeito pelo texto.
 - **GATEKEEPER (04):** reconciliação do gráfico = **conferência VISUAL** (imagem não parseável): o número do
   texto bate com o visível no gráfico e com `00_data.json`; confirma que é o **print real** (marca d'água,
   enquadramento correto: cabeçalho + gráfico, sem toolbar/sidebar), sem edição do Claude.
-- **Ângulo:** com 3 anos no gráfico, os posts tendem a **leituras de contexto de ciclo** (onde estamos na
-  faixa histórica), não micro-movimentos de 30D.
+- **Ângulo:** com o range longo (5Y) no gráfico, os posts tendem a **leituras de contexto de ciclo** (onde
+  estamos na faixa histórica), não micro-movimentos de 30D.
 
 ## Por quê
 
