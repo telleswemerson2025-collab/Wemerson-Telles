@@ -1,6 +1,6 @@
 # APPROVAL — Ciclo 2026-07-24-sopr-breakeven-cross-01
 
-STATUS: pending
+STATUS: approved
 
 <!-- GATE 2 — INVIOLÁVEL (invariante 7). Só o Mr. G altera STATUS: approved | revise | rejected. -->
 
@@ -31,4 +31,4 @@ _(278/280)_
 ## Decisão do Mr. G
 Edite o `STATUS:` no topo: `approved` | `revise` | `rejected`.
 
-**Nota (opcional):** _(Gate 2 aberto — aguardando decisão do Mr. G.)_
+**Nota (opcional):** Aprovado pelo Mr. G em 2026-07-24. Publicação manual na @VantageNodvt; Mr. G anexa o print (SOPR agregado, 90D) no X.
