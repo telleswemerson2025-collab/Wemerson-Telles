@@ -1,0 +1,29 @@
+{
+  "cycle_id": "2026-07-24-sopr-breakeven-cross-01",
+  "created_at": "2026-07-24T00:00:00+00:00",
+  "indicator": "SOPR",
+  "data_ref": "cycles/2026-07-24-sopr-breakeven-cross-01/00_data.json",
+  "headline_number": {
+    "value": 1.0004,
+    "unit": "ratio",
+    "label": "SOPR agregado (atual) — mas a manchete é a MUDANÇA de regime, não o valor"
+  },
+  "angle": "O regime de PREJUÍZO afrouxou: o SOPR agregado cruzou de volta o breakeven. Depois de semanas realizando perda (SOPR agregado abaixo de 1,0 por boa parte de mai-jul), o coorte saiu de 0,9876 (18/jul) e encostou em 1,0004 (23/jul) — cruzou pra cima do 1,0. O STH acompanhou (1,0017). Leitura honesta: o mercado voltou ao CUSTO-BASE/breakeven, NÃO ao lucro robusto — o estresse de realização de perda está cedendo. Sinal fresco (5 dias) e frágil (SOPR é ruidoso, pode chicotear). Nuance-chave: os LTHs NÃO cruzaram (SOPR-LTH ~0,84, ainda em perda) — a virada é do agregado/STH, não dos long-term holders.",
+  "why_now": "A narrativa de superfície (vídeo do Gui 24/07) é de 'azedou — sair ou dobrar'. O dado onchain de realização mostra uma divergência fina e interessante: enquanto a leitura é de azedume, o SOPR acabou de sair do prejuízo e tocou o breakeven. Não é contradizer — é dar a nuance que qualifica o momento: o estresse de curto prazo cedeu na margem. É um cruzamento de nível clássico (virada de regime), o tipo de evento que um analista salva.",
+  "target_reader": "analista que lê SOPR como termômetro de realização de lucro/prejuízo e usa o cruzamento do 1,0 como marco de regime",
+  "single_idea": true,
+  "risk_flags": [
+    "Invariante 5: NÃO prever preço nem dizer que o bear acabou / que virou pra alta. Descrever a MUDANÇA de regime (prejuízo -> breakeven) e a fragilidade (fresco, ruidoso). Disclaimer.",
+    "Manchete NÃO é o valor absoluto (1,0004 é indistinguível de 1,0). A manchete é a MUDANÇA: saiu do prejuízo, encostou no breakeven.",
+    "HONESTIDADE: deixar EXPLÍCITO que a virada é do AGREGADO e do STH, NÃO dos LTH (SOPR-LTH ~0,84 segue em perda). Evita confusão com a pauta anterior (post #2, SOPR-LTH em perda). Isso entra no corpo ou no reply como qualificador.",
+    "Uma ideia só: o cruzamento do breakeven pelo SOPR agregado. STH e LTH entram como CONTEXTO/qualificador, não como 2º e 3º insight.",
+    "SOPR é ruidoso (indicators.md): usar a leitura da janela, moldura de AFROUXAMENTO e não de reversão confirmada. Hedge de que pode voltar abaixo de 1,0.",
+    "RANGE DO PRINT = 90D (EXCEÇÃO deliberada à regra 5Y do data-sourcing.md): o evento é um cruzamento de 5 dias, invisível num gráfico de 5Y; o 90D torna o cruzamento do 1,0 legível no thumbnail. GATEKEEPER: range != 5Y é intencional e justificado para pauta de virada de regime de curto prazo."
+  ],
+  "gate1": {
+    "status": "approved",
+    "note": "Aprovado por Mr. G (24/07): cruzamento do 1,0 pelo SOPR agregado/STH como evento do dia; deixar EXPLÍCITO que a virada NÃO é dos LTH; range do print = 90D seguindo o padrão de screenshot real do terminal.",
+    "decided_by": "Mr. G",
+    "decided_at": "2026-07-24T00:00:00+00:00"
+  }
+}

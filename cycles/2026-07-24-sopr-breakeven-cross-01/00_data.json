@@ -1,0 +1,24 @@
+{
+  "cycle_id": "2026-07-24-sopr-breakeven-cross-01",
+  "indicator": "SOPR",
+  "source": {
+    "name": "VantageNode",
+    "url": "https://vantagenode.io/terminal#metric=2552c9f025&range=90D&sma=7",
+    "captured_by": "Mr. G / Claude no Chrome — leitura no terminal VantageNode",
+    "captured_at": "2026-07-24T00:00:00+00:00"
+  },
+  "as_of": "2026-07-23",
+  "unit": "ratio",
+  "latest_value": 1.0004,
+  "series": [
+    {
+      "t": "2026-07-18",
+      "v": 0.9876
+    },
+    {
+      "t": "2026-07-23",
+      "v": 1.0004
+    }
+  ],
+  "notes": "SOPR agregado (Spent Output Profit Ratio). CRUZAMENTO FRESCO do 1,0: 0,9876 (18/jul, regime de PREJUÍZO) -> 1,0004 (23/jul NOW, cruzou pra CIMA do breakeven). Nos últimos ~5 dias o coorte agregado saiu da realização de prejuízo e ENCOSTOU no breakeven (1,0004 é indistinguível de 1,0 pro leitor — a manchete é a MUDANÇA de regime, não o valor). CONTEXTO/CORTES: SOPR-STH = 1,0017 (23/jul, permalink #metric=04b7f85145) — acompanhou o agregado, saiu do vermelho (mai-jun-jul) pro verde. SOPR-LTH = ~0,84 SMA-7 (24/jul, permalink #metric=fb7651e934) — SEGUE ABAIXO de 1,0, LTHs AINDA em PREJUÍZO, NÃO cruzou: a virada de regime é do AGREGADO e do STH, NÃO dos LTH. BTC a $65.051 no ponto NOW (23/jul). SOPR é RUIDOSO (indicators.md) — cruzamento de 5 dias pode chicotear de volta; moldura = AFROUXAMENTO do regime de perda, NÃO reversão confirmada. RANGE do print: 90D (exceção justificada à regra 5Y — o cruzamento de 5 dias só é legível no zoom curto; ver 00_brief risk_flags). Permalink agregado #metric=2552c9f025."
+}

@@ -1,0 +1,37 @@
+{
+  "cycle_id": "2026-07-24-sopr-breakeven-cross-01",
+  "post": {
+    "text": "SOPR agregado cruzou de volta o breakeven: de 0,9876 (18/jul) a 1,0004 (23/jul). Depois de semanas no prejuízo, o mercado voltou ao custo-base, não ao lucro. A virada é do agregado, não dos LTH: os long-term holders seguem no vermelho. Estresse cedendo, não revertido.",
+    "char_count": 273
+  },
+  "reply": {
+    "text": "SOPR = preço de venda / preço de compra das moedas movidas. Abaixo de 1,0 = prejuízo; acima = lucro. O corte curto acompanhou (STH 1,0017); o longo, não. Cruzamento fresco e ruidoso, pode recuar. Não é previsão de preço. https://vantagenode.io/terminal#metric=2552c9f025",
+    "char_count": 278,
+    "link": "https://vantagenode.io/terminal#metric=2552c9f025"
+  },
+  "numbers": [
+    {
+      "value": 0.9876,
+      "unit": "ratio",
+      "where": "post",
+      "claim": "SOPR agregado em 0,9876 (18/jul) — abaixo de 1,0, regime de prejuízo"
+    },
+    {
+      "value": 1.0004,
+      "unit": "ratio",
+      "where": "post",
+      "claim": "SOPR agregado em 1,0004 (23/jul, NOW) — cruzou pra cima do breakeven"
+    },
+    {
+      "value": 1.0017,
+      "unit": "ratio",
+      "where": "reply",
+      "claim": "SOPR-STH em 1,0017 (23/jul) — acompanhou o agregado"
+    }
+  ],
+  "reading": "O SOPR agregado cruzou de volta o 1,0 (0,9876 em 18/jul -> 1,0004 em 23/jul): o coorte saiu do regime de realização de prejuízo e encostou no breakeven/custo-base — NÃO no lucro robusto (1,0004 hair acima de 1,0). O STH acompanhou (1,0017); os LTH NÃO (SOPR-LTH ~0,84, ainda em perda), então a virada é do agregado/STH, não dos long-term holders. Moldura de AFROUXAMENTO do estresse de realização, não de reversão confirmada — cruzamento fresco (5 dias) e ruidoso pode recuar. Descreve mudança de regime e trajetória, sem prever preço (invariante 5).",
+  "single_idea": true,
+  "link_in_reply_only": true,
+  "bookmark_test": "Sim — marca um cruzamento de nível (virada de regime prejuízo->breakeven) auditável, com a nuance honesta de que os LTH ainda não viraram. É o tipo de marco de regime que um analista salva pra acompanhar se confirma ou chicoteia.",
+  "no_hype_check": true
+}
