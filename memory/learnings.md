@@ -19,6 +19,12 @@ não apenas registrar métricas.
 
 -->
 
+## 2026-07-24 — ciclo 2026-07-21-mvrv-sth-resistance-01 (MVRV-STH resistência)
+- **Post:** preço encostando na Realized Price do STH — coorte de curto prazo perto do breakeven (zona de custo/oferta).
+- **Sinal (+48h/66h):** impressões 17 · **bookmarks n/d** (KPI inaudível no painel básico) · likes 0 · replies 1 (só a nossa/link) · reposts 0 · profile visits 1 · **detail expands 6** · engagements 9.
+- **Leitura:** ⚠️ **4ª medição, alcance segue caindo: 36 → 33 → 20 → 17 impressões.** A queda é monotônica e agora inequívoca — o gargalo é distribuição, não conteúdo. Micro-sinal positivo isolado: **6 detail expands em 17 impressões** (quem alcança, ABRE pra ler — a densidade analítica retém), mas n~17 = 1–6 eventos, hipótese não conclusão. **Buraco operacional:** o painel básico de Post Analytics **não expõe bookmarks** — nosso KPI real ficou n/d. Ação: passar a ler a contagem de bookmarks no **ícone do post** (fita), não só no painel.
+- **Ação:** (1) Consertar a captura do KPI — bookmarks pelo ícone do post em toda coleta. (2) Confirma (4ª vez) que o próximo passo é **reach/distribuição** (Tier A: replies em contas maiores, timing), não copy. Não otimizar texto com <~100 impressões/post. Hipótese a observar quando houver reach: posts de regime/coorte geram expands/retenção acima da média mesmo sem bookmark imediato (agora 5 e 6 expands nos dois últimos analíticos).
+
 ## 2026-07-23 — ciclo 2026-07-20-mvrv-cohort-01 (MVRV por coorte)
 - **Post:** MVRV agregado esconde a divisão — STH abaixo do custo, LTH em lucro (divergência de coorte).
 - **Sinal (+48h/60h):** impressões 20 · **bookmarks 0** (KPI) · likes 0 · replies 1 (só a nossa/link) · reposts 0. Reply teve 16 views.
