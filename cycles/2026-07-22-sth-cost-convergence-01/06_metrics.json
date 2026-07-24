@@ -13,7 +13,7 @@
     "replies_ours": 1,
     "replies_third_party": 0,
     "profile_visits": 0,
-    "bookmarks": "n/d",
+    "bookmarks": 0,
     "quotes": "n/d",
     "new_followers": "n/d",
     "non_follower_reach_pct": "n/d",
@@ -21,9 +21,9 @@
   },
   "kpi": {
     "primary": "bookmarks",
-    "value": "n/d",
-    "analyst_saved": null,
-    "note": "Bookmarks não exibidos no painel básico. Mr. G vai ler a contagem pelo ícone do post e trazer — atualizar este campo então."
+    "value": 0,
+    "analyst_saved": false,
+    "note": "Bookmarks = 0 (lido no ícone do post — o painel básico não expõe). KPI real fechado."
   },
   "learning": "5ª medição. Impressões 15 — a série de alcance segue caindo: 36 -> 33 -> 20 -> 17 -> 15. Cinco pontos, queda monotônica, sem uma única exceção. 0 like, 0 repost, 1 reply (nossa/link), 0 visita ao perfil, 3 detail_expands. Padrão dos analíticos mantém-se (quem alcança tende a abrir: expands 5,6,3 nos últimos três), mas o teto de ~15-17 impressões torna qualquer leitura de copy sem sentido. Conclusão inalterada e reforçada: o gargalo é DISTRIBUIÇÃO — a conta não tem alcance, e postar sozinho não o constrói. Bookmarks pelo ícone pendentes (KPI real)."
 }

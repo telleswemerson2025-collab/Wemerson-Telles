@@ -13,7 +13,7 @@
     "replies_ours": 1,
     "replies_third_party": 0,
     "profile_visits": 1,
-    "bookmarks": "n/d",
+    "bookmarks": 0,
     "quotes": "n/d",
     "new_followers": "n/d",
     "non_follower_reach_pct": "n/d",
@@ -21,9 +21,9 @@
   },
   "kpi": {
     "primary": "bookmarks",
-    "value": "n/d",
-    "analyst_saved": null,
-    "note": "Bookmarks NÃO aparecem no painel básico de Post Analytics — KPI real ficou inaudível nesta coleta. Ação futura: ler a contagem de bookmarks direto no ícone do post (fita/ribbon), não só no painel."
+    "value": 0,
+    "analyst_saved": false,
+    "note": "Bookmarks = 0 (lido no ícone do post e do reply — o painel básico não expõe). KPI real fechado. Fonte de captura confirmada: ícone/fita do post, não o painel de Post Analytics."
   },
   "learning": "4ª medição. Impressões 17 — a série de alcance CONTINUA caindo: 36 (16/07 MVRV) -> 33 (18/07 SOPR-LTH) -> 20 (20/07 coorte) -> 17 (21/07 MVRV-STH). 0 like, 0 repost, 1 reply (a nossa/link), 1 visita ao perfil. Micro-sinal POSITIVO isolado: 6 detail_expands em 17 impressões — quem viu ABRIU pra ler (a densidade analítica engaja os poucos que alcançam), mas n minúsculo não conclui. Bookmarks n/d: o painel básico não expõe o KPI real — precisamos ler a contagem no ícone do post. Sinal macro repetido e agora inequívoco em 4 pontos: o gargalo é DISTRIBUIÇÃO/ALCANCE e o alcance ENCOLHE post a post; conteúdo não é o problema. Postar diariamente sozinho não constrói reach. Próximo passo é fora da linha editorial (Tier A: interação/replies em contas maiores, timing), não ajustar copy."
 }
