@@ -1,0 +1,25 @@
+{
+  "cycle_id": "2026-07-24-sopr-breakeven-cross-01",
+  "chart_type": "vantagenode_original_screenshot",
+  "indicator": "SOPR",
+  "cohort": "agregado",
+  "permalink": "https://vantagenode.io/terminal#metric=2552c9f025",
+  "range": "90D (APR 27 -> NOW)",
+  "range_exception": "90D em vez do padrao 5Y (data-sourcing.md): o evento e um cruzamento do 1,0 de ~5 dias, ilegivel em 5Y; o zoom curto torna a virada de regime visivel no thumbnail. Excecao registrada no 00_brief.risk_flags e aprovada no Gate 1.",
+  "sma": 7,
+  "mscale": "linear",
+  "pscale": "log",
+  "as_of": "2026-07-23",
+  "captured_by": "Mr. G — screenshot do terminal VantageNode",
+  "watermark": "VantageNode (nativa)",
+  "claude_marks": false,
+  "framing_ok": true,
+  "visual_check": {
+    "done": true,
+    "enquadramento": "cabecalho (logo VantageNode + breadcrumb Studio/Spent Output Profit Ratio (SOPR)/SOPR) + grafico; SEM toolbar, SEM sidebar, SEM tooltip",
+    "observed": "Fill por regime em torno da linha 1,0 (breakeven ~ gridline $74K, eixo dir.): VERDE no inicio (APR 27 ~ MAY 14, SOPR>1,0) -> longa mancha VERMELHA (mid-MAY ate JUL, SOPR<1,0, realizacao de prejuizo) -> sliver VERDE fino no NOW (cruzou de volta >1,0). Preco BTC (linha cinza, eixo esq. log $58K-$84K).",
+    "reconciliacao": "Bate com 00_data.json: 0,9876 (18/jul, vermelho <1,0) -> 1,0004 (23/jul NOW, verde fino >1,0). O verde FINO no NOW confirma a leitura honesta 'encostou no breakeven, nao lucro robusto'. E o SOPR AGREGADO (permalink 2552c9f025), coorte correto.",
+    "conclusao": "OK — enquadramento, escalas, range 90D e o cruzamento do breakeven conferem visualmente"
+  },
+  "note": "Imagem VISTA pelo Claude e conferida, mas NAO salva como 02_chart.png (o anexo nao chegou como arquivo acessivel no ambiente; so o upload de 22/jul esta em disco). Mr. G anexa este mesmo print na publicacao manual, com o enquadramento acima."
+}

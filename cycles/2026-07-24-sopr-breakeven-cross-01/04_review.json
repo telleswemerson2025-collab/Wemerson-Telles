@@ -1,0 +1,93 @@
+{
+  "cycle_id": "2026-07-24-sopr-breakeven-cross-01",
+  "reviewed_at": "2026-07-24T00:00:00+00:00",
+  "verdict": "pass",
+  "invariants": [
+    {
+      "id": 1,
+      "name": "1 post = 1 ideia",
+      "status": "ok",
+      "note": "Uma tese: o SOPR AGREGADO cruzou de volta o breakeven (regime prejuizo -> custo-base). STH e LTH entram como qualificadores da MESMA ideia (quem virou e quem nao), nao como 2o/3o insight."
+    },
+    {
+      "id": 2,
+      "name": "KPI é bookmark",
+      "status": "ok",
+      "note": "Marca um cruzamento de nivel auditavel (virada de regime) com a ressalva honesta de que os LTH nao viraram. E o tipo de marco que um analista salva pra acompanhar se confirma ou chicoteia."
+    },
+    {
+      "id": 3,
+      "name": "Link fora do corpo",
+      "status": "ok",
+      "note": "post.text sem URL; permalink so no reply."
+    },
+    {
+      "id": 4,
+      "name": "Gráfico com leitura",
+      "status": "ok",
+      "note": "Leitura no texto (imagem = screenshot real). Grafico 90D mostra o regime: vermelho <1,0 em mai-jul -> sliver verde no NOW (cruzou). Verde fino coere com 'encostou no breakeven, nao lucro'."
+    },
+    {
+      "id": 5,
+      "name": "Responsabilidade (sem certeza de preço)",
+      "status": "ok",
+      "note": "Descreve MUDANCA de regime e trajetoria do SOPR, NAO direcao de preco. Hedge forte: 'nao ao lucro', 'nao revertido', 'fresco e ruidoso, pode recuar', 'Nao e previsao de preco'. Nenhum indicador Categoria B (SOPR e publico)."
+    },
+    {
+      "id": 6,
+      "name": "Número texto = gráfico = fonte",
+      "status": "ok",
+      "note": "0,9876 e 1,0004 (post) rastreaveis em 00_data.json (serie) e confirmados VISUALMENTE no screenshot (vermelho <1,0 -> verde >1,0 no NOW). STH 1,0017 (reply) em 00_data.notes (permalink 04b7f85145). Enquadramento correto (cabecalho+grafico, sem toolbar/sidebar, marca d'agua). OBS: 'LTH seguem no vermelho' e claim QUALITATIVO do SOPR-LTH (~0,84, permalink fb7651e934, confirmado no ciclo 18/07) — sustentado pela fonte, mas NAO e o grafico agregado publicado; e qualificador honesto, nao manchete."
+    },
+    {
+      "id": 7,
+      "name": "Gate humano inviolável",
+      "status": "ok",
+      "note": "APPROVAL.md em STATUS: pending. Sem auto-aprovacao."
+    },
+    {
+      "id": 8,
+      "name": "Sem emoji/hype/jargão",
+      "status": "ok",
+      "note": "Varredura limpa. 'breakeven', 'custo-base', 'regime', 'estresse', 'vermelho' (cor do regime de perda) sao termos analiticos. Zero emoji, zero hype, zero jargao de lua/pump. Voz de terminal."
+    },
+    {
+      "id": 9,
+      "name": "Indicador válido/definido",
+      "status": "ok",
+      "note": "SOPR (e cortes LTH/STH) tem entrada publica completa em knowledge/indicators.md. Sem pendencia de registro (diferente do NUPL). Categoria B respeitada."
+    }
+  ],
+  "numbers_reconciliation": [
+    {
+      "claim": "SOPR agregado 0,9876 (18/jul, regime de prejuizo)",
+      "in_text": 0.9876,
+      "in_chart": "visual OK — vermelho <1,0 (screenshot real)",
+      "in_source": 0.9876,
+      "matches": true
+    },
+    {
+      "claim": "SOPR agregado 1,0004 (23/jul NOW, cruzou o breakeven)",
+      "in_text": 1.0004,
+      "in_chart": "visual OK — sliver verde >1,0 no NOW (screenshot real)",
+      "in_source": 1.0004,
+      "matches": true
+    },
+    {
+      "claim": "SOPR-STH 1,0017 (reply)",
+      "in_text": 1.0017,
+      "in_chart": null,
+      "in_source": 1.0017,
+      "matches": true
+    },
+    {
+      "claim": "SOPR-LTH ainda <1,0 ('no vermelho') — qualitativo",
+      "in_text": "no vermelho (<1,0)",
+      "in_chart": null,
+      "in_source": 0.845,
+      "matches": true
+    }
+  ],
+  "blocks": [],
+  "notes": "PASS completo — 9 invariantes, numeros e conferencia VISUAL do screenshot 90D concluidos (imagem vista e conferida). Range 90D e excecao justificada a regra 5Y (cruzamento de 5 dias), registrada no brief e no 02_chart_meta.json. O PNG nao pode ser salvo como 02_chart.png (anexo inline nao acessivel como arquivo); Mr. G anexa este mesmo print na publicacao. Pronto para o Gate 2."
+}
