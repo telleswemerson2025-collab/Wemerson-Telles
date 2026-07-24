@@ -19,6 +19,12 @@ não apenas registrar métricas.
 
 -->
 
+## 2026-07-24 — ciclo 2026-07-22-sth-cost-convergence-01 (STH cost convergence)
+- **Post:** preço convergindo pra Realized Price do STH (~$69K) — coorte de curto prazo perto do custo-base.
+- **Sinal (+48h/52h):** impressões 15 · **bookmarks n/d** (pendente pelo ícone) · likes 0 · replies 1 (só a nossa/link) · reposts 0 · profile visits 0 · detail expands 3 · engagements 6.
+- **Leitura:** **5ª medição, alcance ainda caindo: 36 → 33 → 20 → 17 → 15.** Cinco pontos, queda monotônica sem exceção. O teto de ~15 impressões/post torna qualquer inferência sobre copy sem sentido estatístico. Padrão dos analíticos persiste (expands 5, 6, 3 nos três últimos — quem alcança abre), mas é sinal fraco em n minúsculo.
+- **Ação:** Nada muda no diagnóstico — **distribuição é o único gargalo que importa agora.** Prioridade absoluta = executar a frente Tier A (replies em contas de alcance, timing de publicação), não produzir mais posts no vácuo. Bookmarks pelo ícone a completar (KPI real).
+
 ## 2026-07-24 — ciclo 2026-07-21-mvrv-sth-resistance-01 (MVRV-STH resistência)
 - **Post:** preço encostando na Realized Price do STH — coorte de curto prazo perto do breakeven (zona de custo/oferta).
 - **Sinal (+48h/66h):** impressões 17 · **bookmarks n/d** (KPI inaudível no painel básico) · likes 0 · replies 1 (só a nossa/link) · reposts 0 · profile visits 1 · **detail expands 6** · engagements 9.

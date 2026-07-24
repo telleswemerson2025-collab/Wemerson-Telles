@@ -1,0 +1,29 @@
+{
+  "cycle_id": "2026-07-22-sth-cost-convergence-01",
+  "collected_at": "2026-07-24T18:15:00+00:00",
+  "window_hours": 52,
+  "source": "X Post Analytics (visão básica de post orgânico)",
+  "metrics": {
+    "impressions": 15,
+    "engagements": 6,
+    "detail_expands": 3,
+    "likes": 0,
+    "reposts": 0,
+    "replies": 1,
+    "replies_ours": 1,
+    "replies_third_party": 0,
+    "profile_visits": 0,
+    "bookmarks": "n/d",
+    "quotes": "n/d",
+    "new_followers": "n/d",
+    "non_follower_reach_pct": "n/d",
+    "link_clicks_reply": "n/d"
+  },
+  "kpi": {
+    "primary": "bookmarks",
+    "value": "n/d",
+    "analyst_saved": null,
+    "note": "Bookmarks não exibidos no painel básico. Mr. G vai ler a contagem pelo ícone do post e trazer — atualizar este campo então."
+  },
+  "learning": "5ª medição. Impressões 15 — a série de alcance segue caindo: 36 -> 33 -> 20 -> 17 -> 15. Cinco pontos, queda monotônica, sem uma única exceção. 0 like, 0 repost, 1 reply (nossa/link), 0 visita ao perfil, 3 detail_expands. Padrão dos analíticos mantém-se (quem alcança tende a abrir: expands 5,6,3 nos últimos três), mas o teto de ~15-17 impressões torna qualquer leitura de copy sem sentido. Conclusão inalterada e reforçada: o gargalo é DISTRIBUIÇÃO — a conta não tem alcance, e postar sozinho não o constrói. Bookmarks pelo ícone pendentes (KPI real)."
+}
