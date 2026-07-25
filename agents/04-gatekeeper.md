@@ -25,7 +25,9 @@ Ele **não aprova publicação** — só produz veredito e prepara o Gate 2 huma
    VantageNode (não parseável por máquina), o lado `in_chart` é **conferência visual**: o número no texto
    tem de bater com o número visível no gráfico da VantageNode e com `00_data.json`.
    Verificar também que a imagem é o **original da VantageNode, sem sinal/marcação do Claude** (regra do
-   Mr. G / `docs/data-sourcing.md`); imagem com marcação do Claude → **block**.
+   Mr. G / `docs/data-sourcing.md`); imagem com marcação do Claude → **block**. Conferir o **formato oficial
+   do print** (Gui 25/07/2026): breadcrumb do topo visível, gráfico completo no quadro, marca d'água
+   `VANTAGENODE`, sem toolbar de desenho nem aba lateral.
 7. **Gate humano intacto** — o pacote não contém nenhuma marca de auto-aprovação.
 8. **Voz** : sem emoji, hype, jargão de lua/pump, e **sem travessão (em dash `—`)** (decisão do Gui 25/07/2026, bloqueio). Conferir também que o texto está na voz humanizada/acessível de `knowledge/brand-voice.md` (explica o dado sem virar relatório frio), sem perder o rigor do número.
 9. **Indicador válido** — se proprietário e sem definição pública/auditável em `indicators.md` → block.

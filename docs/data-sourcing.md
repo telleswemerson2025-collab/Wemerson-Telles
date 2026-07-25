@@ -51,6 +51,22 @@ range, `as_of`, permalink, e "traga todos os gráficos relevantes").
 - **Entrega:** Mr. G anexa o screenshot **como ARQUIVO** (não como paste no chat) — só assim o Claude salva
   como `02_chart.png`. (Combinado 2026-07-23: não precisa ser lembrado disso a cada vez.)
 
+### FORMATO OFICIAL DO PRINT (confirmado, Gui 25/07/2026)
+
+> Padrão **validado no post v2** de 25/07 (ciclo `2026-07-25-weekend-liquidity-01`, aceito e publicado). Vale
+> para **todos os prints de gráfico dos posts daqui pra frente**. São 4 itens obrigatórios:
+>
+> 1. **Barra de navegação do topo VISÍVEL** (breadcrumb), ex.: `VantageNode / Studio / Spent Output Profit
+>    Ratio (SOPR) / SOPR`. É ela que dá contexto e prova de origem.
+> 2. **Gráfico completo ocupando o quadro** (a série cheia, sem cortar o gráfico).
+> 3. **Marca d'água `VANTAGENODE` visível no fundo** do gráfico.
+> 4. **SEM a toolbar de ferramentas de desenho** (nem os botões SMA / 7D / 30D / Y LOG / BTC LOG, nem a aba
+>    lateral de métricas). Só cabeçalho + gráfico.
+>
+> Resumo: é o **mesmo enquadramento da view em tela cheia** (cabeçalho + gráfico limpos), print real do
+> terminal, sem edição/anotação do Claude. O **range** segue a regra acima (5Y padrão, exceções justificadas
+> como 90D quando o evento é de curto prazo); este bloco fixa o **enquadramento**, não o range.
+
 ### Consequências no pipeline
 
 - **Captação:** o screenshot (5Y, enquadrado) vem do Claude Chrome / Mr. G. O Claude não captura o terminal.

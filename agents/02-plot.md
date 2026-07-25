@@ -28,8 +28,13 @@ Depois do Gate 1 aprovado (`00_brief.json` com `gate1.status: approved`).
 
 ## Regras
 - A imagem é o print real da VantageNode, não do Claude. **Nunca** editar/anotar/renderizar.
-- Enquadramento: **cabeçalho (logo + breadcrumb) + gráfico**, sem barra de ferramentas nem aba lateral;
-  marca d'água visível; range **5 anos (botão 5Y)**.
+- **FORMATO OFICIAL DO PRINT (Gui 25/07/2026, confirmado no post v2), 4 itens obrigatórios:**
+  1. barra de navegação do topo (breadcrumb) VISÍVEL, ex.: `VantageNode / Studio / Spent Output Profit Ratio (SOPR) / SOPR`;
+  2. gráfico completo ocupando o quadro;
+  3. marca d'água `VANTAGENODE` visível no fundo;
+  4. SEM a toolbar de ferramentas de desenho (nem aba lateral).
+  Ver a recipe completa em `docs/data-sourcing.md`. O range segue a regra de lá (5Y padrão, exceção justificada
+  como 90D em evento de curto prazo); este formato fixa o **enquadramento**.
 - Os renderizadores `lib/render_chart.py` / `render_cohort.py` são **uso interno/verificação apenas** —
   não produzem a imagem publicada.
 

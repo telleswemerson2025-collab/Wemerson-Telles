@@ -8,6 +8,12 @@ Editável pelo Mr. G.
 > cara do próprio terminal). Vale apenas para gráficos **internos/de apoio** feitos com `lib/render_*.py`,
 > que não vão ao post.
 
+> **FORMATO OFICIAL DO PRINT (Gui 25/07/2026, confirmado no post v2):** o print publicado tem 4 itens
+> obrigatórios: (1) barra de navegação do topo/breadcrumb VISÍVEL (ex.: `VantageNode / Studio / Spent Output
+> Profit Ratio (SOPR) / SOPR`); (2) gráfico completo ocupando o quadro; (3) marca d'água `VANTAGENODE` no
+> fundo; (4) SEM a toolbar de ferramentas de desenho (nem aba lateral). Definição canônica em
+> `docs/data-sourcing.md`.
+
 Objetivo (para os gráficos internos): legível, no espírito "terminal analítico".
 
 > **Nota:** os valores concretos abaixo (cores hex, fonte) são um ponto de partida. Mr. G ajusta
