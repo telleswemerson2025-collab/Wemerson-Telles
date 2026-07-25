@@ -1,22 +1,30 @@
 {
   "cycle_id": "2026-07-25-weekend-liquidity-01",
   "status": "pending_metrics",
+  "republished": true,
   "post": {
-    "title": "Tese do dia — Sábado / leitura de fim de semana (liquidez fina)",
+    "version": "v2-voz-humanizada (republicado)",
+    "title": "Tese do dia / Sábado, leitura de fim de semana (liquidez fina)",
     "account": "@VantageNodvt",
-    "published_at": "2026-07-25T14:53:00",
-    "published_at_note": "horário reportado pelo Mr. G (fuso local não confirmado)",
-    "post_url": "https://x.com/VantageNodvt/status/2081075287232548991",
-    "post_id": "2081075287232548991",
+    "published_at": "2026-07-25T18:56:00Z",
+    "published_at_note": "republicação do v2 registrada nesta sessão (~18:56 UTC). Horário exato do X a confirmar.",
+    "post_url": "pendente (aguardando URL/ID do post v2 republicado)",
+    "post_id": "pendente (aguardando ID do post v2 republicado)",
     "channel": "manual",
     "gate_gui": "aprovado",
+    "copy_ref": "cycles/2026-07-25-weekend-liquidity-01/03_copy_v2.json",
+    "review_ref": "cycles/2026-07-25-weekend-liquidity-01/04_review_v2.json",
+    "text": "Sábado, liquidez fina: poucos operando, a vela exagera. Não olha a vela, olha os holders. Mercado no zero a zero (SOPR 1,0004), quem comprou há pouco de leve no vermelho (MVRV-STH 0,954; NUPL-STH -0,032). https://vantagenode.io/terminal#metric=2552c9f025 Não é recomendação.",
+    "char_count_x": 248,
     "indicators": {
       "SOPR": 1.0004,
       "MVRV_STH": 0.954,
       "NUPL_STH": -0.032
     },
-    "format": "post único com gráfico SOPR (barra de navegação + sem toolbar) + link da fonte + 'Não é recomendação'",
-    "pipeline_note": "Ciclo publicado FORA do fluxo desta sessão (não passou pelo GATEKEEPER 04 aqui). Registrado retroativamente a pedido do Mr. G. O link no corpo do post está OK (o Gui aprovou link no corpo como regra permanente em 25/07/2026; invariante 3 atualizada). Observação remanescente, só a conferir no FEEDBACK, sem bloqueio: invariante 1, os 3 indicadores (SOPR/MVRV-STH/NUPL-STH) foram usados sob a tese única de liquidez fina de fim de semana."
+    "image": "gráfico SOPR limpo (print do terminal VantageNode) anexado no post",
+    "format": "post único, voz humanizada, SEM travessão, link da fonte NO CORPO (aprovado pelo Gui 25/07/2026), 'Não é recomendação'. GATEKEEPER 9/9 (04_review_v2.json). X-count 248.",
+    "history": "v1 (post_id 2081075287232548991, voz antiga) foi DELETADO pelo usuário e SUBSTITUÍDO por este v2 humanizado. O v1 não recebe mais métricas (post removido).",
+    "pipeline_note": "Republicação passou pelo VOICE + GATEKEEPER desta sessão com as regras novas do Gui (link no corpo OK, sem travessão, voz humanizada). Observação de forma (não bloqueio): ciclo ainda sem 00_data.json formal; os 3 valores estão em post.indicators e conferidos pelo Mr. G."
   },
   "collected_at": null,
   "window_hours": null,
@@ -41,8 +49,8 @@
     "primary": "bookmarks",
     "value": "pendente",
     "analyst_saved": null,
-    "note": "A medir em +48h (~27/07 14:53). Ler bookmarks no ÍCONE do post (o painel básico não expõe)."
+    "note": "A medir em +48h (~27/07 18:56 UTC). Ler bookmarks no ÍCONE do post (o painel básico não expõe)."
   },
-  "feedback_due_at": "2026-07-27T14:53:00",
-  "learning": "PENDENTE: métricas de alcance a coletar em +48h. Sem números de alcance inventados. No FEEDBACK, além do KPI, comparar as impressões com a série atual (36, 33, 20, 17, 15) pra ver se o formato 'tese do dia'/fim de semana muda o alcance, e observar (sem bloqueio) se a tese única segurou os 3 indicadores (invariante 1). Link no corpo deixou de ser problema (Gui aprovou em 25/07/2026)."
+  "feedback_due_at": "2026-07-27T18:56:00Z",
+  "learning": "PENDENTE: métricas de alcance a coletar em +48h (janela a partir da republicação v2, ~25/07 18:56 UTC). Sem números inventados. No FEEDBACK: (1) comparar impressões com a série atual (36, 33, 20, 17, 15) pra ver se o formato 'tese do dia' de fim de semana muda o alcance; (2) este é o PRIMEIRO post na VOZ NOVA (humanizada, link no corpo) e o primeiro com imagem SOPR limpa anexada, então serve de baseline pra avaliar se a mudança de voz/formato mexe no engajamento (com a ressalva de sempre: n minúsculo, reach é o gargalo); (3) observar, sem bloqueio, se a tese única segurou os 3 indicadores (invariante 1). Nota: v1 deletado, então não há comparação direta v1 vs v2 de métricas (o v1 não acumulou janela)."
 }
