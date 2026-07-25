@@ -16,7 +16,8 @@
       "required": ["text", "char_count"],
       "properties": {
         "text": { "type": "string", "maxLength": 280, "description": "Corpo do post. Pode conter link (invariante 3, decisão do Gui 25/07/2026). Sem travessão em dash (invariante 8)." },
-        "char_count": { "type": "integer", "maximum": 280 },
+        "char_count": { "type": "integer", "maximum": 280, "description": "Contagem crua de code points do texto (referência interna)." },
+        "char_count_x": { "type": "integer", "maximum": 280, "description": "Opcional. Contagem como o X conta: URLs valem 23 (t.co), independentemente do tamanho real. É esta que precisa caber em 280." },
         "link": { "type": "string", "description": "Link presente no corpo do post, se houver (permitido desde 25/07/2026). Ausente se o post não tiver link no corpo." }
       }
     },

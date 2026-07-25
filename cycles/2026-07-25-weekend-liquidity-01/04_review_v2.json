@@ -9,7 +9,7 @@
       "id": 1,
       "name": "1 post = 1 ideia",
       "status": "ok",
-      "note": "Uma tese única: em liquidez fina de fim de semana a vela engana, a leitura real está no custo dos holders (mercado no breakeven / STH quase no custo). Os 3 números servem a ESSA ideia (SOPR = agregado no zero a zero; MVRV-STH e NUPL-STH = mesmo sinal, STH quase no empate), não são 3 insights soltos."
+      "note": "Uma tese única: em liquidez fina de fim de semana a vela engana, a leitura real está no custo dos holders (mercado no breakeven / STH quase no custo). Os 3 números servem a ESSA ideia (SOPR = agregado no zero a zero; MVRV-STH e NUPL-STH = mesmo sinal, STH de leve no vermelho), não são 3 insights soltos."
     },
     {
       "id": 2,
@@ -33,7 +33,7 @@
       "id": 5,
       "name": "Responsabilidade (sem certeza de preço)",
       "status": "ok",
-      "note": "'a vela exagera/engana' fala de RUÍDO, não de direção de preço. 'quase no empate' descreve estado. 'Não é recomendação' explícito. Zero previsão (invariante 5)."
+      "note": "'a vela exagera/engana' fala de RUÍDO, não de direção de preço. 'de leve no vermelho' descreve estado. 'Não é recomendação' explícito. Zero previsão (invariante 5)."
     },
     {
       "id": 6,
@@ -51,7 +51,7 @@
       "id": 8,
       "name": "Voz: sem emoji/hype/jargão, SEM TRAVESSÃO, humanizada",
       "status": "ok",
-      "note": "Varredura: zero emoji, zero hype, zero jargão de lua/pump, ZERO travessão (em dash) verificado por script. Voz humanizada: traduz SOPR ('zero a zero'), MVRV-STH/NUPL-STH ('quem comprou há pouco quase no empate'), tom conversacional ('não olha a vela, olha os holders'), sem perder os números. É o showcase das 3 regras novas."
+      "note": "Varredura: zero emoji, zero hype, zero jargão de lua/pump, ZERO travessão (em dash) verificado por script. Voz humanizada: traduz SOPR ('zero a zero'), MVRV-STH/NUPL-STH ('quem comprou há pouco de leve no vermelho'), tom conversacional ('não olha a vela, olha os holders'), sem perder os números. É o showcase das 3 regras novas."
     },
     {
       "id": 9,
@@ -61,10 +61,28 @@
     }
   ],
   "numbers_reconciliation": [
-    { "claim": "SOPR 1,0004 (mercado no zero a zero)", "in_text": 1.0004, "in_chart": "visual OK (print SOPR)", "in_source": 1.0004, "matches": true },
-    { "claim": "MVRV-STH 0,954 (STH quase no custo)", "in_text": 0.954, "in_chart": null, "in_source": 0.954, "matches": true },
-    { "claim": "NUPL-STH -0,032 (STH de leve no vermelho)", "in_text": -0.032, "in_chart": null, "in_source": -0.032, "matches": true }
+    {
+      "claim": "SOPR 1,0004 (mercado no zero a zero)",
+      "in_text": 1.0004,
+      "in_chart": "visual OK (print SOPR)",
+      "in_source": 1.0004,
+      "matches": true
+    },
+    {
+      "claim": "MVRV-STH 0,954 (STH de leve no vermelho, abaixo do custo)",
+      "in_text": 0.954,
+      "in_chart": null,
+      "in_source": 0.954,
+      "matches": true
+    },
+    {
+      "claim": "NUPL-STH -0,032 (STH de leve no vermelho)",
+      "in_text": -0.032,
+      "in_chart": null,
+      "in_source": -0.032,
+      "matches": true
+    }
   ],
   "blocks": [],
-  "notes": "PASS (rascunho v2). Aplica as 3 regras novas do Gui sem violar nenhum invariante. Texto = 270 code points (X conta ~270 e ainda encurta a URL pra 23, folga grande). Observação de forma, não bloqueio: criar 00_data.json do ciclo antes de uma republicação formal. NADA publicado — aguarda revisão do Mr. G."
+  "notes": "PASS (rascunho v2). Aplica as 3 regras novas do Gui sem violar nenhum invariante. Texto = 274 code points; X-count = 248 (URL vale 23 no X), folga grande sob 280. Observação de forma, não bloqueio: criar 00_data.json do ciclo antes de uma republicação formal. NADA publicado, aguarda revisão do Mr. G."
 }
