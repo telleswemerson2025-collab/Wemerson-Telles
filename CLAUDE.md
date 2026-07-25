@@ -42,12 +42,12 @@ Fora desses 2 pontos, o pipeline roda sozinho.
 
 1. **1 post = 1 ideia.** Nunca empacotar dois insights no mesmo post.
 2. **KPI real é bookmark, não like.** Pergunta de teste: "um analista salvaria isto?"
-3. **Link nunca no corpo do post.** Sempre no primeiro reply.
+3. **Link no corpo do post é permitido.** Pode ir no corpo do post ou no primeiro reply, à escolha (decisão do Gui, 25/07/2026: ele gostou de ter o link do gráfico no corpo). Antes o link era restrito ao primeiro reply; essa restrição caiu.
 4. **Todo gráfico acompanha uma leitura.** Nunca publicar dado cru sem interpretação.
 5. **Contra-consenso é permitido, irresponsabilidade não.** Nunca afirmar certeza sobre preço futuro nem prometer retorno.
 6. **Número no texto = número no gráfico = número na fonte.** Qualquer divergência bloqueia o ciclo no GATEKEEPER.
 7. **Gate humano é inviolável.** Nada é publicado sem `STATUS: approved`. Nenhum agente marca aprovação em nome do humano.
-8. **Sem emoji, sem hype, sem jargão de lua/pump.** Voz de terminal analítico.
+8. **Sem emoji, sem hype, sem jargão de lua/pump. Sem travessão (em dash `—`).** Voz humanizada e acessível: próxima, conversacional, que explica o dado de um jeito que qualquer pessoa entenda, sem abrir mão da honestidade e do rigor do número (decisão do Gui, 25/07/2026, que substitui a antiga "voz de terminal frio"). Travessão proibido: trocar por vírgula, ponto, dois-pontos ou reescrever a frase. Detalhes em `knowledge/brand-voice.md`.
 9. **API do X é dependência frágil, não alicerce.** Tratar automação de publicação como substituível (ver episódio Kaito/jan-2026 em `knowledge/algorithm-x-2026.md`).
 
 ## Onde vive o quê

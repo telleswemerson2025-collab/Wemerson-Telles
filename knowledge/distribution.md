@@ -13,8 +13,12 @@ Estratégia de **alcance** da VantageNode-X no X. Editável pelo Mr. G (é markd
 > pode **rascunhar** replies (na nossa voz, sobre um post de terceiro), mas publicar exige o **mesmo tipo
 > de gate humano** dos posts (invariante 7 adaptado). Nenhum agente publica reply em nome do humano.
 
-Vale também tudo do arquivo-mãe: sem emoji/hype (inv. 8), **link nunca no corpo** (inv. 3), número =
-gráfico = fonte (inv. 6), sem previsão de preço (inv. 5), voz de terminal analítico.
+Vale também tudo do arquivo-mãe: sem emoji/hype e **sem travessão (em dash)** (inv. 8), número =
+gráfico = fonte (inv. 6), sem previsão de preço (inv. 5), **voz humanizada e acessível** (ver `brand-voice.md`).
+
+> **Nota sobre link (atualização de 25/07/2026):** no NOSSO post o link agora pode ir no corpo (inv. 3 mudou).
+> Mas em **reply na casa de terceiro** a regra é outra e continua valendo: **não** despejar link (é spam e
+> queima reputação). São coisas diferentes: link no nosso post = ok; link no reply a estranho = evitar.
 
 ---
 
@@ -52,7 +56,7 @@ gráfico = fonte (inv. 6), sem previsão de preço (inv. 5), voz de terminal ana
   saiu do prejuízo, mas os LTH não acompanharam". Complementa, não contradiz por esporte.
 - **Número com contexto** (nunca valor solto), com a mesma disciplina do post (inv. 4 e 6).
 - **Curto e denso.** Um reply é ainda mais implacável que um post — uma ideia, sem rodeio.
-- **Autossuficiente sem link.** O corpo do reply **não leva link** (inv. 3). Se a pessoa quiser a fonte,
+- **Autossuficiente sem link.** O corpo do reply a terceiro **não leva link** (norma anti-spam desta frente, não a inv. 3, que é só sobre o nosso próprio post). Se a pessoa quiser a fonte,
   ela pergunta ou visita o perfil — e é aí que o perfil (bio + posts fixados) faz o trabalho de conversão.
 - **Respeitoso e de nível.** Fala com quem lê como um par que entende, não como quem quer aparecer.
 - **Honesto quando o dado não confirma a tese do autor** — discordar com dado, com hedge (inv. 5), constrói

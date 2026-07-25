@@ -29,7 +29,7 @@ A VantageNode lê indicadores onchain e publica a **leitura**, não o dado cru �
 ## Como isso vira decisão nos agentes
 
 - **SCOUT** escolhe o ângulo que só um leitor-analista valorizaria — e recusa ângulos que só geram like.
-- **VOICE** escreve como terminal, não como influenciador.
+- **VOICE** escreve de forma humanizada e acessível (explica o dado pra qualquer pessoa entender), sem virar influenciador de hype e sem perder o rigor do número. Ver `knowledge/brand-voice.md` (decisão do Gui, 25/07/2026).
 - **GATEKEEPER** trata qualquer deslize de posicionamento (hype, número frouxo, previsão) como bloqueio, não como ajuste cosmético.
 
 ## A confirmar com o Mr. G

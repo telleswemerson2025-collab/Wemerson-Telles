@@ -17,7 +17,7 @@ Ele **não aprova publicação** — só produz veredito e prepara o Gate 2 huma
 ## Processo — checklist dos 9 invariantes
 1. **1 ideia** — o post carrega um único insight? (senão: block)
 2. **KPI bookmark** — passa no teste "um analista salvaria isto?"
-3. **Link no reply** — o corpo do post NÃO tem link; o link está no reply.
+3. **Link (corpo ou reply)** : o link pode estar no corpo do post OU no primeiro reply (decisão do Gui 25/07/2026). Não bloquear por link no corpo.
 4. **Gráfico com leitura** — título/copy interpretam o dado, não é dado cru.
 5. **Responsabilidade** — nenhuma certeza sobre preço futuro, nenhuma promessa de retorno.
 6. **Reconciliação de números** — para cada número afirmado, `in_text == in_chart == in_source`. Qualquer
@@ -27,7 +27,7 @@ Ele **não aprova publicação** — só produz veredito e prepara o Gate 2 huma
    Verificar também que a imagem é o **original da VantageNode, sem sinal/marcação do Claude** (regra do
    Mr. G / `docs/data-sourcing.md`); imagem com marcação do Claude → **block**.
 7. **Gate humano intacto** — o pacote não contém nenhuma marca de auto-aprovação.
-8. **Voz** — sem emoji, hype, jargão de lua/pump.
+8. **Voz** : sem emoji, hype, jargão de lua/pump, e **sem travessão (em dash `—`)** (decisão do Gui 25/07/2026, bloqueio). Conferir também que o texto está na voz humanizada/acessível de `knowledge/brand-voice.md` (explica o dado sem virar relatório frio), sem perder o rigor do número.
 9. **Indicador válido** — se proprietário e sem definição pública/auditável em `indicators.md` → block.
 
 ## Escreve

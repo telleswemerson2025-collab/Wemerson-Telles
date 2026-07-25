@@ -1,42 +1,67 @@
-# brand-voice.md — Voz de marca
+# brand-voice.md : Voz de marca
 
 Editável pelo Mr. G. Lido diretamente pelo VOICE (03) e cobrado pelo GATEKEEPER (04).
 
+> **Atualização (Gui, 25/07/2026), três decisões que valem daqui pra frente:**
+> 1. **Link no corpo do post é permitido** (antes era só no primeiro reply). Ver "Micro-regras de forma".
+> 2. **Travessão (em dash `—`) proibido** em qualquer texto. Trocar por vírgula, ponto, dois-pontos ou reescrever.
+> 3. **Voz mais humanizada e menos técnica.** Ver "A voz em uma imagem" e "Princípios", reescritos abaixo.
+
 ## A voz em uma imagem
 
-**Terminal analítico.** Frio, preciso, denso. O post parece a saída de um sistema que respeita a inteligência de quem lê — não um influenciador tentando animar a plateia.
+**Analista que explica pra um amigo.** Próxima, clara e conversacional, sem perder o rigor do número.
+A gente lê o dado onchain e conta o que ele quer dizer de um jeito que qualquer pessoa entenda, mesmo quem
+nunca ouviu falar de MVRV ou SOPR. Não é o influenciador tentando animar a plateia, nem o terminal frio que
+cospe sigla. É alguém que entende de dado e tem prazer em traduzir, com honestidade.
 
 ## Princípios
 
-1. **Afirmação antes de floreio.** Comece pelo fato/leitura, não pela introdução.
-2. **Número com contexto, sempre.** Um valor sozinho não diz nada; a leitura é o produto (invariante 4).
-3. **Densidade > volume.** Se dá para cortar uma palavra sem perder sentido, corte.
-4. **Incerteza é honesta, não covarde.** "sugere", "historicamente", "tende a" — nunca "vai" quando se fala de preço futuro (invariante 5).
-5. **Uma ideia por post** (invariante 1).
+1. **Fala como gente, não como planilha.** Frase que uma pessoa diria em voz alta. Se soou como relatório
+   de banco, reescreve mais simples.
+2. **Traduz o jargão na hora.** Pode usar o termo técnico (MVRV, SOPR, custo-base), mas explica em seguida
+   o que ele significa na prática. O leitor não precisa saber a sigla pra entender a leitura.
+3. **Número com contexto, sempre.** Um valor sozinho não diz nada. A leitura, o "e daí?", é o produto
+   (invariante 4).
+4. **Afirmação antes de floreio.** Começa pelo fato ou pela leitura, não por uma introdução longa.
+5. **Honestidade acima de esperteza.** "sugere", "costuma", "tende a", nunca "vai" quando o assunto é preço
+   futuro (invariante 5). Humanizar não é suavizar a verdade nem prometer nada.
+6. **Uma ideia por post** (invariante 1).
+7. **Densidade sem secura.** Corta a palavra que não faz falta, mas mantém o tom de conversa. Enxuto pode
+   ser caloroso.
 
-## Proibido (invariante 8 — bloqueio no GATEKEEPER)
+## Proibido (invariante 8, bloqueio no GATEKEEPER)
 
 - Emoji, de qualquer tipo.
 - Hype: "explodir", "bombar", "não vai acreditar", "insano".
 - Jargão de lua/pump: "to the moon", "wagmi", "pump", "LFG".
-- Exclamação em cadeia, CAPS para ênfase, thread-bait ("segue o fio 🧵").
-- Promessa/insinuação de retorno ou preço-alvo com ar de certeza.
+- Exclamação em cadeia, CAPS para ênfase, thread-bait ("segue o fio").
+- Promessa ou insinuação de retorno ou preço-alvo com ar de certeza.
+- **Travessão (em dash `—`).** Regra dura do Gui (25/07/2026). Trocar por vírgula, ponto, dois-pontos, ou
+  reescrever a frase. (O hífen normal `-` em palavras compostas continua ok; o proibido é o travessão longo.)
 
 ## Micro-regras de forma
 
-- **Link:** nunca no corpo do post; sempre no primeiro reply (invariante 3).
+- **Link:** **permitido no corpo do post** (decisão do Gui, 25/07/2026), ou no primeiro reply, à escolha.
+  Deixou de ser obrigatório mandar pro reply. Escolher onde o link lê melhor pra cada post.
+- **Pontuação:** sem travessão (ver Proibido). Preferir frases curtas a orações emendadas por travessão.
 - **Maiúsculas:** só nome próprio e siglas (MVRV, SOPR, BTC).
-- **Números:** use a mesma casa decimal do gráfico e da fonte (invariante 6).
-- **Sem hashtags** por padrão — só entram se o Mr. G definir uma tag de marca.
+- **Números:** usar a mesma casa decimal do gráfico e da fonte (invariante 6).
+- **Sem hashtags** por padrão. Só entram se o Mr. G definir uma tag de marca.
 
-## Antes → depois (calibragem)
+## Antes, depois (calibragem)
 
-- ❌ "MVRV tá VOANDO 🚀 melhor indicador pra saber o topo!!"
-  ✅ "MVRV em 2,4 — a mesma faixa que antecedeu as três últimas zonas de euforia. Não é sinal de topo; é sinal de que o risco assimétrico mudou de lado."
-- ❌ "Whales acumulando forte, bull chegando 🐳"
-  ✅ "Endereços acima de 1k BTC somaram X no mês. Acumulação não garante preço — muda quem está do outro lado do book."
+Os exemplos abaixo já seguem a voz humanizada e sem travessão.
+
+- ❌ "MVRV tá VOANDO melhor indicador pra saber o topo!!"
+  ✅ "MVRV chegou a 2,4. Traduzindo: o mercado, na média, está bem acima do preço que pagou pelas moedas.
+     Foi mais ou menos nessa faixa que começaram as três últimas ondas de euforia. Não quer dizer que é
+     topo, quer dizer que o risco ficou mais assimétrico."
+- ❌ "Whales acumulando forte, bull chegando"
+  ✅ "As carteiras com mais de 1.000 BTC somaram X moedas no mês. Acumular não garante preço, mas muda quem
+     está do outro lado da mesa. Vale de olho."
 
 ## A confirmar com o Mr. G
 
-- Existe assinatura/encerramento padrão dos posts? (ex.: nenhuma, por escolha)
-- Tratamento: primeira pessoa do plural ("lemos"), impessoal ("os dados mostram"), ou terminal puro (sem sujeito)?
+- Existe assinatura ou encerramento padrão dos posts? (ex.: nenhuma, por escolha)
+- Tratamento: primeira pessoa do plural ("a gente lê", "lemos"), impessoal ("os dados mostram"), ou uma
+  mistura conforme o post? (A voz humanizada tende à primeira pessoa próxima, a confirmar.)
