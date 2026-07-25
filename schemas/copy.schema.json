@@ -5,21 +5,25 @@
   "description": "Texto do post + primeiro reply. Link permitido no corpo do post ou no reply (invariante 3, decisão do Gui 25/07/2026). Voz humanizada e acessível, sem emoji/hype e sem travessão em dash (invariante 8).",
   "type": "object",
   "additionalProperties": false,
-  "required": ["cycle_id", "post", "reply", "numbers", "reading", "single_idea", "link_in_reply_only", "no_hype_check"],
+  "required": ["cycle_id", "post", "numbers", "reading", "single_idea", "no_hype_check"],
   "properties": {
     "cycle_id": { "type": "string" },
+    "version": { "type": "string", "description": "Opcional. Marca versões/rascunhos de reescrita (ex.: 'v2-voz-humanizada')." },
+    "note": { "type": "string", "description": "Opcional. Proveniência/observação livre (ex.: rascunho não publicado, motivo da reescrita)." },
     "post": {
       "type": "object",
       "additionalProperties": false,
       "required": ["text", "char_count"],
       "properties": {
         "text": { "type": "string", "maxLength": 280, "description": "Corpo do post. Pode conter link (invariante 3, decisão do Gui 25/07/2026). Sem travessão em dash (invariante 8)." },
-        "char_count": { "type": "integer", "maximum": 280 }
+        "char_count": { "type": "integer", "maximum": 280 },
+        "link": { "type": "string", "description": "Link presente no corpo do post, se houver (permitido desde 25/07/2026). Ausente se o post não tiver link no corpo." }
       }
     },
     "reply": {
       "type": "object",
       "additionalProperties": false,
+      "description": "Primeiro reply. OPCIONAL desde 25/07/2026: com link permitido no corpo, um post pode ir sozinho, sem reply. Se presente, exige text.",
       "required": ["text"],
       "properties": {
         "text": { "type": "string", "maxLength": 280 },

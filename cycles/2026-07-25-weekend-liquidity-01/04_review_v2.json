@@ -1,0 +1,70 @@
+{
+  "cycle_id": "2026-07-25-weekend-liquidity-01",
+  "version": "v2-voz-humanizada (rascunho, NAO publicado)",
+  "reviewed_at": "2026-07-25T00:00:00+00:00",
+  "verdict": "pass",
+  "rules_baseline": "Regras do Gui de 25/07/2026 aplicadas: link no corpo permitido (inv.3), sem travessão (inv.8), voz humanizada (inv.8/brand-voice).",
+  "invariants": [
+    {
+      "id": 1,
+      "name": "1 post = 1 ideia",
+      "status": "ok",
+      "note": "Uma tese única: em liquidez fina de fim de semana a vela engana, a leitura real está no custo dos holders (mercado no breakeven / STH quase no custo). Os 3 números servem a ESSA ideia (SOPR = agregado no zero a zero; MVRV-STH e NUPL-STH = mesmo sinal, STH quase no empate), não são 3 insights soltos."
+    },
+    {
+      "id": 2,
+      "name": "KPI é bookmark",
+      "status": "ok",
+      "note": "Leitura anti-armadilha de fim de semana (não confie na vela em liquidez fina, olhe o custo) com números pra checar. Ressalva de sempre: o gargalo é reach, não a copy."
+    },
+    {
+      "id": 3,
+      "name": "Link (corpo ou reply)",
+      "status": "ok",
+      "note": "Link no CORPO do post, agora PERMITIDO (decisão do Gui 25/07/2026). Não é mais violação. link_in_reply_only=false, coerente."
+    },
+    {
+      "id": 4,
+      "name": "Gráfico com leitura",
+      "status": "ok",
+      "note": "A leitura vai no texto (traduzida). Numa republicação, a imagem seria o mesmo print SOPR (90D/5Y) do terminal; reconciliação visual como nos outros ciclos de screenshot."
+    },
+    {
+      "id": 5,
+      "name": "Responsabilidade (sem certeza de preço)",
+      "status": "ok",
+      "note": "'a vela exagera/engana' fala de RUÍDO, não de direção de preço. 'quase no empate' descreve estado. 'Não é recomendação' explícito. Zero previsão (invariante 5)."
+    },
+    {
+      "id": 6,
+      "name": "Número texto = gráfico = fonte",
+      "status": "ok",
+      "note": "SOPR 1,0004 / MVRV-STH 0,954 / NUPL-STH -0,032 batem com os dados reais verificados pelo Mr. G (06_metrics.json > post.indicators). SOPR reconciliável no print; MVRV-STH e NUPL-STH são valores de sidebar (contexto qualitativo do coorte STH), não plotados no print SOPR. PENDÊNCIA DE FORMA (não bloqueia o texto): este ciclo não tem 00_data.json formal (foi publicado fora do fluxo); para uma republicação limpa, criar o 00_data.json com os 3 valores + proveniência."
+    },
+    {
+      "id": 7,
+      "name": "Gate humano inviolável",
+      "status": "ok",
+      "note": "Rascunho, NÃO publicado. Nenhuma auto-aprovação. Republicação (se houver) exige decisão do Mr. G/Gui."
+    },
+    {
+      "id": 8,
+      "name": "Voz: sem emoji/hype/jargão, SEM TRAVESSÃO, humanizada",
+      "status": "ok",
+      "note": "Varredura: zero emoji, zero hype, zero jargão de lua/pump, ZERO travessão (em dash) verificado por script. Voz humanizada: traduz SOPR ('zero a zero'), MVRV-STH/NUPL-STH ('quem comprou há pouco quase no empate'), tom conversacional ('não olha a vela, olha os holders'), sem perder os números. É o showcase das 3 regras novas."
+    },
+    {
+      "id": 9,
+      "name": "Indicador válido/definido",
+      "status": "ok",
+      "note": "SOPR, MVRV (coorte STH) e NUPL (coorte STH) têm entrada pública em knowledge/indicators.md. Nenhum Categoria B."
+    }
+  ],
+  "numbers_reconciliation": [
+    { "claim": "SOPR 1,0004 (mercado no zero a zero)", "in_text": 1.0004, "in_chart": "visual OK (print SOPR)", "in_source": 1.0004, "matches": true },
+    { "claim": "MVRV-STH 0,954 (STH quase no custo)", "in_text": 0.954, "in_chart": null, "in_source": 0.954, "matches": true },
+    { "claim": "NUPL-STH -0,032 (STH de leve no vermelho)", "in_text": -0.032, "in_chart": null, "in_source": -0.032, "matches": true }
+  ],
+  "blocks": [],
+  "notes": "PASS (rascunho v2). Aplica as 3 regras novas do Gui sem violar nenhum invariante. Texto = 270 code points (X conta ~270 e ainda encurta a URL pra 23, folga grande). Observação de forma, não bloqueio: criar 00_data.json do ciclo antes de uma republicação formal. NADA publicado — aguarda revisão do Mr. G."
+}

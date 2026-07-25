@@ -1,0 +1,35 @@
+{
+  "cycle_id": "2026-07-25-weekend-liquidity-01",
+  "version": "v2-voz-humanizada (rascunho, NAO publicado)",
+  "note": "Reescrita do post de sábado (que está no ar como v1, status 2081075287232548991) aplicando as 3 regras novas do Gui (25/07): voz humanizada, sem travessão, link no corpo permitido. Mesma tese, mesmos dados reais. Aguardando revisão do Mr. G antes de qualquer republicação.",
+  "post": {
+    "text": "Sábado, liquidez fina: poucos operando, a vela exagera. Não olha a vela, olha os holders. Mercado no zero a zero (SOPR 1,0004), quem comprou há pouco quase no empate (MVRV-STH 0,954; NUPL-STH -0,032). https://vantagenode.io/terminal#metric=2552c9f025 Não é recomendação.",
+    "char_count": 270,
+    "link": "https://vantagenode.io/terminal#metric=2552c9f025"
+  },
+  "numbers": [
+    {
+      "value": 1.0004,
+      "unit": "ratio",
+      "where": "post",
+      "claim": "SOPR 1,0004 = mercado 'no zero a zero' (as moedas que se movem estão saindo perto do preço de compra, breakeven)"
+    },
+    {
+      "value": 0.954,
+      "unit": "ratio",
+      "where": "post",
+      "claim": "MVRV-STH 0,954 = quem comprou há pouco (short-term holder) está, na média, um pouco abaixo do próprio custo (quase no empate, de leve no vermelho)"
+    },
+    {
+      "value": -0.032,
+      "unit": "ratio",
+      "where": "post",
+      "claim": "NUPL-STH -0,032 = lucro/prejuízo não realizado do STH levemente negativo (confirma o 'quase no empate')"
+    }
+  ],
+  "reading": "Tese: no fim de semana a liquidez é fina, então a vela de preço exagera o movimento e engana. A leitura de verdade está nos holders, não na vela: o mercado está no breakeven (SOPR 1,0004) e o coorte de curto prazo está quase no custo, de leve no vermelho (MVRV-STH 0,954; NUPL-STH -0,032). Voz humanizada: traduz SOPR como 'zero a zero' e MVRV-STH/NUPL-STH como 'quem comprou há pouco quase no empate', sem perder o número entre parênteses. Sem travessão, sem previsão de preço (invariante 5).",
+  "single_idea": true,
+  "link_in_reply_only": false,
+  "bookmark_test": "Sim (com ressalva de reach): dá ao leitor uma leitura anti-armadilha de fim de semana (não confie na vela em liquidez fina, olhe o custo dos holders), com os números pra checar. O valor está na tradução honesta, não em previsão.",
+  "no_hype_check": true
+}
