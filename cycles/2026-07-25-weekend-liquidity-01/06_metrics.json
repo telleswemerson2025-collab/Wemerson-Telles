@@ -1,0 +1,48 @@
+{
+  "cycle_id": "2026-07-25-weekend-liquidity-01",
+  "status": "pending_metrics",
+  "post": {
+    "title": "Tese do dia — Sábado / leitura de fim de semana (liquidez fina)",
+    "account": "@VantageNodvt",
+    "published_at": "2026-07-25T14:53:00",
+    "published_at_note": "horário reportado pelo Mr. G (fuso local não confirmado)",
+    "post_url": "https://x.com/VantageNodvt/status/2081075287232548991",
+    "post_id": "2081075287232548991",
+    "channel": "manual",
+    "gate_gui": "aprovado",
+    "indicators": {
+      "SOPR": 1.0004,
+      "MVRV_STH": 0.954,
+      "NUPL_STH": -0.032
+    },
+    "format": "post único com gráfico SOPR (barra de navegação + sem toolbar) + link da fonte + 'Não é recomendação'",
+    "pipeline_note": "Ciclo publicado FORA do fluxo desta sessão (não passou pelo GATEKEEPER 04 aqui). Registrado retroativamente a pedido do Mr. G. Observações a conferir no FEEDBACK: (a) invariante 3 — se o link ficou no CORPO do post (e não em reply), é desvio da regra 'link só no primeiro reply'; (b) invariante 1 — 3 indicadores (SOPR/MVRV-STH/NUPL-STH) sob a tese única de liquidez fina de fim de semana."
+  },
+  "collected_at": null,
+  "window_hours": null,
+  "source": "pendente (+48h)",
+  "metrics": {
+    "impressions": "pendente",
+    "engagements": "pendente",
+    "detail_expands": "pendente",
+    "likes": "pendente",
+    "reposts": "pendente",
+    "replies": "pendente",
+    "replies_ours": "pendente",
+    "replies_third_party": "pendente",
+    "profile_visits": "pendente",
+    "bookmarks": "pendente",
+    "quotes": "pendente",
+    "new_followers": "pendente",
+    "non_follower_reach_pct": "pendente",
+    "link_clicks": "pendente"
+  },
+  "kpi": {
+    "primary": "bookmarks",
+    "value": "pendente",
+    "analyst_saved": null,
+    "note": "A medir em +48h (~27/07 14:53). Ler bookmarks no ÍCONE do post (o painel básico não expõe)."
+  },
+  "feedback_due_at": "2026-07-27T14:53:00",
+  "learning": "PENDENTE — métricas de alcance a coletar em +48h. Sem números de alcance inventados. No FEEDBACK, além do KPI, verificar os dois pontos de invariante anotados em post.pipeline_note (link no corpo? uma ideia só?) e comparar as impressões com a série atual (36→33→20→17→15) pra ver se o formato 'tese do dia'/fim de semana muda o alcance."
+}
