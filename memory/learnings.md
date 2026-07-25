@@ -19,6 +19,13 @@ não apenas registrar métricas.
 
 -->
 
+## 2026-07-25 — MIGRAÇÃO DE CONTA (operacional, não é ciclo)
+- **O que mudou:** o Gui definiu a **conta oficial** da marca no X como **`@VantageNodeio`** (e-mail contato@vantagenode.io). A antiga **`@VantageNodvt`** era só de **teste** e deixou de ser a principal.
+- **Efeito no pipeline:** todo post/ciclo NOVO publica em `@VantageNodeio`. Handle oficial registrado em CLAUDE.md, positioning.md e distribution.md.
+- **Histórico preservado:** os ciclos já publicados na `@VantageNodvt` (16/07 a 25/07, incluindo o v2 weekend-liquidity) **ficam intactos** no repo como referência de teste. Não migrar nem apagar. Os `05_published.json`/`06_metrics.json` desses ciclos seguem apontando para as URLs reais em `x.com/VantageNodvt/...` (é onde os posts realmente estão).
+- **Consequência p/ métricas:** a série de alcance de teste (36, 33, 20, 17, 15) é da `@VantageNodvt`. A conta nova começa praticamente do zero de audiência: o gargalo de distribuição continua, e a frente Tier A passa a mirar em construir a `@VantageNodeio`.
+- **Triggers de FEEDBACK pendentes** (SOPR breakeven 24/07 e weekend v2 25/07) continuam apontando para os posts na `@VantageNodvt`, pois é onde esses posts específicos vivem. Correto manter.
+
 ## 2026-07-24 — ciclo 2026-07-22-sth-cost-convergence-01 (STH cost convergence)
 - **Post:** preço convergindo pra Realized Price do STH (~$69K) — coorte de curto prazo perto do custo-base.
 - **Sinal (+48h/52h):** impressões 15 · **bookmarks 0** (KPI, lido no ícone) · likes 0 · replies 1 (só a nossa/link) · reposts 0 · profile visits 0 · detail expands 3 · engagements 6.

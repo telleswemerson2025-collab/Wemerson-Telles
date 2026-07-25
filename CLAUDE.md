@@ -8,6 +8,8 @@ Pipeline "empresa de um + 6 agentes" para produzir conteúdo de indicadores onch
 
 Operador humano: Mr. G (Diretor Editorial). Ele intervém em 2 checkpoints (gates) e em mais nenhum outro ponto do ciclo.
 
+**Conta oficial no X:** `@VantageNodeio` (e-mail de contato: contato@vantagenode.io). Definida pelo Gui em 25/07/2026. Todo post/ciclo novo publica nesta conta. A antiga `@VantageNodvt` foi **conta de teste** e deixou de ser a principal; os ciclos já publicados nela ficam no repo como referência histórica de teste (não migrar nem apagar).
+
 ## Arquitetura
 
 File-driven: cada agente é um prompt (`agents/*.md`) + comando slash (`.claude/commands/`). O estado de cada post viaja como arquivos JSON e imagem dentro de `cycles/<id-do-ciclo>/`. Nada roda em servidor 24/7 — Claude Code orquestra tudo via scripts shell.

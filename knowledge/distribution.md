@@ -116,9 +116,10 @@ Cada reply publicado vira uma linha em `memory/distribution-log.md` (a criar no 
    Estar presente de forma consistente e útil > estar em todo lugar.
 3. **Timing.** Entrar **cedo** num post que está subindo (primeiros minutos/hora) coloca nossa leitura no
    topo dos replies, onde é vista. Reply tardio em post morto não alcança.
-4. **O perfil faz a conversão.** Antes de escalar replies, garantir que **bio + post fixado** deixem claro
-   em 1 segundo o que a VantageNode entrega (leitura onchain, terminal). O reply traz a visita; o perfil
-   decide o follow. _(Ação paralela: revisar bio/pinned — fora do escopo deste arquivo, mas pré-requisito.)_
+4. **O perfil faz a conversão.** O perfil oficial é **`@VantageNodeio`** (definido pelo Gui em 25/07/2026; a
+   antiga `@VantageNodvt` era teste). Antes de escalar replies, garantir que **bio + post fixado** desse perfil
+   deixem claro em 1 segundo o que a VantageNode entrega (leitura onchain, terminal). O reply traz a visita; o
+   perfil decide o follow. _(Ação paralela: revisar bio/pinned da `@VantageNodeio`, pré-requisito.)_
 5. **Consistência analítica.** Toda interação reforça a mesma identidade: dado + leitura, sem hype. É isso
    que faz alguém pensar "essa conta sempre traz um número que importa" e seguir.
 6. **Medir e podar.** A cada ~2 semanas, olhar o tracker: a conta-alvo que não gera visita/follow sai; a que

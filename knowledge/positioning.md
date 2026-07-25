@@ -32,8 +32,13 @@ A VantageNode lê indicadores onchain e publica a **leitura**, não o dado cru �
 - **VOICE** escreve de forma humanizada e acessível (explica o dado pra qualquer pessoa entender), sem virar influenciador de hype e sem perder o rigor do número. Ver `knowledge/brand-voice.md` (decisão do Gui, 25/07/2026).
 - **GATEKEEPER** trata qualquer deslize de posicionamento (hype, número frouxo, previsão) como bloqueio, não como ajuste cosmético.
 
+## Conta oficial
+
+- **Handle oficial no X:** `@VantageNodeio` (contato: contato@vantagenode.io). Definido pelo Gui em 25/07/2026.
+- A antiga `@VantageNodvt` era conta de **teste** e deixou de ser a principal (ver migração em `memory/learnings.md`).
+
 ## A confirmar com o Mr. G
 
-- Nome/handle oficial no X e bio.
+- Bio do perfil oficial (o que deixa claro em 1 segundo o que a VantageNode entrega).
 - Cadência-alvo (posts por semana) — impacta o SCOUT priorizar.
 - Lista curta de indicadores "assinatura" da marca (além dos proprietários bloqueados).
