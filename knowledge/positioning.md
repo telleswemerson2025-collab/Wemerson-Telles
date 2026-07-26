@@ -32,13 +32,15 @@ A VantageNode lê indicadores onchain e publica a **leitura**, não o dado cru �
 - **VOICE** escreve de forma humanizada e acessível (explica o dado pra qualquer pessoa entender), sem virar influenciador de hype e sem perder o rigor do número. Ver `knowledge/brand-voice.md` (decisão do Gui, 25/07/2026).
 - **GATEKEEPER** trata qualquer deslize de posicionamento (hype, número frouxo, previsão) como bloqueio, não como ajuste cosmético.
 
-## Conta oficial
+## Conta oficial (ao vivo)
 
 - **Handle oficial no X:** `@VantageNodeio` (contato: contato@vantagenode.io). Definido pelo Gui em 25/07/2026.
+- **Bio (aplicada):** "Inteligencia onchain de Bitcoin, direto da blockchain e sem tecniques. A gente le os holders, nao a vela. Nada aqui e recomendacao."
+- **Website:** vantagenode.io. **Avatar:** logo V. **Banner:** `assets/branding/x-header-vantagenodeio-1500x500.png`. Data de nascimento removida (conta de marca).
 - A antiga `@VantageNodvt` era conta de **teste** e deixou de ser a principal (ver migração em `memory/learnings.md`).
 
 ## A confirmar com o Mr. G
 
-- Bio do perfil oficial (o que deixa claro em 1 segundo o que a VantageNode entrega).
-- Cadência-alvo (posts por semana) — impacta o SCOUT priorizar.
+- Post fixado (pinned) do perfil oficial (pode ser o post de batismo).
+- Cadência-alvo (posts por semana), impacta o SCOUT priorizar.
 - Lista curta de indicadores "assinatura" da marca (além dos proprietários bloqueados).

@@ -19,6 +19,16 @@ não apenas registrar métricas.
 
 -->
 
+## 2026-07-26 — SETUP VISUAL DA @VantageNodeio CONCLUÍDO (ao vivo no X)
+- **Status:** ✅ tarefa "revisar bio + avatar da @VantageNodeio" **CONCLUÍDA**. Perfil oficial está ao vivo.
+- **Bio aplicada:** "Inteligencia onchain de Bitcoin, direto da blockchain e sem tecniques. A gente le os holders, nao a vela. Nada aqui e recomendacao." (nota: "A gente le os holders, nao a vela" ecoa a voz humanizada e o post de batismo; o disclaimer "Nada aqui e recomendacao" fixa a invariante 5 no perfil.)
+- **Website:** vantagenode.io (campo oficial preenchido).
+- **Data de nascimento:** REMOVIDA (conta de marca, sem data pessoal).
+- **Banner:** aplicado (`assets/branding/x-header-vantagenodeio-1500x500.png`, commit 0203f86).
+- **Avatar:** logo V (o emblema entregue).
+- **Efeito na distribuição:** o "perfil que converte a visita em follow" (ver `distribution.md` seção 4) agora está pronto. Pré-requisito da frente Tier A **destravado**. Pendência restante do perfil: post fixado (pinned) ainda não confirmado (opcional, pode ser o post de batismo).
+- **Caminho crítico que sobra:** os **2 @handles do Tier A** (dependem do Mr. G / Gui). Sem números aqui: métricas seguem pendentes.
+
 ## 2026-07-25 — BATISMO DA CONTA OFICIAL @VantageNodeio (primeiro post)
 - **O que aconteceu:** o post v2 "sábado, liquidez fina" (SOPR 1,0004 / MVRV-STH 0,954 / NUPL-STH -0,032) virou o **primeiro post da conta oficial `@VantageNodeio`** (post_id `2081163282233131517`, publicado 25/07 20:42 UTC). Mesmo conteúdo foi ao ar também na conta de teste `@VantageNodvt` (post_id `2081089146026647741`) = **cross-post idêntico**, mesmo GATEKEEPER 9/9.
 - **Distribuição extra:** o Mr. G compartilhou o post oficial no **WhatsApp** (primeiro empurrão de alcance fora do X).
