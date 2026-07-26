@@ -1,0 +1,18 @@
+{
+  "cycle_id": "2026-07-24-sopr-breakeven-cross-01",
+  "collected_at": "2026-07-26T22:13:56Z",
+  "window_hours": 56,
+  "metrics": {
+    "bookmarks": 0,
+    "likes": 0,
+    "replies": 1,
+    "reposts": 0,
+    "impressions": 24
+  },
+  "kpi": {
+    "primary": "bookmarks",
+    "value": 0,
+    "analyst_saved": false
+  },
+  "learning": "SOPR breakeven (@VantageNodvt teste, publicado 24/07 14:17). Reach 24 views no post (19 no reply com link); 0 bookmark (KPI), 0 like, 1 reply (a nossa/link), 0 repost. Bookmarks lidos como 0 na tela; painel de analytics inacessivel (conta dona logada so mostra popup de Views), entao impressions = views publicos. NOVIDADE na serie de teste: o reach NAO continuou caindo, bounce de 15 para 24 (serie: 36, 33, 20, 17, 15, 24). A queda monotonica que eu vinha registrando nao se sustentou; parece estabilizar na faixa ~15-24 views. n minusculo, entao e ruido, mas fica o registro de que o piso nao e zero. KPI bookmark segue 0."
+}

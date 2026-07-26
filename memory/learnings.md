@@ -19,6 +19,17 @@ não apenas registrar métricas.
 
 -->
 
+## 2026-07-26 — FEEDBACK (coleta de 4 posts): reach parou de cair, batismo oficial reagiu
+- **Coletado (views públicos; painel de analytics inacessível, então impressions = views; bookmarks lidos na tela):**
+  - NUPL (23/07, teste): 24 views, 1 like, 1 reply (nossa), 0 repost, **0 bookmark** (final, ~73h).
+  - SOPR breakeven (24/07, teste): 24 views, 0 like, 1 reply (nossa), 0 repost, **0 bookmark** (final, ~56h).
+  - Weekend v2 teste (25/07, @VantageNodvt): 15 views, 0 like, 0 reply, 0 repost, **0 bookmark** (parcial ~30h).
+  - Weekend v2 oficial (25/07, @VantageNodeio, BATISMO): 24 views, 2 likes, 0 reply, 0 repost, **0 bookmark** (parcial ~25h).
+- **Revisão de conclusão:** a "queda monotônica" que eu vinha registrando (36, 33, 20, 17, 15) **não se sustentou**. Com NUPL e SOPR breakeven em 24, a série vira 36, 33, 20, 17, 15, 24, 24: o reach **estabilizou na faixa ~15-24 views**, não continuou caindo. Piso não é zero. (n minúsculo: é tendência fraca, não lei.)
+- **Batismo da conta oficial reagiu bem (parcial):** a @VantageNodeio, começando do ZERO, já igualou/superou o reach da conta de teste (24 vs 15) e teve **2 likes, o maior engajamento de qualquer post da série**, provavelmente puxado pelo **compartilhamento no WhatsApp**. Primeiro sinal concreto de que distribuição fora do X (empurrão manual) move o ponteiro mais do que postar no vácuo.
+- **KPI real:** bookmark segue **0** em todos; o único bookmark de toda a história continua sendo o do 1º post (MVRV). Conteúdo não é o gargalo; alcance/distribuição é.
+- **Ação:** confirma a prioridade da frente Tier A (2 @handles) e o valor de empurrões de distribuição fora do X. Os posts de fim de semana têm leitura FINAL pendente no +48h (triggers de 27/07).
+
 ## 2026-07-25 — REVERSÃO DA INVARIANTE 3: link volta pro primeiro reply (decisão do Gui)
 - **O que mudou:** o Gui revisou e decidiu que o **link externo NÃO vai mais no corpo do post**. O corpo fica sem link; o link (ex.: `vantagenode.io/terminal`) vai no **primeiro reply**. Isso **reverte** a permissão de "link no corpo" registrada mais cedo no mesmo dia.
 - **Por quê:** link no corpo **derruba o alcance**. O algoritmo do X rebaixa posts que tiram o usuário da plataforma. Priorizar reach (que é o nosso gargalo) pesa mais do que a conveniência do link no corpo.

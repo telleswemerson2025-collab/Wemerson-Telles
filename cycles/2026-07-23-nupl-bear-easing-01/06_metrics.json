@@ -1,0 +1,18 @@
+{
+  "cycle_id": "2026-07-23-nupl-bear-easing-01",
+  "collected_at": "2026-07-26T22:13:56Z",
+  "window_hours": 73,
+  "metrics": {
+    "bookmarks": 0,
+    "likes": 1,
+    "replies": 1,
+    "reposts": 0,
+    "impressions": 24
+  },
+  "kpi": {
+    "primary": "bookmarks",
+    "value": 0,
+    "analyst_saved": false
+  },
+  "learning": "NUPL bear-easing (@VantageNodvt teste, publicado 23/07 21:02). Reach 24 views no post (17 no reply com link); 0 bookmark (KPI), 1 like no post e 1 like no reply, 1 reply (a nossa/link), 0 repost. Painel de analytics inacessivel; impressions = views publicos. Foi o 1o post com a IMAGEM = screenshot real de ~3 anos: reach 24 vs 15 do post anterior (leve bounce), mas n minusculo nao permite atribuir o ganho a mudanca de imagem. 0 bookmark mantem o KPI em ~0 (unico bookmark de toda a serie segue sendo o do 1o post MVRV). Confirma o padrao: distribuicao/reach e o gargalo, nao o conteudo."
+}

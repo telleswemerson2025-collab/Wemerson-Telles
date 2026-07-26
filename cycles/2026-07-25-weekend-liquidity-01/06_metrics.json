@@ -1,16 +1,17 @@
 {
   "cycle_id": "2026-07-25-weekend-liquidity-01",
-  "status": "pending_metrics",
+  "status": "interim_metrics",
   "republished": true,
   "cross_post": true,
   "official_account_debut": true,
-  "cross_post_note": "Mesmo conteúdo v2 (mesmo GATEKEEPER 9/9) publicado nas DUAS contas: `post` = cópia de teste na @VantageNodvt; `post_official` = BATISMO da conta OFICIAL @VantageNodeio. Métricas medidas separadamente nas duas (Decisão B: manter os dois, 25/07).",
+  "cross_post_note": "Mesmo conteúdo v2 (mesmo GATEKEEPER 9/9) publicado nas DUAS contas: `post` = cópia de teste na @VantageNodvt; `post_official` = BATISMO da conta OFICIAL @VantageNodeio. Métricas medidas separadamente (Decisão B: manter os dois, 25/07).",
+  "interim_note": "LEITURA PARCIAL coletada em 2026-07-26T22:13Z, ANTES do fim da janela de +48h (teste fecha 27/07, oficial 27/07 20:42). Os triggers de +48h seguem agendados para a leitura final. Painel de analytics inacessível; impressions = views públicos; campos sem valor na tela = n/d (não inventados).",
   "post": {
     "version": "v2-voz-humanizada (republicado)",
     "title": "Tese do dia / Sábado, leitura de fim de semana (liquidez fina)",
     "account": "@VantageNodvt",
-    "published_at": "2026-07-25T18:56:00Z",
-    "published_at_note": "republicação do v2 registrada nesta sessão (~18:56 UTC). Horário exato do X a confirmar.",
+    "published_at": "2026-07-25T15:48:00Z",
+    "published_at_note": "horário observado na timeline do X pelo Mr. G: 25/07 15:48 (corrige a aproximação anterior de 18:56).",
     "post_url": "https://x.com/VantageNodvt/status/2081089146026647741",
     "post_id": "2081089146026647741",
     "channel": "manual",
@@ -19,15 +20,20 @@
     "review_ref": "cycles/2026-07-25-weekend-liquidity-01/04_review_v2.json",
     "text": "Sábado, liquidez fina: poucos operando, a vela exagera. Não olha a vela, olha os holders. Mercado no zero a zero (SOPR 1,0004), quem comprou há pouco de leve no vermelho (MVRV-STH 0,954; NUPL-STH -0,032). https://vantagenode.io/terminal#metric=2552c9f025 Não é recomendação.",
     "char_count_x": 248,
-    "indicators": {
-      "SOPR": 1.0004,
-      "MVRV_STH": 0.954,
-      "NUPL_STH": -0.032
-    },
+    "indicators": { "SOPR": 1.0004, "MVRV_STH": 0.954, "NUPL_STH": -0.032 },
     "image": "gráfico SOPR limpo (print do terminal VantageNode) anexado no post",
-    "format": "post único, voz humanizada, SEM travessão, link da fonte NO CORPO (aprovado pelo Gui 25/07/2026), 'Não é recomendação'. GATEKEEPER 9/9 (04_review_v2.json). X-count 248.",
-    "history": "v1 (post_id 2081075287232548991, voz antiga) foi DELETADO pelo usuário e SUBSTITUÍDO por este v2 humanizado. O v1 não recebe mais métricas (post removido).",
-    "pipeline_note": "Republicação passou pelo VOICE + GATEKEEPER desta sessão com as regras novas do Gui (link no corpo OK, sem travessão, voz humanizada). Observação de forma (não bloqueio): ciclo ainda sem 00_data.json formal; os 3 valores estão em post.indicators e conferidos pelo Mr. G. NOTA: este post (@VantageNodvt) é agora a CÓPIA DE TESTE do cross-post; o post oficial está em post_official."
+    "format": "post único, voz humanizada, SEM travessão, link da fonte NO CORPO, 'Não é recomendação'. GATEKEEPER 9/9. X-count 248.",
+    "history": "v1 (post_id 2081075287232548991, voz antiga) DELETADO e substituído por este v2. NOTA: link no corpo era permitido em 25/07; regra revertida no mesmo dia (link volta pro primeiro reply). Este post fica como está (X não edita corpo).",
+    "metrics_interim": {
+      "impressions": 15,
+      "likes": 0,
+      "replies": 0,
+      "reposts": 0,
+      "bookmarks": 0,
+      "note": "leitura ~30h (parcial). 'post único, link no corpo, sem reply'. engagements/detail_expands/profile_visits/new_followers/link_clicks = n/d (painel inacessível)."
+    },
+    "kpi_interim": { "primary": "bookmarks", "value": 0, "analyst_saved": false },
+    "feedback_due_at": "2026-07-27T18:56:00Z"
   },
   "post_official": {
     "role": "BATISMO da conta oficial @VantageNodeio (primeiro post da marca na conta oficial)",
@@ -38,57 +44,20 @@
     "post_id": "2081163282233131517",
     "channel": "manual",
     "gate_gui": "aprovado",
-    "content_note": "MESMO conteúdo do post de teste (mesmo texto, mesma imagem SOPR limpa, link no corpo, 'Não é recomendação'), mesmo GATEKEEPER 9/9 (04_review_v2.json). Cross-post idêntico.",
+    "content_note": "MESMO conteúdo do post de teste (mesmo texto, imagem SOPR limpa, link no corpo, 'Não é recomendação'), mesmo GATEKEEPER 9/9. Cross-post idêntico.",
     "off_x_distribution": "Post oficial compartilhado pelo Mr. G no WhatsApp (canal de distribuição fora do X).",
-    "metrics": {
-      "impressions": "pendente",
-      "engagements": "pendente",
-      "detail_expands": "pendente",
-      "likes": "pendente",
-      "reposts": "pendente",
-      "replies": "pendente",
-      "replies_ours": "pendente",
-      "replies_third_party": "pendente",
-      "profile_visits": "pendente",
-      "bookmarks": "pendente",
-      "quotes": "pendente",
-      "new_followers": "pendente",
-      "non_follower_reach_pct": "pendente",
-      "link_clicks": "pendente"
+    "metrics_interim": {
+      "impressions": 24,
+      "likes": 2,
+      "replies": 0,
+      "reposts": 0,
+      "bookmarks": 0,
+      "note": "leitura ~25h (parcial). 'post único, link no corpo, sem reply'. 2 likes = maior engajamento de qualquer post até agora, mas n minúsculo e provável efeito do compartilhamento no WhatsApp. Demais campos = n/d (painel inacessível)."
     },
-    "kpi": {
-      "primary": "bookmarks",
-      "value": "pendente",
-      "analyst_saved": null,
-      "note": "A medir em +48h (27/07 20:42 UTC). Ler bookmarks no ÍCONE do post (o painel básico não expõe)."
-    },
+    "kpi_interim": { "primary": "bookmarks", "value": 0, "analyst_saved": false },
     "feedback_due_at": "2026-07-27T20:42:00Z"
   },
-  "collected_at": null,
-  "window_hours": null,
-  "source": "pendente (+48h)",
-  "metrics": {
-    "impressions": "pendente",
-    "engagements": "pendente",
-    "detail_expands": "pendente",
-    "likes": "pendente",
-    "reposts": "pendente",
-    "replies": "pendente",
-    "replies_ours": "pendente",
-    "replies_third_party": "pendente",
-    "profile_visits": "pendente",
-    "bookmarks": "pendente",
-    "quotes": "pendente",
-    "new_followers": "pendente",
-    "non_follower_reach_pct": "pendente",
-    "link_clicks": "pendente"
-  },
-  "kpi": {
-    "primary": "bookmarks",
-    "value": "pendente",
-    "analyst_saved": null,
-    "note": "A medir em +48h (~27/07 18:56 UTC). Ler bookmarks no ÍCONE do post (o painel básico não expõe)."
-  },
-  "feedback_due_at": "2026-07-27T18:56:00Z",
-  "learning": "PENDENTE (duas janelas +48h, ambas sem números até coleta): TESTE @VantageNodvt fecha ~27/07 18:56 UTC; OFICIAL @VantageNodeio fecha 27/07 20:42 UTC. Sem números inventados. No FEEDBACK: (1) o post OFICIAL é o BATISMO da @VantageNodeio: alcance da conta oficial COMEÇA DO ZERO (a série 36,33,20,17,15 é da conta de teste; não dá pra comparar direto). (2) cross-post do MESMO conteúdo nas duas contas = experimento natural: mesma copy/imagem, audiências diferentes; comparar reach/engajamento entre teste e oficial. (3) houve distribuição fora do X (WhatsApp) do post oficial, o que pode inflar as primeiras impressões da oficial: considerar isso ao ler o reach inicial. (4) primeiro post na VOZ NOVA (humanizada, link no corpo) e primeiro com imagem SOPR limpa. Ressalva de sempre: n minúsculo, distribuição é o gargalo."
+  "collected_at": "2026-07-26T22:13:56Z",
+  "collected_at_note": "leitura PARCIAL/interina (antes do +48h). Final vem nos triggers de 27/07.",
+  "learning": "LEITURA PARCIAL (~25-30h; final no +48h de 27/07). TESTE @VantageNodvt: 15 views, 0 like, 0 reply, 0 repost, 0 bookmark. OFICIAL @VantageNodeio (batismo): 24 views, 2 likes, 0 reply, 0 repost, 0 bookmark. Achados: (1) o post OFICIAL (batismo, conta do ZERO) já bateu o reach da conta de teste (24 vs 15) e teve 2 likes, o maior engajamento de qualquer post da série, provavelmente puxado pelo compartilhamento no WhatsApp (distribuição fora do X funcionou como empurrão inicial). (2) bookmark segue 0 nas duas (KPI real intacto em ~0). (3) mesmo conteúdo, contas diferentes: a oficial performou melhor, mas n minúsculo + WhatsApp confundem a leitura. Aguardar o +48h final antes de concluir. Nada inventado."
 }
