@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" width="1500" height="500" role="img" aria-label="VantageNode X header">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0E1318"/>
+      <stop offset="1" stop-color="#06090C"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F7F3EA"/>
+      <stop offset="1" stop-color="#E7E0D2"/>
+    </linearGradient>
+    <radialGradient id="vignette" cx="0.5" cy="0.42" r="0.75">
+      <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.55"/>
+    </radialGradient>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#8FA0B4" fill-opacity="0.05"/>
+    </pattern>
+  </defs>
+
+  <!-- fundo grafite -->
+  <rect width="1500" height="500" fill="url(#bg)"/>
+  <rect width="1500" height="500" fill="url(#dots)"/>
+  <rect width="1500" height="500" fill="url(#vignette)"/>
+
+  <!-- emblema V (Didone serif, vetor) centralizado -->
+  <g transform="translate(605,27) scale(1.13)" fill="url(#ink)">
+    <path d="M64,80 L92,80 L128,150 L176,80 L192,80 L128,184 Z"/>
+    <rect x="56" y="77.8" width="44" height="4.6" rx="2.3"/>
+    <rect x="168" y="77.8" width="32" height="4.6" rx="2.3"/>
+  </g>
+
+  <!-- tagline -->
+  <text x="750" y="302" text-anchor="middle"
+        font-family="Liberation Sans, DejaVu Sans, Arial, sans-serif"
+        font-size="31" letter-spacing="7" fill="#F4F0E7">ONCHAIN INTELLIGENCE TERMINAL</text>
+
+  <!-- divisor hairline -->
+  <line x1="642" y1="330" x2="858" y2="330" stroke="#2E3640" stroke-width="1"/>
+
+  <!-- site -->
+  <text x="750" y="366" text-anchor="middle"
+        font-family="DejaVu Sans Mono, monospace"
+        font-size="21" letter-spacing="3" fill="#8B94A1">vantagenode.io</text>
+</svg>
