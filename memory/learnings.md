@@ -19,6 +19,13 @@ não apenas registrar métricas.
 
 -->
 
+## 2026-07-25 — BATISMO DA CONTA OFICIAL @VantageNodeio (primeiro post)
+- **O que aconteceu:** o post v2 "sábado, liquidez fina" (SOPR 1,0004 / MVRV-STH 0,954 / NUPL-STH -0,032) virou o **primeiro post da conta oficial `@VantageNodeio`** (post_id `2081163282233131517`, publicado 25/07 20:42 UTC). Mesmo conteúdo foi ao ar também na conta de teste `@VantageNodvt` (post_id `2081089146026647741`) = **cross-post idêntico**, mesmo GATEKEEPER 9/9.
+- **Distribuição extra:** o Mr. G compartilhou o post oficial no **WhatsApp** (primeiro empurrão de alcance fora do X).
+- **Baseline nova:** o alcance da `@VantageNodeio` **começa do zero**. A série histórica (36, 33, 20, 17, 15) é da conta de teste e **não** serve de comparação direta.
+- **Experimento natural:** mesma copy/imagem em duas contas com audiências diferentes. Quando as métricas chegarem (duas janelas +48h: teste 27/07 18:56 UTC, oficial 27/07 20:42 UTC), dá pra comparar reach/engajamento entre elas. Ressalva: o compartilhamento no WhatsApp pode inflar as primeiras impressões da oficial, considerar isso na leitura.
+- **Ação:** a partir daqui, todo ciclo novo publica na `@VantageNodeio`; a frente Tier A passa a construir a audiência dela. Métricas: **pendentes** até o Mr. G coletar (nada inventado).
+
 ## 2026-07-25 — MIGRAÇÃO DE CONTA (operacional, não é ciclo)
 - **O que mudou:** o Gui definiu a **conta oficial** da marca no X como **`@VantageNodeio`** (e-mail contato@vantagenode.io). A antiga **`@VantageNodvt`** era só de **teste** e deixou de ser a principal.
 - **Efeito no pipeline:** todo post/ciclo NOVO publica em `@VantageNodeio`. Handle oficial registrado em CLAUDE.md, positioning.md e distribution.md.

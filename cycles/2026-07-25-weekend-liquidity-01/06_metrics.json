@@ -2,6 +2,9 @@
   "cycle_id": "2026-07-25-weekend-liquidity-01",
   "status": "pending_metrics",
   "republished": true,
+  "cross_post": true,
+  "official_account_debut": true,
+  "cross_post_note": "Mesmo conteúdo v2 (mesmo GATEKEEPER 9/9) publicado nas DUAS contas: `post` = cópia de teste na @VantageNodvt; `post_official` = BATISMO da conta OFICIAL @VantageNodeio. Métricas medidas separadamente nas duas (Decisão B: manter os dois, 25/07).",
   "post": {
     "version": "v2-voz-humanizada (republicado)",
     "title": "Tese do dia / Sábado, leitura de fim de semana (liquidez fina)",
@@ -24,7 +27,42 @@
     "image": "gráfico SOPR limpo (print do terminal VantageNode) anexado no post",
     "format": "post único, voz humanizada, SEM travessão, link da fonte NO CORPO (aprovado pelo Gui 25/07/2026), 'Não é recomendação'. GATEKEEPER 9/9 (04_review_v2.json). X-count 248.",
     "history": "v1 (post_id 2081075287232548991, voz antiga) foi DELETADO pelo usuário e SUBSTITUÍDO por este v2 humanizado. O v1 não recebe mais métricas (post removido).",
-    "pipeline_note": "Republicação passou pelo VOICE + GATEKEEPER desta sessão com as regras novas do Gui (link no corpo OK, sem travessão, voz humanizada). Observação de forma (não bloqueio): ciclo ainda sem 00_data.json formal; os 3 valores estão em post.indicators e conferidos pelo Mr. G."
+    "pipeline_note": "Republicação passou pelo VOICE + GATEKEEPER desta sessão com as regras novas do Gui (link no corpo OK, sem travessão, voz humanizada). Observação de forma (não bloqueio): ciclo ainda sem 00_data.json formal; os 3 valores estão em post.indicators e conferidos pelo Mr. G. NOTA: este post (@VantageNodvt) é agora a CÓPIA DE TESTE do cross-post; o post oficial está em post_official."
+  },
+  "post_official": {
+    "role": "BATISMO da conta oficial @VantageNodeio (primeiro post da marca na conta oficial)",
+    "account": "@VantageNodeio",
+    "published_at": "2026-07-25T20:42:00Z",
+    "published_at_note": "horário mostrado no X: 25/07/2026 20:42 (8:42 PM), confirmado pelo Mr. G.",
+    "post_url": "https://x.com/VantageNodeio/status/2081163282233131517",
+    "post_id": "2081163282233131517",
+    "channel": "manual",
+    "gate_gui": "aprovado",
+    "content_note": "MESMO conteúdo do post de teste (mesmo texto, mesma imagem SOPR limpa, link no corpo, 'Não é recomendação'), mesmo GATEKEEPER 9/9 (04_review_v2.json). Cross-post idêntico.",
+    "off_x_distribution": "Post oficial compartilhado pelo Mr. G no WhatsApp (canal de distribuição fora do X).",
+    "metrics": {
+      "impressions": "pendente",
+      "engagements": "pendente",
+      "detail_expands": "pendente",
+      "likes": "pendente",
+      "reposts": "pendente",
+      "replies": "pendente",
+      "replies_ours": "pendente",
+      "replies_third_party": "pendente",
+      "profile_visits": "pendente",
+      "bookmarks": "pendente",
+      "quotes": "pendente",
+      "new_followers": "pendente",
+      "non_follower_reach_pct": "pendente",
+      "link_clicks": "pendente"
+    },
+    "kpi": {
+      "primary": "bookmarks",
+      "value": "pendente",
+      "analyst_saved": null,
+      "note": "A medir em +48h (27/07 20:42 UTC). Ler bookmarks no ÍCONE do post (o painel básico não expõe)."
+    },
+    "feedback_due_at": "2026-07-27T20:42:00Z"
   },
   "collected_at": null,
   "window_hours": null,
@@ -52,5 +90,5 @@
     "note": "A medir em +48h (~27/07 18:56 UTC). Ler bookmarks no ÍCONE do post (o painel básico não expõe)."
   },
   "feedback_due_at": "2026-07-27T18:56:00Z",
-  "learning": "PENDENTE: métricas de alcance a coletar em +48h (janela a partir da republicação v2, ~25/07 18:56 UTC). Sem números inventados. No FEEDBACK: (1) comparar impressões com a série atual (36, 33, 20, 17, 15) pra ver se o formato 'tese do dia' de fim de semana muda o alcance; (2) este é o PRIMEIRO post na VOZ NOVA (humanizada, link no corpo) e o primeiro com imagem SOPR limpa anexada, então serve de baseline pra avaliar se a mudança de voz/formato mexe no engajamento (com a ressalva de sempre: n minúsculo, reach é o gargalo); (3) observar, sem bloqueio, se a tese única segurou os 3 indicadores (invariante 1). Nota: v1 deletado, então não há comparação direta v1 vs v2 de métricas (o v1 não acumulou janela)."
+  "learning": "PENDENTE (duas janelas +48h, ambas sem números até coleta): TESTE @VantageNodvt fecha ~27/07 18:56 UTC; OFICIAL @VantageNodeio fecha 27/07 20:42 UTC. Sem números inventados. No FEEDBACK: (1) o post OFICIAL é o BATISMO da @VantageNodeio: alcance da conta oficial COMEÇA DO ZERO (a série 36,33,20,17,15 é da conta de teste; não dá pra comparar direto). (2) cross-post do MESMO conteúdo nas duas contas = experimento natural: mesma copy/imagem, audiências diferentes; comparar reach/engajamento entre teste e oficial. (3) houve distribuição fora do X (WhatsApp) do post oficial, o que pode inflar as primeiras impressões da oficial: considerar isso ao ler o reach inicial. (4) primeiro post na VOZ NOVA (humanizada, link no corpo) e primeiro com imagem SOPR limpa. Ressalva de sempre: n minúsculo, distribuição é o gargalo."
 }
