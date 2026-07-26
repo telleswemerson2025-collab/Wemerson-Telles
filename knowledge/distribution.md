@@ -16,9 +16,10 @@ Estratégia de **alcance** da VantageNode-X no X. Editável pelo Mr. G (é markd
 Vale também tudo do arquivo-mãe: sem emoji/hype e **sem travessão (em dash)** (inv. 8), número =
 gráfico = fonte (inv. 6), sem previsão de preço (inv. 5), **voz humanizada e acessível** (ver `brand-voice.md`).
 
-> **Nota sobre link (atualização de 25/07/2026):** no NOSSO post o link agora pode ir no corpo (inv. 3 mudou).
-> Mas em **reply na casa de terceiro** a regra é outra e continua valendo: **não** despejar link (é spam e
-> queima reputação). São coisas diferentes: link no nosso post = ok; link no reply a estranho = evitar.
+> **Nota sobre link (invariante 3, revisada 25/07/2026):** no NOSSO post, o link externo vai no **primeiro
+> reply**, nunca no corpo (link no corpo derruba o alcance). Em **reply na casa de terceiro** a regra é outra e
+> também vale: **não** despejar link (é spam e queima reputação). Resumo: link só no primeiro reply do NOSSO
+> próprio post; nunca no corpo do post; nunca em reply a estranho.
 
 ---
 

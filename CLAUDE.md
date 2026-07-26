@@ -44,7 +44,7 @@ Fora desses 2 pontos, o pipeline roda sozinho.
 
 1. **1 post = 1 ideia.** Nunca empacotar dois insights no mesmo post.
 2. **KPI real é bookmark, não like.** Pergunta de teste: "um analista salvaria isto?"
-3. **Link no corpo do post é permitido.** Pode ir no corpo do post ou no primeiro reply, à escolha (decisão do Gui, 25/07/2026: ele gostou de ter o link do gráfico no corpo). Antes o link era restrito ao primeiro reply; essa restrição caiu.
+3. **Link externo no primeiro reply, corpo sem link externo.** O corpo do post não leva link externo; o link (ex.: `vantagenode.io/terminal`) vai no **primeiro reply**. Motivo: link no corpo derruba o alcance (o algoritmo do X rebaixa posts que tiram o usuário da plataforma). Decisão do Gui, 25/07/2026, que **reverte** a permissão anterior de link no corpo. Vale só para os próximos posts (os já publicados ficam como estão, o X não deixa editar).
 4. **Todo gráfico acompanha uma leitura.** Nunca publicar dado cru sem interpretação.
 5. **Contra-consenso é permitido, irresponsabilidade não.** Nunca afirmar certeza sobre preço futuro nem prometer retorno.
 6. **Número no texto = número no gráfico = número na fonte.** Qualquer divergência bloqueia o ciclo no GATEKEEPER.

@@ -19,6 +19,13 @@ não apenas registrar métricas.
 
 -->
 
+## 2026-07-25 — REVERSÃO DA INVARIANTE 3: link volta pro primeiro reply (decisão do Gui)
+- **O que mudou:** o Gui revisou e decidiu que o **link externo NÃO vai mais no corpo do post**. O corpo fica sem link; o link (ex.: `vantagenode.io/terminal`) vai no **primeiro reply**. Isso **reverte** a permissão de "link no corpo" registrada mais cedo no mesmo dia.
+- **Por quê:** link no corpo **derruba o alcance**. O algoritmo do X rebaixa posts que tiram o usuário da plataforma. Priorizar reach (que é o nosso gargalo) pesa mais do que a conveniência do link no corpo.
+- **Onde foi gravado:** CLAUDE.md (invariante 3), knowledge/brand-voice.md (nota de topo + micro-regras), agents/03-voice.md, agents/04-gatekeeper.md (volta a bloquear link externo no corpo), schemas/copy.schema.json, .claude/commands/voice.md, knowledge/distribution.md.
+- **Escopo:** vale só para os **próximos** posts. Os já publicados com link no corpo (`2081089146026647741` na @VantageNodvt e `2081163282233131517` na @VantageNodeio, o batismo) **ficam como estão**, o X não deixa editar o corpo depois de publicado.
+- **A observar no FEEDBACK:** os dois posts de batismo têm link no corpo. Quando as métricas chegarem, comparar o reach deles com os próximos posts (link no reply) pode dar um sinal prático sobre o tamanho do efeito do link no corpo. Sem números inventados até coleta.
+
 ## 2026-07-26 — SETUP VISUAL DA @VantageNodeio CONCLUÍDO (ao vivo no X)
 - **Status:** ✅ tarefa "revisar bio + avatar da @VantageNodeio" **CONCLUÍDA**. Perfil oficial está ao vivo.
 - **Bio aplicada:** "Inteligencia onchain de Bitcoin, direto da blockchain e sem tecniques. A gente le os holders, nao a vela. Nada aqui e recomendacao." (nota: "A gente le os holders, nao a vela" ecoa a voz humanizada e o post de batismo; o disclaimer "Nada aqui e recomendacao" fixa a invariante 5 no perfil.)

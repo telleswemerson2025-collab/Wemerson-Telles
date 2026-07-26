@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "vantagenode-x/schemas/copy.schema.json",
   "title": "03_copy.json — saída do VOICE (03)",
-  "description": "Texto do post + primeiro reply. Link permitido no corpo do post ou no reply (invariante 3, decisão do Gui 25/07/2026). Voz humanizada e acessível, sem emoji/hype e sem travessão em dash (invariante 8).",
+  "description": "Texto do post + primeiro reply. Link externo vai no PRIMEIRO REPLY, corpo sem link externo (invariante 3, decisão do Gui 25/07/2026, revertendo a permissão de link no corpo). Voz humanizada e acessível, sem emoji/hype e sem travessão em dash (invariante 8).",
   "type": "object",
   "additionalProperties": false,
   "required": ["cycle_id", "post", "numbers", "reading", "single_idea", "no_hype_check"],
@@ -15,20 +15,19 @@
       "additionalProperties": false,
       "required": ["text", "char_count"],
       "properties": {
-        "text": { "type": "string", "maxLength": 280, "description": "Corpo do post. Pode conter link (invariante 3, decisão do Gui 25/07/2026). Sem travessão em dash (invariante 8)." },
+        "text": { "type": "string", "maxLength": 280, "description": "Corpo do post. SEM link externo (invariante 3, decisão do Gui 25/07/2026: link externo vai no reply). Sem travessão em dash (invariante 8)." },
         "char_count": { "type": "integer", "maximum": 280, "description": "Contagem crua de code points do texto (referência interna)." },
-        "char_count_x": { "type": "integer", "maximum": 280, "description": "Opcional. Contagem como o X conta: URLs valem 23 (t.co), independentemente do tamanho real. É esta que precisa caber em 280." },
-        "link": { "type": "string", "description": "Link presente no corpo do post, se houver (permitido desde 25/07/2026). Ausente se o post não tiver link no corpo." }
+        "char_count_x": { "type": "integer", "maximum": 280, "description": "Opcional. Contagem como o X conta: URLs valem 23 (t.co), independentemente do tamanho real. É esta que precisa caber em 280." }
       }
     },
     "reply": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Primeiro reply. OPCIONAL desde 25/07/2026: com link permitido no corpo, um post pode ir sozinho, sem reply. Se presente, exige text.",
+      "description": "Primeiro reply. É onde vai o link externo (invariante 3). Um post com link externo PRECISA deste reply; só é dispensável se o post não tiver link nenhum. Se presente, exige text.",
       "required": ["text"],
       "properties": {
         "text": { "type": "string", "maxLength": 280 },
-        "link": { "type": "string", "description": "Link do reply, se o link for nesse lugar. Desde 25/07/2026 o link também pode ir no corpo do post (invariante 3). Ausente se não houver link no reply." }
+        "link": { "type": "string", "description": "O link externo vive AQUI, no primeiro reply (invariante 3, decisão do Gui 25/07/2026). Nunca no corpo do post. Ausente se não houver link." }
       }
     },
     "numbers": {
@@ -48,7 +47,7 @@
     },
     "reading": { "type": "string", "description": "A leitura/interpretação que acompanha o dado (invariante 4). Nunca dado cru." },
     "single_idea": { "type": "boolean", "description": "Invariante 1." },
-    "link_in_reply_only": { "type": "boolean", "description": "Campo legado da invariante 3. Desde 25/07/2026 o link pode ir no corpo do post OU no reply, então isto virou informativo (onde o link ficou), não mais um requisito. true = link só no reply; false = link no corpo (ou em ambos)." },
+    "link_in_reply_only": { "type": "boolean", "description": "Autoverificação da invariante 3 (reativada em 25/07/2026): true = link externo só no primeiro reply, corpo sem link. Deve ser true; false sinaliza link externo no corpo, que o GATEKEEPER bloqueia." },
     "bookmark_test": { "type": "string", "description": "Resposta à pergunta 'um analista salvaria isto?' (invariante 2)." },
     "no_hype_check": { "type": "boolean", "description": "Sem emoji, sem hype, sem jargão de lua/pump e sem travessão em dash (invariante 8)." }
   }

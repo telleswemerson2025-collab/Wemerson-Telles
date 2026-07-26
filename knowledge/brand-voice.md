@@ -2,8 +2,10 @@
 
 Editável pelo Mr. G. Lido diretamente pelo VOICE (03) e cobrado pelo GATEKEEPER (04).
 
-> **Atualização (Gui, 25/07/2026), três decisões que valem daqui pra frente:**
-> 1. **Link no corpo do post é permitido** (antes era só no primeiro reply). Ver "Micro-regras de forma".
+> **Atualização (Gui, 25/07/2026), regras que valem daqui pra frente:**
+> 1. **Link externo vai no PRIMEIRO REPLY, corpo sem link.** (Revisão do Gui no mesmo dia: chegou a liberar
+>    link no corpo, mas REVERTEU. Motivo: link no corpo derruba o alcance, o algoritmo do X rebaixa quem tira
+>    o usuário da plataforma.) Ver "Micro-regras de forma".
 > 2. **Travessão (em dash `—`) proibido** em qualquer texto. Trocar por vírgula, ponto, dois-pontos ou reescrever.
 > 3. **Voz mais humanizada e menos técnica.** Ver "A voz em uma imagem" e "Princípios", reescritos abaixo.
 
@@ -41,8 +43,9 @@ cospe sigla. É alguém que entende de dado e tem prazer em traduzir, com honest
 
 ## Micro-regras de forma
 
-- **Link:** **permitido no corpo do post** (decisão do Gui, 25/07/2026), ou no primeiro reply, à escolha.
-  Deixou de ser obrigatório mandar pro reply. Escolher onde o link lê melhor pra cada post.
+- **Link:** o link externo (ex.: `vantagenode.io/terminal`) vai no **primeiro reply**, nunca no corpo do post
+  (decisão do Gui, 25/07/2026). Motivo: link no corpo derruba o alcance (o X rebaixa post que tira o usuário da
+  plataforma). O corpo carrega só a leitura; a fonte fica no reply logo abaixo.
 - **Pontuação:** sem travessão (ver Proibido). Preferir frases curtas a orações emendadas por travessão.
 - **Maiúsculas:** só nome próprio e siglas (MVRV, SOPR, BTC).
 - **Números:** usar a mesma casa decimal do gráfico e da fonte (invariante 6).

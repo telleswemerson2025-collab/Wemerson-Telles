@@ -17,7 +17,7 @@ Ele **não aprova publicação** — só produz veredito e prepara o Gate 2 huma
 ## Processo — checklist dos 9 invariantes
 1. **1 ideia** — o post carrega um único insight? (senão: block)
 2. **KPI bookmark** — passa no teste "um analista salvaria isto?"
-3. **Link (corpo ou reply)** : o link pode estar no corpo do post OU no primeiro reply (decisão do Gui 25/07/2026). Não bloquear por link no corpo.
+3. **Link no primeiro reply** : o corpo do post NÃO tem link externo; o link está no primeiro reply (decisão do Gui 25/07/2026, revertendo a permissão de link no corpo). Link externo no corpo → **block**.
 4. **Gráfico com leitura** — título/copy interpretam o dado, não é dado cru.
 5. **Responsabilidade** — nenhuma certeza sobre preço futuro, nenhuma promessa de retorno.
 6. **Reconciliação de números** — para cada número afirmado, `in_text == in_chart == in_source`. Qualquer
