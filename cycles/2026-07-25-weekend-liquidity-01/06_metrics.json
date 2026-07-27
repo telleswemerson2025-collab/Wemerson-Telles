@@ -1,6 +1,12 @@
 {
   "cycle_id": "2026-07-25-weekend-liquidity-01",
-  "status": "official_final__test_still_interim",
+  "status": "final__both_accounts",
+  "experiment_two_accounts": {
+    "design": "MESMO conteúdo (texto + imagem SOPR + link no corpo), duas contas, +48h cada.",
+    "oficial_VantageNodeio": { "impressions": 51, "engagements": 33, "engagement_rate": "64,7%", "detail_expands": 9, "link_clicks": 4, "bookmarks": 1, "off_x_push": "WhatsApp (sim)" },
+    "teste_VantageNodvt": { "impressions": 20, "engagements": 3, "engagement_rate": "15%", "detail_expands": 1, "link_clicks": 0, "bookmarks": 0, "off_x_push": "não" },
+    "conclusion": "Conteúdo idêntico, resultados muito diferentes: a oficial teve 2,5x o alcance (51 vs 20) e 11x os engajamentos (33 vs 3). A única diferença de tratamento foi o empurrão de WhatsApp (distribuição fora do X) na oficial, além do perfil já configurado. Confirma o diagnóstico: o gargalo é DISTRIBUIÇÃO, não conteúdo. Ambos n minúsculos (51 e 20): direção clara, magnitude não conclusiva."
+  },
   "republished": true,
   "cross_post": true,
   "official_account_debut": true,
@@ -33,7 +39,25 @@
       "note": "leitura ~30h (parcial). 'post único, link no corpo, sem reply'. engagements/detail_expands/profile_visits/new_followers/link_clicks = n/d (painel inacessível)."
     },
     "kpi_interim": { "primary": "bookmarks", "value": 0, "analyst_saved": false },
-    "feedback_due_at": "2026-07-27T18:56:00Z"
+    "feedback_due_at": "2026-07-27T18:56:00Z",
+    "metrics_final": {
+      "window": "+48h (janela fechada, lida por Wemerson em 27/07)",
+      "source_panel": "X Post Analytics oficial do post",
+      "impressions": 20,
+      "impressions_note": "Views (= impressões) = 20. Era 15 na parcial de ~30h.",
+      "engagements": 3,
+      "engagement_rate": "15% (3/20)",
+      "detail_expands": 1,
+      "profile_visits": 1,
+      "link_clicks": 0,
+      "likes": 0,
+      "reposts": 0,
+      "replies": 0,
+      "bookmarks": 0,
+      "new_followers": "n/d",
+      "distribution_note": "SEM empurrão de WhatsApp (o compartilhamento fora do X foi só no post oficial)."
+    },
+    "kpi_final": { "primary": "bookmarks", "value": 0, "impressions_base": 20, "bookmark_rate": "0% (0/20)", "analyst_saved": false }
   },
   "post_official": {
     "role": "BATISMO da conta oficial @VantageNodeio (primeiro post da marca na conta oficial)",
@@ -84,5 +108,5 @@
   "collected_final_at": "2026-07-27T20:42:00Z+",
   "collected_final_note": "Leitura final +48h do POST OFICIAL @VantageNodeio por Wemerson ao vivo no X. O post de TESTE @VantageNodvt (2081089146026647741) segue com leitura interina; final ainda não coletado.",
   "collected_at_note": "leitura PARCIAL/interina (antes do +48h). Final vem nos triggers de 27/07.",
-  "learning": "LEITURA FINAL (+48h) do OFICIAL @VantageNodeio (batismo), Post Analytics real: 51 impressões, 33 engagements, engagement rate 64,7%, 9 detail expands, 4 link clicks, 0 profile visits, 3 likes, 1 repost, 2 replies, 1 BOOKMARK (primeiro do post). Evolução parcial->final: views 24->51, likes 2->3, bookmark 0->1. Achados: (1) melhor post da série em TODOS os campos: 51 é o maior reach já medido (série de teste ia 15-36) e é o PRIMEIRO bookmark desde o MVRV (16/07). (2) sinais de LEAN-IN fortes para o padrão histórico: 9 detail expands (17,6% de quem alcançou ABRIU pra ler) e 4 link clicks (primeiros cliques de link relevantes da série; este post tinha link no corpo). Bookmark rate 2,0% (1/51). (3) Ressalva dura: conta nova + empurrão de WhatsApp + n minúsculo (51). O que moveu o ponteiro foi DISTRIBUIÇÃO (WhatsApp), não a copy; engagement rate de 64,7% é real mas sobre base minúscula, não extrapolar. (4) CORREÇÃO: o '18,5K/2,9%' anterior era um card promocional NÃO relacionado (datas ago 1-6), DESCARTADO. (5) TESTE @VantageNodvt: final ainda pendente (interina: 15 views, tudo 0). Nada inventado."
+  "learning": "LEITURA FINAL (+48h) do OFICIAL @VantageNodeio (batismo), Post Analytics real: 51 impressões, 33 engagements, engagement rate 64,7%, 9 detail expands, 4 link clicks, 0 profile visits, 3 likes, 1 repost, 2 replies, 1 BOOKMARK (primeiro do post). Evolução parcial->final: views 24->51, likes 2->3, bookmark 0->1. Achados: (1) melhor post da série em TODOS os campos: 51 é o maior reach já medido (série de teste ia 15-36) e é o PRIMEIRO bookmark desde o MVRV (16/07). (2) sinais de LEAN-IN fortes para o padrão histórico: 9 detail expands (17,6% de quem alcançou ABRIU pra ler) e 4 link clicks (primeiros cliques de link relevantes da série; este post tinha link no corpo). Bookmark rate 2,0% (1/51). (3) Ressalva dura: conta nova + empurrão de WhatsApp + n minúsculo (51). O que moveu o ponteiro foi DISTRIBUIÇÃO (WhatsApp), não a copy; engagement rate de 64,7% é real mas sobre base minúscula, não extrapolar. (4) CORREÇÃO: o '18,5K/2,9%' anterior era um card promocional NÃO relacionado (datas ago 1-6), DESCARTADO. (5) EXPERIMENTO FECHADO (duas contas, mesmo conteúdo): OFICIAL 51 imp / 33 eng / 64,7% / 1 bookmark (com WhatsApp) vs TESTE @VantageNodvt 20 imp / 3 eng / 15% / 0 bookmark (sem WhatsApp). A oficial teve 2,5x o alcance e 11x os engajamentos com o MESMO texto. A diferença foi DISTRIBUIÇÃO (empurrão de WhatsApp), não conteúdo. Direção inequívoca; magnitude não conclusiva (n de 51 e 20). Nada inventado."
 }
