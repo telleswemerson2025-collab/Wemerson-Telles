@@ -19,6 +19,13 @@ não apenas registrar métricas.
 
 -->
 
+## 2026-07-27 — FEEDBACK final +48h: batismo oficial @VantageNodeio (weekend v2, 25/07)
+- **Post:** "Sábado, liquidez fina" (SOPR 1,0004 / MVRV-STH 0,954 / NUPL-STH -0,032), primeiro post da conta oficial, link no corpo, empurrão de WhatsApp.
+- **Sinal (+48h, lido ao vivo por Wemerson):** 50 views · **1 bookmark** (KPI, primeiro deste post) · 3 likes · 1 repost · 2 replies · profile visits/detail expands/link clicks = n/d. Evolução parcial→final: views 24→50, likes 2→3, bookmark 0→1.
+- **Leitura:** melhor post da série em todos os campos. 50 views = maior alcance já medido (série de teste ia de 15 a 36) e é o **1º bookmark desde o MVRV de 16/07** (quebra 8 ciclos de 0). Bookmark rate deste post = 2,0% (1/50); `analyst_saved` indeterminado (n=1). Ressalva dura: o ganho é de uma conta nova com **empurrão de WhatsApp** e n minúsculo, é sinal de **distribuição**, não de copy. A conta oficial nasce com baseline própria (não comparar direto com a série de teste).
+- **⚠️ Dado em quarentena:** o painel reportou "18,5K impressões / 2,9% engajamento", que **contradiz** os 50 views do mesmo post (no X, Views = impressões do post) e tem cara de resumo de **conta/28 dias**, não do post. NÃO registrado como alcance do post; **escopo a confirmar com o Wemerson** antes de qualquer conclusão. Se for mesmo 28d de conta, é a primeira medida de reach agregado da marca, valiosa, mas outra unidade.
+- **Ação:** (1) Confirmar a origem do 18,5K (post × conta/28d) para não poluir a série de reach por post. (2) O diagnóstico não muda: **distribuição é o gargalo**; o que moveu o ponteiro aqui foi o WhatsApp (canal fora do X), reforçando a frente Tier A. (3) Coletar ainda o final do post de teste @VantageNodvt (2081089146026647741) para fechar o experimento das duas contas.
+
 ## 2026-07-26 — FEEDBACK (coleta de 4 posts): reach parou de cair, batismo oficial reagiu
 - **Coletado (views públicos; painel de analytics inacessível, então impressions = views; bookmarks lidos na tela):**
   - NUPL (23/07, teste): 24 views, 1 like, 1 reply (nossa), 0 repost, **0 bookmark** (final, ~73h).
