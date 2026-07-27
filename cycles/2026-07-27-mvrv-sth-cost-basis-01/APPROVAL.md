@@ -10,9 +10,10 @@ STATUS: approved
   após ele revisar T1-T4 + reply e confirmar que os 6 números batem com os dados reais do terminal.
 -->
 
-> **AUTORIZAÇÃO DE PUBLICAÇÃO: NÃO.** Aprovar o Gate 2 NÃO autoriza o post no X. A publicação (BROADCAST 05)
-> só ocorre com um ok explícito posterior do Wemerson. Até lá, nada é publicado. Falta também capturar o
-> print da série MVRV-STH (02_chart.png).
+> **PUBLICADO.** Wemerson deu o ok explícito e publicou a thread (5 posts) na @VantageNodeio em 27/07 às 13:31
+> (horário de Brasília), confirmada ao vivo no perfil. Registro em 05_published.json. Reply saiu com o link
+> genérico (a troca pelo permalink não foi aplicada). Próximo passo do ciclo: FEEDBACK (06) na janela +48h
+> (29/07 ~13:31 BRT).
 
 ## Resumo
 - **Formato:** thread educativa (4 tweets + reply)
