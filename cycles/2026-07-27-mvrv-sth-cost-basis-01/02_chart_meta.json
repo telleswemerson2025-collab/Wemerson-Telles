@@ -1,22 +1,31 @@
 {
   "cycle_id": "2026-07-27-mvrv-sth-cost-basis-01",
   "indicator": "MVRV",
+  "metric": "MVRV-STH",
   "unit": "ratio",
-  "chart_type": "cohort_bars",
-  "status": "pending_render",
-  "render_note": "02_chart.png ainda NÃO renderizado (sem lib de render neste checkout; gráfico historicamente gerado pelo Mr. G). Anexar ao T1 ou ao T4 conforme decisão do gate.",
-  "title": "O custo de quem comprou por último: MVRV-STH em 0,969",
-  "subtitle": "MVRV por coorte · abaixo de 1,0 = preço sob o custo-base · VantageNode, 26/07/2026",
-  "as_of": "2026-07-26",
-  "reference": {
-    "value": 1.0,
-    "label": "breakeven (custo-base)"
+  "chart_type": "terminal_screenshot",
+  "series": "time_series",
+  "status": "pending_capture",
+  "format_rule": "docs/data-sourcing.md > FORMATO OFICIAL DO PRINT (Gui 25/07/2026). Print REAL do terminal VantageNode, sem render/edição do Claude.",
+  "framing": {
+    "breadcrumb_visivel": "VantageNode / Studio / Market Value to Realized Value (MVRV) / MVRV · STH",
+    "range": "5Y (padrão; ALL se faltar histórico)",
+    "sma": "7 (padrão, não alterar)",
+    "grafico_completo_no_quadro": true,
+    "marca_dagua": "VANTAGENODE visível no fundo",
+    "sem_toolbar": "sem SMA/7D/14D/30D, sem ferramentas de desenho, sem Y LOG/BTC LOG, sem aba lateral",
+    "cabecalho_studio": true
   },
-  "numbers_plotted": [
-    { "name": "LTH (long-term)", "value": 1.322 },
-    { "name": "Agregado", "value": 1.248 },
-    { "name": "STH (short-term)", "value": 0.969 }
-  ],
+  "reading_current": {
+    "value": 0.969,
+    "label": "MVRV-STH em 0,969 (último ponto da série, fechamento 26/07/2026), abaixo de 1,0 = preço sob o custo-base do short-term holder"
+  },
+  "reference": { "value": 1.0, "label": "breakeven (custo-base), linha de referência da leitura, não necessariamente marcada no print" },
+  "capture": {
+    "provided_by": "Wemerson (Mr. G), screenshot anexado como ARQUIVO",
+    "claude_renders": false,
+    "note": "PLOT (02) apenas salva o screenshot recebido como 02_chart.png, sem editar/anotar/re-renderizar. Gráfico de barras por coorte NÃO é usado no post (era só spec interna)."
+  },
   "source": {
     "name": "VantageNode",
     "url": "https://vantagenode.io/terminal",

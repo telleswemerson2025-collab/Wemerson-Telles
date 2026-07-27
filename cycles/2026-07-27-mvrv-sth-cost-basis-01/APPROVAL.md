@@ -1,12 +1,18 @@
 # APPROVAL: Ciclo 2026-07-27-mvrv-sth-cost-basis-01
 
-STATUS: pending
+STATUS: approved
 
 <!--
   GATE 2: INVIOLÁVEL (invariante 7).
   Somente o Mr. G altera STATUS para: approved | revise | rejected
   Nenhum agente marca 'approved' em nome do humano. O BROADCAST (05) só publica com STATUS: approved.
+  Registro: STATUS mudado para 'approved' por instrução explícita do Wemerson (Mr. G) em 27/07/2026,
+  após ele revisar T1-T4 + reply e confirmar que os 6 números batem com os dados reais do terminal.
 -->
+
+> **AUTORIZAÇÃO DE PUBLICAÇÃO: NÃO.** Aprovar o Gate 2 NÃO autoriza o post no X. A publicação (BROADCAST 05)
+> só ocorre com um ok explícito posterior do Wemerson. Até lá, nada é publicado. Falta também capturar o
+> print da série MVRV-STH (02_chart.png).
 
 ## Resumo
 - **Formato:** thread educativa (4 tweets + reply)
@@ -48,7 +54,8 @@ MVRV-STH = valor de mercado ÷ custo-base do short-term holder. Abaixo de 1, o p
 - **Reconciliação:** 0,969 / 3,1% / 0,9945 / 0,9995 / 1,248 / 1,322 conferem com a fonte (MVRV 3 casas, SOPR 4 casas).
 - **Invariante 5:** T4 diz "isso não diz pra onde o preço vai"; sem previsão/promessa; disclaimer no reply.
 - **Invariante 8:** zero emoji/hype/jargão e zero travessão verificados nos 4 tweets + reply.
-- **Pendências antes de publicar:** (1) renderizar 02_chart.png (barras por coorte, ver 02_chart_meta.json) e (2) este Gate 2.
+- **Gráfico (formato definido pelo Wemerson, 27/07):** 02_chart.png = PRINT REAL da série temporal MVRV-STH do terminal VantageNode (range 5Y, breadcrumb Studio visível, marca d'água VANTAGENODE, sem toolbar), no mesmo estilo do último post publicado. NÃO é o gráfico de barras por coorte. Claude não renderiza; o Wemerson anexa o screenshot.
+- **Pendências antes de publicar:** (1) capturar o print da série MVRV-STH (02_chart.png) e (2) o ok explícito de publicação do Wemerson. O Gate 2 já está aprovado, mas não libera a publicação sozinho.
 
 ## Decisão do Mr. G
 Edite o campo `STATUS:` no topo:
@@ -56,7 +63,7 @@ Edite o campo `STATUS:` no topo:
 - `revise`   → devolve ao pipeline; escreva a nota abaixo.
 - `rejected` → descarta o ciclo.
 
-**Nota (opcional):**
+**Nota (opcional):** Aprovado pelo Wemerson (Mr. G) em 27/07/2026 após revisão do texto completo (T1-T4 + reply); os 6 números conferem com o terminal. Duas instruções registradas: (1) o print (02_chart.png) é a série temporal MVRV-STH no formato oficial (não barras por coorte); (2) publicação NÃO autorizada por este gate, só com ok explícito posterior do Wemerson. BROADCAST (05) não executado.
 
 ---
-_Gráfico do ciclo: 02_chart.png (barras por coorte, breakeven em 1,0), a renderizar._
+_Gráfico do ciclo: 02_chart.png = print real da série temporal MVRV-STH (5Y, breadcrumb + marca d'água VANTAGENODE, sem toolbar), a capturar pelo Wemerson. Ver 02_chart_meta.json._
