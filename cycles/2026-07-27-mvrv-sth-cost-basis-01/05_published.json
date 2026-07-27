@@ -11,7 +11,14 @@
     "posts_count": 5,
     "structure": "T1 (com imagem = print da série temporal MVRV-STH) + T2 + T3 + T4 + reply (com link)",
     "confirmed_live": true,
-    "post_ids": "pendente: Wemerson pode enviar os 5 status_id/URLs para completar o registro",
+    "primary_post_id": "2081779645985304994",
+    "posts": [
+      { "id": "T1", "role": "hook + imagem MVRV-STH", "status_id": "2081779645985304994", "url": "https://x.com/VantageNodeio/status/2081779645985304994" },
+      { "id": "T2", "role": "define MVRV-STH + número", "status_id": "2081779649047052443", "url": "https://x.com/VantageNodeio/status/2081779649047052443" },
+      { "id": "T3", "role": "confirmação SOPR", "status_id": "2081779651026850004", "url": "https://x.com/VantageNodeio/status/2081779651026850004" },
+      { "id": "T4", "role": "leitura/coorte + disclaimer", "status_id": "2081779652964532487", "url": "https://x.com/VantageNodeio/status/2081779652964532487" },
+      { "id": "reply", "role": "definição + link", "status_id": "2081779655309213721", "url": "https://x.com/VantageNodeio/status/2081779655309213721" }
+    ],
     "profile_url": "https://x.com/VantageNodeio"
   },
   "reply_link": {
