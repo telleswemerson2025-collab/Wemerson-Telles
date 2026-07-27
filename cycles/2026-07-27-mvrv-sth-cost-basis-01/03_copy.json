@@ -1,0 +1,48 @@
+{
+  "cycle_id": "2026-07-27-mvrv-sth-cost-basis-01",
+  "format": "thread",
+  "thread": [
+    {
+      "id": "T1",
+      "text": "O gráfico de preço não te conta uma coisa: quanto quem comprou agora pagou.",
+      "char_count": 75,
+      "role": "hook (71-100 caracteres)"
+    },
+    {
+      "id": "T2",
+      "text": "É isso que o MVRV-STH mede. Ele compara o preço de hoje com o custo médio de quem comprou nos últimos meses, o short-term holder. Agora está em 0,969. Na prática: na média, quem entrou faz pouco está 3,1% abaixo do que pagou. De leve no vermelho.",
+      "char_count": 246,
+      "role": "define o indicador + número-âncora"
+    },
+    {
+      "id": "T3",
+      "text": "Dá pra checar isso por outro ângulo: o SOPR, que olha quem está de fato vendendo. O SOPR geral está em 0,9945 e o do curto prazo em 0,9995, os dois rente ao empate. Quem realiza hoje sai perto do zero a zero, parte no vermelho leve. Mesma história.",
+      "char_count": 248,
+      "role": "confirmação por comportamento realizado (SOPR)"
+    },
+    {
+      "id": "T4",
+      "text": "O contraste fecha a leitura. O mercado todo (MVRV 1,248) e quem segura há muito tempo (LTH 1,322) seguem no lucro. A força está nas mãos antigas, não no dinheiro novo. Isso não diz pra onde o preço vai. Diz onde está a tensão: no custo de quem comprou por último.",
+      "char_count": 263,
+      "role": "leitura/coorte + disclaimer de não-previsão"
+    }
+  ],
+  "reply": {
+    "text": "MVRV-STH = valor de mercado ÷ custo-base do short-term holder. Abaixo de 1, o preço está sob o custo médio de quem comprou há pouco. Leitura no terminal (26/07): https://vantagenode.io/terminal. Não é previsão de preço nem recomendação.",
+    "link": "https://vantagenode.io/terminal"
+  },
+  "numbers": [
+    { "value": 0.969, "unit": "ratio", "where": "T2", "claim": "MVRV-STH em 0,969" },
+    { "value": 3.1, "unit": "%", "where": "T2", "claim": "3,1% abaixo do custo (derivado de 1 - 0,969)" },
+    { "value": 0.9945, "unit": "ratio", "where": "T3", "claim": "SOPR geral 0,9945" },
+    { "value": 0.9995, "unit": "ratio", "where": "T3", "claim": "SOPR-STH 0,9995" },
+    { "value": 1.248, "unit": "ratio", "where": "T4", "claim": "MVRV agregado 1,248" },
+    { "value": 1.322, "unit": "ratio", "where": "T4", "claim": "LTH 1,322" }
+  ],
+  "reading": "Thread educativa sobre o custo do short-term holder. MVRV-STH 0,969: quem comprou há pouco está, na média, 3,1% abaixo do que pagou (de leve no vermelho). O SOPR confirma pelo lado de quem realiza (geral 0,9945 e curto prazo 0,9995, ambos rente ao empate). O agregado (1,248) e o LTH (1,322) em lucro mostram que a força está nas mãos antigas, não no dinheiro novo. Descrição de custo e comportamento, sem afirmar direção de preço (invariante 5).",
+  "single_idea": true,
+  "link_in_reply_only": true,
+  "bookmark_test": "Sim, é material de referência: ensina a ler MVRV-STH e a cruzar com SOPR num caso real, com os números do dia.",
+  "no_hype_check": true,
+  "no_emdash_check": true
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_id": "2026-07-27-mvrv-sth-cost-basis-01",
+  "format": "thread",
+  "result": "pass",
+  "gate2_status": "pending",
+  "invariants": [
+    { "id": 1, "name": "1 post = 1 ideia", "status": "ok", "note": "Uma tese ensinada em 4 tweets: o custo do STH (MVRV-STH). SOPR e as demais coortes entram como confirmação/contexto, não como segundo insight. SOPR-LTH ficou fora do corpo de propósito." },
+    { "id": 2, "name": "KPI = bookmark", "status": "ok", "note": "Thread de referência (define MVRV-STH + cruza com SOPR num caso real). Um analista salvaria." },
+    { "id": 3, "name": "Link fora do corpo", "status": "ok", "note": "Nenhum tweet (T1-T4) tem link; o único link (vantagenode.io/terminal) está no primeiro reply." },
+    { "id": 4, "name": "Gráfico com leitura", "status": "pending", "note": "Spec do gráfico em 02_chart_meta.json (barras por coorte, título é a leitura). 02_chart.png ainda a renderizar antes de publicar." },
+    { "id": 5, "name": "Contra-consenso sem irresponsabilidade", "status": "ok", "note": "T4 diz explicitamente 'isso não diz pra onde o preço vai'. Sem previsão nem promessa de retorno. Disclaimer no reply." },
+    { "id": 6, "name": "Número texto = gráfico = fonte", "status": "ok", "note": "0,969 / 0,9945 / 0,9995 / 1,248 / 1,322 conferem com 00_data.json (fonte). 3,1% = (1 - 0,969) x 100, exato. MVRV em 3 casas, SOPR em 4, igual à fonte." },
+    { "id": 7, "name": "Gate humano inviolável", "status": "ok", "note": "APPROVAL.md em STATUS: pending. Nenhum agente marca approved; publicação aguarda o Wemerson (Mr. G)." },
+    { "id": 8, "name": "Sem emoji/hype/jargão/travessão", "status": "ok", "note": "Varredura: zero emoji, zero hype, zero jargão de lua/pump, ZERO travessão (verificado por contagem em todos os 4 tweets + reply). Voz humanizada: traduz MVRV-STH e SOPR ('zero a zero', 'de leve no vermelho')." },
+    { "id": 9, "name": "API do X é dependência frágil", "status": "ok", "note": "Publicação manual pelo Mr. G; nenhuma automação de publicação neste ciclo." }
+  ],
+  "reconciliation": [
+    { "claim": "MVRV-STH 0,969", "in_text": 0.969, "in_chart": 0.969, "in_source": 0.969, "matches": true },
+    { "claim": "3,1% abaixo do custo (1 - 0,969)", "in_text": 3.1, "in_chart": null, "in_source": 3.1, "matches": true },
+    { "claim": "SOPR geral 0,9945", "in_text": 0.9945, "in_chart": null, "in_source": 0.9945, "matches": true },
+    { "claim": "SOPR-STH 0,9995", "in_text": 0.9995, "in_chart": null, "in_source": 0.9995, "matches": true },
+    { "claim": "MVRV agregado 1,248", "in_text": 1.248, "in_chart": 1.248, "in_source": 1.248, "matches": true },
+    { "claim": "LTH 1,322", "in_text": 1.322, "in_chart": 1.322, "in_source": 1.322, "matches": true }
+  ],
+  "corrections_applied": [
+    "STH atualizado para 0,969 (era 0,958 no rascunho antigo).",
+    "LTH atualizado para 1,322 (era 1,305 no rascunho antigo).",
+    "SOPR corrigido para 0,9945 (abaixo de 1): T3 não diz mais 'SOPR ~1,00'; agora trata como rente ao empate / vermelho leve, com SOPR-STH 0,9995.",
+    "T1 encurtado para hook de 75 caracteres (dentro de 71-100)."
+  ],
+  "blocking": ["Gate 2 (aprovação do Mr. G) pendente.", "02_chart.png a renderizar (invariante 4)."],
+  "note": "Thread remontada do zero com dados reais de 26/07 a pedido do operador. Conteúdo passa nas 9 invariantes; restam o render do gráfico e o gate humano."
+}

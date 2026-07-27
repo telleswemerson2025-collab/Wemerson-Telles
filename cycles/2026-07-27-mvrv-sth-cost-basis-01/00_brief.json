@@ -1,0 +1,30 @@
+{
+  "cycle_id": "2026-07-27-mvrv-sth-cost-basis-01",
+  "created_at": "2026-07-27T00:00:00+00:00",
+  "indicator": "MVRV",
+  "format": "thread",
+  "data_ref": "cycles/2026-07-27-mvrv-sth-cost-basis-01/00_data.json",
+  "headline_number": {
+    "value": 0.969,
+    "unit": "ratio",
+    "label": "MVRV-STH (26/07/2026)"
+  },
+  "angle": "Thread educativa: o que o gráfico de preço não mostra é o custo de quem comprou há pouco. O MVRV-STH em 0,969 diz que, na média, o short-term holder está 3,1% abaixo do que pagou (de leve no vermelho). O SOPR confirma pelo lado de quem realiza (0,9945 geral, 0,9995 no curto prazo, os dois rente ao empate). O contraste com o agregado (1,248) e o LTH (1,322) em lucro mostra que a força está nas mãos antigas, não no dinheiro novo. Uma ideia só, ensinada em 4 tweets: como ler o custo do STH.",
+  "why_now": "Publicação do dia. A narrativa de superfície olha só o preço; o custo de quem comprou por último (logo acima/rente ao preço) é o que o gráfico de preço não nomeia. Momento didático para ensinar a leitura de coorte.",
+  "target_reader": "quem acompanha cripto mas nunca leu MVRV/SOPR: a thread traduz o jargão sem perder o número",
+  "single_idea": true,
+  "risk_flags": [
+    "Invariante 5: NÃO prever preço. Descrever custo/comportamento com hedge; disclaimer explícito no reply.",
+    "Uma ideia só: o custo do STH (MVRV-STH). SOPR e as demais coortes entram como confirmação/contexto, não como segundo insight (invariante 1).",
+    "Invariante 6: todo número no texto confere com 00_data.json e com o gráfico (mesma casa decimal). Derivado 3,1% = 1 - 0,969.",
+    "SOPR-LTH 0,845 fica FORA do corpo (leitura de realização de mãos antigas contradiria a mensagem de coorte em lucro se mal explicada); usado só como checagem interna.",
+    "Invariante 3: nenhum link no corpo dos tweets; link só no primeiro reply.",
+    "Invariante 8: sem emoji, hype, jargão de lua/pump e sem travessão em nenhum tweet."
+  ],
+  "gate1": {
+    "status": "approved",
+    "note": "Direção solicitada diretamente pelo operador (Wemerson/Mr. G) em 27/07: remontar a thread educativa MVRV-STH com os dados reais de 26/07 e voz humanizada. Ângulo = custo do STH que o gráfico de preço não mostra.",
+    "decided_by": "Mr. G (via Wemerson)",
+    "decided_at": "2026-07-27T00:00:00+00:00"
+  }
+}

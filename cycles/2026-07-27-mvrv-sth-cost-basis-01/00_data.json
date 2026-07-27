@@ -1,0 +1,25 @@
+{
+  "cycle_id": "2026-07-27-mvrv-sth-cost-basis-01",
+  "indicator": "MVRV",
+  "source": {
+    "name": "VantageNode",
+    "url": "https://vantagenode.io/terminal",
+    "captured_by": "Wemerson (Mr. G), leitura direta no terminal VantageNode",
+    "captured_at": "2026-07-27T00:00:00+00:00"
+  },
+  "as_of": "2026-07-26",
+  "unit": "ratio",
+  "reference": { "value": 1.0, "label": "breakeven (custo-base)" },
+  "cohorts": [
+    { "name": "LTH (long-term)", "value": 1.322, "note": "long-term holders em lucro" },
+    { "name": "Agregado", "value": 1.248, "note": "mercado como um todo em lucro (MVRV Ratio)" },
+    { "name": "STH (short-term)", "value": 0.969, "note": "short-term holders ~3,1% abaixo do custo, de leve no vermelho" }
+  ],
+  "sopr": {
+    "SOPR": 0.9945,
+    "SOPR_STH": 0.9995,
+    "SOPR_LTH": 0.8450,
+    "note": "SOPR abaixo de 1 = realização média no vermelho leve. SOPR-STH rente ao empate. SOPR-LTH usado só como contexto de checagem, fora do corpo (uma ideia por post)."
+  },
+  "notes": "Valores verificados no terminal VantageNode (invariante 6), fechamento 26/07/2026: MVRV-STH 0,969, MVRV-LTH 1,322, MVRV Ratio (agregado) 1,248 (3 casas decimais); SOPR 0,9945, SOPR-STH 0,9995, SOPR-LTH 0,8450 (4 casas). Derivado usado no corpo: 1 - 0,969 = 0,031 = 3,1% abaixo do custo do STH. Thread educativa: âncora em MVRV-STH (custo de quem comprou há pouco), SOPR entra como confirmação de comportamento realizado."
+}

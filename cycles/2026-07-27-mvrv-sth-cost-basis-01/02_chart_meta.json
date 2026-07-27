@@ -1,0 +1,27 @@
+{
+  "cycle_id": "2026-07-27-mvrv-sth-cost-basis-01",
+  "indicator": "MVRV",
+  "unit": "ratio",
+  "chart_type": "cohort_bars",
+  "status": "pending_render",
+  "render_note": "02_chart.png ainda NÃO renderizado (sem lib de render neste checkout; gráfico historicamente gerado pelo Mr. G). Anexar ao T1 ou ao T4 conforme decisão do gate.",
+  "title": "O custo de quem comprou por último: MVRV-STH em 0,969",
+  "subtitle": "MVRV por coorte · abaixo de 1,0 = preço sob o custo-base · VantageNode, 26/07/2026",
+  "as_of": "2026-07-26",
+  "reference": {
+    "value": 1.0,
+    "label": "breakeven (custo-base)"
+  },
+  "numbers_plotted": [
+    { "name": "LTH (long-term)", "value": 1.322 },
+    { "name": "Agregado", "value": 1.248 },
+    { "name": "STH (short-term)", "value": 0.969 }
+  ],
+  "source": {
+    "name": "VantageNode",
+    "url": "https://vantagenode.io/terminal",
+    "captured_by": "Wemerson (Mr. G), leitura direta no terminal VantageNode",
+    "captured_at": "2026-07-27T00:00:00+00:00"
+  },
+  "data_ref": "cycles/2026-07-27-mvrv-sth-cost-basis-01/00_data.json"
+}
