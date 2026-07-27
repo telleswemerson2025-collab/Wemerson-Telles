@@ -6,12 +6,12 @@
   "published_at": "2026-07-27T13:31:00-03:00",
   "published_at_note": "27/07 13:31 horário de Brasília (16:31 UTC), confirmado ao vivo no perfil por Wemerson. Alinhado à janela de pico da rotina 12h30.",
   "channel": "manual",
-  "publish_authorized_by": "Wemerson (Mr. G) — ok explícito de publicação após o Gate 2",
+  "publish_authorized_by": "Wemerson (Mr. G), ok explícito de publicação após o Gate 2",
   "thread": {
     "posts_count": 5,
     "structure": "T1 (com imagem = print da série temporal MVRV-STH) + T2 + T3 + T4 + reply (com link)",
     "confirmed_live": true,
-    "post_ids": "pendente — Wemerson pode enviar os 5 status_id/URLs para completar o registro",
+    "post_ids": "pendente: Wemerson pode enviar os 5 status_id/URLs para completar o registro",
     "profile_url": "https://x.com/VantageNodeio"
   },
   "reply_link": {
