@@ -58,28 +58,31 @@
     "feedback_due_at": "2026-07-27T20:42:00Z",
     "metrics_final": {
       "window": "+48h (janela fechada, lida ao vivo por Wemerson em 27/07)",
-      "impressions_views": 50,
-      "impressions_views_note": "contagem de Views do próprio post (ícone de olho) = impressão do post. Era ~24 na parcial de ~25h.",
+      "source_panel": "X Post Analytics oficial do post (números confirmados por Wemerson)",
+      "impressions": 51,
+      "impressions_note": "Post Analytics = 51 (autoritativo). O ícone de Views mostrava ~50; diferença normal entre a contagem do ícone e o painel. Era ~24 na parcial de ~25h.",
+      "engagements": 33,
+      "engagement_rate": "64,7% (33/51)",
+      "engagement_rate_note": "Taxa altíssima, mas sobre n minúsculo (51 impressões). Componentes visíveis (likes 3 + reposts 1 + replies 2 + bookmarks 1 + detail_expands 9 + link_clicks 4 + profile_visits 0 = 20) somam menos que 33; os ~13 restantes são engajamentos de mídia/outros cliques que o X conta (provável interação com a imagem do gráfico). Internamente plausível.",
+      "detail_expands": 9,
+      "profile_visits": 0,
+      "link_clicks": 4,
       "likes": 3,
       "reposts": 1,
       "replies": 2,
       "bookmarks": 1,
-      "bookmarks_note": "PRIMEIRO bookmark deste post (era 0 na parcial). KPI real (invariante 2), lido no ícone do post.",
-      "profile_visits": "n/d",
-      "detail_expands": "n/d",
-      "link_clicks": "n/d",
+      "bookmarks_note": "PRIMEIRO bookmark deste post (era 0 na parcial). KPI real (invariante 2).",
       "new_followers": "n/d",
-      "account_panel_UNCONFIRMED": {
-        "impressions_28d_or_post": "18,5K",
-        "engagement_rate": "2,9%",
-        "flag": "ESCOPO A CONFIRMAR. Reportado por Wemerson como 'painel de analytics do post', mas contradiz Views=50 do mesmo post (no X, Views = impressões do post). 18,5K x 2,9% ~ 536 engajamentos, incompatível com um post de 50 views (~7 engajamentos visíveis). Padrão de tela de conta (28 dias). NÃO usar como alcance deste post até o Wemerson confirmar a origem exata."
+      "discarded_reading": {
+        "value": "18,5K impressões / 2,9% engajamento",
+        "reason": "ERRADO. Wemerson confirmou que era um card promocional NÃO relacionado a este post (datas futuras ago 1-6, comparativo de período). Descartado; não é métrica deste post nem da conta neste contexto."
       }
     },
-    "kpi_final": { "primary": "bookmarks", "value": 1, "impressions_base": 50, "bookmark_rate": "2,0% (1/50)", "analyst_saved": "indeterminado (n=1)" }
+    "kpi_final": { "primary": "bookmarks", "value": 1, "impressions_base": 51, "bookmark_rate": "2,0% (1/51)", "analyst_saved": "indeterminado (n=1)" }
   },
   "collected_at": "2026-07-26T22:13:56Z",
   "collected_final_at": "2026-07-27T20:42:00Z+",
   "collected_final_note": "Leitura final +48h do POST OFICIAL @VantageNodeio por Wemerson ao vivo no X. O post de TESTE @VantageNodvt (2081089146026647741) segue com leitura interina; final ainda não coletado.",
   "collected_at_note": "leitura PARCIAL/interina (antes do +48h). Final vem nos triggers de 27/07.",
-  "learning": "LEITURA FINAL (+48h) do OFICIAL @VantageNodeio (batismo): 50 views, 3 likes, 1 repost, 2 replies, 1 BOOKMARK (primeiro do post; era 0 na parcial). Evolução parcial->final: views 24->50, likes 2->3, bookmark 0->1. Achados: (1) melhor post da série em TODOS os campos: 50 é o maior reach já medido (série de teste ia 15-36) e é o PRIMEIRO bookmark desde o post de MVRV (16/07). Ressalva forte: empurrão de WhatsApp + n minúsculo, não é sinal de copy. (2) bookmark rate deste post = 2,0% (1/50); analyst_saved indeterminado (n=1). (3) DADO EM QUARENTENA: o '18,5K impressões / 2,9% engajamento' reportado do painel CONTRADIZ Views=50 do mesmo post e tem cara de resumo de CONTA (28 dias), não do post. NÃO tratado como alcance do post; escopo a confirmar com o Wemerson. (4) TESTE @VantageNodvt: final ainda pendente (interina: 15 views, tudo 0). Nada inventado."
+  "learning": "LEITURA FINAL (+48h) do OFICIAL @VantageNodeio (batismo), Post Analytics real: 51 impressões, 33 engagements, engagement rate 64,7%, 9 detail expands, 4 link clicks, 0 profile visits, 3 likes, 1 repost, 2 replies, 1 BOOKMARK (primeiro do post). Evolução parcial->final: views 24->51, likes 2->3, bookmark 0->1. Achados: (1) melhor post da série em TODOS os campos: 51 é o maior reach já medido (série de teste ia 15-36) e é o PRIMEIRO bookmark desde o MVRV (16/07). (2) sinais de LEAN-IN fortes para o padrão histórico: 9 detail expands (17,6% de quem alcançou ABRIU pra ler) e 4 link clicks (primeiros cliques de link relevantes da série; este post tinha link no corpo). Bookmark rate 2,0% (1/51). (3) Ressalva dura: conta nova + empurrão de WhatsApp + n minúsculo (51). O que moveu o ponteiro foi DISTRIBUIÇÃO (WhatsApp), não a copy; engagement rate de 64,7% é real mas sobre base minúscula, não extrapolar. (4) CORREÇÃO: o '18,5K/2,9%' anterior era um card promocional NÃO relacionado (datas ago 1-6), DESCARTADO. (5) TESTE @VantageNodvt: final ainda pendente (interina: 15 views, tudo 0). Nada inventado."
 }
