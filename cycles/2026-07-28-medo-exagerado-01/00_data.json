@@ -19,7 +19,7 @@
     "BTC_usd": 63694,
     "fear_greed": 29,
     "funding_apr_pct": 5.1,
-    "note": "Contexto de fechamento 27/07. SOPR, BTC e Funding NAO sao citados na copy. Fear & Greed (29) e citado na copy (T2 como 'termometro do mercado' e no reply nomeado). ATENCAO GATEKEEPER: Fear & Greed e um indice de sentimento EXTERNO (off-chain), NAO esta definido em knowledge/indicators.md nem e metrica onchain da VantageNode."
+    "note": "Contexto de fechamento 27/07 (dados capturados, nao necessariamente citados). SOPR, BTC, Funding e Fear & Greed NAO sao citados na copy corrigida. Fear & Greed (29) foi REMOVIDO da copy em 28/07 (era indice de sentimento EXTERNO/off-chain sem definicao em indicators.md, violava a invariante 9). Fica aqui so como contexto de captura, nao como numero publicado."
   },
   "notes": "Valores de fechamento 27/07/2026, leitura no terminal VantageNode (invariante 6): MVRV-STH 0,937, MVRV-LTH 1,28. Derivado usado na copy: 1 - 0,937 = 0,063 = 6,3% abaixo do custo do STH ('uns 6%'). Angulo contrarian: sentimento de medo (Fear & Greed 29) vs dados onchain de estrago leve (STH pouco abaixo do custo, LTH no lucro). O grafico do T1 e o print MVRV-STH e precisa mostrar o ultimo ponto ~0,937 (nao 0,969, que era 26/07)."
 }
