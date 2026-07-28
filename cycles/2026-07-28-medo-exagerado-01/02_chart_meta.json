@@ -1,0 +1,28 @@
+{
+  "cycle_id": "2026-07-28-medo-exagerado-01",
+  "indicator": "MVRV",
+  "metric": "MVRV-STH",
+  "unit": "ratio",
+  "chart_type": "terminal_screenshot",
+  "series": "time_series",
+  "status": "pending_capture",
+  "format_rule": "FORMATO OFICIAL DO PRINT (visual-identity.md + docs/data-sourcing.md). Print REAL do terminal VantageNode, sem render/edicao do Claude: breadcrumb do topo visivel, grafico completo no quadro, marca d'agua VANTAGENODE, SEM toolbar de desenho nem aba lateral, range 5Y (ou ALL).",
+  "reading_current": {
+    "value": 0.937,
+    "label": "MVRV-STH em 0,937 (ultimo ponto, fechamento 27/07/2026), abaixo de 1,0 = short-term holders no leve prejuizo (~6% abaixo do custo)"
+  },
+  "reference": { "value": 1.0, "label": "breakeven (custo-base)" },
+  "gatekeeper_check": "O ultimo ponto do print DEVE ler ~0,937 (27/07), NAO 0,969 (26/07, ciclo anterior). Conferencia visual da invariante 6.",
+  "capture": {
+    "provided_by": "Wemerson (Mr. G), screenshot anexado como ARQUIVO",
+    "claude_renders": false,
+    "note": "PLOT (02) apenas salva o screenshot recebido como 02_chart.png, sem editar/anotar/re-renderizar."
+  },
+  "source": {
+    "name": "VantageNode",
+    "url": "https://vantagenode.io/terminal",
+    "captured_by": "Wemerson (Mr. G), leitura direta no terminal VantageNode",
+    "captured_at": "2026-07-28T00:00:00+00:00"
+  },
+  "data_ref": "cycles/2026-07-28-medo-exagerado-01/00_data.json"
+}

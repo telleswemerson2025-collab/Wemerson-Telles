@@ -1,0 +1,25 @@
+{
+  "cycle_id": "2026-07-28-medo-exagerado-01",
+  "indicator": "MVRV",
+  "source": {
+    "name": "VantageNode",
+    "url": "https://vantagenode.io/terminal",
+    "captured_by": "Wemerson (Mr. G), leitura direta no terminal VantageNode",
+    "captured_at": "2026-07-28T00:00:00+00:00"
+  },
+  "as_of": "2026-07-27",
+  "unit": "ratio",
+  "reference": { "value": 1.0, "label": "breakeven (custo-base)" },
+  "cohorts": [
+    { "name": "LTH (long-term)", "value": 1.28, "note": "long-term holders no lucro (MVRV-LTH)" },
+    { "name": "STH (short-term)", "value": 0.937, "note": "short-term holders ~6,3% abaixo do custo, no leve prejuizo (MVRV-STH)" }
+  ],
+  "market_context": {
+    "SOPR": 0.996,
+    "BTC_usd": 63694,
+    "fear_greed": 29,
+    "funding_apr_pct": 5.1,
+    "note": "Contexto de fechamento 27/07. SOPR, BTC e Funding NAO sao citados na copy. Fear & Greed (29) e citado na copy (T2 como 'termometro do mercado' e no reply nomeado). ATENCAO GATEKEEPER: Fear & Greed e um indice de sentimento EXTERNO (off-chain), NAO esta definido em knowledge/indicators.md nem e metrica onchain da VantageNode."
+  },
+  "notes": "Valores de fechamento 27/07/2026, leitura no terminal VantageNode (invariante 6): MVRV-STH 0,937, MVRV-LTH 1,28. Derivado usado na copy: 1 - 0,937 = 0,063 = 6,3% abaixo do custo do STH ('uns 6%'). Angulo contrarian: sentimento de medo (Fear & Greed 29) vs dados onchain de estrago leve (STH pouco abaixo do custo, LTH no lucro). O grafico do T1 e o print MVRV-STH e precisa mostrar o ultimo ponto ~0,937 (nao 0,969, que era 26/07)."
+}

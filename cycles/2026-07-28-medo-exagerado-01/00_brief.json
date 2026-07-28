@@ -1,0 +1,27 @@
+{
+  "cycle_id": "2026-07-28-medo-exagerado-01",
+  "created_at": "2026-07-28T00:00:00+00:00",
+  "indicator": "MVRV",
+  "data_ref": "cycles/2026-07-28-medo-exagerado-01/00_data.json",
+  "headline_number": {
+    "value": 0.937,
+    "unit": "ratio",
+    "label": "MVRV-STH (27/07/2026)"
+  },
+  "angle": "Contrarian: o medo da rua esta exagerado frente ao que os dados onchain mostram. O sentimento marcou medo (Fear & Greed 29), mas o estrago e leve: quem comprou faz pouco tempo esta so ~6% abaixo do custo (MVRV-STH 0,937) e quem segura ha muito tempo segue no lucro e nao vendeu (MVRV-LTH 1,28). O medo esta na cabeca do pequeno investidor, nao nas maos fortes. Uma tese, contada em thread de 4 tweets + reply.",
+  "why_now": "Queda de preco e pico de medo no noticiario/sentimento; o momento pede uma leitura que separe o susto de preco do estrado real dos holders. Pauta contrarian ancorada em MVRV por coorte.",
+  "target_reader": "quem esta com medo pela queda e nao sabe ler os dados onchain; a thread traduz o dado sem jargao (teste da amiga), mantendo o rigor do numero.",
+  "single_idea": true,
+  "risk_flags": [
+    "INVARIANTE 9 (principal): a copy cita Fear & Greed, que NAO tem definicao em knowledge/indicators.md. E indice de sentimento EXTERNO/off-chain, nao metrica onchain da VantageNode. GATEKEEPER precisa decidir: exige entrada em indicators.md antes de publicar.",
+    "Invariante 5: 'tem mais chao pela frente?' beira direcao de preco, mas esta posto como PERGUNTA ao leitor, nao afirmacao; 'Nem todo susto e fundo do poco' e hedge; 'Nao e recomendacao' presente. Vigiar linguagem.",
+    "Invariante 6: o grafico do T1 (print MVRV-STH) precisa mostrar o ultimo ponto ~0,937 (fechamento 27/07), NAO 0,969 (26/07). Conferencia visual obrigatoria.",
+    "Invariante 1: garantir que Fear & Greed + MVRV-STH + MVRV-LTH servem a UMA ideia (medo exagerado vs dados), nao a tres insights soltos."
+  ],
+  "gate1": {
+    "status": "approved",
+    "note": "Direcao editorial fornecida diretamente pelo operador (Wemerson/Mr. G) em 28/07, com a copy final ja escrita: pauta contrarian 'medo exagerado' ancorada em MVRV por coorte. Angulo aprovado; copy nao deve ser reescrita.",
+    "decided_by": "Mr. G (via Wemerson)",
+    "decided_at": "2026-07-28T00:00:00+00:00"
+  }
+}

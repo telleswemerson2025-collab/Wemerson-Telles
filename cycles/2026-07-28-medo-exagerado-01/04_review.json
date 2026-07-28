@@ -1,0 +1,27 @@
+{
+  "cycle_id": "2026-07-28-medo-exagerado-01",
+  "reviewed_at": "2026-07-28T00:00:00+00:00",
+  "verdict": "block",
+  "invariants": [
+    { "id": 1, "name": "1 post = 1 ideia", "status": "ok", "note": "Uma tese: o medo (sentimento) esta exagerado frente aos dados de coorte. Fear & Greed, MVRV-STH e MVRV-LTH servem a ESSA ideia (medo vs estrago real), nao a tres insights soltos." },
+    { "id": 2, "name": "KPI = bookmark", "status": "ok", "note": "Leitura util (sentimento vs coorte) que o grafico de preco nao mostra. Ressalva leve: o T4 fecha com pergunta de engajamento ('voce acha que...'), mais retail que analista, mas nao descaracteriza o valor de referencia." },
+    { "id": 3, "name": "Link fora do corpo", "status": "ok", "note": "Corpo (T1-T4) sem link. O unico link (vantagenode.io) esta no reply. Conforme invariante 3." },
+    { "id": 4, "name": "Grafico com leitura", "status": "ok", "note": "T1 leva o print MVRV-STH e a copy interpreta o dado (medo vs custo do STH). Print ainda pendente de captura (02_chart.png nao esta no repo); a leitura textual ja acompanha o dado." },
+    { "id": 5, "name": "Contra-consenso sem irresponsabilidade", "status": "ok", "note": "Sem previsao/promessa de preco. 'Nem todo susto e fundo do poco' e hedge; 'Nao e recomendacao' presente. CAUTELA registrada: 'tem mais chao pela frente?' beira direcao de preco, mas esta como PERGUNTA ao leitor, nao afirmacao. No limite do aceitavel." },
+    { "id": 6, "name": "Numero texto = grafico = fonte", "status": "ok", "note": "Texto = fonte confere: Fear & Greed 29, MVRV-STH 0,937, MVRV-LTH 1,28; derivado 'uns 6%' = 1 - 0,937 = 6,3% (aprox honesta com 'uns'). PENDENCIA VISUAL: o print do T1 deve mostrar o ultimo ponto ~0,937 (27/07), NAO 0,969 (26/07); conferir antes de publicar. Nota menor de forma: casas decimais diferentes entre 1,28 (2) e 0,937 (3), mas cada uma bate com a fonte." },
+    { "id": 7, "name": "Gate humano inviolavel", "status": "ok", "note": "APPROVAL.md em STATUS: pending. Nenhuma marca de auto-aprovacao. Decisao e do Mr. G." },
+    { "id": 8, "name": "Sem emoji/hype/jargao/travessao", "status": "ok", "note": "Varredura nos 4 tweets + reply: zero emoji, zero hype, zero jargao de lua/pump, ZERO travessao (verificado por contagem). Voz humanizada/acessivel forte (teste da amiga): 'donos do Bitcoin', 'termometro do mercado', 'maos fortes', 'ressaca leve'. Nao usa thread-bait ('segue o fio')." },
+    { "id": 9, "name": "Indicador valido/definido", "status": "violation", "note": "BLOQUEIO. A copy cita FEAR & GREED (T2 como 'termometro do mercado marcou 29' e no reply nomeado 'Fear & Greed em 29'). Fear & Greed NAO tem definicao em knowledge/indicators.md, e e um indice de SENTIMENTO EXTERNO (off-chain), fora do escopo onchain da VantageNode. A regra de indicators.md e dura: indicador sem definicao no arquivo -> o ciclo nao passa. Ressalva de contexto: F&G nao e proprietario nem fabricado (e publico/auditavel, alternative.me), diferente das Categorias A/B; o bloqueio e de DOCUMENTACAO, nao de dado inventado. MVRV-STH e MVRV-LTH estao ok (definidos). Nenhum indicador Categoria B citado." }
+  ],
+  "numbers_reconciliation": [
+    { "claim": "Fear & Greed 29 (T2 + reply)", "in_text": 29, "in_chart": null, "in_source": 29, "matches": true },
+    { "claim": "uns 6% abaixo do custo (T2, derivado 1 - 0,937)", "in_text": 6, "in_chart": null, "in_source": 6.3, "matches": true },
+    { "claim": "MVRV-STH 0,937 (reply + chart do T1)", "in_text": 0.937, "in_chart": "pendente (~0,937 a conferir no print 27/07)", "in_source": 0.937, "matches": true },
+    { "claim": "MVRV-LTH 1,28 (reply)", "in_text": 1.28, "in_chart": null, "in_source": 1.28, "matches": true }
+  ],
+  "blocks": [
+    "Invariante 9: Fear & Greed citado (T2 e reply) sem definicao em knowledge/indicators.md. Resolucao: (a) adicionar uma entrada de definicao de Fear & Greed em indicators.md (indice publico/auditavel), tornando o uso conforme; OU (b) Mr. G decide no gate (aprovar assumindo a pendencia, revisar, ou remover a mencao). Nao reescrevi a copy (instrucao do operador).",
+    "Invariante 6 (condicional, nao-final): confirmar visualmente que o print do T1 (MVRV-STH) mostra o ultimo ponto ~0,937 do fechamento 27/07, e nao 0,969 (26/07). 02_chart.png ainda nao esta no repo."
+  ],
+  "notes": "Conteudo forte na acessibilidade (teste da amiga) e coeso numa unica tese contrarian; texto = fonte reconciliam. O bloqueio e pontual e resolvel: Fear & Greed precisa de definicao em indicators.md (ou decisao do Mr. G) e o print precisa refletir 0,937. Copy nao reescrita, conforme instruido. Gate 2 humano decide."
+}
