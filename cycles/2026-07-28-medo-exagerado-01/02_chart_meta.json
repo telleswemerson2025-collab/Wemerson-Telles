@@ -5,7 +5,11 @@
   "unit": "ratio",
   "chart_type": "terminal_screenshot",
   "series": "time_series",
-  "status": "pending_capture",
+  "status": "captured",
+  "file": "cycles/2026-07-28-medo-exagerado-01/02_chart.png",
+  "captured_at": "2026-07-28T20:01:51Z",
+  "captured_dimensions": "1365x526 PNG (339779 bytes)",
+  "privacy_check": "OK. Print conferido visualmente antes de arquivar: breadcrumb MVRV STH, grafico completo 2011-NOW, marca d'agua VANTAGENODE, SEM sidebar, SEM barra de busca, SEM e-mail/dado pessoal. Este e o print CORRETO (a v1 tinha vazado o e-mail e foi apagada).",
   "format_rule": "FORMATO OFICIAL DO PRINT (visual-identity.md + docs/data-sourcing.md). Print REAL do terminal VantageNode, sem render/edicao do Claude: breadcrumb do topo visivel, grafico completo no quadro, marca d'agua VANTAGENODE, SEM toolbar de desenho nem aba lateral, range 5Y (ou ALL).",
   "reading_current": {
     "value": 0.937,
