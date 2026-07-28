@@ -19,6 +19,11 @@ não apenas registrar métricas.
 
 -->
 
+## 2026-07-28 — INCIDENTE DE PRIVACIDADE no print (thread medo-exagerado apagada e refeita)
+- **O que aconteceu:** a thread do ciclo `2026-07-28-medo-exagerado-01` foi publicada, apagada e **republicada**. Motivo: o print do T1 da 1a versao mostrava a **aba lateral (sidebar) do terminal com o e-mail PESSOAL do Wemerson**. Dado pessoal exposto no post oficial. IDs da v1 (2082148...) foram deletados; v2 no ar com print correto (2082153...).
+- **Leitura:** o formato oficial do print ja manda "**sem aba lateral**" (docs/data-sourcing.md / visual-identity.md), justamente porque a sidebar pode carregar contexto/dado que nao deve ir ao publico. Aqui a regra de enquadramento tambem e uma regra de **privacidade/seguranca**, nao so estetica.
+- **Acao (checklist antes de publicar, reforcado):** conferir que o print (1) esta no enquadramento oficial (cabecalho + grafico, marca d'agua, **sem toolbar e SEM sidebar**), (2) mostra o valor certo (ex.: MVRV-STH ~0,937), e (3) **nao contem nada pessoal** (e-mail, nome de conta pessoal, notificacoes, abas). Um print errado publicado e irreversivel no alcance (mesmo apagando, pode ter sido visto/arquivado); o gate do print vale tanto quanto o gate do texto.
+
 ## 2026-07-27 — FEEDBACK final +48h: batismo oficial @VantageNodeio (weekend v2, 25/07)
 - **Post:** "Sábado, liquidez fina" (SOPR 1,0004 / MVRV-STH 0,954 / NUPL-STH -0,032), primeiro post da conta oficial, link no corpo, empurrão de WhatsApp.
 - **Sinal (+48h, Post Analytics real):** 51 impressões · **1 bookmark** (KPI, primeiro deste post) · 33 engagements · engagement rate 64,7% · **9 detail expands** · **4 link clicks** · 0 profile visits · 3 likes · 1 repost · 2 replies. Evolução parcial→final: views 24→51, likes 2→3, bookmark 0→1.

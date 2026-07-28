@@ -3,34 +3,41 @@
   "status": "published",
   "format": "thread",
   "account": "@VantageNodeio",
-  "published_at": "2026-07-28T16:56:25Z",
-  "published_at_note": "28/07 16:56:25 UTC (13:56 BRT), derivado do snowflake do T1. Publicacao pelo agente Chrome, confirmada ao vivo por Wemerson.",
+  "published_at": "2026-07-28T17:18:47Z",
+  "published_at_note": "REPUBLICACAO: 28/07 17:18:47 UTC (14:18 BRT), derivado do snowflake do novo T1. A 1a publicacao (16:56 UTC) foi APAGADA e refeita com o print correto (ver v1_deleted).",
   "channel": "manual",
   "publish_authorized_by": "Wemerson (Mr. G), Gate 2 approved em 28/07",
   "version_published": "A (onchain-pura, SEM Fear & Greed), exatamente a copy aprovada",
   "thread": {
     "posts_count": 5,
-    "structure": "T1 (com imagem = print MVRV-STH ~0,937) + T2 + T3 + T4 + reply (com link)",
+    "structure": "T1 (com imagem = print MVRV-STH ~0,937, CORRETO) + T2 + T3 + T4 + reply (com link)",
     "confirmed_live": true,
-    "confirmation_note": "Wemerson confirmou: imagem so no T1, link so no reply, texto identico ao aprovado.",
-    "primary_post_id": "2082148179793838282",
+    "confirmation_note": "Copy identica a aprovada (versao A). Imagem so no T1 (print correto, sem sidebar/dado pessoal), link so no reply.",
+    "primary_post_id": "2082153808663105717",
     "posts": [
-      { "id": "T1", "role": "hook + imagem MVRV-STH", "status_id": "2082148179793838282", "url": "https://x.com/VantageNodeio/status/2082148179793838282" },
-      { "id": "T2", "role": "medo (qualitativo) + MVRV-STH", "status_id": "2082148195690315776", "url": "https://x.com/VantageNodeio/status/2082148195690315776" },
-      { "id": "T3", "role": "coorte LTH maos fortes", "status_id": "2082148208960995582", "url": "https://x.com/VantageNodeio/status/2082148208960995582" },
-      { "id": "T4", "role": "sintese + pergunta + disclaimer", "status_id": "2082148233409687900", "url": "https://x.com/VantageNodeio/status/2082148233409687900" },
-      { "id": "reply", "role": "MVRV-STH/LTH + NUPL + link", "status_id": "2082148247225712898", "url": "https://x.com/VantageNodeio/status/2082148247225712898" }
+      { "id": "T1", "role": "hook + imagem MVRV-STH (correta)", "status_id": "2082153808663105717", "url": "https://x.com/VantageNodeio/status/2082153808663105717" },
+      { "id": "T2", "role": "medo (qualitativo) + MVRV-STH", "status_id": "2082153810915405920", "url": "https://x.com/VantageNodeio/status/2082153810915405920" },
+      { "id": "T3", "role": "coorte LTH maos fortes", "status_id": "2082153812798689612", "url": "https://x.com/VantageNodeio/status/2082153812798689612" },
+      { "id": "T4", "role": "sintese + pergunta + disclaimer", "status_id": "2082153814522487266", "url": "https://x.com/VantageNodeio/status/2082153814522487266" },
+      { "id": "reply", "role": "MVRV-STH/LTH + NUPL + link", "status_id": "2082153816791679410", "url": "https://x.com/VantageNodeio/status/2082153816791679410" }
     ],
     "profile_url": "https://x.com/VantageNodeio"
+  },
+  "v1_deleted": {
+    "reason": "PRIVACIDADE: o print do T1 da 1a versao mostrava a aba lateral (sidebar) do terminal com o e-mail PESSOAL do Wemerson. Thread apagada e refeita com o print correto (sem sidebar, sem dado pessoal).",
+    "old_post_ids_dead": ["2082148179793838282", "2082148195690315776", "2082148208960995582", "2082148233409687900", "2082148247225712898"],
+    "old_published_at": "2026-07-28T16:56:25Z",
+    "lesson": "Antes de publicar, conferir que o print NAO tem aba lateral nem nada pessoal (reforca a regra de enquadramento oficial: 'sem aba lateral')."
   },
   "reply_link": {
     "used": "https://vantagenode.io",
     "note": "Link generico do terminal, no reply (invariante 3)."
   },
-  "image_note": "T1 com o print MVRV-STH (~0,937, formato oficial). O arquivo 02_chart.png ainda pode ser anexado ao repo para fechar o ciclo em disco (a imagem esta viva no post).",
-  "fear_greed_note": "Publicada a versao A SEM Fear & Greed. O agente Chrome corretamente NAO aplicou a instrucao de re-adicionar 'Fear & Greed em 29', que contradizia a decisao onchain-pura do Wemerson e reabriria a invariante 9.",
+  "image_note": "T1 com o print MVRV-STH CORRETO (~0,937, formato oficial, sem sidebar). O arquivo 02_chart.png ainda pode ser anexado ao repo para fechar o ciclo em disco.",
+  "fear_greed_note": "Publicada a versao A SEM Fear & Greed (ambas as tentativas). Corretamente NAO se aplicou a instrucao de re-adicionar 'Fear & Greed em 29', que reabriria a invariante 9.",
   "approval_ref": "cycles/2026-07-28-medo-exagerado-01/APPROVAL.md",
   "copy_ref": "cycles/2026-07-28-medo-exagerado-01/03_copy.json",
-  "feedback_due_at": "2026-07-30T16:56:25Z",
-  "feedback_note": "Janela +48h fecha 30/07 16:56 UTC (13:56 BRT). Coletar Post Analytics: impressoes, bookmarks (KPI), engagements/rate, detail expands, link clicks, profile visits, novos seguidores."
+  "feedback_due_at": "2026-07-30T17:18:47Z",
+  "feedback_trigger_scheduled": false,
+  "feedback_note": "Janela +48h fecha 30/07 17:18 UTC (14:18 BRT), recalculada pela republicacao. TRIGGER automatico NAO agendado (instrucao do Wemerson: confirmar antes). Coletar Post Analytics: impressoes, bookmarks (KPI), engagements/rate, detail expands, link clicks, profile visits, novos seguidores."
 }

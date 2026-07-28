@@ -87,7 +87,7 @@ Edite o campo `STATUS:` no topo:
 
 **Nota (opcional):** Aprovado pelo Wemerson (Mr. G) em 28/07/2026 ("eu aprovado o gate 2"). Copy final: thread contrarian "medo exagerado", corpo sem Fear & Greed (medo qualitativo), reply com MVRV-STH 0,937 / MVRV-LTH 1,28 / NUPL 0,170 (mercado em lucro modesto, longe da capitulacao). GATEKEEPER PASS 9/9.
 
-**PUBLICADO:** 28/07 16:56 UTC (13:56 BRT) na @VantageNodeio, versao A (sem Fear & Greed), 5 posts confirmados ao vivo. Ver 05_published.json (post_ids). FEEDBACK +48h agendado para 30/07 16:56 UTC. Pendencia so de arquivo: anexar o 02_chart.png (~0,937) ao repo.
+**PUBLICADO (republicado):** a 1a versao (16:56 UTC) foi APAGADA por vazamento de dado pessoal no print (sidebar com e-mail do Wemerson) e refeita. Versao no ar: 28/07 17:18 UTC (14:18 BRT) na @VantageNodeio, versao A (sem Fear & Greed), 5 posts, print correto. Ver 05_published.json (novos post_ids + v1_deleted). FEEDBACK +48h em 30/07 17:18 UTC, mas o trigger NAO foi agendado ainda (Wemerson vai confirmar). Pendencia so de arquivo: anexar o 02_chart.png ao repo.
 
 ---
 _Gráfico do ciclo: 02_chart.png = print real da série MVRV-STH (último ponto ~0,937), a capturar. Ver 02_chart_meta.json._
