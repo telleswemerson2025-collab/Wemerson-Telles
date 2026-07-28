@@ -14,6 +14,24 @@
     { "name": "LTH (long-term)", "value": 1.28, "note": "long-term holders no lucro (MVRV-LTH)" },
     { "name": "STH (short-term)", "value": 0.937, "note": "short-term holders ~6,3% abaixo do custo, no leve prejuizo (MVRV-STH)" }
   ],
+  "nupl": {
+    "metric": "NUPL agregado",
+    "value": 0.170,
+    "zone": "Hope (banda 0 a 0,25)",
+    "series_daily": [
+      { "date": "2026-07-23", "value": 0.188 },
+      { "date": "2026-07-24", "value": 0.175 },
+      { "date": "2026-07-25", "value": 0.178 },
+      { "date": "2026-07-26", "value": 0.190 },
+      { "date": "2026-07-27", "value": 0.170 }
+    ],
+    "note": "NUPL baixo e positivo = lucro nao realizado modesto / inicio de recuperacao. Indicador ONCHAIN definido em knowledge/indicators.md. Usado como lastro do angulo 'medo exagerado' no lugar do indice externo Fear & Greed. Citado no reply."
+  },
+  "print_confirmation": {
+    "metric": "MVRV-STH",
+    "close_2026-07-27": 0.937,
+    "note": "Print do T1 deve ler ~0,937 (fechamento 27/07). O 0,969 era do dia 26/07. Confirmado por Wemerson no terminal."
+  },
   "market_context": {
     "SOPR": 0.996,
     "BTC_usd": 63694,

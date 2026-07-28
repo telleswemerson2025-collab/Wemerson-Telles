@@ -12,10 +12,10 @@ STATUS: pending
 
 ## Resumo
 - **Formato:** thread educativa contrarian (4 tweets + reply). Tese 1, 28/07.
-- **Indicador:** MVRV por coorte (MVRV-STH âncora, MVRV-LTH contexto). Sem indicador externo.
+- **Indicador:** MVRV por coorte (MVRV-STH âncora, MVRV-LTH contexto) + NUPL agregado (lastro onchain do "medo", no reply). Sem indicador externo. Todos definidos em `indicators.md`.
 - **Ângulo:** o medo da rua está exagerado frente aos dados onchain. Há medo (mood qualitativo), mas o estrago é leve: STH ~6% abaixo do custo (MVRV-STH 0,937) e LTH no lucro sem vender (MVRV-LTH 1,28). O medo é do pequeno, não das mãos fortes.
-- **Número-chave:** MVRV-STH 0,937 (27/07) · MVRV-LTH 1,28
-- **Correção aplicada (28/07):** removida a citação ao Fear & Greed (era indicador externo sem definição em indicators.md). Mesma tese; o medo fica qualitativo e só indicadores onchain definidos são citados. Instrução do operador: usar a mesma tese, corrigir para ser aprovado.
+- **Número-chave:** MVRV-STH 0,937 (27/07) · MVRV-LTH 1,28 · NUPL 0,170 (faixa Hope)
+- **Correção aplicada (28/07):** (a) removida a citação ao Fear & Greed (indicador externo sem definição em indicators.md); (b) adicionado NUPL 0,170 ao reply como lastro onchain **definido** do ângulo "medo", no lugar do índice externo. Mesma tese; o medo fica qualitativo no corpo e ganha respaldo onchain no reply. Instrução do operador: usar a mesma tese, corrigir para ser aprovado + usar NUPL como proxy.
 - **Fonte dos números:** 00_data.json (leitura manual do terminal VantageNode)
 
 ## Thread (corpo, sem link)
@@ -39,7 +39,7 @@ Resumo: a rua com medo, os dados só de ressaca leve. Nem todo susto no preço �
 
 ## Primeiro reply (com o link)
 ```
-MVRV dos short-term holders em 0,937 (abaixo de 1 = novatos no leve prejuízo), MVRV dos long-term holders em 1,28 (veteranos no lucro). Leitura no terminal: vantagenode.io
+MVRV dos short-term holders em 0,937 (abaixo de 1 = novatos no leve prejuízo), MVRV dos long-term holders em 1,28 (veteranos no lucro), NUPL em 0,170 (lucro não realizado modesto, começo de recuperação). Leitura no terminal: vantagenode.io
 ```
 
 ## Veredito do GATEKEEPER: PASS (após correção da copy)
@@ -55,7 +55,7 @@ Checklist dos 9 invariantes:
 | 3 | Link fora do corpo | ok | Corpo sem link; vantagenode.io só no reply. |
 | 4 | Gráfico com leitura | ok | Copy interpreta o MVRV-STH. Print pendente de captura. |
 | 5 | Contra-consenso sem irresponsabilidade | ok (cautela) | Sem previsão/promessa; "Não é recomendação" presente. "tem mais chão pela frente?" beira preço, mas é pergunta ao leitor, não afirmação. |
-| 6 | Número texto = gráfico = fonte | ok (condicional) | Texto = fonte confere (0,937 / 1,28 / ~6%). **Conferir o print:** último ponto deve ler ~0,937 (27/07), não 0,969 (26/07). |
+| 6 | Número texto = gráfico = fonte | ok | Texto = fonte confere (0,937 / 1,28 / 0,170 / ~6%). Print **confirmado** em ~0,937 (Wemerson, fechamento 27/07). Falta só anexar o arquivo. |
 | 7 | Gate humano intacto | ok | STATUS pending; nenhuma auto-aprovação. |
 | 8 | Sem emoji/hype/jargão/travessão | ok | Zero de tudo, verificado. Voz acessível forte. |
 | 9 | Indicador válido/definido | ok | **Resolvido:** citação ao Fear & Greed removida; só MVRV-STH/LTH (definidos). Ver abaixo. |
@@ -65,15 +65,16 @@ A copy original citava **Fear & Greed** (parêntese do T2 e prefixo do reply), u
 
 ### Reconciliação de números (texto = gráfico = fonte)
 - uns 6%: = 1 − 0,937 = 6,3% ✅ (aprox. honesta com "uns").
-- MVRV-STH 0,937: texto = fonte ✅ · **gráfico: pendente (~0,937 a conferir no print)**.
+- MVRV-STH 0,937: texto = fonte ✅ · **gráfico: valor confirmado ~0,937 (Wemerson, fechamento 27/07)**.
 - MVRV-LTH 1,28: texto = fonte ✅.
+- NUPL 0,170: texto = fonte ✅ (faixa Hope; indicador onchain definido em indicators.md).
 - (Fear & Greed 29: removido da copy, não há mais número externo a reconciliar.)
 
 ### Teste da amiga (linguagem acessível)
 **Passa com folga.** Traduz tudo sem jargão: "os donos do Bitcoin", "quem comprou faz pouco tempo está uns 6% abaixo do que pagou", "mãos fortes", "a rua com medo, os dados só de ressaca leve". Uma pessoa leiga entende a tese sem saber o que é MVRV.
 
 ### Conferência do print (visual-identity.md)
-`02_chart.png` **ainda não está no repo** (pendente de captura). Ao anexar, deve seguir o FORMATO OFICIAL (visual-identity.md + data-sourcing.md): print real do terminal, breadcrumb `MVRV · STH` visível, gráfico completo no quadro, marca d'água VANTAGENODE, sem toolbar de desenho nem aba lateral, range 5Y/ALL. **Além do formato, o último ponto tem de ler ~0,937** (fechamento 27/07), não 0,969.
+`02_chart.png` **ainda não está no repo** (pendente só de captura do arquivo; o valor já está confirmado). Ao anexar, deve seguir o FORMATO OFICIAL (visual-identity.md + data-sourcing.md): print real do terminal, breadcrumb `MVRV · STH` visível, gráfico completo no quadro, marca d'água VANTAGENODE, sem toolbar de desenho nem aba lateral, range 5Y/ALL. **O último ponto lê ~0,937** (fechamento 27/07, confirmado por Wemerson), não 0,969.
 
 ## Decisão do Mr. G
 Edite o campo `STATUS:` no topo:

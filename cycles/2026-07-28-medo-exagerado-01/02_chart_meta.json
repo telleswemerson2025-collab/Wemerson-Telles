@@ -12,7 +12,7 @@
     "label": "MVRV-STH em 0,937 (ultimo ponto, fechamento 27/07/2026), abaixo de 1,0 = short-term holders no leve prejuizo (~6% abaixo do custo)"
   },
   "reference": { "value": 1.0, "label": "breakeven (custo-base)" },
-  "gatekeeper_check": "O ultimo ponto do print DEVE ler ~0,937 (27/07), NAO 0,969 (26/07, ciclo anterior). Conferencia visual da invariante 6.",
+  "gatekeeper_check": "O ultimo ponto do print DEVE ler ~0,937 (27/07), NAO 0,969 (26/07, ciclo anterior). VALOR CONFIRMADO por Wemerson no terminal: fechamento 27/07 = 0,937. Falta so a captura do arquivo 02_chart.png no formato oficial mostrando esse ponto.",
   "capture": {
     "provided_by": "Wemerson (Mr. G), screenshot anexado como ARQUIVO",
     "claude_renders": false,

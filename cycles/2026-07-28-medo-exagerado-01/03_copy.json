@@ -29,17 +29,19 @@
     }
   ],
   "reply": {
-    "text": "MVRV dos short-term holders em 0,937 (abaixo de 1 = novatos no leve prejuízo), MVRV dos long-term holders em 1,28 (veteranos no lucro). Leitura no terminal: vantagenode.io",
+    "text": "MVRV dos short-term holders em 0,937 (abaixo de 1 = novatos no leve prejuízo), MVRV dos long-term holders em 1,28 (veteranos no lucro), NUPL em 0,170 (lucro não realizado modesto, começo de recuperação). Leitura no terminal: vantagenode.io",
+    "char_count": 239,
     "link": "https://vantagenode.io"
   },
-  "correction_note": "Versao corrigida (28/07): removida a citacao ao Fear & Greed (T2 parentese + prefixo do reply) para nao violar a invariante 9 (indicador externo sem definicao em indicators.md). A tese e a estrutura sao as mesmas; o 'medo' fica como mood qualitativo, e os numeros citados sao so os onchain definidos (MVRV-STH, MVRV-LTH). Instrucao do operador: usar a mesma tese, corrigir para ser aprovado.",
+  "correction_note": "Versao corrigida (28/07): (a) removida a citacao ao Fear & Greed (T2 parentese + prefixo do reply) para nao violar a invariante 9; (b) adicionado NUPL 0,170 ao reply como LASTRO ONCHAIN definido (indicators.md) do angulo 'medo', no lugar do indice externo. A tese e os tweets do corpo sao os mesmos; o 'medo' fica mood qualitativo no corpo e ganha respaldo onchain no reply. Instrucao do operador: mesma tese, corrigir para ser aprovado + usar NUPL como proxy.",
   "numbers": [
     { "value": 6, "unit": "%", "where": "post", "claim": "uns 6% abaixo do que pagou (T2, derivado de 1 - 0,937 = 6,3%)" },
     { "value": 0.937, "unit": "ratio", "where": "reply", "claim": "MVRV dos short-term holders em 0,937" },
     { "value": 1.28, "unit": "ratio", "where": "reply", "claim": "MVRV dos long-term holders em 1,28" },
-    { "value": 0.937, "unit": "ratio", "where": "chart", "claim": "MVRV-STH ~0,937 (ultimo ponto do print do T1)" }
+    { "value": 0.170, "unit": "ratio", "where": "reply", "claim": "NUPL em 0,170 (Hope, lucro nao realizado modesto)" },
+    { "value": 0.937, "unit": "ratio", "where": "chart", "claim": "MVRV-STH ~0,937 (ultimo ponto do print do T1, fechamento 27/07)" }
   ],
-  "reading": "Tese contrarian (inalterada): o medo do mercado esta descolado do estrago real onchain. O medo entra como leitura de humor qualitativa (sem citar indice externo); os numeros sao onchain: o short-term holder esta so ~6% abaixo do custo (MVRV-STH 0,937, leve prejuizo) e o long-term holder segue no lucro sem vender (MVRV-LTH 1,28). Logo, o medo e do pequeno investidor, nao das maos fortes; um tropeço, nao um desastre. Descreve regime/custo por coorte, sem afirmar direcao de preco (a duvida sobre 'mais chao pela frente' e devolvida como pergunta ao leitor).",
+  "reading": "Tese contrarian (inalterada): o medo do mercado esta descolado do estrago real onchain. O medo entra como leitura de humor qualitativa no corpo (sem citar indice externo); os numeros sao onchain: o short-term holder esta so ~6% abaixo do custo (MVRV-STH 0,937, leve prejuizo), o long-term holder segue no lucro sem vender (MVRV-LTH 1,28) e o NUPL agregado em 0,170 (faixa Hope) mostra lucro nao realizado modesto / inicio de recuperacao. Logo, o medo e do pequeno investidor, nao das maos fortes; um tropeço, nao um desastre. Descreve regime/custo por coorte, sem afirmar direcao de preco (a duvida sobre 'mais chao pela frente' e devolvida como pergunta ao leitor).",
   "single_idea": true,
   "link_in_reply_only": true,
   "bookmark_test": "Sim: da ao leitor uma leitura util (medo de mercado vs dados de coorte) que o grafico de preco nao mostra. Ressalva: o T4 termina com pergunta de engajamento, mais retail que analista.",
