@@ -25,7 +25,7 @@
       { "date": "2026-07-26", "value": 0.190 },
       { "date": "2026-07-27", "value": 0.170 }
     ],
-    "note": "NUPL baixo e positivo = lucro nao realizado modesto / inicio de recuperacao. Indicador ONCHAIN definido em knowledge/indicators.md. Usado como lastro do angulo 'medo exagerado' no lugar do indice externo Fear & Greed. Citado no reply."
+    "note": "NUPL baixo e positivo = mercado em lucro modesto, longe da capitulacao (capitulacao seria NUPL < 0, conforme indicators.md). Indicador ONCHAIN definido em knowledge/indicators.md. Usado como lastro do angulo 'medo exagerado' no lugar do indice externo Fear & Greed. Citado no reply."
   },
   "print_confirmation": {
     "metric": "MVRV-STH",

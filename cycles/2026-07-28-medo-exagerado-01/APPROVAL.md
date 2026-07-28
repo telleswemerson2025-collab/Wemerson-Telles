@@ -15,7 +15,8 @@ STATUS: pending
 - **Indicador:** MVRV por coorte (MVRV-STH âncora, MVRV-LTH contexto) + NUPL agregado (lastro onchain do "medo", no reply). Sem indicador externo. Todos definidos em `indicators.md`.
 - **Ângulo:** o medo da rua está exagerado frente aos dados onchain. Há medo (mood qualitativo), mas o estrago é leve: STH ~6% abaixo do custo (MVRV-STH 0,937) e LTH no lucro sem vender (MVRV-LTH 1,28). O medo é do pequeno, não das mãos fortes.
 - **Número-chave:** MVRV-STH 0,937 (27/07) · MVRV-LTH 1,28 · NUPL 0,170 (faixa Hope)
-- **Correção aplicada (28/07):** (a) removida a citação ao Fear & Greed (indicador externo sem definição em indicators.md); (b) adicionado NUPL 0,170 ao reply como lastro onchain **definido** do ângulo "medo", no lugar do índice externo. Mesma tese; o medo fica qualitativo no corpo e ganha respaldo onchain no reply. Instrução do operador: usar a mesma tese, corrigir para ser aprovado + usar NUPL como proxy.
+- **Correção aplicada (28/07):** (a) removida a citação ao Fear & Greed (indicador externo sem definição em indicators.md); (b) adicionado NUPL 0,170 ao reply como lastro onchain **definido** do ângulo "medo", no lugar do índice externo; (c) refinado o texto do NUPL no reply para "(mercado em lucro modesto, longe da capitulação)". Mesma tese; o medo fica qualitativo no corpo e ganha respaldo onchain no reply. Instrução do operador: usar a mesma tese, corrigir para ser aprovado + usar NUPL como proxy.
+- **Revalidação do reply (só o reply, GATEKEEPER):** PASS. Continua descritivo (descreve a zona do NUPL, sem previsão de preço, invariante 5); "capitulação" é a zona definida do NUPL (< 0 em indicators.md), não o painel proprietário da Categoria B; 235 caracteres (dentro de 280). Corpo (tweets) intocado.
 - **Fonte dos números:** 00_data.json (leitura manual do terminal VantageNode)
 
 ## Thread (corpo, sem link)
@@ -39,7 +40,7 @@ Resumo: a rua com medo, os dados só de ressaca leve. Nem todo susto no preço �
 
 ## Primeiro reply (com o link)
 ```
-MVRV dos short-term holders em 0,937 (abaixo de 1 = novatos no leve prejuízo), MVRV dos long-term holders em 1,28 (veteranos no lucro), NUPL em 0,170 (lucro não realizado modesto, começo de recuperação). Leitura no terminal: vantagenode.io
+MVRV dos short-term holders em 0,937 (abaixo de 1 = novatos no leve prejuízo), MVRV dos long-term holders em 1,28 (veteranos no lucro), NUPL em 0,170 (mercado em lucro modesto, longe da capitulação). Leitura no terminal: vantagenode.io
 ```
 
 ## Veredito do GATEKEEPER: PASS (após correção da copy)
