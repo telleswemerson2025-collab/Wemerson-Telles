@@ -1,13 +1,15 @@
 # APPROVAL: Ciclo 2026-07-28-medo-exagerado-01
 
-STATUS: pending
+STATUS: approved
 
 <!--
   GATE 2: INVIOLÁVEL (invariante 7).
   Somente o Mr. G altera STATUS para: approved | revise | rejected
   Nenhum agente marca 'approved' em nome do humano. O BROADCAST (05) só publica com STATUS: approved.
   Em caso de dúvida, o ciclo para aqui (regra de segurança do CLAUDE.md).
-  Veredito do GATEKEEPER: PASS (apos correcao da copy, ver abaixo). Aguarda o Gate 2 do Mr. G.
+  Veredito do GATEKEEPER: PASS. STATUS mudado para 'approved' por decisao explicita do Wemerson (Mr. G)
+  em 28/07/2026 ("eu aprovado o gate 2"). Nenhum agente aprovou por conta propria.
+  PENDENCIA OPERACIONAL antes do 'Post all': anexar o 02_chart.png (~0,937) no formato oficial.
 -->
 
 ## Resumo
@@ -83,7 +85,7 @@ Edite o campo `STATUS:` no topo:
 - `revise`   → devolve ao pipeline; escreva a nota abaixo.
 - `rejected` → descarta o ciclo.
 
-**Nota (opcional):**
+**Nota (opcional):** Aprovado pelo Wemerson (Mr. G) em 28/07/2026 ("eu aprovado o gate 2"). Copy final: thread contrarian "medo exagerado", corpo sem Fear & Greed (medo qualitativo), reply com MVRV-STH 0,937 / MVRV-LTH 1,28 / NUPL 0,170 (mercado em lucro modesto, longe da capitulacao). GATEKEEPER PASS 9/9. BROADCAST (05) nao executado por mim (publicacao manual). Antes do "Post all": anexar o 02_chart.png (~0,937) no formato oficial.
 
 ---
 _Gráfico do ciclo: 02_chart.png = print real da série MVRV-STH (último ponto ~0,937), a capturar. Ver 02_chart_meta.json._

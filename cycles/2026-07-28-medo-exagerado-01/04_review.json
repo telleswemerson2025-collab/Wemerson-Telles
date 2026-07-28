@@ -2,6 +2,12 @@
   "cycle_id": "2026-07-28-medo-exagerado-01",
   "reviewed_at": "2026-07-28T00:00:00+00:00",
   "verdict": "pass",
+  "gate2_decision": {
+    "status": "approved",
+    "decided_by": "Wemerson (Mr. G)",
+    "decided_at": "2026-07-28T00:00:00+00:00",
+    "note": "Aprovou o Gate 2 ('eu aprovado o gate 2'). Publicacao segue manual; antes do post, anexar o 02_chart.png (~0,937). Nenhum agente aprovou por conta propria."
+  },
   "verdict_history": [
     { "at": "2026-07-28T00:00:00+00:00", "verdict": "block", "reason": "Invariante 9: Fear & Greed sem definicao em indicators.md." },
     { "at": "2026-07-28T00:00:00+00:00", "verdict": "pass", "reason": "Resolvido pela CORRECAO DA COPY (instrucao do operador: mesma tese, sem violar). Removida a citacao ao Fear & Greed (parentese do T2 e prefixo do reply); o medo fica como mood qualitativo e so indicadores onchain definidos (MVRV-STH, MVRV-LTH) sao citados. Marca segue onchain-pura; nada adicionado ao indicators.md. Invariante 9 agora ok." }
