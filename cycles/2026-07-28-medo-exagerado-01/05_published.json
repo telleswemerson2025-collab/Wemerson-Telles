@@ -38,6 +38,7 @@
   "approval_ref": "cycles/2026-07-28-medo-exagerado-01/APPROVAL.md",
   "copy_ref": "cycles/2026-07-28-medo-exagerado-01/03_copy.json",
   "feedback_due_at": "2026-07-30T17:18:47Z",
-  "feedback_trigger_scheduled": false,
-  "feedback_note": "Janela +48h fecha 30/07 17:18 UTC (14:18 BRT), recalculada pela republicacao. TRIGGER automatico NAO agendado (instrucao do Wemerson: confirmar antes). Coletar Post Analytics: impressoes, bookmarks (KPI), engagements/rate, detail expands, link clicks, profile visits, novos seguidores."
+  "feedback_trigger_scheduled": true,
+  "feedback_trigger_id": "trig_0181LmgUKPLVb3rpdq3iiYJq",
+  "feedback_note": "Janela +48h fecha 30/07 17:18 UTC (14:18 BRT), recalculada pela republicacao. TRIGGER agendado (confirmado pelo Wemerson) com os post_ids NOVOS (2082153...), push on. Coletar Post Analytics: impressoes, bookmarks (KPI), engagements/rate, detail expands, link clicks, profile visits, novos seguidores."
 }
