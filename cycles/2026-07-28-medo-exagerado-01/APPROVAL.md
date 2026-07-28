@@ -85,7 +85,9 @@ Edite o campo `STATUS:` no topo:
 - `revise`   → devolve ao pipeline; escreva a nota abaixo.
 - `rejected` → descarta o ciclo.
 
-**Nota (opcional):** Aprovado pelo Wemerson (Mr. G) em 28/07/2026 ("eu aprovado o gate 2"). Copy final: thread contrarian "medo exagerado", corpo sem Fear & Greed (medo qualitativo), reply com MVRV-STH 0,937 / MVRV-LTH 1,28 / NUPL 0,170 (mercado em lucro modesto, longe da capitulacao). GATEKEEPER PASS 9/9. BROADCAST (05) nao executado por mim (publicacao manual). Antes do "Post all": anexar o 02_chart.png (~0,937) no formato oficial.
+**Nota (opcional):** Aprovado pelo Wemerson (Mr. G) em 28/07/2026 ("eu aprovado o gate 2"). Copy final: thread contrarian "medo exagerado", corpo sem Fear & Greed (medo qualitativo), reply com MVRV-STH 0,937 / MVRV-LTH 1,28 / NUPL 0,170 (mercado em lucro modesto, longe da capitulacao). GATEKEEPER PASS 9/9.
+
+**PUBLICADO:** 28/07 16:56 UTC (13:56 BRT) na @VantageNodeio, versao A (sem Fear & Greed), 5 posts confirmados ao vivo. Ver 05_published.json (post_ids). FEEDBACK +48h agendado para 30/07 16:56 UTC. Pendencia so de arquivo: anexar o 02_chart.png (~0,937) ao repo.
 
 ---
 _Gráfico do ciclo: 02_chart.png = print real da série MVRV-STH (último ponto ~0,937), a capturar. Ver 02_chart_meta.json._

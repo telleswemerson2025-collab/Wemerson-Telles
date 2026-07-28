@@ -1,0 +1,36 @@
+{
+  "cycle_id": "2026-07-28-medo-exagerado-01",
+  "status": "published",
+  "format": "thread",
+  "account": "@VantageNodeio",
+  "published_at": "2026-07-28T16:56:25Z",
+  "published_at_note": "28/07 16:56:25 UTC (13:56 BRT), derivado do snowflake do T1. Publicacao pelo agente Chrome, confirmada ao vivo por Wemerson.",
+  "channel": "manual",
+  "publish_authorized_by": "Wemerson (Mr. G), Gate 2 approved em 28/07",
+  "version_published": "A (onchain-pura, SEM Fear & Greed), exatamente a copy aprovada",
+  "thread": {
+    "posts_count": 5,
+    "structure": "T1 (com imagem = print MVRV-STH ~0,937) + T2 + T3 + T4 + reply (com link)",
+    "confirmed_live": true,
+    "confirmation_note": "Wemerson confirmou: imagem so no T1, link so no reply, texto identico ao aprovado.",
+    "primary_post_id": "2082148179793838282",
+    "posts": [
+      { "id": "T1", "role": "hook + imagem MVRV-STH", "status_id": "2082148179793838282", "url": "https://x.com/VantageNodeio/status/2082148179793838282" },
+      { "id": "T2", "role": "medo (qualitativo) + MVRV-STH", "status_id": "2082148195690315776", "url": "https://x.com/VantageNodeio/status/2082148195690315776" },
+      { "id": "T3", "role": "coorte LTH maos fortes", "status_id": "2082148208960995582", "url": "https://x.com/VantageNodeio/status/2082148208960995582" },
+      { "id": "T4", "role": "sintese + pergunta + disclaimer", "status_id": "2082148233409687900", "url": "https://x.com/VantageNodeio/status/2082148233409687900" },
+      { "id": "reply", "role": "MVRV-STH/LTH + NUPL + link", "status_id": "2082148247225712898", "url": "https://x.com/VantageNodeio/status/2082148247225712898" }
+    ],
+    "profile_url": "https://x.com/VantageNodeio"
+  },
+  "reply_link": {
+    "used": "https://vantagenode.io",
+    "note": "Link generico do terminal, no reply (invariante 3)."
+  },
+  "image_note": "T1 com o print MVRV-STH (~0,937, formato oficial). O arquivo 02_chart.png ainda pode ser anexado ao repo para fechar o ciclo em disco (a imagem esta viva no post).",
+  "fear_greed_note": "Publicada a versao A SEM Fear & Greed. O agente Chrome corretamente NAO aplicou a instrucao de re-adicionar 'Fear & Greed em 29', que contradizia a decisao onchain-pura do Wemerson e reabriria a invariante 9.",
+  "approval_ref": "cycles/2026-07-28-medo-exagerado-01/APPROVAL.md",
+  "copy_ref": "cycles/2026-07-28-medo-exagerado-01/03_copy.json",
+  "feedback_due_at": "2026-07-30T16:56:25Z",
+  "feedback_note": "Janela +48h fecha 30/07 16:56 UTC (13:56 BRT). Coletar Post Analytics: impressoes, bookmarks (KPI), engagements/rate, detail expands, link clicks, profile visits, novos seguidores."
+}
