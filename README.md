@@ -1,3 +1,3 @@
-# Wemerson-Telles
+# Wemerson Telles App
 
-App React Native para visualizar carteira Bitget (somente leitura).
+App Gui Telles – Integrações e funcionalidades.
