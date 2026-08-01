@@ -1,0 +1,16 @@
+{
+  "name": "gui-telles-bitget",
+  "version": "1.0.0",
+  "description": "Gui Telles App – Integração Bitget",
+  "main": "index.js",
+  "dependencies": {
+    "react": "18.3.1",
+    "react-native": "0.75.0",
+    "@react-native-async-storage/async-storage": "^2.0.0",
+    "crypto-js": "^4.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.0",
+    "babel-plugin-module-resolver": "^5.0.2"
+  }
+}
