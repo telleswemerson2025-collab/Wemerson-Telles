@@ -45,6 +45,30 @@ Ordem de preferência: 1) Tem BDR? Opere pela B3. 2) Tem ETF do tema? Use o ETF.
 ETF? Corretora internacional (Avenue, IBKR, Schwab). 4) Já tem conta nos EUA? Direto na bolsa
 americana. A VRT já está tokenizada na Bitget; a CEG pode ser acessada via BDR na B3 ou nos EUA.
 
+### Dá pra investir na Carteira IA pela Binance? E ações tokenizadas / lei brasileira?
+A Carteira IA é composta por **ações** (não cripto), então o caminho recomendado **não é a
+Binance**. As formas de operar (em ordem): BDR na B3, ETF do tema, corretora internacional
+(Avenue, IBKR, Schwab), ou direto na bolsa americana. Sendo brasileiro, você consegue investir
+tranquilamente por esses caminhos, **sem depender da Binance nem de ação tokenizada**. Alguns
+ativos têm versão tokenizada em algumas exchanges (ex.: VRT na Bitget), mas é caso a caso.
+Sobre a **legalidade de ações tokenizadas no Brasil**: é um tema jurídico/regulatório em
+evolução — não damos orientação legal definitiva por aqui; para essa parte específica ou para a
+adesão, encaminhar pro suporte (suporte@theblockcapital.net). Ponto tranquilizador: os caminhos
+recomendados (BDR na B3, corretoras internacionais reguladas) **não dependem de tokenização**.
+
+### Uma ação indicada está acima do preço de entrada — entro agora?
+Pode entrar com **metade** do que foi recomendado agora e **aguardar um pullback** pra entrar
+com a outra metade — e focar nas próximas entradas que vierem. A carteira é projeto de longo
+prazo; leva um tempo até ser totalmente montada.
+
+### Preço da Carteira IA
+Avulsa: **R$2.997,00/ano** (sem desconto). No **Vitalício** já vem incluída (junto com a CRM).
+Detalhes de planos/desconto em `blockcapital-comercial.md`.
+
+### Perfis da Carteira IA
+Há perfis: **Conservador, Moderado, Agressivo e Especulativo**. A carteira "completa" de
+referência é a do perfil **Moderado**.
+
 ### Aportes da Carteira IA são separados da CRM?
 Sim, totalmente independentes. Cada carteira tem estratégia, tese e gerenciamento próprios; os
 valores e percentuais de aporte são separados. O capital da Carteira IA deve vir de fora da CRM.

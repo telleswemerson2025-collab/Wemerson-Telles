@@ -28,8 +28,13 @@ regras de ouro, quando escalar pro suporte).
    tem**, NÃO invente — diga que vai confirmar e encaminhe pro suporte
    (suporte@theblockcapital.net). Herança do app: melhor dizer "vou confirmar" do que
    dar resposta errada.
-2. **Nunca promessa de retorno.** A CRM não garante lucro. "Preservar capital também é
-   performance." Nada de "vai render X", nada de recomendação de compra/venda.
+2. **Seguir a decisão publicada SIM; promessa e recomendação nova NÃO.** A CRM e a Carteira IA
+   são carteiras-modelo que o cliente contratou pra copiar — então orientar o cliente a
+   **seguir a decisão já publicada** (entrar/sair no ativo do momento, inclusive "dá pra entrar"
+   quando o preço está perto da entrada) faz parte do atendimento. O que NÃO se faz: **prometer
+   retorno** ("vai render X"; a carteira não garante lucro) nem dar **recomendação nova** fora do
+   que foi publicado. Enquadramento oficial: carteira-modelo/educacional, decisão e risco do cliente.
+   (Isto é diferente da VantageNode, que nunca dá recomendação de preço — lá é conta de dados.)
 3. **A posição vigente é sempre a última decisão publicada oficialmente na CRM** (vídeo
    de gerenciamento, ~18h). Composição, aporte, preço de entrada e stop MUDAM — dê como
    "a última decisão publicada" e mande o cliente confirmar na CRM. Nunca crave número
@@ -64,6 +69,7 @@ oficial — registre-a no arquivo de referência do produto certo, no mesmo form
 - `knowledge/historico-decisoes.md` — compilado oficial das decisões (fev–ago/2026, canal Decisões).
 - `knowledge/comunidade.md` — regras do canal, avisos, e o alerta "relatórios do Gilmar não são oficiais".
 - `knowledge/seguranca-e-custodia.md` — wallet x corretora, onde guardar, rumores, Ledger/Bitget.
+- `knowledge/produtos-e-status.md` — status de produtos/plataformas (Trader de Sucesso, Velo, bônus, Comunidade OnChain, acesso).
 - `knowledge/carteira-ia.md` — a Carteira IA (composição real, tese, relatório x executado, como operar).
 - `knowledge/historico-carteira-ia.md` — compilado das decisões da Carteira IA (feed do site).
 - `knowledge/vantagenode-produto.md` — o produto VantageNode (planos, terminal).

@@ -11,12 +11,25 @@ validade de 12 meses, **garantia de 7 dias**. A página avisa que o valor vai au
 da página oficial acima; o Vitalício não aparece nessa página, confirmar no suporte.)
 Os valores mudam conforme a campanha — pra cravar, confirme o checkout oficial.
 
-### Diferença entre plano Anual e Vitalício
-O Anual dá acesso por 12 meses (~R$1.997,00). O Vitalício dá acesso contínuo (~R$6.997,00)
-e já inclui a Carteira IA. Valores de referência, podem variar conforme a campanha.
+### Diferença entre planos + preço da Carteira IA + desconto
+- **CRM (Rumo ao Milhão):** ver "Planos e valores" acima (anual R$175,51/mês).
+- **Carteira IA avulsa:** **R$2.997,00 por ano** (preço informado pelo Gui em 17/06). **Sem
+  desconto** na avulsa.
+- **Vitalício:** acesso contínuo e **inclui as duas carteiras (CRM + Carteira IA)** + relatórios
+  + projetos futuros. Quem já é cliente CRM tem desconto para migrar pro vitalício — **varia de
+  10% a 15% conforme a campanha/disponibilidade** (confirmar antes de prometer um número fixo).
+  O desconto **abate a assinatura vigente**.
+Valores mudam conforme a campanha — confirme o checkout oficial.
+
+### Renovação anual da CRM (valor)
+A renovação anual da CRM é **R$1.697,00**. O **parcelado tem juros**. (Renovação é diferente da
+primeira adesão; confirme o valor vigente no checkout.)
+
+### Curso / treinamento
+O curso dá **2 anos de acesso**; a liberação acontece **em até 7 dias** após a compra.
 
 ### Formas de pagamento
-Pela Hotmart (cartão, boleto ou Pix) ou em cripto: USDT na rede BSC/BEP-20
+Pela Hotmart (cartão, boleto ou Pix) ou em cripto: USDT ou USDC na rede BSC/BEP-20
 (0x2538e340d59345cfd316e516f93df7965de11868) ou BTC na rede nativa
 (1PgtkygvP75gMkwrz6KVEZmjr64FKGnTo7). No caso de cripto, envie o comprovante/TXID para a
 liberação manual do acesso.
@@ -32,6 +45,39 @@ Pode ser solicitado em até 7 dias corridos a partir da liberação do acesso, c
 Código de Defesa do Consumidor. A renovação é automática ao fim do período contratado, e o
 reembolso vale apenas para a transação inicial dentro desses 7 dias. Dúvidas sobre o
 processo: suporte@theblockcapital.net
+
+### Reembolso de RENOVAÇÃO AUTOMÁTICA — NÃO há
+**Renovação automática não tem reembolso.** Conforme os termos da Hotmart, o cliente deve
+**cancelar a renovação ANTES** da data em que ela ocorre. Depois que renovou, não há reembolso
+dessa renovação. Então a orientação principal é: oriente o cliente a **cancelar a renovação na
+Hotmart com antecedência** (ver "Renovação automática e como cancelar"). O único reembolso é o
+**arrependimento de 7 dias da compra inicial**.
+
+> RESUMO da política de reembolso (fechada): (1) **arrependimento de 7 dias** da compra inicial
+> = reembolso da transação inicial (CDC). (2) **Renovação automática = SEM reembolso**; o cliente
+> deve cancelar ANTES (termos da Hotmart). (3) **Cobrança indevida após o Vitalício = reembolso
+> imediato**. Qualquer cortesia/benefício além disso (ex.: converter em desconto) é caso a caso.
+
+### Chargeback
+Se o cliente abre chargeback no banco, é o **próprio banco** que cancela a compra e faz o
+reembolso — a BlockCapital não tem controle sobre isso. O cliente deve falar com o banco pra
+ver o status. (Chargeback normalmente ocorre em renovação contestada.)
+
+### Cancelar renovação / upgrade na Hotmart
+O cliente cancela a renovação **na própria Hotmart** (passar as instruções). Compra de um
+produto novo (não renovação) o próprio cliente cancela. Se um cancelamento não foi processado,
+o suporte abre o pedido de reembolso direto com a Hotmart.
+
+### Fiscal / tributação — NÃO é a BlockCapital que orienta
+Não damos recomendação fiscal nem tributária — cada caso é um caso, e o cliente deve falar com
+o **contador dele**. A BlockCapital dá a visão estratégica de mercado; fiscal, escolha de
+instrumento e execução da compra são responsabilidade do cliente. Frase do Gui: *"não sabe por
+que fazer ou como fazer? Não faz."*
+
+### Pagamento em cripto aceita USDC?
+Sim — atualmente aceita **os dois: USDT e USDC** (rede BSC/BEP-20). Envie o comprovante/TXID
+pro suporte (suporte@theblockcapital.net) pra liberação manual. (Resolvido em ago/2026; a
+orientação antiga de "converter USDC pra USDT antes" não vale mais.)
 
 ### Renovação automática e como cancelar
 O plano Anual tem renovação automática ao fim do período. Se não quiser renovar, avise o

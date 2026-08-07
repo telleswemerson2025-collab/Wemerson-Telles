@@ -22,7 +22,11 @@ girava em torno de US$4.200 investidos. A gestão é sempre manual (não há apo
 automático) e a consistência importa mais que o tamanho do aporte.
 
 ### Ativos operados na CRM
-O núcleo é BTC (ativo de risco) + USDT (caixa), com PAXG (ouro) como posição defensiva recorrente (está em 40% agora e já foi usado antes). Pontualmente já teve posições táticas menores em SOL (abr/26) e ETH (mai/26) — mas não mantém uma cesta fixa de altcoins. O Gui nunca faz operações vendidas ('short nem na praia'). No PAXG, os stops são sempre por ordem limite, nunca a mercado, pela baixa liquidez do book.
+O núcleo é **BTC** (ativo de risco) + **USDT** (caixa), com **PAXG (ouro)** como posição
+defensiva **recorrente** (está em 40% agora e já foi usado antes). Pontualmente já teve
+**posições táticas menores em SOL (abr/26)** e **ETH (mai/26)** — mas **não mantém uma cesta
+fixa de altcoins**. O Gui nunca faz operações vendidas ("short nem na praia"). No PAXG, os
+stops são sempre por ordem limite, nunca a mercado, pela baixa liquidez do book.
 
 ### Composição atual da carteira
 Última decisão oficial confirmada (05/08/2026, canal Decisões): **BTC 20% · PAXG 40% ·
@@ -37,7 +41,10 @@ A posição vigente é sempre a última publicada na CRM. Compilado completo em
 `historico-decisoes.md`.
 
 ### A carteira tem SOL ou outras altcoins?
-O núcleo é BTC + USDT, com PAXG (ouro) como defensivo. Hoje não há posição em SOL. Mas, pra ser preciso: pontualmente já houve posições táticas em SOL (abr/26) e ETH (mai/26) — a carteira não mantém uma cesta fixa de altcoins, foram operações pontuais. A posição vigente é sempre a última publicada na CRM (hoje: BTC 20% · PAXG 40% · USDT 40%).
+O núcleo é BTC + USDT, com PAXG (ouro) como defensivo. **Hoje não há posição em SOL.** Mas,
+pra ser preciso: pontualmente já houve posições táticas em **SOL (abr/26)** e **ETH (mai/26)** —
+a carteira não mantém uma cesta fixa de altcoins, foram operações pontuais. A posição vigente é
+sempre a última publicada na CRM (hoje: BTC 20% · PAXG 40% · USDT 40%).
 
 ### Tem stop ou take profit no BTC agora?
 Os stops são definidos operação a operação, conforme o gerenciamento de risco do momento
@@ -214,3 +221,12 @@ grande transferência, mas mover Bitcoin não é o mesmo que vender — as moeda
 endereço. Um jeito de checar se é venda de verdade é o indicador SOPR: quando ele sobe, é
 gente vendendo pra realizar lucro; quando fica estável, foi só troca de endereço. No caso da
 Coldcard, o SOPR ficou estável — proteção, não pânico de venda.
+
+**Ainda vale a pena entrar no valor atual? (ex.: PAXG, BTC)**
+Sim, quando o preço atual está **perto** do ponto de entrada publicado (diferença pequena, ~1–2%),
+dá pra seguir a estratégia e entrar na alocação indicada. Ex.: o PAXG teve entrada a US$4.190;
+com o preço em ~US$4.227 (menos de 1% acima), dá pra entrar normalmente nos 40% — lembrando que
+o PAXG é por **ordem limite** (book de baixa liquidez). Se o preço já se **afastou muito** do
+ponto de entrada, o melhor é aguardar a próxima orientação oficial, sem perseguir preço.
+Qualquer ajuste é comunicado na CRM. (É a carteira-modelo: você segue a decisão publicada; a
+decisão e o risco são seus.)
