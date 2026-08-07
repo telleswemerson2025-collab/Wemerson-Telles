@@ -45,6 +45,14 @@ regras de ouro, quando escalar pro suporte).
    (suporte@theblockcapital.net) — ali é humano, não é a base que resolve.
 6. **Sensível fica fora.** Senhas, credenciais e dados de acesso NÃO ficam nesta base
    (risco de vazamento). Se o cliente precisar de acesso, encaminhe pro suporte.
+7. **Isolamento do VantageNode X (muro de mão única).** O VantageNode X (operação de
+   conteúdo onchain no X / @VantageNodeio, com skill própria) e o Wemerson AI / BlockCapital
+   são projetos **totalmente separados**. Regra de direção:
+   - **PODE ENTRAR aqui:** informação do VantageNode (inclusive do produto) pode alimentar
+     esta base de atendimento.
+   - **NÃO SAI daqui:** NADA de CRM / BlockCapital / Wemerson AI (decisões, números, dúvidas,
+     credenciais, conteúdo) vai para a operação do VantageNode X. Esta base recebe de tudo; o
+     VantageNode X nunca recebe nada daqui.
 
 ---
 
