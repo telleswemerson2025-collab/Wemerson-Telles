@@ -106,6 +106,15 @@ São produtos diferentes: a **Rumo ao Milhão (CRM)** é de **cripto** (BTC/USDT
 PAXG), página em carteirarumoaomilhao.com. A **Infraestrutura de IA (Carteira IA)** é de
 **ações** de infraestrutura de IA, dentro do theblockcapital.com. Não confundir as duas.
 
+### "Consigo acessar a CRM pelo theblockcapital.com (Block Capital Research)?" — NÃO
+CONFIRMADO (verificado no ambiente logado em 08/08/2026): o theblockcapital.com (Block Capital
+Research) dá acesso SÓ à Carteira IA (Infraestrutura de IA). Dentro dele, a "Rumo ao Milhão"
+aparece apenas como produto bloqueado/cadeado ("Você ainda não tem esta carteira") — vitrine/
+upsell, não acesso incluído. A CRM (Rumo ao Milhão) fica em outro ambiente: guitelles.academy
+(área "BlockCapital by Gui Telles"), onde o conteúdo dela é entregue como curso próprio. Resumo
+pro cliente: cada carteira tem seu próprio ambiente e login — CRM em guitelles.academy/app;
+Carteira IA em theblockcapital.com. Quem quer as duas num acesso só migra pra Carteira Vitalícia.
+
 ### Quem é o Gui Telles
 No mercado de criptoativos desde 2017, analista on-chain, fundador da BlockCapital e da
 VantageNode.

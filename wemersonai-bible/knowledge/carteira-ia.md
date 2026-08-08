@@ -43,14 +43,23 @@ Contato: suporte@theblockcapital.net.
 ### Como operar a Carteira IA (Brasil)
 Ordem de preferência: 1) Tem BDR? Opere pela B3. 2) Tem ETF do tema? Use o ETF. 3) Sem BDR nem
 ETF? Corretora internacional (Avenue, IBKR, Schwab). 4) Já tem conta nos EUA? Direto na bolsa
-americana. A VRT já está tokenizada na Bitget; a CEG pode ser acessada via BDR na B3 ou nos EUA.
+americana. A CEG pode ser acessada via BDR na B3 ou nos EUA.
+
+### Onde operar a MOD (Modine) / ativo que não está na minha corretora
+A MOD (Modine) é ação da NYSE (código MOD). CONFIRMADO (08/08/2026): NÃO tem BDR na B3 e NÃO
+está tokenizada na Bitget (o "MOD" que aparece lá é outro token, não relacionado). Caminho
+recomendado: comprar a ação por uma corretora tradicional americana com acesso à NYSE, onde é
+negociada normalmente. Regra geral: quando um ativo da carteira não aparece na corretora do
+cliente, não é problema de conta — o ativo pode não estar listado ali; orientar o caminho
+tradicional (BDR se houver, senão corretora internacional/bolsa americana), sem indicar exchange
+de tokenização.
 
 ### Dá pra investir na Carteira IA pela Binance? E ações tokenizadas / lei brasileira?
 A Carteira IA é composta por **ações** (não cripto), então o caminho recomendado **não é a
 Binance**. As formas de operar (em ordem): BDR na B3, ETF do tema, corretora internacional
 (Avenue, IBKR, Schwab), ou direto na bolsa americana. Sendo brasileiro, você consegue investir
 tranquilamente por esses caminhos, **sem depender da Binance nem de ação tokenizada**. Alguns
-ativos têm versão tokenizada em algumas exchanges (ex.: VRT na Bitget), mas é caso a caso.
+ativos têm versão tokenizada em algumas exchanges (a disponibilidade varia por exchange e por ativo; confirmar caso a caso antes de indicar), mas é caso a caso.
 Sobre a **legalidade de ações tokenizadas no Brasil**: é um tema jurídico/regulatório em
 evolução — não damos orientação legal definitiva por aqui; para essa parte específica ou para a
 adesão, encaminhar pro suporte (suporte@theblockcapital.net). Ponto tranquilizador: os caminhos

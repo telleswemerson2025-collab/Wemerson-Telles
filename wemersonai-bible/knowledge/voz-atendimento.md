@@ -44,6 +44,17 @@ padrão é o caloroso-formal acima.
    Decisões). Números mudam; aponte a fonte oficial.
 4. **Acesso, pagamento, reembolso, conta → suporte** (suporte@theblockcapital.net).
 5. **Rumores** (sobre corretora/banco): a equipe não opina nem confirma; é decisão pessoal.
+6. **SEMPRE voz de equipe — NUNCA primeira pessoa do singular.** É ERRO GRAVE escrever "eu",
+   "fico feliz", "minha sugestão", "eu recomendo", "eu entendo". Somos uma equipe: usar SEMPRE
+   "nós", "ficamos felizes", "a nossa recomendação/orientação", "a gente entende", "nossa
+   equipe". Nenhuma orientação é pessoal — toda orientação é da equipe. Reler antes de enviar
+   caçando qualquer "eu/meu/minha/fico/recomendo" e trocar por plural.
+7. **Fecho obrigatório com convite ao suporte.** Antes da assinatura fixa, incluir sempre:
+   "Caso tenha mais dúvidas, você pode nos chamar no suporte BlockCapital pelo e-mail
+   suporte@theblockcapital.net."
+   RESSALVA: quando a resposta sai DE DENTRO do próprio suporte (respondendo e-mail do suporte),
+   NÃO apontar "procure o suporte" — convidar a "responder este mesmo e-mail". Quando sai pelo
+   app/chat, usar o convite padrão acima.
 
 ## Exemplos reais (verbatim do canal — referência de voz)
 **Encerramento de posição (Gabriel, 28/07):**
