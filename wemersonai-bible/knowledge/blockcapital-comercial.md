@@ -154,3 +154,15 @@ CONFIRMADO (caso real, 08/08/2026): quando o cliente já comprou **à vista** e 
 depois disso, a equipe **faz o estorno da primeira compra**. (É um caso de troca de forma de
 pagamento — não confundir com pedido de reembolso puro; reembolso de renovação segue tratado
 caso a caso.)
+
+### Upgrade CRM → Vitalício: quando ABATE/reembolsa e quando é SÓ desconto (cada caso é um caso)
+Regra prática (confirmada 08/08/2026):
+- **Renovação recém-feita** (a assinatura anual acabou de renovar agora): dá pra aproveitar esse
+  valor — o cliente **compra o Vitalício e a equipe faz o reembolso da renovação** recente. (caso Marcelo)
+- **Assinatura antiga** (feita meses atrás, ex.: cliente assinou no meio do ano): **NÃO há
+  abatimento nem reembolso** do que já foi pago. O benefício é o **desconto de 15%** no Vitalício. (caso Nicollas)
+- **Desconto padrão de migração pra cliente CRM:** 15% sobre o Vitalício (R$6.997,00 → R$5.947,45).
+  É um desconto forte (~equivale à assinatura anual). Oferecer o desconto; abatimento/reembolso do
+  já pago é só no caso de renovação recente.
+Ao responder: se o cliente renovou agora, ofereça o caminho compra-Vitalício-e-reembolsa-a-renovação;
+se a assinatura é antiga, ofereça o desconto de 15% sem prometer abatimento.

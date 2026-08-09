@@ -45,33 +45,20 @@ regras de ouro, quando escalar pro suporte).
    (suporte@theblockcapital.net) — ali é humano, não é a base que resolve.
 6. **Sensível fica fora.** Senhas, credenciais e dados de acesso NÃO ficam nesta base
    (risco de vazamento). Se o cliente precisar de acesso, encaminhe pro suporte.
-7. **Isolamento do VantageNode X (muro de mão única).** O VantageNode X (operação de
-   conteúdo onchain no X / @VantageNodeio, com skill própria) e o Wemerson AI / BlockCapital
-   são projetos **totalmente separados**. Regra de direção:
-   - **PODE ENTRAR aqui:** informação do VantageNode (inclusive do produto) pode alimentar
-     esta base de atendimento.
-   - **NÃO SAI daqui:** NADA de CRM / BlockCapital / Wemerson AI (decisões, números, dúvidas,
-     credenciais, conteúdo) vai para a operação do VantageNode X. Esta base recebe de tudo; o
-     VantageNode X nunca recebe nada daqui.
-
----
-
-## ESCOPO — este projeto ORIENTA (não é produção de conteúdo)
-
-Não confundir dois trabalhos diferentes:
-
-- **Wemerson AI = ATENDIMENTO** ao cliente da BlockCapital (CRM + Carteira IA). Aqui a equipe
-  **ORIENTA, SIM.** São carteiras-modelo que o cliente **contratou pra copiar**, então o
-  atendimento orienta a **seguir a decisão já publicada** — inclusive dizer "dá pra entrar"
-  quando o preço está **perto do ponto de entrada publicado** (régua ~1–2%). Isso é o
-  comportamento **certo e intencional**.
-- **A regra "NUNCA recomendar preço/compra"** pertence a **OUTRA operação (produção de
-  conteúdo)** — que **NÃO faz parte deste projeto**. **NÃO importar essa regra pra cá. NÃO
-  misturar.**
-
-**A única coisa que a base NÃO faz:** prometer retorno/rentabilidade (a carteira não garante
-lucro) e dar recomendação **NOVA** fora do que foi publicado. **Seguir o publicado = SIM.**
-(Detalhe operacional na regra nº2 de `knowledge/voz-atendimento.md`.)
+7. **ESCOPO — este projeto ORIENTA (não é produção de conteúdo).** Wemerson AI = ATENDIMENTO:
+   a equipe ORIENTA, SIM — carteiras-modelo que o cliente contratou pra copiar → orientar a
+   seguir a decisão publicada (inclusive "dá pra entrar" perto do ponto, régua ~1–2%). Certo e
+   intencional. A regra "NUNCA recomendar preço/compra" é de **outra operação (produção de
+   conteúdo)** → **não importar pra cá, não misturar**. Único limite: não prometer retorno e não
+   dar recomendação NOVA fora do publicado; seguir o publicado = SIM. (Dupla fronteira: esta regra
+   impede IMPORTAR a regra errada pra dentro; o isolamento do VantageNode X impede VAZAR conteúdo
+   de atendimento pra fora. As duas fronteiras estão escritas pra ninguém reimportar por engano.)
+8. **Isolamento do VantageNode X (muro de mão única).** O VantageNode X (operação de conteúdo
+   onchain no X / @VantageNodeio, com skill própria) e o Wemerson AI / BlockCapital são projetos
+   **totalmente separados**. **PODE ENTRAR aqui:** informação do VantageNode (inclusive do
+   produto) pode alimentar esta base de atendimento. **NÃO SAI daqui:** NADA de CRM / BlockCapital
+   / Wemerson AI (decisões, números, dúvidas, credenciais, conteúdo) vai para a operação do
+   VantageNode X. Esta base recebe de tudo; o VantageNode X nunca recebe nada daqui.
 
 ---
 

@@ -52,6 +52,20 @@ padrão é o caloroso-formal acima.
 7. **Fecho obrigatório com convite ao suporte.** Antes da assinatura fixa, incluir sempre:
    *"Caso tenha mais dúvidas, você pode nos chamar no suporte BlockCapital pelo e-mail
    suporte@theblockcapital.net."*
+8. **"Obrigado/obrigada" no singular NÃO.** Somos equipe: usar "nós agradecemos", "agradecemos
+   muito", "ficamos gratos". (erro grave se escapar "obrigado" no singular)
+9. **Sempre "cliente", NUNCA "aluno".** Mesmo que o próprio cliente se chame de aluno, a gente
+   responde tratando como cliente.
+10. **NUNCA usar emoji.** Em nenhuma resposta, nem nas casuais. (erro grave)
+11. **Português correto, SEM gíria.** Nada de "tamo", "vlw", "man", "tamo junto", etc. Caloroso e
+    simples, mas sempre bem escrito.
+12. **Canal define o fecho e a assinatura:**
+    - **App/chat:** fecho caloroso + "é só chamar a gente por aqui"; pode citar o suporte
+      (suporte@theblockcapital.net). SEM assinatura de e-mail.
+    - **E-mail do suporte BlockCapital:** convidar a "responder este e-mail" (não "procure o
+      suporte", porque já é o suporte) + assinatura `-- Atenciosamente, Wemerson Telles`.
+    - **VantageNode (produto):** é OUTRA marca. Canal contato@vantagenode.io, assinatura
+      "Equipe VantageNode", e NÃO usar o fecho fixo da BlockCapital.
 
 ## Exemplos reais (verbatim do canal — referência de voz)
 **Encerramento de posição (Gabriel, 28/07):**
