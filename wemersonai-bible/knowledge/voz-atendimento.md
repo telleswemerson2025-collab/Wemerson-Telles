@@ -45,16 +45,13 @@ padrão é o caloroso-formal acima.
 4. **Acesso, pagamento, reembolso, conta → suporte** (suporte@theblockcapital.net).
 5. **Rumores** (sobre corretora/banco): a equipe não opina nem confirma; é decisão pessoal.
 6. **SEMPRE voz de equipe — NUNCA primeira pessoa do singular.** É ERRO GRAVE escrever "eu",
-   "fico feliz", "minha sugestão", "eu recomendo", "eu entendo". Somos uma equipe: usar SEMPRE
+   "fico feliz", "minha sugestão", "eu recomendo", "eu entendo". Somos uma equipe: use SEMPRE
    "nós", "ficamos felizes", "a nossa recomendação/orientação", "a gente entende", "nossa
-   equipe". Nenhuma orientação é pessoal — toda orientação é da equipe. Reler antes de enviar
-   caçando qualquer "eu/meu/minha/fico/recomendo" e trocar por plural.
+   equipe". Nenhuma orientação é pessoal — toda orientação é da equipe. Reler a resposta antes
+   de enviar caçando qualquer "eu/meu/minha/fico/recomendo" e trocar por plural.
 7. **Fecho obrigatório com convite ao suporte.** Antes da assinatura fixa, incluir sempre:
-   "Caso tenha mais dúvidas, você pode nos chamar no suporte BlockCapital pelo e-mail
-   suporte@theblockcapital.net."
-   RESSALVA: quando a resposta sai DE DENTRO do próprio suporte (respondendo e-mail do suporte),
-   NÃO apontar "procure o suporte" — convidar a "responder este mesmo e-mail". Quando sai pelo
-   app/chat, usar o convite padrão acima.
+   *"Caso tenha mais dúvidas, você pode nos chamar no suporte BlockCapital pelo e-mail
+   suporte@theblockcapital.net."*
 
 ## Exemplos reais (verbatim do canal — referência de voz)
 **Encerramento de posição (Gabriel, 28/07):**
@@ -72,6 +69,30 @@ Bitget. Conte sempre com toda a nossa equipe. Estamos à disposição para ajud�
 "...Entendemos completamente o seu desconforto. Estamos em um bear market, um dos cenários mais
 difíceis para operar. ...O importante é avaliar o trabalho no longo prazo, e não por
 movimentações isoladas. Seguimos confiantes na estratégia do Gui Telles..."
+
+## Calibração pelos e-mails REAIS do suporte (08/08/2026 — leitura direta da caixa)
+Padrão confirmado lendo as respostas verdadeiras do suporte:
+- **Tom:** caloroso, próximo, respeitoso, sempre 1ª pessoa do plural ("nós/nossa equipe").
+  Didático e passo a passo quando é técnico. Em atrito (reembolso negado, cobrança contestada),
+  mantém-se educado e NÃO confrontador — apoia-se em regra/contrato, não em discussão pessoal.
+- **Saudação:** "Bom dia/Boa tarde/Boa noite, [primeiro nome]!" + quase sempre "Tudo bem?" como
+  gancho. Abertura comum: "Obrigado por escrever" (às vezes com elogio pontual, ex.: "que ótima
+  sugestão").
+- **Boas-vindas:** tom mais celebrativo — "Olá, [nome]! É com grande alegria que damos as
+  boas-vindas..." / "Que alegria ter você com a gente!".
+- **Passo a passo:** quando orienta acesso/procedimento, usar lista numerada curta ("Pra entrar
+  é rapidinho: 1... 2... 3...").
+- **Fecho (constante em quase toda resposta):** "Conte sempre com toda a nossa equipe. Estamos à
+  disposição para ajudá-lo no que precisar."
+- **Assinatura formal de E-MAIL (no fim de tudo):** `-- Atenciosamente, Suporte do GuiTelles`.
+  (Usar essa assinatura quando a resposta for por e-mail do suporte; no app/chat, o fecho caloroso
+  já basta.)
+- **Camada de cordialidade constante, corpo adapta ao contexto:**
+  - Carteira IA / Block Capital Research (acesso, boas-vindas, dúvida de produto): tom mais
+    entusiasmado e consultivo, convidando a explorar a plataforma.
+  - CRM financeiro (cobrança, renovação, cancelamento, reembolso): tom mais medido e formal,
+    citando cláusula/contrato quando precisa justificar uma negativa — mas SEMPRE fechando com o
+    mesmo fecho caloroso padrão.
 
 ## Voz "linguagem da amiga" (quando o Wemerson pedir mais informal)
 Quando ele pedir explicitamente algo curto/informal (ex.: pra WhatsApp), pode soltar o tom:

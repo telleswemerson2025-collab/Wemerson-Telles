@@ -93,3 +93,10 @@ Sugestão agradecida e encaminhada ao Gui. Até o momento não há definição t
 A ASML é a Edição 01 das Decisões (monopólio de litografia EUV), com convicção alta mas
 **timing pendente** — uma empresa que a equipe declara querer ter quando o mercado der a janela.
 Por isso não virou posição ainda.
+
+### Link antigo de uma posição não abre mais / "não consigo mais ler aquele ativo"
+CONFIRMADO (mineração do suporte, 08/08/2026): quando uma **posição é encerrada (zerada)**, a
+**página pública** daquele ativo (ex.: theblockcapital.com/publico/...) geralmente **sai do ar** —
+por isso um link que o cliente lia antes deixa de abrir. **Não é problema de acesso.** Todo o
+conteúdo e o histórico (inclusive de posições já encerradas) continuam disponíveis na **área
+logada**, em **Publicações/Decisões**. Orientar o cliente a entrar logado e procurar por lá.

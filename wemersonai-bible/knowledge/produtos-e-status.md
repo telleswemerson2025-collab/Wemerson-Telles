@@ -23,6 +23,8 @@ Não há disponibilidade para consultoria/mentoria no momento.
 A Comunidade OnChain "segue vendida desde o início do bear; a Monalisa ainda segue desligada.
 Quando ela sinalizar compra, provavelmente será o início do bull — e aí as decisões da CO serão
 unidas às da CRM. Os clientes ativos da CO serão avisados quando esse sinal ocorrer."
+> **Confirmado (08/08/2026):** a Comunidade OnChain está **parada / em hiato no momento**,
+> aguardando o **sinal da Monalisa**. Enquanto esse sinal não vier, ela segue parada.
 
 ### Acesso — pontos oficiais
 - A liberação da **Carteira IA** (clientes do Vitalício) é feita **exclusivamente pelo Gui**.
