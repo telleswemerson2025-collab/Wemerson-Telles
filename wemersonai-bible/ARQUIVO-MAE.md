@@ -56,6 +56,25 @@ regras de ouro, quando escalar pro suporte).
 
 ---
 
+## ESCOPO — este projeto ORIENTA (não é produção de conteúdo)
+
+Não confundir dois trabalhos diferentes:
+
+- **Wemerson AI = ATENDIMENTO** ao cliente da BlockCapital (CRM + Carteira IA). Aqui a equipe
+  **ORIENTA, SIM.** São carteiras-modelo que o cliente **contratou pra copiar**, então o
+  atendimento orienta a **seguir a decisão já publicada** — inclusive dizer "dá pra entrar"
+  quando o preço está **perto do ponto de entrada publicado** (régua ~1–2%). Isso é o
+  comportamento **certo e intencional**.
+- **A regra "NUNCA recomendar preço/compra"** pertence a **OUTRA operação (produção de
+  conteúdo)** — que **NÃO faz parte deste projeto**. **NÃO importar essa regra pra cá. NÃO
+  misturar.**
+
+**A única coisa que a base NÃO faz:** prometer retorno/rentabilidade (a carteira não garante
+lucro) e dar recomendação **NOVA** fora do que foi publicado. **Seguir o publicado = SIM.**
+(Detalhe operacional na regra nº2 de `knowledge/voz-atendimento.md`.)
+
+---
+
 ## COMO USAR (fluxo)
 
 1. O Wemerson cola ou conta a **dúvida do cliente** (muitas vêm do CRM de dúvidas).
