@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.13 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 20 aplicadas.
+Versão 1.14 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 21 aplicadas.
 
 ---
 
@@ -289,19 +289,21 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
     ativo passou de 12% da parte exposta, a venda parcial de volta a 8% foi levada ao Gate como
     decisão própria e registrada com data, ativo e percentual antes e depois?
 22. **Se a camada 5 entrou:** a agregação é média ponderada pelo tamanho da posição na parte
-    exposta? Ativo sem degrau ficou FORA do cálculo, em vez de entrar como 100 ou 0? Os ativos sem
-    degrau somam 30% ou menos da parte exposta — e, se somam mais, a camada saiu inteira? A etiqueta
-    de julgamento traz as três informações?
-23. **Algum degrau usado passou de 180 dias?** Degrau vencido é ausência, nunca valor herdado.
+    exposta? Ativo sem degrau ficou FORA do cálculo, em vez de entrar como 100 ou 0? Os ativos **fora
+    de BTC e ETH** sem degrau somam 30% ou menos da parte exposta — e, se somam mais, a camada saiu
+    inteira? A etiqueta de julgamento traz as três informações?
+23. **Os degraus de BTC e ETH estão vigentes?** Vencido ou nunca atribuído em qualquer um dos dois,
+    a camada 5 é SUSPENSA por inteiro e a leitura diz isso em texto, com a data. Camada 5 calculada
+    sem o degrau de BTC ou de ETH REPROVA — renormalizar sem um ativo de 30% ou mais descreve outra
+    carteira.
+24. **Algum degrau usado passou de 180 dias?** Degrau vencido é ausência, nunca valor herdado.
     Renovação sem data nova e motivo escrito não é renovação — REPROVA.
-24. **O mapa de vencimentos dos próximos 180 dias, por janela de 30, foi produzido?** Sem o mapa
-    REPROVA. O mapa traz três linhas (Decisão 20):
-    a. **Regime 1** — BTC e ETH a 45 dias ou mais um do outro. Abaixo disso REPROVA.
-    b. **Regime 2** — nenhuma janela acima de 35% do peso do próprio conjunto. Estouro por **soma de
-       vários** REPROVA até ser escalonado; por **ativo isolado**, sai relatado e não reprova.
-    c. **Linha informativa, cruzando os dois regimes** — soma dos vencimentos por janela sobre a
-       parte exposta inteira, comparada aos 30% da trava da Decisão 17. Não é limite novo, é a trava
-       existente olhada com antecedência. Janela acima de 30% sai sinalizada ao Gate.
+25. **O mapa de vencimentos dos próximos 180 dias, por janela fechada de 30, foi produzido?** Sem o
+    mapa REPROVA. O mapa traz duas linhas (Decisão 21):
+    a. **BTC e ETH** — a 45 dias ou mais um do outro. Abaixo disso REPROVA.
+    b. **Régua única** — nenhuma janela `[t, t+30]` com vencimentos de ativos fora de BTC e ETH
+       somando mais de **30% da parte exposta**. Estouro **REPROVA** até ser escalonado. É a régua
+       oficial desde a Decisão 21, não mais linha informativa.
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 

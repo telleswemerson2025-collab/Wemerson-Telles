@@ -1,6 +1,6 @@
 # GATES DA CARTEIRA SEMENTE
 Nenhum agente aprova. Só o humano.
-Versão 1.12 · 29/08/2026 — Decisões 1 a 18 aplicadas.
+Versão 1.13 · 29/08/2026 — Decisões 1 a 21 aplicadas.
 
 ## GATE 1 — DIREÇÃO (antes de produzir)
 Perguntas:
@@ -31,7 +31,9 @@ Checklist. Qualquer item falho VETA:
 9. **Camada 5 rotulada** — se está fora, a leitura diz que está fora, e nunca a apresenta valendo
    50. Se está dentro, vem com a etiqueta de julgamento completa: que carrega julgamento humano, a
    data do degrau mais antigo em vigor, e quantos ativos estão sem degrau. Faltando qualquer uma
-   das três, veta. Degrau com mais de 180 dias é ausência, nunca valor em vigor.
+   das três, veta. Degrau com mais de 180 dias é ausência, nunca valor em vigor. Se o degrau de BTC
+   ou de ETH estiver vencido, a camada sai SUSPENSA e nomeada, com a data — camada calculada sem um
+   deles veta.
 10. **Peso e caixa** — o peso resultante respeita o limite; o caixa não fica abaixo do mínimo.
 11. **Abrigo** — se faltam 3 anos ou menos, a exposição respeita a glidepath.
 12. **Fatia tática** — se houver, opera só com ganho realizado, nunca com o principal, e no máximo 5–10%.

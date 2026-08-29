@@ -1,6 +1,6 @@
 # ÍNDICE SEMENTE — indicador composto
 Régua única de 0 a 100 que reúne as camadas de leitura.
-Versão 1.10 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15 a 20 aplicadas.
+Versão 1.11 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15 a 21 aplicadas.
 
 ## O QUE ELE É, E O QUE ELE NÃO É
 O Índice Semente **mede a intensidade** da situação de mercado. Ele **não classifica o estado**.
@@ -169,17 +169,29 @@ para mudar de faixa. Se os dois somarem 90% da parte exposta, são 10,8 pontos d
 **Degrau não atribuído é ausência**, não 100 e não 0. Vale a invariante 3: reporta-se a falta, não
 se presume tese intacta — sem essa regra o esquecimento viraria otimismo automático.
 
-O ativo sem degrau **fica fora do cálculo** e os pesos se renormalizam sobre os que têm degrau —
-mesma mecânica da Decisão 5.
+**BTC e ETH têm tratamento próprio (Decisão 21).** Degrau vencido — ou nunca atribuído — em BTC ou
+em ETH **não vira ausência**: a camada 5 é **suspensa por inteiro**, e o Índice sai renormalizado
+sobre as demais camadas, com a leitura dizendo em texto:
 
-> **Trava dos 30%:** se os ativos sem degrau somarem **mais de 30% da parte exposta**, a camada 5
-> **sai inteira** do Índice e os pesos das demais camadas se renormalizam. Uma nota que descreve
-> menos de dois terços da carteira não descreve a carteira.
+> *camada 5 suspensa por tese vencida em BTC (ou em ETH), desde tal data.*
 
-*Consequência operacional:* como BTC+ETH somam ao menos 60% da parte exposta, **basta um dos dois
-passar de 30% para que a falta do degrau dele derrube a camada sozinho.** Os demais, limitados a 8%
-cada, precisam de quatro ativos sem degrau para chegar ao mesmo lugar. Na prática, a camada 5
-depende de os degraus de BTC e ETH estarem sempre em dia.
+*Razão:* renormalizar sem um ativo que pesa 30% ou mais não descreve a carteira, descreve outra
+coisa. **Suspensão declarada é informação; ausência diluída é silêncio.**
+
+**Os demais ativos** seguem a mecânica da Decisão 5: o que está sem degrau fica fora do cálculo e os
+pesos se renormalizam sobre os que têm.
+
+> **Trava dos 30% (redefinida pela Decisão 21):** se os ativos **que não são BTC nem ETH** e estão
+> sem degrau somarem mais de **30% da parte exposta**, a camada 5 sai inteira e os pesos das demais
+> camadas se renormalizam.
+
+*Efeito, que é o objetivo:* **BTC e ETH saem da conta da trava.** Não podem mais derrubar a camada
+por soma com um vizinho de janela, porque não entram na soma — eles a suspendem sozinhos, de forma
+visível e nomeada.
+
+⚠️ *O gatilho ficou mais sensível, não menos.* Antes, o ETH vencendo sozinho (25%, abaixo dos 30%)
+não derrubava nada; agora suspende a camada. É o desenho — o que se ganha é que a suspensão sai
+nomeada em vez de diluída — mas eleva a importância do lembrete diário da Decisão 18.
 
 ### Validade: 180 dias (Decisão 18)
 **Todo degrau vale 180 dias corridos a partir da data de atribuição.** Vencido, ele **não vira 0 e
@@ -206,12 +218,17 @@ A coorte sincronizada é tratada por escalonamento, em **dois regimes separados*
 dois **nunca a menos de 45 dias um do outro**. Na primeira atribuição, o de maior peso recebe 180
 dias e o outro 135.
 
-**Regime 2 — todos os demais.** Nenhuma janela de 30 dias pode conter vencimentos que somem mais de
-**35% do peso desse conjunto** — do conjunto, não da parte exposta.
+**Regime 2 — todos os demais.** Régua única, a mesma escala da trava (Decisão 21):
 
-*Por que 35% e não 25%:* com as validades espalhadas por igual num intervalo de 90 dias, uma janela
-de 30 dias contém cerca de **um terço** do conjunto. Pedir menos que isso é pedir o impossível, que
-foi o erro da Decisão 19.
+> Nenhuma janela de 30 dias pode conter vencimentos, **entre os ativos que não são BTC nem ETH**,
+> somando mais de **30% da parte exposta**.
+
+A janela é **fechada nos dois extremos**, `[t, t+30]`.
+
+*Por que essa régua e não um percentual do subconjunto:* com o piso de 60% em BTC e ETH, esse
+conjunto inteiro nunca passa de 40% da parte exposta, e cada ativo dele não passa de 8%. Uma janela
+precisaria conter **quatro** deles para estourar. É a mesma escala da trava que a régua existe para
+proteger — uma régua só, não duas.
 
 **Espaçamento uniforme, sem passo fixo.** Para os N ativos do regime 2, ordenados por peso
 decrescente:
@@ -235,33 +252,32 @@ que couber, nunca abaixo de 90. Se nem 90 couber, o ativo entra e a colisão é 
 **Auditoria** (regra E da Decisão 19, mantida): o Auditor verifica a cada rodada, com o mapa de
 vencimentos dos próximos 180 dias por janela de 30.
 
-#### ⚠️ Três ressalvas medidas
-**1. O limite de 35% só é atingido quando N é múltiplo de três.** A geometria do "um terço" vale no
-limite de N grande; com poucos ativos a discretização manda. Fração do conjunto na pior janela,
-pesos iguais:
+#### ⚠️ Uma ressalva medida
+**A régua é inquebrável até nove ativos fora de BTC e ETH. De dez em diante, não.**
 
-| N | 2 | 3 | 4 | **5** | 6 | 7 | 8 | 9 | 12 | 15 |
-|---|---|---|---|---|---|---|---|---|---|---|
-| Pior janela | 50% | 33% | 50% | **40%** | 33% | 43% | 38% | 33% | 33% | 33% |
+Uma janela fechada de 30 dias, com espaçamento `90/(N−1)`, contém `⌊(N−1)/3⌋+1` ativos — e, pela
+ordem decrescente da fórmula, são sempre os **mais pesados** do conjunto:
 
-**N = 5 é o caso mais provável** — com BTC+ETH em pelo menos 60% e os demais limitados a 8%, cinco
-ativos no teto preenchem exatamente os 40% restantes. E N = 5 dá 40%, acima do limite.
+| N (fora de BTC/ETH) | 2–3 | 4–6 | 7–9 | **10–12** | 13–15 |
+|---|---|---|---|---|---|
+| Ativos na pior janela | 1 | 2 | 3 | **4** | 5 |
+| Soma máxima (8% cada) | 8% | 16% | 24% | **32%** | 40% |
+| Estoura os 30%? | não | não | não | **sim** | sim |
 
-**2. A convenção da janela muda o resultado.** Com janela **semiaberta** (`[t, t+30)`), N = 4, 7, 10,
-13, 16 e 19 passam a caber; N = 2, 5, 8, 11, 14 e 17 continuam estourando. A regra precisa dizer se
-a janela inclui os dois extremos. Aqui está aplicada como **fechada**, que é a leitura conservadora.
+Três ativos no teto somam 24%, abaixo da régua. **Quatro somam 32% e estouram.** A partir de dez
+ativos a janela passa a comportar quatro.
 
-**3. Existe um ponto cego entre os dois regimes.** O regime 1 só compara BTC com ETH; o regime 2 só
-mede peso dentro do próprio conjunto. **Ninguém mede a soma dos dois regimes numa mesma janela** — e
-é essa soma que a trava dos 30% da Decisão 17 enxerga.
+Contraexemplo dentro de todos os tetos: quatro ativos de 8% e seis de 1,33% somam os 40% do
+conjunto; BTC e ETH ocupam os outros 60% e a carteira cumpre a Decisão 16 inteira. As validades
+saem `180 · 170 · 160 · 150 · …`, e a janela `[150, 180]` contém os quatro de 8% — **32% da parte
+exposta.**
 
-> Exemplo real, na carteira BTC 35 · ETH 25 · cinco de 8%: **o ETH sozinho são 25%, abaixo da trava
-> de 30%.** Com um ativo de 8% vencendo na mesma janela, viram **33% da parte exposta e a camada 5
-> some** — sem que nenhuma das duas regras de regime tenha sido violada.
+Não é o caso típico: exige dez ou mais ativos fora de BTC e ETH, com os quatro maiores no teto e uma
+cauda muito miúda. Mas o universo elegível vem da CRM (Decisão 15), e o tamanho dele não é escolha
+da Semente. **Fica registrado como o único ponto em que a régua ainda pode ser furada.**
 
-Por isso o mapa do Auditor traz, além das duas verificações de regime, uma **linha informativa com a
-soma de vencimentos por janela sobre a parte exposta inteira**, comparada aos 30% da trava. Não é
-limite novo: é a trava que já existe, olhada com antecedência.
+O mapa do Auditor mede exatamente essa régua, e **reprova** quando ela é ultrapassada — deixou de
+ser linha informativa quando virou alcançável (Decisão 21, parte E).
 
 ### Etiqueta de julgamento — obrigatória
 Toda leitura publicada que inclua a camada 5 informa as **três** coisas:

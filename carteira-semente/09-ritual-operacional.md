@@ -1,5 +1,5 @@
 # 09 — RITUAL OPERACIONAL DA CARTEIRA SEMENTE
-Versão 1.6 · 29/08/2026 — conciliado com as Decisões 1 a 19.
+Versão 1.7 · 29/08/2026 — conciliado com as Decisões 1 a 21.
 *Alterações em relação ao original do Mr. G estão listadas no fim do arquivo.*
 
 Como o Mr. G aciona o sistema no dia a dia. Espelha o ritual da
@@ -50,6 +50,8 @@ Três acionamentos. Dois por frase, um automático.
 - **Ausências**, nomeadas uma a uma.
 - **Etiqueta de julgamento**, se a camada 5 entrar: julgamento
   humano · data do degrau mais antigo · ativos sem degrau.
+  Se o degrau de BTC ou de ETH estiver vencido, a camada sai
+  SUSPENSA e nomeada, com a data, em vez de recalculada.
 - **Degraus a vencer**: a partir dos 150 dias, diário para BTC e
   ETH, semanal para os demais.
 
@@ -88,9 +90,9 @@ Três acionamentos. Dois por frase, um automático.
    e nunca no patamar de um estado vizinho.
 5. Avalia o Reforço de Fundo contra as sete travas.
 6. **Grava.** Sem registro gravado não há liberação de reforço.
-7. **Passa pelo Auditor**, que confere os 24 itens do checklist e
+7. **Passa pelo Auditor**, que confere os 25 itens do checklist e
    CARIMBA ou REPROVA. Entre eles, o mapa de vencimentos de degrau
-   dos próximos 180 dias por janela de 30 (Decisão 19).
+   dos próximos 180 dias por janela fechada de 30 (Decisões 19 a 21).
 8. **Vai ao Gate 2**, que o Gui assina ou veta. Só o "Aprovado
    DD/MM" dele libera execução.
 
