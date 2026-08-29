@@ -1,10 +1,14 @@
 # PEÇA 1 — REGISTRO DO ALOCADOR
-Conferência. Versão 1.0 · 29/08/2026
+Conferência. Versão 1.1 · 29/08/2026 — Decisão 32 aplicada
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
 - `registro.mjs` — o módulo. Sem dependências, roda em navegador e em Node.
-- `registro.test.mjs` — 20 testes. `node --test` na raiz do repositório.
+- `registro.test.mjs` — 31 testes. `node --test` na raiz do repositório.
+
+**A peça 1 são sete registros** (Decisão 32 C), não quatro: ciclo do Reforço ·
+composição da CRM · degraus · tranches e defasagem · invalidação do Gate ·
+resultado do Filtro de Horizonte · exclusão por teto de contagem.
 
 ## O QUE ESTA PEÇA FAZ, E O QUE NÃO FAZ
 **Faz:** grava os eventos duráveis e deriva deles o que é pura função do log —
@@ -37,52 +41,64 @@ decide vem depois.
 | **D21 B (extensão da D28)** | nunca atribuído tem o mesmo tratamento | mesma função, `razao:'nunca atribuído'` | *"BTC sem degrau nenhum também suspende"* |
 | **D24 B** | tranche com data, ativo, quantidade, exposição antes e depois | validação exige os quatro | *"tranche exige exposição antes e depois"* |
 | **D25 C** | a defasagem não se perde | `defasagemAcumulada()` soma e guarda a série com o fator | *"a defasagem soma e guarda o fator"* |
+| **D32 A** | leitura retroativa recompõe o dia faltante | campo `retroativa` + `coletadaEm`, janela de 30 dias | *"a contagem se recompõe sozinha"* · *"fora da janela é recusada"* |
+| **D32 B** | o registro grava o reset no 30º fechamento | `#gravarMarcoSeCompletou()`, disparado ao gravar leitura | *"o marco completo é gravado pelo registro"* · *"retroativa que completa um marco"* |
+| **D23 B** | "invalidar" do Gate, com data e motivo | tipo `gate_invalidar`, motivo obrigatório | *"invalidação do Gate exige motivo"* |
+| **D16 B** | resultado do Filtro, com o motivo | tipo `filtro_horizonte`, veredito + motivo obrigatórios | *"os dois motivos são tipos distintos"* |
+| **D22 C** | exclusão por contagem, distinguível do filtro | tipo `teto_contagem` **separado**; `situacaoDoAtivo()` devolve `voltaSozinho` | *"reprovado no filtro não volta sozinho; excluído por contagem volta"* |
 
-## TRÊS COISAS QUE APARECERAM AO ESCREVER
+## O QUE A DECISÃO 32 RESOLVEU
+As três coisas levantadas na conferência da v1.0 foram decididas e aplicadas:
 
-### 1. Dia sem leitura interrompe a contagem do marco — e isso não estava dito
-A D9 diz "30 dias corridos consecutivos" e a D21 A fixou a janela como fechada.
-Nenhuma das duas diz o que fazer com um **dia sem leitura nenhuma**.
+1. **Dia sem leitura** — continua interrompendo, mas agora é **recuperável**. A
+   leitura retroativa se grava com a data original, marcada, com a data de
+   coleta, dentro de 30 dias. A contagem se recompõe sozinha porque é função pura
+   do log. Uma falha de coleta custa o trabalho de recuperar o dia, não a
+   contagem inteira — e nada é presumido, porque o número gravado é o número real
+   daquele dia.
+2. **Quem grava o reset** — o registro grava, no 30º fechamento consecutivo, com
+   o intervalo que o produziu no rastro. `marcoPendenteDeRegistro()` saiu.
+3. **Os três registros** entraram, e o filtro e o teto de contagem são **tipos
+   distintos**, nunca um só com motivo livre.
 
-Implementado como **interrompe**, pela invariante 3: não se pode presumir que o
-dia ausente fechou acima de 65. A alternativa — ignorar o buraco e emendar os
-dias vizinhos — presumiria exatamente isso.
+## DUAS COISAS QUE APARECERAM AGORA
 
-Consequência prática: uma falha de coleta de um único dia custa a contagem
-inteira e o marco recomeça. É conservador na direção certa (o ciclo demora mais
-a fechar, e o contador do reforço demora mais a zerar), mas é rigoroso, e é
-decisão sua confirmar.
+### 1. Leitura de dia que já tem leitura é recusada
+A retroativa abre uma porta que não existia: gravar leitura para uma data
+passada. Se essa data já tivesse leitura, a segunda seria **correção
+disfarçada** de um número real — e o log deixaria de ser append-only na prática,
+mesmo continuando append-only na forma.
 
-### 2. O reset do marco não é gravado sozinho
-A D9 regra 1 diz que o contador zera no 30º dia; a regra 5 diz que cada reset é
-gravado. As duas juntas não dizem **quem grava**.
+Implementado como **recusa**, para leitura normal e retroativa igualmente. A
+consequência é que um número errado gravado por engano não tem conserto dentro
+desta peça. Se isso precisar existir, é evento próprio — uma retificação
+explícita, que deixa as duas versões no log — e é decisão sua, não minha.
 
-Implementado como: o registro **aponta** o marco pendente
-(`marcoPendenteDeRegistro`) e não o cria. Registro que derivasse sozinho um
-reset que a decisão manda gravar estaria inventando um evento — e o contador
-passaria a zerar sem rastro. Fica para o Alocador (peça 3) gravar, ou para o
-Gate.
+### 2. Sequência longa produz um marco só
+Trinta fechamentos consecutivos completam o marco no 30º dia. Se a sequência
+continuar até o 45º, **não nasce um segundo marco**: o ciclo é o intervalo entre
+duas viradas, e a sequência precisaria romper e se formar de novo.
 
-### 3. Há registros duráveis exigidos pelas decisões que não estão entre os quatro
-As quatro coisas da lista foram implementadas. Ao percorrer as decisões, achei
-mais três que precisam ser duráveis e não têm lugar definido:
+É a leitura natural da D9, e está testada — mas a decisão não diz isso com essas
+palavras, e a alternativa (um marco a cada 30 dias de sequência) zeraria o
+contador do reforço repetidamente num bull longo.
 
-| Registro | Decisão | Coberto? |
-|---|---|---|
-| Escolha do Gate na vaga bloqueada: **manter** | D23 B | **sim** — a D24 D fez o "manter" valer como reatribuição de degrau, e degrau já é gravado |
-| Escolha do Gate: **invalidar** | D23 B | **não** — leva a saída ordenada, e não é degrau |
-| Resultado do Filtro de Horizonte, com o motivo | D16 B | **não** |
-| Exclusão por **teto de contagem**, com o motivo | D22 C | **não** |
+## O QUE NÃO MUDOU
 
-Não inventei tipo de evento para eles: a peça 1 foi definida como as quatro
-coisas, e acrescentar por conta própria seria a mesma classe de erro que a regra
-da classe âncora proíbe. Ficam para a sua decisão — cabem aqui, ou são peça 3.
+### O aviso semanal (D32 D)
+Confirmados os dias 150, 157, 164, 171 e 178, ancorados no início da janela.
 
-## NENHUM PARÂMETRO NOVO NASCEU
-Nada a submeter aos quatro critérios da classe âncora. Todos os números do
-módulo vêm das decisões: 180 dias e o aviso aos 150 (D18), 65 e 30 dias (D9),
-a escala 0·33·66·100 (D16 D), BTC e ETH como âncoras de tese (D21 B).
+### O que a peça faz e não faz
+Segue igual: grava, e deriva do que está gravado. Não calcula Índice Semente,
+alvo de glidepath, modulação nem alocação — isso é peça 2 e peça 3.
 
-*Única escolha de fase, sem parâmetro novo:* o aviso semanal dos não-âncora cai
-nos dias 150, 157, 164, 171 e 178 — ancorado no início da janela. A D18 B diz
-"uma vez por semana" sem dizer em que dia da semana.
+### Nenhum parâmetro novo nasceu
+A janela de recuperação de 30 dias vem da D32 A; os demais números vêm das
+decisões anteriores. Nada a submeter aos quatro critérios da classe âncora.
+
+---
+
+*As três questões levantadas na conferência da v1.0 — dia sem leitura, quem grava
+o reset, e os registros fora das quatro coisas — foram todas decididas pela
+Decisão 32 e estão resolvidas acima. O histórico completo delas está em
+`../08-decisoes-29-08-2026.md`.*

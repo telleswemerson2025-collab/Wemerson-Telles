@@ -72,13 +72,16 @@ test('sem leitura de hoje, a contagem é ausente e não o valor de ontem', () =>
   assert.match(c.motivo, /sem leitura de 2026-01-03/);
 });
 
-test('o marco completo é apontado como pendente, não gravado sozinho', () => {
+test('o marco completo é gravado pelo registro, com rastro (D32 B)', () => {
   const r = novo();
   for (let i = 0; i < 30; i++) r.registrar(leitura(dias('2026-01-01', i), 70));
   const hoje = dias('2026-01-01', 29);
   assert.equal(r.diasConsecutivosNoMarco(C, hoje).completo, true);
-  assert.deepEqual(r.marcoPendenteDeRegistro(C, hoje).marco, 'virada');
-  assert.equal(r.cicloReforco(C).desde, null, 'o reset não aparece sem ser gravado');
+  const reset = r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET }).at(-1);
+  assert.equal(reset.marco, 'virada');
+  assert.equal(reset.desde, '2026-01-01', 'o intervalo que o produziu fica no rastro');
+  assert.equal(reset.ate, hoje);
+  assert.equal(r.cicloReforco(C).desde, hoje);
 });
 
 // ── 2 · COMPOSIÇÃO DA CRM (D16 B) ──────────────────────────────────────────
@@ -180,4 +183,104 @@ test('o contador é por carteira, nunca global', () => {
   r.registrar({ carteira: 'B', tipo: TIPOS.REFORCO_ACIONADO, data: '2026-01-10', indice: 18, pctCaixa: 25 });
   assert.equal(r.cicloReforco('A').contador, 1);
   assert.equal(r.cicloReforco('B').contador, 1);
+});
+
+// ── D32 A · LEITURA RETROATIVA ─────────────────────────────────────────────
+const retro = (data, indice, coletadaEm) => ({ ...leitura(data, indice), retroativa: true, coletadaEm });
+
+test('gravada a leitura que faltava, a contagem se recompõe sozinha', () => {
+  const r = novo();
+  for (let i = 0; i < 3; i++) r.registrar(leitura(dias('2026-01-01', i), 70));
+  r.registrar(leitura(dias('2026-01-01', 4), 70)); // buraco no dia 3
+  assert.equal(r.diasConsecutivosNoMarco(C, dias('2026-01-01', 4)).dias, 1, 'o buraco quebra');
+  r.registrar(retro(dias('2026-01-01', 3), 70, dias('2026-01-01', 10)));
+  assert.equal(r.diasConsecutivosNoMarco(C, dias('2026-01-01', 4)).dias, 5, 'recomposta, emenda de verdade');
+});
+
+test('retroativa fora da janela de 30 dias é recusada', () => {
+  const r = novo();
+  assert.throws(() => r.registrar(retro('2026-01-01', 70, '2026-02-05')), RegistroInvalido);
+  assert.doesNotThrow(() => r.registrar(retro('2026-01-01', 70, '2026-01-31')));
+});
+
+test('retroativa sem data de coleta é recusada', () => {
+  const r = novo();
+  assert.throws(() => r.registrar({ ...leitura('2026-01-01', 70), retroativa: true }), RegistroInvalido);
+});
+
+test('leitura de dia que já tem leitura é recusada — não há correção disfarçada', () => {
+  const r = novo();
+  r.registrar(leitura('2026-01-01', 70));
+  assert.throws(() => r.registrar(leitura('2026-01-01', 40)), RegistroInvalido);
+  assert.throws(() => r.registrar(retro('2026-01-01', 40, '2026-01-10')), RegistroInvalido);
+});
+
+// ── D32 B · O REGISTRO GRAVA O RESET ───────────────────────────────────────
+test('o reset é gravado sozinho no 30º fechamento consecutivo', () => {
+  const r = novo();
+  r.registrar({ carteira: C, tipo: TIPOS.REFORCO_ACIONADO, data: '2025-12-01', indice: 18, pctCaixa: 25 });
+  for (let i = 0; i < 30; i++) r.registrar(leitura(dias('2026-01-01', i), 70));
+  const resets = r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET });
+  assert.equal(resets.length, 1);
+  assert.equal(resets[0].data, dias('2026-01-01', 29), 'datado no 30º dia, não no dia da gravação');
+  assert.equal(resets[0].desde, '2026-01-01');
+  assert.equal(r.cicloReforco(C).contador, 0, 'e o contador zerou');
+});
+
+test('sequência que passa de 30 dias não produz um segundo reset', () => {
+  const r = novo();
+  for (let i = 0; i < 45; i++) r.registrar(leitura(dias('2026-01-01', i), 70));
+  assert.equal(r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET }).length, 1);
+});
+
+test('leitura retroativa que completa um marco grava o reset com data no passado', () => {
+  const r = novo();
+  for (let i = 0; i < 30; i++) if (i !== 10) r.registrar(leitura(dias('2026-01-01', i), 70));
+  assert.equal(r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET }).length, 0, 'o buraco impediu');
+  r.registrar(retro(dias('2026-01-01', 10), 70, dias('2026-01-01', 35)));
+  const resets = r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET });
+  assert.equal(resets.length, 1);
+  assert.equal(resets[0].data, dias('2026-01-01', 29));
+});
+
+// ── D32 C · OS TRÊS REGISTROS NOVOS ────────────────────────────────────────
+test('reprovado no filtro não volta sozinho; excluído por contagem volta', () => {
+  const r = novo();
+  r.registrar({ carteira: C, tipo: TIPOS.FILTRO_HORIZONTE, data: '2026-08-01', ativo: 'XYZ', aprovado: false, motivo: 'tese depende de upgrade datado' });
+  r.registrar({ carteira: C, tipo: TIPOS.FILTRO_HORIZONTE, data: '2026-08-01', ativo: 'SOL', aprovado: true, motivo: 'passa nas quatro alíneas' });
+  r.registrar({ carteira: C, tipo: TIPOS.TETO_CONTAGEM, data: '2026-08-02', ativo: 'SOL', posicao: 9 });
+
+  const xyz = r.situacaoDoAtivo(C, 'XYZ');
+  assert.equal(xyz.situacao, 'reprovado_no_filtro');
+  assert.equal(xyz.voltaSozinho, false);
+
+  const sol = r.situacaoDoAtivo(C, 'SOL');
+  assert.equal(sol.situacao, 'teto_de_contagem');
+  assert.equal(sol.voltaSozinho, true, 'volta sozinho se subir de posição (D22 C)');
+});
+
+test('os dois motivos são tipos distintos, não campo livre', () => {
+  assert.notEqual(TIPOS.FILTRO_HORIZONTE, TIPOS.TETO_CONTAGEM);
+  const r = novo();
+  assert.throws(() => r.registrar({ carteira: C, tipo: TIPOS.FILTRO_HORIZONTE, data: '2026-08-01', ativo: 'A', aprovado: false }), RegistroInvalido);
+  assert.throws(() => r.registrar({ carteira: C, tipo: TIPOS.TETO_CONTAGEM, data: '2026-08-01', ativo: 'A' }), RegistroInvalido);
+});
+
+test('invalidação do Gate exige motivo e prevalece sobre o registro anterior', () => {
+  const r = novo();
+  r.registrar({ carteira: C, tipo: TIPOS.FILTRO_HORIZONTE, data: '2026-08-01', ativo: 'SOL', aprovado: true, motivo: 'passa nas quatro' });
+  assert.throws(() => r.registrar({ carteira: C, tipo: TIPOS.GATE_INVALIDAR, data: '2026-09-01', ativo: 'SOL' }), RegistroInvalido);
+  r.registrar({ carteira: C, tipo: TIPOS.GATE_INVALIDAR, data: '2026-09-01', ativo: 'SOL', motivo: 'tese invalidada na revisão de vaga bloqueada' });
+  const s = r.situacaoDoAtivo(C, 'SOL');
+  assert.equal(s.situacao, 'invalidado_pelo_gate');
+  assert.equal(s.voltaSozinho, false);
+});
+
+test('o universo lista cada ativo com a situação corrente', () => {
+  const r = novo();
+  r.registrar({ carteira: C, tipo: TIPOS.FILTRO_HORIZONTE, data: '2026-08-01', ativo: 'SOL', aprovado: true, motivo: 'ok' });
+  r.registrar({ carteira: C, tipo: TIPOS.FILTRO_HORIZONTE, data: '2026-08-01', ativo: 'XYZ', aprovado: false, motivo: 'evento datado' });
+  const u = r.universo(C);
+  assert.deepEqual([...u.keys()], ['SOL', 'XYZ']);
+  assert.equal(u.get('SOL').situacao, 'elegivel');
 });

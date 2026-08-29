@@ -1,5 +1,5 @@
 # 09 — RITUAL OPERACIONAL DA CARTEIRA SEMENTE
-Versão 1.10 · 29/08/2026 — conciliado com as Decisões 1 a 27.
+Versão 1.11 · 29/08/2026 — conciliado com as Decisões 1 a 32.
 *Alterações em relação ao original do Mr. G estão listadas no fim do arquivo.*
 
 Como o Mr. G aciona o sistema no dia a dia. Espelha o ritual da
@@ -164,7 +164,17 @@ dia. Precisa gravar, por carteira:
   a etiqueta de julgamento, e sem etiqueta a leitura não é
   publicável;
 - **a última composição da CRM lida**, com a data, para saber
-  desde quando o universo está congelado se a leitura falhar.
+  desde quando o universo está congelado se a leitura falhar;
+- **o "invalidar" do Gate na vaga bloqueada**, com data e motivo
+  (D23 B);
+- **o resultado do Filtro de Horizonte por ativo**, com o motivo
+  (D16 B);
+- **a exclusão por teto de contagem**, em tipo próprio e não como
+  motivo livre — excluído por contagem volta sozinho se subir de
+  posição, reprovado no filtro não volta sem reexame (D22 C).
+
+São **sete registros**, não quatro (Decisão 32 C). A implementação
+está em `registro/`, com a folha de conferência no README de lá.
 
 Por isso a etapa 3 da ordem de construção começa pelo registro, não
 pela lógica. Sem registro gravado o reforço não é liberado — logo o

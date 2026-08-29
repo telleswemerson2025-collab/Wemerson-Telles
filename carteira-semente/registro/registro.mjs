@@ -5,6 +5,9 @@
 //   2. última composição da CRM lida  (D16 B)
 //   3. histórico de degraus           (D16 D, D17, D18)
 //   4. tranches e defasagem da glidepath (D24 B, D25 C)
+//   5. "invalidar" do Gate na vaga bloqueada (D23 B)
+//   6. resultado do Filtro de Horizonte, com o motivo (D16 B)
+//   7. exclusão por teto de contagem, com o motivo (D22 C)
 //
 // Duas invariantes governam este arquivo inteiro:
 //   · NUNCA SOBRESCREVE (D18 D) — só existe acrescentar. Não há update nem delete.
@@ -22,13 +25,21 @@ export const TIPOS = Object.freeze({
   DEGRAU: 'degrau',                   // {data, ativo, valor, motivo}
   TRANCHE: 'tranche',                 // {data, ativo, quantidade, exposicaoAntes, exposicaoDepois}
   DEFASAGEM: 'defasagem',             // {data, pontosNaoMovidos, fator, estado}
+  GATE_INVALIDAR: 'gate_invalidar',   // {data, ativo, motivo}
+  FILTRO_HORIZONTE: 'filtro_horizonte', // {data, ativo, aprovado, motivo}
+  TETO_CONTAGEM: 'teto_contagem',     // {data, ativo, posicao}
 });
+
+// D22 C: excluído por contagem volta sozinho se subir de posição; reprovado no
+// filtro não volta sem reexame. São dois TIPOS de evento, nunca um só com motivo
+// livre — a diferença tem de sobreviver a quem ler o log daqui a dez anos.
 
 export const DEGRAUS_VALIDOS = Object.freeze([0, 33, 66, 100]);
 export const VALIDADE_DIAS = 180;      // âncora estrutural (D18, D28)
 export const MARCO_INDICE = 65;        // D9
 export const MARCO_DIAS = 30;          // D9
 export const ANCORAS_DE_TESE = Object.freeze(['BTC', 'ETH']); // D21 B
+export const RECUPERACAO_DIAS = 30;    // D32 A — janela para gravar leitura retroativa
 
 const DIA_MS = 86400000;
 
@@ -48,6 +59,17 @@ function valida(ev) {
     case TIPOS.LEITURA:
       if (typeof ev.indice !== 'number' || !Number.isFinite(ev.indice)) throw new RegistroInvalido('leitura sem índice numérico');
       if (!naoVazio(ev.estado)) throw new RegistroInvalido('leitura sem estado da Linha dágua');
+      // D32 A: leitura retroativa carrega a data em que foi coletada, e só vale
+      // dentro de 30 dias da data faltante. Passado isso o dia fica ausente em
+      // definitivo — o dado onchain não se perde, mas a janela de recompor fecha.
+      if (ev.retroativa) {
+        if (!ehData(ev.coletadaEm)) throw new RegistroInvalido('leitura retroativa sem data de coleta');
+        const atraso = dia(ev.coletadaEm) - dia(ev.data);
+        if (atraso < 0) throw new RegistroInvalido('coleta anterior à data da leitura');
+        if (atraso > RECUPERACAO_DIAS) {
+          throw new RegistroInvalido(`recuperação fora da janela: ${atraso} dias depois de ${ev.data}, o limite é ${RECUPERACAO_DIAS}`);
+        }
+      }
       break;
     case TIPOS.REFORCO_ACIONADO:
       if (typeof ev.indice !== 'number') throw new RegistroInvalido('acionamento sem índice');
@@ -76,6 +98,19 @@ function valida(ev) {
       if (typeof ev.pontosNaoMovidos !== 'number') throw new RegistroInvalido('defasagem sem pontos');
       if (typeof ev.fator !== 'number') throw new RegistroInvalido('defasagem sem fator do estado');
       break;
+    case TIPOS.GATE_INVALIDAR:
+      if (!naoVazio(ev.ativo)) throw new RegistroInvalido('invalidação sem ativo');
+      if (!naoVazio(ev.motivo)) throw new RegistroInvalido('invalidação sem motivo escrito (D23 B)');
+      break;
+    case TIPOS.FILTRO_HORIZONTE:
+      if (!naoVazio(ev.ativo)) throw new RegistroInvalido('filtro sem ativo');
+      if (typeof ev.aprovado !== 'boolean') throw new RegistroInvalido('filtro sem veredito');
+      if (!naoVazio(ev.motivo)) throw new RegistroInvalido('filtro sem motivo escrito (D16 B)');
+      break;
+    case TIPOS.TETO_CONTAGEM:
+      if (!naoVazio(ev.ativo)) throw new RegistroInvalido('exclusão por contagem sem ativo');
+      if (typeof ev.posicao !== 'number') throw new RegistroInvalido('exclusão por contagem sem a posição do ativo');
+      break;
   }
 }
 
@@ -95,6 +130,19 @@ export class Registro {
   /** Acrescenta um evento. É a única forma de escrita que existe. */
   registrar(evento) {
     valida(evento);
+    // Append-only tem uma consequência: leitura de um dia que já tem leitura seria
+    // correção disfarçada. Recusa-se, inclusive a retroativa.
+    if (evento.tipo === TIPOS.LEITURA) {
+      const jaTem = this.eventos({ carteira: evento.carteira, tipo: TIPOS.LEITURA })
+        .some((l) => l.data === evento.data);
+      if (jaTem) throw new RegistroInvalido(`já existe leitura de ${evento.data}; o log não sobrescreve`);
+    }
+    const gravado = this.#anexar(evento);
+    if (evento.tipo === TIPOS.LEITURA) this.#gravarMarcoSeCompletou(evento.carteira);
+    return gravado;
+  }
+
+  #anexar(evento) {
     const gravado = Object.freeze({
       ...evento,
       seq: this.#eventos.length + 1,
@@ -103,6 +151,49 @@ export class Registro {
     this.#eventos = [...this.#eventos, gravado];
     this.#adaptador.gravar(this.#eventos);
     return gravado;
+  }
+
+  /**
+   * D32 B: o registro grava o reset, automaticamente, no dia em que o 30º
+   * fechamento consecutivo se completa. É derivação determinística de um log que
+   * já existe — não decisão, e nenhuma das quatro coisas que a invariante 1
+   * proíbe (comprar, vender, aportar, publicar). O que a D9 regra 5 quer é que o
+   * reset deixe rastro, e rastro derivado é rastro.
+   *
+   * Um marco por sequência: se a sequência continua além dos 30 dias, ela não
+   * produz um segundo reset — precisaria romper e se formar de novo.
+   */
+  #gravarMarcoSeCompletou(carteira) {
+    const seq = this.#sequenciaNoMarco(carteira);
+    if (seq === null || seq.dias < MARCO_DIAS) return;
+    const completoEm = this.#somaDias(seq.desde, MARCO_DIAS - 1);
+    const jaGravado = this.eventos({ carteira, tipo: TIPOS.CONTADOR_RESET })
+      .some((r) => r.marco === 'virada' && r.desde === seq.desde);
+    if (jaGravado) return;
+    this.#anexar({
+      carteira, tipo: TIPOS.CONTADOR_RESET, data: completoEm, marco: 'virada',
+      desde: seq.desde, ate: completoEm,
+    });
+  }
+
+  #somaDias(data, n) {
+    return new Date((dia(data) + n) * DIA_MS).toISOString().slice(0, 10);
+  }
+
+  /** A sequência corrente de fechamentos em 65 ou mais, ou null se não há. */
+  #sequenciaNoMarco(carteira) {
+    const leituras = this.#porData(carteira, TIPOS.LEITURA);
+    if (leituras.length === 0) return null;
+    let inicio = null, anterior = null;
+    for (const l of leituras) {
+      const rompeu = l.indice < MARCO_INDICE;
+      const pulouDia = anterior !== null && dia(l.data) !== dia(anterior) + 1;
+      if (rompeu || pulouDia) inicio = rompeu ? null : l.data;
+      else if (inicio === null) inicio = l.data;
+      anterior = l.data;
+    }
+    if (inicio === null) return null;
+    return { desde: inicio, ate: anterior, dias: dia(anterior) - dia(inicio) + 1 };
   }
 
   eventos({ carteira, tipo } = {}) {
@@ -144,37 +235,16 @@ export class Registro {
     const leituras = this.#porData(carteira, TIPOS.LEITURA);
     if (leituras.length === 0) return ausente('nenhuma leitura registrada');
 
-    let inicio = null, anterior = null;
-    for (const l of leituras) {
-      const rompeu = l.indice < MARCO_INDICE;
-      const pulouDia = anterior !== null && dia(l.data) !== dia(anterior) + 1;
-      if (rompeu || pulouDia) inicio = rompeu ? null : l.data;
-      else if (inicio === null) inicio = l.data;
-      anterior = l.data;
-    }
-
     const ultima = leituras.at(-1);
     if (hoje !== undefined && ehData(hoje) && dia(hoje) > dia(ultima.data)) {
-      return ausente(`última leitura em ${ultima.data}; sem leitura de ${hoje}`);
+      // D32 A: o dia pode ser recomposto por leitura retroativa dentro de 30 dias.
+      const recuperavel = dia(hoje) - dia(ultima.data) <= RECUPERACAO_DIAS;
+      return ausente(`última leitura em ${ultima.data}; sem leitura de ${hoje}` +
+        (recuperavel ? ' — ainda recuperável por leitura retroativa' : ' — fora da janela de recuperação'));
     }
-    if (inicio === null) return presente({ dias: 0, desde: null, completo: false });
-
-    const dias = dia(ultima.data) - dia(inicio) + 1;
-    return presente({ dias, desde: inicio, completo: dias >= MARCO_DIAS });
-  }
-
-  /**
-   * D9 regra 5: o reset tem de ser GRAVADO. Este método não o cria sozinho — aponta
-   * que ele está devido, para que quem grava o grave. Registro não deriva o que a
-   * decisão manda gravar.
-   */
-  marcoPendenteDeRegistro(carteira, hoje) {
-    const contagem = this.diasConsecutivosNoMarco(carteira, hoje);
-    if (!contagem.disponivel || !contagem.completo) return null;
-    const ciclo = this.cicloReforco(carteira);
-    const fim = this.#porData(carteira, TIPOS.LEITURA).at(-1).data;
-    if (ciclo.desde !== null && ciclo.desde >= fim) return null; // já registrado
-    return { marco: 'virada', desde: contagem.desde, completoEm: fim };
+    const seq = this.#sequenciaNoMarco(carteira);
+    if (seq === null) return presente({ dias: 0, desde: null, completo: false });
+    return presente({ dias: seq.dias, desde: seq.desde, completo: seq.dias >= MARCO_DIAS });
   }
 
   // ── 2 · ÚLTIMA COMPOSIÇÃO DA CRM ─────────────────────────────────────────
@@ -270,6 +340,43 @@ export class Registro {
 
   tranches(carteira) {
     return this.#porData(carteira, TIPOS.TRANCHE);
+  }
+
+  // ── 5·6·7 · GATE, FILTRO E TETO DE CONTAGEM ─────────────────────────────
+  // D23 B · D16 B · D22 C. São três tipos distintos de propósito: a razão pela
+  // qual um ativo está fora determina se ele volta sozinho ou não.
+
+  /**
+   * Situação de um ativo, com a diferença que a D22 C exige preservada:
+   *   'reprovado_no_filtro' — não volta sem reexame;
+   *   'teto_de_contagem'    — volta sozinho se subir de posição;
+   *   'invalidado_pelo_gate'— saiu por decisão de tese, com saída ordenada.
+   */
+  situacaoDoAtivo(carteira, ativo) {
+    const ultimo = (tipo) => this.#porData(carteira, tipo).filter((e) => e.ativo === ativo).at(-1) ?? null;
+    const invalidacao = ultimo(TIPOS.GATE_INVALIDAR);
+    const filtro = ultimo(TIPOS.FILTRO_HORIZONTE);
+    const contagem = ultimo(TIPOS.TETO_CONTAGEM);
+
+    const candidatos = [
+      invalidacao && { evento: invalidacao, situacao: 'invalidado_pelo_gate', voltaSozinho: false, motivo: invalidacao.motivo },
+      filtro && !filtro.aprovado && { evento: filtro, situacao: 'reprovado_no_filtro', voltaSozinho: false, motivo: filtro.motivo },
+      contagem && { evento: contagem, situacao: 'teto_de_contagem', voltaSozinho: true, motivo: `9ª posição ou além (${contagem.posicao}ª)` },
+      filtro && filtro.aprovado && { evento: filtro, situacao: 'elegivel', voltaSozinho: null, motivo: filtro.motivo },
+    ].filter(Boolean);
+
+    if (candidatos.length === 0) return ausente(`nenhum registro de filtro, contagem ou invalidação para ${ativo}`);
+    const vigente = candidatos.reduce((a, b) => (a.evento.data >= b.evento.data ? a : b));
+    return presente({ situacao: vigente.situacao, voltaSozinho: vigente.voltaSozinho, motivo: vigente.motivo, desde: vigente.evento.data });
+  }
+
+  /** Todo ativo que já passou pelo filtro, com a situação corrente de cada um. */
+  universo(carteira) {
+    const ativos = new Set();
+    for (const t of [TIPOS.FILTRO_HORIZONTE, TIPOS.TETO_CONTAGEM, TIPOS.GATE_INVALIDAR]) {
+      for (const e of this.eventos({ carteira, tipo: t })) ativos.add(e.ativo);
+    }
+    return new Map([...ativos].sort().map((a) => [a, this.situacaoDoAtivo(carteira, a)]));
   }
 
   defasagemAcumulada(carteira) {
