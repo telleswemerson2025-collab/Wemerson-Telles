@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.11 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 18 aplicadas.
+Versão 1.12 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 19 aplicadas.
 
 ---
 
@@ -294,6 +294,11 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
     de julgamento traz as três informações?
 23. **Algum degrau usado passou de 180 dias?** Degrau vencido é ausência, nunca valor herdado.
     Renovação sem data nova e motivo escrito não é renovação — REPROVA.
+24. **O mapa de vencimentos dos próximos 180 dias, por janela de 30, foi produzido?** Sem o mapa não
+    se enxerga a coorte se formando — mapa ausente REPROVA. Janela acima de 25% da parte exposta:
+    se o estouro vem da **soma de vários ativos**, é acionável e REPROVA até ser escalonado; se vem
+    de **um ativo isolado**, é estrutural (ver a prova na Decisão 19), sai relatado e não reprova —
+    o freio contra ele é o lembrete diário da Decisão 18.
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 

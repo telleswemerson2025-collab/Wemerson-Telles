@@ -1,6 +1,6 @@
 # ÍNDICE SEMENTE — indicador composto
 Régua única de 0 a 100 que reúne as camadas de leitura.
-Versão 1.8 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15, 16, 17 e 18 aplicadas.
+Versão 1.9 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15 a 19 aplicadas.
 
 ## O QUE ELE É, E O QUE ELE NÃO É
 O Índice Semente **mede a intensidade** da situação de mercado. Ele **não classifica o estado**.
@@ -199,11 +199,43 @@ há um ano descreve um mercado que já não existe.
 A assimetria acompanha o custo de esquecer: qualquer um dos dois passando de 30% da parte exposta
 derruba a camada 5 sozinho.
 
-> ⚠️ **A primeira atribuição de uma carteira cria uma coorte sincronizada.** Todos os degraus
-> nascem no mesmo dia, logo **todos vencem no mesmo dia**, e o aviso dispara em bloco no dia 150. Se
-> o bloco não for renovado, 100% da parte exposta vira ausência de uma vez e a camada 5 **não
-> degrada gradualmente: some inteira.** Escalonar as primeiras validades resolveria, mas isso não
-> foi decidido — fica registrado como risco de operação.
+### Escalonamento das validades (Decisão 19)
+A coorte sincronizada — todos os degraus nascendo e vencendo no mesmo dia — é tratada por
+escalonamento.
+
+**Princípio permanente (regra A):** nenhuma janela de 30 dias pode conter vencimentos que somem
+mais de **25% da parte exposta**. Vale na primeira atribuição, em lote novo da CRM e em qualquer
+renovação.
+
+**Primeira atribuição (regra B):** ativos ordenados por peso na parte exposta, do maior para o
+menor. O primeiro recebe **180 dias**, cada seguinte **15 dias a menos**, com **piso de 90 dias**.
+Se a regra A ainda for violada, encurta-se a validade do ativo de menor peso da janela até caber.
+
+**Renovação (regra C):** vale **180 dias cheios** a partir da data nova.
+
+**Lote novo da CRM (regra D):** o ativo recebe 180 dias, salvo se isso violar a regra A — aí recebe
+a maior validade que couber, **nunca abaixo de 90 dias**. Se nem 90 couber, **o ativo entra e a
+colisão é reportada ao Gate**. Não se cria validade menor que o piso em silêncio.
+
+**Auditoria (regra E):** o Auditor verifica a regra A a cada rodada, com o **mapa de vencimentos dos
+próximos 180 dias por janela de 30**. É a única forma de ver a coorte se formando antes de vencer.
+
+> ⚠️ **A regra A não é satisfazível junto com o piso de concentração da Decisão 16.**
+> Todo ativo vence em algum dia, logo dentro de alguma janela de 30 dias. Segue que **nenhum ativo
+> isolado pode pesar mais de 25% da parte exposta**. Mas a Decisão 16 exige BTC+ETH somando ao menos
+> 60%, o que obriga o maior dos dois a pesar **no mínimo 30%** — se ambos coubessem em 25%, a soma
+> não passaria de 50%. A contradição é aritmética, não de calibragem.
+>
+> Rodado o algoritmo da regra B numa carteira típica (BTC 35 · ETH 25 · cinco ativos de 8%), a pior
+> janela de 30 dias fica em **68%**, contra o limite de 25%. O mesmo resultado aparece com BTC 30 ·
+> ETH 30 e com BTC 45 · ETH 15: o escalonamento põe os dois grandes nos vencimentos mais distantes,
+> mas **adjacentes entre si**, e adjacente é justamente o problema quando os dois somam 60%.
+>
+> **Leitura provisória, até a regra ser reparada:** o mapa da regra E é produzido a cada rodada e
+> separa o que o escalonamento pode resolver do que não pode. Estouro causado por **um único ativo**
+> é estrutural — nenhum escalonamento o resolve, e o freio contra ele é o lembrete diário de BTC e
+> ETH da Decisão 18. Estouro causado pela **soma de vários** é acionável e o Auditor cobra. Detalhe
+> e prova em `08-decisoes-29-08-2026.md`.
 
 ### Etiqueta de julgamento — obrigatória
 Toda leitura publicada que inclua a camada 5 informa as **três** coisas:
