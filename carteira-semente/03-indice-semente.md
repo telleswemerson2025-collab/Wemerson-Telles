@@ -1,6 +1,6 @@
 # ÍNDICE SEMENTE — indicador composto
 Régua única de 0 a 100 que reúne as camadas de leitura.
-Versão 1.2 · 29/08/2026 — Decisões 1, 2, 4 e 5 aplicadas.
+Versão 1.3 · 29/08/2026 — Decisões 1, 2, 4, 5 e 7 aplicadas.
 
 ## O QUE ELE É, E O QUE ELE NÃO É
 O Índice Semente **mede a intensidade** da situação de mercado. Ele **não classifica o estado**.
@@ -46,6 +46,27 @@ Cada leitura vira posição de 0 a 100 dentro da **própria faixa histórica** d
 - Séries de escala multiplicativa (preço, MVRV, SOPR, Realized Price): normalização **logarítmica**.
 - Séries de escala aditiva (percentuais, taxas, fluxo): normalização **linear**.
 
+### FATOR DE CONFIANÇA POR JANELA (Decisão 7, 29/08/2026)
+Série curta normalizada contra a própria faixa produz falsa confiança: dois anos de extremos não
+são comparáveis a quinze. A correção amortece a série curta em direção ao neutro, na proporção do
+que lhe falta de história. **Ela não é descartada, ela é amortecida.**
+
+```
+confiança      = anos_de_série ÷ 5,  limitado a 1,00
+valor_ajustado = 50 + (valor_bruto − 50) × confiança
+```
+
+| Série | Início | Anos | Confiança | Bruto | Ajustado |
+|---|---|---|---|---|---|
+| ETF Net Inflow | 11/jan/2024 | 2,63 | **0,53** | 54,97 | **52,61** |
+| Funding Rate | 01/jan/2020 | 6,66 | 1,00 | 43,26 | 43,26 |
+| Todas as demais | 01/jan/2011 | 15,66 | 1,00 | — | sem ajuste |
+
+**A confiança de cada série aparece na saída da Torre, ao lado do valor.**
+
+*Nota:* o limiar de confiança plena é 5 anos, por decisão. Com ele, o Funding Rate (6,7 anos)
+entra com peso integral ao lado de séries de 15,7 anos. Só o ETF é amortecido hoje.
+
 ## AS FAIXAS — INTENSIDADE, NÃO DECISÃO
 As faixas descrevem o quão esticada está a situação. **Nenhuma delas dispara aporte.**
 Os nomes deixaram de reutilizar o vocabulário de estado da Linha d'Água justamente para que os
@@ -64,7 +85,7 @@ conta é a fórmula.
 
 ## LEITURA DE 29/08/2026 (dado real, confirmado por tooltip)
 **Estado (Linha d'Água): Mercado saudável** — preço acima dos três custos de referência.
-**Índice Semente = 50,91 (exibido 51) · faixa Equilíbrio.**
+**Índice Semente = 50,75 (exibido 51) · faixa Equilíbrio.**
 **Nota de divergência:** estado saudável, mas intensidade apenas em equilíbrio. O estado manda;
 a intensidade qualifica. Não há disputa a resolver.
 
@@ -73,21 +94,22 @@ a intensidade qualifica. Não há disputa a resolver.
 | 1 · Estado do preço | 44,41 | 38,6% | preço ÷ Realized Price = 1,46706 |
 | 2 · Comportamento | 60,27 | 29,5% | SOPR 32,8 · Supply in Profit 49,4 · Liveliness 98,6 |
 | 3 · Macro | 50,88 | 18,2% | DXY 36,3 · Fed Funds 32,2 · M2 100,0 · Curva 35,0 |
-| 4 · Fluxo | 49,11 | 13,6% | ETF 55,0 · Funding 43,3 |
+| 4 · Fluxo | 47,94 | 13,6% | ETF 52,6 (amortecido de 55,0) · Funding 43,3 |
 | 5 · Carteira | — | fora | sem carteira ativa |
 
-Conta: `(0,34×44,41 + 0,26×60,27 + 0,16×50,88 + 0,12×49,11) ÷ 0,88 = 50,91`
+Conta: `(0,34×44,41 + 0,26×60,27 + 0,16×50,88 + 0,12×47,94) ÷ 0,88 = 50,75`
 
 Histórico do mesmo dia, para rastreabilidade:
-`50` (v1.0, com dupla contagem do MVRV) → `50,80` (v1.1, Decisão 1) → **`50,91`** (v1.2, Decisão 5).
-A faixa nunca mudou: Equilíbrio em todas as versões.
+`50` (v1.0, dupla contagem do MVRV) → `50,80` (v1.1, Decisão 1) → `50,91` (v1.2, Decisão 5) →
+**`50,75`** (v1.3, Decisão 7). A faixa nunca mudou: Equilíbrio em todas as versões, e o valor
+exibido é 51 desde a v1.2.
 
 ### ⚠️ OBSERVAÇÃO OBRIGATÓRIA EM QUALQUER LEITURA PUBLICADA
 A camada Comportamento subiu de 56 para 60 porque, sem o MVRV puxando para baixo, **a Liveliness
 em 98,6 da faixa histórica passou a pesar mais** — de 1/4 para 1/3 da camada.
 
-Quanto ela responde, medido: a Liveliness contribui com **9,7 dos 50,91 pontos** do índice (19%).
-Se ela estivesse em 50 em vez de 98,6, o índice de hoje seria **46,1** — ou seja, ela sozinha
+Quanto ela responde, medido: a Liveliness contribui com **9,7 dos 50,75 pontos** do índice (19%).
+Se ela estivesse em 50 em vez de 98,6, o índice de hoje seria **45,9** — ou seja, ela sozinha
 **levanta a leitura em 4,8 pontos**. É o número que está segurando o índice no Equilíbrio.
 
 ### O que salta na leitura individual

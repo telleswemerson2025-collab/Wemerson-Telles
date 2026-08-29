@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.2 · 29/08/2026 · BlockCapital Research — Decisões 2, 3, 4 e 5 aplicadas.
+Versão 1.3 · 29/08/2026 · BlockCapital Research — Decisões 2 a 7 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -86,6 +86,17 @@ A modulação é de no máximo ±20% sobre a base do estado — ajuste fino, nun
 
 Índice 50 devolve a base pura. Mercado deprimido reforça um pouco o aporte; mercado esticado
 alivia um pouco. A fórmula completa, com os tetos absolutos, está em `02-agentes.md`.
+
+### O reforço de fundo (a segunda torneira)
+O aporte do mês tem teto de 100% — não existe aportar mais do que entrou. Mas a tese é acumular no
+desânimo, e no fundo do ciclo o aporte sozinho não dá conta. Por isso existe um **segundo fluxo,
+separado**: em fundo de ciclo, parte do **caixa acumulado** é liberada. É para isso que o caixa é
+guardado.
+
+Só nos dois estados ruins, só com o Índice em 30 ou menos, só com mais de três anos até a entrega,
+no máximo 25% do caixa por vez, no máximo três vezes por ciclo, nunca deixando o caixa abaixo de
+10% da carteira — e sempre passando pelo Gate como decisão própria. Sete travas, para que ele não
+vire gatilho de impulso justamente no momento em que o medo é maior.
 
 ### As quatro estações
 | Estação | Quando | O aporte |
@@ -217,6 +228,8 @@ Nunca prometer valor futuro. Nunca usar linguagem de garantia de retorno.
 ## 13. O QUE ESTE DOCUMENTO NÃO DEFINE (pendências)
 
 - Percentuais exatos de cada estação do Índice de Plantio.
+- **O que define um "ciclo"** para contar os três acionamentos do reforço de fundo, e quando o
+  contador zera. A trava existe; o marco de reset não.
 - **As métricas internas da camada 5 do Índice Semente** — pesos, caixa, distância do stop, anos
   restantes — e como cada uma normaliza. Só faz sentido definir quando houver carteira; até lá a
   camada fica fora da conta.

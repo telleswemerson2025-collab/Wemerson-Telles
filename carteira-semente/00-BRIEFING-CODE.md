@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.2 — decisões 1 a 5 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.3 — decisões 1 a 7 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -39,9 +39,12 @@ Não existem dois juízes. Os papéis são distintos e ordenados:
    rebaixa estado. Diz o quão esticada está a situação, e modula o tamanho do aporte dentro da
    faixa que o estado já definiu — no máximo ±20%, pela fórmula da Decisão 4 em `02-agentes.md`.
    A modulação nunca leva o resultado ao patamar de um estado vizinho.
-3. **Quem dispara a estação é o Índice de Plantio** — o cruzamento do estado (Linha d'Água) com o
+3. **Existem dois fluxos de dinheiro, e eles não se misturam.** O aporte do mês tem teto absoluto
+   de 100%. O Reforço de Fundo é outra torneira — libera caixa acumulado em fundo de ciclo, sob
+   sete travas, e passa pelo Gate como decisão própria (Decisão 6).
+4. **Quem dispara a estação é o Índice de Plantio** — o cruzamento do estado (Linha d'Água) com o
    tempo restante até a entrega (Abrigo). O Índice Semente nunca dispara decisão sozinho.
-4. **Divergência aparente entre os dois não é empate a resolver.** O estado é o da Linha d'Água; o
+5. **Divergência aparente entre os dois não é empate a resolver.** O estado é o da Linha d'Água; o
    Índice apenas informa a intensidade. A divergência vira NOTA na saída diária da Torre
    ("estado saudável, mas intensidade em equilíbrio"), nunca uma disputa.
 
@@ -68,8 +71,13 @@ especificação. Nenhum foi alterado. O que precisa mudar:
   renormalizados por 88 (38,6 · 29,5 · 18,2 · 13,6). A tela precisa marcar a camada como fora,
   não desenhá-la como se valesse 50. Com as três correções juntas, o índice exibido passa de
   50 para 51.
-- **Nenhuma tela mostra a modulação da Decisão 4.** O modulador M e a matriz de aporte final não
-  existem em lugar nenhum do pacote visual.
+- **`indice-semente.html`** — não aplica o fator de confiança por janela (Decisão 7). O ETF Net
+  Inflow entra bruto em 55,0 quando deveria entrar amortecido em 52,6, e a confiança de cada série
+  não aparece na tela. Com as quatro correções juntas, o índice exibido é 51 e o valor interno
+  50,75.
+- **Nenhuma tela mostra a modulação da Decisão 4 nem o Reforço de Fundo da Decisão 6.** O
+  modulador M, a matriz de aporte final e as sete travas do reforço não existem em lugar nenhum
+  do pacote visual.
 - **`simulador.html`** — o modelo está correto e é a fonte de verdade dos cenários (Decisão 3).
   Nada a corrigir. Era o documento que estava errado.
 

@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.2 · 29/08/2026 — Decisões 1, 2, 4 e 5 aplicadas.
+Versão 1.3 · 29/08/2026 — Decisões 1, 2, 4, 5, 6 e 7 aplicadas.
 
 ---
 
@@ -40,6 +40,9 @@ Se algo vier zerado ou com traço: reportar, NÃO inventar.
 - **O ESTADO do mercado**, pela Linha d'Água — é o número de cima do bloco
 - O **Índice Semente** (0–100) e a **faixa de intensidade** correspondente, com a **camada 5
   marcada como FORA da conta** enquanto não houver carteira ativa — nunca desenhada como 50
+- **A confiança de cada série ao lado do valor** (Decisão 7). Hoje só o ETF Net Inflow entra
+  amortecido: 2,63 anos de série, confiança 0,53, bruto 55,0 e ajustado 52,6.
+- **Se as condições do Reforço de Fundo estão reunidas** — é sinalização, não acionamento
 - **A NOTA DE DIVERGÊNCIA**, quando estado e intensidade apontam para lados diferentes
   (ex.: "estado saudável, mas intensidade em equilíbrio"). É nota, não disputa.
 - **O que mudou desde ontem** — só o que mudou
@@ -107,7 +110,7 @@ Decisão 2 proíbe.
 
 **Modular com o índice cheio, não com o exibido.** O índice é calculado em ponto flutuante e
 arredondado só para exibição. Modular com o valor arredondado introduz degrau artificial na
-fronteira de cada ponto. Hoje: índice 50,9145 → M = 0,9963 (com 51 arredondado daria 0,9960).
+fronteira de cada ponto. Hoje: índice 50,7536 → M = 0,99699 (com 51 arredondado daria 0,99600).
 
 ### TETO E PISO ABSOLUTOS (valem sempre, acima da fórmula)
 1. O resultado nunca passa de 100% do aporte nem fica abaixo de 0%.
@@ -134,21 +137,58 @@ longo prazo, combinação que a correlação entre os dois torna quase impossív
 ciclo, e ali a regra 2 e o teto de 100% se encontram no mesmo lugar. Registrado como pendência
 em `08-decisoes-29-08-2026.md`.
 
-### MATRIZ DO APORTE — leitura de 29/08/2026 (Índice 50,91 · M = 0,9963)
+### MATRIZ DO APORTE — leitura de 29/08/2026 (Índice 50,75 · M = 0,99699)
 | Estado | +3 anos | 3 anos | 2 anos | 1 ano | entrega |
 |---|---|---|---|---|---|
-| Capitulação profunda | 99,6% | 65,8% | 44,8% | 24,9% | 14,9% |
+| Capitulação profunda | 99,7% | 65,8% | 44,9% | 24,9% | 15,0% |
 | Prejuízo do mercado | 89,7% | 59,2% | 40,4% | 22,4% | 13,5% |
-| Estresse de curto prazo | 64,8% | 42,7% | 29,1% | 16,2% | 9,7% |
+| Estresse de curto prazo | 64,8% | 42,8% | 29,2% | 16,2% | 9,7% |
 | **Mercado saudável** (estado de hoje) | **39,9%** | 26,3% | 17,9% | 10,0% | 6,0% |
 
 Com o índice quase exatamente em 50, a modulação de hoje é praticamente nula — é o que se espera
 de um ajuste fino num mercado em equilíbrio. As colunas com Abrigo ativo já trazem
 `M_efetivo = min(M, 1)` aplicado.
 
-**Saída:** proposta com ativo, percentual, faixa de preço e justificativa em uma linha.
+### FLUXO 2 · REFORÇO DE FUNDO (Decisão 6, 29/08/2026)
+Os dois fluxos são separados e **não se misturam**:
 
-**Limite:** PROPÕE. Não executa.
+| | Fluxo 1 · Aporte do mês | Fluxo 2 · Reforço de fundo |
+|---|---|---|
+| Dinheiro | o que entrou naquele mês | o **caixa acumulado**, e só ele |
+| Teto | 100%, absoluto | 25% do caixa por acionamento |
+| Quando | todo mês | só nas condições abaixo |
+
+**100% do aporte é todo o aporte — não existe 108% de uma coisa que acabou.** O reforço nunca
+estica o aporte do mês; ele abre uma segunda torneira, que é o caixa. É para isso que o caixa é
+guardado.
+
+**As sete travas (todas obrigatórias; qualquer uma que falhe BLOQUEIA):**
+1. Estado **Capitulação profunda** ou **Prejuízo do mercado** — só esses dois.
+2. **Índice Semente ≤ 30.**
+3. **Mais de 3 anos até a entrega.** Abrigo ativo bloqueia o reforço.
+4. Libera no máximo **25% do caixa acumulado** por acionamento.
+5. No máximo **3 acionamentos por ciclo**, espaçados em pelo menos **30 dias**.
+6. Nunca deixa o caixa abaixo de **10% da carteira**.
+7. Passa pelo **Gate humano como decisão própria**, separada do aporte do mês.
+
+**Razão:** a tese é "acumular no desânimo". Sem esse fluxo o caixa vira enfeite e a tese não se
+cumpre no único momento em que ela importa. Com as sete travas ele não vira gatilho de impulso:
+exige estado ruim, intensidade baixa, horizonte longo, e ainda é fatiado.
+
+**O que as travas 4 e 5 produzem juntas** (derivado, não digitado): como cada acionamento leva 25%
+do que sobrou, três acionamentos consomem no máximo `1 − 0,75³ = 57,8%` do caixa, e restam 42,2%.
+A sequência é 25,00% · 18,75% · 14,06% do caixa original. O ciclo mínimo de três acionamentos leva
+60 dias. O piso da trava 6 pode interromper a sequência antes disso.
+
+**Isto fecha o conflito da Decisão 4.** O caso que mordia era Prejuízo do mercado com Índice
+abaixo de 22 — dentro da janela do reforço (estado válido, Índice ≤ 30). O aporte segue travado em
+100% e o reforço vem por fora, do caixa. Com **Abrigo ativo o teto continua mordendo sem
+compensação**, e isso é intencional: a trava 3 existe justamente para a proteção vencer.
+
+**Saída:** proposta com ativo, percentual, faixa de preço e justificativa em uma linha. Se as
+condições do Reforço de Fundo estiverem reunidas, ela vai **separada**, como segunda proposta.
+
+**Limite:** PROPÕE. Não executa. Nem o aporte, nem o reforço.
 
 ---
 
@@ -168,6 +208,9 @@ de um ajuste fino num mercado em equilíbrio. As colunas com Abrigo ativo já tr
 10. A modulação respeitou os tetos absolutos — 0% a 100%, sem invadir patamar de estado vizinho,
     e sem elevar acima do que o Abrigo travou?
 11. A camada 5 foi tratada como FORA da conta, e não como 50?
+12. As séries de janela curta entraram amortecidas pelo fator de confiança?
+13. Se há Reforço de Fundo na mesa: as sete travas foram TODAS conferidas uma a uma, e ele veio
+    separado do aporte do mês, e não misturado nele?
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 
