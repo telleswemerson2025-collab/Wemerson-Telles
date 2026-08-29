@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.17 — decisões 1 a 28 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.18 — decisões 1 a 29 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -66,6 +66,12 @@ depois que alguém percebe.
 | 3 | O piso de **60%** em BTC e ETH | D16 | diluição lenta da qualidade da carteira |
 | 4 | A **lista fechada** dos três gatilhos de venda | D23 · D24 | gatilho novo nascendo de implementação |
 | 5 | A validade de **180 dias** do degrau de invalidação | D18 | julgamento antigo com cara de número atual |
+| 6 | O teto de **8% por ativo**, com a faixa até **12%** | D15 · D16 | concentração crescendo ciclo a ciclo |
+| 7 | O piso de **2% por posição** | D22 | a cauda miúda voltando, com o custo operacional junto |
+
+> **A faixa 8%–12% é âncora de par.** Mover só o gatilho de 12% para 15% afrouxa o teto efetivo sem
+> tocar no número protegido: o ativo passaria a passear até 15% sem venda nenhuma. **Âncora de faixa
+> se move junta ou não se move.**
 
 ### O teste de admissão
 Um parâmetro é âncora quando **as três** valem:
@@ -79,6 +85,11 @@ Falhando qualquer uma das três, é régua, piso ou parâmetro — e se calibra 
 *É o teste que descreve o padrão de dano que a classe existe para conter:* 180 → 240 → 300 dias,
 cada passo por um bom motivo de rodada, e nenhuma rodada isolada teria parecido errada.
 
+**Regra estrutural entra pelo espírito, não pela letra.** O teste foi escrito para parâmetro
+numérico. Numa regra estrutural, o teste 1 lê-se assim: **o dano não é o ato visível, é o precedente
+que ele cria.** A lista fechada de gatilhos é o caso — o gatilho novo aparece, mas o que degrada é a
+ideia de que gatilho pode nascer sem decisão.
+
 ### O que foi testado e ficou de fora
 | Parâmetro | Por que não é âncora |
 |---|---|
@@ -89,6 +100,9 @@ cada passo por um bom motivo de rodada, e nenhuma rodada isolada teria parecido 
 **Regra da classe:** alterar uma âncora exige **decisão registrada com a razão escrita**, passa pelo
 **Gate 2**, e a alteração fica na **tabela de deriva em caráter permanente**. Nenhuma âncora muda
 por calibragem, por implementação ou por conveniência de rodada. O Auditor confere a cada rodada.
+
+**A regra vale nos dois sentidos: para tirar e para pôr.** Incluir membro por conta própria é a
+mesma violação que remover — e é a mais tentadora, porque parece zelo.
 
 *Contra-exemplo que define a fronteira da classe:* o limite de 15% da trava de deriva **não** é
 âncora — a D19 regra 6 o declara provisório e prevê recalibragem na décima segunda versão. Âncora é

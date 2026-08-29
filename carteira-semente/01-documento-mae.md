@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.17 · 29/08/2026 · BlockCapital Research — Decisões 2 a 27 aplicadas.
+Versão 1.18 · 29/08/2026 · BlockCapital Research — Decisões 2 a 29 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -98,9 +98,14 @@ comprado permanece até decisão de tese. **Sem venda automática.**
 Os limites valem sobre a **PARTE EXPOSTA**, não sobre a carteira inteira. **O que o Abrigo já
 protegeu sai da base de cálculo** (Decisão 16).
 
-- **BTC e ETH somados nunca abaixo de 60%** da parte exposta.
-- **Nenhum ativo fora desses dois passa de 8%** da parte exposta.
-- **Nenhum ativo fora desses dois fica abaixo de 2%** da parte exposta (Decisão 22).
+- 🔒 **BTC e ETH somados nunca abaixo de 60%** da parte exposta.
+- 🔒 **Nenhum ativo fora desses dois passa de 8%** da parte exposta.
+- 🔒 **Nenhum ativo fora desses dois fica abaixo de 2%** da parte exposta (Decisão 22).
+
+🔒 = **âncora estrutural** (Decisão 29): só muda por decisão registrada, com razão escrita e
+passagem pelo Gate 2. **A faixa 8%–12% é âncora de par** — mover só o gatilho de venda de 12% para
+15% afrouxaria o teto sem tocar no número protegido, deixando o ativo passear até 15% sem venda
+nenhuma. Faixa se move junta ou não se move.
 - **No máximo 8 ativos** fora de BTC e ETH na carteira (Decisão 22).
 
 *Por que 8:* com oito ativos, a pior janela de vencimento de degrau contém três e soma no máximo
