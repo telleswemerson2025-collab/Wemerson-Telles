@@ -1,5 +1,5 @@
 # LINHA D'ÁGUA — o instrumento de origem da leitura
-Versão 1.3 · 29/08/2026 — Decisões 2, 4, 5, 6 e 7 aplicadas.
+Versão 1.4 · 29/08/2026 — Decisões 2, 4 a 9 aplicadas.
 
 ## AUTORIDADE
 A Linha d'Água é a **autoridade única sobre o estado do mercado**. A classificação é objetiva —
@@ -30,6 +30,19 @@ LTH US$ 49.449,51 → preço acima dos três → **Mercado saudável**.
 Índice Semente do mesmo dia: 50,75 (Equilíbrio). Nota: estado saudável, intensidade em equilíbrio.
 Modulação resultante: M = 0,99699 — praticamente nula, como se espera em equilíbrio.
 Reforço de Fundo bloqueado: exige Capitulação ou Prejuízo, e o estado de hoje é Mercado saudável.
+
+## A LINHA D'ÁGUA TAMBÉM ABRE O SIMULADOR (Decisão 8)
+A fase de partida da simulação é lida daqui, no dia em que a simulação é aberta:
+
+| Estado | Fase de partida |
+|---|---|
+| Capitulação profunda | 0 · queda |
+| Prejuízo do mercado | 0 · queda |
+| Estresse de curto prazo | 1 · recuperação |
+| Mercado saudável | 2 · alta |
+
+**Sem leitura disponível, o simulador não assume fase** — exibe indisponível e não projeta.
+Isso faz da Linha d'Água uma dependência dura do simulador, não só do Alocador.
 
 ## LINHA D'ÁGUA DA SEMENTE (o mesmo conceito, do lado do pai)
 Plota o **valor da carteira** contra:

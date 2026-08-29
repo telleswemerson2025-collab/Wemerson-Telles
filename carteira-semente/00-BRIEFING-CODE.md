@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.3 — decisões 1 a 7 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.4 — decisões 1 a 9 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -39,12 +39,16 @@ Não existem dois juízes. Os papéis são distintos e ordenados:
    rebaixa estado. Diz o quão esticada está a situação, e modula o tamanho do aporte dentro da
    faixa que o estado já definiu — no máximo ±20%, pela fórmula da Decisão 4 em `02-agentes.md`.
    A modulação nunca leva o resultado ao patamar de um estado vizinho.
-3. **Existem dois fluxos de dinheiro, e eles não se misturam.** O aporte do mês tem teto absoluto
+3. **Nada de default silencioso.** Quando uma leitura de origem falta, o sistema mostra que falta
+   e não produz saída derivada dela. Vale para a Torre (indicador zerado se reporta, não se
+   inventa), para o simulador (sem Linha d'Água não há projeção) e para o Reforço de Fundo (sem
+   registro gravado não há liberação).
+4. **Existem dois fluxos de dinheiro, e eles não se misturam.** O aporte do mês tem teto absoluto
    de 100%. O Reforço de Fundo é outra torneira — libera caixa acumulado em fundo de ciclo, sob
    sete travas, e passa pelo Gate como decisão própria (Decisão 6).
-4. **Quem dispara a estação é o Índice de Plantio** — o cruzamento do estado (Linha d'Água) com o
+5. **Quem dispara a estação é o Índice de Plantio** — o cruzamento do estado (Linha d'Água) com o
    tempo restante até a entrega (Abrigo). O Índice Semente nunca dispara decisão sozinho.
-5. **Divergência aparente entre os dois não é empate a resolver.** O estado é o da Linha d'Água; o
+6. **Divergência aparente entre os dois não é empate a resolver.** O estado é o da Linha d'Água; o
    Índice apenas informa a intensidade. A divergência vira NOTA na saída diária da Torre
    ("estado saudável, mas intensidade em equilíbrio"), nunca uma disputa.
 
@@ -78,8 +82,17 @@ especificação. Nenhum foi alterado. O que precisa mudar:
 - **Nenhuma tela mostra a modulação da Decisão 4 nem o Reforço de Fundo da Decisão 6.** O
   modulador M, a matriz de aporte final e as sete travas do reforço não existem em lugar nenhum
   do pacote visual.
-- **`simulador.html`** — o modelo está correto e é a fonte de verdade dos cenários (Decisão 3).
-  Nada a corrigir. Era o documento que estava errado.
+- **`simulador.html`** — o modelo de cenários está correto e segue sendo a fonte de verdade
+  (Decisão 3). Mas a **Decisão 8 mudou a fase de partida**, e aí há três mudanças a fazer:
+  a) `FASE_ESTADO=[0,2,3,1]` implementa o mapeamento antigo; o novo é
+  Capitulação→0 · Prejuízo→**0** · Estresse→1 · Saudável→2, e a fase 3 deixa de ser destino de
+  qualquer estado; b) a fase deixa de ser escolha do usuário e passa a ser lida da Linha d'Água,
+  com o seletor nascendo preenchido e rotulado "fase atual lida hoje", marcando a simulação como
+  hipotética se o usuário mudar; c) sem leitura da Linha d'Água, o simulador exibe estado
+  indisponível e **não gera projeção** — nunca default silencioso.
+- **Nenhuma tela registra o ciclo do Reforço de Fundo** (Decisão 9). O contador de acionamentos, o
+  marco de virada e o registro gravado de datas não existem em lugar nenhum — e sem registro
+  gravado o reforço não pode ser liberado.
 
 ## ARQUIVOS DESTE PACOTE
 - `00-BRIEFING-CODE.md` — este arquivo

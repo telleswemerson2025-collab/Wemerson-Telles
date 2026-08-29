@@ -1,6 +1,6 @@
 # ÍNDICE SEMENTE — indicador composto
 Régua única de 0 a 100 que reúne as camadas de leitura.
-Versão 1.3 · 29/08/2026 — Decisões 1, 2, 4, 5 e 7 aplicadas.
+Versão 1.4 · 29/08/2026 — Decisões 1, 2, 4, 5, 7 e 9 aplicadas.
 
 ## O QUE ELE É, E O QUE ELE NÃO É
 O Índice Semente **mede a intensidade** da situação de mercado. Ele **não classifica o estado**.
@@ -12,6 +12,10 @@ fórmula da Decisão 4 (em `02-agentes.md`, seção Alocador).
 
 > Estado é da Linha d'Água. Intensidade é do Índice. Estação é do Índice de Plantio
 > (estado × tempo restante). Ver a hierarquia completa em `00-BRIEFING-CODE.md`.
+
+O Índice tem ainda um segundo papel, de contagem e não de decisão: ele define o **marco de virada**
+que fecha um ciclo do Reforço de Fundo — fechar em **65 ou mais por 30 dias corridos consecutivos**
+(Decisão 9). Isso restringe ou permite, nunca aloca, e por isso não conflita com a Decisão 2.
 
 ## PESOS
 A camada 5 (Carteira) **está fora da conta** enquanto não existir carteira ativa para medir. Os

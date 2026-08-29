@@ -1,6 +1,6 @@
 # GATES DA CARTEIRA SEMENTE
 Nenhum agente aprova. Só o humano.
-Versão 1.3 · 29/08/2026 — Decisões 1 a 7 aplicadas.
+Versão 1.4 · 29/08/2026 — Decisões 1 a 9 aplicadas.
 
 ## GATE 1 — DIREÇÃO (antes de produzir)
 Perguntas:
@@ -23,8 +23,9 @@ Checklist. Qualquer item falho VETA:
    intensidade, nunca como classificador de estado nem como gatilho de decisão.
 6. **Modulação dentro do teto** — o aporte proposto fica entre 0% e 100%, não invade o patamar de
    um estado vizinho, e com Abrigo ativo não sobe acima do que o Abrigo travou.
-7. **Reforço de fundo** — se houver, as sete travas foram conferidas uma a uma, e ele veio como
-   decisão SEPARADA do aporte do mês. Misturar os dois fluxos veta.
+7. **Reforço de fundo** — se houver, as sete travas foram conferidas uma a uma, o contador do
+   ciclo veio de registro GRAVADO, e ele chegou como decisão SEPARADA do aporte do mês. Misturar
+   os dois fluxos veta; contar acionamentos de memória veta.
 8. **Confiança por janela** — séries curtas entraram amortecidas; a confiança aparece ao lado do
    valor.
 9. **Camada 5 rotulada** — se a leitura publicada cita o Índice, diz que a camada Carteira está
@@ -33,8 +34,10 @@ Checklist. Qualquer item falho VETA:
 11. **Abrigo** — se faltam 3 anos ou menos, a exposição respeita a glidepath.
 12. **Fatia tática** — se houver, opera só com ganho realizado, nunca com o principal, e no máximo 5–10%.
 13. **Voz** — sem hype, sem emoji, Teste da Amiga passa, sem `=` e `≠`.
-14. **Rótulo de dado** — nada ilustrativo apresentado como real. Projeção sai como faixa, nunca
-    como número único.
+14. **Rótulo de dado** — nada ilustrativo apresentado como real. Projeção traz a data e o estado
+    que a geraram; simulação com fase trocada à mão sai marcada como hipotética.
+15. **Sem default silencioso** — se faltou leitura de origem, o material diz que faltou. Nunca
+    preencher lacuna com suposição.
 
 → "Aprovado DD/MM" do Gui. Executar/publicar é irreversível.
 

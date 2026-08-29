@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.3 · 29/08/2026 — Decisões 1, 2, 4, 5, 6 e 7 aplicadas.
+Versão 1.4 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7 e 9 aplicadas.
 
 ---
 
@@ -168,6 +168,7 @@ guardado.
 3. **Mais de 3 anos até a entrega.** Abrigo ativo bloqueia o reforço.
 4. Libera no máximo **25% do caixa acumulado** por acionamento.
 5. No máximo **3 acionamentos por ciclo**, espaçados em pelo menos **30 dias**.
+   O que é um ciclo, aqui, está definido logo abaixo (Decisão 9).
 6. Nunca deixa o caixa abaixo de **10% da carteira**.
 7. Passa pelo **Gate humano como decisão própria**, separada do aporte do mês.
 
@@ -185,8 +186,39 @@ abaixo de 22 — dentro da janela do reforço (estado válido, Índice ≤ 30). 
 100% e o reforço vem por fora, do caixa. Com **Abrigo ativo o teto continua mordendo sem
 compensação**, e isso é intencional: a trava 3 existe justamente para a proteção vencer.
 
+### O CICLO E O RESET DA TRAVA 5 (Decisão 9, 29/08/2026)
+**Ciclo, para efeito exclusivo de contar os três acionamentos**, é o intervalo entre dois marcos
+de virada.
+
+> **Marco de virada** = o Índice Semente fechar em **65 ou mais** por **30 dias corridos
+> consecutivos**. Um único fechamento abaixo de 65 recomeça a contagem dos 30 dias do zero.
+
+1. O contador de acionamentos **zera no dia em que o marco se completa** — o 30º dia.
+2. Enquanto o marco não se completa, **o ciclo é o mesmo**, independentemente de quanto tempo
+   passe. Um mercado deprimido por cinco anos sem nunca sustentar 65 por 30 dias dá três reforços
+   nesses cinco anos, e não mais.
+3. **A entrada em Abrigo também zera o contador**, mas a trava 3 continua valendo: em Abrigo não há
+   reforço. O reset fica registrado para o caso de a carteira sair do Abrigo.
+4. O contador é **por carteira**, não global.
+5. O sistema **grava data e índice de cada acionamento e de cada reset**.
+   **Sem registro gravado, o reforço não é liberado.**
+
+**Consequência de implementação:** a regra 5 torna o Alocador um agente **com estado persistente**.
+Ele não pode ser reconstruído a cada execução a partir só da leitura do dia — precisa de um
+registro durável de acionamentos e resets por carteira. É o primeiro ponto do sistema com essa
+exigência.
+
+**O primeiro ciclo de cada carteira** começa na abertura dela, com o contador em zero. Não existe
+marco de virada anterior para consultar, e nenhum é presumido.
+
+**Nota de coerência com a Decisão 2:** aqui o Índice Semente define uma fronteira de contagem, o
+que é papel permitido — ele **restringe ou permite, nunca aloca**. Continua sem classificar estado
+e sem disparar decisão: o reforço ainda exige o estado da Linha d'Água, as outras seis travas e o
+Gate humano.
+
 **Saída:** proposta com ativo, percentual, faixa de preço e justificativa em uma linha. Se as
-condições do Reforço de Fundo estiverem reunidas, ela vai **separada**, como segunda proposta.
+condições do Reforço de Fundo estiverem reunidas, ela vai **separada**, como segunda proposta,
+acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o último reset.
 
 **Limite:** PROPÕE. Não executa. Nem o aporte, nem o reforço.
 
@@ -211,6 +243,8 @@ condições do Reforço de Fundo estiverem reunidas, ela vai **separada**, como 
 12. As séries de janela curta entraram amortecidas pelo fator de confiança?
 13. Se há Reforço de Fundo na mesa: as sete travas foram TODAS conferidas uma a uma, e ele veio
     separado do aporte do mês, e não misturado nele?
+14. O contador do ciclo foi lido de registro GRAVADO, e não recontado de memória? Sem registro, o
+    reforço não é liberado.
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 

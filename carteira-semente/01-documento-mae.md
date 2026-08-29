@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.3 · 29/08/2026 · BlockCapital Research — Decisões 2 a 7 aplicadas.
+Versão 1.4 · 29/08/2026 · BlockCapital Research — Decisões 2 a 9 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -186,35 +186,51 @@ Ciclo de 4 anos: queda · recuperação · alta · correção.
 
 Média a.a. = média geométrica do ciclo: `((1+r₁)(1+r₂)(1+r₃)(1+r₄))^(1/4) − 1`
 
-### O resultado é uma FAIXA, não um número
-O valor final depende de **em que ponto do ciclo a carteira começa** — a mesma criança, o mesmo
-aporte e o mesmo cenário chegam a números diferentes conforme o mês de entrada. Por isso o
-resultado se apresenta como faixa, e o simulador é quem calcula.
+### A fase de partida é LIDA, não escolhida (Decisão 8)
+O valor final depende de **em que ponto do ciclo a carteira começa**. Esse ponto não é chutado nem
+fixado no código: é **lido da Linha d'Água no dia em que a simulação é aberta**.
 
-| Cenário | Faixa ao final dos 18 anos | Multiplicador |
+| Estado hoje (Linha d'Água) | Fase de partida |
+|---|---|
+| Capitulação profunda | fase 0 · queda |
+| Prejuízo do mercado | fase 0 · queda |
+| Estresse de curto prazo | fase 1 · recuperação |
+| Mercado saudável | fase 2 · alta |
+
+O seletor manual continua na tela, mas nasce preenchido com a fase real e rotulado como
+**"fase atual lida hoje"**. Se o usuário mudar, a tela marca a simulação como **hipotética**.
+**Se a leitura da Linha d'Água não estiver disponível, o simulador não assume fase:** mostra o
+estado indisponível e não gera projeção. Nunca cair em default silencioso.
+
+### O resultado de HOJE (29/08/2026 · Mercado saudável · fase 2)
+Números datados: mudam quando o estado muda. Quem calcula é o simulador, não este documento.
+
+| Cenário | Resultado | Multiplicador |
 |---|---|---|
-| Conservador | R$ 68 mil a R$ 97 mil | 2,1x a 3,0x |
-| Moderado | R$ 186 mil a R$ 312 mil | 5,7x a 9,6x |
-| Forte | R$ 557 mil a R$ 1,12 mi | 17,2x a 34,4x |
+| Conservador | R$ 88 mil | 2,7x |
+| Moderado | R$ 262 mil | 8,1x |
+| Forte | R$ 868 mil | 26,8x |
 
-Detalhe por ponto de partida (o que o simulador calcula em `simulador.html`):
+O que cada estado produziria, para referência:
 
-| Começa em | Conservador | Moderado | Forte |
-|---|---|---|---|
-| Capitulação profunda | R$ 81 mil (2,5x) | R$ 238 mil (7,4x) | R$ 773 mil (23,9x) |
-| Estresse de curto prazo | R$ 97 mil (3,0x) | R$ 312 mil (9,6x) | R$ 1,12 mi (34,4x) |
-| Mercado saudável | R$ 88 mil (2,7x) | R$ 262 mil (8,1x) | R$ 868 mil (26,8x) |
-| Prejuízo do mercado | R$ 68 mil (2,1x) | R$ 186 mil (5,7x) | R$ 557 mil (17,2x) |
+| Estado na abertura | Fase | Conservador | Moderado | Forte |
+|---|---|---|---|---|
+| Capitulação profunda | 0 | R$ 81 mil (2,5x) | R$ 238 mil (7,4x) | R$ 773 mil (23,9x) |
+| Prejuízo do mercado | 0 | R$ 81 mil (2,5x) | R$ 238 mil (7,4x) | R$ 773 mil (23,9x) |
+| Estresse de curto prazo | 1 | R$ 97 mil (3,0x) | R$ 312 mil (9,6x) | R$ 1,12 mi (34,4x) |
+| **Mercado saudável** (hoje) | 2 | **R$ 88 mil (2,7x)** | **R$ 262 mil (8,1x)** | **R$ 868 mil (26,8x)** |
 
-**Em todos os pontos de partida do cenário conservador, com queda de 55% a cada ciclo, o valor
-aportado mais que dobra** — o pior caso da tabela é 2,1x. O produto funciona até quando o mercado
-não colabora.
+**Em todos os estados e em todos os cenários conservadores, o valor aportado mais que dobra** — o
+menor resultado da tabela é 2,5x. O produto funciona até quando o mercado não colabora.
 
-*Os números de 1.0 (R$ 70 mil · R$ 222 mil · R$ 764 mil) ficam invalidados: não saíam de nenhuma
-partida de ciclo do modelo — eram três pontos de partidas diferentes apresentados como um cenário
-só. Decisão 3.*
+*A faixa por ponto de partida publicada na v1.3 (R$ 68 mil a R$ 97 mil no conservador) fica
+superada: ela varria as quatro fases do modelo, e a Decisão 8 determina que só três são
+alcançáveis — a fase 3 (correção) não é destino de nenhum estado. O piso do conservador sobe de
+R$ 68 mil para R$ 81 mil por causa disso.*
 
 ⚠️ **Regra de comunicação:** apresentar sempre como FAIXA e como perspectiva, nunca como previsão.
+A faixa é a do **conservador ao forte** — três cenários, uma fase, a que a Linha d'Água leu hoje.
+Toda projeção sai com a **data e o estado que a geraram**, porque muda quando o estado muda.
 Nunca prometer valor futuro. Nunca usar retorno de bull isolado (ex.: 2.000%) — destrói a
 credibilidade. Contar o **mecanismo**, não a promessa.
 
@@ -228,13 +244,9 @@ Nunca prometer valor futuro. Nunca usar linguagem de garantia de retorno.
 ## 13. O QUE ESTE DOCUMENTO NÃO DEFINE (pendências)
 
 - Percentuais exatos de cada estação do Índice de Plantio.
-- **O que define um "ciclo"** para contar os três acionamentos do reforço de fundo, e quando o
-  contador zera. A trava existe; o marco de reset não.
 - **As métricas internas da camada 5 do Índice Semente** — pesos, caixa, distância do stop, anos
   restantes — e como cada uma normaliza. Só faz sentido definir quando houver carteira; até lá a
   camada fica fora da conta.
-- **O ponto de partida canônico da simulação**, se um dia for preciso publicar um número único em
-  vez da faixa. Hoje a faixa é a resposta, e é a mais honesta.
 - Composição inicial da carteira (definição do Gui).
 - Fluxo operacional de presente (quem paga ≠ quem gerencia).
 - Nome final (trabalhando com "Carteira Semente").
