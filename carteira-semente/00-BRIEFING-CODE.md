@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.5 — decisões 1 a 10 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.6 — decisões 1 a 11 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -91,7 +91,12 @@ especificação. Nenhum foi alterado. O que precisa mudar:
   Linha d'Água, com o seletor nascendo preenchido e rotulado "fase atual lida hoje", marcando a
   simulação como hipotética se o usuário mudar; c) sem leitura da Linha d'Água, o simulador exibe
   estado indisponível e **não gera projeção** — nunca default silencioso; d) a tela precisa mostrar
-  **o estado E o índice** que definiram a fase, para a leitura ser auditável pelo cliente.
+  **o par completo — estado, índice, fase e mês de entrada** — para a partida ser auditável;
+  e) **o motor deixa de ser anual e passa a ser mensal** (Decisão 11). Hoje `serie()` itera ano a
+  ano e aplica uma fase por ano; com o mês de entrada a fase muda no meio do ano civil. A troca é
+  no laço central, não na tabela de mapeamento. Especificação em `08-decisoes-29-08-2026.md`,
+  com o critério de aceite que já foi verificado: **com mês de entrada 0, o motor mensal reproduz
+  o anual com diferença zero** nas doze combinações de fase e cenário.
 - **Nenhuma tela registra o ciclo do Reforço de Fundo** (Decisão 9). O contador de acionamentos, o
   marco de virada e o registro gravado de datas não existem em lugar nenhum — e sem registro
   gravado o reforço não pode ser liberado.

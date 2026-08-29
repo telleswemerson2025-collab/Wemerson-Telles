@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.5 · 29/08/2026 · BlockCapital Research — Decisões 2 a 10 aplicadas.
+Versão 1.6 · 29/08/2026 · BlockCapital Research — Decisões 2 a 11 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -190,13 +190,23 @@ Média a.a. = média geométrica do ciclo: `((1+r₁)(1+r₂)(1+r₃)(1+r₄))^(
 O valor final depende de **em que ponto do ciclo a carteira começa**. Esse ponto não é chutado nem
 fixado no código: é **lido da Linha d'Água no dia em que a simulação é aberta**.
 
-| Estado hoje (Linha d'Água) | Condição | Fase de partida |
-|---|---|---|
-| Capitulação profunda | — | fase 0 · queda |
-| Prejuízo do mercado | — | fase 0 · queda |
-| Estresse de curto prazo | — | fase 1 · recuperação |
-| Mercado saudável | Índice < 65 | fase 2 · alta |
-| Mercado saudável | Índice ≥ 65 | fase 3 · correção |
+| Estado hoje (Linha d'Água) | Condição | Fase de partida | Mês de entrada |
+|---|---|---|---|
+| Capitulação profunda | — | fase 0 · queda | **mês 9** (faltam 3) |
+| Prejuízo do mercado | — | fase 0 · queda | **mês 3** (faltam 9) |
+| Estresse de curto prazo | — | fase 1 · recuperação | mês 0 |
+| Mercado saudável | Índice < 65 | fase 2 · alta | mês 0 |
+| Mercado saudável | Índice ≥ 65 | fase 3 · correção | mês 0 |
+
+**Capitulação e Prejuízo são momentos diferentes da mesma queda** (Decisão 11). Capitulação é queda
+quase consumida: entra faltando três meses. Prejuízo é queda em curso: entra faltando nove. Sem
+essa distinção os dois estados produziriam projeção idêntica, o que a leitura não sustenta.
+
+O horizonte não muda — a simulação roda exatamente os anos que faltam até os 18. O mês de entrada
+só define onde o padrão de quatro anos começa a ser lido, e ele segue girando dali em diante. Os
+meses não consumidos da fase de entrada não são recuperados no fim: a fase de entrada é parcial por
+definição. A proteção do Abrigo continua indexada aos **anos restantes até a entrega**, nunca à
+fase.
 
 Mercado saudável com o Índice já em 65 ou mais é topo de ciclo: o próximo capítulo do padrão é a
 correção, não a continuação da alta. A fronteira exata (Índice igual a 65) vai para a fase 3, e o
@@ -204,7 +214,8 @@ que vale é o **fechamento do dia da simulação**, não uma média.
 
 O seletor manual continua na tela, mas nasce preenchido com a fase real e rotulado como
 **"fase atual lida hoje"**. Se o usuário mudar, a tela marca a simulação como **hipotética**.
-A tela mostra **o estado E o índice que definiram a fase**, para o cliente poder auditar a leitura.
+A tela mostra **o par completo — estado, índice, fase e mês de entrada** — para o cliente poder
+auditar a partida.
 **Se a leitura da Linha d'Água não estiver disponível, o simulador não assume fase:** mostra o
 estado indisponível e não gera projeção. Nunca cair em default silencioso.
 
@@ -219,22 +230,27 @@ Números datados: mudam quando o estado muda. Quem calcula é o simulador, não 
 
 O que cada estado produziria, para referência:
 
-| Estado na abertura | Fase | Conservador | Moderado | Forte |
+| Estado na abertura | Fase · mês | Conservador | Moderado | Forte |
 |---|---|---|---|---|
-| Capitulação profunda | 0 | R$ 81 mil (2,5x) | R$ 238 mil (7,4x) | R$ 773 mil (23,9x) |
-| Prejuízo do mercado | 0 | R$ 81 mil (2,5x) | R$ 238 mil (7,4x) | R$ 773 mil (23,9x) |
-| Estresse de curto prazo | 1 | R$ 97 mil (3,0x) | R$ 312 mil (9,6x) | R$ 1,12 mi (34,4x) |
-| **Mercado saudável · Índice < 65** (hoje) | 2 | **R$ 88 mil (2,7x)** | **R$ 262 mil (8,1x)** | **R$ 868 mil (26,8x)** |
-| Mercado saudável · Índice ≥ 65 | 3 | R$ 68 mil (2,1x) | R$ 186 mil (5,7x) | R$ 557 mil (17,2x) |
+| Capitulação profunda | 0 · 9 | R$ 94 mil (2,9x) | R$ 297 mil (9,2x) | R$ 1,05 mi (32,5x) |
+| Prejuízo do mercado | 0 · 3 | R$ 86 mil (2,6x) | R$ 259 mil (8,0x) | R$ 869 mil (26,8x) |
+| Estresse de curto prazo | 1 · 0 | R$ 97 mil (3,0x) | R$ 312 mil (9,6x) | R$ 1,12 mi (34,4x) |
+| **Mercado saudável · Índice < 65** (hoje) | 2 · 0 | **R$ 88 mil (2,7x)** | **R$ 262 mil (8,1x)** | **R$ 868 mil (26,8x)** |
+| Mercado saudável · Índice ≥ 65 | 3 · 0 | R$ 68 mil (2,1x) | R$ 186 mil (5,7x) | R$ 557 mil (17,2x) |
 
 **Em todos os estados e em todos os cenários conservadores, o valor aportado mais que dobra** — o
 menor resultado da tabela é 2,1x. O produto funciona até quando o mercado não colabora.
 
-### A linha mais aquecida é a de projeção mais baixa
-Repare que a última linha — mercado saudável com o Índice já esticado — dá os menores números da
-tabela. **Isso é intencional, e deve ser dito assim: quanto mais aquecido o mercado no dia em que a
-conta é feita, mais conservadora a projeção.** Uma simulação aberta no topo do ciclo começa pela
-correção, e é assim que se evita vender expectativa no pior momento para criá-la.
+### A leitura mais aquecida é a de projeção mais baixa
+Mercado saudável com o Índice já esticado dá **os menores números da tabela nos três cenários**.
+Uma simulação aberta no topo do ciclo começa pela correção, e é assim que se evita vender
+expectativa justo no pior momento para criá-la.
+
+O que **não** se deve dizer é que a projeção cai conforme o mercado esquenta, em linha reta: não
+cai. Prejuízo do mercado (2,6x) fica abaixo de Mercado saudável com Índice baixo (2,7x), porque o
+que ordena a tabela não é a temperatura, e sim **quanto da queda ainda está pela frente e onde ela
+cai em relação ao capital já acumulado**. A afirmação segura é a de cima, sobre o extremo quente —
+e só ela.
 
 ⚠️ **Regra de comunicação:** apresentar sempre como FAIXA e como perspectiva, nunca como previsão.
 A faixa é a do **conservador ao forte** — três cenários, uma fase, a que a Linha d'Água leu hoje.
