@@ -31,7 +31,8 @@ export const SERIES = Object.freeze([
   { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11' },
   { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01' },
   // A escala é LINEAR e não pode ser outra: netflow é entrada menos saída, cruza o
-  // zero, e log de zero ou de negativo não existe. Ver a nota na D38 D.
+  // zero, e log de zero ou de negativo não produz número errado — não produz número
+  // nenhum. A D38 D chamou a série de logarítmica; a D39 corrigiu para linear.
   // Os extremos e o início da série são PROVISÓRIOS até a leitura no terminal.
   { n: 'Exchange Netflow',    camada: 4, escala: 'lin', inicioSerie: '2011-01-01', extremosProvisorios: true },
 ]);
@@ -100,8 +101,74 @@ export const faixaDoIndice = (v) => FAIXAS.find((f) => v < f.ate).nome;
  * Varredura do dia. `varredura` traz, por indicador: {valor, min, max, data}.
  * Ausência = indicador que não veio, ou veio sem valor. É nomeado, nunca estimado.
  */
-/** Séries cujos extremos ainda não foram lidos no terminal (D38 D). */
+// ── ESTADO DE CONFERÊNCIA DOS EXTREMOS (D35) ──────────────────────────────
+// O estado fica NO DADO, não em nota de rodapé: cada número carrega confirmado
+// por tooltip, com a data da conferência, ou provisório. Erro de escala e erro de
+// extremo são a mesma classe — os dois mexem na régua, não no número — e a régua é
+// o único lugar onde erro pequeno vira erro grande.
+
+/** Séries cujos extremos nasceram provisórios por não terem sido lidos ainda. */
 export const seriesComExtremosProvisorios = () => SERIES.filter((s) => s.extremosProvisorios).map((s) => s.n);
+
+/**
+ * D35 D: primeiro as séries logarítmicas, depois as lineares, e dentro de cada
+ * grupo por peso de camada. A régua log é a que amplifica erro de extremo.
+ */
+export function filaDeConferencia(varredura) {
+  const pendentes = [];
+  for (const s of SERIES) {
+    const v = varredura?.[s.n];
+    if (!v) continue;
+    for (const campo of ['valor', 'min', 'max']) {
+      if (!v.confirmado?.[campo]) pendentes.push({ serie: s.n, campo, escala: s.escala, camada: s.camada, peso: PESOS[s.camada] });
+    }
+  }
+  const ordemCampo = { min: 0, max: 1, valor: 2 };
+  return pendentes.sort((a, b) =>
+    (a.escala === b.escala ? 0 : a.escala === 'log' ? -1 : 1) ||
+    b.peso - a.peso ||
+    a.serie.localeCompare(b.serie) ||
+    ordemCampo[a.campo] - ordemCampo[b.campo]);
+}
+
+/** D35 C: quantos extremos são provisórios e em quais séries. Não bloqueia a leitura. */
+export function estadoDosExtremos(varredura) {
+  const fila = filaDeConferencia(varredura);
+  const porSerie = new Map();
+  for (const p of fila) porSerie.set(p.serie, [...(porSerie.get(p.serie) ?? []), p.campo]);
+  let confirmados = 0, total = 0;
+  for (const s of SERIES) {
+    const v = varredura?.[s.n]; if (!v) continue;
+    for (const campo of ['valor', 'min', 'max']) { total++; if (v.confirmado?.[campo]) confirmados++; }
+  }
+  return {
+    total, confirmados, provisorios: total - confirmados,
+    series: [...porSerie].map(([serie, campos]) => ({ serie, campos })),
+    proximo: fila[0] ?? null,
+  };
+}
+
+/**
+ * D35 B: comando pro Chrome, UM extremo por vez, somente leitura. O salto de sete
+ * dias do cursor é efeito do zoom ALL, não do terminal — estreitar a janela em
+ * torno da data até o passo virar um dia, ler a tooltip, voltar ao ALL.
+ */
+export function comandoDeConferencia({ serie, campo }, varredura) {
+  const v = varredura?.[serie];
+  if (!v) return null;
+  const alvo = v[campo];
+  // A data do extremo NÃO cai para a data da leitura: mandar estreitar a janela no
+  // dia errado é o default silencioso mais caro possível numa conferência.
+  const data = campo === 'valor' ? v.data : v[`data${campo[0].toUpperCase()}${campo.slice(1)}`];
+  if (!data) return { erro: `sem a data do ${campo} de ${serie} — não dá para dizer onde estreitar a janela` };
+  return [
+    `Conferir no terminal VantageNode, somente leitura: ${serie} · ${campo}.`,
+    `Valor a bater: ${alvo} na data ${data}.`,
+    'Passos: abrir a série · estreitar a janela em torno da data até o passo do cursor virar um dia ·',
+    'ler a tooltip · anotar o valor dígito a dígito · voltar ao range ALL.',
+    'Nunca publica, nunca altera, nunca apaga. Restaura o estado da tela. A sidebar nunca aparece.',
+  ].join('\n');
+}
 
 export function varrer({ varredura, hoje, camada5 = null, anterior = null }) {
   const ausencias = [];
@@ -202,6 +269,7 @@ export function varrer({ varredura, hoje, camada5 = null, anterior = null }) {
       .map((x) => ({ indicador: x.n, confianca: x.confianca, bruto: x.bruto, ajustado: x.posicao })),
     ausencias,
     extremosProvisorios: seriesComExtremosProvisorios().filter((n) => varredura?.[n]),
+    extremos: estadoDosExtremos(varredura),
     mudou,
     semRecomendacao: true, // a Torre lê regime. Não decide nada.
   };

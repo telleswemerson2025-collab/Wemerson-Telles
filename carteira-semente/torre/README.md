@@ -1,11 +1,11 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.4 · 29/08/2026 — Decisões 36, 37 e 38 aplicadas
+Conferência. Versão 1.5 · 29/08/2026 — Decisões 35 a 39 aplicadas
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
 - `torre.mjs` — o módulo. Sem dependências. Lê o registro da peça 1, não guarda nada.
 - `leitura-29-08-2026.mjs` — as catorze leituras reais do documento 07, transcritas.
-- `torre.test.mjs` — 56 testes da Torre (105 no pacote inteiro). `node --test` na raiz.
+- `torre.test.mjs` — 64 testes da Torre (113 no pacote inteiro). `node --test` na raiz.
 
 ## ⭐ ITEM 5 — O TESTE QUE PROVA A LEITURA DE 29/08/2026
 Entrada: as catorze leituras reais do `07-leituras-29-08-2026.md`, com mínimas e
@@ -203,34 +203,68 @@ mudança que revelou a divergência de 0,0004 entre as duas implementações.
 `r.estacao` é `undefined` por construção, e `semRecomendacao` sai `true` em toda
 entrega. A estação vem do Índice de Plantio, que é peça 3.
 
-## ⚠️ DOIS PONTOS DA D38 QUE PRECISAM DE VOCÊ
+## O ESTADO DE CONFERÊNCIA DOS EXTREMOS (D35)
+O estado ficou **no dado**, não em nota de rodapé. Cada número carrega `confirmado:
+{ valor, min, max }` com a data da conferência ou `null`.
 
-### A escala do netflow: a D38 D contradiz a D37 C, e a D37 C está certa
-A **D37 C** diz que o netflow *"é aditivo para efeito de normalização"*. A
-**D38 D** diz *"a série é logarítmica"*. São incompatíveis, e o desempate é
-técnico, não de preferência:
+```
+estado: 14 confirmados · 28 provisórios de 42
+```
 
-**Netflow é entrada menos saída — ele cruza o zero.** `log(0)` é −∞ e `log(−500)`
-é `NaN`. Normalização logarítmica numa série assinada não produz número errado:
-não produz número nenhum.
+Os 14 confirmados são os valores, que o documento 07 diz terem sido lidos "um por
+um" pela tooltip. Os 28 provisórios são as mínimas e as máximas, que o cursor no
+zoom ALL não alcança. O netflow nasce provisório inteiro — valor e extremos —
+levando o total a 45 e os provisórios a 31 quando ele entra na varredura.
 
-O ETF Net Inflow, da mesma família e já no sistema, tem mínima **−1.138,9** e é
-linear no documento 07. Mantive **linear**, como a D37 C mandou, e escrevi o teste
-que prova a impossibilidade — `normalizar(-500, -1000, 1000, 'log')` devolve `NaN`.
+### A fila, na prioridade da D35 D
+```
+MVRV Ratio · min           log · camada 1 (34%)
+MVRV Ratio · max           log · camada 1 (34%)
+Preço do BTC · min         log · camada 1 (34%)
+Preço do BTC · max         log · camada 1 (34%)
+Realized Price · min       log · camada 1 (34%)
+...
+```
+Logarítmicas primeiro, e dentro delas por peso de camada. Está testado que o MVRV
+(camada 1) vem antes do SOPR (camada 2), e que nenhuma linear aparece antes da
+última log.
 
-Se a intenção da D38 D era outra coisa — por exemplo normalizar o *módulo* do
-netflow em log e reaplicar o sinal — isso é desenho diferente e precisa ser dito,
-porque muda o que o indicador mede.
+### O comando, um extremo por vez
+```
+Conferir no terminal VantageNode, somente leitura: MVRV Ratio · min.
+Valor a bater: 0.384 na data 2011-10-19.
+Passos: abrir a série · estreitar a janela em torno da data até o passo do cursor virar um dia ·
+ler a tooltip · anotar o valor dígito a dígito · voltar ao range ALL.
+Nunca publica, nunca altera, nunca apaga. Restaura o estado da tela. A sidebar nunca aparece.
+```
 
-### A Decisão 35 nunca chegou aqui
-A parte D manda os extremos do netflow para "a fila da D35". **Não tenho a D35** —
-as decisões saltaram de 34 para 36 no meu registro, e `08-decisoes` não tem
-nenhuma ocorrência dela.
+### 🐛 Um erro que a D35 B fez aparecer
+A primeira versão do comando mandava conferir o mínimo do MVRV **em 28/08/2026** —
+a data da leitura — em vez de **19/out/2011**, a data do mínimo. As datas dos
+extremos estão no documento 07 e eu não as tinha carregado: o dado só trazia `data`,
+a da leitura, e o comando caía nela.
 
-Implementei o que dava sem ela: o netflow está marcado com `extremosProvisorios`,
-a entrega da Torre lista quais séries em uso estão nessa condição, e o início em
-`2011-01-01` está registrado no código como alinhamento de conveniência até a
-leitura real. O que não fiz foi pôr numa fila que não conheço.
+Mandar estreitar a janela no dia errado é o pior default silencioso possível numa
+conferência: a pessoa lê uma tooltip legítima, anota um número real, e confirma um
+extremo que não é aquele. Carreguei `dataMin` e `dataMax` das catorze séries, e o
+comando agora **recusa** se a data faltar, em vez de cair na data da leitura.
+
+*Só apareceu porque olhei a saída do comando, não o teste dele. Testes de formato
+teriam passado.*
+
+## ⚠️ O QUE A D35 D CHAMA DE OUTRO NOME
+A prioridade fala em "Ciclo 34%, Valuation 26%, Macro 16%, Fluxo 12%". Os pesos
+batem, mas os dois primeiros nomes não são os do sistema: o `03-indice-semente.md`
+chama a camada 1 de **Estado do preço** e a camada 2 de **Comportamento**.
+
+Implementei pelos pesos, que são inequívocos. Se "Ciclo" e "Valuation" forem
+renomeações pretendidas, é mudança de vocabulário em cinco documentos e merece
+decisão própria — a Decisão 2 já mostrou o custo de dois nomes para a mesma coisa.
+
+## A ESCALA DO NETFLOW, FECHADA PELA D39
+Linear, como a D37 C disse. A D38 D foi corrigida. O teste que prova a
+impossibilidade continua: `normalizar(-500, -1000, 1000, 'log')` devolve `NaN`, e
+`log(0)` é `-Infinity`.
 
 ## UM PARÂMETRO NOVO NASCEU, E JÁ FOI SUBMETIDO
 O **limiar de liquidez** (D37 A) e a **lista de exchanges** (D38 A) passaram pelos

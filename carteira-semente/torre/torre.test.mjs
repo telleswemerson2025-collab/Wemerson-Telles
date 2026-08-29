@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, comandoDeConferencia, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -496,4 +496,74 @@ test('a escala do netflow é linear, e não pode ser outra', () => {
   assert.equal(Math.log(0), -Infinity);
   assert.equal(Number.isNaN(normalizar(-500, -1000, 1000, 'log')), true, 'log numa série assinada dá NaN');
   assert.equal(normalizar(-500, -1000, 1000, 'lin'), 25, 'linear funciona');
+});
+
+// ══ D35 · EXTREMOS PROVISÓRIOS E RITUAL DE CONFERÊNCIA ════════════════════
+test('na abertura são 14 valores confirmados e 28 extremos provisórios', () => {
+  const e = estadoDosExtremos(V);
+  assert.equal(e.total, 42, '14 séries × valor, min e max');
+  assert.equal(e.confirmados, 14, 'os valores, conferidos um por um pelo documento 07');
+  assert.equal(e.provisorios, 28, 'os extremos, que o cursor no ALL não alcança');
+});
+
+test('o netflow nasce provisório inteiro — valor e extremos', () => {
+  const comNf = { ...V, 'Exchange Netflow': NETFLOW };
+  const e = estadoDosExtremos(comNf);
+  assert.equal(e.total, 45);
+  assert.equal(e.provisorios, 31, 'os 28 mais os três do netflow');
+});
+
+test('a fila segue a prioridade da D35 D: logarítmicas primeiro, e por peso de camada', () => {
+  const fila = filaDeConferencia(V);
+  const primeiras = fila.slice(0, 10).map((f) => f.serie);
+  for (const n of primeiras) {
+    assert.equal(SERIES.find((s) => s.n === n).escala, 'log', `${n} deveria ser logarítmica`);
+  }
+  // dentro das log, camada 1 (34%) antes de camada 2 (26%)
+  const soprPos = fila.findIndex((f) => f.serie === 'SOPR');
+  const mvrvPos = fila.findIndex((f) => f.serie === 'MVRV Ratio');
+  assert.ok(mvrvPos < soprPos, 'MVRV, camada 1, vem antes do SOPR, camada 2');
+  // e as lineares só depois de todas as log
+  const primeiraLinear = fila.findIndex((f) => f.escala === 'lin');
+  const ultimaLog = fila.map((f) => f.escala).lastIndexOf('log');
+  assert.ok(ultimaLog < primeiraLinear);
+});
+
+test('a leitura publicada informa quantos são provisórios, sem bloquear', () => {
+  const r = varrer({ varredura: V, hoje: HOJE });
+  assert.equal(r.disponivel, true, 'não bloqueia');
+  assert.equal(r.indice.toFixed(4), '50.7536', 'e o índice não muda');
+  assert.equal(r.extremos.provisorios, 28);
+  assert.ok(r.extremos.series.length > 0, 'e diz em quais séries');
+});
+
+test('o comando de conferência é de um extremo por vez e só de leitura', () => {
+  const fila = filaDeConferencia(V);
+  const cmd = comandoDeConferencia(fila[0], V);
+  assert.match(cmd, /somente leitura/);
+  assert.match(cmd, /Nunca publica, nunca altera, nunca apaga/);
+  assert.match(cmd, /sidebar nunca aparece/);
+  assert.match(cmd, /estreitar a janela em torno da data até o passo do cursor virar um dia/);
+  assert.match(cmd, new RegExp(fila[0].serie.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.ok(!cmd.includes('\n\n'), 'um extremo por vez, sem lista');
+});
+
+test('confirmar um extremo tira ele da fila e some no contador', () => {
+  const conferido = { ...V, 'MVRV Ratio': { ...V['MVRV Ratio'], confirmado: { valor: '2026-08-29', min: '2026-08-30', max: null } } };
+  assert.equal(estadoDosExtremos(conferido).provisorios, 27);
+  assert.ok(!filaDeConferencia(conferido).some((f) => f.serie === 'MVRV Ratio' && f.campo === 'min'));
+});
+
+test('o comando aponta a data do EXTREMO, não a data da leitura', () => {
+  const cmd = comandoDeConferencia({ serie: 'MVRV Ratio', campo: 'min' }, V);
+  assert.match(cmd, /0\.384 na data 2011-10-19/, 'o mínimo do MVRV é de outubro de 2011');
+  assert.ok(!cmd.includes('2026-08-28'), 'não pode mandar estreitar no dia da leitura');
+  const doMax = comandoDeConferencia({ serie: 'MVRV Ratio', campo: 'max' }, V);
+  assert.match(doMax, /7\.854 na data 2011-06-04/);
+});
+
+test('sem a data do extremo, o comando recusa em vez de chutar o dia', () => {
+  const semData = { 'X': { valor: 1, min: 0, max: 2, data: '2026-08-29' } };
+  const r = comandoDeConferencia({ serie: 'X', campo: 'min' }, semData);
+  assert.match(r.erro, /sem a data do min/);
 });
