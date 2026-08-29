@@ -1,0 +1,216 @@
+<title>Índice Semente</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --side:#0a0e15;--main:#0b0f17;--card:#0d1219;--bd:rgba(255,255,255,.06);
+  --ink:#e6eaf0;--mut:#8a95a5;--dim:#5a6472;--hover:rgba(255,255,255,.045);
+  --z1:#3d7dff;--z2:#3ddc84;--z3:#f5c518;--z4:#f97316;--z5:#ef4444;--price:#9aa3ad;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--main);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5}
+:focus-visible{outline:1px solid var(--z1);outline-offset:2px}
+.app{display:grid;grid-template-columns:296px 1fr;min-height:100vh}
+.side{background:var(--side);border-right:1px solid var(--bd);display:flex;flex-direction:column;padding:14px 12px 0}
+.search{display:flex;align-items:center;gap:9px;border:1px solid var(--bd);border-radius:9px;padding:9px 12px;color:var(--dim);font-size:13px;margin-bottom:16px}
+.tree{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:1px;padding-bottom:12px}
+.row{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;color:var(--mut);font-size:13.5px}
+.row:hover{background:var(--hover)}
+.row .ic{width:14px;height:14px;border:1.4px solid currentColor;border-radius:50%;position:relative;flex:none;opacity:.75}
+.row .ic::after{content:'';position:absolute;left:2.4px;right:2.4px;top:5px;height:1.4px;background:currentColor}
+.row .n{flex:1}.row .c{font-size:12px;color:var(--dim)}.row .ch{color:var(--dim);font-size:11px}
+.row.sub{padding-left:34px;font-size:13px}.row.sub .em{margin-left:auto;color:var(--dim);font-size:12px}
+.row.on{background:#151b25;color:var(--ink)}
+.row.bullet::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--z3);margin-left:2px;flex:none}
+.user{border-top:1px solid var(--bd);display:flex;align-items:center;gap:11px;padding:14px 8px;margin-top:auto}
+.av{width:32px;height:32px;border-radius:50%;background:#1b2230;display:grid;place-items:center;font-size:13px;color:var(--mut)}
+.user .nm{font-size:13px;line-height:1.25}.user .em{font-size:11.5px;color:var(--dim)}.user .out{margin-left:auto;color:var(--dim)}
+.main{display:flex;flex-direction:column;min-width:0}
+.top{display:flex;align-items:center;gap:22px;padding:16px 24px}
+.tgl{width:24px;height:20px;border:1.4px solid var(--dim);border-radius:5px;position:relative;flex:none}
+.tgl::after{content:'';position:absolute;left:7px;top:-1.4px;bottom:-1.4px;width:1.4px;background:var(--dim)}
+.mark{font-family:"Playfair Display",Georgia,serif;font-size:22px;font-weight:600}.mark i{font-style:italic}
+.crumb{display:flex;align-items:center;gap:9px;color:var(--dim);font-size:13.5px}.crumb b{color:var(--ink);font-weight:500}
+.bell{margin-left:auto;color:var(--dim)}
+.plot{margin:0 24px 16px;background:var(--card);border:1px solid var(--bd);border-radius:14px;position:relative;overflow:hidden;padding:20px 6px 4px}
+.wm{position:absolute;inset:0;display:grid;place-items:center;font-family:"Playfair Display",serif;font-size:clamp(38px,6vw,72px);
+  letter-spacing:.14em;color:rgba(255,255,255,.04);pointer-events:none;user-select:none}
+canvas{width:100%;height:470px;display:block}
+.foot{display:flex;justify-content:space-between;padding:0 26px 14px;font-size:11.5px;color:var(--dim);letter-spacing:.04em}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:1px;background:var(--bd);
+  margin:0 24px 16px;border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+.rc{background:var(--card);padding:15px 17px}
+.rc .l{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.rc .v{font-family:"Playfair Display",serif;font-size:26px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.rc .s{font-size:11.5px;color:var(--dim);margin-top:5px}
+.bars{display:flex;flex-direction:column;gap:7px}
+.bar{display:grid;grid-template-columns:118px 1fr 34px;align-items:center;gap:10px;font-size:11.5px;color:var(--mut)}
+.bar .t{height:5px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden}
+.bar .f{height:100%;border-radius:3px}
+.bar .p{text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
+.nota{margin:0 24px 26px;border:1px solid rgba(245,197,24,.28);background:rgba(245,197,24,.05);border-radius:12px;padding:14px 17px;font-size:12.5px;color:var(--mut)}
+.nota b{color:var(--z3);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:6px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{display:none}}
+</style>
+
+<div class="app">
+  <aside class="side">
+    <div class="search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      Pesquisar métricas, endereços...
+    </div>
+    <div class="tree" id="tree"></div>
+    <div class="user">
+      <div class="av">W</div>
+      <div><div class="nm">Wemerson Telles</div><div class="em">Carteira Semente</div></div>
+      <svg class="out" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4H6a2 2 0 00-2 2v12a2 2 0 002 2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="top">
+      <div class="tgl"></div>
+      <div class="mark">Vantage<i>Node</i></div>
+      <div class="crumb">Studio <span>/</span> Carteira Semente <span>/</span> <b>Índice Semente</b></div>
+      <svg class="bell" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+    </div>
+
+    <div class="read" id="read"></div>
+
+    <div class="plot">
+      <div class="wm">VANTAGENODE</div>
+      <canvas id="cv"></canvas>
+      <div class="foot"><span>Posição de cada leitura na própria faixa histórica do terminal</span><span>VantageNode</span></div>
+    </div>
+
+    <div class="nota">
+      <b>Sobre as janelas</b>
+      O ALL do terminal começa em 01/jan/2011, então os extremos de macro são os da janela, não os absolutos. ETF Net Inflow só existe desde 11/jan/2024 e Funding Rate desde 01/jan/2020 — comparar o extremo dessas duas com o de MVRV é comparar 2 anos com 15. O US M2 está exatamente na máxima e é série mensal, chapada desde 01/jul/2026. Fechamentos: onchain em 28/ago, macro e funding em 29/ago, ETF em 27/ago.
+    </div>
+  </div>
+</div>
+
+<script>
+const LEITURAS=[
+ {c:1,n:'Preço do BTC',       v:77839.19, mn:0.29,     mx:124353.95, f:'US$', d:'28/ago', esc:'log', pos:null},
+ {c:1,n:'Realized Price',     v:53057.77, mn:0.088,    mx:56449.62,  f:'US$', d:'28/ago', esc:'log'},
+ {c:1,n:'Realized Price STH', v:69977.18, mn:0.19,     mx:114018.67, f:'US$', d:'28/ago', esc:'log'},
+ {c:1,n:'Realized Price LTH', v:49449.51, mn:0.003,    mx:49991.21,  f:'US$', d:'28/ago', esc:'log'},
+ {c:2,n:'MVRV Ratio',         v:1.465,    mn:0.384,    mx:7.854,     f:'',    d:'28/ago', esc:'log'},
+ {c:2,n:'SOPR',               v:1.0112,   mn:0.6068,   mx:2.8740,    f:'',    d:'28/ago', esc:'log'},
+ {c:2,n:'Supply in Profit',   v:67.4,     mn:35.6,     mx:100.0,     f:'%',   d:'28/ago', esc:'lin'},
+ {c:2,n:'Liveliness',         v:0.6345,   mn:0.1785,   mx:0.6410,    f:'',    d:'28/ago', esc:'lin'},
+ {c:3,n:'DXY',                v:99.16,    mn:72.93,    mx:114.11,    f:'',    d:'29/ago', esc:'lin', inv:1},
+ {c:3,n:'Fed Funds Rate',     v:3.63,     mn:0.05,     mx:5.33,      f:'%',   d:'29/ago', esc:'lin', inv:1},
+ {c:3,n:'US M2',              v:23.218,   mn:8.845,    mx:23.218,    f:'T',   d:'29/ago', esc:'lin'},
+ {c:3,n:'Curva 10Y-2Y',       v:0.38,     mn:-0.93,    mx:2.81,      f:'',    d:'29/ago', esc:'lin'},
+ {c:4,n:'ETF Net Inflow',     v:242.3,    mn:-1138.9,  mx:1373.8,    f:'M',   d:'27/ago', esc:'lin'},
+ {c:4,n:'Funding Rate',       v:1.84,     mn:-139.23,  mx:186.86,    f:'%',   d:'29/ago', esc:'lin'}
+];
+const CAMADAS=[
+ {id:1,n:'Estado do preço',p:.34},
+ {id:2,n:'Comportamento', p:.26},
+ {id:3,n:'Macro',         p:.16},
+ {id:4,n:'Fluxo',         p:.12},
+ {id:5,n:'Carteira',      p:.12}
+];
+const FAIXAS=[
+ {ate:20,n:'Capitulação profunda',c:'--z1',r:'Plantio · aporte integral'},
+ {ate:40,n:'Prejuízo do mercado', c:'--z2',r:'Plantio · aporte integral'},
+ {ate:60,n:'Equilíbrio',          c:'--z3',r:'Crescimento · aporte parcial'},
+ {ate:80,n:'Aquecido',            c:'--z4',r:'Colheita · caixa cresce'},
+ {ate:101,n:'Euforia',            c:'--z5',r:'Colheita · proteger o ganho'}
+];
+const faixa=v=>FAIXAS.find(f=>v<f.ate);
+const cvar=n=>getComputedStyle(document.body).getPropertyValue(n).trim();
+const clamp=v=>Math.max(0,Math.min(1,v));
+
+LEITURAS.forEach(L=>{
+  let p = L.esc==='log' ? Math.log(L.v/L.mn)/Math.log(L.mx/L.mn) : (L.v-L.mn)/(L.mx-L.mn);
+  p=clamp(p); if(L.inv) p=1-p; L.pos=p*100;
+});
+// camada 1 usa preço ÷ custo da rede (MVRV) como régua de posição
+const posCamada=id=>{
+  if(id===1) return LEITURAS.find(l=>l.n==='MVRV Ratio').pos;
+  if(id===5) return 50;
+  const L=LEITURAS.filter(l=>l.c===id);
+  return L.reduce((s,l)=>s+l.pos,0)/L.length;
+};
+CAMADAS.forEach(c=>c.v=posCamada(c.id));
+const SCORE=Math.round(CAMADAS.reduce((s,c)=>s+c.v*c.p,0));
+
+const fmt=L=>{
+  const v=L.v;
+  if(L.f==='US$') return 'US$ '+(v>=1000?Math.round(v).toLocaleString('pt-BR'):v.toFixed(2).replace('.',','));
+  if(L.f==='%')  return v.toFixed(2).replace('.',',')+'%';
+  if(L.f==='M')  return (v>=0?'+':'')+'US$ '+v.toFixed(1).replace('.',',')+'M';
+  if(L.f==='T')  return 'US$ '+v.toFixed(3).replace('.',',')+' tri';
+  return v.toFixed(v<10?4:2).replace('.',',');
+};
+
+(()=>{const t=document.getElementById('tree');
+ const row=(n,c)=>`<div class="row"><i class="ic"></i><span class="n">${n}</span><span class="c">${c}</span><span class="ch">›</span></div>`;
+ t.innerHTML=[['Supply in Profit/Loss',6],['Histograms',8],['Cointime Statistics',15],['UTXO Dormancy',4],['UTXO CoinDays',2],['Unspent Outputs by Age',3]].map(p=>row(p[0],p[1])).join('')
+  +`<div class="row"><i class="ic"></i><span class="n">Carteira Semente</span><span class="c">3</span><span class="ch">⌄</span></div>`
+  +`<div class="row sub">Linha d’Água<span class="em">—</span></div>`
+  +`<div class="row sub on">Índice Semente<span class="em">${SCORE}</span></div>`
+  +`<div class="row sub bullet">Índice de Plantio<span class="em">—</span></div>`
+  +[['Spent Output by Age',4],['Network Statistics',5],['Address Statistics',1]].map(p=>row(p[0],p[1])).join('');
+})();
+
+(()=>{const f=faixa(SCORE), col=cvar(f.c);
+ document.getElementById('read').innerHTML=
+  `<div class="rc"><div class="l">Índice Semente</div><div class="v" style="color:${col}">${SCORE}</div><div class="s">${f.n}</div></div>
+   <div class="rc"><div class="l">Decisão do aporte</div><div class="v" style="font-size:19px">${f.r.split('·')[0].trim()}</div><div class="s">${f.r.split('·')[1].trim()}</div></div>
+   <div class="rc"><div class="l">Estado do preço</div><div class="v" style="font-size:19px;color:var(--z2)">Mercado saudável</div><div class="s">acima dos três custos de referência</div></div>
+   <div class="rc" style="grid-column:span 2"><div class="l">Composição da leitura</div>
+     <div class="bars">${CAMADAS.map(c=>
+       `<div class="bar"><span>${c.n}</span><span class="t"><span class="f" style="width:${c.v}%;background:${cvar(faixa(c.v).c)}"></span></span><span class="p">${Math.round(c.v)}</span></div>`).join('')}</div>
+     <div class="s" style="margin-top:9px">Pesos 34 · 26 · 16 · 12 · 12 · a camada Carteira fica em 50 até existir carteira ativa</div></div>`;
+})();
+
+function draw(){
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+  const dpr=devicePixelRatio||1,W=cv.clientWidth,H=470;
+  cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+  const L=178,R=118,T=34,B=30,w=W-L-R,h=H-T-B;
+  const n=LEITURAS.length, step=h/n;
+  const X=p=>L+p/100*w;
+
+  ctx.font='10px Inter,sans-serif';ctx.fillStyle=cvar('--dim');
+  FAIXAS.forEach((f,i)=>{
+    const a=i?FAIXAS[i-1].ate:0, b=Math.min(f.ate,100);
+    ctx.globalAlpha=.055;ctx.fillStyle=cvar(f.c);ctx.fillRect(X(a),T-16,X(b)-X(a),h+18);ctx.globalAlpha=1;
+    ctx.fillStyle=cvar(f.c);ctx.globalAlpha=.85;
+    ctx.fillText(f.n.toUpperCase(),X(a)+5,T-22);ctx.globalAlpha=1;
+  });
+  [0,20,40,60,80,100].forEach(v=>{
+    ctx.strokeStyle='rgba(255,255,255,.07)';ctx.beginPath();ctx.moveTo(X(v),T-16);ctx.lineTo(X(v),T+h);ctx.stroke();
+    ctx.fillStyle=cvar('--dim');ctx.fillText(String(v),X(v)-4,H-12);
+  });
+
+  LEITURAS.forEach((Lx,i)=>{
+    const y=T+step*i+step/2;
+    ctx.fillStyle=cvar('--mut');ctx.font='12px Inter,sans-serif';
+    ctx.fillText(Lx.n,10,y+4);
+    ctx.fillStyle=cvar('--dim');ctx.font='10px Inter,sans-serif';
+    ctx.fillText('C'+Lx.c,150,y+4);
+    // trilho
+    ctx.strokeStyle='rgba(255,255,255,.10)';ctx.lineWidth=3;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(X(0),y);ctx.lineTo(X(100),y);ctx.stroke();
+    // preenchimento até a posição
+    const col=cvar(faixa(Lx.pos).c);
+    ctx.strokeStyle=col;ctx.globalAlpha=.55;ctx.beginPath();ctx.moveTo(X(0),y);ctx.lineTo(X(Lx.pos),y);ctx.stroke();ctx.globalAlpha=1;
+    // marcador
+    ctx.beginPath();ctx.arc(X(Lx.pos),y,4.6,0,7);ctx.fillStyle=col;ctx.fill();
+    ctx.strokeStyle=cvar('--card');ctx.lineWidth=1.6;ctx.stroke();
+    // valor
+    ctx.fillStyle=cvar('--ink');ctx.font='11.5px Inter,sans-serif';
+    ctx.fillText(fmt(Lx),W-R+10,y+4);
+  });
+  ctx.fillStyle=cvar('--dim');ctx.font='10px Inter,sans-serif';
+  ctx.fillText('0 = mínima da série · 100 = máxima da série',10,H-12);
+}
+addEventListener('resize',draw);
+draw();
+</script>

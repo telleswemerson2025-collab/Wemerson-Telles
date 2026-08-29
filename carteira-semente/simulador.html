@@ -1,0 +1,431 @@
+<title>Simulador da Semente</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#070b12; --bg-2:#0b1220; --glow:rgba(38,78,140,.38);
+  --card:rgba(255,255,255,.025); --card-2:rgba(255,255,255,.04); --bd:rgba(255,255,255,.075);
+  --ink:#e9edf4; --mut:#8b95a8; --dim:#5d6779;
+  --gold:#d8a740; --green:#4fd88a; --red:#ff6b7a;
+  --c1:#ff8a4c; --c2:#ff5d73; --c3:#f2c14e; --c4:#4cc9f0; --c5:#56d98a; --c6:#a78bfa;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.55;
+  background-image:radial-gradient(900px 460px at 22% -8%, var(--glow), transparent 70%);background-repeat:no-repeat}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* NAV */
+nav{display:flex;align-items:center;gap:26px;padding:14px 26px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.logo{width:34px;height:34px;border-radius:9px;background:#f2f4f8;color:#0a0e16;display:grid;place-items:center;
+  font-family:"Playfair Display",Georgia,serif;font-weight:700;font-size:20px;flex:none}
+.pill{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--bd);border-radius:999px;padding:6px 14px;
+  font-size:13px;color:var(--ink);background:var(--card)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.links{display:flex;gap:22px;flex-wrap:wrap}
+.links a{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.links a.on{color:var(--gold)}
+.ghost{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(216,167,64,.5);border-radius:999px;padding:6px 14px}
+.right{margin-left:auto;display:flex;align-items:center;gap:20px}
+.badge{position:relative}
+.badge b{position:absolute;top:-7px;right:-11px;background:var(--gold);color:#0a0e16;font-family:"IBM Plex Mono",monospace;
+  font-size:9px;border-radius:999px;padding:1px 5px}
+.av{width:30px;height:30px;border-radius:9px;background:var(--card-2);border:1px solid var(--bd);display:grid;place-items:center;
+  font-family:"Playfair Display",serif;font-size:14px;color:var(--ink)}
+
+.wrap{max-width:1180px;margin:0 auto;padding:34px 26px 130px}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:30px;margin-bottom:34px}
+.k .lab{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:7px}
+.k .num{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:clamp(26px,3.3vw,38px);line-height:1;
+  font-variant-numeric:tabular-nums}
+.k .num.g{color:var(--green)}
+.k .sub{font-size:12px;color:var(--dim);margin-top:6px}
+
+h1{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:clamp(28px,4vw,42px);line-height:1.08;margin:0 0 8px;text-wrap:balance}
+.kick{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:0 0 22px}
+h2{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:26px;margin:0 0 5px}
+.lede{color:var(--mut);max-width:64ch;margin:0 0 30px;font-size:15.5px}
+
+/* CONTROLES */
+.panel{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:26px;
+  background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:24px 26px;margin-bottom:36px}
+.field{display:flex;flex-direction:column;gap:9px}
+label{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.val{font-family:"Playfair Display",serif;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.val small{font-family:Inter,sans-serif;font-size:12.5px;font-weight:400;color:var(--mut);margin-left:6px}
+input[type=range]{width:100%;accent-color:var(--gold);height:20px;margin:0;background:transparent}
+select{font-family:Inter,sans-serif;font-size:14px;padding:9px 11px;background:var(--bg-2);color:var(--ink);
+  border:1px solid var(--bd);border-radius:9px;width:100%}
+
+/* CARTÃO GRÁFICO */
+.card{background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--bd);border-radius:18px;
+  padding:22px 20px 14px;margin-bottom:14px}
+.card .ct{font-family:"Playfair Display",serif;font-size:22px;font-weight:600;margin:0 0 4px}
+.card .cs{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 14px}
+canvas{width:100%;height:330px;display:block}
+
+/* ESTAÇÕES */
+.tl{display:flex;gap:4px;overflow-x:auto;padding:4px 0 10px}
+.yr{flex:1 0 44px;text-align:center;border:1px solid var(--bd);border-radius:10px;padding:10px 4px 8px;background:var(--card)}
+.yr b{display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;color:var(--mut)}
+.yr i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:.1em;
+  text-transform:uppercase;margin-top:4px;color:var(--dim)}
+.yr.plantio{border-color:rgba(79,216,138,.45)} .yr.plantio i{color:var(--green)}
+.yr.colheita{border-color:rgba(242,193,78,.5)} .yr.colheita i{color:var(--c3)}
+.yr.abrigo{border-color:rgba(76,201,240,.45)} .yr.abrigo i{color:var(--c4)}
+
+/* LINHA D'ÁGUA DA SEMENTE */
+.estado{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:0 0 16px}
+.estado .tag{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  border:1px solid var(--bd);border-radius:999px;padding:6px 13px;color:var(--mut)}
+.estado .tag b{color:var(--ink);font-weight:500}
+.estado .tag.on{border-color:var(--green);color:var(--green)}
+.leg{display:flex;flex-wrap:wrap;gap:18px;font-size:12.5px;color:var(--mut);padding:10px 4px 2px;
+  font-family:"IBM Plex Mono",monospace;letter-spacing:.06em}
+.leg span{display:inline-flex;align-items:center;gap:8px}
+.sw{width:18px;height:3px;border-radius:2px;display:inline-block}
+
+/* MATRIZ ÍNDICE DE PLANTIO */
+.mx{display:grid;grid-template-columns:150px repeat(5,1fr);gap:5px;min-width:620px}
+.mx .hd{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);display:flex;align-items:flex-end;justify-content:center;padding-bottom:7px;text-align:center}
+.mx .rw{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mut);display:flex;align-items:center;padding-right:8px}
+.cel{border:1px solid var(--bd);border-radius:10px;padding:11px 6px 9px;text-align:center;position:relative;transition:transform .15s}
+.cel .p{font-family:"Playfair Display",serif;font-size:19px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.cel .e{font-family:"IBM Plex Mono",monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;margin-top:5px;color:var(--dim)}
+.cel.here{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 0 22px rgba(216,167,64,.25);transform:translateY(-2px)}
+.cel.here::after{content:'VOCÊ';position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--gold);
+  color:#0a0e16;font-family:"IBM Plex Mono",monospace;font-size:7.5px;letter-spacing:.12em;border-radius:999px;padding:2px 7px}
+.mxwrap{overflow-x:auto;background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--bd);
+  border-radius:18px;padding:22px 20px 18px;margin-bottom:14px}
+.axl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+
+/* TABELA */
+.tw{overflow-x:auto;border:1px solid var(--bd);border-radius:16px;background:var(--card)}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:right;padding:14px 18px;border-bottom:1px solid var(--bd)}
+th:first-child,td:first-child{text-align:left}
+th{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:500}
+td{font-variant-numeric:tabular-nums;color:var(--ink)}
+td.g{color:var(--green)}
+tr:last-child td{border-bottom:none}
+
+.note{font-size:13px;color:var(--dim);max-width:74ch;margin:14px 0 40px}
+footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--bd);font-size:12.5px;color:var(--dim);max-width:76ch}
+
+/* TOAST */
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;z-index:9;display:flex;align-items:center;gap:18px;
+  background:rgba(12,17,27,.94);border:1px solid var(--bd);border-radius:14px;padding:14px 18px;flex-wrap:wrap;
+  box-shadow:0 18px 50px rgba(0,0,0,.55);max-width:calc(100% - 36px)}
+.toast p{margin:0;font-size:14px;color:var(--mut)}
+.toast p b{color:var(--ink);font-weight:600}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);
+  border:1px solid var(--bd);border-radius:999px;padding:7px 13px}
+.chip span{color:var(--ink)}
+.cta{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);
+  color:#0a0e16;border:none;border-radius:999px;padding:9px 20px;cursor:pointer;font-weight:500}
+.x{background:none;border:none;color:var(--dim);font-size:17px;cursor:pointer;line-height:1;padding:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<nav>
+  <div class="logo">B</div>
+  <div class="pill"><i class="dot"></i> Carteira Semente</div>
+  <div class="links">
+    <a href="#">Início</a><a href="#">Feed</a><a href="#" class="on">Simulador</a><a href="#">Estações</a><a href="#">Publicações</a>
+  </div>
+  <span class="ghost">Instalar</span>
+  <div class="right">
+    <span class="badge" style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)">Comentários<b>2</b></span>
+    <span class="av">B</span>
+  </div>
+</nav>
+
+<div class="wrap">
+  <p class="kick">Carteira Semente · BlockCapital Research</p>
+  <h1>O maior ativo do seu filho hoje não é dinheiro. É o tempo.</h1>
+  <p class="lede">Escolha a idade da criança e quanto cabe no seu mês. O simulador mostra o que esse hábito pode construir até os 18 anos, atravessando quatro ou cinco ciclos de mercado.</p>
+
+  <div class="panel">
+    <div class="field">
+      <label for="idade">Idade da criança</label>
+      <div class="val"><span id="vIdade">5</span><small>anos</small></div>
+      <input type="range" id="idade" min="0" max="16" value="5" step="1">
+    </div>
+    <div class="field">
+      <label for="aporte">Aporte por mês</label>
+      <div class="val">R$&nbsp;<span id="vAporte">150</span></div>
+      <input type="range" id="aporte" min="50" max="1000" value="150" step="10">
+    </div>
+    <div class="field">
+      <label for="fase">Momento do ciclo hoje</label>
+      <select id="fase">
+        <option value="0">Capitulação · época de plantar</option>
+        <option value="1" selected>Recuperação · crescimento</option>
+        <option value="2">Alta · colheita</option>
+        <option value="3">Correção</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="k"><div class="lab">Anos até a entrega</div><div class="num" id="oAnos">13</div><div class="sub">quando ele fizer 18</div></div>
+    <div class="k"><div class="lab">Você terá aportado</div><div class="num" id="oAportado">R$ 23.400</div><div class="sub" id="oMeses">156 aportes</div></div>
+    <div class="k"><div class="lab">Pode virar</div><div class="num g" id="oFaixa">—</div><div class="sub" id="oMult">—</div></div>
+    <div class="k"><div class="lab">Estação de hoje</div><div class="num" id="oEst">—</div><div class="sub">Índice de Plantio</div></div>
+  </div>
+
+  <div class="card">
+    <p class="ct">A jornada, ano a ano</p>
+    <p class="cs">Valor da carteira a partir do aporte mensal · faixa entre cenários</p>
+    <canvas id="cv" height="330"></canvas>
+  </div>
+  <p class="note">A faixa vai do cenário conservador ao forte, com ciclos completos — as quedas estão dentro da conta, não só as altas. É uma perspectiva de mecanismo, nunca uma previsão. Rentabilidade passada não garante resultado futuro.</p>
+
+  <div class="card">
+    <p class="ct">Linha d'Água da Semente</p>
+    <p class="cs">Valor da carteira × o que já foi aportado × o piso já protegido</p>
+    <div class="estado" id="estado"></div>
+    <canvas id="wl" height="330"></canvas>
+    <div class="leg">
+      <span><i class="sw" style="background:var(--c5);box-shadow:0 0 8px var(--c5)"></i> Valor da carteira</span>
+      <span><i class="sw" style="background:var(--c4)"></i> Linha d'água · o que você aportou</span>
+      <span><i class="sw" style="background:var(--gold)"></i> Piso protegido</span>
+    </div>
+  </div>
+  <p class="note" style="margin-bottom:40px">Acima da linha d'água, a carteira está à frente do que saiu do seu bolso. Abaixo, está submersa — e é aí que o aporte do mês compra mais barato. O piso protegido sobe quando o Abrigo entra: é a parte que já não corre risco.</p>
+
+  <h2>Índice de Plantio</h2>
+  <p class="cs" style="margin-bottom:14px">Estado do mercado × tempo até a entrega · quanto do aporte vai para o ativo</p>
+  <div class="mxwrap">
+    <div class="axl" style="margin-bottom:12px">↓ Estado do mercado &nbsp;·&nbsp; Tempo restante até os 18 →</div>
+    <div class="mx" id="mx"></div>
+  </div>
+  <p class="note" style="margin-bottom:40px">O que sobra de cada percentual fica em caixa, esperando zona. Repare na coluna da direita: perto da entrega, o Abrigo derruba a exposição independentemente do que o mercado esteja fazendo — é ele que impede a criança de fazer 18 anos no fundo de um ciclo.</p>
+
+  <h2>As estações de cada ano</h2>
+  <p class="cs" style="margin-bottom:14px">Índice de Plantio · o Abrigo assume nos anos finais</p>
+  <div class="tl" id="tl"></div>
+
+  <h2 style="margin-top:38px">Os três cenários</h2>
+  <p class="cs" style="margin-bottom:14px">Mesmo no conservador, com queda a cada ciclo, o aportado mais que dobra</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Cenário</th><th>Média ao ano</th><th>Resultado aos 18</th><th>Multiplicador</th></tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </div>
+
+  <footer>Material de estudo da BlockCapital Research. Não é recomendação de investimento. A conta é operada por um adulto responsável, com o compromisso de entregar aos 18 anos. Nenhum valor futuro é prometido.</footer>
+</div>
+
+<div class="toast" id="toast">
+  <p><b>Semente: pague uma vez.</b> A jornada vai até os 18 anos.</p>
+  <span class="chip">Preço sobe em <span id="cd">2D 00:00:00</span></span>
+  <button class="cta">Quero</button>
+  <button class="x" id="fechar" aria-label="Fechar">✕</button>
+</div>
+
+<script>
+const CEN={Conservador:[-0.55,0.35,1.20,0.10],Moderado:[-0.60,0.50,2.00,0.20],Forte:[-0.65,0.70,3.00,0.30]};
+const COR={Conservador:'--c4',Moderado:'--c5',Forte:'--c3'};
+const NOME=['Plantio','Crescimento','Colheita','Plantio'];
+const EXPO={3:.66,2:.45,1:.25,0:.15};
+const brl=n=>'R$ '+Math.round(n).toLocaleString('pt-BR');
+const curto=n=>n>=1e6?'R$ '+(n/1e6).toFixed(n>=1e7?0:1).replace('.',',')+' mi'
+  :n>=1000?'R$ '+Math.round(n/1000)+' mil':brl(n);
+
+function serie(anos,ap,fase,pat){
+  const pts=[{s:0,a:0}];let s=0,a=0;
+  for(let y=0;y<anos;y++){
+    const rest=anos-y-1, exp=rest<=3?EXPO[rest]:1;
+    const m=Math.pow(1+pat[(fase+y)%4]*exp,1/12)-1;
+    for(let i=0;i<12;i++){s=(s+ap)*(1+m);a+=ap;}
+    pts.push({s,a});
+  }
+  return pts;
+}
+
+const ESTADOS=[
+  {n:'Capitulação profunda',base:1.00,est:'Plantio'},
+  {n:'Prejuízo do mercado', base:0.90,est:'Plantio'},
+  {n:'Estresse de curto prazo',base:0.65,est:'Crescimento'},
+  {n:'Mercado saudável',    base:0.40,est:'Colheita'}
+];
+const COLS=[{n:'+3 anos',r:9,f:1},{n:'3 anos',r:3,f:EXPO[3]},{n:'2 anos',r:2,f:EXPO[2]},
+            {n:'1 ano',r:1,f:EXPO[1]},{n:'entrega',r:0,f:EXPO[0]}];
+const FASE_ESTADO=[0,2,3,1];
+
+function matriz(anos,fase){
+  const mx=document.getElementById('mx');
+  mx.innerHTML='<div></div>'+COLS.map(c=>`<div class="hd">${c.n}</div>`).join('');
+  const rNow=anos-1, colNow=rNow>=3?0:COLS.findIndex(c=>c.r===rNow);
+  const rowNow=FASE_ESTADO[fase];
+  ESTADOS.forEach((e,ri)=>{
+    mx.insertAdjacentHTML('beforeend',`<div class="rw">${e.n}</div>`);
+    COLS.forEach((c,ci)=>{
+      const pct=Math.round(e.base*c.f*100);
+      const est = c.r<=2 ? 'Abrigo' : e.est;
+      const col = est==='Abrigo'?'--c4':(est==='Colheita'?'--c3':(est==='Plantio'?'--green':'--mut'));
+      const a=(pct/100*0.30+0.04).toFixed(3);
+      const here=(ri===rowNow&&ci===colNow)?' here':'';
+      mx.insertAdjacentHTML('beforeend',
+        `<div class="cel${here}" style="background:color-mix(in srgb, var(${col}) ${Math.round(pct*0.30+4)}%, transparent)">
+           <div class="p" style="color:var(${col})">${pct}%</div><div class="e">${est}</div></div>`);
+    });
+  });
+}
+
+function waterline(S,anos,idade,fase){
+  const cv=document.getElementById('wl'),ctx=cv.getContext('2d');
+  const dpr=devicePixelRatio||1,W=cv.clientWidth,H=330;
+  cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+  const cs=getComputedStyle(document.body),c=n=>cs.getPropertyValue(n).trim();
+  const L=54,R=118,T=18,B=34,w=W-L-R,h=H-T-B;
+  const M=S.Moderado;
+  const piso=M.map((p,i)=>{
+    const rest=anos-i; const exp=rest<=3&&rest>=0?EXPO[Math.max(rest,0)]:1;
+    return p.a+(p.s-p.a)*(1-exp);
+  });
+  const max=Math.max(M[anos].s,1)*1.08;
+  const X=i=>L+i/anos*w,Y=v=>T+h-v/max*h;
+
+  // faixas por estação
+  for(let y=0;y<anos;y++){
+    const rest=anos-y-1,ph=(fase+y)%4;
+    const col = rest<=2?'rgba(76,201,240,.10)'
+      : ph===2?'rgba(242,193,78,.09)'
+      : (ph===0||ph===3)?'rgba(79,216,138,.09)':'rgba(255,255,255,.015)';
+    ctx.fillStyle=col;ctx.fillRect(X(y),T,X(y+1)-X(y),h);
+  }
+  ctx.strokeStyle='rgba(255,255,255,.06)';ctx.fillStyle=c('--dim');
+  ctx.font='10px "IBM Plex Mono",monospace';ctx.lineWidth=1;
+  for(let g=0;g<=4;g++){const v=max*g/4,y=Y(v);
+    ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(L+w,y);ctx.stroke();
+    ctx.fillText(curto(v).replace('R$ ',''),4,y+3);}
+  for(let y=0;y<=anos;y+=Math.max(1,Math.ceil(anos/9))) ctx.fillText(String(idade+y)+'a',X(y)-7,H-11);
+
+  // área entre valor e linha d'água
+  ctx.beginPath();
+  M.forEach((p,i)=>i?ctx.lineTo(X(i),Y(p.s)):ctx.moveTo(X(i),Y(p.s)));
+  for(let i=anos;i>=0;i--) ctx.lineTo(X(i),Y(M[i].a));
+  ctx.closePath();ctx.fillStyle='rgba(86,217,138,.13)';ctx.fill();
+
+  const linha=(vals,col,wd,dash,glow)=>{
+    ctx.beginPath();ctx.setLineDash(dash||[]);
+    vals.forEach((v,i)=>i?ctx.lineTo(X(i),Y(v)):ctx.moveTo(X(i),Y(v)));
+    ctx.strokeStyle=col;ctx.lineWidth=wd;ctx.lineJoin='round';
+    if(glow){ctx.shadowColor=col;ctx.shadowBlur=10;}
+    ctx.stroke();ctx.shadowBlur=0;ctx.setLineDash([]);
+  };
+  linha(piso,c('--gold'),1.6,[5,4]);
+  linha(M.map(p=>p.a),c('--c4'),1.9);
+  linha(M.map(p=>p.s),c('--c5'),2.4,null,true);
+
+  const rot=(v,col,txt)=>{ctx.fillStyle=col;ctx.font='11px "IBM Plex Mono",monospace';
+    ctx.beginPath();ctx.arc(X(anos),Y(v),3.4,0,7);ctx.fill();ctx.fillText(txt,X(anos)+10,Y(v)+4);};
+  rot(M[anos].s,c('--c5'),curto(M[anos].s).replace('R$ ',''));
+  rot(M[anos].a,c('--c4'),curto(M[anos].a).replace('R$ ',''));
+  rot(piso[anos],c('--gold'),'PISO '+curto(piso[anos]).replace('R$ ',''));
+}
+
+function render(){
+  const idade=+I.value, ap=+A.value, fase=+F.value, anos=18-idade;
+  vIdade.textContent=idade; vAporte.textContent=ap.toLocaleString('pt-BR');
+  oAnos.textContent=anos; oMeses.textContent=anos*12+' aportes';
+  oEst.textContent=anos<=3?'Abrigo':NOME[fase];
+
+  const S={}; for(const k in CEN) S[k]=serie(anos,ap,fase,CEN[k]);
+  const apd=S.Moderado[anos].a;
+  oAportado.textContent=brl(apd);
+  oFaixa.textContent=curto(S.Conservador[anos].s)+' – '+curto(S.Forte[anos].s);
+  oMult.textContent=(S.Conservador[anos].s/apd).toFixed(1).replace('.',',')+'x a '+
+                    (S.Forte[anos].s/apd).toFixed(1).replace('.',',')+'x o aportado';
+
+  tb.innerHTML='';
+  for(const k in CEN){
+    const f=S[k][anos].s, c=Math.pow(CEN[k].reduce((p,r)=>p*(1+r),1),1/4)-1;
+    tb.insertAdjacentHTML('beforeend',
+      `<tr><td>${k}</td><td>${(c*100).toFixed(0)}%</td><td class="g">${brl(f)}</td><td>${(f/apd).toFixed(1).replace('.',',')}x</td></tr>`);
+  }
+
+  tl.innerHTML='';
+  for(let y=0;y<anos;y++){
+    const rest=anos-y-1, ph=(fase+y)%4;
+    const cls=rest<=2?'abrigo':(ph===2?'colheita':(ph===0||ph===3?'plantio':''));
+    tl.insertAdjacentHTML('beforeend',
+      `<div class="yr ${cls}"><b>${idade+y+1}a</b><i>${rest<=2?'Abrigo':NOME[ph]}</i></div>`);
+  }
+  const est=document.getElementById('estado');
+  const nomes=['Capitulação profunda','Estresse de curto prazo','Mercado saudável','Prejuízo do mercado'];
+  est.innerHTML=`<span class="tag on">Hoje · <b>${nomes[fase]}</b></span>`+
+    `<span class="tag">Estação · <b>${anos<=3?'Abrigo':NOME[fase]}</b></span>`+
+    `<span class="tag">Aporte para o ativo · <b>${Math.round([1,.65,.40,.90][fase]*(anos-1<=3?EXPO[Math.max(anos-1,0)]:1)*100)}%</b></span>`;
+  waterline(S,anos,idade,fase);
+  matriz(anos,fase);
+  draw(S,anos,idade);
+}
+
+function draw(S,anos,idade){
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+  const dpr=devicePixelRatio||1,W=cv.clientWidth,H=330;
+  cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+  const cs=getComputedStyle(document.body), c=n=>cs.getPropertyValue(n).trim();
+  const L=54,R=132,T=18,B=32,w=W-L-R,h=H-T-B;
+  const max=Math.max(S.Forte[anos].s,1)*1.08;
+  const X=i=>L+i/anos*w, Y=v=>T+h-v/max*h;
+
+  if(anos>3){
+    ctx.fillStyle='rgba(76,201,240,.07)';ctx.fillRect(X(anos-3),T,X(anos)-X(anos-3),h);
+    ctx.strokeStyle='rgba(76,201,240,.3)';ctx.setLineDash([3,4]);
+    ctx.beginPath();ctx.moveTo(X(anos-3),T);ctx.lineTo(X(anos-3),T+h);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=c('--c4');ctx.font='10px "IBM Plex Mono",monospace';ctx.fillText('ABRIGO',X(anos-3)+7,T+13);
+  }
+  ctx.strokeStyle='rgba(255,255,255,.06)';ctx.fillStyle=c('--dim');
+  ctx.font='10px "IBM Plex Mono",monospace';ctx.lineWidth=1;
+  for(let g=0;g<=4;g++){
+    const v=max*g/4,y=Y(v);
+    ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(L+w,y);ctx.stroke();
+    ctx.fillText(curto(v).replace('R$ ',''),4,y+3);
+  }
+  for(let y=0;y<=anos;y+=Math.max(1,Math.ceil(anos/9))) ctx.fillText(String(idade+y),X(y)-6,H-10);
+
+  ctx.beginPath();
+  S.Forte.forEach((p,i)=>i?ctx.lineTo(X(i),Y(p.s)):ctx.moveTo(X(i),Y(p.s)));
+  for(let i=anos;i>=0;i--) ctx.lineTo(X(i),Y(S.Conservador[i].s));
+  ctx.closePath();ctx.fillStyle='rgba(86,217,138,.10)';ctx.fill();
+
+  ctx.setLineDash([4,4]);ctx.beginPath();
+  S.Moderado.forEach((p,i)=>i?ctx.lineTo(X(i),Y(p.a)):ctx.moveTo(X(i),Y(p.a)));
+  ctx.strokeStyle=c('--dim');ctx.lineWidth=1.4;ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=c('--mut');ctx.fillText('APORTADO '+curto(S.Moderado[anos].a).replace('R$ ',''),X(anos)+10,Y(S.Moderado[anos].a)+3);
+
+  const ord=['Forte','Moderado','Conservador'];
+  ord.forEach(k=>{
+    const col=c(COR[k]);
+    ctx.beginPath();
+    S[k].forEach((p,i)=>i?ctx.lineTo(X(i),Y(p.s)):ctx.moveTo(X(i),Y(p.s)));
+    ctx.strokeStyle=col;ctx.lineWidth=2.1;ctx.lineJoin='round';
+    ctx.shadowColor=col;ctx.shadowBlur=9;ctx.stroke();ctx.shadowBlur=0;
+    const yv=Y(S[k][anos].s);
+    ctx.beginPath();ctx.arc(X(anos),yv,3.4,0,7);ctx.fillStyle=col;ctx.fill();
+    ctx.fillStyle=col;ctx.font='11px "IBM Plex Mono",monospace';
+    ctx.fillText(k.toUpperCase().slice(0,5)+' '+curto(S[k][anos].s).replace('R$ ',''),X(anos)+10,yv+4);
+  });
+}
+
+const I=document.getElementById('idade'),A=document.getElementById('aporte'),F=document.getElementById('fase');
+const tb=document.getElementById('tb'),tl=document.getElementById('tl');
+[I,A,F].forEach(e=>e.addEventListener('input',render));
+addEventListener('resize',render);
+document.getElementById('fechar').onclick=()=>document.getElementById('toast').remove();
+let t=2*86400;
+setInterval(()=>{t--;const d=Math.floor(t/86400),r=t%86400;
+  document.getElementById('cd').textContent=d+'D '+String(Math.floor(r/3600)).padStart(2,'0')+':'+
+  String(Math.floor(r%3600/60)).padStart(2,'0')+':'+String(r%60).padStart(2,'0');},1000);
+render();
+</script>
