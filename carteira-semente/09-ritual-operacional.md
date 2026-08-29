@@ -1,5 +1,5 @@
 # 09 — RITUAL OPERACIONAL DA CARTEIRA SEMENTE
-Versão 1.7 · 29/08/2026 — conciliado com as Decisões 1 a 21.
+Versão 1.8 · 29/08/2026 — conciliado com as Decisões 1 a 25.
 *Alterações em relação ao original do Mr. G estão listadas no fim do arquivo.*
 
 Como o Mr. G aciona o sistema no dia a dia. Espelha o ritual da
@@ -153,6 +153,9 @@ dia. Precisa gravar, por carteira:
 - cada reset do contador, com data e o marco que o causou;
 - a contagem corrente de dias consecutivos com Índice 65 ou mais;
 - a série de leituras diárias, para a auditoria da contagem;
+- **a defasagem acumulada da glidepath**, em pontos de exposição, com o
+  histórico de quanto cada mês deixou de mover e por qual fator
+  (Decisão 25). Sem ela o fator 1,50 não sabe o que recuperar;
 - **a série completa de degraus por ativo — valor, data e motivo
   escrito** (Decisões 16 a 18). **Nunca sobrescreve:** o histórico
   de mudança de tese é auditável para trás. Sem a data não se monta

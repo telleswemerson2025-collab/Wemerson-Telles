@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.17 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 24 aplicadas.
+Versão 1.18 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 25 aplicadas.
 
 ---
 
@@ -317,9 +317,12 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
 27. **Toda venda proposta é um dos TRÊS gatilhos determinísticos — estouro acima de 12%, queda
     abaixo de 2%, ou realização programada da glidepath — ou uma decisão de tese registrada?** Venda
     que não caiba REPROVA. **Gatilho novo nunca nasce de implementação: exige decisão registrada.**
-    No gatilho 3: o fluxo do mês foi consumido antes de qualquer venda? A ordem de venda respeita o
-    peso de longo prazo, com BTC e ETH por último? A banda de 3 pontos foi respeitada? Cada tranche
-    tem data, ativo, quantidade e exposição antes e depois?
+    No gatilho 3: o alvo foi **interpolado mês a mês**, e não lido como degrau anual? O fator do
+    estado foi aplicado (1,50 · 1,00 · 0,50 · 0,25)? A **defasagem acumulada** está registrada e
+    abaixo do teto de 12 pontos — e, se no teto, o fator voltou a 1,00? Nos **últimos 12 meses** o
+    fator é 1,00 e a defasagem está sendo liquidada? O fluxo do mês foi consumido antes de qualquer
+    venda? A ordem de venda respeita o peso de longo prazo, com BTC e ETH por último? A banda de 3
+    pontos foi respeitada? Cada tranche tem data, ativo, quantidade e exposição antes e depois?
 28. **Alguma vaga bloqueada passou de 90 dias sem ir ao Gate?** Prorrogação silenciosa REPROVA — a
     escolha entre manter e invalidar tem de estar registrada com data e motivo.
 

@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.14 · 29/08/2026 · BlockCapital Research — Decisões 2 a 24 aplicadas.
+Versão 1.15 · 29/08/2026 · BlockCapital Research — Decisões 2 a 25 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -153,6 +153,11 @@ Gate 2 com as duas saídas escritas:
 | **Manter** | A vaga segue bloqueada por mais 90 dias, o relógio recomeça, e o "manter" **vale como reatribuição do degrau** daquele ativo, com data nova e motivo escrito — é materialmente um julgamento de tese, e tratá-lo como outra coisa criaria dois registros para o mesmo ato. |
 | **Invalidar** | Saída ordenada, e a vaga abre. |
 
+**Se os 180 dias do "manter" caírem numa janela que romperia a régua**, a validade recua dia a dia
+até a data mais próxima que couber, com piso de 90 dias, e o recuo é registrado. Se nem 90 couberem,
+a renovação vale assim mesmo e a colisão vai relatada ao Gate — **a renovação é obrigatória e nunca
+deixa de acontecer por causa da régua** (Decisão 25).
+
 **Não há terceira saída, e não há prorrogação silenciosa.** O Gate registra a escolha com data e
 motivo.
 
@@ -190,6 +195,27 @@ os anos restantes definem a exposição alvo, a diferença para a exposição at
 o sistema calcula sem discricionariedade. **O Gate assina.** A invariante 1 permanece intacta.
 
 **Como o gatilho 3 executa:**
+- **Alvo interpolado linearmente mês a mês** entre os pontos da tabela, pelos meses restantes até a
+  entrega (Decisão 25). Deixou de ser degrau anual.
+
+  | Trecho | Passo mensal | Banda de 3 pts rompe a cada |
+  |---|---|---|
+  | 4 → 3 anos | 2,83 pts | 1,1 mês |
+  | 3 → 2 anos | 1,75 pts | 1,7 mês |
+  | 2 → 1 ano | 1,67 pts | 1,8 mês |
+  | 1 ano → entrega | 0,83 pt | 3,6 meses |
+
+- **A velocidade é modulada pelo estado da Linha d'Água:** Mercado saudável **1,50** · Estresse de
+  curto prazo **1,00** · Prejuízo do mercado **0,50** · Capitulação profunda **0,25**. Acelera no
+  bom, segura no ruim, **nunca força proteção no fundo** — é a seção 7 finalmente implementada.
+- **A defasagem não se perde.** O que a modulação deixou de mover fica registrado como defasagem
+  acumulada, e o fator 1,50 a recupera antes de seguir o alvo corrente. **Teto de 12 pontos**:
+  atingido, o fator volta a 1,00 mesmo em Capitulação — abaixo disso a modulação deixaria de ser
+  prudência e viraria aposta de que o fundo passa antes dos 18 anos.
+- **Os últimos doze meses não modulam.** Faltando 12 meses ou menos, o fator é sempre 1,00, qualquer
+  que seja o estado, e a defasagem acumulada é liquidada dentro desse período. *Modular pressupõe
+  tempo para esperar o mercado virar; no último ano não há esse tempo.* É a invariante 6 aplicada ao
+  relógio.
 - Verificação **mensal**, no aporte.
 - **Move-se primeiro por fluxo:** o aporte do mês vai inteiro para a defesa antes de qualquer venda.
 - O que o fluxo não cobrir sai por venda, **na ordem inversa do peso de longo prazo**: primeiro os
@@ -198,10 +224,12 @@ o sistema calcula sem discricionariedade. **O Gate assina.** A invariante 1 perm
   move nada — sem ela o sistema venderia todo mês por ruído.
 - Cada tranche registrada com data, ativo, quantidade e a exposição antes e depois.
 
-> ⚠️ **Duas coisas do gatilho 3 ainda não fecham com a seção 7, e estão registradas em
-> `08-decisoes-29-08-2026.md`:** o alvo discreto da tabela produz um degrau anual de ~20 pontos em
-> vez de realização gradual, e a execução não lê o mercado, enquanto a seção 7 manda o Abrigo
-> acelerar no bom e segurar a mão no ruim.
+> ⚠️ **A partir de 3 anos da entrega, o gatilho 3 disputa o aporte com o Índice de Plantio.** A
+> demanda mensal da glidepath supera os R$150 do aporte em todos os estados, então nos meses em que
+> a banda rompe o aporte inteiro vai para a defesa. A modulação protege a tese onde importa — em
+> Capitulação isso acontece em 15% dos meses, e nos outros 85% o aporte segue o Índice de Plantio —
+> mas **a ordem de precedência entre os dois não está escrita**. Detalhe em
+> `08-decisoes-29-08-2026.md`.
 
 ### Os três degraus do teto de 8%
 Um teto que nunca é executado não é teto, é intenção. Por isso o limite tem degraus:
