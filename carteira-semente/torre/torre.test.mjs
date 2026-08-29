@@ -259,3 +259,49 @@ test('reprovação nomeia a alínea que falhou', () => {
   assert.equal(r.veredito, 'reprovado');
   assert.match(r.motivo, /\(c\) tese sem evento datado/);
 });
+
+// ══ FIXAÇÃO DA TRANSCRIÇÃO ════════════════════════════════════════════════
+// O item 5 confere a CONTA contra um número já verificado fora da Torre. Ele não
+// confere as ENTRADAS. Este teste fixa a transcrição do documento 07: se alguém
+// editar um valor, uma mínima ou uma máxima, ele quebra pelo nome do número.
+test('as catorze entradas batem, dígito a dígito, com o documento 07', () => {
+  const doc07 = {
+    'Preço do BTC':       [77839.19, 0.29, 124353.95],
+    'Realized Price':     [53057.77, 0.088, 56449.62],
+    'Realized Price STH': [69977.18, 0.19, 114018.67],
+    'Realized Price LTH': [49449.51, 0.003, 49991.21],
+    'MVRV Ratio':         [1.465, 0.384, 7.854],
+    'SOPR':               [1.0112, 0.6068, 2.8740],
+    'Supply in Profit':   [67.4, 35.6, 100.0],
+    'Liveliness':         [0.6345, 0.1785, 0.6410],
+    'DXY':                [99.16, 72.93, 114.11],
+    'Fed Funds Rate':     [3.63, 0.05, 5.33],
+    'US M2':              [23.218, 8.845, 23.218],
+    'Curva 10Y-2Y':       [0.38, -0.93, 2.81],
+    'ETF Net Inflow':     [242.3, -1138.9, 1373.8],
+    'Funding Rate':       [1.84, -139.23, 186.86],
+  };
+  assert.equal(Object.keys(doc07).length, 14);
+  for (const [nome, [valor, min, max]] of Object.entries(doc07)) {
+    assert.equal(V[nome].valor, valor, `${nome}: valor`);
+    assert.equal(V[nome].min, min, `${nome}: mínima`);
+    assert.equal(V[nome].max, max, `${nome}: máxima`);
+  }
+});
+
+test('a escala de cada série é a que o documento 03 manda — e trocar uma muda a faixa', () => {
+  const log = ['Preço do BTC', 'Realized Price', 'Realized Price STH', 'Realized Price LTH', 'MVRV Ratio', 'SOPR'];
+  for (const s of SERIES) {
+    assert.equal(s.escala, log.includes(s.n) ? 'log' : 'lin', `${s.n}: escala`);
+  }
+  // A régua da camada 1 com a escala trocada: 44,4 vira 14,5, e o índice sai da faixa.
+  const trocado = { ...V, 'MVRV Ratio': { ...V['MVRV Ratio'] } };
+  const comLinear = normalizar(1.465, 0.384, 7.854, 'lin');
+  assert.ok(Math.abs(comLinear - 14.48) < 0.01);
+  const indiceErrado = 50.754 - (44.41 - comLinear) * (0.34 / 0.88);
+  assert.ok(indiceErrado < 40, `índice iria a ${indiceErrado.toFixed(1)} — sairia de Equilíbrio para Comprimido`);
+});
+
+test('DXY e Fed Funds são os únicos invertidos', () => {
+  assert.deepEqual(SERIES.filter((s) => s.invertido).map((s) => s.n), ['DXY', 'Fed Funds Rate']);
+});

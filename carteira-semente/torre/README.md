@@ -1,11 +1,11 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.0 · 29/08/2026
+Conferência. Versão 1.1 · 29/08/2026
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
 - `torre.mjs` — o módulo. Sem dependências. Lê o registro da peça 1, não guarda nada.
 - `leitura-29-08-2026.mjs` — as catorze leituras reais do documento 07, transcritas.
-- `torre.test.mjs` — 29 testes da Torre (78 no pacote inteiro). `node --test` na raiz.
+- `torre.test.mjs` — 32 testes da Torre (81 no pacote inteiro). `node --test` na raiz.
 
 ## ⭐ ITEM 5 — O TESTE QUE PROVA A LEITURA DE 29/08/2026
 Entrada: as catorze leituras reais do `07-leituras-29-08-2026.md`, com mínimas e
@@ -26,6 +26,47 @@ quatro camadas, os quatro pesos renormalizados e o amortecimento do ETF.
 
 Testes: *"as catorze leituras reais devolvem 50,75"* · *"cada camada bate com o
 documento 03"* · *"a camada 5 fica fora e os pesos renormalizam sobre 0,88"*.
+
+### Do que ele protege, medido
+O item 5 é o único teste que compara a Torre com um número conferido fora dela.
+Vale saber exatamente o que isso cobre — e o que não cobre.
+
+**O que o torna um cheque real:** o 50,75 foi derivado por um caminho diferente
+(scripts avulsos, camada a camada, na rodada da Decisão 7), em outro momento, e
+ratificado no `03-indice-semente.md`. São **duas implementações independentes que
+concordam até a quarta casa**. Não é verificação externa de terceiro — o âncora
+externo de verdade é o terminal — mas é o cheque mais forte disponível.
+
+**Do que ele protege, na prática.** Rodada a sensibilidade do índice a cada uma
+das 42 entradas:
+
+| Classe de erro | Efeito no índice | O item 5 pega? |
+|---|---|---|
+| Erro de transcrição de 1% num número | no máximo **0,135 ponto** | pega, mas nem precisaria |
+| Erro que mudaria a faixa por transcrição | exigiria **~68%** num único número | não acontece |
+| **Escala trocada (log ↔ linear)** | MVRV: 44,4 vira **14,5** · índice cai ~11,5 pontos | **pega, e é o que importa** |
+
+A conclusão inverte a intuição: **o erro de transcrição é quase inofensivo** — o
+índice é robusto e as faixas têm 20 pontos de largura. **O erro perigoso é o de
+classe**, e é justamente o que o item 5 pega, porque uma escala trocada em
+qualquer das seis séries logarítmicas quebra o 50,75 na hora.
+
+**O que ele não cobre:** as entradas. O `07-leituras` registra que os extremos
+**não puderam ser confirmados um a um pela tooltip** — no zoom ALL o cursor salta
+cerca de sete dias e não encosta no dia exato do topo. São **28 dos 42 números**,
+e são os denominadores de toda normalização. Acrescentei dois testes que fecham a
+parte fechável disso:
+
+- *"as catorze entradas batem, dígito a dígito, com o documento 07"* — fixa a
+  transcrição. Editar qualquer valor, mínima ou máxima quebra o teste pelo nome do
+  número.
+- *"a escala de cada série é a que o documento 03 manda"* — fixa as seis
+  logarítmicas e as oito lineares, e prova que trocar a régua da camada 1 tiraria
+  o índice de Equilíbrio.
+
+O que resta descoberto é só o elo terminal → documento 07, que nenhum teste
+alcança. As três conferências por tooltip que o documento 07 registra são hoje a
+única evidência dele.
 
 ## ITEM 1 — NORMALIZAÇÃO POR FAIXA PRÓPRIA
 `normalizar(valor, min, max, escala, invertido)`, com a escala declarada em
