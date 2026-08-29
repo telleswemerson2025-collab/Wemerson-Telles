@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.7 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12, 13 e 14 aplicadas.
+Versão 1.8 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12, 13, 14 e 15 aplicadas.
 
 ---
 
@@ -61,7 +61,10 @@ Linha d'Água.
 - Qual o cenário de queda e quanto ele custa?
 - Onde a tese quebra? Qual nível invalida?
 - Que posição está grande demais?
-- Alguma posição está perto do stop?
+- Alguma tese está perto de ser invalidada, e qual seria o nível ou fato que a invalida?
+  *(a Semente não opera com stop — Decisão 15. Ativo stopado na CRM não sai daqui por isso.)*
+- Algum ativo saiu da CRM, e portanto para de receber aporte novo no mês seguinte?
+- O teto de concentração está respeitado: BTC+ETH em pelo menos 60%, nenhum outro acima de 8%?
 
 **Saída:** lista de riscos abertos, cada um com o nível que o dispara e o custo estimado.
 
@@ -73,7 +76,8 @@ Linha d'Água.
 **Função:** propor o destino do aporte do mês.
 
 **Entrada:** **estado do mercado (Linha d'Água)** · Índice Semente e faixa de intensidade ·
-anos restantes até a entrega · composição atual da carteira · caixa disponível · zonas publicadas.
+anos restantes até a entrega · **universo elegível** (espelho filtrado da CRM, Decisão 15) ·
+composição atual da carteira · caixa disponível · zonas publicadas.
 
 **Regra central — o ÍNDICE DE PLANTIO** (percentual do aporte que vai para o ativo).
 Quem dispara a estação é o cruzamento do **estado** com o **tempo restante**. O Índice Semente
@@ -228,7 +232,8 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
 **Função:** o cão de guarda. Confere a proposta do Alocador.
 
 **Checklist de reprovação (qualquer item falho = REPROVA):**
-1. O peso resultante estoura o limite do ativo?
+1. O peso resultante estoura o limite do ativo — 8% para qualquer um fora de BTC e ETH, e BTC+ETH
+   somados em pelo menos 60%? O rebalanceamento proposto usa aporte novo, e não venda?
 2. O caixa fica abaixo do mínimo?
 3. O preço proposto bate com a zona publicada?
 4. Todo número citado bate com a fonte (tooltip/terminal)?
@@ -257,6 +262,9 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
     indireta.
 18. **A base da deriva continua na v1.3?** Qualquer remedição contra base diferente da v1.3
     REPROVA, inclusive depois de recalibragem do limite.
+19. **Todo ativo proposto está no universo elegível**, ou seja, veio da CRM e passou nas quatro
+    alíneas do Filtro de Horizonte? Ativo fora do universo REPROVA. Ativo reprovado no filtro tem o
+    motivo registrado?
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 

@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.9 · 29/08/2026 · BlockCapital Research — Decisões 2 a 14 aplicadas.
+Versão 1.10 · 29/08/2026 · BlockCapital Research — Decisões 2 a 15 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -62,6 +62,60 @@ Na prática: peso controlado por ativo, sem concentração capaz de machucar o t
 defensiva permanente; caixa vivo; e sinalização de saída ou ajuste quando a tese quebra.
 
 > **Preservação vem antes de convicção.**
+
+## 5.1 DE ONDE VÊM OS ATIVOS — espelho filtrado da CRM
+
+**A Carteira Semente não escolhe ativo.** Ela herda o universo de ativos da CRM, filtrado, e decide
+sozinha peso e momento.
+
+1. A CRM inclui um ativo.
+2. O **Filtro de Horizonte** avalia. Passou, o ativo entra no universo elegível da Semente. Não
+   passou, fica de fora **e o motivo é registrado**.
+3. O Alocador decide quanto do aporte do mês vai para o universo elegível, pelo Índice de Plantio
+   e pelo Abrigo.
+4. A distribuição dentro do universo elegível segue a **política de pesos da Semente**, não os
+   pesos da CRM.
+
+### O Filtro de Horizonte — o ativo precisa passar em todas
+a. **Liquidez** suficiente para sair sem derrubar preço.
+b. **Ter atravessado pelo menos um ciclo completo**, ou ser BTC ou ETH.
+c. **Tese que não dependa de evento datado** — listagem, airdrop, upgrade, narrativa de trimestre.
+d. **Não ser alavancado, sintético nem token de plataforma** com risco de contraparte concentrado.
+
+### O que NÃO se herda da CRM
+- **Os pesos.** A CRM pesa por convicção de ciclo; a Semente pesa por sobrevivência de dezoito anos.
+- **O stop.** A CRM opera com stop; a Semente opera com **invalidação de tese**. Ativo stopado na
+  CRM **não sai** da Semente automaticamente. Sai se a tese for invalidada, e isso é decisão
+  registrada, nunca gatilho de preço.
+- **O timing de entrada.** A CRM entra quando a tese aparece; a Semente entra no aporte do mês, na
+  zona.
+
+### Saída do universo
+Ativo removido da CRM deixa de receber aporte novo na Semente **no mês seguinte**. O que já está
+comprado permanece até decisão de tese. **Sem venda automática.**
+
+### Teto de concentração
+- **BTC e ETH somados nunca abaixo de 60%** do valor da carteira.
+- **Nenhum ativo fora desses dois passa de 8%.**
+- O rebalanceamento para o teto acontece **com aporte novo, nunca com venda**, enquanto o aporte
+  for suficiente.
+
+*Forma implícita:* com BTC+ETH em pelo menos 60% e os demais limitados a 8% cada, sobram no máximo
+40% para o resto — ou seja, no mínimo cinco outros ativos para preencher esse espaço no teto.
+
+> ⚠️ **O piso de 60% é aritmeticamente incompatível com o Abrigo a partir de 2 anos da entrega.**
+> Com exposição de 0,45, BTC e ETH somados não podem passar de 45% da carteira. A 3 anos ainda cabe,
+> mas apertado: exige que BTC+ETH sejam 90,9% de toda a parte exposta. **Enquanto isso não for
+> decidido, o Abrigo prevalece** — por invariante 6 (*preservação vem antes de convicção*) e pelo
+> precedente da Decisão 4, em que o teto do Abrigo já vence a modulação. Detalhe em
+> `08-decisoes-29-08-2026.md`.
+
+### Dependência declarada
+Esta decisão cria dependência real: **mudança na CRM muda o universo da Semente.** Fica registrado
+como risco conhecido e aceito. A Semente **não redesenha, não critica e não propõe nada para a
+CRM** — ela consome o que a CRM publica.
+
+---
 
 ## 6. O ÍNDICE DE PLANTIO (indicador proprietário)
 
@@ -356,6 +410,7 @@ Nunca prometer valor futuro. Nunca usar linguagem de garantia de retorno.
 - **As métricas internas da camada 5 do Índice Semente** — pesos, caixa, distância do stop, anos
   restantes — e como cada uma normaliza. Só faz sentido definir quando houver carteira; até lá a
   camada fica fora da conta.
-- Composição inicial da carteira (definição do Gui).
+- **A lista concreta de ativos.** A Decisão 15 fechou o *mecanismo* — universo herdado da CRM,
+  filtrado pelo Filtro de Horizonte. A lista em si depende do que a CRM publica hoje, e é do Gui.
 - Fluxo operacional de presente (quem paga ≠ quem gerencia).
 - Nome final (trabalhando com "Carteira Semente").

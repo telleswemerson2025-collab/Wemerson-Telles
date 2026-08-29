@@ -1,5 +1,5 @@
 # 09 — RITUAL OPERACIONAL DA CARTEIRA SEMENTE
-Versão 1.1 · 29/08/2026 — conciliado com as Decisões 1 a 14.
+Versão 1.2 · 29/08/2026 — conciliado com as Decisões 1 a 15.
 *Alterações em relação ao original do Mr. G estão listadas no fim do arquivo.*
 
 Como o Mr. G aciona o sistema no dia a dia. Espelha o ritual da
@@ -113,6 +113,10 @@ Três gatilhos:
 2. A Linha d'Água muda de estado.
 3. O contador de ciclo zera (marco de virada completado, ou
    entrada em Abrigo).
+4. **A CRM inclui ou remove um ativo** — muda o universo elegível
+   da Semente (Decisão 15). Inclusão manda o ativo para o Filtro de
+   Horizonte; remoção corta o aporte novo a partir do mês seguinte,
+   sem venda.
 
 O alerta diz o que mudou, o valor antes e depois, e o que isso
 libera ou trava. Não sugere ação.
@@ -187,3 +191,7 @@ uma — o Auditor confere as sete uma a uma, e receber só a primeira obrigaria 
 2. **O ritual cobre três acionamentos.** Guardiões, Responsável pelos Posts e Laboratório ficaram
    de fora. Se é porque ainda não existem, tudo bem — mas os Guardiões são a etapa 2 da ordem de
    construção e não têm ritual de acionamento definido.
+3. **Quem observa a CRM, e com que frequência.** A Decisão 15 cria um insumo novo — inclusões e
+   remoções de ativo na CRM — que nenhum agente busca hoje. O gatilho 4 do alerta pressupõe que
+   alguém veja a mudança. Sem um acionamento definido, o universo elegível fica desatualizado sem
+   ninguém perceber, o que é a forma de default silencioso que a invariante 3 proíbe.

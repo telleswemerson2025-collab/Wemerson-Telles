@@ -1,6 +1,6 @@
 # ÍNDICE SEMENTE — indicador composto
 Régua única de 0 a 100 que reúne as camadas de leitura.
-Versão 1.4 · 29/08/2026 — Decisões 1, 2, 4, 5, 7 e 9 aplicadas.
+Versão 1.5 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9 e 15 aplicadas.
 
 ## O QUE ELE É, E O QUE ELE NÃO É
 O Índice Semente **mede a intensidade** da situação de mercado. Ele **não classifica o estado**.
@@ -27,7 +27,7 @@ quatro pesos restantes são renormalizados proporcionalmente (base 88).
 | 2 · Comportamento | **29,5%** | 26% | SOPR · Supply in Profit · Liveliness (média de **três**) |
 | 3 · Macro | **18,2%** | 16% | DXY* · Fed Funds* · M2 · Curva 10Y-2Y (média) |
 | 4 · Fluxo | **13,6%** | 12% | ETF Net Inflow · Funding Rate (média) |
-| 5 · Carteira | **fora** | 12% | pesos · caixa · distância do stop · anos restantes |
+| 5 · Carteira | **fora** | 12% | pesos · caixa · distância da invalidação de tese · anos restantes |
 
 \* DXY e Fed Funds entram **invertidos**: dólar forte e juro alto tiram ar do risco.
 
@@ -136,5 +136,11 @@ contradizem — e contradição é o coração de uma boa thread.
 contra 44,41 — diferença de 0,05 ponto, sem efeito no índice exibido.
 
 ## PENDÊNCIA ABERTA
-**As métricas internas da camada 5** — pesos, caixa, distância do stop, anos restantes — e como
-cada uma normaliza. Só faz sentido definir quando houver carteira. Até lá a camada fica fora.
+**As métricas internas da camada 5** — pesos, caixa, distância da invalidação de tese, anos
+restantes — e como cada uma normaliza. Só faz sentido definir quando houver carteira; até lá a
+camada fica fora.
+
+⚠️ **A Decisão 15 mexeu nesta lista.** A métrica era "distância do stop", e a Semente não opera com
+stop: opera com invalidação de tese, que é decisão registrada e não nível de preço. Uma distância
+até um fato qualitativo não normaliza como uma distância até um preço. **Como medir isso de 0 a 100
+é pergunta aberta**, e é a que mais atrasa a volta da camada 5.

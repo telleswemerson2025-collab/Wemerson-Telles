@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.9 — decisões 1 a 14 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.10 — decisões 1 a 15 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -11,6 +11,10 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
 - **A Carteira Semente é proposta do Mr. G.** É onde o sistema pode nascer.
 - O sistema de agentes é EXCLUSIVO da Semente. Se um dia fizer sentido levar para as outras,
   quem puxa essa conversa é o Gui.
+- **A Semente CONSOME a CRM, em uma direção só** (Decisão 15). O universo de ativos é espelho
+  filtrado do que a CRM publica. Mudança na CRM muda o universo da Semente — dependência real,
+  registrada como risco conhecido e aceito. A Semente não redesenha, não critica e não propõe nada
+  para a CRM. A fronteira de autoria continua intacta: o fluxo é de lá para cá.
 
 ## A LEI (invariantes do sistema — valem sempre)
 1. **O GATE É SEMPRE HUMANO E INVIOLÁVEL.** Nenhum agente compra, vende, aporta ou publica.
