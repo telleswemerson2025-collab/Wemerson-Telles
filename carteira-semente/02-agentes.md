@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.15 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 22 aplicadas.
+Versão 1.16 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 23 aplicadas.
 
 ---
 
@@ -82,6 +82,8 @@ estado vem da Linha d'Água — e não decide elegibilidade sozinha: aplica o Fi
 - Alguma tese está perto de ser invalidada, e qual seria o nível ou fato que a invalida?
   *(a Semente não opera com stop — Decisão 15. Ativo stopado na CRM não sai daqui por isso.)*
 - Algum ativo saiu da CRM, e portanto para de receber aporte novo no mês seguinte?
+- Alguma vaga está bloqueada há 90 dias ou mais, e portanto a tese daquele ativo precisa ir ao
+  Gate com as duas saídas escritas?
 - O teto de concentração está respeitado: BTC+ETH em pelo menos 60%, nenhum outro acima de 8%?
 
 **Saída:** lista de riscos abertos, cada um com o nível que o dispara e o custo estimado.
@@ -283,7 +285,8 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
 18. **A base da deriva continua na v1.3?** Qualquer remedição contra base diferente da v1.3
     REPROVA, inclusive depois de recalibragem do limite.
 19. **Todo ativo proposto está no universo elegível**, ou seja, veio da CRM, passou nas quatro
-    alíneas do Filtro de Horizonte e está entre os 8 de maior peso na CRM? Ativo fora do universo
+    alíneas do Filtro de Horizonte e está entre os **8 de maior capitalização de mercado** entre os
+    aprovados? Ativo fora do universo
     REPROVA. Exclusão por **teto de contagem** foi registrada como tal, e não como reprovação de
     tese?
 20. **O universo elegível está fresco?** Se a composição da CRM não pôde ser lida, a proposta diz
@@ -310,6 +313,11 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
 26. **Se houve consolidação de posição abaixo do piso de 2%:** ela foi levada ao Gate como decisão
     própria, registrada com data, ativo e percentual antes e depois? Consolidação executada sem
     passar pelo Gate REPROVA — é venda, e vale a mesma regra do degrau 3.
+27. **Toda venda proposta é um dos dois gatilhos determinísticos — estouro acima de 12% ou queda
+    abaixo de 2% — ou uma decisão de tese registrada?** Venda que não caiba em nenhum dos três
+    REPROVA. **Gatilho novo nunca nasce de implementação: exige decisão registrada.**
+28. **Alguma vaga bloqueada passou de 90 dias sem ir ao Gate?** Prorrogação silenciosa REPROVA — a
+    escolha entre manter e invalidar tem de estar registrada com data e motivo.
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 

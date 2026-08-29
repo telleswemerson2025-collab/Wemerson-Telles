@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.12 · 29/08/2026 · BlockCapital Research — Decisões 2 a 22 aplicadas.
+Versão 1.13 · 29/08/2026 · BlockCapital Research — Decisões 2 a 23 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -113,9 +113,17 @@ miúda é risco operacional disfarçado de diversificação.** Posição que cai
 para de receber aporte e é consolidada em BTC e ETH no rebalanceamento seguinte.
 
 ### Quando a CRM tem mais de 8 elegíveis
-O universo elegível é o subconjunto dos **8 de maior peso na CRM** que passaram no Filtro de
-Horizonte. O nono e seguintes ficam de fora, e a exclusão é registrada com o motivo **"teto de
-contagem"**, nunca como reprovação de tese — a diferença importa se o ativo um dia subir de posição.
+O universo elegível é o subconjunto dos **8 de maior capitalização de mercado** entre os que
+passaram no Filtro de Horizonte (Decisão 23). Empate se resolve pelo **maior tempo de mercado**. O
+nono e seguintes ficam de fora, e a exclusão é registrada com o motivo **"teto de contagem"**, nunca
+como reprovação de tese — a diferença importa se o ativo um dia subir de posição.
+
+*Por que capitalização e não o peso na CRM:* capitalização é critério objetivo, público e alinhado
+ao horizonte de dezoito anos — o mesmo raciocínio do piso de 60% em BTC e ETH. Ordenar pelo peso da
+CRM faria convicção de ciclo decidir quem entra numa carteira de criança. **A Decisão 15 já tinha
+separado essas duas coisas para alocar; agora separa também para selecionar**, e a dependência da
+CRM volta a ser exatamente a que a D15 declarou: a CRM define o universo, a Semente ordena e pesa
+por critério próprio.
 
 A composição do universo é revista quando a CRM muda, no ritual da Decisão 16. Ativo que entra por
 subir de posição recebe validade pela regra de lote novo; ativo que sai por cair de posição deixa de
@@ -129,12 +137,24 @@ receber aporte, e o que já está comprado permanece até decisão de tese.
 > **segundo gatilho determinístico de venda** do sistema, sob a mesma regra do degrau 3: o sistema
 > detecta e calcula, **o Gate assina**. A invariante 1 segue intacta.
 >
-> **2. O teto de 8 e a proibição de venda automática podem se travar.** O teto conta ativos **na
-> carteira**; um ativo que cai do top 8 da CRM permanece comprado até decisão de tese. Carteira com
-> oito mais o remanescente daria nove. Implementado assim: **o novo ativo não entra** enquanto a
-> vaga não for liberada por decisão de tese, e a exclusão é registrada como "teto de contagem" —
-> usando o mecanismo que a própria decisão criou. Consequência: uma posição legada pode bloquear
-> entradas novas por tempo indefinido, e só o Gui destrava.
+### Vaga bloqueada tem prazo (Decisão 23)
+Ativo que caiu do top 8 e continua comprado **bloqueia a vaga** — o novo ativo não entra, e a
+exclusão é registrada como "teto de contagem".
+
+Mas **a tese dele entra em revisão obrigatória em 90 dias a partir da queda**, e o item vai ao
+Gate 2 com as duas saídas escritas:
+
+| Saída | O que acontece |
+|---|---|
+| **Manter** | A vaga segue bloqueada por mais 90 dias, e o relógio recomeça. |
+| **Invalidar** | Saída ordenada, e a vaga abre. |
+
+**Não há terceira saída, e não há prorrogação silenciosa.** O Gate registra a escolha com data e
+motivo.
+
+*Razão:* os dois limites juntos travariam entrada nova por tempo indeterminado, e **travamento
+indeterminado é decisão tomada por omissão**. Com prazo, continua sendo escolha do Gui — só que uma
+escolha que ele precisa fazer em voz alta.
 
 *Razão da base:* a parte protegida é, por definição, a mais segura da carteira. Contá-la na base
 faria a proteção diluir o piso de qualidade — o oposto da intenção. Com a base na parte exposta, a
