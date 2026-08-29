@@ -1,6 +1,6 @@
 # ÍNDICE SEMENTE — indicador composto
 Régua única de 0 a 100 que reúne as camadas de leitura.
-Versão 1.7 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15, 16 e 17 aplicadas.
+Versão 1.8 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15, 16, 17 e 18 aplicadas.
 
 ## O QUE ELE É, E O QUE ELE NÃO É
 O Índice Semente **mede a intensidade** da situação de mercado. Ele **não classifica o estado**.
@@ -181,10 +181,35 @@ passar de 30% para que a falta do degrau dele derrube a camada sozinho.** Os dem
 cada, precisam de quatro ativos sem degrau para chegar ao mesmo lugar. Na prática, a camada 5
 depende de os degraus de BTC e ETH estarem sempre em dia.
 
+### Validade: 180 dias (Decisão 18)
+**Todo degrau vale 180 dias corridos a partir da data de atribuição.** Vencido, ele **não vira 0 e
+não permanece: vira ausência**, e cai na mecânica acima — sai do cálculo, os pesos renormalizam, e
+se o total sem degrau passar de 30% da parte exposta a camada 5 sai inteira.
+
+*Razão:* julgamento sem data de validade envelhece sem avisar. Um degrau de tese intacta atribuído
+há um ano descreve um mercado que já não existe.
+
+**Reatribuição é sempre ato novo.** Renovar exige atribuição nova, com data nova e motivo escrito,
+**mesmo que o degrau seja o mesmo de antes**. Não existe prorrogação automática nem "segue igual".
+
+**Lembrete assimétrico.** A Torre avisa aos **150 dias** — trinta antes de vencer:
+- **BTC e ETH: aviso diário** a partir daí, dentro da entrega da leitura do dia.
+- **Demais ativos: uma vez por semana** (cerca de cinco avisos na janela).
+
+A assimetria acompanha o custo de esquecer: qualquer um dos dois passando de 30% da parte exposta
+derruba a camada 5 sozinho.
+
+> ⚠️ **A primeira atribuição de uma carteira cria uma coorte sincronizada.** Todos os degraus
+> nascem no mesmo dia, logo **todos vencem no mesmo dia**, e o aviso dispara em bloco no dia 150. Se
+> o bloco não for renovado, 100% da parte exposta vira ausência de uma vez e a camada 5 **não
+> degrada gradualmente: some inteira.** Escalonar as primeiras validades resolveria, mas isso não
+> foi decidido — fica registrado como risco de operação.
+
 ### Etiqueta de julgamento — obrigatória
 Toda leitura publicada que inclua a camada 5 informa as **três** coisas:
 1. que a camada carrega **julgamento humano**;
-2. a **data do degrau mais antigo em vigor**;
+2. a **data do degrau mais antigo em vigor** — que, com a validade de 180 dias, nunca pode ter mais
+   de 180 dias de idade;
 3. **quantos ativos estão sem degrau**.
 
 **Sem as três, a leitura não é publicável.**

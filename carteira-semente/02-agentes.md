@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.10 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 17 aplicadas.
+Versão 1.11 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 18 aplicadas.
 
 ---
 
@@ -46,6 +46,8 @@ Se algo vier zerado ou com traço: reportar, NÃO inventar.
   julgamento humano · a data do degrau mais antigo em vigor · quantos ativos estão sem degrau. Sem
   as três, a leitura não é publicável.
 - **Se as condições do Reforço de Fundo estão reunidas** — é sinalização, não acionamento
+- **Lembretes de degrau a vencer** (Decisão 18): a partir dos 150 dias, diário para BTC e ETH,
+  semanal para os demais. É lembrete, não cobrança — a Torre avisa, quem atribui é o Gui.
 - **A NOTA DE DIVERGÊNCIA**, quando estado e intensidade apontam para lados diferentes
   (ex.: "estado saudável, mas intensidade em equilíbrio"). É nota, não disputa.
 - **O que mudou desde ontem** — só o que mudou
@@ -290,6 +292,8 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
     exposta? Ativo sem degrau ficou FORA do cálculo, em vez de entrar como 100 ou 0? Os ativos sem
     degrau somam 30% ou menos da parte exposta — e, se somam mais, a camada saiu inteira? A etiqueta
     de julgamento traz as três informações?
+23. **Algum degrau usado passou de 180 dias?** Degrau vencido é ausência, nunca valor herdado.
+    Renovação sem data nova e motivo escrito não é renovação — REPROVA.
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 
