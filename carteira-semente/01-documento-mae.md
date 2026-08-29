@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.1 · 29/08/2026 · BlockCapital Research — Decisões 2 e 3 aplicadas.
+Versão 1.2 · 29/08/2026 · BlockCapital Research — Decisões 2, 3, 4 e 5 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -79,6 +79,13 @@ O **Índice de Plantio** é o cruzamento acima, e é ele que dispara a estação
 (o composto de 0 a 100, em `03-indice-semente.md`) não classifica estado nem dispara estação: ele
 mede a **intensidade** dentro do estado que a Linha d'Água já definiu, e modula o tamanho do
 aporte dentro daquela faixa. Não existem dois juízes.
+
+A modulação é de no máximo ±20% sobre a base do estado — ajuste fino, nunca troca de estação:
+
+    aporte = base_do_estado × fator_do_Abrigo × M,   com M = 1 + (50 − Índice)/50 × 0,20
+
+Índice 50 devolve a base pura. Mercado deprimido reforça um pouco o aporte; mercado esticado
+alivia um pouco. A fórmula completa, com os tetos absolutos, está em `02-agentes.md`.
 
 ### As quatro estações
 | Estação | Quando | O aporte |
@@ -210,9 +217,9 @@ Nunca prometer valor futuro. Nunca usar linguagem de garantia de retorno.
 ## 13. O QUE ESTE DOCUMENTO NÃO DEFINE (pendências)
 
 - Percentuais exatos de cada estação do Índice de Plantio.
-- **A fórmula de modulação do Índice Semente** — a Decisão 2 diz que ele modula o tamanho do
-  aporte dentro da faixa do estado, mas não define quanto, nem o teto e o piso desse movimento.
-  Até lá o Alocador opera só com base × Abrigo. Não inventar.
+- **As métricas internas da camada 5 do Índice Semente** — pesos, caixa, distância do stop, anos
+  restantes — e como cada uma normaliza. Só faz sentido definir quando houver carteira; até lá a
+  camada fica fora da conta.
 - **O ponto de partida canônico da simulação**, se um dia for preciso publicar um número único em
   vez da faixa. Hoje a faixa é a resposta, e é a mais honesta.
 - Composição inicial da carteira (definição do Gui).

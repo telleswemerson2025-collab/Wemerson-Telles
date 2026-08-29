@@ -1,14 +1,15 @@
 # LINHA D'ÁGUA — o instrumento de origem da leitura
-Versão 1.1 · 29/08/2026 — Decisão 2 aplicada.
+Versão 1.2 · 29/08/2026 — Decisões 2, 4 e 5 aplicadas.
 
 ## AUTORIDADE
 A Linha d'Água é a **autoridade única sobre o estado do mercado**. A classificação é objetiva —
 posição do preço contra os três custos de referência — e nada a sobrepõe. Nenhum outro
 instrumento, o Índice Semente incluído, reclassifica, promove ou rebaixa estado.
 
-O Índice Semente mede a **intensidade dentro do estado** que a Linha d'Água já definiu. Quando os
-dois parecem discordar, não há empate: o estado é o da Linha d'Água, e a divergência vira nota na
-saída diária da Torre.
+O Índice Semente mede a **intensidade dentro do estado** que a Linha d'Água já definiu, e modula o
+aporte em no máximo ±20% sobre a base do estado — sem nunca alcançar o patamar de um estado
+vizinho. Quando os dois parecem discordar, não há empate: o estado é o da Linha d'Água, e a
+divergência vira nota na saída diária da Torre.
 
 ## LINHA D'ÁGUA DO MERCADO (classificador de estado)
 Indicador proprietário já existente (arquivo Waterline). Plota o **preço do BTC** contra três
@@ -26,7 +27,8 @@ entrega** — o Índice de Plantio, em `02-agentes.md`.
 
 **Leitura de 28/08/2026:** preço US$ 77.839,19 · rede US$ 53.057,77 · STH US$ 69.977,18 ·
 LTH US$ 49.449,51 → preço acima dos três → **Mercado saudável**.
-Índice Semente do mesmo dia: 50,8 (Equilíbrio). Nota: estado saudável, intensidade em equilíbrio.
+Índice Semente do mesmo dia: 50,91 (Equilíbrio). Nota: estado saudável, intensidade em equilíbrio.
+Modulação resultante: M = 0,9963 — praticamente nula, como se espera em equilíbrio.
 
 ## LINHA D'ÁGUA DA SEMENTE (o mesmo conceito, do lado do pai)
 Plota o **valor da carteira** contra:

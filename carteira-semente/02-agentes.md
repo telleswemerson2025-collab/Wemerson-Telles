@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.1 · 29/08/2026 — Decisões 1 e 2 aplicadas.
+Versão 1.2 · 29/08/2026 — Decisões 1, 2, 4 e 5 aplicadas.
 
 ---
 
@@ -38,7 +38,8 @@ Se algo vier zerado ou com traço: reportar, NÃO inventar.
 - Os 14 números com data de fechamento
 - Variação de cada um vs. a leitura anterior
 - **O ESTADO do mercado**, pela Linha d'Água — é o número de cima do bloco
-- O **Índice Semente** (0–100) e a **faixa de intensidade** correspondente
+- O **Índice Semente** (0–100) e a **faixa de intensidade** correspondente, com a **camada 5
+  marcada como FORA da conta** enquanto não houver carteira ativa — nunca desenhada como 50
 - **A NOTA DE DIVERGÊNCIA**, quando estado e intensidade apontam para lados diferentes
   (ex.: "estado saudável, mas intensidade em equilíbrio"). É nota, não disputa.
 - **O que mudou desde ontem** — só o que mudou
@@ -72,8 +73,8 @@ Linha d'Água.
 anos restantes até a entrega · composição atual da carteira · caixa disponível · zonas publicadas.
 
 **Regra central — o ÍNDICE DE PLANTIO** (percentual do aporte que vai para o ativo).
-Quem dispara é o cruzamento do **estado** com o **tempo restante**. O Índice Semente não entra
-nesta tabela: ele modula dentro da faixa, e a fórmula da modulação ainda não existe.
+Quem dispara a estação é o cruzamento do **estado** com o **tempo restante**. O Índice Semente
+não entra nesta tabela: ele modula o resultado dela, depois, pela fórmula da Decisão 4.
 
 | Estado do mercado (Linha d'Água) | Base | × Abrigo (anos restantes) |
 |---|---|---|
@@ -84,9 +85,66 @@ nesta tabela: ele modula dentro da faixa, e a fórmula da modulação ainda não
 
 O que sobra vai para o caixa, aguardando zona.
 
-⚠️ **Enquanto a fórmula de modulação não for definida, o Alocador opera só com base × Abrigo**, e
-o Índice Semente entra na proposta como nota informativa, não como fator multiplicador. Não
-inventar a modulação. Pendência registrada em `03-indice-semente.md`.
+### A MODULAÇÃO PELO ÍNDICE SEMENTE (Decisão 4, 29/08/2026)
+
+```
+aporte_final = base_do_estado × fator_do_Abrigo × M
+
+M = 1 + (50 − Índice)/50 × 0,20        limitado a [0,80 ; 1,20]
+```
+
+| Índice | M | Efeito |
+|---|---|---|
+| 10 | 1,16 | mercado deprimido: reforça um pouco |
+| 30 | 1,08 | |
+| 50 | 1,00 | neutro: manda a base pura |
+| 70 | 0,92 | |
+| 90 | 0,84 | mercado esticado: alivia um pouco |
+
+**Por que ±20%:** é ajuste fino, não decisão. Quem decide o patamar é o estado (Linha d'Água); o
+Índice só afina dentro dele. Banda mais larga transformaria o Índice em segundo juiz, o que a
+Decisão 2 proíbe.
+
+**Modular com o índice cheio, não com o exibido.** O índice é calculado em ponto flutuante e
+arredondado só para exibição. Modular com o valor arredondado introduz degrau artificial na
+fronteira de cada ponto. Hoje: índice 50,9145 → M = 0,9963 (com 51 arredondado daria 0,9960).
+
+### TETO E PISO ABSOLUTOS (valem sempre, acima da fórmula)
+1. O resultado nunca passa de 100% do aporte nem fica abaixo de 0%.
+2. A modulação **nunca move a decisão para o patamar de um estado vizinho**.
+3. Se o Abrigo estiver ativo (3 anos ou menos até a entrega), ele é aplicado **antes** da
+   modulação e **o teto dele prevalece**: a modulação pode reduzir o resultado, nunca elevá-lo
+   acima de `base × fator_do_Abrigo`. Deixar o Índice empurrar exposição para cima do que o
+   Abrigo já travou desmontaria a própria proteção. Na prática, com Abrigo ativo vale
+   `M_efetivo = min(M, 1,00)`.
+
+⚠️ **A regra 2 é mais apertada que a banda de ±20% nos dois estados de cima.** As bases 100% e 90%
+estão separadas por 10 pontos, e a banda é de ±20% relativos. Onde a regra 2 morde:
+
+| Estado | Base | Banda pela fórmula | Banda efetiva com a regra 2 | Quando morde |
+|---|---|---|---|---|
+| Capitulação profunda | 100% | 80% a 100% | **90% a 100%** | Índice acima de 75 |
+| Prejuízo do mercado | 90% | 72% a 108% | **72% a 100%** | Índice abaixo de 22 |
+| Estresse de curto prazo | 65% | 52% a 78% | 52% a 78% | nunca |
+| Mercado saudável | 40% | 32% a 48% | 32% a 48% | nunca |
+
+O caso de cima é teórico: exigiria Índice acima de 75 com o preço abaixo do custo do holder de
+longo prazo, combinação que a correlação entre os dois torna quase impossível. **O caso de baixo
+é real:** Índice abaixo de 22 com o preço abaixo do custo médio da rede é exatamente um fundo de
+ciclo, e ali a regra 2 e o teto de 100% se encontram no mesmo lugar. Registrado como pendência
+em `08-decisoes-29-08-2026.md`.
+
+### MATRIZ DO APORTE — leitura de 29/08/2026 (Índice 50,91 · M = 0,9963)
+| Estado | +3 anos | 3 anos | 2 anos | 1 ano | entrega |
+|---|---|---|---|---|---|
+| Capitulação profunda | 99,6% | 65,8% | 44,8% | 24,9% | 14,9% |
+| Prejuízo do mercado | 89,7% | 59,2% | 40,4% | 22,4% | 13,5% |
+| Estresse de curto prazo | 64,8% | 42,7% | 29,1% | 16,2% | 9,7% |
+| **Mercado saudável** (estado de hoje) | **39,9%** | 26,3% | 17,9% | 10,0% | 6,0% |
+
+Com o índice quase exatamente em 50, a modulação de hoje é praticamente nula — é o que se espera
+de um ajuste fino num mercado em equilíbrio. As colunas com Abrigo ativo já trazem
+`M_efetivo = min(M, 1)` aplicado.
 
 **Saída:** proposta com ativo, percentual, faixa de preço e justificativa em uma linha.
 
@@ -107,6 +165,9 @@ inventar a modulação. Pendência registrada em `03-indice-semente.md`.
 7. A proposta usa o principal na fatia tática? (proibido — só ganho realizado)
 8. O estado usado é o da Linha d'Água? (o Índice Semente não classifica estado)
 9. Algum número derivado foi digitado à mão em vez de calculado da fonte primária?
+10. A modulação respeitou os tetos absolutos — 0% a 100%, sem invadir patamar de estado vizinho,
+    e sem elevar acima do que o Abrigo travou?
+11. A camada 5 foi tratada como FORA da conta, e não como 50?
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 

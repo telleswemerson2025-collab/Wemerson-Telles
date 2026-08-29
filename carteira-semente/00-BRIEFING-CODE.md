@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.1 — decisões de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.2 — decisões 1 a 5 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -37,7 +37,8 @@ Não existem dois juízes. Os papéis são distintos e ordenados:
    Regra objetiva: posição do preço contra os três custos de referência. Nada sobrepõe isso.
 2. **O Índice Semente MEDE A INTENSIDADE dentro do estado.** Não reclassifica, não promove nem
    rebaixa estado. Diz o quão esticada está a situação, e modula o tamanho do aporte dentro da
-   faixa que o estado já definiu.
+   faixa que o estado já definiu — no máximo ±20%, pela fórmula da Decisão 4 em `02-agentes.md`.
+   A modulação nunca leva o resultado ao patamar de um estado vizinho.
 3. **Quem dispara a estação é o Índice de Plantio** — o cruzamento do estado (Linha d'Água) com o
    tempo restante até a entrega (Abrigo). O Índice Semente nunca dispara decisão sozinho.
 4. **Divergência aparente entre os dois não é empate a resolver.** O estado é o da Linha d'Água; o
@@ -62,6 +63,13 @@ especificação. Nenhum foi alterado. O que precisa mudar:
 - **`indice-semente.html`** — a tabela `FAIXAS` ainda usa nomes de estado (Capitulação profunda,
   Prejuízo do mercado) e ainda dispara decisão de aporte (`r:'Plantio · aporte integral'`). Pela
   Decisão 2 as faixas do Índice medem intensidade e não disparam nada. Ver `03-indice-semente.md`.
+- **`indice-semente.html`** — a camada 5 entra na conta com peso 12 travado em 50
+  (`posCamada` devolve 50 para `id===5`). Pela Decisão 5 ela fica FORA e os quatro pesos são
+  renormalizados por 88 (38,6 · 29,5 · 18,2 · 13,6). A tela precisa marcar a camada como fora,
+  não desenhá-la como se valesse 50. Com as três correções juntas, o índice exibido passa de
+  50 para 51.
+- **Nenhuma tela mostra a modulação da Decisão 4.** O modulador M e a matriz de aporte final não
+  existem em lugar nenhum do pacote visual.
 - **`simulador.html`** — o modelo está correto e é a fonte de verdade dos cenários (Decisão 3).
   Nada a corrigir. Era o documento que estava errado.
 
@@ -74,4 +82,4 @@ especificação. Nenhum foi alterado. O que precisa mudar:
 - `05-gates.md` — Gate 1 e Gate 2 da Semente
 - `06-campanhas.md` — precificação, base e calendário de campanhas
 - `07-leituras-29-08-2026.md` — as 14 leituras reais confirmadas no terminal (fonte primária)
-- `08-decisoes-29-08-2026.md` — as decisões desta rodada e o que cada uma invalidou
+- `08-decisoes-29-08-2026.md` — as decisões 1 a 5, o que cada uma invalidou e o que ficou aberto
