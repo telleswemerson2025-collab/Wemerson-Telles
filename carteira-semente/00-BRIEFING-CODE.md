@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.13 — decisões 1 a 23 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.14 — decisões 1 a 24 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -24,8 +24,9 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
    discricionariedade sobre o número e leva ao Gate 2. A assinatura é do Gui, sempre. O que torna o
    teto real é o gatilho ser obrigatório e não opcional — o Gate não enfraquece a regra, é o que a
    mantém dentro da lei. **A invariante 1 permanece intacta e inviolada.***
-   *A **lista de gatilhos determinísticos de venda é fechada e tem dois**: estouro acima de 12% do
-   teto por ativo, e queda abaixo de 2% do piso de posição (Decisão 23). Qualquer outra venda é
+   *A **lista de gatilhos determinísticos de venda é fechada e tem três**: estouro acima de 12% do
+   teto por ativo, queda abaixo de 2% do piso de posição, e realização programada da glidepath
+   (Decisões 23 e 24). Qualquer outra venda é
    decisão de tese, com registro. **Gatilho novo exige decisão registrada — nunca nasce de
    implementação.***
 2. **Nada sai para o cliente sem passar pelo Gui.** O sistema é ferramenta interna.

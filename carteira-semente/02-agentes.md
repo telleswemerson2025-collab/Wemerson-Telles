@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.16 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 23 aplicadas.
+Versão 1.17 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 24 aplicadas.
 
 ---
 
@@ -84,6 +84,7 @@ estado vem da Linha d'Água — e não decide elegibilidade sozinha: aplica o Fi
 - Algum ativo saiu da CRM, e portanto para de receber aporte novo no mês seguinte?
 - Alguma vaga está bloqueada há 90 dias ou mais, e portanto a tese daquele ativo precisa ir ao
   Gate com as duas saídas escritas?
+- A exposição atual saiu da banda de 3 pontos em torno do alvo da glidepath?
 - O teto de concentração está respeitado: BTC+ETH em pelo menos 60%, nenhum outro acima de 8%?
 
 **Saída:** lista de riscos abertos, cada um com o nível que o dispara e o custo estimado.
@@ -313,9 +314,12 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
 26. **Se houve consolidação de posição abaixo do piso de 2%:** ela foi levada ao Gate como decisão
     própria, registrada com data, ativo e percentual antes e depois? Consolidação executada sem
     passar pelo Gate REPROVA — é venda, e vale a mesma regra do degrau 3.
-27. **Toda venda proposta é um dos dois gatilhos determinísticos — estouro acima de 12% ou queda
-    abaixo de 2% — ou uma decisão de tese registrada?** Venda que não caiba em nenhum dos três
-    REPROVA. **Gatilho novo nunca nasce de implementação: exige decisão registrada.**
+27. **Toda venda proposta é um dos TRÊS gatilhos determinísticos — estouro acima de 12%, queda
+    abaixo de 2%, ou realização programada da glidepath — ou uma decisão de tese registrada?** Venda
+    que não caiba REPROVA. **Gatilho novo nunca nasce de implementação: exige decisão registrada.**
+    No gatilho 3: o fluxo do mês foi consumido antes de qualquer venda? A ordem de venda respeita o
+    peso de longo prazo, com BTC e ETH por último? A banda de 3 pontos foi respeitada? Cada tranche
+    tem data, ativo, quantidade e exposição antes e depois?
 28. **Alguma vaga bloqueada passou de 90 dias sem ir ao Gate?** Prorrogação silenciosa REPROVA — a
     escolha entre manter e invalidar tem de estar registrada com data e motivo.
 

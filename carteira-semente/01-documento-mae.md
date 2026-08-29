@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.13 · 29/08/2026 · BlockCapital Research — Decisões 2 a 23 aplicadas.
+Versão 1.14 · 29/08/2026 · BlockCapital Research — Decisões 2 a 24 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -114,7 +114,11 @@ para de receber aporte e é consolidada em BTC e ETH no rebalanceamento seguinte
 
 ### Quando a CRM tem mais de 8 elegíveis
 O universo elegível é o subconjunto dos **8 de maior capitalização de mercado** entre os que
-passaram no Filtro de Horizonte (Decisão 23). Empate se resolve pelo **maior tempo de mercado**. O
+passaram no Filtro de Horizonte (Decisão 23). Empate se resolve pelo **maior tempo de mercado**.
+
+**A capitalização é medida uma vez por mês**, na leitura do aporte — a varredura diária não move a
+lista. Para **entrar**, o ativo precisa estar entre os 8 em **duas medições mensais consecutivas**;
+para **sair**, precisa cair **abaixo da 9ª posição**, não da 8ª (Decisão 24). A porta para de bater. O
 nono e seguintes ficam de fora, e a exclusão é registrada com o motivo **"teto de contagem"**, nunca
 como reprovação de tese — a diferença importa se o ativo um dia subir de posição.
 
@@ -146,7 +150,7 @@ Gate 2 com as duas saídas escritas:
 
 | Saída | O que acontece |
 |---|---|
-| **Manter** | A vaga segue bloqueada por mais 90 dias, e o relógio recomeça. |
+| **Manter** | A vaga segue bloqueada por mais 90 dias, o relógio recomeça, e o "manter" **vale como reatribuição do degrau** daquele ativo, com data nova e motivo escrito — é materialmente um julgamento de tese, e tratá-lo como outra coisa criaria dois registros para o mesmo ato. |
 | **Invalidar** | Saída ordenada, e a vaga abre. |
 
 **Não há terceira saída, e não há prorrogação silenciosa.** O Gate registra a escolha com data e
@@ -169,6 +173,35 @@ Em pontos da carteira inteira, ao longo da glidepath:
 | 2 anos | 45% | 27,0 pts | 3,60 pts | 5,40 pts |
 | 1 ano | 25% | 15,0 pts | 2,00 pts | 3,00 pts |
 | entrega | 15% | 9,0 pts | 1,20 pts | 1,80 pts |
+
+### Os três gatilhos determinísticos de venda (Decisões 16, 22, 23 e 24)
+São **três e só três**. Qualquer venda fora deles é decisão de tese, com registro.
+**Gatilho novo exige decisão registrada — nunca nasce de implementação.**
+
+| # | Gatilho | Origem |
+|---|---|---|
+| 1 | Estouro acima de **12%** do teto por ativo | teto de concentração |
+| 2 | Queda abaixo de **2%** do piso de posição | piso de posição |
+| 3 | **Realização programada da glidepath** | calendário e tabela do Abrigo |
+
+O gatilho 3 cobre o **Abrigo**, a **Colheita** e o retorno da **fatia tática** para a parte
+protegida. É determinístico porque sai do calendário e da tabela de exposição, não de julgamento:
+os anos restantes definem a exposição alvo, a diferença para a exposição atual define quanto move, e
+o sistema calcula sem discricionariedade. **O Gate assina.** A invariante 1 permanece intacta.
+
+**Como o gatilho 3 executa:**
+- Verificação **mensal**, no aporte.
+- **Move-se primeiro por fluxo:** o aporte do mês vai inteiro para a defesa antes de qualquer venda.
+- O que o fluxo não cobrir sai por venda, **na ordem inversa do peso de longo prazo**: primeiro os
+  ativos fora de BTC e ETH, do menor peso ao maior; **BTC e ETH por último**.
+- **Banda de tolerância de 3 pontos percentuais** em torno da exposição alvo. Dentro da banda não se
+  move nada — sem ela o sistema venderia todo mês por ruído.
+- Cada tranche registrada com data, ativo, quantidade e a exposição antes e depois.
+
+> ⚠️ **Duas coisas do gatilho 3 ainda não fecham com a seção 7, e estão registradas em
+> `08-decisoes-29-08-2026.md`:** o alvo discreto da tabela produz um degrau anual de ~20 pontos em
+> vez de realização gradual, e a execução não lê o mercado, enquanto a seção 7 manda o Abrigo
+> acelerar no bom e segurar a mão no ruim.
 
 ### Os três degraus do teto de 8%
 Um teto que nunca é executado não é teto, é intenção. Por isso o limite tem degraus:
