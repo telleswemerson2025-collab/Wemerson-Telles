@@ -284,3 +284,108 @@ test('o universo lista cada ativo com a situação corrente', () => {
   assert.deepEqual([...u.keys()], ['SOL', 'XYZ']);
   assert.equal(u.get('SOL').situacao, 'elegivel');
 });
+
+// ── D33 · RETIFICAÇÃO ──────────────────────────────────────────────────────
+const retif = (data, dataRetificada, valorAntigo, valorNovo) => ({
+  carteira: C, tipo: TIPOS.RETIFICACAO, data, dataRetificada, valorAntigo, valorNovo,
+  motivo: 'tooltip relida, dígito trocado na coleta', aprovadoEm: data,
+});
+
+test('retificação exige os quatro obrigatórios da D33 B', () => {
+  const r = novo();
+  r.registrar(leitura('2026-01-01', 70));
+  const base = retif('2026-01-10', '2026-01-01', 70, 64);
+  for (const faltando of ['motivo', 'aprovadoEm', 'valorAntigo', 'dataRetificada']) {
+    const ev = { ...base }; delete ev[faltando];
+    assert.throws(() => r.registrar(ev), RegistroInvalido, `sem ${faltando} deveria recusar`);
+  }
+});
+
+test('retificação sem o Gate é recusada — é o que a separa de reescrita', () => {
+  const r = novo();
+  r.registrar(leitura('2026-01-01', 70));
+  assert.throws(() => r.registrar({ ...retif('2026-01-10', '2026-01-01', 70, 64), aprovadoEm: undefined }), RegistroInvalido);
+});
+
+test('as duas versões permanecem no log para sempre', () => {
+  const r = novo();
+  r.registrar(leitura('2026-01-01', 70));
+  r.registrar(retif('2026-01-10', '2026-01-01', 70, 64));
+  const h = r.historicoDaLeitura(C, '2026-01-01');
+  assert.equal(h.original.indice, 70, 'a original continua lá');
+  assert.equal(h.retificacoes.length, 1);
+  assert.equal(h.vigente.indice, 64, 'e a vigente é a retificada');
+});
+
+test('retificar data sem leitura é recusado', () => {
+  const r = novo();
+  assert.throws(() => r.registrar(retif('2026-01-10', '2026-01-01', 70, 64)), RegistroInvalido);
+});
+
+test('retificação escrita sobre versão que já não vale é recusada', () => {
+  const r = novo();
+  r.registrar(leitura('2026-01-01', 70));
+  r.registrar(retif('2026-01-10', '2026-01-01', 70, 64));
+  assert.throws(() => r.registrar(retif('2026-01-11', '2026-01-01', 70, 50)), RegistroInvalido);
+  assert.doesNotThrow(() => r.registrar(retif('2026-01-11', '2026-01-01', 64, 50)), 'partindo da vigente, passa');
+});
+
+test('as derivações leem a versão vigente e se recompõem sozinhas (D33 C)', () => {
+  const r = novo();
+  for (let i = 0; i < 5; i++) r.registrar(leitura(dias('2026-01-01', i), 70));
+  assert.equal(r.diasConsecutivosNoMarco(C, dias('2026-01-01', 4)).dias, 5);
+  r.registrar(retif('2026-02-01', dias('2026-01-01', 2), 70, 60));
+  assert.equal(r.diasConsecutivosNoMarco(C, dias('2026-01-01', 4)).dias, 2, 'a sequência quebrou no dia retificado');
+});
+
+test('retificação que desfaz um marco gera anulação, e o marco não some (D33 D)', () => {
+  const r = novo();
+  for (let i = 0; i < 30; i++) r.registrar(leitura(dias('2026-01-01', i), 70));
+  const marco = r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET }).at(-1);
+  assert.equal(r.cicloReforco(C).desde, dias('2026-01-01', 29));
+
+  r.registrar(retif('2026-02-15', dias('2026-01-01', 15), 70, 60));
+
+  const anulacoes = r.eventos({ carteira: C, tipo: TIPOS.ANULACAO_MARCO });
+  assert.equal(anulacoes.length, 1);
+  assert.equal(anulacoes[0].marcoSeq, marco.seq, 'aponta para o marco');
+  assert.equal(typeof anulacoes[0].retificacaoSeq, 'number', 'e para a retificação que o desfez');
+  assert.equal(r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET }).length, 1, 'o marco continua no log');
+  assert.equal(r.cicloReforco(C).desde, null, 'mas saiu da contagem');
+});
+
+test('retificação que completa um marco novo grava o marco', () => {
+  const r = novo();
+  for (let i = 0; i < 30; i++) r.registrar(leitura(dias('2026-01-01', i), i === 15 ? 60 : 70));
+  assert.equal(r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET }).length, 0);
+  r.registrar(retif('2026-02-15', dias('2026-01-01', 15), 60, 70));
+  const resets = r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET });
+  assert.equal(resets.length, 1, 'o marco nasceu da retificação');
+  assert.equal(resets[0].data, dias('2026-01-01', 29));
+});
+
+test('marco anulado não é regravado enquanto a sequência não voltar a valer', () => {
+  const r = novo();
+  for (let i = 0; i < 30; i++) r.registrar(leitura(dias('2026-01-01', i), 70));
+  r.registrar(retif('2026-02-15', dias('2026-01-01', 15), 70, 60));
+  assert.equal(r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET }).length, 1);
+  r.registrar(retif('2026-02-16', dias('2026-01-01', 15), 60, 70));
+  const resets = r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET });
+  assert.equal(resets.length, 2, 'volta a valer, nasce marco novo — e o anulado segue no log');
+  assert.equal(r.cicloReforco(C).desde, dias('2026-01-01', 29));
+});
+
+// ── D33 E · MARCO ÚNICO ────────────────────────────────────────────────────
+test('sequência de 200 dias produz o mesmo marco único', () => {
+  const r = novo();
+  for (let i = 0; i < 200; i++) r.registrar(leitura(dias('2026-01-01', i), 70));
+  assert.equal(r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET }).length, 1);
+});
+
+test('rompida e reformada, a sequência produz um segundo marco', () => {
+  const r = novo();
+  for (let i = 0; i < 30; i++) r.registrar(leitura(dias('2026-01-01', i), 70));
+  r.registrar(leitura(dias('2026-01-01', 30), 60));
+  for (let i = 31; i < 61; i++) r.registrar(leitura(dias('2026-01-01', i), 70));
+  assert.equal(r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET }).length, 2);
+});

@@ -1,10 +1,10 @@
 # PEÇA 1 — REGISTRO DO ALOCADOR
-Conferência. Versão 1.1 · 29/08/2026 — Decisão 32 aplicada
+Conferência. Versão 1.2 · 29/08/2026 — Decisões 32 e 33 aplicadas
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
 - `registro.mjs` — o módulo. Sem dependências, roda em navegador e em Node.
-- `registro.test.mjs` — 31 testes. `node --test` na raiz do repositório.
+- `registro.test.mjs` — 42 testes. `node --test` na raiz do repositório.
 
 **A peça 1 são sete registros** (Decisão 32 C), não quatro: ciclo do Reforço ·
 composição da CRM · degraus · tranches e defasagem · invalidação do Gate ·
@@ -46,6 +46,12 @@ decide vem depois.
 | **D23 B** | "invalidar" do Gate, com data e motivo | tipo `gate_invalidar`, motivo obrigatório | *"invalidação do Gate exige motivo"* |
 | **D16 B** | resultado do Filtro, com o motivo | tipo `filtro_horizonte`, veredito + motivo obrigatórios | *"os dois motivos são tipos distintos"* |
 | **D22 C** | exclusão por contagem, distinguível do filtro | tipo `teto_contagem` **separado**; `situacaoDoAtivo()` devolve `voltaSozinho` | *"reprovado no filtro não volta sozinho; excluído por contagem volta"* |
+| **D33 A** | leitura para data que já tem leitura é recusada | checagem em `registrar()`, apontando a retificação como caminho | *"leitura de dia que já tem leitura é recusada"* |
+| **D33 B** | retificação é evento próprio, com quatro obrigatórios e Gate | tipo `retificacao`; validação exige data retificada, valor antigo, valor novo, motivo e `aprovadoEm` | *"exige os quatro obrigatórios"* · *"sem o Gate é recusada"* |
+| **D33 B** | as duas versões permanecem para sempre | `historicoDaLeitura()` devolve original, retificações e vigente | *"as duas versões permanecem no log"* |
+| **D33 C** | as derivações leem a vigente | `#leiturasVigentes()`; contagem, marco e sequência leem dela | *"as derivações leem a versão vigente"* |
+| **D33 D** | retificação não apaga marco | `#anularMarcosDesfeitos()` cria `anulacao_marco` apontando marco e retificação | *"gera anulação, e o marco não some"* |
+| **D33 E** | um marco por sequência | `#gravarMarcoSeCompletou()` grava uma vez por sequência | *"sequência de 200 dias produz o mesmo marco"* · *"rompida e reformada, produz um segundo"* |
 
 ## O QUE A DECISÃO 32 RESOLVEU
 As três coisas levantadas na conferência da v1.0 foram decididas e aplicadas:
@@ -61,27 +67,39 @@ As três coisas levantadas na conferência da v1.0 foram decididas e aplicadas:
 3. **Os três registros** entraram, e o filtro e o teto de contagem são **tipos
    distintos**, nunca um só com motivo livre.
 
-## DUAS COISAS QUE APARECERAM AGORA
+## O QUE A DECISÃO 33 RESOLVEU
+As duas coisas levantadas na conferência da v1.1 foram decididas e aplicadas.
+A retificação existe, com Gate, e o marco único virou texto com a razão junto.
 
-### 1. Leitura de dia que já tem leitura é recusada
-A retroativa abre uma porta que não existia: gravar leitura para uma data
-passada. Se essa data já tivesse leitura, a segunda seria **correção
-disfarçada** de um número real — e o log deixaria de ser append-only na prática,
-mesmo continuando append-only na forma.
+**A cadeia da retificação ficou com quatro elos, e todos estão testados:**
+1. a retificação **acrescenta** e aponta para a original — nada é sobrescrito;
+2. a versão **vigente** passa a ser a retificada, e as derivações se recompõem
+   sozinhas, como a retroativa já havia mostrado;
+3. se isso **desfaz um marco**, nasce a anulação apontando para os dois, e o
+   marco permanece no log;
+4. se a sequência **volta a valer** por uma retificação posterior, nasce um marco
+   novo — e o anulado continua onde estava.
 
-Implementado como **recusa**, para leitura normal e retroativa igualmente. A
-consequência é que um número errado gravado por engano não tem conserto dentro
-desta peça. Se isso precisar existir, é evento próprio — uma retificação
-explícita, que deixa as duas versões no log — e é decisão sua, não minha.
+## UMA COISA QUE APARECEU AGORA
 
-### 2. Sequência longa produz um marco só
-Trinta fechamentos consecutivos completam o marco no 30º dia. Se a sequência
-continuar até o 45º, **não nasce um segundo marco**: o ciclo é o intervalo entre
-duas viradas, e a sequência precisaria romper e se formar de novo.
+### Retificação parte da versão vigente, não da original
+A D33 B exige "o valor antigo e o novo". Implementei com uma checagem que a
+decisão não pede: **o valor antigo tem de bater com o que está vigente naquela
+data**, não com o da leitura original.
 
-É a leitura natural da D9, e está testada — mas a decisão não diz isso com essas
-palavras, e a alternativa (um marco a cada 30 dias de sequência) zeraria o
-contador do reforço repetidamente num bull longo.
+Sem isso, uma segunda retificação escrita a partir da leitura original — e não da
+primeira correção — passaria, e a cadeia nasceria torta: duas correções
+concorrentes sobre a mesma data, cada uma partindo de um ponto diferente, sem
+ordem definida entre elas.
+
+É restrição, não invenção de regra: apenas obriga quem retifica a partir do que
+vale hoje. Mas é minha, e fica dita.
+
+### O que não tem caminho de correção
+A retificação corrige o **índice** de uma leitura. O **estado da Linha d'Água**
+gravado junto não tem caminho de correção — e ele também é fato coletado, sujeito
+ao mesmo erro de leitura. Não estendi por conta própria. Se precisar, é a mesma
+decisão, um campo a mais.
 
 ## O QUE NÃO MUDOU
 

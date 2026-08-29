@@ -9,6 +9,9 @@
 //   6. resultado do Filtro de Horizonte, com o motivo (D16 B)
 //   7. exclusão por teto de contagem, com o motivo (D22 C)
 //
+// Correção de fato gravado existe, e é evento próprio (D33 B): a retificação
+// acrescenta, aponta para a original, e as duas versões ficam no log para sempre.
+//
 // Duas invariantes governam este arquivo inteiro:
 //   · NUNCA SOBRESCREVE (D18 D) — só existe acrescentar. Não há update nem delete.
 //   · SEM DEFAULT SILENCIOSO (invariante 3) — o que falta é reportado como ausente,
@@ -28,6 +31,8 @@ export const TIPOS = Object.freeze({
   GATE_INVALIDAR: 'gate_invalidar',   // {data, ativo, motivo}
   FILTRO_HORIZONTE: 'filtro_horizonte', // {data, ativo, aprovado, motivo}
   TETO_CONTAGEM: 'teto_contagem',     // {data, ativo, posicao}
+  RETIFICACAO: 'retificacao',         // {data, dataRetificada, valorAntigo, valorNovo, motivo, aprovadoEm}
+  ANULACAO_MARCO: 'anulacao_marco',   // {data, marcoSeq, retificacaoSeq, motivo}
 });
 
 // D22 C: excluído por contagem volta sozinho se subir de posição; reprovado no
@@ -111,6 +116,18 @@ function valida(ev) {
       if (!naoVazio(ev.ativo)) throw new RegistroInvalido('exclusão por contagem sem ativo');
       if (typeof ev.posicao !== 'number') throw new RegistroInvalido('exclusão por contagem sem a posição do ativo');
       break;
+    case TIPOS.RETIFICACAO:
+      // D33 B: os quatro obrigatórios. O Gate é o que separa retificação de
+      // reescrita de história — sem ele o append-only vira formalidade.
+      if (!ehData(ev.dataRetificada)) throw new RegistroInvalido('retificação sem a data da leitura retificada');
+      if (typeof ev.valorAntigo !== 'number') throw new RegistroInvalido('retificação sem o valor antigo');
+      if (typeof ev.valorNovo !== 'number') throw new RegistroInvalido('retificação sem o valor novo');
+      if (!naoVazio(ev.motivo)) throw new RegistroInvalido('retificação sem motivo escrito (D33 B)');
+      if (!ehData(ev.aprovadoEm)) throw new RegistroInvalido('retificação sem passagem pelo Gate 2 (D33 B)');
+      break;
+    case TIPOS.ANULACAO_MARCO:
+      if (typeof ev.marcoSeq !== 'number') throw new RegistroInvalido('anulação sem o marco que anula');
+      break;
   }
 }
 
@@ -135,11 +152,69 @@ export class Registro {
     if (evento.tipo === TIPOS.LEITURA) {
       const jaTem = this.eventos({ carteira: evento.carteira, tipo: TIPOS.LEITURA })
         .some((l) => l.data === evento.data);
-      if (jaTem) throw new RegistroInvalido(`já existe leitura de ${evento.data}; o log não sobrescreve`);
+      if (jaTem) throw new RegistroInvalido(`já existe leitura de ${evento.data}; o log não sobrescreve — corrija por retificação (D33 B)`);
+    }
+    if (evento.tipo === TIPOS.RETIFICACAO) {
+      const vigente = this.#leiturasVigentes(evento.carteira).get(evento.dataRetificada);
+      if (!vigente) throw new RegistroInvalido(`não há leitura de ${evento.dataRetificada} para retificar`);
+      // A retificação parte do que está vigente. Se o valor antigo não bate, ela foi
+      // escrita sobre uma versão que já não vale — e a cadeia nasceria torta.
+      if (vigente.indice !== evento.valorAntigo) {
+        throw new RegistroInvalido(`valor antigo não confere: vigente em ${evento.dataRetificada} é ${vigente.indice}, não ${evento.valorAntigo}`);
+      }
     }
     const gravado = this.#anexar(evento);
     if (evento.tipo === TIPOS.LEITURA) this.#gravarMarcoSeCompletou(evento.carteira);
+    if (evento.tipo === TIPOS.RETIFICACAO) {
+      this.#anularMarcosDesfeitos(evento.carteira, gravado);
+      this.#gravarMarcoSeCompletou(evento.carteira);
+    }
     return gravado;
+  }
+
+  /**
+   * D33 C: a versão vigente de uma data é a última retificação que aponta para ela,
+   * ou a leitura original se não houver nenhuma. Toda derivação lê daqui, e por isso
+   * se recompõe sozinha.
+   */
+  #leiturasVigentes(carteira) {
+    const mapa = new Map();
+    for (const l of this.#porData(carteira, TIPOS.LEITURA)) {
+      mapa.set(l.data, { data: l.data, indice: l.indice, estado: l.estado, retificada: false });
+    }
+    for (const r of this.eventos({ carteira, tipo: TIPOS.RETIFICACAO }).sort((a, b) => a.seq - b.seq)) {
+      const atual = mapa.get(r.dataRetificada);
+      if (atual) mapa.set(r.dataRetificada, { ...atual, indice: r.valorNovo, retificada: true, retificacaoSeq: r.seq });
+    }
+    return mapa;
+  }
+
+  /**
+   * D33 D: retificação não apaga marco. Se o marco deixou de valer, nasce uma
+   * anulação que aponta para ele e para a retificação que o desfez. Marco apagado
+   * seria exatamente o rastro que a D9 regra 5 existe para impedir.
+   */
+  #anularMarcosDesfeitos(carteira, retificacao) {
+    const vigentes = this.#leiturasVigentes(carteira);
+    for (const reset of this.eventos({ carteira, tipo: TIPOS.CONTADOR_RESET })) {
+      if (reset.marco !== 'virada' || this.#marcoAnulado(carteira, reset.seq)) continue;
+      let vale = true;
+      for (let d = dia(reset.desde); d <= dia(reset.ate); d++) {
+        const l = vigentes.get(new Date(d * DIA_MS).toISOString().slice(0, 10));
+        if (!l || l.indice < MARCO_INDICE) { vale = false; break; }
+      }
+      if (!vale) {
+        this.#anexar({
+          carteira, tipo: TIPOS.ANULACAO_MARCO, data: retificacao.data,
+          marcoSeq: reset.seq, retificacaoSeq: retificacao.seq,
+          motivo: `retificação de ${retificacao.dataRetificada} desfez a sequência ${reset.desde}–${reset.ate}`,
+        });
+      }
+    }
+  }
+
+  #marcoAnulado(carteira, seq) {
+    return this.eventos({ carteira, tipo: TIPOS.ANULACAO_MARCO }).some((a) => a.marcoSeq === seq);
   }
 
   #anexar(evento) {
@@ -160,15 +235,17 @@ export class Registro {
    * proíbe (comprar, vender, aportar, publicar). O que a D9 regra 5 quer é que o
    * reset deixe rastro, e rastro derivado é rastro.
    *
-   * Um marco por sequência: se a sequência continua além dos 30 dias, ela não
-   * produz um segundo reset — precisaria romper e se formar de novo.
+   * D33 E — um marco por sequência: trinta fechamentos completam um marco, e um só.
+   * Sequência de 45 ou 200 dias produz o mesmo marco único; para nascer outro, ela
+   * precisa romper e se formar de novo. Um marco a cada 30 dias rearmaria o reforço
+   * repetidamente num bull longo, que é justamente quando ele não deve ser rearmado.
    */
   #gravarMarcoSeCompletou(carteira) {
     const seq = this.#sequenciaNoMarco(carteira);
     if (seq === null || seq.dias < MARCO_DIAS) return;
     const completoEm = this.#somaDias(seq.desde, MARCO_DIAS - 1);
     const jaGravado = this.eventos({ carteira, tipo: TIPOS.CONTADOR_RESET })
-      .some((r) => r.marco === 'virada' && r.desde === seq.desde);
+      .some((r) => r.marco === 'virada' && r.desde === seq.desde && !this.#marcoAnulado(carteira, r.seq));
     if (jaGravado) return;
     this.#anexar({
       carteira, tipo: TIPOS.CONTADOR_RESET, data: completoEm, marco: 'virada',
@@ -182,7 +259,7 @@ export class Registro {
 
   /** A sequência corrente de fechamentos em 65 ou mais, ou null se não há. */
   #sequenciaNoMarco(carteira) {
-    const leituras = this.#porData(carteira, TIPOS.LEITURA);
+    const leituras = [...this.#leiturasVigentes(carteira).values()].sort((a, b) => (a.data < b.data ? -1 : 1));
     if (leituras.length === 0) return null;
     let inicio = null, anterior = null;
     for (const l of leituras) {
@@ -212,7 +289,9 @@ export class Registro {
   // na entrada em Abrigo. Sem registro gravado, o reforço não é liberado.
 
   cicloReforco(carteira) {
-    const resets = this.#porData(carteira, TIPOS.CONTADOR_RESET);
+    // D33 D: marco anulado sai da contagem, mas continua no log.
+    const resets = this.#porData(carteira, TIPOS.CONTADOR_RESET)
+      .filter((r) => !this.#marcoAnulado(carteira, r.seq));
     const ultimoReset = resets.at(-1) ?? null;
     const desde = ultimoReset?.data ?? null;
     const acionamentos = this.#porData(carteira, TIPOS.REFORCO_ACIONADO)
@@ -232,7 +311,7 @@ export class Registro {
    * não se pode presumir que o dia ausente fechou acima de 65.
    */
   diasConsecutivosNoMarco(carteira, hoje) {
-    const leituras = this.#porData(carteira, TIPOS.LEITURA);
+    const leituras = [...this.#leiturasVigentes(carteira).values()].sort((a, b) => (a.data < b.data ? -1 : 1));
     if (leituras.length === 0) return ausente('nenhuma leitura registrada');
 
     const ultima = leituras.at(-1);
@@ -272,6 +351,14 @@ export class Registro {
   // ── 3 · HISTÓRICO DE DEGRAUS ─────────────────────────────────────────────
   // D18 A: validade de 180 dias; vencido vira ausência, não 0 e não valor herdado.
   // D18 D: série completa por ativo, nunca sobrescrita.
+
+  /** A série completa de uma data: a leitura original e cada retificação sobre ela. */
+  historicoDaLeitura(carteira, data) {
+    const original = this.#porData(carteira, TIPOS.LEITURA).find((l) => l.data === data) ?? null;
+    const retificacoes = this.eventos({ carteira, tipo: TIPOS.RETIFICACAO })
+      .filter((r) => r.dataRetificada === data).sort((a, b) => a.seq - b.seq);
+    return { original, retificacoes, vigente: this.#leiturasVigentes(carteira).get(data) ?? null };
+  }
 
   historicoDegraus(carteira, ativo) {
     return this.#porData(carteira, TIPOS.DEGRAU).filter((d) => ativo === undefined || d.ativo === ativo);
