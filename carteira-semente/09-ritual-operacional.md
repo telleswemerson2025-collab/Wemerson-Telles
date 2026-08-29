@@ -1,5 +1,5 @@
 # 09 — RITUAL OPERACIONAL DA CARTEIRA SEMENTE
-Versão 1.11 · 29/08/2026 — conciliado com as Decisões 1 a 32.
+Versão 1.12 · 29/08/2026 — conciliado com as Decisões 1 a 36.
 *Alterações em relação ao original do Mr. G estão listadas no fim do arquivo.*
 
 Como o Mr. G aciona o sistema no dia a dia. Espelha o ritual da
@@ -45,8 +45,8 @@ Três acionamentos. Dois por frase, um automático.
 - **O que mudou** desde a última leitura. Se nada mudou de faixa
   nem de estado, a resposta é uma linha só.
 - **Composição da CRM**: incluídos, removidos, ou "nada mudou".
-  Cada incluído já vem com o resultado do Filtro de Horizonte e o
-  motivo registrado.
+- **Fila de julgamento pendente**, com há quantos dias cada ativo
+  está nela (Decisão 36 A).
 - **Ausências**, nomeadas uma a uma.
 - **Etiqueta de julgamento**, se a camada 5 entrar: julgamento
   humano · data do degrau mais antigo · ativos sem degrau.
@@ -55,14 +55,35 @@ Três acionamentos. Dois por frase, um automático.
 - **Degraus a vencer**: a partir dos 150 dias, diário para BTC e
   ETH, semanal para os demais.
 
+### O passo humano do Filtro de Horizonte (Decisão 36 A)
+
+Ativo novo detectado na composição da CRM não entra sozinho no
+universo elegível. O caminho é:
+
+1. A Torre aplica **sozinha** a alínea **(a) liquidez** e a alínea
+   **(b) ciclo completo, ou ser BTC ou ETH** — as duas objetivas.
+2. Apresenta as alíneas **(c) tese sem evento datado** e **(d) sem
+   alavancagem, sintético ou contraparte concentrada** ao Gui como
+   julgamento, com o registro pronto para receber o motivo.
+3. Enquanto não julgado, o ativo fica na **fila de julgamento
+   pendente**: não entra no universo elegível e **não recebe
+   aporte**. Ausência de julgamento nunca vira aprovação.
+
+É o único passo do ritual diário que espera por uma pessoa.
+
 ### Regras
 
 - Indicador que não voltou se reporta como ausente. Nunca se
   estima, nunca se repete o valor de ontem. É a invariante do
   default silencioso.
-- Com indicador ausente o Índice é calculado só sobre as camadas
-  que voltaram, com os pesos renormalizados, e a entrega diz
-  quais camadas entraram.
+- Com indicador ausente, **a camada renormaliza internamente**
+  sobre os que voltaram, e sai inteira só se os ausentes pesarem
+  mais de um terço dela (Decisão 36 B). O Índice então renormaliza
+  sobre as camadas que ficaram. A entrega nomeia quais indicadores
+  entraram em cada camada e quais faltaram.
+- A **confiança** de cada série vai do início dela até a **última
+  data em que aquele indicador tem dado**, não até hoje: série
+  parada não ganha confiança por ficar parada (Decisão 36 C).
 - Se faltar a Linha d'Água, não há estado e não há projeção.
 - Se a composição da CRM não puder ser lida, o universo elegível
   fica congelado no último estado conhecido, marcado como

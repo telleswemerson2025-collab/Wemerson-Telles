@@ -1,24 +1,24 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.1 · 29/08/2026
+Conferência. Versão 1.2 · 29/08/2026 — Decisão 36 aplicada
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
 - `torre.mjs` — o módulo. Sem dependências. Lê o registro da peça 1, não guarda nada.
 - `leitura-29-08-2026.mjs` — as catorze leituras reais do documento 07, transcritas.
-- `torre.test.mjs` — 32 testes da Torre (81 no pacote inteiro). `node --test` na raiz.
+- `torre.test.mjs` — 41 testes da Torre (90 no pacote inteiro). `node --test` na raiz.
 
 ## ⭐ ITEM 5 — O TESTE QUE PROVA A LEITURA DE 29/08/2026
 Entrada: as catorze leituras reais do `07-leituras-29-08-2026.md`, com mínimas e
 máximas do range ALL. Saída do módulo:
 
 ```
-índice 50.7540 · exibido 51 · Equilíbrio · Mercado saudável
+índice 50.7536 · exibido 51 · Equilíbrio · Mercado saudável
   camada 1: 44.41 · peso 38.6%
   camada 2: 60.27 · peso 29.5%
   camada 3: 50.88 · peso 18.2%
   camada 4: 47.94 · peso 13.6%
   fora: 5 (sem carteira ativa)
-  ETF: 54.97 -> 52.61 · confiança 0.526
+  ETF: 54.97 -> 52.61 · confiança 0.5251 (janela até 27/08, data do dado)
 ```
 
 Bate com o `03-indice-semente.md` em todos os números: **50,75 · Equilíbrio**, as
@@ -33,9 +33,19 @@ Vale saber exatamente o que isso cobre — e o que não cobre.
 
 **O que o torna um cheque real:** o 50,75 foi derivado por um caminho diferente
 (scripts avulsos, camada a camada, na rodada da Decisão 7), em outro momento, e
-ratificado no `03-indice-semente.md`. São **duas implementações independentes que
-concordam até a quarta casa**. Não é verificação externa de terceiro — o âncora
-externo de verdade é o terminal — mas é o cheque mais forte disponível.
+ratificado no `03-indice-semente.md`. Não é verificação externa de terceiro — o
+âncora externo de verdade é o terminal — mas é o cheque mais forte disponível.
+
+**E a Decisão 36 C fechou uma folga que ninguém tinha visto.** Antes dela a Torre
+dava `50.7540` e a derivação da Decisão 7 dava `50.7536`: quatro décimos de
+milésimo de diferença, invisível na tolerância do teste, que vinha exatamente de
+medir a confiança do ETF até hoje em vez de até a data do dado. A derivação
+original media até a data do dado. **Agora as duas implementações batem dígito a
+dígito**, e o teste fixa `50.7536` na quarta casa em vez de aceitar uma faixa.
+
+Foi a decisão de princípio que revelou a divergência de implementação, não o
+contrário — e é o argumento mais forte que a rodada produziu a favor de decidir
+pela razão certa mesmo quando o efeito parece nulo.
 
 **Do que ele protege, na prática.** Rodada a sensibilidade do índice a cada uma
 das 42 entradas:
@@ -92,12 +102,20 @@ lugar onde a Torre erraria em silêncio e ninguém veria.
 | A entrega diz quais camadas entraram e quais ficaram fora, com motivo | idem, e `camadasForaDaConta` |
 | Sem nenhuma camada inteira, não há índice — e o motivo vem junto | *"sem nenhuma camada inteira, não há índice"* |
 
-**Camada incompleta sai inteira, e isso é escolha.** O `09-ritual-operacional.md`
-diz "o Índice é calculado só sobre as **camadas** que voltaram". Tirar a média só
-do que voltou dentro de uma camada substituiria o indicador que falta pela média
-do resto — o default silencioso que a invariante 3 proíbe. **Esta questão foi
-levantada na conferência do 09 e nunca decidida**; implementei a leitura literal
-e a não-presumidora. Segue sendo sua.
+**Ausência parcial dentro da camada (D36 B):** a camada renormaliza internamente
+sobre os indicadores que voltaram, e sai inteira só se os ausentes pesarem **mais
+de um terço** dela. É a mesma mecânica que o sistema já usa um nível acima.
+
+| Camada | Indicadores | Um ausente | Dois ausentes |
+|---|---|---|---|
+| 2 · Comportamento | 3 | 33% — **cabe** | 67% — sai |
+| 3 · Macro | 4 | 25% — **cabe** | 50% — sai |
+| 4 · Fluxo | 2 | **50% — sai** | — |
+
+**A camada 4 tem só dois indicadores, então qualquer ausência a derruba.** Não é
+efeito colateral da regra: com dois itens, perder um deixaria a camada descrita
+por metade, bem além do terço. Mas vale saber que o ETF ou o Funding faltando
+tira 13,6% do índice de uma vez, e é a camada mais frágil das quatro.
 
 ## ITEM 3 — CAMADA 5 SUSPENSA POR INTEIRO (D21 B)
 | Prova | Teste |
