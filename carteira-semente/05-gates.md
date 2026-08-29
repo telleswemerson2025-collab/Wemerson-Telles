@@ -1,6 +1,6 @@
 # GATES DA CARTEIRA SEMENTE
 Nenhum agente aprova. Só o humano.
-Versão 1.9 · 29/08/2026 — Decisões 1 a 14 aplicadas.
+Versão 1.10 · 29/08/2026 — Decisões 1 a 16 aplicadas.
 
 ## GATE 1 — DIREÇÃO (antes de produzir)
 Perguntas:
@@ -44,7 +44,10 @@ Checklist. Qualquer item falho VETA:
     para a revisão inteira e sobe para o Gui; célula retida não entra em material de venda.
     Base sempre na v1.3; linha desdobrada herda a referência da original.
 17. **Sem default silencioso** — se faltou leitura de origem, o material diz que faltou. Nunca
-    preencher lacuna com suposição.
+    preencher lacuna com suposição. Universo elegível congelado sai rotulado com a data.
+18. **Tetos sobre a parte exposta** — os 60% e os 8% foram medidos sobre a parte exposta, não sobre
+    a carteira inteira. Venda parcial do degrau 3 chega aqui como decisão própria, com data, ativo
+    e percentual antes e depois. Venda executada sem passar por este Gate veta.
 
 → "Aprovado DD/MM" do Gui. Executar/publicar é irreversível.
 

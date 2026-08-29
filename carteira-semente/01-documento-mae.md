@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.10 · 29/08/2026 · BlockCapital Research — Decisões 2 a 15 aplicadas.
+Versão 1.11 · 29/08/2026 · BlockCapital Research — Decisões 2 a 16 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -95,20 +95,48 @@ Ativo removido da CRM deixa de receber aporte novo na Semente **no mês seguinte
 comprado permanece até decisão de tese. **Sem venda automática.**
 
 ### Teto de concentração
-- **BTC e ETH somados nunca abaixo de 60%** do valor da carteira.
-- **Nenhum ativo fora desses dois passa de 8%.**
-- O rebalanceamento para o teto acontece **com aporte novo, nunca com venda**, enquanto o aporte
-  for suficiente.
+Os limites valem sobre a **PARTE EXPOSTA**, não sobre a carteira inteira. **O que o Abrigo já
+protegeu sai da base de cálculo** (Decisão 16).
 
-*Forma implícita:* com BTC+ETH em pelo menos 60% e os demais limitados a 8% cada, sobram no máximo
-40% para o resto — ou seja, no mínimo cinco outros ativos para preencher esse espaço no teto.
+- **BTC e ETH somados nunca abaixo de 60%** da parte exposta.
+- **Nenhum ativo fora desses dois passa de 8%** da parte exposta.
 
-> ⚠️ **O piso de 60% é aritmeticamente incompatível com o Abrigo a partir de 2 anos da entrega.**
-> Com exposição de 0,45, BTC e ETH somados não podem passar de 45% da carteira. A 3 anos ainda cabe,
-> mas apertado: exige que BTC+ETH sejam 90,9% de toda a parte exposta. **Enquanto isso não for
-> decidido, o Abrigo prevalece** — por invariante 6 (*preservação vem antes de convicção*) e pelo
-> precedente da Decisão 4, em que o teto do Abrigo já vence a modulação. Detalhe em
-> `08-decisoes-29-08-2026.md`.
+*Razão da base:* a parte protegida é, por definição, a mais segura da carteira. Contá-la na base
+faria a proteção diluir o piso de qualidade — o oposto da intenção. Com a base na parte exposta, a
+regra continua viva até o dia da entrega, e o Abrigo continua prevalecendo sobre tudo.
+
+Em pontos da carteira inteira, ao longo da glidepath:
+
+| Anos restantes | Exposição | BTC+ETH no mínimo | Teto por ativo | Gatilho de venda (12%) |
+|---|---|---|---|---|
+| +3 anos | 100% | 60,0 pts | 8,00 pts | 12,00 pts |
+| 3 anos | 66% | 39,6 pts | 5,28 pts | 7,92 pts |
+| 2 anos | 45% | 27,0 pts | 3,60 pts | 5,40 pts |
+| 1 ano | 25% | 15,0 pts | 2,00 pts | 3,00 pts |
+| entrega | 15% | 9,0 pts | 1,20 pts | 1,80 pts |
+
+### Os três degraus do teto de 8%
+Um teto que nunca é executado não é teto, é intenção. Por isso o limite tem degraus:
+
+| Degrau | Situação | O que acontece |
+|---|---|---|
+| 1 | Até 8% | Normal. |
+| 2 | Acima de 8% | O ativo **para de receber aporte novo**. O aporte que iria para ele se redistribui no restante do universo elegível. É o rebalanceamento por fluxo. |
+| 3 | Acima de 12% | **Venda parcial de volta para 8%.** A única venda do sistema inteiro que nasce de gatilho, e não de tese. |
+
+A faixa entre 8% e 12% é a folga que deixa o fluxo trabalhar antes de vender. A venda do degrau 3
+é registrada como evento, com data, ativo e percentual antes e depois.
+
+*Como BTC e ETH têm piso e não teto, eles são o destino natural do aporte redistribuído quando
+todos os demais estiverem no limite.* A redistribuição do degrau 2 respeita os tetos: se realocar
+empurra outro ativo acima de 8%, o excedente segue adiante.
+
+> ⚠️ **O degrau 3 colide com a invariante 1.** *Nenhum agente compra, vende, aporta ou publica —
+> quem assina é o Gui*, e essa invariante está declarada inviolável. Aqui foi implementado como
+> **gatilho automático, execução pelo Gate**: o sistema detecta o estouro, monta a ordem de venda
+> parcial e a leva ao Gate 2 como decisão própria, sem discricionariedade sobre o número. Se a
+> intenção era que a venda dispensasse o Gate, isso é uma **emenda à invariante 1** e precisa ser
+> dita como tal. Detalhe em `08-decisoes-29-08-2026.md`.
 
 ### Dependência declarada
 Esta decisão cria dependência real: **mudança na CRM muda o universo da Semente.** Fica registrado

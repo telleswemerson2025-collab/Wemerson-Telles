@@ -1,6 +1,6 @@
 # ÍNDICE SEMENTE — indicador composto
 Régua única de 0 a 100 que reúne as camadas de leitura.
-Versão 1.5 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9 e 15 aplicadas.
+Versão 1.6 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15 e 16 aplicadas.
 
 ## O QUE ELE É, E O QUE ELE NÃO É
 O Índice Semente **mede a intensidade** da situação de mercado. Ele **não classifica o estado**.
@@ -27,7 +27,7 @@ quatro pesos restantes são renormalizados proporcionalmente (base 88).
 | 2 · Comportamento | **29,5%** | 26% | SOPR · Supply in Profit · Liveliness (média de **três**) |
 | 3 · Macro | **18,2%** | 16% | DXY* · Fed Funds* · M2 · Curva 10Y-2Y (média) |
 | 4 · Fluxo | **13,6%** | 12% | ETF Net Inflow · Funding Rate (média) |
-| 5 · Carteira | **fora** | 12% | pesos · caixa · distância da invalidação de tese · anos restantes |
+| 5 · Carteira | **fora** | 12% | pesos · caixa · **degrau de invalidação** · anos restantes |
 
 \* DXY e Fed Funds entram **invertidos**: dólar forte e juro alto tiram ar do risco.
 
@@ -135,12 +135,32 @@ contradizem — e contradição é o coração de uma boa thread.
 (77.839,19 ÷ 53.057,77 = 1,46706). O MVRV lido diretamente no terminal é 1,465 e dá posição 44,36
 contra 44,41 — diferença de 0,05 ponto, sem efeito no índice exibido.
 
-## PENDÊNCIA ABERTA
-**As métricas internas da camada 5** — pesos, caixa, distância da invalidação de tese, anos
-restantes — e como cada uma normaliza. Só faz sentido definir quando houver carteira; até lá a
-camada fica fora.
+## A CAMADA 5 — O DEGRAU DE INVALIDAÇÃO (Decisão 16, parte D)
+Distância até um fato qualitativo **não se normaliza em escala contínua**. Vira escala ordinal de
+quatro degraus, **atribuída pelo Gui e registrada com data**:
 
-⚠️ **A Decisão 15 mexeu nesta lista.** A métrica era "distância do stop", e a Semente não opera com
-stop: opera com invalidação de tese, que é decisão registrada e não nível de preço. Uma distância
-até um fato qualitativo não normaliza como uma distância até um preço. **Como medir isso de 0 a 100
-é pergunta aberta**, e é a que mais atrasa a volta da camada 5.
+| Degrau | Situação |
+|---|---|
+| **100** | Tese intacta, nenhum sinal contrário |
+| **66** | Sinal contrário isolado, sem confirmação |
+| **33** | Sinal contrário confirmado, tese em observação |
+| **0** | Tese invalidada, ativo em saída ordenada |
+
+A camada 5 **lê o degrau, não a distância**. É julgamento humano com registro, não número
+inventado — preferível a uma métrica contínua que aparenta precisão que não existe.
+
+**Consequência a declarar:** com isso o Índice Semente deixa de ser inteiramente mecânico. Quando a
+camada 5 voltar, parte do índice passará a depender de julgamento humano datado. Não é defeito — é
+o preço de não fabricar precisão — mas toda leitura publicada precisa dizer que a camada 5 carrega
+julgamento, e a data do último degrau atribuído.
+
+**Degrau não atribuído é ausência**, não 100. Vale a invariante 3: reporta-se a falta, não se
+presume tese intacta.
+
+## PENDÊNCIA ABERTA
+**A camada 5 continua fora.** A Decisão 16 definiu **uma** das quatro métricas. Faltam três —
+pesos, caixa e anos restantes — e falta a regra de agregação: o degrau é **por ativo**, e a camada 5
+é **um número só** para a carteira. Média simples entre ativos, ou ponderada pelo tamanho da
+posição? Não definido, e as duas dão resultados diferentes.
+
+

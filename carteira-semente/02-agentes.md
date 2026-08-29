@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.8 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12, 13, 14 e 15 aplicadas.
+Versão 1.9 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 16 aplicadas.
 
 ---
 
@@ -48,8 +48,21 @@ Se algo vier zerado ou com traço: reportar, NÃO inventar.
 - **O que mudou desde ontem** — só o que mudou
 - ⚠️ SEM recomendação de compra ou venda
 
-**Limite:** não decide nada. Lê regime. Não classifica estado por conta própria — o estado vem da
-Linha d'Água.
+### VARREDURA DA COMPOSIÇÃO DA CRM (Decisão 16, parte B)
+Segunda varredura, **separada dos catorze indicadores**, rodando junto com a leitura do dia: ler a
+composição publicada da CRM e comparar com a última lida.
+
+**Entrega:** incluídos · removidos · ou "nada mudou".
+- Cada **incluído** passa pelo Filtro de Horizonte na hora, e o resultado é registrado com o motivo.
+- Cada **removido** para de receber aporte novo a partir do mês seguinte. Sem venda.
+
+**Se a composição não puder ser lida:** a Torre reporta ausência e o universo elegível **fica
+congelado no último estado conhecido, marcado explicitamente como desatualizado desde tal data.**
+**Nunca se presume que não mudou** — é a invariante 3 aplicada a um insumo que não é indicador.
+
+**Limite:** não decide nada. Lê regime e lê composição. Não classifica estado por conta própria — o
+estado vem da Linha d'Água — e não decide elegibilidade sozinha: aplica o Filtro de Horizonte, que
+é regra escrita, e registra o motivo.
 
 ---
 
@@ -265,6 +278,11 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
 19. **Todo ativo proposto está no universo elegível**, ou seja, veio da CRM e passou nas quatro
     alíneas do Filtro de Horizonte? Ativo fora do universo REPROVA. Ativo reprovado no filtro tem o
     motivo registrado?
+20. **O universo elegível está fresco?** Se a composição da CRM não pôde ser lida, a proposta diz
+    desde quando o universo está congelado? Universo desatualizado sem rótulo REPROVA.
+21. **Os tetos foram medidos sobre a parte EXPOSTA**, e não sobre a carteira inteira? Se algum
+    ativo passou de 12% da parte exposta, a venda parcial de volta a 8% foi levada ao Gate como
+    decisão própria e registrada com data, ativo e percentual antes e depois?
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 

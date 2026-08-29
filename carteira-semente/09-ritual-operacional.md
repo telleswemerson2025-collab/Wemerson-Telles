@@ -1,5 +1,5 @@
 # 09 — RITUAL OPERACIONAL DA CARTEIRA SEMENTE
-Versão 1.2 · 29/08/2026 — conciliado com as Decisões 1 a 15.
+Versão 1.3 · 29/08/2026 — conciliado com as Decisões 1 a 16.
 *Alterações em relação ao original do Mr. G estão listadas no fim do arquivo.*
 
 Como o Mr. G aciona o sistema no dia a dia. Espelha o ritual da
@@ -23,6 +23,9 @@ Três acionamentos. Dois por frase, um automático.
    indicadores**, sempre os mesmos, sempre na mesma ordem.
 2. O Chrome busca, em modo somente leitura: nunca publica, nunca
    altera, nunca apaga, restaura o estado da tela.
+2b. **Na mesma ida, lê a composição publicada da CRM** e compara
+   com a última lida (Decisão 16). É varredura separada dos
+   catorze indicadores.
 3. A Torre normaliza cada indicador contra a própria faixa
    histórica (log para série multiplicativa, linear para aditiva)
    e **amortece as séries de janela curta pelo fator de confiança**
@@ -41,6 +44,9 @@ Três acionamentos. Dois por frase, um automático.
 - **A confiança de cada série**, ao lado do valor.
 - **O que mudou** desde a última leitura. Se nada mudou de faixa
   nem de estado, a resposta é uma linha só.
+- **Composição da CRM**: incluídos, removidos, ou "nada mudou".
+  Cada incluído já vem com o resultado do Filtro de Horizonte e o
+  motivo registrado.
 - **Ausências**, nomeadas uma a uma.
 
 ### Regras
@@ -52,6 +58,9 @@ Três acionamentos. Dois por frase, um automático.
   que voltaram, com os pesos renormalizados, e a entrega diz
   quais camadas entraram.
 - Se faltar a Linha d'Água, não há estado e não há projeção.
+- Se a composição da CRM não puder ser lida, o universo elegível
+  fica congelado no último estado conhecido, marcado como
+  desatualizado desde tal data. Nunca se presume que não mudou.
 - A Torre não classifica estação e não dispara decisão. Ela lê.
 
 ---
@@ -191,7 +200,5 @@ uma — o Auditor confere as sete uma a uma, e receber só a primeira obrigaria 
 2. **O ritual cobre três acionamentos.** Guardiões, Responsável pelos Posts e Laboratório ficaram
    de fora. Se é porque ainda não existem, tudo bem — mas os Guardiões são a etapa 2 da ordem de
    construção e não têm ritual de acionamento definido.
-3. **Quem observa a CRM, e com que frequência.** A Decisão 15 cria um insumo novo — inclusões e
-   remoções de ativo na CRM — que nenhum agente busca hoje. O gatilho 4 do alerta pressupõe que
-   alguém veja a mudança. Sem um acionamento definido, o universo elegível fica desatualizado sem
-   ninguém perceber, o que é a forma de default silencioso que a invariante 3 proíbe.
+3. ~~Quem observa a CRM~~ — **fechado pela Decisão 16, parte B.** A Torre ganhou a varredura da
+   composição, rodando junto com a leitura do dia, com congelamento rotulado quando a leitura falha.
