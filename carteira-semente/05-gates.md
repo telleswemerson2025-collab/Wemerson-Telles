@@ -1,6 +1,6 @@
 # GATES DA CARTEIRA SEMENTE
 Nenhum agente aprova. Só o humano.
-Versão 1.8 · 29/08/2026 — Decisões 1 a 13 aplicadas.
+Versão 1.9 · 29/08/2026 — Decisões 1 a 14 aplicadas.
 
 ## GATE 1 — DIREÇÃO (antes de produzir)
 Perguntas:
@@ -42,6 +42,7 @@ Checklist. Qualquer item falho VETA:
 16. **Tabela de deriva** — presente, atualizada e completa desde a v1.3, com as quinze células e o
     dono do piso. Tabela ausente, apagada ou resumida veta. Deriva acima de +15% em qualquer célula
     para a revisão inteira e sobe para o Gui; célula retida não entra em material de venda.
+    Base sempre na v1.3; linha desdobrada herda a referência da original.
 17. **Sem default silencioso** — se faltou leitura de origem, o material diz que faltou. Nunca
     preencher lacuna com suposição.
 

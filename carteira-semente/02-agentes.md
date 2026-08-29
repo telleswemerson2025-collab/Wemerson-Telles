@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.6 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 e 13 aplicadas.
+Versão 1.7 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12, 13 e 14 aplicadas.
 
 ---
 
@@ -252,6 +252,11 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
     **para a revisão inteira** e sobe para o Gui — não se publica a parte que não estourou.
 16. **O dono do piso mudou desde a versão anterior?** Se mudou, está registrado e reportado, mesmo
     que o valor do piso não tenha se movido?
+17. **Se a rodada desdobrou alguma partida:** cada linha nova herdou a referência da linha de que
+    nasceu, em vez de entrar sem base? Desdobramento sem herança REPROVA — zera a trava por via
+    indireta.
+18. **A base da deriva continua na v1.3?** Qualquer remedição contra base diferente da v1.3
+    REPROVA, inclusive depois de recalibragem do limite.
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 

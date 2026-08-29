@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.8 · 29/08/2026 · BlockCapital Research — Decisões 2 a 13 aplicadas.
+Versão 1.9 · 29/08/2026 · BlockCapital Research — Decisões 2 a 14 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -278,6 +278,18 @@ venda para cima sem que ninguém perceba.
 **A trava é acumulada e não zera por compensação.** Uma revisão posterior que derrube o número não
 apaga a deriva registrada: a série fica completa e o gatilho lê sempre o acumulado contra a v1.3.
 
+**As quatro regras de leitura da trava (Decisão 14):**
+1. **A trava lê célula, não nome citado.** Se uma célula está acima do limite, ela fica retida —
+   tenha sido nomeada por alguém ou não.
+2. **A referência é sempre a v1.3 e nunca se move.** Nem depois da recalibragem da regra 6: a
+   recalibragem mexe no limite, jamais na base.
+3. **Bloqueio futuro, transição retroativa.** Daqui em diante, célula estourada para a revisão
+   inteira. Para o que já está publicado, as células retidas saem do material de venda e o resto
+   segue.
+4. **Linha desdobrada herda a referência da linha de que nasceu.** Vale para qualquer desdobramento
+   futuro. Sem isso, desdobrar uma linha zeraria a trava dela — e desdobramento viraria porta de
+   saída.
+
 #### Estado atual (v1.8) — deriva contra a v1.3
 | Partida | Fase · mês | Conservador | Moderado | Forte |
 |---|---|---|---|---|
@@ -311,14 +323,19 @@ estável com dono novo é informação, não silêncio.
 - **Estresse de curto prazo e Saudável · Índice < 65** estão em +0,0% e seguem publicáveis.
 - **Capitulação profunda e Prejuízo do mercado estão retidas** nos três cenários, aguardando o Gui.
 
-*Nota de método:* a linha Saudável · Índice ≥ 65 não existia na v1.3 — nasceu do desdobramento da
-D10. Ela herda como referência o valor da linha "Mercado saudável" da v1.3 (fase 2 · mês 0),
-que é o comportamento padrão para série que se divide. Sem essa herança a célula ficaria sem base e
-fora da trava. Escolha de implementação, sujeita a confirmação.
+*Herança de referência aplicada:* a linha Saudável · Índice ≥ 65 não existia na v1.3 — nasceu do
+desdobramento da D10 e herda a referência da linha "Mercado saudável" da v1.3 (fase 2 · mês 0),
+pela regra 4 acima. É por isso que ela marca −22,7% em vez de ficar sem base.
 
 *Provisoriedade do limite (regra 6):* os 15% foram calibrados sobre seis linhas de série (v1.3 a
 v1.8). Na **décima segunda linha** o limite é recalculado com base na dispersão observada, e essa
-recalibragem é ela própria uma decisão registrada — nunca ajuste silencioso.
+recalibragem é ela própria uma decisão registrada — nunca ajuste silencioso. **A base continua na
+v1.3**: o que se recalibra é o limite, não a referência.
+
+Como as duas regras se encaixam: com a base fixa na v1.3, a deriva medida só cresce em alcance
+conforme as versões se acumulam — é memória permanente, não janela móvel. Em termos absolutos a
+trava fica progressivamente mais apertada, e é justamente para isso que existe a recalibragem
+periódica do limite.
 
 ⚠️ **Regra de comunicação:** apresentar sempre como FAIXA e como perspectiva, nunca como previsão.
 A faixa é a do **conservador ao forte** — três cenários, uma fase, a que a Linha d'Água leu hoje.
