@@ -1,6 +1,6 @@
 # GATES DA CARTEIRA SEMENTE
 Nenhum agente aprova. Só o humano.
-Versão 1.10 · 29/08/2026 — Decisões 1 a 16 aplicadas.
+Versão 1.11 · 29/08/2026 — Decisões 1 a 17 aplicadas.
 
 ## GATE 1 — DIREÇÃO (antes de produzir)
 Perguntas:
@@ -28,8 +28,10 @@ Checklist. Qualquer item falho VETA:
    os dois fluxos veta; contar acionamentos de memória veta.
 8. **Confiança por janela** — séries curtas entraram amortecidas; a confiança aparece ao lado do
    valor.
-9. **Camada 5 rotulada** — se a leitura publicada cita o Índice, diz que a camada Carteira está
-   fora da conta. Nunca apresentá-la como valendo 50.
+9. **Camada 5 rotulada** — se está fora, a leitura diz que está fora, e nunca a apresenta valendo
+   50. Se está dentro, vem com a etiqueta de julgamento completa: que carrega julgamento humano, a
+   data do degrau mais antigo em vigor, e quantos ativos estão sem degrau. Faltando qualquer uma
+   das três, veta.
 10. **Peso e caixa** — o peso resultante respeita o limite; o caixa não fica abaixo do mínimo.
 11. **Abrigo** — se faltam 3 anos ou menos, a exposição respeita a glidepath.
 12. **Fatia tática** — se houver, opera só com ganho realizado, nunca com o principal, e no máximo 5–10%.

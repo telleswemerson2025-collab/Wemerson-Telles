@@ -1,5 +1,5 @@
 # 09 — RITUAL OPERACIONAL DA CARTEIRA SEMENTE
-Versão 1.3 · 29/08/2026 — conciliado com as Decisões 1 a 16.
+Versão 1.4 · 29/08/2026 — conciliado com as Decisões 1 a 17.
 *Alterações em relação ao original do Mr. G estão listadas no fim do arquivo.*
 
 Como o Mr. G aciona o sistema no dia a dia. Espelha o ritual da
@@ -48,6 +48,8 @@ Três acionamentos. Dois por frase, um automático.
   Cada incluído já vem com o resultado do Filtro de Horizonte e o
   motivo registrado.
 - **Ausências**, nomeadas uma a uma.
+- **Etiqueta de julgamento**, se a camada 5 entrar: julgamento
+  humano · data do degrau mais antigo · ativos sem degrau.
 
 ### Regras
 
@@ -145,7 +147,13 @@ dia. Precisa gravar, por carteira:
 - cada acionamento do Reforço de Fundo, com data e Índice;
 - cada reset do contador, com data e o marco que o causou;
 - a contagem corrente de dias consecutivos com Índice 65 ou mais;
-- a série de leituras diárias, para a auditoria da contagem.
+- a série de leituras diárias, para a auditoria da contagem;
+- **o degrau de invalidação de cada ativo, com a data em que o Gui
+  o atribuiu** (Decisões 16 e 17). Sem a data não se monta a
+  etiqueta de julgamento, e sem etiqueta a leitura não é
+  publicável;
+- **a última composição da CRM lida**, com a data, para saber
+  desde quando o universo está congelado se a leitura falhar.
 
 Por isso a etapa 3 da ordem de construção começa pelo registro, não
 pela lógica. Sem registro gravado o reforço não é liberado — logo o

@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.11 — decisões 1 a 16 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.12 — decisões 1 a 17 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -19,10 +19,11 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
 ## A LEI (invariantes do sistema — valem sempre)
 1. **O GATE É SEMPRE HUMANO E INVIOLÁVEL.** Nenhum agente compra, vende, aporta ou publica.
    Eles medem, propõem, conferem e organizam. Quem assina é o Gui.
-   *A venda parcial do degrau 3 do teto de concentração (Decisão 16, parte C) é gatilho automático
-   com execução pelo Gate: o sistema detecta, monta a ordem e leva para assinatura. Não há
-   discricionariedade sobre o número, e não há execução sem assinatura. Ver a ressalva registrada
-   em `08-decisoes-29-08-2026.md`.*
+   *A venda parcial do degrau 3 do teto de concentração é o **único gatilho de venda determinístico**
+   do sistema (Decisões 16 e 17): o sistema detecta o estouro, calcula a ordem sem nenhuma
+   discricionariedade sobre o número e leva ao Gate 2. A assinatura é do Gui, sempre. O que torna o
+   teto real é o gatilho ser obrigatório e não opcional — o Gate não enfraquece a regra, é o que a
+   mantém dentro da lei. **A invariante 1 permanece intacta e inviolada.***
 2. **Nada sai para o cliente sem passar pelo Gui.** O sistema é ferramenta interna.
 3. **A fonte é o gráfico/tooltip, NUNCA a memória.** Todo número citado tem que bater com a fonte.
 4. **Quem propõe não audita.** Alocador e Auditor são papéis separados.

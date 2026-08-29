@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.9 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 16 aplicadas.
+Versão 1.10 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 17 aplicadas.
 
 ---
 
@@ -42,6 +42,9 @@ Se algo vier zerado ou com traço: reportar, NÃO inventar.
   marcada como FORA da conta** enquanto não houver carteira ativa — nunca desenhada como 50
 - **A confiança de cada série ao lado do valor** (Decisão 7). Hoje só o ETF Net Inflow entra
   amortecido: 2,63 anos de série, confiança 0,53, bruto 55,0 e ajustado 52,6.
+- **A etiqueta de julgamento, sempre que a camada 5 entrar** (Decisão 17): que ela carrega
+  julgamento humano · a data do degrau mais antigo em vigor · quantos ativos estão sem degrau. Sem
+  as três, a leitura não é publicável.
 - **Se as condições do Reforço de Fundo estão reunidas** — é sinalização, não acionamento
 - **A NOTA DE DIVERGÊNCIA**, quando estado e intensidade apontam para lados diferentes
   (ex.: "estado saudável, mas intensidade em equilíbrio"). É nota, não disputa.
@@ -283,6 +286,10 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
 21. **Os tetos foram medidos sobre a parte EXPOSTA**, e não sobre a carteira inteira? Se algum
     ativo passou de 12% da parte exposta, a venda parcial de volta a 8% foi levada ao Gate como
     decisão própria e registrada com data, ativo e percentual antes e depois?
+22. **Se a camada 5 entrou:** a agregação é média ponderada pelo tamanho da posição na parte
+    exposta? Ativo sem degrau ficou FORA do cálculo, em vez de entrar como 100 ou 0? Os ativos sem
+    degrau somam 30% ou menos da parte exposta — e, se somam mais, a camada saiu inteira? A etiqueta
+    de julgamento traz as três informações?
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 

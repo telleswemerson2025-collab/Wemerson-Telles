@@ -1,6 +1,6 @@
 # ÍNDICE SEMENTE — indicador composto
 Régua única de 0 a 100 que reúne as camadas de leitura.
-Versão 1.6 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15 e 16 aplicadas.
+Versão 1.7 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15, 16 e 17 aplicadas.
 
 ## O QUE ELE É, E O QUE ELE NÃO É
 O Índice Semente **mede a intensidade** da situação de mercado. Ele **não classifica o estado**.
@@ -149,18 +149,49 @@ quatro degraus, **atribuída pelo Gui e registrada com data**:
 A camada 5 **lê o degrau, não a distância**. É julgamento humano com registro, não número
 inventado — preferível a uma métrica contínua que aparenta precisão que não existe.
 
-**Consequência a declarar:** com isso o Índice Semente deixa de ser inteiramente mecânico. Quando a
-camada 5 voltar, parte do índice passará a depender de julgamento humano datado. Não é defeito — é
-o preço de não fabricar precisão — mas toda leitura publicada precisa dizer que a camada 5 carrega
-julgamento, e a data do último degrau atribuído.
+### Agregação: média ponderada pelo tamanho da posição (Decisão 17)
+O degrau é **por ativo**; a camada 5 é **um número só**. Agregam-se por **média ponderada pelo
+tamanho da posição na parte exposta**.
 
-**Degrau não atribuído é ausência**, não 100. Vale a invariante 3: reporta-se a falta, não se
-presume tese intacta.
+*Razão:* tese trincada num ativo de 1,5% não pesa o mesmo que tese trincada num ativo de 30%. Média
+simples deixaria uma ponta pequena mover o índice tanto quanto o núcleo, e isso não descreve o
+risco real da carteira.
+
+**Consequência assumida:** com o piso de 60% em BTC e ETH, a métrica passa a ser **dominada pela
+tese desses dois** — eles pesam ao menos 60% da média. É o resultado correto: numa carteira com esse
+piso, a saúde da tese é majoritariamente a tese deles.
+
+*Calibragem do efeito:* uma invalidação total de BTC e ETH, com os demais intactos, derruba a
+camada 5 em pelo menos 60 pontos e o **Índice em pelo menos 7,2 pontos** (0,12 × 60) — o bastante
+para mudar de faixa. Se os dois somarem 90% da parte exposta, são 10,8 pontos de Índice.
+
+### Ausência na agregação
+**Degrau não atribuído é ausência**, não 100 e não 0. Vale a invariante 3: reporta-se a falta, não
+se presume tese intacta — sem essa regra o esquecimento viraria otimismo automático.
+
+O ativo sem degrau **fica fora do cálculo** e os pesos se renormalizam sobre os que têm degrau —
+mesma mecânica da Decisão 5.
+
+> **Trava dos 30%:** se os ativos sem degrau somarem **mais de 30% da parte exposta**, a camada 5
+> **sai inteira** do Índice e os pesos das demais camadas se renormalizam. Uma nota que descreve
+> menos de dois terços da carteira não descreve a carteira.
+
+*Consequência operacional:* como BTC+ETH somam ao menos 60% da parte exposta, **basta um dos dois
+passar de 30% para que a falta do degrau dele derrube a camada sozinho.** Os demais, limitados a 8%
+cada, precisam de quatro ativos sem degrau para chegar ao mesmo lugar. Na prática, a camada 5
+depende de os degraus de BTC e ETH estarem sempre em dia.
+
+### Etiqueta de julgamento — obrigatória
+Toda leitura publicada que inclua a camada 5 informa as **três** coisas:
+1. que a camada carrega **julgamento humano**;
+2. a **data do degrau mais antigo em vigor**;
+3. **quantos ativos estão sem degrau**.
+
+**Sem as três, a leitura não é publicável.**
 
 ## PENDÊNCIA ABERTA
-**A camada 5 continua fora.** A Decisão 16 definiu **uma** das quatro métricas. Faltam três —
-pesos, caixa e anos restantes — e falta a regra de agregação: o degrau é **por ativo**, e a camada 5
-é **um número só** para a carteira. Média simples entre ativos, ou ponderada pelo tamanho da
-posição? Não definido, e as duas dão resultados diferentes.
+**A camada 5 continua fora.** As Decisões 16 e 17 fecharam o **degrau de invalidação** por inteiro —
+escala, agregação, ausência e etiqueta. Faltam as outras **três métricas**: pesos, caixa e anos
+restantes, e como cada uma normaliza. Só faz sentido definir quando houver carteira.
 
 
