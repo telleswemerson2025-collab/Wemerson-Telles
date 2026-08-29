@@ -1,6 +1,6 @@
 # ÍNDICE SEMENTE — indicador composto
 Régua única de 0 a 100 que reúne as camadas de leitura.
-Versão 1.11 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15 a 21 aplicadas.
+Versão 1.12 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15 a 22 aplicadas.
 
 ## O QUE ELE É, E O QUE ELE NÃO É
 O Índice Semente **mede a intensidade** da situação de mercado. Ele **não classifica o estado**.
@@ -253,7 +253,8 @@ que couber, nunca abaixo de 90. Se nem 90 couber, o ativo entra e a colisão é 
 vencimentos dos próximos 180 dias por janela de 30.
 
 #### ⚠️ Uma ressalva medida
-**A régua é inquebrável até nove ativos fora de BTC e ETH. De dez em diante, não.**
+**A régua é inquebrável até nove ativos fora de BTC e ETH — e a Decisão 22 tampou a carteira em
+oito, uma vaga abaixo disso.**
 
 Uma janela fechada de 30 dias, com espaçamento `90/(N−1)`, contém `⌊(N−1)/3⌋+1` ativos — e, pela
 ordem decrescente da fórmula, são sempre os **mais pesados** do conjunto:
@@ -272,9 +273,10 @@ conjunto; BTC e ETH ocupam os outros 60% e a carteira cumpre a Decisão 16 intei
 saem `180 · 170 · 160 · 150 · …`, e a janela `[150, 180]` contém os quatro de 8% — **32% da parte
 exposta.**
 
-Não é o caso típico: exige dez ou mais ativos fora de BTC e ETH, com os quatro maiores no teto e uma
-cauda muito miúda. Mas o universo elegível vem da CRM (Decisão 15), e o tamanho dele não é escolha
-da Semente. **Fica registrado como o único ponto em que a régua ainda pode ser furada.**
+✅ **Esse contraexemplo deixou de ser construível.** A Decisão 22 limita a carteira a **8 ativos**
+fora de BTC e ETH, e com oito a pior janela contém três, somando no máximo 24%. O piso de 2% por
+posição elimina a cauda miúda que o contraexemplo exigia. A régua ficou fechada por construção, não
+por calibragem.
 
 O mapa do Auditor mede exatamente essa régua, e **reprova** quando ela é ultrapassada — deixou de
 ser linha informativa quando virou alcançável (Decisão 21, parte E).

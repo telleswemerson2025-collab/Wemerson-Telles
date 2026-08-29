@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.14 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 21 aplicadas.
+Versão 1.15 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 22 aplicadas.
 
 ---
 
@@ -251,7 +251,9 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
 
 **Checklist de reprovação (qualquer item falho = REPROVA):**
 1. O peso resultante estoura o limite do ativo — 8% para qualquer um fora de BTC e ETH, e BTC+ETH
-   somados em pelo menos 60%? O rebalanceamento proposto usa aporte novo, e não venda?
+   somados em pelo menos 60%? Algum ativo ficou **abaixo do piso de 2%** da parte exposta? A carteira
+   tem **mais de 8 ativos** fora de BTC e ETH? O rebalanceamento proposto usa aporte novo, e não
+   venda?
 2. O caixa fica abaixo do mínimo?
 3. O preço proposto bate com a zona publicada?
 4. Todo número citado bate com a fonte (tooltip/terminal)?
@@ -280,9 +282,10 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
     indireta.
 18. **A base da deriva continua na v1.3?** Qualquer remedição contra base diferente da v1.3
     REPROVA, inclusive depois de recalibragem do limite.
-19. **Todo ativo proposto está no universo elegível**, ou seja, veio da CRM e passou nas quatro
-    alíneas do Filtro de Horizonte? Ativo fora do universo REPROVA. Ativo reprovado no filtro tem o
-    motivo registrado?
+19. **Todo ativo proposto está no universo elegível**, ou seja, veio da CRM, passou nas quatro
+    alíneas do Filtro de Horizonte e está entre os 8 de maior peso na CRM? Ativo fora do universo
+    REPROVA. Exclusão por **teto de contagem** foi registrada como tal, e não como reprovação de
+    tese?
 20. **O universo elegível está fresco?** Se a composição da CRM não pôde ser lida, a proposta diz
     desde quando o universo está congelado? Universo desatualizado sem rótulo REPROVA.
 21. **Os tetos foram medidos sobre a parte EXPOSTA**, e não sobre a carteira inteira? Se algum
@@ -304,6 +307,9 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
     b. **Régua única** — nenhuma janela `[t, t+30]` com vencimentos de ativos fora de BTC e ETH
        somando mais de **30% da parte exposta**. Estouro **REPROVA** até ser escalonado. É a régua
        oficial desde a Decisão 21, não mais linha informativa.
+26. **Se houve consolidação de posição abaixo do piso de 2%:** ela foi levada ao Gate como decisão
+    própria, registrada com data, ativo e percentual antes e depois? Consolidação executada sem
+    passar pelo Gate REPROVA — é venda, e vale a mesma regra do degrau 3.
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 

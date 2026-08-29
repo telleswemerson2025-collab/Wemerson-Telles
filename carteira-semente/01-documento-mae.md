@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.11 · 29/08/2026 · BlockCapital Research — Decisões 2 a 16 aplicadas.
+Versão 1.12 · 29/08/2026 · BlockCapital Research — Decisões 2 a 22 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -100,6 +100,41 @@ protegeu sai da base de cálculo** (Decisão 16).
 
 - **BTC e ETH somados nunca abaixo de 60%** da parte exposta.
 - **Nenhum ativo fora desses dois passa de 8%** da parte exposta.
+- **Nenhum ativo fora desses dois fica abaixo de 2%** da parte exposta (Decisão 22).
+- **No máximo 8 ativos** fora de BTC e ETH na carteira (Decisão 22).
+
+*Por que 8:* com oito ativos, a pior janela de vencimento de degrau contém três e soma no máximo
+24% da parte exposta, contra a régua de 30% da Decisão 21. A folga é estrutural. *(A régua só passa
+a ser furável com dez ativos; o teto de 8 guarda uma vaga de margem.)*
+
+*Por que o piso de 2%:* uma posição de 1,33% não muda resultado nenhum em dezoito anos. O que ela
+muda é a complexidade do controle, a conta de custódia e a chance de esquecer um degrau. **Cauda
+miúda é risco operacional disfarçado de diversificação.** Posição que caia abaixo de 2% por preço
+para de receber aporte e é consolidada em BTC e ETH no rebalanceamento seguinte.
+
+### Quando a CRM tem mais de 8 elegíveis
+O universo elegível é o subconjunto dos **8 de maior peso na CRM** que passaram no Filtro de
+Horizonte. O nono e seguintes ficam de fora, e a exclusão é registrada com o motivo **"teto de
+contagem"**, nunca como reprovação de tese — a diferença importa se o ativo um dia subir de posição.
+
+A composição do universo é revista quando a CRM muda, no ritual da Decisão 16. Ativo que entra por
+subir de posição recebe validade pela regra de lote novo; ativo que sai por cair de posição deixa de
+receber aporte, e o que já está comprado permanece até decisão de tese.
+
+> ⚠️ **Duas coisas desta regra precisam de decisão, e estão implementadas de forma conservadora.**
+>
+> **1. "Consolidada em BTC e ETH" é venda.** Não há como mover uma posição existente para BTC e ETH
+> só com aporte novo — aporte novo compra BTC e ETH, mas a posição pequena continua lá, e o motivo
+> declarado do piso (custódia, controle, degrau esquecido) não é atendido. Tratada, então, como o
+> **segundo gatilho determinístico de venda** do sistema, sob a mesma regra do degrau 3: o sistema
+> detecta e calcula, **o Gate assina**. A invariante 1 segue intacta.
+>
+> **2. O teto de 8 e a proibição de venda automática podem se travar.** O teto conta ativos **na
+> carteira**; um ativo que cai do top 8 da CRM permanece comprado até decisão de tese. Carteira com
+> oito mais o remanescente daria nove. Implementado assim: **o novo ativo não entra** enquanto a
+> vaga não for liberada por decisão de tese, e a exclusão é registrada como "teto de contagem" —
+> usando o mecanismo que a própria decisão criou. Consequência: uma posição legada pode bloquear
+> entradas novas por tempo indefinido, e só o Gui destrava.
 
 *Razão da base:* a parte protegida é, por definição, a mais segura da carteira. Contá-la na base
 faria a proteção diluir o piso de qualidade — o oposto da intenção. Com a base na parte exposta, a
