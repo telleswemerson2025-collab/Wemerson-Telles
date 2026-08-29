@@ -120,4 +120,5 @@ especificação. Nenhum foi alterado. O que precisa mudar:
 - `05-gates.md` — Gate 1 e Gate 2 da Semente
 - `06-campanhas.md` — precificação, base e calendário de campanhas
 - `07-leituras-29-08-2026.md` — as 14 leituras reais confirmadas no terminal (fonte primária)
-- `08-decisoes-29-08-2026.md` — as decisões 1 a 5, o que cada uma invalidou e o que ficou aberto
+- `08-decisoes-29-08-2026.md` — as decisões 1 a 14, o que cada uma invalidou e o que ficou aberto
+- `09-ritual-operacional.md` — como o Mr. G aciona o sistema no dia a dia
