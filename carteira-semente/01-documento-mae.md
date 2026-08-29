@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.19 · 29/08/2026 · BlockCapital Research — Decisões 2 a 30 aplicadas.
+Versão 1.20 · 29/08/2026 · BlockCapital Research — Decisões 2 a 31 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -349,8 +349,8 @@ separado**: em fundo de ciclo, parte do **caixa acumulado** é liberada. É para
 guardado.
 
 Só nos dois estados ruins, só com o Índice em 30 ou menos, só com mais de três anos até a entrega,
-no máximo 25% do caixa por vez, no máximo três vezes por ciclo, nunca deixando o caixa abaixo de
-10% da carteira — e sempre passando pelo Gate como decisão própria. Sete travas, para que ele não
+no máximo 25% do caixa por vez, no máximo três vezes por ciclo, 🔒 **nunca deixando o caixa abaixo
+de 10% da carteira** — e sempre passando pelo Gate como decisão própria. Sete travas, para que ele não
 vire gatilho de impulso justamente no momento em que o medo é maior.
 
 ### As quatro estações

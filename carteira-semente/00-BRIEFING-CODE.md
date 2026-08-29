@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.19 — decisões 1 a 30 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.20 — decisões 1 a 31 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`) · **classe âncora fechada**
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -69,6 +69,12 @@ depois que alguém percebe.
 | 6 | O teto de **8% por ativo**, com a faixa até **12%** | D15 · D16 | concentração crescendo ciclo a ciclo |
 | 7 | O piso de **2% por posição** | D22 | a cauda miúda voltando, com o custo operacional junto |
 | 8 | A **banda de 3 pontos** da glidepath | D24 · D30 | a exposição com que a criança recebe a carteira |
+| 9 | A **trava 6** do Reforço de Fundo — caixa nunca abaixo de **10%** da carteira | D6 · D31 | a reserva sumindo acionamento a acionamento |
+
+> **A classe está fechada** (Decisão 31). Ela para de crescer por rodada e passa a mudar **só por
+> evento**: parâmetro novo criado durante a implementação passa pelos quatro critérios **uma vez**, e
+> o resultado entra na lista ou na tabela de exclusão. **Não há mais varredura de candidatos** — o
+> sistema já foi varrido inteiro três vezes, e a quarta encontraria só o que as três recusaram.
 
 > **A faixa 8%–12% é âncora de par.** Mover só o gatilho de 12% para 15% afrouxa o teto efetivo sem
 > tocar no número protegido: o ativo passaria a passear até 15% sem venda nenhuma. **Âncora de faixa
@@ -116,6 +122,7 @@ de quem testou.
 | A **fórmula de espaçamento** | **4** | Idem. Muda **quando**, não **o quê**. |
 | O **teto de 8 ativos** | **1** | Afrouxar rompe a régua dos 30% e o mapa do Auditor acusa na mesma rodada. É restrição derivada, não âncora. |
 | A revisão de **90 dias** da vaga bloqueada | **4** | O cliente não recebe promessa de cadência de rotação. |
+| A **trava 4** do Reforço de Fundo — 25% do caixa por acionamento | **4** | Não guarda promessa publicada própria. A promessa do reforço é **coletiva** (*"sete travas, para que ele não vire gatilho de impulso"*) e sobrevive ao afrouxamento dela, porque as travas 1, 2, 3, 5 e 7 seguem inteiras. E a trava 6, agora âncora, já limita o mesmo dano: com o caixa abaixo de 23,7% da carteira é ela que binda, e a trava 4 fica folgada. |
 
 **Regra da classe:** alterar uma âncora exige **decisão registrada com a razão escrita**, passa pelo
 **Gate 2**, e a alteração fica na **tabela de deriva em caráter permanente**. Nenhuma âncora muda

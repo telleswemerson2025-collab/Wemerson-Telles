@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.23 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 30 aplicadas.
+Versão 1.24 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 31 aplicadas.
 
 ---
 
@@ -204,7 +204,7 @@ guardado.
 4. Libera no máximo **25% do caixa acumulado** por acionamento.
 5. No máximo **3 acionamentos por ciclo**, espaçados em pelo menos **30 dias**.
    O que é um ciclo, aqui, está definido logo abaixo (Decisão 9).
-6. Nunca deixa o caixa abaixo de **10% da carteira**.
+6. 🔒 Nunca deixa o caixa abaixo de **10% da carteira**. *(âncora estrutural — Decisão 31)*
 7. Passa pelo **Gate humano como decisão própria**, separada do aporte do mês.
 
 **Razão:** a tese é "acumular no desânimo". Sem esse fluxo o caixa vira enfeite e a tese não se
@@ -300,8 +300,8 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
     aprovados? Ativo fora do universo
     REPROVA. Exclusão por **teto de contagem** foi registrada como tal, e não como reprovação de
     tese?
-29. **Alguma âncora estrutural foi alterada?** São **oito** — as sete abaixo mais a **banda de 3
-    pontos** da glidepath: a base v1.3 da trava de deriva · o teto
+29. **Alguma âncora estrutural foi alterada?** São **nove** — as sete abaixo mais a **banda de 3
+    pontos** da glidepath e a **trava 6 do Reforço de Fundo** (caixa nunca abaixo de 10%): a base v1.3 da trava de deriva · o teto
     de 12 pontos de defasagem · o piso de 60% em BTC e ETH · a lista fechada dos três gatilhos de
     venda · a validade de 180 dias do degrau · o teto de 8% por ativo com a faixa até 12% · o piso
     de 2% por posição. Alteração sem decisão registrada, com razão escrita e passagem pelo Gate 2,
