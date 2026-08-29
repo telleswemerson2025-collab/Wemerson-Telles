@@ -1,11 +1,11 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.6 · 29/08/2026 — Decisões 35 a 40 aplicadas
+Conferência. Versão 1.7 · 29/08/2026 — Decisões 35 a 40 · primeira conferência de extremo feita
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
 - `torre.mjs` — o módulo. Sem dependências. Lê o registro da peça 1, não guarda nada.
 - `leitura-29-08-2026.mjs` — as catorze leituras reais do documento 07, transcritas.
-- `torre.test.mjs` — 67 testes da Torre (116 no pacote inteiro). `node --test` na raiz.
+- `torre.test.mjs` — 71 testes da Torre (120 no pacote inteiro). `node --test` na raiz.
 
 ## ⭐ ITEM 5 — O TESTE QUE PROVA A LEITURA DE 29/08/2026
 Entrada: as catorze leituras reais do `07-leituras-29-08-2026.md`, com mínimas e
@@ -208,8 +208,9 @@ O estado ficou **no dado**, não em nota de rodapé. Cada número carrega `confi
 { valor, min, max }` com a data da conferência ou `null`.
 
 ```
-estado: 14 confirmados · 28 provisórios de 42
+estado: 15 confirmados · 27 provisórios de 42
 ```
+*Abertura: 14 e 28. O primeiro extremo foi conferido em 29/08/2026.*
 
 Os 14 confirmados são os valores, que o documento 07 diz terem sido lidos "um por
 um" pela tooltip. Os 28 provisórios são as mínimas e as máximas, que o cursor no
@@ -229,6 +230,11 @@ Logarítmicas primeiro, e dentro delas por peso de camada. Está testado que o M
 (camada 1) vem antes do SOPR (camada 2), e que nenhuma linear aparece antes da
 última log.
 
+*Os testes de contagem foram reescritos para medir **progresso**, não um instante:
+fixam que a conta fecha e que a conferência nunca anda para trás, em vez de fixar
+"14 e 28". Testes que quebram a cada conferência transformariam a fila em inimiga
+do trabalho.*
+
 ### O comando, um extremo por vez
 ```
 Conferir no terminal VantageNode, somente leitura: MVRV Ratio · min.
@@ -237,6 +243,34 @@ Passos: abrir a série · estreitar a janela em torno da data até o passo do cu
 ler a tooltip · anotar o valor dígito a dígito · voltar ao range ALL.
 Nunca publica, nunca altera, nunca apaga. Restaura o estado da tela. A sidebar nunca aparece.
 ```
+
+### ✅ O primeiro extremo conferido — e o que ele ensinou sobre o comando
+**MVRV Ratio · min = 0,384 em 19/10/2011**, lido na tooltip em modo SMA, com a
+janela estreitada até o passo do cursor virar um dia. Registrado no dado, com o
+método, os vizinhos e a tela restaurada.
+
+A conferência veio **mais forte do que o comando pedia**, e a diferença importa:
+
+| O que o comando pedia | O que foi entregue |
+|---|---|
+| a tooltip do dia | a tooltip do dia: 0,384 |
+| — | os vizinhos: 18/10 = 0,418 · **19/10 = 0,384** · 20/10 = 0,411 |
+| — | a varredura do ALL: nenhum ponto abaixo; 2015, 2018 e 2022 param acima |
+| — | cruzamento: BTC PRICE na mesma tooltip, US$ 2 |
+
+**Ler a tooltip prova que o número daquele dia está certo. Não prova que aquele dia
+é o extremo.** São coisas diferentes, e só a segunda é o que a normalização precisa
+— o denominador de toda a régua é o extremo, não um valor qualquer.
+
+O comando foi reescrito para pedir as três coisas, com a direção acompanhando o
+campo (abaixo para mínima, acima para máxima) e um pedido de cruzamento quando
+houver outro indicador na mesma tooltip. **A melhoria veio da conferência, não do
+desenho.**
+
+*O cruzamento fecha, aliás:* MVRV 0,384 com BTC a US$ 2 implica Realized Price de
+~5,21 — e o documento 07 dá mínima de 0,088 em janeiro de 2011. De 0,088 a 5,21 em
+dez meses é o ciclo de 2011, e MVRV abaixo de 1 com o preço em US$ 2 é a definição
+de capitulação profunda: o mercado valendo menos do que custou.
 
 ### 🐛 Um erro que a D35 B fez aparecer
 A primeira versão do comando mandava conferir o mínimo do MVRV **em 28/08/2026** —

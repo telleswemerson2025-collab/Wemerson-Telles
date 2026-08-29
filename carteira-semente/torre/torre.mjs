@@ -169,11 +169,25 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
   // dia errado é o default silencioso mais caro possível numa conferência.
   const data = campo === 'valor' ? v.data : v[`data${campo[0].toUpperCase()}${campo.slice(1)}`];
   if (!data) return { erro: `sem a data do ${campo} de ${serie} — não dá para dizer onde estreitar a janela` };
+  const ehExtremo = campo !== 'valor';
   return [
     `Conferir no terminal VantageNode, somente leitura: ${serie} · ${campo}.`,
     `Valor a bater: ${alvo} na data ${data}.`,
+    '',
     'Passos: abrir a série · estreitar a janela em torno da data até o passo do cursor virar um dia ·',
     'ler a tooltip · anotar o valor dígito a dígito · voltar ao range ALL.',
+    ...(ehExtremo ? [
+      '',
+      // A conferência de 19/10/2011 mostrou que o comando pedia pouco: ler a tooltip',
+      // prova que o NÚMERO daquele dia está certo, não que aquele dia é o extremo.
+      'Três coisas, não uma:',
+      `  1. o valor de ${data}, dígito a dígito;`,
+      '  2. os dois dias vizinhos, para provar que este é o ponto e não um qualquer;',
+      `  3. na visão ALL, que nenhum outro ponto da série fica ${campo === 'min' ? 'abaixo' : 'acima'} dele.`,
+      'Sem as três, o que se confirma é o número do dia — não que o dia seja o extremo.',
+      'Se houver outro indicador na mesma tooltip, anotar também: serve de cruzamento.',
+    ] : []),
+    '',
     'Nunca publica, nunca altera, nunca apaga. Restaura o estado da tela. A sidebar nunca aparece.',
   ].join('\n');
 }

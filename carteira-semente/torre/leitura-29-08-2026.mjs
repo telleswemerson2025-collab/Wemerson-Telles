@@ -14,7 +14,22 @@ export const VARREDURA_29_08_2026 = Object.freeze({
   'Realized Price':     { valor: 53057.77, min: 0.088,   max: 56449.62,  data: '2026-08-28' , dataMin: '2011-01-01', dataMax: '2025-11-26', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Realized Price STH': { valor: 69977.18, min: 0.19,    max: 114018.67, data: '2026-08-28' , dataMin: '2011-01-01', dataMax: '2025-10-09', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Realized Price LTH': { valor: 49449.51, min: 0.003,   max: 49991.21,  data: '2026-08-28' , dataMin: '2011-01-01', dataMax: '2026-07-26', confirmado: { valor: '2026-08-29', min: null, max: null } },
-  'MVRV Ratio':         { valor: 1.465,    min: 0.384,   max: 7.854,     data: '2026-08-28' , dataMin: '2011-10-19', dataMax: '2011-06-04', confirmado: { valor: '2026-08-29', min: null, max: null } },
+  'MVRV Ratio': {
+    valor: 1.465, min: 0.384, max: 7.854, data: '2026-08-28',
+    dataMin: '2011-10-19', dataMax: '2011-06-04',
+    confirmado: { valor: '2026-08-29', min: '2026-08-29', max: null },
+    conferencias: [{
+      campo: 'min', em: '2026-08-29',
+      metodo: 'tooltip do terminal, modo SMA, janela estreitada de 01/10/2011 a dez/2011 até o passo do cursor virar 1 dia',
+      lido: '0.384 — zero, ponto, três, oito, quatro (o terminal usa ponto decimal, não vírgula)',
+      // Vizinhos e varredura do ALL: provam que é o FUNDO, não só que o número
+      // daquele dia está certo. O comando pedia só a segunda coisa.
+      vizinhos: { '2011-10-18': 0.418, '2011-10-19': 0.384, '2011-10-20': 0.411 },
+      ehMinimoDaSerie: 'nenhum ponto da série no ALL fica abaixo; os fundos de 2015, 2018 e 2022 param acima',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 2 — implica Realized Price ~5,21 e MVRV abaixo de 1, que é capitulação profunda',
+      telaRestaurada: 'range de volta em ALL, página no topo, sidebar reaberta; nada salvo, alterado, publicado ou apagado',
+    }],
+  },
   'SOPR':               { valor: 1.0112,   min: 0.6068,  max: 2.8740,    data: '2026-08-28' , dataMin: '2011-11-09', dataMax: '2011-04-29', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Supply in Profit':   { valor: 67.4,     min: 35.6,    max: 100.0,     data: '2026-08-28' , dataMin: '2015-08-24', dataMax: '2011-02-04', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Liveliness':         { valor: 0.6345,   min: 0.1785,  max: 0.6410,    data: '2026-08-28' , dataMin: '2011-01-09', dataMax: '2025-12-20', confirmado: { valor: '2026-08-29', min: null, max: null } },
