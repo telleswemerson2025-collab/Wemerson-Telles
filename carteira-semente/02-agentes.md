@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.12 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 19 aplicadas.
+Versão 1.13 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 20 aplicadas.
 
 ---
 
@@ -294,11 +294,14 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
     de julgamento traz as três informações?
 23. **Algum degrau usado passou de 180 dias?** Degrau vencido é ausência, nunca valor herdado.
     Renovação sem data nova e motivo escrito não é renovação — REPROVA.
-24. **O mapa de vencimentos dos próximos 180 dias, por janela de 30, foi produzido?** Sem o mapa não
-    se enxerga a coorte se formando — mapa ausente REPROVA. Janela acima de 25% da parte exposta:
-    se o estouro vem da **soma de vários ativos**, é acionável e REPROVA até ser escalonado; se vem
-    de **um ativo isolado**, é estrutural (ver a prova na Decisão 19), sai relatado e não reprova —
-    o freio contra ele é o lembrete diário da Decisão 18.
+24. **O mapa de vencimentos dos próximos 180 dias, por janela de 30, foi produzido?** Sem o mapa
+    REPROVA. O mapa traz três linhas (Decisão 20):
+    a. **Regime 1** — BTC e ETH a 45 dias ou mais um do outro. Abaixo disso REPROVA.
+    b. **Regime 2** — nenhuma janela acima de 35% do peso do próprio conjunto. Estouro por **soma de
+       vários** REPROVA até ser escalonado; por **ativo isolado**, sai relatado e não reprova.
+    c. **Linha informativa, cruzando os dois regimes** — soma dos vencimentos por janela sobre a
+       parte exposta inteira, comparada aos 30% da trava da Decisão 17. Não é limite novo, é a trava
+       existente olhada com antecedência. Janela acima de 30% sai sinalizada ao Gate.
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 

@@ -1,6 +1,6 @@
 # ÍNDICE SEMENTE — indicador composto
 Régua única de 0 a 100 que reúne as camadas de leitura.
-Versão 1.9 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15 a 19 aplicadas.
+Versão 1.10 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15 a 20 aplicadas.
 
 ## O QUE ELE É, E O QUE ELE NÃO É
 O Índice Semente **mede a intensidade** da situação de mercado. Ele **não classifica o estado**.
@@ -199,43 +199,69 @@ há um ano descreve um mercado que já não existe.
 A assimetria acompanha o custo de esquecer: qualquer um dos dois passando de 30% da parte exposta
 derruba a camada 5 sozinho.
 
-### Escalonamento das validades (Decisão 19)
-A coorte sincronizada — todos os degraus nascendo e vencendo no mesmo dia — é tratada por
-escalonamento.
+### Escalonamento das validades (Decisões 19 e 20)
+A coorte sincronizada é tratada por escalonamento, em **dois regimes separados**.
 
-**Princípio permanente (regra A):** nenhuma janela de 30 dias pode conter vencimentos que somem
-mais de **25% da parte exposta**. Vale na primeira atribuição, em lote novo da CRM e em qualquer
-renovação.
+**Regime 1 — BTC e ETH.** Ficam **fora do teto de janela**, e têm regra própria: os vencimentos dos
+dois **nunca a menos de 45 dias um do outro**. Na primeira atribuição, o de maior peso recebe 180
+dias e o outro 135.
 
-**Primeira atribuição (regra B):** ativos ordenados por peso na parte exposta, do maior para o
-menor. O primeiro recebe **180 dias**, cada seguinte **15 dias a menos**, com **piso de 90 dias**.
-Se a regra A ainda for violada, encurta-se a validade do ativo de menor peso da janela até caber.
+**Regime 2 — todos os demais.** Nenhuma janela de 30 dias pode conter vencimentos que somem mais de
+**35% do peso desse conjunto** — do conjunto, não da parte exposta.
 
-**Renovação (regra C):** vale **180 dias cheios** a partir da data nova.
+*Por que 35% e não 25%:* com as validades espalhadas por igual num intervalo de 90 dias, uma janela
+de 30 dias contém cerca de **um terço** do conjunto. Pedir menos que isso é pedir o impossível, que
+foi o erro da Decisão 19.
 
-**Lote novo da CRM (regra D):** o ativo recebe 180 dias, salvo se isso violar a regra A — aí recebe
-a maior validade que couber, **nunca abaixo de 90 dias**. Se nem 90 couber, **o ativo entra e a
-colisão é reportada ao Gate**. Não se cria validade menor que o piso em silêncio.
+**Espaçamento uniforme, sem passo fixo.** Para os N ativos do regime 2, ordenados por peso
+decrescente:
 
-**Auditoria (regra E):** o Auditor verifica a regra A a cada rodada, com o **mapa de vencimentos dos
-próximos 180 dias por janela de 30**. É a única forma de ver a coorte se formando antes de vencer.
+```
+validade do i-ésimo = 180 − 90 × i / (N − 1)     , i de 0 a N−1
+com N = 1, validade 180
+```
 
-> ⚠️ **A regra A não é satisfazível junto com o piso de concentração da Decisão 16.**
-> Todo ativo vence em algum dia, logo dentro de alguma janela de 30 dias. Segue que **nenhum ativo
-> isolado pode pesar mais de 25% da parte exposta**. Mas a Decisão 16 exige BTC+ETH somando ao menos
-> 60%, o que obriga o maior dos dois a pesar **no mínimo 30%** — se ambos coubessem em 25%, a soma
-> não passaria de 50%. A contradição é aritmética, não de calibragem.
->
-> Rodado o algoritmo da regra B numa carteira típica (BTC 35 · ETH 25 · cinco ativos de 8%), a pior
-> janela de 30 dias fica em **68%**, contra o limite de 25%. O mesmo resultado aparece com BTC 30 ·
-> ETH 30 e com BTC 45 · ETH 15: o escalonamento põe os dois grandes nos vencimentos mais distantes,
-> mas **adjacentes entre si**, e adjacente é justamente o problema quando os dois somam 60%.
->
-> **Leitura provisória, até a regra ser reparada:** o mapa da regra E é produzido a cada rodada e
-> separa o que o escalonamento pode resolver do que não pode. Estouro causado por **um único ativo**
-> é estrutural — nenhum escalonamento o resolve, e o freio contra ele é o lembrete diário de BTC e
-> ETH da Decisão 18. Estouro causado pela **soma de vários** é acionável e o Auditor cobra. Detalhe
-> e prova em `08-decisoes-29-08-2026.md`.
+O maior vence em 180, o menor em 90, e o espaçamento se ajusta sozinho ao número de ativos. **A
+cauda não colapsa mais**, porque o piso é o último ponto do intervalo e não um teto de corte.
+
+**Renovação.** De um ativo só: 180 dias a partir da data nova. **De dois ou mais na mesma sessão:
+as validades novas são distribuídas pela fórmula acima sobre os ativos renovados**, com o de maior
+peso recebendo 180. Renovar em lote nunca recria a coorte — revisar teses de uma vez é o
+comportamento natural de quem trabalha, e a regra não pode punir isso.
+
+**Lote novo da CRM** (regra D da Decisão 19, mantida): 180 dias, salvo colisão — aí a maior validade
+que couber, nunca abaixo de 90. Se nem 90 couber, o ativo entra e a colisão é reportada ao Gate.
+
+**Auditoria** (regra E da Decisão 19, mantida): o Auditor verifica a cada rodada, com o mapa de
+vencimentos dos próximos 180 dias por janela de 30.
+
+#### ⚠️ Três ressalvas medidas
+**1. O limite de 35% só é atingido quando N é múltiplo de três.** A geometria do "um terço" vale no
+limite de N grande; com poucos ativos a discretização manda. Fração do conjunto na pior janela,
+pesos iguais:
+
+| N | 2 | 3 | 4 | **5** | 6 | 7 | 8 | 9 | 12 | 15 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Pior janela | 50% | 33% | 50% | **40%** | 33% | 43% | 38% | 33% | 33% | 33% |
+
+**N = 5 é o caso mais provável** — com BTC+ETH em pelo menos 60% e os demais limitados a 8%, cinco
+ativos no teto preenchem exatamente os 40% restantes. E N = 5 dá 40%, acima do limite.
+
+**2. A convenção da janela muda o resultado.** Com janela **semiaberta** (`[t, t+30)`), N = 4, 7, 10,
+13, 16 e 19 passam a caber; N = 2, 5, 8, 11, 14 e 17 continuam estourando. A regra precisa dizer se
+a janela inclui os dois extremos. Aqui está aplicada como **fechada**, que é a leitura conservadora.
+
+**3. Existe um ponto cego entre os dois regimes.** O regime 1 só compara BTC com ETH; o regime 2 só
+mede peso dentro do próprio conjunto. **Ninguém mede a soma dos dois regimes numa mesma janela** — e
+é essa soma que a trava dos 30% da Decisão 17 enxerga.
+
+> Exemplo real, na carteira BTC 35 · ETH 25 · cinco de 8%: **o ETH sozinho são 25%, abaixo da trava
+> de 30%.** Com um ativo de 8% vencendo na mesma janela, viram **33% da parte exposta e a camada 5
+> some** — sem que nenhuma das duas regras de regime tenha sido violada.
+
+Por isso o mapa do Auditor traz, além das duas verificações de regime, uma **linha informativa com a
+soma de vencimentos por janela sobre a parte exposta inteira**, comparada aos 30% da trava. Não é
+limite novo: é a trava que já existe, olhada com antecedência.
 
 ### Etiqueta de julgamento — obrigatória
 Toda leitura publicada que inclua a camada 5 informa as **três** coisas:
