@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.18 · 29/08/2026 · BlockCapital Research — Decisões 2 a 29 aplicadas.
+Versão 1.19 · 29/08/2026 · BlockCapital Research — Decisões 2 a 30 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -235,8 +235,10 @@ o sistema calcula sem discricionariedade. **O Gate assina.** A invariante 1 perm
 - **Move-se primeiro por fluxo:** o aporte do mês vai inteiro para a defesa antes de qualquer venda.
 - O que o fluxo não cobrir sai por venda, **na ordem inversa do peso de longo prazo**: primeiro os
   ativos fora de BTC e ETH, do menor peso ao maior; **BTC e ETH por último**.
-- **Banda de tolerância de 3 pontos percentuais** em torno da exposição alvo. Dentro da banda não se
-  move nada — sem ela o sistema venderia todo mês por ruído.
+- 🔒 **Banda de tolerância de 3 pontos percentuais** em torno da exposição alvo. Dentro da banda não
+  se move nada — sem ela o sistema venderia todo mês por ruído. **É âncora estrutural** (Decisão 30):
+  ela determina a exposição com que a criança recebe a carteira, e isso é a promessa central do
+  produto. Com banda de 5 em vez de 3, a entrega aconteceria com 20% de exposição em vez de 18%.
 - Cada tranche registrada com data, ativo, quantidade e a exposição antes e depois.
 
 ### A precedência sobre o aporte do mês (Decisão 26)

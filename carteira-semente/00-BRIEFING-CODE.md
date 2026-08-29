@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.18 — decisões 1 a 29 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.19 — decisões 1 a 30 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -68,6 +68,7 @@ depois que alguém percebe.
 | 5 | A validade de **180 dias** do degrau de invalidação | D18 | julgamento antigo com cara de número atual |
 | 6 | O teto de **8% por ativo**, com a faixa até **12%** | D15 · D16 | concentração crescendo ciclo a ciclo |
 | 7 | O piso de **2% por posição** | D22 | a cauda miúda voltando, com o custo operacional junto |
+| 8 | A **banda de 3 pontos** da glidepath | D24 · D30 | a exposição com que a criança recebe a carteira |
 
 > **A faixa 8%–12% é âncora de par.** Mover só o gatilho de 12% para 15% afrouxa o teto efetivo sem
 > tocar no número protegido: o ativo passaria a passear até 15% sem venda nenhuma. **Âncora de faixa
@@ -79,8 +80,19 @@ Um parâmetro é âncora quando **as três** valem:
 1. **Afrouxá-lo não produz efeito visível na rodada em que se afrouxa.**
 2. **O dano só aparece depois de várias rodadas somadas.**
 3. **Cada afrouxamento isolado tem justificativa razoável.**
+4. **Sua deriva degrada uma promessa publicada ao cliente.**
 
-Falhando qualquer uma das três, é régua, piso ou parâmetro — e se calibra normalmente, com registro.
+Falhando qualquer uma das **quatro**, é régua, piso ou parâmetro — e se calibra normalmente, com
+registro.
+
+**Os três primeiros dizem que o dano é lento e disfarçado. O quarto diz de quem é o dano.** Sem ele
+o teste admitiria qualquer limite de proteção, porque proteção age devagar por desenho — e a classe
+viraria "todo número do sistema", que é o mesmo que não existir.
+
+> **A distinção que o critério 4 produz:** mecânica que muda **quando** fica fora; mecânica que muda
+> **o que o cliente recebe** entra. A fórmula de espaçamento só move datas, e data movida não muda
+> nada do que foi prometido. A banda de 3 pontos muda a exposição da entrega, e essa é a promessa
+> central do produto.
 
 *É o teste que descreve o padrão de dano que a classe existe para conter:* 180 → 240 → 300 dias,
 cada passo por um bom motivo de rodada, e nenhuma rodada isolada teria parecido errada.
@@ -90,12 +102,20 @@ numérico. Numa regra estrutural, o teste 1 lê-se assim: **o dano não é o ato
 que ele cria.** A lista fechada de gatilhos é o caso — o gatilho novo aparece, mas o que degrada é a
 ideia de que gatilho pode nascer sem decisão.
 
-### O que foi testado e ficou de fora
-| Parâmetro | Por que não é âncora |
-|---|---|
-| A trava dos **30%** da camada 5 | Falha o teste 1: afrouxar produz leitura ruim **hoje**, visível na hora. É piso de qualidade da leitura. |
-| O limite de **15%** da trava de deriva | Declarado provisório pela D19 regra 6, com recalibragem prevista. Âncora é o que segura a régua; o limite **é** a régua. |
-| Os **45 dias** entre BTC e ETH, o **piso de 90 dias**, a **fórmula de espaçamento** | Mecânica de distribuição. Mexer neles não degrada julgamento nenhum. |
+### A tabela de exclusão
+**Todo candidato testado e recusado entra aqui, com o critério em que falhou.** Ela é tão importante
+quanto a lista: **é ela que mostra onde a classe para**, e sem ela a fronteira só existiria na cabeça
+de quem testou.
+
+| Parâmetro | Falha em | Por quê |
+|---|---|---|
+| A trava dos **30%** da camada 5 | **1** | Afrouxar produz leitura ruim **hoje**, visível na hora. É piso de qualidade da leitura, não deriva lenta. |
+| O limite de **15%** da trava de deriva | **1** | Afrouxar libera células retidas na mesma rodada. E a D19 regra 6 já o declara provisório: âncora é o que segura a régua; o limite **é** a régua. |
+| Os **45 dias** entre BTC e ETH | **4** | Só move datas de vencimento. Nenhuma promessa ao cliente muda. |
+| O **piso de 90 dias** de validade | **4** | Idem: agenda a medição, não altera o que é medido nem o que é entregue. |
+| A **fórmula de espaçamento** | **4** | Idem. Muda **quando**, não **o quê**. |
+| O **teto de 8 ativos** | **1** | Afrouxar rompe a régua dos 30% e o mapa do Auditor acusa na mesma rodada. É restrição derivada, não âncora. |
+| A revisão de **90 dias** da vaga bloqueada | **4** | O cliente não recebe promessa de cadência de rotação. |
 
 **Regra da classe:** alterar uma âncora exige **decisão registrada com a razão escrita**, passa pelo
 **Gate 2**, e a alteração fica na **tabela de deriva em caráter permanente**. Nenhuma âncora muda
