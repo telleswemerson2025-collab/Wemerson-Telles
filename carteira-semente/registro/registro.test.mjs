@@ -286,8 +286,8 @@ test('o universo lista cada ativo com a situação corrente', () => {
 });
 
 // ── D33 · RETIFICAÇÃO ──────────────────────────────────────────────────────
-const retif = (data, dataRetificada, valorAntigo, valorNovo) => ({
-  carteira: C, tipo: TIPOS.RETIFICACAO, data, dataRetificada, valorAntigo, valorNovo,
+const retif = (data, dataRetificada, valorAntigo, valorNovo, campo = 'indice') => ({
+  carteira: C, tipo: TIPOS.RETIFICACAO, data, dataRetificada, campo, valorAntigo, valorNovo,
   motivo: 'tooltip relida, dígito trocado na coleta', aprovadoEm: data,
 });
 
@@ -295,7 +295,7 @@ test('retificação exige os quatro obrigatórios da D33 B', () => {
   const r = novo();
   r.registrar(leitura('2026-01-01', 70));
   const base = retif('2026-01-10', '2026-01-01', 70, 64);
-  for (const faltando of ['motivo', 'aprovadoEm', 'valorAntigo', 'dataRetificada']) {
+  for (const faltando of ['motivo', 'aprovadoEm', 'valorAntigo', 'dataRetificada', 'campo']) {
     const ev = { ...base }; delete ev[faltando];
     assert.throws(() => r.registrar(ev), RegistroInvalido, `sem ${faltando} deveria recusar`);
   }
@@ -388,4 +388,69 @@ test('rompida e reformada, a sequência produz um segundo marco', () => {
   r.registrar(leitura(dias('2026-01-01', 30), 60));
   for (let i = 31; i < 61; i++) r.registrar(leitura(dias('2026-01-01', i), 70));
   assert.equal(r.eventos({ carteira: C, tipo: TIPOS.CONTADOR_RESET }).length, 2);
+});
+
+// ── D34 · RETIFICAÇÃO COBRE A LEITURA INTEIRA ──────────────────────────────
+const comIndicadores = (data, indice, indicadores) => ({ ...leitura(data, indice), indicadores });
+
+test('o estado da Linha dágua é retificável pelo mesmo evento (D34 B)', () => {
+  const r = novo();
+  r.registrar(leitura('2026-01-01', 70, 'Mercado saudável'));
+  r.registrar(retif('2026-01-10', '2026-01-01', 'Mercado saudável', 'Estresse de curto prazo', 'estado'));
+  const v = r.historicoDaLeitura(C, '2026-01-01').vigente;
+  assert.equal(v.estado, 'Estresse de curto prazo');
+  assert.equal(v.indice, 70, 'o índice não foi tocado');
+});
+
+test('indicador individual da varredura é retificável', () => {
+  const r = novo();
+  r.registrar(comIndicadores('2026-01-01', 70, { MVRV: 1.465, SOPR: 1.0112 }));
+  r.registrar(retif('2026-01-10', '2026-01-01', 1.465, 1.456, 'indicadores.MVRV'));
+  const v = r.historicoDaLeitura(C, '2026-01-01').vigente;
+  assert.equal(v.indicadores.MVRV, 1.456);
+  assert.equal(v.indicadores.SOPR, 1.0112, 'os outros indicadores ficam intactos');
+});
+
+test('a cadeia da D34 A vale campo a campo, e um campo não trava o outro', () => {
+  const r = novo();
+  r.registrar(leitura('2026-01-01', 70, 'Mercado saudável'));
+  r.registrar(retif('2026-01-10', '2026-01-01', 70, 64, 'indice'));
+  // partir do valor original do índice já não vale...
+  assert.throws(() => r.registrar(retif('2026-01-11', '2026-01-01', 70, 50, 'indice')), RegistroInvalido);
+  // ...mas o estado segue no valor original, e retifica normalmente
+  assert.doesNotThrow(() => r.registrar(retif('2026-01-11', '2026-01-01', 'Mercado saudável', 'Prejuízo do mercado', 'estado')));
+});
+
+test('campo que não existe na leitura é recusado', () => {
+  const r = novo();
+  r.registrar(leitura('2026-01-01', 70));
+  assert.throws(() => r.registrar(retif('2026-01-10', '2026-01-01', 1, 2, 'indicadores.MVRV')), RegistroInvalido);
+});
+
+test('valor antigo e novo de tipos diferentes é recusado', () => {
+  const r = novo();
+  r.registrar(leitura('2026-01-01', 70));
+  assert.throws(() => r.registrar(retif('2026-01-10', '2026-01-01', 70, 'sessenta e quatro', 'indice')), RegistroInvalido);
+});
+
+test('o histórico separa as retificações por campo', () => {
+  const r = novo();
+  r.registrar(leitura('2026-01-01', 70, 'Mercado saudável'));
+  r.registrar(retif('2026-01-10', '2026-01-01', 70, 64, 'indice'));
+  r.registrar(retif('2026-01-11', '2026-01-01', 'Mercado saudável', 'Prejuízo do mercado', 'estado'));
+  const h = r.historicoDaLeitura(C, '2026-01-01');
+  assert.equal(h.retificacoes.length, 2);
+  assert.equal(h.porCampo.get('indice').length, 1);
+  assert.equal(h.porCampo.get('estado').length, 1);
+  assert.deepEqual(h.vigente.camposRetificados.sort(), ['estado', 'indice']);
+  assert.equal(h.original.indice, 70, 'a original continua inteira');
+  assert.equal(h.original.estado, 'Mercado saudável');
+});
+
+test('retificar o estado não anula marco — o marco não depende do estado', () => {
+  const r = novo();
+  for (let i = 0; i < 30; i++) r.registrar(leitura(dias('2026-01-01', i), 70));
+  r.registrar(retif('2026-02-15', '2026-01-05', 'Mercado saudável', 'Estresse de curto prazo', 'estado'));
+  assert.equal(r.eventos({ carteira: C, tipo: TIPOS.ANULACAO_MARCO }).length, 0);
+  assert.equal(r.cicloReforco(C).desde, dias('2026-01-01', 29), 'o marco segue de pé');
 });

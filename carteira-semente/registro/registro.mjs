@@ -31,7 +31,7 @@ export const TIPOS = Object.freeze({
   GATE_INVALIDAR: 'gate_invalidar',   // {data, ativo, motivo}
   FILTRO_HORIZONTE: 'filtro_horizonte', // {data, ativo, aprovado, motivo}
   TETO_CONTAGEM: 'teto_contagem',     // {data, ativo, posicao}
-  RETIFICACAO: 'retificacao',         // {data, dataRetificada, valorAntigo, valorNovo, motivo, aprovadoEm}
+  RETIFICACAO: 'retificacao',         // {data, dataRetificada, campo, valorAntigo, valorNovo, motivo, aprovadoEm}
   ANULACAO_MARCO: 'anulacao_marco',   // {data, marcoSeq, retificacaoSeq, motivo}
 });
 
@@ -52,6 +52,13 @@ const dia = (d) => Math.floor(Date.parse(`${d}T00:00:00Z`) / DIA_MS);
 const ehData = (d) => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) && !Number.isNaN(dia(d));
 const naoVazio = (s) => typeof s === 'string' && s.trim().length > 0;
 
+/** Lê e escreve campo por caminho pontuado: 'indice', 'estado', 'indicadores.MVRV'. */
+const leCampo = (obj, caminho) => caminho.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj);
+const comCampo = (obj, caminho, valor) => {
+  const [chave, ...resto] = caminho.split('.');
+  return { ...obj, [chave]: resto.length === 0 ? valor : comCampo(obj[chave] ?? {}, resto.join('.'), valor) };
+};
+
 /** Erro de validação: o registro recusa o evento em vez de gravar algo malformado. */
 export class RegistroInvalido extends Error {}
 
@@ -64,6 +71,9 @@ function valida(ev) {
     case TIPOS.LEITURA:
       if (typeof ev.indice !== 'number' || !Number.isFinite(ev.indice)) throw new RegistroInvalido('leitura sem índice numérico');
       if (!naoVazio(ev.estado)) throw new RegistroInvalido('leitura sem estado da Linha dágua');
+      if (ev.indicadores !== undefined && (typeof ev.indicadores !== 'object' || ev.indicadores === null)) {
+        throw new RegistroInvalido('indicadores da varredura têm de vir como objeto');
+      }
       // D32 A: leitura retroativa carrega a data em que foi coletada, e só vale
       // dentro de 30 dias da data faltante. Passado isso o dia fica ausente em
       // definitivo — o dado onchain não se perde, mas a janela de recompor fecha.
@@ -120,8 +130,15 @@ function valida(ev) {
       // D33 B: os quatro obrigatórios. O Gate é o que separa retificação de
       // reescrita de história — sem ele o append-only vira formalidade.
       if (!ehData(ev.dataRetificada)) throw new RegistroInvalido('retificação sem a data da leitura retificada');
-      if (typeof ev.valorAntigo !== 'number') throw new RegistroInvalido('retificação sem o valor antigo');
-      if (typeof ev.valorNovo !== 'number') throw new RegistroInvalido('retificação sem o valor novo');
+      // D34 B: a retificação cobre a leitura inteira — índice, estado da Linha d'Água
+      // e qualquer indicador da varredura. Uma por campo, nunca uma que mexe em
+      // vários de uma vez, para a cadeia continuar legível campo a campo.
+      if (!naoVazio(ev.campo)) throw new RegistroInvalido('retificação sem o campo retificado (D34 B)');
+      if (ev.valorAntigo === undefined) throw new RegistroInvalido('retificação sem o valor antigo');
+      if (ev.valorNovo === undefined) throw new RegistroInvalido('retificação sem o valor novo');
+      if (typeof ev.valorAntigo !== typeof ev.valorNovo) {
+        throw new RegistroInvalido('retificação com valor antigo e novo de tipos diferentes');
+      }
       if (!naoVazio(ev.motivo)) throw new RegistroInvalido('retificação sem motivo escrito (D33 B)');
       if (!ehData(ev.aprovadoEm)) throw new RegistroInvalido('retificação sem passagem pelo Gate 2 (D33 B)');
       break;
@@ -157,16 +174,21 @@ export class Registro {
     if (evento.tipo === TIPOS.RETIFICACAO) {
       const vigente = this.#leiturasVigentes(evento.carteira).get(evento.dataRetificada);
       if (!vigente) throw new RegistroInvalido(`não há leitura de ${evento.dataRetificada} para retificar`);
-      // A retificação parte do que está vigente. Se o valor antigo não bate, ela foi
-      // escrita sobre uma versão que já não vale — e a cadeia nasceria torta.
-      if (vigente.indice !== evento.valorAntigo) {
-        throw new RegistroInvalido(`valor antigo não confere: vigente em ${evento.dataRetificada} é ${vigente.indice}, não ${evento.valorAntigo}`);
+      // D34 A: retificação é elo de cadeia. O valor antigo tem de bater com o VIGENTE
+      // naquele campo, não com o da leitura original — elo que parte de um ponto que
+      // já não vale cria duas correções concorrentes sem ordem entre elas.
+      const atual = leCampo(vigente, evento.campo);
+      if (atual === undefined) {
+        throw new RegistroInvalido(`campo "${evento.campo}" não existe na leitura de ${evento.dataRetificada}`);
+      }
+      if (atual !== evento.valorAntigo) {
+        throw new RegistroInvalido(`valor antigo não confere: vigente em ${evento.dataRetificada}.${evento.campo} é ${atual}, não ${evento.valorAntigo}`);
       }
     }
     const gravado = this.#anexar(evento);
     if (evento.tipo === TIPOS.LEITURA) this.#gravarMarcoSeCompletou(evento.carteira);
     if (evento.tipo === TIPOS.RETIFICACAO) {
-      this.#anularMarcosDesfeitos(evento.carteira, gravado);
+      this.#anularDerivacoesDesfeitas(evento.carteira, gravado);
       this.#gravarMarcoSeCompletou(evento.carteira);
     }
     return gravado;
@@ -180,21 +202,33 @@ export class Registro {
   #leiturasVigentes(carteira) {
     const mapa = new Map();
     for (const l of this.#porData(carteira, TIPOS.LEITURA)) {
-      mapa.set(l.data, { data: l.data, indice: l.indice, estado: l.estado, retificada: false });
+      mapa.set(l.data, {
+        data: l.data, indice: l.indice, estado: l.estado,
+        ...(l.indicadores ? { indicadores: { ...l.indicadores } } : {}),
+        camposRetificados: [],
+      });
     }
     for (const r of this.eventos({ carteira, tipo: TIPOS.RETIFICACAO }).sort((a, b) => a.seq - b.seq)) {
       const atual = mapa.get(r.dataRetificada);
-      if (atual) mapa.set(r.dataRetificada, { ...atual, indice: r.valorNovo, retificada: true, retificacaoSeq: r.seq });
+      if (!atual) continue;
+      mapa.set(r.dataRetificada, {
+        ...comCampo(atual, r.campo, r.valorNovo),
+        camposRetificados: [...new Set([...atual.camposRetificados, r.campo])],
+      });
     }
     return mapa;
   }
 
   /**
-   * D33 D: retificação não apaga marco. Se o marco deixou de valer, nasce uma
-   * anulação que aponta para ele e para a retificação que o desfez. Marco apagado
-   * seria exatamente o rastro que a D9 regra 5 existe para impedir.
+   * D33 D · D34 C: retificação não apaga o que foi derivado. Se a derivação deixou
+   * de valer, nasce uma anulação que aponta para ela e para a retificação que a
+   * desfez. Apagar seria exatamente o rastro que a D9 regra 5 existe para impedir.
+   *
+   * Hoje a única derivação gravada é o marco de virada, que depende só do índice.
+   * Quando a peça 3 gravar derivações que dependem do estado da Linha d'Água, elas
+   * entram nesta mesma varredura — a mecânica já é genérica, a lista é que é curta.
    */
-  #anularMarcosDesfeitos(carteira, retificacao) {
+  #anularDerivacoesDesfeitas(carteira, retificacao) {
     const vigentes = this.#leiturasVigentes(carteira);
     for (const reset of this.eventos({ carteira, tipo: TIPOS.CONTADOR_RESET })) {
       if (reset.marco !== 'virada' || this.#marcoAnulado(carteira, reset.seq)) continue;
@@ -357,7 +391,9 @@ export class Registro {
     const original = this.#porData(carteira, TIPOS.LEITURA).find((l) => l.data === data) ?? null;
     const retificacoes = this.eventos({ carteira, tipo: TIPOS.RETIFICACAO })
       .filter((r) => r.dataRetificada === data).sort((a, b) => a.seq - b.seq);
-    return { original, retificacoes, vigente: this.#leiturasVigentes(carteira).get(data) ?? null };
+    const porCampo = new Map();
+    for (const r of retificacoes) porCampo.set(r.campo, [...(porCampo.get(r.campo) ?? []), r]);
+    return { original, retificacoes, porCampo, vigente: this.#leiturasVigentes(carteira).get(data) ?? null };
   }
 
   historicoDegraus(carteira, ativo) {

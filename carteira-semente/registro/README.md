@@ -1,10 +1,10 @@
 # PEÇA 1 — REGISTRO DO ALOCADOR
-Conferência. Versão 1.2 · 29/08/2026 — Decisões 32 e 33 aplicadas
+Conferência. Versão 1.3 · 29/08/2026 — Decisões 32, 33 e 34 aplicadas
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
 - `registro.mjs` — o módulo. Sem dependências, roda em navegador e em Node.
-- `registro.test.mjs` — 42 testes. `node --test` na raiz do repositório.
+- `registro.test.mjs` — 49 testes. `node --test` na raiz do repositório.
 
 **A peça 1 são sete registros** (Decisão 32 C), não quatro: ciclo do Reforço ·
 composição da CRM · degraus · tranches e defasagem · invalidação do Gate ·
@@ -52,6 +52,10 @@ decide vem depois.
 | **D33 C** | as derivações leem a vigente | `#leiturasVigentes()`; contagem, marco e sequência leem dela | *"as derivações leem a versão vigente"* |
 | **D33 D** | retificação não apaga marco | `#anularMarcosDesfeitos()` cria `anulacao_marco` apontando marco e retificação | *"gera anulação, e o marco não some"* |
 | **D33 E** | um marco por sequência | `#gravarMarcoSeCompletou()` grava uma vez por sequência | *"sequência de 200 dias produz o mesmo marco"* · *"rompida e reformada, produz um segundo"* |
+| **D34 A** | o valor antigo bate com o **vigente**, não com o original | checagem em `registrar()`, por campo | *"a cadeia vale campo a campo"* |
+| **D34 B** | a retificação cobre a leitura inteira | campo `campo` obrigatório, com caminho pontuado; `leCampo`/`comCampo` | *"o estado é retificável"* · *"indicador individual é retificável"* |
+| **D34 B** | uma retificação por campo, nunca várias de uma vez | o evento nomeia um campo só; `historicoDaLeitura().porCampo` separa a cadeia | *"o histórico separa as retificações por campo"* |
+| **D34 C** | anulação vale para o que deriva | `#anularDerivacoesDesfeitas()`, varredura genérica | *"retificar o estado não anula marco"* |
 
 ## O QUE A DECISÃO 32 RESOLVEU
 As três coisas levantadas na conferência da v1.0 foram decididas e aplicadas:
@@ -80,26 +84,35 @@ A retificação existe, com Gate, e o marco único virou texto com a razão junt
 4. se a sequência **volta a valer** por uma retificação posterior, nasce um marco
    novo — e o anulado continua onde estava.
 
-## UMA COISA QUE APARECEU AGORA
+## O QUE A DECISÃO 34 RESOLVEU
+As duas coisas levantadas na conferência da v1.2 foram decididas e aplicadas.
 
-### Retificação parte da versão vigente, não da original
-A D33 B exige "o valor antigo e o novo". Implementei com uma checagem que a
-decisão não pede: **o valor antigo tem de bater com o que está vigente naquela
-data**, não com o da leitura original.
+**A restrição da cadeia virou regra** (D34 A) — deixou de ser acréscimo do
+implementador e passou a ser como a D33 B se lê.
 
-Sem isso, uma segunda retificação escrita a partir da leitura original — e não da
-primeira correção — passaria, e a cadeia nasceria torta: duas correções
-concorrentes sobre a mesma data, cada uma partindo de um ponto diferente, sem
-ordem definida entre elas.
+**A retificação cobre a leitura inteira** (D34 B). O campo é nomeado por caminho
+pontuado: `indice`, `estado`, `indicadores.MVRV`. A leitura passou a aceitar um
+objeto `indicadores` opcional, para que a varredura da Torre caiba nela quando a
+peça 2 chegar.
 
-É restrição, não invenção de regra: apenas obriga quem retifica a partir do que
-vale hoje. Mas é minha, e fica dita.
+**A cadeia é campo a campo, e isso importa mais do que parece:** retificado o
+índice, uma segunda retificação do índice partindo do valor original é recusada —
+mas o estado, que não foi tocado, continua retificável a partir do valor
+original. Um campo não trava o outro, e cada cadeia é legível sozinha.
 
-### O que não tem caminho de correção
-A retificação corrige o **índice** de uma leitura. O **estado da Linha d'Água**
-gravado junto não tem caminho de correção — e ele também é fato coletado, sujeito
-ao mesmo erro de leitura. Não estendi por conta própria. Se precisar, é a mesma
-decisão, um campo a mais.
+## O QUE A PARTE C AINDA NÃO TEM O QUE ANULAR
+A mecânica de anulação foi generalizada e a função mudou de nome
+(`#anularDerivacoesDesfeitas`). Mas, **na peça 1, nenhuma derivação gravada
+depende do estado da Linha d'Água** — a única é o marco de virada, e ele depende
+só do índice. Está testado que retificar o estado não anula marco nenhum, porque
+não deveria mesmo.
+
+A parte C só passa a ter efeito quando a **peça 3** gravar derivações que leem o
+estado — o fator de modulação da glidepath (D25 B) é a primeira delas. A mecânica
+já está pronta para recebê-las; a lista é que é curta hoje.
+
+Registro isto para que a ausência de anulações numa retificação de estado seja
+lida como correto, e não como esquecimento.
 
 ## O QUE NÃO MUDOU
 
