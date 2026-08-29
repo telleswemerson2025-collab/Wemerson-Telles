@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.7 — decisões 1 a 12 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.8 — decisões 1 a 13 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -26,7 +26,10 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
 9. **MATERIAL COMERCIAL ABRE PELO PISO, E A DERIVA FICA REGISTRADA.** O número de capa é o menor
    resultado entre as partidas possíveis, no cenário conservador — nunca a leitura do dia. Toda
    revisão que mexa em projeção recalcula todas as partidas nos três cenários, e a tabela de deriva
-   acumulada por versão é permanente: nunca apagada, nunca resumida.
+   acumulada por versão é permanente: nunca apagada, nunca resumida. A trava de +15% vale para cada
+   uma das quinze células contra a v1.3, é acumulada e **não zera por compensação**. Estourou uma
+   célula, para a revisão inteira. O dono do piso é rastreado junto com o valor: piso estável com
+   dono novo é informação, não silêncio.
 10. **NENHUM NÚMERO DERIVADO É DIGITADO À MÃO.** Todo derivado — média, percentual, projeção,
    posição normalizada — é calculado a partir da fonte primária, em tempo de execução. Se um
    derivado aparece em dois lugares, um dos dois está errado por definição. Quando documento e

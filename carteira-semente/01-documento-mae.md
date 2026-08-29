@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.7 · 29/08/2026 · BlockCapital Research — Decisões 2 a 12 aplicadas.
+Versão 1.8 · 29/08/2026 · BlockCapital Research — Decisões 2 a 13 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -271,39 +271,54 @@ cai em relação ao capital já acumulado**. A afirmação segura é a de cima, 
 e só ela.
 
 ### 🔒 TABELA DE DERIVA ACUMULADA (permanente — nunca apagar nem resumir)
-Registro de como o **piso** se moveu a cada revisão de mapeamento, desde a v1.3. Existe para que
-uma sequência de correções individualmente defensáveis não empurre o número de venda para cima sem
-que ninguém perceba.
+Registro de como **cada uma das quinze células** (cinco partidas × três cenários) se moveu desde a
+v1.3. Existe para que uma sequência de correções individualmente defensáveis não empurre números de
+venda para cima sem que ninguém perceba.
 
-| Versão | Decisão | Piso conservador | Deriva | Piso forte | Deriva |
-|---|---|---|---|---|---|
-| v1.3 | — (referência) | R$ 67.725 | +0,0% | R$ 557.020 | +0,0% |
-| v1.4 | D8 | R$ 81.316 | **+20,1%** ⚠️ | R$ 773.042 | **+38,8%** ⚠️ |
-| v1.5 | D10 | R$ 67.725 | +0,0% | R$ 557.020 | +0,0% |
-| v1.6 | D11 | R$ 67.725 | +0,0% | R$ 557.020 | +0,0% |
-| **v1.7** | **D12** | **R$ 67.725** | **+0,0%** | **R$ 557.020** | **+0,0%** |
+**A trava é acumulada e não zera por compensação.** Uma revisão posterior que derrube o número não
+apaga a deriva registrada: a série fica completa e o gatilho lê sempre o acumulado contra a v1.3.
 
-**Regra:** se a deriva do piso conservador passar de **+15%** sobre a v1.3, a revisão **não é
-publicada de imediato** — vai para revisão do Gui antes de entrar em material de venda. Toda
-revisão que altere projeções recalcula **as cinco partidas nos três cenários** antes de publicar;
-publicar só a linha afetada está proibido.
+#### Estado atual (v1.8) — deriva contra a v1.3
+| Partida | Fase · mês | Conservador | Moderado | Forte |
+|---|---|---|---|---|
+| Capitulação profunda | 0 · 9 | R$ 94.071 **+15,7%** 🔴 | R$ 297.492 **+24,8%** 🔴 | R$ 1.051.848 **+36,1%** 🔴 |
+| Prejuízo do mercado | 0 · 3 | R$ 85.820 **+26,7%** 🔴 | R$ 259.084 **+39,6%** 🔴 | R$ 869.200 **+56,0%** 🔴 |
+| Estresse de curto prazo | 1 · 0 | R$ 97.384 +0,0% | R$ 311.730 +0,0% | R$ 1.115.616 +0,0% |
+| Saudável · Índice < 65 | 2 · 0 | R$ 87.561 +0,0% | R$ 262.311 +0,0% | R$ 867.667 +0,0% |
+| Saudável · Índice ≥ 65 | 3 · 0 | R$ 67.725 −22,7% | R$ 185.653 −29,2% | R$ 557.020 −35,8% |
 
-**A v1.4 teria estourado a trava.** A linha acima é retroativa e fica registrada como prova de que
-a regra funciona: a Decisão 8 elevou o piso em 20,1%, e a Decisão 10 o devolveu ao lugar.
+**Seis das quinze células estão acima de +15%.** 🔴 = pendente de revisão do Gui, não vai para
+material de venda até ele se pronunciar.
 
-#### ⚠️ O que esta tabela NÃO enxerga
-O piso está ancorado na partida Saudável · Índice ≥ 65, que não mudou desde a v1.3. Deriva em
-**qualquer outra linha** passa invisível por esta tabela. E houve uma:
+#### Histórico do gatilho, por versão
+| Versão | Decisão | Células acima de +15% | Piso conservador | Dono do piso |
+|---|---|---|---|---|
+| v1.3 | — (referência) | 0 | R$ 67.725 | Prejuízo do mercado |
+| v1.4 | D8 | 3 (Prejuízo) | R$ 81.316 | **Capitulação + Prejuízo** (empate) ⚠️ dono novo |
+| v1.5 | D10 | 3 (Prejuízo) | R$ 67.725 | **Saudável · Índice ≥ 65** ⚠️ dono novo |
+| v1.6 | D11 | 6 (Prejuízo + Capitulação) | R$ 67.725 | Saudável · Índice ≥ 65 |
+| v1.7 | D12 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
+| v1.8 | D13 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
 
-| Prejuízo do mercado | v1.3 (fase 3) | v1.6 (fase 0 · mês 3) | Deriva |
-|---|---|---|---|
-| Conservador | R$ 67.725 | R$ 85.820 | **+26,7%** |
-| Moderado | R$ 185.653 | R$ 259.084 | **+39,6%** |
-| Forte | R$ 557.020 | R$ 869.200 | **+56,0%** |
+**Rastreamento da identidade do piso (regra 4):** entre a **v1.3 e a v1.5 o valor do piso é o
+mesmo — R$ 67.725 — mas o dono mudou**, de Prejuízo do mercado para Saudável · Índice ≥ 65. A
+tabela da v1.7 marcava aquela linha como "+0,0%" sem dizer que o piso tinha trocado de mãos. Piso
+estável com dono novo é informação, não silêncio.
 
-Enquanto isso a deriva do piso na v1.6 marcava +0,0%. **A trava protege a capa, não o interior da
-tabela.** Esta segunda tabela fica aqui pelo mesmo motivo da primeira, e sob a mesma regra: nunca
-apagar, nunca resumir.
+#### O que está publicável hoje
+- **O número de capa (R$ 67.725, piso conservador) está liberado.** A partida que o ocupa está em
+  −22,7%, muito longe do gatilho.
+- **Estresse de curto prazo e Saudável · Índice < 65** estão em +0,0% e seguem publicáveis.
+- **Capitulação profunda e Prejuízo do mercado estão retidas** nos três cenários, aguardando o Gui.
+
+*Nota de método:* a linha Saudável · Índice ≥ 65 não existia na v1.3 — nasceu do desdobramento da
+D10. Ela herda como referência o valor da linha "Mercado saudável" da v1.3 (fase 2 · mês 0),
+que é o comportamento padrão para série que se divide. Sem essa herança a célula ficaria sem base e
+fora da trava. Escolha de implementação, sujeita a confirmação.
+
+*Provisoriedade do limite (regra 6):* os 15% foram calibrados sobre seis linhas de série (v1.3 a
+v1.8). Na **décima segunda linha** o limite é recalculado com base na dispersão observada, e essa
+recalibragem é ela própria uma decisão registrada — nunca ajuste silencioso.
 
 ⚠️ **Regra de comunicação:** apresentar sempre como FAIXA e como perspectiva, nunca como previsão.
 A faixa é a do **conservador ao forte** — três cenários, uma fase, a que a Linha d'Água leu hoje.

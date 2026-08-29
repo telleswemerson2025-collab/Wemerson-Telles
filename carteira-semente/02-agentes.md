@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.5 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9 e 12 aplicadas.
+Versão 1.6 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 e 13 aplicadas.
 
 ---
 
@@ -247,9 +247,11 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
     reforço não é liberado.
 15. **Se a rodada mexeu em projeção publicada:** o número de capa é o PISO conservador entre as
     cinco partidas, a tabela de deriva acumulada está presente e atualizada, e as cinco partidas
-    foram recalculadas nos três cenários? Publicar só a linha afetada REPROVA. Deriva do piso
-    conservador acima de +15% sobre a v1.3 não é reprovação automática, mas **para a publicação** e
-    sobe para revisão do Gui.
+    foram recalculadas nos três cenários? Publicar só a linha afetada REPROVA. Deriva acima de
+    +15% sobre a v1.3 em **qualquer uma das quinze células** não é reprovação automática, mas
+    **para a revisão inteira** e sobe para o Gui — não se publica a parte que não estourou.
+16. **O dono do piso mudou desde a versão anterior?** Se mudou, está registrado e reportado, mesmo
+    que o valor do piso não tenha se movido?
 
 **Saída:** CARIMBA ou REPROVA, com o motivo.
 
