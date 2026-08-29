@@ -1,6 +1,6 @@
 # ÍNDICE SEMENTE — indicador composto
 Régua única de 0 a 100 que reúne as camadas de leitura.
-Versão 1.12 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15 a 22 aplicadas.
+Versão 1.13 · 29/08/2026 — Decisões 1, 2, 4, 5, 7, 9, 15 a 22, 28 aplicadas.
 
 ## O QUE ELE É, E O QUE ELE NÃO É
 O Índice Semente **mede a intensidade** da situação de mercado. Ele **não classifica o estado**.
@@ -194,7 +194,10 @@ não derrubava nada; agora suspende a camada. É o desenho — o que se ganha é
 nomeada em vez de diluída — mas eleva a importância do lembrete diário da Decisão 18.
 
 ### Validade: 180 dias (Decisão 18)
-**Todo degrau vale 180 dias corridos a partir da data de atribuição.** Vencido, ele **não vira 0 e
+**Todo degrau vale 180 dias corridos a partir da data de atribuição.** 🔒 **Os 180 dias são âncora
+estrutural** (Decisão 28): só mudam por decisão registrada com razão escrita, passando pelo Gate 2.
+Afrouxados de rodada em rodada, cada vez por um bom motivo, a camada 5 viraria julgamento antigo com
+cara de número atual. Vencido, ele **não vira 0 e
 não permanece: vira ausência**, e cai na mecânica acima — sai do cálculo, os pesos renormalizam, e
 se o total sem degrau passar de 30% da parte exposta a camada 5 sai inteira.
 

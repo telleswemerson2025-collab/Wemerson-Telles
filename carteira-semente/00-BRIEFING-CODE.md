@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.16 — decisões 1 a 27 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.17 — decisões 1 a 28 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -65,6 +65,26 @@ depois que alguém percebe.
 | 2 | O teto de **12 pontos** de defasagem | D25 · D26 | exposição ficando para trás do alvo, ciclo após ciclo |
 | 3 | O piso de **60%** em BTC e ETH | D16 | diluição lenta da qualidade da carteira |
 | 4 | A **lista fechada** dos três gatilhos de venda | D23 · D24 | gatilho novo nascendo de implementação |
+| 5 | A validade de **180 dias** do degrau de invalidação | D18 | julgamento antigo com cara de número atual |
+
+### O teste de admissão
+Um parâmetro é âncora quando **as três** valem:
+
+1. **Afrouxá-lo não produz efeito visível na rodada em que se afrouxa.**
+2. **O dano só aparece depois de várias rodadas somadas.**
+3. **Cada afrouxamento isolado tem justificativa razoável.**
+
+Falhando qualquer uma das três, é régua, piso ou parâmetro — e se calibra normalmente, com registro.
+
+*É o teste que descreve o padrão de dano que a classe existe para conter:* 180 → 240 → 300 dias,
+cada passo por um bom motivo de rodada, e nenhuma rodada isolada teria parecido errada.
+
+### O que foi testado e ficou de fora
+| Parâmetro | Por que não é âncora |
+|---|---|
+| A trava dos **30%** da camada 5 | Falha o teste 1: afrouxar produz leitura ruim **hoje**, visível na hora. É piso de qualidade da leitura. |
+| O limite de **15%** da trava de deriva | Declarado provisório pela D19 regra 6, com recalibragem prevista. Âncora é o que segura a régua; o limite **é** a régua. |
+| Os **45 dias** entre BTC e ETH, o **piso de 90 dias**, a **fórmula de espaçamento** | Mecânica de distribuição. Mexer neles não degrada julgamento nenhum. |
 
 **Regra da classe:** alterar uma âncora exige **decisão registrada com a razão escrita**, passa pelo
 **Gate 2**, e a alteração fica na **tabela de deriva em caráter permanente**. Nenhuma âncora muda
