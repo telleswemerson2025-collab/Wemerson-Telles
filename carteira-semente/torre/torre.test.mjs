@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, comandoDeConferencia, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, comandoDeConferencia, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -566,4 +566,27 @@ test('sem a data do extremo, o comando recusa em vez de chutar o dia', () => {
   const semData = { 'X': { valor: 1, min: 0, max: 2, data: '2026-08-29' } };
   const r = comandoDeConferencia({ serie: 'X', campo: 'min' }, semData);
   assert.match(r.erro, /sem a data do min/);
+});
+
+// ══ D40 · VOCABULÁRIO DAS CAMADAS ═════════════════════════════════════════
+test('os nomes das camadas são os canônicos dos cinco documentos', () => {
+  assert.deepEqual(CAMADAS, {
+    1: 'Estado do preço', 2: 'Comportamento', 3: 'Macro', 4: 'Fluxo', 5: 'Carteira',
+  });
+});
+
+test('a entrega nomeia cada camada, dentro e fora da conta', () => {
+  const r = varrer({ varredura: V, hoje: HOJE });
+  assert.deepEqual(r.camadas.map((c) => c.nome),
+    ['Estado do preço', 'Comportamento', 'Macro', 'Fluxo']);
+  assert.equal(r.camadasForaDaConta.find((c) => c.camada === 5).nome, 'Carteira');
+});
+
+test('nome e peso andam juntos: quem renomear sem decisão quebra este teste', () => {
+  // A D35 D chamou a camada 1 de "Ciclo" e a 2 de "Valuation". Os pesos batiam.
+  // A regra da D40: o peso manda, o nome diferente é erro de redação.
+  assert.equal(CAMADAS[1], 'Estado do preço'); assert.equal(PESOS[1], 0.34);
+  assert.equal(CAMADAS[2], 'Comportamento');   assert.equal(PESOS[2], 0.26);
+  assert.notEqual(CAMADAS[1], 'Ciclo');
+  assert.notEqual(CAMADAS[2], 'Valuation');
 });

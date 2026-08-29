@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.22 — decisões 1 a 38 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.23 — decisões 1 a 40 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -39,7 +39,12 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
 7. **Sempre os mesmos indicadores, todo dia, na mesma ordem.** Indicador que entra e sai conforme
    a conveniência vira desculpa para justificar o que já se queria fazer.
 8. **Dado ilustrativo é rotulado como ilustrativo.** Nunca apresentar reconstrução como leitura real.
-9. **MATERIAL COMERCIAL ABRE PELO PISO, E A DERIVA FICA REGISTRADA.** O número de capa é o menor
+9. **NOME DIFERENTE NUMA DECISÃO É ERRO DE REDAÇÃO ATÉ PROVA EM CONTRÁRIO.**
+   Renomeação de camada, de estado, de faixa ou de indicador é **decisão registrada
+   própria**, nunca efeito colateral do texto de outra decisão. Quando nome e número
+   discordam, **manda o número**, que é inequívoco — e o implementador levanta a
+   divergência em vez de escolher sozinho (Decisão 40).
+10. **MATERIAL COMERCIAL ABRE PELO PISO, E A DERIVA FICA REGISTRADA.** O número de capa é o menor
    resultado entre as partidas possíveis, no cenário conservador — nunca a leitura do dia. Toda
    revisão que mexa em projeção recalcula todas as partidas nos três cenários, e a tabela de deriva
    acumulada por versão é permanente: nunca apagada, nunca resumida. A trava de +15% vale para cada
@@ -49,7 +54,7 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
    libera uma célula por menção. **A base é a v1.3 e nunca se move**, nem na recalibragem: o que se
    recalibra é o limite. **Linha desdobrada herda a referência da linha de que nasceu**, senão
    desdobrar vira porta de saída da trava.
-10. **NENHUM NÚMERO DERIVADO É DIGITADO À MÃO.** Todo derivado — média, percentual, projeção,
+11. **NENHUM NÚMERO DERIVADO É DIGITADO À MÃO.** Todo derivado — média, percentual, projeção,
    posição normalizada — é calculado a partir da fonte primária, em tempo de execução. Se um
    derivado aparece em dois lugares, um dos dois está errado por definição. Quando documento e
    instrumento divergem, o instrumento (que calcula) está certo e o documento (que digitou) está

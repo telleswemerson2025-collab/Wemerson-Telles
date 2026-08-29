@@ -1,11 +1,11 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.5 · 29/08/2026 — Decisões 35 a 39 aplicadas
+Conferência. Versão 1.6 · 29/08/2026 — Decisões 35 a 40 aplicadas
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
 - `torre.mjs` — o módulo. Sem dependências. Lê o registro da peça 1, não guarda nada.
 - `leitura-29-08-2026.mjs` — as catorze leituras reais do documento 07, transcritas.
-- `torre.test.mjs` — 64 testes da Torre (113 no pacote inteiro). `node --test` na raiz.
+- `torre.test.mjs` — 67 testes da Torre (116 no pacote inteiro). `node --test` na raiz.
 
 ## ⭐ ITEM 5 — O TESTE QUE PROVA A LEITURA DE 29/08/2026
 Entrada: as catorze leituras reais do `07-leituras-29-08-2026.md`, com mínimas e
@@ -252,14 +252,19 @@ comando agora **recusa** se a data faltar, em vez de cair na data da leitura.
 *Só apareceu porque olhei a saída do comando, não o teste dele. Testes de formato
 teriam passado.*
 
-## ⚠️ O QUE A D35 D CHAMA DE OUTRO NOME
-A prioridade fala em "Ciclo 34%, Valuation 26%, Macro 16%, Fluxo 12%". Os pesos
-batem, mas os dois primeiros nomes não são os do sistema: o `03-indice-semente.md`
-chama a camada 1 de **Estado do preço** e a camada 2 de **Comportamento**.
+## O VOCABULÁRIO DAS CAMADAS, FECHADO PELA D40
+"Ciclo" e "Valuation" eram descuido de redação. Os nomes ficam **Estado do preço**
+e **Comportamento**, e a D35 D foi corrigida no registro.
 
-Implementei pelos pesos, que são inequívocos. Se "Ciclo" e "Valuation" forem
-renomeações pretendidas, é mudança de vocabulário em cinco documentos e merece
-decisão própria — a Decisão 2 já mostrou o custo de dois nomes para a mesma coisa.
+Os nomes canônicos passaram a existir **em código** (`CAMADAS`), a entrega da Torre
+nomeia cada camada dentro e fora da conta, e um teste quebra se alguém renomear sem
+decisão. A regra da D40 deixou de existir só no texto:
+
+> Nome diferente numa decisão é erro de redação até prova em contrário. Quando nome
+> e número discordam, **manda o número** — e o implementador levanta a divergência
+> em vez de escolher sozinho.
+
+Virou **invariante 9** do briefing.
 
 ## A ESCALA DO NETFLOW, FECHADA PELA D39
 Linear, como a D37 C disse. A D38 D foi corrigida. O teste que prova a

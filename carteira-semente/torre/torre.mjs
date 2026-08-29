@@ -54,6 +54,14 @@ const naLista = (nome) => EXCHANGES_PRIMEIRA_LINHA.some((e) => e.toLowerCase() =
 
 export const PESOS = Object.freeze({ 1: 0.34, 2: 0.26, 3: 0.16, 4: 0.12, 5: 0.12 });
 
+// D40: os nomes canônicos das camadas, como estão nos cinco documentos.
+// Renomeação de camada é decisão registrada própria, nunca efeito colateral do
+// texto de outra decisão. Nome que aparece diferente numa decisão é erro de
+// redação até prova em contrário — e o peso é que manda, por ser inequívoco.
+export const CAMADAS = Object.freeze({
+  1: 'Estado do preço', 2: 'Comportamento', 3: 'Macro', 4: 'Fluxo', 5: 'Carteira',
+});
+
 // D36 B: dentro da camada vale a mesma mecânica de um nível acima — renormaliza
 // sobre o que voltou, e sai inteira se o que falta pesar mais de um terço. Duas
 // regras diferentes para o mesmo problema em dois níveis seria incoerência.
@@ -247,19 +255,19 @@ export function varrer({ varredura, hoje, camada5 = null, anterior = null }) {
   return {
     disponivel: true, hoje, indice, faixa, estado,
     camadas: ativas.map((c) => ({
-      camada: c, posicao: camadas.get(c).posicao,
+      camada: c, nome: CAMADAS[c], posicao: camadas.get(c).posicao,
       pesoNominal: PESOS[c], pesoAplicado: PESOS[c] / somaPesos,
       itens: camadas.get(c).itens,
       ausentes: camadas.get(c).ausentes ?? [],
     })),
     camadasForaDaConta: [1, 2, 3, 4, 5].filter((c) => !camadas.has(c))
       .map((c) => {
-        if (c === 5) return { camada: 5, motivo: camada5?.motivo ?? 'sem carteira ativa' };
+        if (c === 5) return { camada: 5, nome: CAMADAS[5], motivo: camada5?.motivo ?? 'sem carteira ativa' };
         const daCamada = SERIES.filter((s) => s.camada === c && s.papel === undefined);
         const faltando = daCamada.filter((s) => !lidos.has(s.n)).map((s) => s.n);
         const frac = daCamada.length ? faltando.length / daCamada.length : 1;
         return {
-          camada: c, ausentes: faltando,
+          camada: c, nome: CAMADAS[c], ausentes: faltando,
           motivo: c === 1
             ? 'faltou preço, Realized Price ou a régua do MVRV'
             : `ausentes pesam ${(frac * 100).toFixed(0)}% da camada, acima do terço da trava`,
