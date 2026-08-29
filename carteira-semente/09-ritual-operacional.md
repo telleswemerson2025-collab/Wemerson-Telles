@@ -1,5 +1,5 @@
 # 09 — RITUAL OPERACIONAL DA CARTEIRA SEMENTE
-Versão 1.9 · 29/08/2026 — conciliado com as Decisões 1 a 26.
+Versão 1.10 · 29/08/2026 — conciliado com as Decisões 1 a 27.
 *Alterações em relação ao original do Mr. G estão listadas no fim do arquivo.*
 
 Como o Mr. G aciona o sistema no dia a dia. Espelha o ritual da
@@ -90,7 +90,7 @@ Três acionamentos. Dois por frase, um automático.
    e nunca no patamar de um estado vizinho.
 5. Avalia o Reforço de Fundo contra as sete travas.
 6. **Grava.** Sem registro gravado não há liberação de reforço.
-7. **Passa pelo Auditor**, que confere os 25 itens do checklist e
+7. **Passa pelo Auditor**, que confere os 29 itens do checklist e
    CARIMBA ou REPROVA. Entre eles, o mapa de vencimentos de degrau
    dos próximos 180 dias por janela fechada de 30 (Decisões 19 a 21).
 8. **Vai ao Gate 2**, que o Gui assina ou veta. Só o "Aprovado

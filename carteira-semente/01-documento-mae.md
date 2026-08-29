@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.16 · 29/08/2026 · BlockCapital Research — Decisões 2 a 26 aplicadas.
+Versão 1.17 · 29/08/2026 · BlockCapital Research — Decisões 2 a 27 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -240,6 +240,33 @@ o sistema calcula sem discricionariedade. **O Gate assina.** A invariante 1 perm
 1. **A defesa**, até fechar a demanda da glidepath do mês.
 2. **O que sobrar segue o Índice de Plantio** normalmente.
 3. Sobrando ainda, **o excedente vai para a parte protegida**.
+
+**Com o Abrigo ativo, o caixa não recebe mais** (Decisão 27). A partir dos três anos da entrega, o
+passo 3 substitui a regra do caixa: o excedente vai direto para a parte protegida.
+
+> *O caixa é pólvora seca para o Reforço de Fundo e para a compra na zona. A trava 3 já bloqueia o
+> reforço em Abrigo, e a compra na zona vai encolhendo com a exposição alvo. **Caixa que ninguém
+> pode consumir não é reserva, é exposição parada com nome bonito.***
+
+**O caixa que já existe quando o Abrigo começa vira o primeiro amortecedor da glidepath.** A ordem
+de recursos do passo mensal passa a ser:
+
+> **caixa → aporte → venda**
+
+Ele não é despejado de uma vez: é consumido no ritmo que a banda de 3 pontos permite, que já é
+gradual por construção. E **em todo mês em que o caixa cobre a demanda, a venda é zero** — o aporte
+nem chega a ser tocado.
+
+Quantos meses de glidepath um caixa cobre sozinho, com carteira de R$ 53.074 a três anos da entrega:
+
+| Caixa | Mercado saudável | Estresse | Prejuízo | Capitulação |
+|---|---|---|---|---|
+| 5% | 1,9 mês | 2,9 | 5,7 | 11,4 |
+| 10% | 3,8 meses | 5,7 | 11,4 | 22,9 |
+| 15% | 5,7 meses | 8,6 | 17,1 | 34,3 |
+
+**É o melhor uso possível dele:** reduz exatamente o quanto o sistema precisa vender nos últimos
+três anos, e mais ainda nos estados ruins, que é onde vender é pior.
 
 Se o aporte inteiro for consumido pela defesa, o Índice de Plantio não aloca nada naquele mês, e a
 leitura diz isso com estas palavras: **"aporte integralmente destinado à proteção"**.

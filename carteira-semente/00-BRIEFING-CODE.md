@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.15 — decisões 1 a 26 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.16 — decisões 1 a 27 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -54,6 +54,25 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
    derivado aparece em dois lugares, um dos dois está errado por definição. Quando documento e
    instrumento divergem, o instrumento (que calcula) está certo e o documento (que digitou) está
    errado: corrige-se o documento, nunca a fórmula.
+
+## ÂNCORAS ESTRUTURAIS (Decisão 27)
+**Parâmetro que existe para conter deriva lenta nasce marcado como âncora**, e não é protegido
+depois que alguém percebe.
+
+| # | Âncora | Origem | Contra que deriva |
+|---|---|---|---|
+| 1 | A base **v1.3** da trava de deriva | D14 | números publicados subindo por revisões sucessivas |
+| 2 | O teto de **12 pontos** de defasagem | D25 · D26 | exposição ficando para trás do alvo, ciclo após ciclo |
+| 3 | O piso de **60%** em BTC e ETH | D16 | diluição lenta da qualidade da carteira |
+| 4 | A **lista fechada** dos três gatilhos de venda | D23 · D24 | gatilho novo nascendo de implementação |
+
+**Regra da classe:** alterar uma âncora exige **decisão registrada com a razão escrita**, passa pelo
+**Gate 2**, e a alteração fica na **tabela de deriva em caráter permanente**. Nenhuma âncora muda
+por calibragem, por implementação ou por conveniência de rodada. O Auditor confere a cada rodada.
+
+*Contra-exemplo que define a fronteira da classe:* o limite de 15% da trava de deriva **não** é
+âncora — a D19 regra 6 o declara provisório e prevê recalibragem na décima segunda versão. Âncora é
+o que segura a régua; o limite é a régua, e régua se calibra.
 
 ## HIERARQUIA DE LEITURA (quem decide o quê)
 Não existem dois juízes. Os papéis são distintos e ordenados:
