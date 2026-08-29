@@ -1,5 +1,5 @@
 # 09 — RITUAL OPERACIONAL DA CARTEIRA SEMENTE
-Versão 1.12 · 29/08/2026 — conciliado com as Decisões 1 a 36.
+Versão 1.13 · 29/08/2026 — conciliado com as Decisões 1 a 37.
 *Alterações em relação ao original do Mr. G estão listadas no fim do arquivo.*
 
 Como o Mr. G aciona o sistema no dia a dia. Espelha o ritual da
@@ -19,7 +19,7 @@ Três acionamentos. Dois por frase, um automático.
 
 ### Fluxo
 
-1. A Torre monta o comando pro Chrome com a varredura dos **catorze
+1. A Torre monta o comando pro Chrome com a varredura dos **quinze
    indicadores**, sempre os mesmos, sempre na mesma ordem.
 2. O Chrome busca, em modo somente leitura: nunca publica, nunca
    altera, nunca apaga, restaura o estado da tela.
@@ -60,7 +60,10 @@ Três acionamentos. Dois por frase, um automático.
 Ativo novo detectado na composição da CRM não entra sozinho no
 universo elegível. O caminho é:
 
-1. A Torre aplica **sozinha** a alínea **(a) liquidez** e a alínea
+1. A Torre aplica **sozinha** a alínea **(a) liquidez** — volume
+   médio diário de 30 dias em US$ 100 mi ou mais, em pelo menos
+   duas exchanges de primeira linha, cada uma medida sozinha — e a
+   alínea
    **(b) ciclo completo, ou ser BTC ou ETH** — as duas objetivas.
 2. Apresenta as alíneas **(c) tese sem evento datado** e **(d) sem
    alavancagem, sintético ou contraparte concentrada** ao Gui como

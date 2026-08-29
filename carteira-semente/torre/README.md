@@ -1,11 +1,11 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.2 · 29/08/2026 — Decisão 36 aplicada
+Conferência. Versão 1.3 · 29/08/2026 — Decisões 36 e 37 aplicadas
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
 - `torre.mjs` — o módulo. Sem dependências. Lê o registro da peça 1, não guarda nada.
 - `leitura-29-08-2026.mjs` — as catorze leituras reais do documento 07, transcritas.
-- `torre.test.mjs` — 41 testes da Torre (90 no pacote inteiro). `node --test` na raiz.
+- `torre.test.mjs` — 48 testes da Torre (98 no pacote inteiro). `node --test` na raiz.
 
 ## ⭐ ITEM 5 — O TESTE QUE PROVA A LEITURA DE 29/08/2026
 Entrada: as catorze leituras reais do `07-leituras-29-08-2026.md`, com mínimas e
@@ -18,6 +18,7 @@ máximas do range ALL. Saída do módulo:
   camada 3: 50.88 · peso 18.2%
   camada 4: 47.94 · peso 13.6%
   fora: 5 (sem carteira ativa)
+  ausente: Exchange Netflow (não foi coletado em 29/08/2026)
   ETF: 54.97 -> 52.61 · confiança 0.5251 (janela até 27/08, data do dado)
 ```
 
@@ -112,10 +113,31 @@ de um terço** dela. É a mesma mecânica que o sistema já usa um nível acima.
 | 3 · Macro | 4 | 25% — **cabe** | 50% — sai |
 | 4 · Fluxo | 2 | **50% — sai** | — |
 
-**A camada 4 tem só dois indicadores, então qualquer ausência a derruba.** Não é
-efeito colateral da regra: com dois itens, perder um deixaria a camada descrita
-por metade, bem além do terço. Mas vale saber que o ETF ou o Funding faltando
-tira 13,6% do índice de uma vez, e é a camada mais frágil das quatro.
+**A camada 4 ganhou um terceiro indicador (D37 C)** — o Exchange Netflow — porque
+com dois qualquer ausência a derrubava, e a régua interna nem chegava a ser
+testada. Agora ela se comporta como as outras: uma ausência pesa 33% e cabe.
+
+| Camada | Indicadores | Um ausente | Dois ausentes |
+|---|---|---|---|
+| 2 · Comportamento | 3 | 33% — cabe | 67% — sai |
+| 3 · Macro | 4 | 25% — cabe | 50% — sai |
+| 4 · Fluxo | **3** | **33% — cabe** | 67% — sai |
+
+Pesos internos iguais entre os três, por D37 D: *peso inventado é pior que peso
+igual.*
+
+### ⭐ O âncora de 29/08 sobreviveu ao indicador novo, e não por sorte
+O Exchange Netflow **não foi coletado em 29/08/2026** — ele não existe no
+documento 07. Ainda assim o índice continua **50.7536**, exato.
+
+O motivo é a regra da D36 B, decidida uma rodada antes: com três indicadores na
+camada, um ausente é exatamente um terço, e um terço cabe. A camada renormaliza
+sobre ETF e Funding e reproduz o mesmo 47,9351 de quando eram só esses dois.
+
+**Sem a D36 B, acrescentar o décimo quinto indicador teria invalidado a única
+leitura conferida do sistema.** As duas decisões foram tomadas por razões
+independentes e se encaixaram — vale registrado, porque na próxima vez pode não
+encaixar, e aí a leitura histórica precisa de tratamento próprio.
 
 ## ITEM 3 — CAMADA 5 SUSPENSA POR INTEIRO (D21 B)
 | Prova | Teste |
@@ -138,6 +160,19 @@ tira 13,6% do índice de uma vez, e é a camada mais frágil das quatro.
 
 ## O QUE APARECEU AO ESCREVER
 
+### 0. O que a D37 fechou
+A alínea (a) ganhou número: **US$ 100 mi de volume diário médio de 30 dias, em ao
+menos duas exchanges de primeira linha, cada uma medida sozinha.** Somar não vale
+— está testado que 60 + 60 milhões reprova, embora somem 120.
+
+O limiar entrou como **décimo membro da classe âncora**, e é o primeiro nascido na
+implementação, pelo caminho que a D31 parte C previu.
+
+**Um item continua sem definição:** o que é "exchange de primeira linha". A Torre
+conta as exchanges que a varredura lhe entrega; quem decide quais entram na lista
+não está escrito em decisão nenhuma. Hoje isso é escolha de quem monta a
+varredura, o que é o tipo de porta lateral que a classe âncora existe para fechar.
+
 ### 1. O Filtro de Horizonte não é automatizável — três das quatro alíneas são julgamento
 A D16 B manda cada incluído passar pelo Filtro "na hora". Das quatro alíneas da
 D15, **só a (b)** é mecânica — atravessou um ciclo, ou é BTC ou ETH. As outras
@@ -145,7 +180,7 @@ três são julgamento:
 
 | Alínea | Por quê |
 |---|---|
-| (a) liquidez suficiente para sair sem derrubar preço | não há limiar definido |
+| ~~(a) liquidez~~ | **fechada pela D37 A** — passou a ser objetiva |
 | (c) tese que não dependa de evento datado | leitura de tese |
 | (d) não alavancado, sintético, nem contraparte concentrada | classificação |
 
@@ -158,17 +193,19 @@ as alíneas que faltam, para o humano decidir.
 alguém julgar três alíneas — o que está certo, mas significa que o ritual diário
 tem um passo humano que o documento 09 não descreve.
 
-### 2. A confiança é medida até hoje, não até a data do indicador
-O ETF fecha com dois dias de atraso. Medindo a janela até `hoje` (29/08) em vez de
-até a data do dado (27/08), a confiança sai 0,5262 em vez de 0,5250 — e o
-ajustado, 52,617 em vez de 52,609. **Diferença de 0,008 ponto**, nula no índice.
-Escolhi `hoje` por ser um relógio só para as catorze séries. Fica dito.
+### 2. ~~A confiança medida até hoje~~ — fechada pela D36 C
+Passou a ser medida até a última data do próprio indicador. Ver acima: foi essa
+mudança que revelou a divergência de 0,0004 entre as duas implementações.
 
 ### 3. A Torre não classifica estação, e há teste disso
 `r.estacao` é `undefined` por construção, e `semRecomendacao` sai `true` em toda
 entrega. A estação vem do Índice de Plantio, que é peça 3.
 
-## NENHUM PARÂMETRO NOVO NASCEU
-Todos os números vêm das decisões: pesos 34·26·16·12·12 (D03), faixas de 20 em 20
-(D03 · D02), confiança sobre 5 anos (D7), trava de 30% (D17 C), validade de 180
-dias (D18), 65 como limiar (D9 · D10). Nada a submeter aos quatro critérios.
+## UM PARÂMETRO NOVO NASCEU, E JÁ FOI SUBMETIDO
+O **limiar de liquidez** (D37 A) passou pelos quatro critérios na própria decisão
+que o criou, e entrou como membro 10 da classe âncora. É o primeiro caso do
+mecanismo da D31 parte C funcionando na prática.
+
+Os demais números vêm das decisões: pesos 34·26·16·12·12 (D03), faixas de 20 em 20
+(D03 · D02), confiança sobre 5 anos (D7), trava de 30% (D17 C), terço da camada
+(D36 B), validade de 180 dias (D18), 65 como limiar (D9 · D10).

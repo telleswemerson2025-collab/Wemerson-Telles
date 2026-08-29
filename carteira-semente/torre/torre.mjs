@@ -9,7 +9,10 @@
 
 import { TIPOS } from '../registro/registro.mjs';
 
-// ── AS CATORZE SÉRIES, SEMPRE AS MESMAS E NESTA ORDEM (invariante 7) ───────
+// ── AS QUINZE SÉRIES, SEMPRE AS MESMAS E NESTA ORDEM (invariante 7) ───────
+// Eram catorze até a Decisão 37 C, que acrescentou o Exchange Netflow à camada 4.
+// A invariante 7 proíbe indicador que entra e sai por conveniência — não proíbe
+// mudança por decisão registrada, e é exatamente por isso que ela exigiu uma.
 // escala: 'log' para série multiplicativa, 'lin' para aditiva (D03).
 // inicioSerie alimenta o fator de confiança da D7.
 export const SERIES = Object.freeze([
@@ -27,7 +30,15 @@ export const SERIES = Object.freeze([
   { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01' },
   { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11' },
   { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01' },
+  { n: 'Exchange Netflow',    camada: 4, escala: 'lin', inicioSerie: '2011-01-01' },
 ]);
+
+// D37 A: alínea (a) do Filtro de Horizonte, com número.
+// Duas exchanges porque volume concentrado numa só não é liquidez, é dependência.
+// Medido SEPARADAMENTE porque somar esconde exatamente isso.
+export const LIMIAR_LIQUIDEZ = 100_000_000;   // âncora estrutural (D37 B)
+export const EXCHANGES_MINIMAS = 2;           // âncora estrutural (D37 B)
+export const JANELA_LIQUIDEZ_DIAS = 30;
 
 export const PESOS = Object.freeze({ 1: 0.34, 2: 0.26, 3: 0.16, 4: 0.12, 5: 0.12 });
 
@@ -128,6 +139,8 @@ export function varrer({ varredura, hoje, camada5 = null, anterior = null }) {
     const pesoAusente = faltando.length / daCamada.length;
     if (presentes.length > 0 && pesoAusente <= TRAVA_AUSENCIA_NA_CAMADA) {
       camadas.set(camada, {
+        // D37 D: pesos internos iguais entre os indicadores da camada, até haver
+        // razão registrada para não serem. Peso inventado é pior que peso igual.
         posicao: media(presentes.map((x) => x.posicao)),  // renormaliza sobre o que voltou
         itens: presentes.map((x) => `${x.n} ${x.posicao.toFixed(1)}`),
         ausentes: faltando,
@@ -261,13 +274,23 @@ export function camada5({ registro, carteira, hoje, posicoes }) {
  * julgamento, e sem ele o ativo fica PENDENTE. Aprovar por omissão seria o default
  * silencioso que a invariante 3 proíbe.
  */
-export function filtroDeHorizonte(ativo, j = {}, { limiarLiquidez } = {}) {
+export function filtroDeHorizonte(ativo, j = {}, { limiarLiquidez = LIMIAR_LIQUIDEZ, exchangesMinimas = EXCHANGES_MINIMAS } = {}) {
   const reprovas = [], pendentesAutomaticas = [], pendentesDeJulgamento = [];
 
   // (a) e (b) são objetivas: a Torre aplica sozinha (D36 A).
-  if (typeof limiarLiquidez !== 'number') pendentesAutomaticas.push('(a) liquidez — limiar não definido no sistema');
-  else if (typeof j.liquidez !== 'number') pendentesAutomaticas.push('(a) liquidez — medida não veio na varredura');
-  else if (j.liquidez < limiarLiquidez) reprovas.push(`(a) liquidez ${j.liquidez} abaixo do limiar ${limiarLiquidez}`);
+  // (a) D37 A: volume médio diário de 30 dias ≥ US$ 100 mi, em pelo menos duas
+  // exchanges de primeira linha, cada uma medida sozinha. Somar não vale.
+  const vols = j.volumes30d;
+  if (!vols || Object.keys(vols).length === 0) {
+    pendentesAutomaticas.push('(a) liquidez — volumes de 30 dias não vieram na varredura');
+  } else {
+    const qualificam = Object.entries(vols).filter(([, v]) => typeof v === 'number' && v >= limiarLiquidez);
+    if (qualificam.length < exchangesMinimas) {
+      const detalhe = Object.entries(vols).map(([e, v]) => `${e} ${(v / 1e6).toFixed(0)}mi`).join(', ');
+      reprovas.push(`(a) liquidez: ${qualificam.length} exchange(s) acima de US$ ${limiarLiquidez / 1e6} mi, ` +
+        `exige ${exchangesMinimas} — ${detalhe}`);
+    }
+  }
 
   if (['BTC', 'ETH'].includes(ativo)) {
     // (b): BTC e ETH passam por definição

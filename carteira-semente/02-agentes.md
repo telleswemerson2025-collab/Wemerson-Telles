@@ -25,8 +25,12 @@ Versão 1.24 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 31 aplicadas.
 | 12 | Macro | Yield Curve 10Y-2Y | Macro |
 | 13 | Fluxo | ETF Net Inflow | ETF |
 | 14 | Fluxo | Funding Rate | Futuros |
+| 15 | Fluxo | Exchange Netflow | Fluxo de exchanges |
 
-São os mesmos 14 indicadores de sempre (invariante 7). O que mudou na versão 1.1 é **onde o MVRV
+São **15** desde a Decisão 37 C, que acrescentou o Exchange Netflow à camada Fluxo —
+ela tinha só dois indicadores, e qualquer ausência derrubava 13,6% do índice de uma
+vez. A invariante 7 proíbe indicador que entra e sai **por conveniência**; não proíbe
+mudança por decisão registrada, e foi ela que exigiu uma. O que mudou na versão 1.1 é **onde o MVRV
 entra na conta**: ele é a régua da camada 1 e saiu da média da camada 2 (Decisão 1). A coleta é
 idêntica.
 

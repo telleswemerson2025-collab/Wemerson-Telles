@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.20 — decisões 1 a 31 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`) · **classe âncora fechada**
+Versão 1.21 — decisões 1 a 37 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -70,6 +70,12 @@ depois que alguém percebe.
 | 7 | O piso de **2% por posição** | D22 | a cauda miúda voltando, com o custo operacional junto |
 | 8 | A **banda de 3 pontos** da glidepath | D24 · D30 | a exposição com que a criança recebe a carteira |
 | 9 | A **trava 6** do Reforço de Fundo — caixa nunca abaixo de **10%** da carteira | D6 · D31 | a reserva sumindo acionamento a acionamento |
+| 10 | O **limiar de liquidez** — US$ 100 mi de volume diário de 30 dias, em ao menos **duas** exchanges medidas separadamente | D37 | a carteira ganhando ponta da qual não dá para sair |
+
+> **O membro 10 é o primeiro nascido na implementação**, exatamente pelo caminho
+> que a Decisão 31 parte C previu: parâmetro novo criado durante a construção
+> passa pelos quatro critérios uma vez, e o resultado entra na lista ou na tabela.
+> A classe seguia fechada; o que mudou foi que apareceu um parâmetro novo.
 
 > **A classe está fechada** (Decisão 31). Ela para de crescer por rodada e passa a mudar **só por
 > evento**: parâmetro novo criado durante a implementação passa pelos quatro critérios **uma vez**, e

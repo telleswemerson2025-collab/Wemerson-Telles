@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -8,7 +8,7 @@ const HOJE = '2026-08-29';
 const perto = (a, b, tol = 0.005) => assert.ok(Math.abs(a - b) < tol, `${a} ≠ ${b}`);
 
 // ══ ITEM 5 · A LEITURA REAL DE 29/08/2026 ═════════════════════════════════
-test('as catorze leituras reais devolvem 50,75 · Equilíbrio · Mercado saudável', () => {
+test('as leituras reais devolvem 50,75 · Equilíbrio · Mercado saudável', () => {
   const r = varrer({ varredura: V, hoje: HOJE });
   assert.equal(r.disponivel, true);
   perto(r.indice, 50.75);
@@ -18,7 +18,11 @@ test('as catorze leituras reais devolvem 50,75 · Equilíbrio · Mercado saudáv
   assert.equal(Math.round(r.indice), 51, 'exibido 51');
   assert.equal(r.faixa, 'Equilíbrio');
   assert.equal(r.estado, ESTADOS.SAUDAVEL);
-  assert.equal(r.ausencias.length, 0);
+  // D37 C acrescentou o Exchange Netflow, que não foi coletado em 29/08/2026.
+  // O âncora sobrevive porque a D36 B deixa a camada 4 renormalizar sobre os dois
+  // que voltaram — 1 de 3 é exatamente um terço, e um terço cabe.
+  assert.deepEqual(r.ausencias.map((a) => a.indicador), ['Exchange Netflow']);
+  assert.deepEqual(r.camadas.find((c) => c.camada === 4).ausentes, ['Exchange Netflow']);
 });
 
 test('cada camada bate com o documento 03', () => {
@@ -72,7 +76,7 @@ test('o fator de confiança amortece só a série curta (D7)', () => {
 test('ausência é nomeada uma a uma, com a camada', () => {
   const sem = { ...V }; delete sem['SOPR']; delete sem['DXY'];
   const r = varrer({ varredura: sem, hoje: HOJE });
-  assert.deepEqual(r.ausencias.map((a) => a.indicador).sort(), ['DXY', 'SOPR']);
+  assert.deepEqual(r.ausencias.map((a) => a.indicador).sort(), ['DXY', 'Exchange Netflow', 'SOPR']);
   assert.equal(r.ausencias.find((a) => a.indicador === 'SOPR').camada, 2);
 });
 
@@ -119,7 +123,7 @@ test('indicador zerado ou com traço é ausência, não zero', () => {
 test('sem nenhuma camada inteira, não há índice — e o motivo vem junto', () => {
   const r = varrer({ varredura: {}, hoje: HOJE });
   assert.equal(r.disponivel, false);
-  assert.equal(r.ausencias.length, 14);
+  assert.equal(r.ausencias.length, 15);
   assert.equal(r.estado, null, 'sem Linha dágua não há estado');
 });
 
@@ -230,8 +234,10 @@ test('três ativos sem degrau (24%) ainda cabem na trava', () => {
 });
 
 // ══ ITEM 4 · COMPOSIÇÃO DA CRM ILEGÍVEL CONGELA O UNIVERSO ════════════════
-const APROVA = { liquidez: 100, ciclosCompletos: 2, teseSemEventoDatado: true, semAlavancagemOuContraparte: true };
-const LIMIAR = 50;
+const APROVA = {
+  volumes30d: { binance: 250e6, coinbase: 180e6 },
+  ciclosCompletos: 2, teseSemEventoDatado: true, semAlavancagemOuContraparte: true,
+};
 
 test('ilegível congela o universo no último estado, marcado e datado', () => {
   const reg = comRegistro();
@@ -254,7 +260,7 @@ test('incluídos e removidos, com o filtro aplicado na hora', () => {
   reg.registrar({ carteira: CT, tipo: TIPOS.CRM_COMPOSICAO, data: '2026-08-01', legivel: true, ativos: ['BTC', 'ETH', 'SOL'] });
   const v = varreduraDaCRM({
     registro: reg, carteira: CT, composicao: ['BTC', 'ETH', 'AVAX'], hoje: '2026-08-29',
-    julgamentos: { AVAX: APROVA }, limiarLiquidez: LIMIAR,
+    julgamentos: { AVAX: APROVA },
   });
   assert.deepEqual(v.incluidos.map((i) => i.ativo), ['AVAX']);
   assert.equal(v.incluidos[0].veredito, 'aprovado');
@@ -278,29 +284,89 @@ test('sem julgamento humano o ativo fica PENDENTE, e nenhum evento de filtro nas
 });
 
 test('BTC e ETH passam a alínea (b) por definição', () => {
-  const semCiclos = { liquidez: 100, teseSemEventoDatado: true, semAlavancagemOuContraparte: true };
-  assert.equal(filtroDeHorizonte('BTC', semCiclos, { limiarLiquidez: LIMIAR }).veredito, 'aprovado');
-  assert.equal(filtroDeHorizonte('XYZ', semCiclos, { limiarLiquidez: LIMIAR }).veredito, 'pendente');
+  const semCiclos = { volumes30d: { binance: 250e6, coinbase: 180e6 }, teseSemEventoDatado: true, semAlavancagemOuContraparte: true };
+  assert.equal(filtroDeHorizonte('BTC', semCiclos).veredito, 'aprovado');
+  assert.equal(filtroDeHorizonte('XYZ', semCiclos).veredito, 'pendente');
 });
 
 // ══ D36 A · AS DUAS OBJETIVAS E AS DUAS DE JULGAMENTO ═════════════════════
 test('a Torre aplica (a) e (b) sozinha, e separa (c) e (d) como julgamento', () => {
-  const r = filtroDeHorizonte('XYZ', { liquidez: 100, ciclosCompletos: 2 }, { limiarLiquidez: LIMIAR });
+  const r = filtroDeHorizonte('XYZ', { volumes30d: { binance: 250e6, coinbase: 180e6 }, ciclosCompletos: 2 });
   assert.equal(r.veredito, 'pendente');
   assert.deepEqual(r.pendentesAutomaticas, [], '(a) e (b) foram resolvidas sozinhas');
   assert.equal(r.pendentesDeJulgamento.length, 2, 'sobram (c) e (d) para o Gui');
 });
 
-test('liquidez abaixo do limiar reprova sozinha, sem passar pelo Gui', () => {
-  const r = filtroDeHorizonte('XYZ', { ...APROVA, liquidez: 10 }, { limiarLiquidez: LIMIAR });
-  assert.equal(r.veredito, 'reprovado');
-  assert.match(r.motivo, /\(a\) liquidez 10 abaixo do limiar 50/);
+// ══ D37 A · O LIMIAR DE LIQUIDEZ, COM NÚMERO ═════════════════════════════
+test('duas exchanges acima de US$ 100 mi aprovam a alínea (a)', () => {
+  assert.equal(filtroDeHorizonte('XYZ', APROVA).veredito, 'aprovado');
 });
 
-test('sem limiar de liquidez configurado, (a) fica pendente e não aprova por omissão', () => {
-  const r = filtroDeHorizonte('XYZ', APROVA);
+test('volume concentrado numa exchange só reprova — é dependência, não liquidez', () => {
+  const r = filtroDeHorizonte('XYZ', { ...APROVA, volumes30d: { binance: 900e6, kraken: 20e6 } });
+  assert.equal(r.veredito, 'reprovado');
+  assert.match(r.motivo, /1 exchange\(s\) acima de US\$ 100 mi, exige 2/);
+});
+
+test('somar não vale: 60 + 60 dá 120 mi somados e reprova mesmo assim', () => {
+  const r = filtroDeHorizonte('XYZ', { ...APROVA, volumes30d: { binance: 60e6, coinbase: 60e6 } });
+  assert.equal(r.veredito, 'reprovado', 'medido separadamente, nenhuma das duas passa');
+});
+
+test('sem os volumes, (a) fica pendente e não aprova por omissão', () => {
+  const { volumes30d, ...semVolumes } = APROVA;
+  const r = filtroDeHorizonte('XYZ', semVolumes);
   assert.equal(r.veredito, 'pendente');
-  assert.match(r.motivo, /limiar não definido no sistema/);
+  assert.match(r.motivo, /volumes de 30 dias não vieram/);
+});
+
+test('o limiar e o mínimo de exchanges são os da D37 A', () => {
+  assert.equal(LIMIAR_LIQUIDEZ, 100_000_000);
+  assert.equal(EXCHANGES_MINIMAS, 2);
+  assert.equal(JANELA_LIQUIDEZ_DIAS, 30);
+});
+
+// ══ D37 C · O TERCEIRO INDICADOR DA CAMADA 4 ═════════════════════════════
+const NETFLOW = { valor: 0, min: -100, max: 100, data: '2026-08-28' };
+const COMPLETA = { ...V, 'Exchange Netflow': NETFLOW };
+
+test('a camada 4 tem três indicadores e deixou de cair com uma ausência', () => {
+  assert.deepEqual(SERIES.filter((s) => s.camada === 4).map((s) => s.n),
+    ['ETF Net Inflow', 'Funding Rate', 'Exchange Netflow']);
+  const sem = { ...COMPLETA }; delete sem['Funding Rate'];
+  const c4 = varrer({ varredura: sem, hoje: HOJE }).camadas.find((c) => c.camada === 4);
+  assert.ok(c4, 'com três, uma ausência pesa 33% e a camada fica');
+  assert.deepEqual(c4.ausentes, ['Funding Rate']);
+  perto(c4.posicao, (52.6092 + 50) / 2, 0.01, 'renormaliza sobre os dois que voltaram');
+});
+
+test('antes da D37 C, essa mesma ausência derrubaria 13,6% do índice de uma vez', () => {
+  // com dois indicadores, uma ausência era 50% — acima do terço, camada fora.
+  const doisSo = { ...V }; delete doisSo['Funding Rate'];
+  assert.ok(!varrer({ varredura: doisSo, hoje: HOJE }).camadas.some((c) => c.camada === 4));
+  // com três, a mesma falta de Funding deixa a camada de pé.
+  const tres = { ...COMPLETA }; delete tres['Funding Rate'];
+  assert.ok(varrer({ varredura: tres, hoje: HOJE }).camadas.some((c) => c.camada === 4));
+});
+
+test('duas ausências de três derrubam a camada 4, como nas outras', () => {
+  const sem = { ...COMPLETA }; delete sem['Funding Rate']; delete sem['ETF Net Inflow'];
+  assert.ok(!varrer({ varredura: sem, hoje: HOJE }).camadas.some((c) => c.camada === 4));
+});
+
+test('o netflow é aditivo e tem série longa, e não duplica os outros dois', () => {
+  const nf = SERIES.find((s) => s.n === 'Exchange Netflow');
+  assert.equal(nf.escala, 'lin', 'aditivo para efeito de normalização');
+  assert.equal(nf.inicioSerie, '2011-01-01', 'série longa, confiança plena');
+  assert.equal(nf.invertido, undefined);
+});
+
+// ══ D37 D · PESOS INTERNOS IGUAIS ════════════════════════════════════════
+test('os três da camada 4 pesam igual — média simples, sem peso inventado', () => {
+  const r = varrer({ varredura: COMPLETA, hoje: HOJE });
+  const c4 = r.camadas.find((c) => c.camada === 4);
+  perto(c4.posicao, (52.6092 + 43.2621 + 50) / 3, 0.01, 'os três entram com o mesmo peso');
+  assert.deepEqual(c4.ausentes, []);
 });
 
 test('a fila de julgamento traz há quantos dias cada ativo espera', () => {
