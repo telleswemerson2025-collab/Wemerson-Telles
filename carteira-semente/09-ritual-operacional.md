@@ -1,5 +1,5 @@
 # 09 — RITUAL OPERACIONAL DA CARTEIRA SEMENTE
-Versão 1.8 · 29/08/2026 — conciliado com as Decisões 1 a 25.
+Versão 1.9 · 29/08/2026 — conciliado com as Decisões 1 a 26.
 *Alterações em relação ao original do Mr. G estão listadas no fim do arquivo.*
 
 Como o Mr. G aciona o sistema no dia a dia. Espelha o ritual da
@@ -98,7 +98,9 @@ Três acionamentos. Dois por frase, um automático.
 
 ### Entrega, por carteira
 
-- Percentual do aporte do mês que vai para ativo.
+- Percentual do aporte do mês que vai para ativo — ou "aporte
+  integralmente destinado à proteção", quando a glidepath
+  consumir tudo. A defesa vem sempre primeiro (Decisão 26).
 - Estação: Plantio · Crescimento · Colheita · Abrigo.
 - Abrigo ativo, sim ou não, e o fator vigente.
 - Reforço de Fundo: liberado ou travado, com **todas** as travas que

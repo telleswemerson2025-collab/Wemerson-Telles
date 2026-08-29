@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.14 — decisões 1 a 24 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.15 — decisões 1 a 26 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -33,7 +33,9 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
 3. **A fonte é o gráfico/tooltip, NUNCA a memória.** Todo número citado tem que bater com a fonte.
 4. **Quem propõe não audita.** Alocador e Auditor são papéis separados.
 5. **Sem promessa de retorno. Sem previsão de preço.** Falhar aqui veta a saída, sempre.
-6. **Preservação vem antes de convicção.**
+6. **Preservação vem antes de convicção.** E isso é **regra, não calibragem**: quando a proteção
+   programada e a alocação disputam o mesmo dinheiro, **a proteção vem primeiro e a alocação cede**
+   — nunca o contrário, e nunca por acaso de dois fatores estarem alinhados (Decisão 26).
 7. **Sempre os mesmos indicadores, todo dia, na mesma ordem.** Indicador que entra e sai conforme
    a conveniência vira desculpa para justificar o que já se queria fazer.
 8. **Dado ilustrativo é rotulado como ilustrativo.** Nunca apresentar reconstrução como leitura real.

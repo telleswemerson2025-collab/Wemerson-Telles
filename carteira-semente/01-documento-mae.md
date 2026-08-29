@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.15 · 29/08/2026 · BlockCapital Research — Decisões 2 a 25 aplicadas.
+Versão 1.16 · 29/08/2026 · BlockCapital Research — Decisões 2 a 26 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -205,6 +205,9 @@ o sistema calcula sem discricionariedade. **O Gate assina.** A invariante 1 perm
   | 2 → 1 ano | 1,67 pts | 1,8 mês |
   | 1 ano → entrega | 0,83 pt | 3,6 meses |
 
+  A faixa do passo é de **0,83 a 2,83 pontos**. O trecho final é mais lento de propósito — só
+  precisa mover 10 pontos — e move cerca de uma vez por trimestre.
+
 - **A velocidade é modulada pelo estado da Linha d'Água:** Mercado saudável **1,50** · Estresse de
   curto prazo **1,00** · Prejuízo do mercado **0,50** · Capitulação profunda **0,25**. Acelera no
   bom, segura no ruim, **nunca força proteção no fundo** — é a seção 7 finalmente implementada.
@@ -212,8 +215,15 @@ o sistema calcula sem discricionariedade. **O Gate assina.** A invariante 1 perm
   acumulada, e o fator 1,50 a recupera antes de seguir o alvo corrente. **Teto de 12 pontos**:
   atingido, o fator volta a 1,00 mesmo em Capitulação — abaixo disso a modulação deixaria de ser
   prudência e viraria aposta de que o fundo passa antes dos 18 anos.
+
+  *A defasagem acumula 1,5 vez mais rápido do que recupera — 1,31 ponto por mês em Capitulação
+  contra 0,88 em Mercado saudável. **Isso é desenho, não efeito colateral:** proteger na queda custa
+  mais do que recuperar na alta, e é assim que deve ser numa carteira com data de entrega. **O teto
+  de 12 pontos é a peça que impede a assimetria de crescer sem limite, e por isso é estrutural, não
+  parâmetro de ajuste — mexer nele é decisão registrada.***
 - **Os últimos doze meses não modulam.** Faltando 12 meses ou menos, o fator é sempre 1,00, qualquer
-  que seja o estado, e a defasagem acumulada é liquidada dentro desse período. *Modular pressupõe
+  que seja o estado, e a defasagem acumulada é **liquidada** dentro desse período — trabalhada até
+  zero, não perdoada. *Modular pressupõe
   tempo para esperar o mercado virar; no último ano não há esse tempo.* É a invariante 6 aplicada ao
   relógio.
 - Verificação **mensal**, no aporte.
@@ -224,12 +234,25 @@ o sistema calcula sem discricionariedade. **O Gate assina.** A invariante 1 perm
   move nada — sem ela o sistema venderia todo mês por ruído.
 - Cada tranche registrada com data, ativo, quantidade e a exposição antes e depois.
 
-> ⚠️ **A partir de 3 anos da entrega, o gatilho 3 disputa o aporte com o Índice de Plantio.** A
-> demanda mensal da glidepath supera os R$150 do aporte em todos os estados, então nos meses em que
-> a banda rompe o aporte inteiro vai para a defesa. A modulação protege a tese onde importa — em
-> Capitulação isso acontece em 15% dos meses, e nos outros 85% o aporte segue o Índice de Plantio —
-> mas **a ordem de precedência entre os dois não está escrita**. Detalhe em
-> `08-decisoes-29-08-2026.md`.
+### A precedência sobre o aporte do mês (Decisão 26)
+**O gatilho 3 precede o Índice de Plantio, sempre e por regra.** A ordem de destinação é:
+
+1. **A defesa**, até fechar a demanda da glidepath do mês.
+2. **O que sobrar segue o Índice de Plantio** normalmente.
+3. Sobrando ainda, **o excedente vai para a parte protegida**.
+
+Se o aporte inteiro for consumido pela defesa, o Índice de Plantio não aloca nada naquele mês, e a
+leitura diz isso com estas palavras: **"aporte integralmente destinado à proteção"**.
+
+> *Proteção vence convicção é invariante, e invariante não pode depender de dois fatores calibrados
+> calharem de se alinhar. Se uma calibragem futura desalinhar, é a alocação que cede, nunca a
+> proteção.*
+
+Em números, a partir de 3 anos da entrega, com carteira de R$ 53.074 e aporte de R$ 150: a demanda
+da glidepath supera o aporte em **todos** os estados. Nos meses em que a banda rompe — 88% deles em
+Mercado saudável, 15% em Capitulação — o aporte vai inteiro para a defesa. A modulação da Decisão 25
+é o que preserva a tese de acumulação onde ela importa, mas a regra acima é o que garante isso
+**mesmo se a modulação for recalibrada.**
 
 ### Os três degraus do teto de 8%
 Um teto que nunca é executado não é teto, é intenção. Por isso o limite tem degraus:

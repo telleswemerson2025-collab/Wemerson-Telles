@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.18 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 25 aplicadas.
+Versão 1.19 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 26 aplicadas.
 
 ---
 
@@ -112,6 +112,12 @@ não entra nesta tabela: ele modula o resultado dela, depois, pela fórmula da D
 | Mercado saudável | 40% | idem |
 
 O que sobra vai para o caixa, aguardando zona.
+
+⚠️ **O gatilho 3 tem precedência sobre esta tabela** (Decisão 26). A ordem de destinação do aporte é:
+**(1)** a defesa, até fechar a demanda da glidepath do mês; **(2)** o que sobrar segue o Índice de
+Plantio; **(3)** sobrando ainda, o excedente vai para a parte protegida. Se a defesa consumir o
+aporte inteiro, o Índice de Plantio não aloca nada naquele mês e a proposta diz *"aporte
+integralmente destinado à proteção"*.
 
 ### A MODULAÇÃO PELO ÍNDICE SEMENTE (Decisão 4, 29/08/2026)
 
@@ -323,6 +329,9 @@ acompanhada do registro do ciclo: quantos acionamentos já houve e quando foi o 
     fator é 1,00 e a defasagem está sendo liquidada? O fluxo do mês foi consumido antes de qualquer
     venda? A ordem de venda respeita o peso de longo prazo, com BTC e ETH por último? A banda de 3
     pontos foi respeitada? Cada tranche tem data, ativo, quantidade e exposição antes e depois?
+    **A precedência foi respeitada** — defesa primeiro, Índice de Plantio no que sobrar, excedente
+    para a parte protegida? Aporte consumido pela defesa saiu com a frase exata *"aporte
+    integralmente destinado à proteção"*?
 28. **Alguma vaga bloqueada passou de 90 dias sem ir ao Gate?** Prorrogação silenciosa REPROVA — a
     escolha entre manter e invalidar tem de estar registrada com data e motivo.
 
