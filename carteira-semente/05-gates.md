@@ -1,6 +1,6 @@
 # GATES DA CARTEIRA SEMENTE
 Nenhum agente aprova. Só o humano.
-Versão 1.4 · 29/08/2026 — Decisões 1 a 9 aplicadas.
+Versão 1.5 · 29/08/2026 — Decisões 1 a 10 aplicadas.
 
 ## GATE 1 — DIREÇÃO (antes de produzir)
 Perguntas:
@@ -34,8 +34,8 @@ Checklist. Qualquer item falho VETA:
 11. **Abrigo** — se faltam 3 anos ou menos, a exposição respeita a glidepath.
 12. **Fatia tática** — se houver, opera só com ganho realizado, nunca com o principal, e no máximo 5–10%.
 13. **Voz** — sem hype, sem emoji, Teste da Amiga passa, sem `=` e `≠`.
-14. **Rótulo de dado** — nada ilustrativo apresentado como real. Projeção traz a data e o estado
-    que a geraram; simulação com fase trocada à mão sai marcada como hipotética.
+14. **Rótulo de dado** — nada ilustrativo apresentado como real. Projeção traz a data, o estado
+    E o índice que a geraram; simulação com fase trocada à mão sai marcada como hipotética.
 15. **Sem default silencioso** — se faltou leitura de origem, o material diz que faltou. Nunca
     preencher lacuna com suposição.
 

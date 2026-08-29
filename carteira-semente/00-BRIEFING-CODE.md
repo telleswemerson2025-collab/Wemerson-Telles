@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.4 — decisões 1 a 9 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.5 — decisões 1 a 10 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -84,12 +84,14 @@ especificação. Nenhum foi alterado. O que precisa mudar:
   do pacote visual.
 - **`simulador.html`** — o modelo de cenários está correto e segue sendo a fonte de verdade
   (Decisão 3). Mas a **Decisão 8 mudou a fase de partida**, e aí há três mudanças a fazer:
-  a) `FASE_ESTADO=[0,2,3,1]` implementa o mapeamento antigo; o novo é
-  Capitulação→0 · Prejuízo→**0** · Estresse→1 · Saudável→2, e a fase 3 deixa de ser destino de
-  qualquer estado; b) a fase deixa de ser escolha do usuário e passa a ser lida da Linha d'Água,
-  com o seletor nascendo preenchido e rotulado "fase atual lida hoje", marcando a simulação como
-  hipotética se o usuário mudar; c) sem leitura da Linha d'Água, o simulador exibe estado
-  indisponível e **não gera projeção** — nunca default silencioso.
+  a) `FASE_ESTADO=[0,2,3,1]` implementa o mapeamento antigo; o novo tem **cinco entradas para
+  quatro estados** — Capitulação→0 · Prejuízo→**0** · Estresse→1 · Saudável com Índice < 65→2 ·
+  Saudável com Índice ≥ 65→**3** (Decisão 10), o que exige o Índice do dia como segunda entrada,
+  que o simulador hoje não recebe; b) a fase deixa de ser escolha do usuário e passa a ser lida da
+  Linha d'Água, com o seletor nascendo preenchido e rotulado "fase atual lida hoje", marcando a
+  simulação como hipotética se o usuário mudar; c) sem leitura da Linha d'Água, o simulador exibe
+  estado indisponível e **não gera projeção** — nunca default silencioso; d) a tela precisa mostrar
+  **o estado E o índice** que definiram a fase, para a leitura ser auditável pelo cliente.
 - **Nenhuma tela registra o ciclo do Reforço de Fundo** (Decisão 9). O contador de acionamentos, o
   marco de virada e o registro gravado de datas não existem em lugar nenhum — e sem registro
   gravado o reforço não pode ser liberado.

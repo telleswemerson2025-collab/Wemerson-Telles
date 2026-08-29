@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.4 · 29/08/2026 · BlockCapital Research — Decisões 2 a 9 aplicadas.
+Versão 1.5 · 29/08/2026 · BlockCapital Research — Decisões 2 a 10 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -190,15 +190,21 @@ Média a.a. = média geométrica do ciclo: `((1+r₁)(1+r₂)(1+r₃)(1+r₄))^(
 O valor final depende de **em que ponto do ciclo a carteira começa**. Esse ponto não é chutado nem
 fixado no código: é **lido da Linha d'Água no dia em que a simulação é aberta**.
 
-| Estado hoje (Linha d'Água) | Fase de partida |
-|---|---|
-| Capitulação profunda | fase 0 · queda |
-| Prejuízo do mercado | fase 0 · queda |
-| Estresse de curto prazo | fase 1 · recuperação |
-| Mercado saudável | fase 2 · alta |
+| Estado hoje (Linha d'Água) | Condição | Fase de partida |
+|---|---|---|
+| Capitulação profunda | — | fase 0 · queda |
+| Prejuízo do mercado | — | fase 0 · queda |
+| Estresse de curto prazo | — | fase 1 · recuperação |
+| Mercado saudável | Índice < 65 | fase 2 · alta |
+| Mercado saudável | Índice ≥ 65 | fase 3 · correção |
+
+Mercado saudável com o Índice já em 65 ou mais é topo de ciclo: o próximo capítulo do padrão é a
+correção, não a continuação da alta. A fronteira exata (Índice igual a 65) vai para a fase 3, e o
+que vale é o **fechamento do dia da simulação**, não uma média.
 
 O seletor manual continua na tela, mas nasce preenchido com a fase real e rotulado como
 **"fase atual lida hoje"**. Se o usuário mudar, a tela marca a simulação como **hipotética**.
+A tela mostra **o estado E o índice que definiram a fase**, para o cliente poder auditar a leitura.
 **Se a leitura da Linha d'Água não estiver disponível, o simulador não assume fase:** mostra o
 estado indisponível e não gera projeção. Nunca cair em default silencioso.
 
@@ -218,15 +224,17 @@ O que cada estado produziria, para referência:
 | Capitulação profunda | 0 | R$ 81 mil (2,5x) | R$ 238 mil (7,4x) | R$ 773 mil (23,9x) |
 | Prejuízo do mercado | 0 | R$ 81 mil (2,5x) | R$ 238 mil (7,4x) | R$ 773 mil (23,9x) |
 | Estresse de curto prazo | 1 | R$ 97 mil (3,0x) | R$ 312 mil (9,6x) | R$ 1,12 mi (34,4x) |
-| **Mercado saudável** (hoje) | 2 | **R$ 88 mil (2,7x)** | **R$ 262 mil (8,1x)** | **R$ 868 mil (26,8x)** |
+| **Mercado saudável · Índice < 65** (hoje) | 2 | **R$ 88 mil (2,7x)** | **R$ 262 mil (8,1x)** | **R$ 868 mil (26,8x)** |
+| Mercado saudável · Índice ≥ 65 | 3 | R$ 68 mil (2,1x) | R$ 186 mil (5,7x) | R$ 557 mil (17,2x) |
 
 **Em todos os estados e em todos os cenários conservadores, o valor aportado mais que dobra** — o
-menor resultado da tabela é 2,5x. O produto funciona até quando o mercado não colabora.
+menor resultado da tabela é 2,1x. O produto funciona até quando o mercado não colabora.
 
-*A faixa por ponto de partida publicada na v1.3 (R$ 68 mil a R$ 97 mil no conservador) fica
-superada: ela varria as quatro fases do modelo, e a Decisão 8 determina que só três são
-alcançáveis — a fase 3 (correção) não é destino de nenhum estado. O piso do conservador sobe de
-R$ 68 mil para R$ 81 mil por causa disso.*
+### A linha mais aquecida é a de projeção mais baixa
+Repare que a última linha — mercado saudável com o Índice já esticado — dá os menores números da
+tabela. **Isso é intencional, e deve ser dito assim: quanto mais aquecido o mercado no dia em que a
+conta é feita, mais conservadora a projeção.** Uma simulação aberta no topo do ciclo começa pela
+correção, e é assim que se evita vender expectativa no pior momento para criá-la.
 
 ⚠️ **Regra de comunicação:** apresentar sempre como FAIXA e como perspectiva, nunca como previsão.
 A faixa é a do **conservador ao forte** — três cenários, uma fase, a que a Linha d'Água leu hoje.

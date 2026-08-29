@@ -1,5 +1,5 @@
 # LINHA D'ÁGUA — o instrumento de origem da leitura
-Versão 1.4 · 29/08/2026 — Decisões 2, 4 a 9 aplicadas.
+Versão 1.5 · 29/08/2026 — Decisões 2, 4 a 10 aplicadas.
 
 ## AUTORIDADE
 A Linha d'Água é a **autoridade única sobre o estado do mercado**. A classificação é objetiva —
@@ -34,12 +34,17 @@ Reforço de Fundo bloqueado: exige Capitulação ou Prejuízo, e o estado de hoj
 ## A LINHA D'ÁGUA TAMBÉM ABRE O SIMULADOR (Decisão 8)
 A fase de partida da simulação é lida daqui, no dia em que a simulação é aberta:
 
-| Estado | Fase de partida |
-|---|---|
-| Capitulação profunda | 0 · queda |
-| Prejuízo do mercado | 0 · queda |
-| Estresse de curto prazo | 1 · recuperação |
-| Mercado saudável | 2 · alta |
+| Estado | Condição | Fase de partida |
+|---|---|---|
+| Capitulação profunda | — | 0 · queda |
+| Prejuízo do mercado | — | 0 · queda |
+| Estresse de curto prazo | — | 1 · recuperação |
+| Mercado saudável | Índice < 65 | 2 · alta |
+| Mercado saudável | Índice ≥ 65 | 3 · correção |
+
+O desdobramento de Mercado saudável (Decisão 10) é o único ponto em que o Índice entra no
+mapeamento, e mesmo aí ele **não classifica estado**: o estado continua sendo Mercado saudável nos
+dois casos. O Índice só diz em que altura do estado se está.
 
 **Sem leitura disponível, o simulador não assume fase** — exibe indisponível e não projeta.
 Isso faz da Linha d'Água uma dependência dura do simulador, não só do Alocador.
