@@ -30,7 +30,10 @@ export const SERIES = Object.freeze([
   { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01' },
   { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11' },
   { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01' },
-  { n: 'Exchange Netflow',    camada: 4, escala: 'lin', inicioSerie: '2011-01-01' },
+  // A escala é LINEAR e não pode ser outra: netflow é entrada menos saída, cruza o
+  // zero, e log de zero ou de negativo não existe. Ver a nota na D38 D.
+  // Os extremos e o início da série são PROVISÓRIOS até a leitura no terminal.
+  { n: 'Exchange Netflow',    camada: 4, escala: 'lin', inicioSerie: '2011-01-01', extremosProvisorios: true },
 ]);
 
 // D37 A: alínea (a) do Filtro de Horizonte, com número.
@@ -39,6 +42,14 @@ export const SERIES = Object.freeze([
 export const LIMIAR_LIQUIDEZ = 100_000_000;   // âncora estrutural (D37 B)
 export const EXCHANGES_MINIMAS = 2;           // âncora estrutural (D37 B)
 export const JANELA_LIQUIDEZ_DIAS = 30;
+
+// D38 A: a lista é NOMEADA, não descrita. Quem monta a varredura não escolhe: lê.
+// D38 C: é âncora estrutural, e âncora de PAR com o limiar — afrouxar a lista sem
+// tocar no número tem o mesmo efeito de baixar o número.
+export const EXCHANGES_PRIMEIRA_LINHA = Object.freeze([
+  'Binance', 'Coinbase', 'Kraken', 'OKX', 'Bybit', 'Bitget',
+]);
+const naLista = (nome) => EXCHANGES_PRIMEIRA_LINHA.some((e) => e.toLowerCase() === String(nome).toLowerCase());
 
 export const PESOS = Object.freeze({ 1: 0.34, 2: 0.26, 3: 0.16, 4: 0.12, 5: 0.12 });
 
@@ -89,6 +100,9 @@ export const faixaDoIndice = (v) => FAIXAS.find((f) => v < f.ate).nome;
  * Varredura do dia. `varredura` traz, por indicador: {valor, min, max, data}.
  * Ausência = indicador que não veio, ou veio sem valor. É nomeado, nunca estimado.
  */
+/** Séries cujos extremos ainda não foram lidos no terminal (D38 D). */
+export const seriesComExtremosProvisorios = () => SERIES.filter((s) => s.extremosProvisorios).map((s) => s.n);
+
 export function varrer({ varredura, hoje, camada5 = null, anterior = null }) {
   const ausencias = [];
   const lidos = new Map();
@@ -187,6 +201,7 @@ export function varrer({ varredura, hoje, camada5 = null, anterior = null }) {
     confiancas: [...lidos.values()].filter((x) => x.confianca < 1)
       .map((x) => ({ indicador: x.n, confianca: x.confianca, bruto: x.bruto, ajustado: x.posicao })),
     ausencias,
+    extremosProvisorios: seriesComExtremosProvisorios().filter((n) => varredura?.[n]),
     mudou,
     semRecomendacao: true, // a Torre lê regime. Não decide nada.
   };
@@ -275,7 +290,7 @@ export function camada5({ registro, carteira, hoje, posicoes }) {
  * silencioso que a invariante 3 proíbe.
  */
 export function filtroDeHorizonte(ativo, j = {}, { limiarLiquidez = LIMIAR_LIQUIDEZ, exchangesMinimas = EXCHANGES_MINIMAS } = {}) {
-  const reprovas = [], pendentesAutomaticas = [], pendentesDeJulgamento = [];
+  const reprovas = [], pendentesAutomaticas = [], pendentesDeJulgamento = [], ignoradas = [];
 
   // (a) e (b) são objetivas: a Torre aplica sozinha (D36 A).
   // (a) D37 A: volume médio diário de 30 dias ≥ US$ 100 mi, em pelo menos duas
@@ -284,12 +299,15 @@ export function filtroDeHorizonte(ativo, j = {}, { limiarLiquidez = LIMIAR_LIQUI
   if (!vols || Object.keys(vols).length === 0) {
     pendentesAutomaticas.push('(a) liquidez — volumes de 30 dias não vieram na varredura');
   } else {
-    const qualificam = Object.entries(vols).filter(([, v]) => typeof v === 'number' && v >= limiarLiquidez);
+    const entradas = Object.entries(vols);
+    const foraDaLista = entradas.filter(([e]) => !naLista(e)).map(([e]) => e);
+    const qualificam = entradas.filter(([e, v]) => naLista(e) && typeof v === 'number' && v >= limiarLiquidez);
     if (qualificam.length < exchangesMinimas) {
-      const detalhe = Object.entries(vols).map(([e, v]) => `${e} ${(v / 1e6).toFixed(0)}mi`).join(', ');
-      reprovas.push(`(a) liquidez: ${qualificam.length} exchange(s) acima de US$ ${limiarLiquidez / 1e6} mi, ` +
-        `exige ${exchangesMinimas} — ${detalhe}`);
+      const detalhe = entradas.map(([e, v]) => `${e} ${(v / 1e6).toFixed(0)}mi${naLista(e) ? '' : ' (fora da lista)'}`).join(', ');
+      reprovas.push(`(a) liquidez: ${qualificam.length} exchange(s) de primeira linha acima de ` +
+        `US$ ${limiarLiquidez / 1e6} mi, exige ${exchangesMinimas} — ${detalhe}`);
     }
+    if (foraDaLista.length) ignoradas.push(...foraDaLista);
   }
 
   if (['BTC', 'ETH'].includes(ativo)) {
@@ -304,14 +322,14 @@ export function filtroDeHorizonte(ativo, j = {}, { limiarLiquidez = LIMIAR_LIQUI
     else if (!j[chave]) reprovas.push(alinea);
   }
 
-  if (reprovas.length) return { veredito: 'reprovado', motivo: reprovas.join(' · ') };
+  if (reprovas.length) return { veredito: 'reprovado', motivo: reprovas.join(' · '), exchangesIgnoradas: ignoradas };
   if (pendentesAutomaticas.length || pendentesDeJulgamento.length) {
     const partes = [];
     if (pendentesDeJulgamento.length) partes.push(`julgamento do Gui: ${pendentesDeJulgamento.join(' · ')}`);
     if (pendentesAutomaticas.length) partes.push(`dado ou limiar faltando: ${pendentesAutomaticas.join(' · ')}`);
-    return { veredito: 'pendente', motivo: partes.join(' | '), pendentesDeJulgamento, pendentesAutomaticas };
+    return { veredito: 'pendente', motivo: partes.join(' | '), pendentesDeJulgamento, pendentesAutomaticas, exchangesIgnoradas: ignoradas };
   }
-  return { veredito: 'aprovado', motivo: 'passa nas quatro alíneas do Filtro de Horizonte' };
+  return { veredito: 'aprovado', motivo: 'passa nas quatro alíneas do Filtro de Horizonte', exchangesIgnoradas: ignoradas };
 }
 
 /**

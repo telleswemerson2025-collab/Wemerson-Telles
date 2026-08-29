@@ -1,5 +1,5 @@
 # 09 — RITUAL OPERACIONAL DA CARTEIRA SEMENTE
-Versão 1.13 · 29/08/2026 — conciliado com as Decisões 1 a 37.
+Versão 1.14 · 29/08/2026 — conciliado com as Decisões 1 a 38.
 *Alterações em relação ao original do Mr. G estão listadas no fim do arquivo.*
 
 Como o Mr. G aciona o sistema no dia a dia. Espelha o ritual da
@@ -63,7 +63,9 @@ universo elegível. O caminho é:
 1. A Torre aplica **sozinha** a alínea **(a) liquidez** — volume
    médio diário de 30 dias em US$ 100 mi ou mais, em pelo menos
    duas exchanges de primeira linha, cada uma medida sozinha — e a
-   alínea
+   lista de primeira linha é nomeada, não descrita: Binance,
+   Coinbase, Kraken, OKX, Bybit e Bitget. Quem monta a varredura
+   não escolhe, lê a lista — e a alínea
    **(b) ciclo completo, ou ser BTC ou ETH** — as duas objetivas.
 2. Apresenta as alíneas **(c) tese sem evento datado** e **(d) sem
    alavancagem, sintético ou contraparte concentrada** ao Gui como

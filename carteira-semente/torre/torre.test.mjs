@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -305,7 +305,7 @@ test('duas exchanges acima de US$ 100 mi aprovam a alínea (a)', () => {
 test('volume concentrado numa exchange só reprova — é dependência, não liquidez', () => {
   const r = filtroDeHorizonte('XYZ', { ...APROVA, volumes30d: { binance: 900e6, kraken: 20e6 } });
   assert.equal(r.veredito, 'reprovado');
-  assert.match(r.motivo, /1 exchange\(s\) acima de US\$ 100 mi, exige 2/);
+  assert.match(r.motivo, /1 exchange\(s\) de primeira linha acima de US\$ 100 mi, exige 2/);
 });
 
 test('somar não vale: 60 + 60 dá 120 mi somados e reprova mesmo assim', () => {
@@ -445,4 +445,55 @@ test('a escala de cada série é a que o documento 03 manda — e trocar uma mud
 
 test('DXY e Fed Funds são os únicos invertidos', () => {
   assert.deepEqual(SERIES.filter((s) => s.invertido).map((s) => s.n), ['DXY', 'Fed Funds Rate']);
+});
+
+// ══ D38 · A LISTA DE EXCHANGES DE PRIMEIRA LINHA ══════════════════════════
+test('a lista é nomeada, com os seis nomes da D38 A', () => {
+  assert.deepEqual(EXCHANGES_PRIMEIRA_LINHA, ['Binance', 'Coinbase', 'Kraken', 'OKX', 'Bybit', 'Bitget']);
+});
+
+test('exchange fora da lista não conta, por maior que seja o volume', () => {
+  const r = filtroDeHorizonte('XYZ', { ...APROVA, volumes30d: { Binance: 250e6, ExchangeQualquer: 900e6 } });
+  assert.equal(r.veredito, 'reprovado', 'só uma de primeira linha qualifica');
+  assert.match(r.motivo, /ExchangeQualquer 900mi \(fora da lista\)/);
+  assert.deepEqual(r.exchangesIgnoradas, ['ExchangeQualquer']);
+});
+
+test('duas da lista aprovam; a de fora só aparece relatada', () => {
+  const r = filtroDeHorizonte('XYZ', { ...APROVA, volumes30d: { Binance: 250e6, Kraken: 150e6, Outra: 800e6 } });
+  assert.equal(r.veredito, 'aprovado');
+  assert.deepEqual(r.exchangesIgnoradas, ['Outra'], 'quem monta a varredura não escolhe: lê a lista');
+});
+
+test('o nome da exchange não é sensível a maiúscula', () => {
+  const r = filtroDeHorizonte('XYZ', { ...APROVA, volumes30d: { binance: 250e6, okx: 150e6 } });
+  assert.equal(r.veredito, 'aprovado');
+});
+
+test('a lista e o limiar são âncora de par: afrouxar um faz o efeito do outro', () => {
+  // com a lista de seis, uma exchange de fora com 900mi não salva o ativo.
+  const comFora = filtroDeHorizonte('XYZ', { ...APROVA, volumes30d: { Binance: 250e6, Outra: 900e6 } });
+  assert.equal(comFora.veredito, 'reprovado');
+  // se 'Outra' entrasse na lista, o mesmo ativo passaria — sem o número 100mi mudar.
+  const seEntrasse = filtroDeHorizonte('XYZ', { ...APROVA, volumes30d: { Binance: 250e6, Bybit: 900e6 } });
+  assert.equal(seEntrasse.veredito, 'aprovado');
+});
+
+// ══ D38 D · OS EXTREMOS DO NETFLOW SÃO PROVISÓRIOS ════════════════════════
+test('o netflow está marcado como extremos provisórios, e a entrega diz isso', () => {
+  assert.deepEqual(seriesComExtremosProvisorios(), ['Exchange Netflow']);
+  const r = varrer({ varredura: COMPLETA, hoje: HOJE });
+  assert.deepEqual(r.extremosProvisorios, ['Exchange Netflow']);
+  const semNetflow = varrer({ varredura: V, hoje: HOJE });
+  assert.deepEqual(semNetflow.extremosProvisorios, [], 'não sendo lido, não há provisório em uso');
+});
+
+test('a escala do netflow é linear, e não pode ser outra', () => {
+  const nf = SERIES.find((s) => s.n === 'Exchange Netflow');
+  assert.equal(nf.escala, 'lin');
+  // netflow é entrada menos saída: cruza o zero, e log não existe aí.
+  assert.equal(Number.isNaN(Math.log(-500)), true);
+  assert.equal(Math.log(0), -Infinity);
+  assert.equal(Number.isNaN(normalizar(-500, -1000, 1000, 'log')), true, 'log numa série assinada dá NaN');
+  assert.equal(normalizar(-500, -1000, 1000, 'lin'), 25, 'linear funciona');
 });

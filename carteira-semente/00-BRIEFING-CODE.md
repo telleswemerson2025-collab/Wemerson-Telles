@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.21 — decisões 1 a 37 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.22 — decisões 1 a 38 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -71,6 +71,18 @@ depois que alguém percebe.
 | 8 | A **banda de 3 pontos** da glidepath | D24 · D30 | a exposição com que a criança recebe a carteira |
 | 9 | A **trava 6** do Reforço de Fundo — caixa nunca abaixo de **10%** da carteira | D6 · D31 | a reserva sumindo acionamento a acionamento |
 | 10 | O **limiar de liquidez** — US$ 100 mi de volume diário de 30 dias, em ao menos **duas** exchanges medidas separadamente | D37 | a carteira ganhando ponta da qual não dá para sair |
+| 11 | A **lista de exchanges de primeira linha** — Binance · Coinbase · Kraken · OKX · Bybit · Bitget | D38 | a mesma promessa do membro 10 |
+
+> **Os membros 10 e 11 são âncora de par**, como o teto de 8% e o gatilho de 12%.
+> Afrouxar a lista sem tocar no número tem o mesmo efeito de baixar o número: um
+> ativo que hoje reprova passaria, com o "US$ 100 mi" intacto na página.
+>
+> **Para a lista mudar:** entrar exige operar há cinco anos ou mais, estar entre as
+> maiores por volume à vista de forma sustentada e não pontual, e publicar prova de
+> reservas ou equivalente auditável — tudo por decisão registrada no Gate 2.
+> **Sair é mais rápido que entrar:** insolvência, suspensão de saques ou perda de
+> licença relevante tira a exchange na hora, por decisão registrada, sem esperar
+> rodada.
 
 > **O membro 10 é o primeiro nascido na implementação**, exatamente pelo caminho
 > que a Decisão 31 parte C previu: parâmetro novo criado durante a construção

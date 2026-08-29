@@ -1,11 +1,11 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.3 · 29/08/2026 — Decisões 36 e 37 aplicadas
+Conferência. Versão 1.4 · 29/08/2026 — Decisões 36, 37 e 38 aplicadas
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
 - `torre.mjs` — o módulo. Sem dependências. Lê o registro da peça 1, não guarda nada.
 - `leitura-29-08-2026.mjs` — as catorze leituras reais do documento 07, transcritas.
-- `torre.test.mjs` — 48 testes da Torre (98 no pacote inteiro). `node --test` na raiz.
+- `torre.test.mjs` — 56 testes da Torre (105 no pacote inteiro). `node --test` na raiz.
 
 ## ⭐ ITEM 5 — O TESTE QUE PROVA A LEITURA DE 29/08/2026
 Entrada: as catorze leituras reais do `07-leituras-29-08-2026.md`, com mínimas e
@@ -168,10 +168,12 @@ menos duas exchanges de primeira linha, cada uma medida sozinha.** Somar não va
 O limiar entrou como **décimo membro da classe âncora**, e é o primeiro nascido na
 implementação, pelo caminho que a D31 parte C previu.
 
-**Um item continua sem definição:** o que é "exchange de primeira linha". A Torre
-conta as exchanges que a varredura lhe entrega; quem decide quais entram na lista
-não está escrito em decisão nenhuma. Hoje isso é escolha de quem monta a
-varredura, o que é o tipo de porta lateral que a classe âncora existe para fechar.
+**A lista de primeira linha foi fechada pela D38 A**, com seis nomes: Binance,
+Coinbase, Kraken, OKX, Bybit e Bitget. Exchange fora da lista **não conta**, por
+maior que seja o volume — e sai relatada em `exchangesIgnoradas`, para que ignorar
+seja visível e não silencioso. Entrou como membro 11 da classe âncora, **em par
+com o membro 10**: está testado que um ativo reprovado com uma exchange de fora
+passaria se ela entrasse na lista, sem o número 100 mi se mexer.
 
 ### 1. O Filtro de Horizonte não é automatizável — três das quatro alíneas são julgamento
 A D16 B manda cada incluído passar pelo Filtro "na hora". Das quatro alíneas da
@@ -201,10 +203,40 @@ mudança que revelou a divergência de 0,0004 entre as duas implementações.
 `r.estacao` é `undefined` por construção, e `semRecomendacao` sai `true` em toda
 entrega. A estação vem do Índice de Plantio, que é peça 3.
 
+## ⚠️ DOIS PONTOS DA D38 QUE PRECISAM DE VOCÊ
+
+### A escala do netflow: a D38 D contradiz a D37 C, e a D37 C está certa
+A **D37 C** diz que o netflow *"é aditivo para efeito de normalização"*. A
+**D38 D** diz *"a série é logarítmica"*. São incompatíveis, e o desempate é
+técnico, não de preferência:
+
+**Netflow é entrada menos saída — ele cruza o zero.** `log(0)` é −∞ e `log(−500)`
+é `NaN`. Normalização logarítmica numa série assinada não produz número errado:
+não produz número nenhum.
+
+O ETF Net Inflow, da mesma família e já no sistema, tem mínima **−1.138,9** e é
+linear no documento 07. Mantive **linear**, como a D37 C mandou, e escrevi o teste
+que prova a impossibilidade — `normalizar(-500, -1000, 1000, 'log')` devolve `NaN`.
+
+Se a intenção da D38 D era outra coisa — por exemplo normalizar o *módulo* do
+netflow em log e reaplicar o sinal — isso é desenho diferente e precisa ser dito,
+porque muda o que o indicador mede.
+
+### A Decisão 35 nunca chegou aqui
+A parte D manda os extremos do netflow para "a fila da D35". **Não tenho a D35** —
+as decisões saltaram de 34 para 36 no meu registro, e `08-decisoes` não tem
+nenhuma ocorrência dela.
+
+Implementei o que dava sem ela: o netflow está marcado com `extremosProvisorios`,
+a entrega da Torre lista quais séries em uso estão nessa condição, e o início em
+`2011-01-01` está registrado no código como alinhamento de conveniência até a
+leitura real. O que não fiz foi pôr numa fila que não conheço.
+
 ## UM PARÂMETRO NOVO NASCEU, E JÁ FOI SUBMETIDO
-O **limiar de liquidez** (D37 A) passou pelos quatro critérios na própria decisão
-que o criou, e entrou como membro 10 da classe âncora. É o primeiro caso do
-mecanismo da D31 parte C funcionando na prática.
+O **limiar de liquidez** (D37 A) e a **lista de exchanges** (D38 A) passaram pelos
+quatro critérios nas próprias decisões que os criaram, e entraram como membros 10 e
+11 da classe âncora, em par. São os dois primeiros casos do mecanismo da D31 parte
+C funcionando na prática.
 
 Os demais números vêm das decisões: pesos 34·26·16·12·12 (D03), faixas de 20 em 20
 (D03 · D02), confiança sobre 5 anos (D7), trava de 30% (D17 C), terço da camada
