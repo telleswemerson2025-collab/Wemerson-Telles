@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.6 · 29/08/2026 · BlockCapital Research — Decisões 2 a 11 aplicadas.
+Versão 1.7 · 29/08/2026 · BlockCapital Research — Decisões 2 a 12 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -219,16 +219,34 @@ auditar a partida.
 **Se a leitura da Linha d'Água não estiver disponível, o simulador não assume fase:** mostra o
 estado indisponível e não gera projeção. Nunca cair em default silencioso.
 
-### O resultado de HOJE (29/08/2026 · Mercado saudável · fase 2)
-Números datados: mudam quando o estado muda. Quem calcula é o simulador, não este documento.
+### ⭐ O NÚMERO DE CAPA É O PISO (Decisão 12)
+**Todo material comercial abre por este número:**
 
-| Cenário | Resultado | Multiplicador |
-|---|---|---|
-| Conservador | R$ 88 mil | 2,7x |
-| Moderado | R$ 262 mil | 8,1x |
-| Forte | R$ 868 mil | 26,8x |
+> ### R$ 67.725 · 2,1x o aportado
+> Piso do cenário conservador — o menor resultado entre as cinco partidas possíveis.
+> Partida: Mercado saudável com Índice ≥ 65 (fase 3 · mês 0), a mais adversa de todas.
 
-O que cada estado produziria, para referência:
+**Por que o piso e não a leitura do dia:** o piso é a única linha que uma revisão de mapeamento não
+consegue empurrar para cima sem que o próprio pior caso tenha melhorado. Vender pelo piso torna a
+deriva estruturalmente impossível na capa.
+
+Piso nos outros dois cenários, mesma partida: **R$ 185.653 (5,7x)** no moderado e
+**R$ 557.020 (17,2x)** no forte.
+
+### Segunda linha: a leitura do dia (29/08/2026)
+Rotulada como leitura do dia, com a partida visível. Muda quando o estado muda; quem calcula é o
+simulador, não este documento.
+
+| | |
+|---|---|
+| Estado (Linha d'Água) | Mercado saudável |
+| Índice Semente | 50,75 |
+| Fase · mês de entrada | 2 · 0 |
+| Conservador | R$ 88 mil (2,7x) |
+| Moderado | R$ 262 mil (8,1x) |
+| Forte | R$ 868 mil (26,8x) |
+
+### As cinco partidas, ao lado
 
 | Estado na abertura | Fase · mês | Conservador | Moderado | Forte |
 |---|---|---|---|---|
@@ -251,6 +269,41 @@ cai. Prejuízo do mercado (2,6x) fica abaixo de Mercado saudável com Índice ba
 que ordena a tabela não é a temperatura, e sim **quanto da queda ainda está pela frente e onde ela
 cai em relação ao capital já acumulado**. A afirmação segura é a de cima, sobre o extremo quente —
 e só ela.
+
+### 🔒 TABELA DE DERIVA ACUMULADA (permanente — nunca apagar nem resumir)
+Registro de como o **piso** se moveu a cada revisão de mapeamento, desde a v1.3. Existe para que
+uma sequência de correções individualmente defensáveis não empurre o número de venda para cima sem
+que ninguém perceba.
+
+| Versão | Decisão | Piso conservador | Deriva | Piso forte | Deriva |
+|---|---|---|---|---|---|
+| v1.3 | — (referência) | R$ 67.725 | +0,0% | R$ 557.020 | +0,0% |
+| v1.4 | D8 | R$ 81.316 | **+20,1%** ⚠️ | R$ 773.042 | **+38,8%** ⚠️ |
+| v1.5 | D10 | R$ 67.725 | +0,0% | R$ 557.020 | +0,0% |
+| v1.6 | D11 | R$ 67.725 | +0,0% | R$ 557.020 | +0,0% |
+| **v1.7** | **D12** | **R$ 67.725** | **+0,0%** | **R$ 557.020** | **+0,0%** |
+
+**Regra:** se a deriva do piso conservador passar de **+15%** sobre a v1.3, a revisão **não é
+publicada de imediato** — vai para revisão do Gui antes de entrar em material de venda. Toda
+revisão que altere projeções recalcula **as cinco partidas nos três cenários** antes de publicar;
+publicar só a linha afetada está proibido.
+
+**A v1.4 teria estourado a trava.** A linha acima é retroativa e fica registrada como prova de que
+a regra funciona: a Decisão 8 elevou o piso em 20,1%, e a Decisão 10 o devolveu ao lugar.
+
+#### ⚠️ O que esta tabela NÃO enxerga
+O piso está ancorado na partida Saudável · Índice ≥ 65, que não mudou desde a v1.3. Deriva em
+**qualquer outra linha** passa invisível por esta tabela. E houve uma:
+
+| Prejuízo do mercado | v1.3 (fase 3) | v1.6 (fase 0 · mês 3) | Deriva |
+|---|---|---|---|
+| Conservador | R$ 67.725 | R$ 85.820 | **+26,7%** |
+| Moderado | R$ 185.653 | R$ 259.084 | **+39,6%** |
+| Forte | R$ 557.020 | R$ 869.200 | **+56,0%** |
+
+Enquanto isso a deriva do piso na v1.6 marcava +0,0%. **A trava protege a capa, não o interior da
+tabela.** Esta segunda tabela fica aqui pelo mesmo motivo da primeira, e sob a mesma regra: nunca
+apagar, nunca resumir.
 
 ⚠️ **Regra de comunicação:** apresentar sempre como FAIXA e como perspectiva, nunca como previsão.
 A faixa é a do **conservador ao forte** — três cenários, uma fase, a que a Linha d'Água leu hoje.
