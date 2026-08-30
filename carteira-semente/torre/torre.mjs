@@ -66,9 +66,9 @@ const ehCompacto = (serie) => SERIES.find((x) => x.n === serie)?.formato === 'co
 /** Formata como o terminal formataria: $242M, $1B. */
 export function formatoCompacto(v) {
   const a = Math.abs(v);
-  const sinal = v < 0 ? '-' : '';
-  if (a >= 1000) return `${sinal}$${Math.round(a / 1000)}B`;
-  return `${sinal}$${Math.round(a)}M`;
+  const sinal = v < 0 ? '-' : '';   // o terminal escreve "$-1B": cifrão, depois o sinal
+  if (a >= 1000) return `$${sinal}${Math.round(a / 1000)}B`;
+  return `$${sinal}${Math.round(a)}M`;
 }
 
 /**

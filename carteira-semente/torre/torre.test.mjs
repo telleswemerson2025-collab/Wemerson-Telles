@@ -1453,7 +1453,7 @@ test('o máximo do ETF bate, e o registrado não aparece na tela de forma alguma
   assert.equal(c.notacaoCompacta.naTela, '$1B');
   assert.equal(formatoCompacto(1373.8), '$1B');
   assert.equal(formatoCompacto(242.3), '$242M', 'abaixo de 1B dá o inteiro em milhões');
-  assert.equal(formatoCompacto(-1138.9), '-$1B');
+  assert.equal(formatoCompacto(-1138.9), '$-1B');
 });
 
 test('casas decimais não modelam notação compacta, e o código parou de fingir que sim', () => {
@@ -1580,14 +1580,64 @@ test('a régua da Curva tem uma ponta de 2011 e outra de 2023', () => {
       if (d < '2013-01-01') velho++; else novo++;
     }
   }
-  assert.equal(velho + novo, 14, 'catorze extremos conferidos');
-  assert.equal(velho, 6);
-  assert.equal(novo, 8);
+  assert.equal(velho + novo, 15, 'quinze extremos conferidos');
+  assert.equal(velho, 6, 'os pré-2013 pararam de crescer: o que falta conferir é recente');
+  assert.equal(novo, 9);
 });
 
-test('cinco séries já saíram inteiras da fila', () => {
+test('as séries que saem inteiras não voltam para a fila', () => {
   const inteiras = SERIES.filter((x) => V[x.n] &&
     ['valor', 'min', 'max'].every((c) => V[x.n].confirmado?.[c])).map((x) => x.n).sort();
-  assert.deepEqual(inteiras, ['Curva 10Y-2Y', 'DXY', 'Funding Rate', 'MVRV Ratio', 'SOPR']);
+  assert.ok(inteiras.length >= 5, `${inteiras.length} séries inteiras`);
+  for (const n of ['Curva 10Y-2Y', 'DXY', 'Funding Rate', 'MVRV Ratio', 'SOPR']) {
+    assert.ok(inteiras.includes(n), n);
+  }
   for (const n of inteiras) assert.ok(!filaDeConferencia(V, HOJE).some((f) => f.serie === n));
+});
+
+// ══ ETF · MIN — O EMPATE PREVISTO NÃO ACONTECEU ═══════════════════════════
+test('o mínimo do ETF bate, e a série sai inteira', () => {
+  const c = V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'min');
+  assert.equal(V['ETF Net Inflow'].confirmado.min, '2026-08-29');
+  assert.ok(!filaDeConferencia(V, HOJE).some((f) => f.serie === 'ETF Net Inflow'));
+  assert.equal(c.notacaoCompacta.naTela, '$-1B');
+  assert.equal(c.vizinhos['2025-02-24'], -539);
+  assert.equal(c.vizinhos['2025-02-26'], -755);
+});
+
+test('o terminal escreve o sinal depois do cifrão, e o formatador aprendeu isso', () => {
+  assert.equal(formatoCompacto(-1138.9), '$-1B');
+  assert.equal(formatoCompacto(-539), '$-539M');
+  assert.equal(formatoCompacto(1373.8), '$1B');
+  assert.equal(formatoCompacto(242.3), '$242M');
+  // O comando cita esse texto para quem vai conferir: a forma tem de bater com a tela.
+  assert.equal(V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'min').notacaoCompacta.naTela,
+    formatoCompacto(V['ETF Net Inflow'].min));
+});
+
+test('a ambiguidade do formato depende do dado, não só do formato', () => {
+  const min = V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'min').empateDeRotulo;
+  const max = V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'max').empateDeRotulo;
+  assert.equal(min.diasComOMesmoRotulo.length, 1, 'um só dia no bilhão negativo');
+  assert.equal(max.diasComOMesmoRotulo.length, 4, 'quatro no bilhão positivo');
+  // Mesmo formato, riscos opostos: um lado precisou de pixel, o outro não.
+  assert.match(min.naturezaDoMetodo, /leitura de dígito — sem pixel/);
+  assert.match(max.naturezaDoMetodo, /separação por pixel/);
+  assert.match(min.oQueIssoEnsina, /depende do dado, não só do formato/);
+  // O segundo colocado fica FORA da faixa que colapsaria, e é por isso que a tooltip basta.
+  assert.equal(formatoCompacto(-903), '$-903M');
+  assert.notEqual(formatoCompacto(-903), formatoCompacto(V['ETF Net Inflow'].min));
+});
+
+test('seis séries inteiras, e as duas travadas são as duas primeiras da fila', () => {
+  const inteiras = SERIES.filter((x) => V[x.n] &&
+    ['valor', 'min', 'max'].every((c) => V[x.n].confirmado?.[c])).map((x) => x.n).sort();
+  assert.deepEqual(inteiras, ['Curva 10Y-2Y', 'DXY', 'ETF Net Inflow', 'Funding Rate',
+    'MVRV Ratio', 'SOPR']);
+  const fila = filaDeConferencia(V, HOJE);
+  assert.equal(fila[0].serie, 'Supply in Profit');
+  assert.equal(especieDoExtremo(fila[0].serie, fila[0].campo, V), 'teto da métrica');
+  assert.equal(fila[1].serie, 'US M2');
+  assert.equal(especieDoExtremo(fila[1].serie, fila[1].campo, V), 'extremo móvel');
+  assert.equal(estadoDosExtremos(V).provisoriosQueImportam, 5);
 });

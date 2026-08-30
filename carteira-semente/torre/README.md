@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.22 · 29/08/2026 — a primeira conferência que não corrigiu nada
+Conferência. Versão 1.23 · 29/08/2026 — o risco do formato depende do dado
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -1007,6 +1007,49 @@ Metade dos catorze extremos já conferidos é anterior a 2013; a outra metade n�
 **Cinco séries saíram inteiras:** MVRV Ratio · SOPR · DXY · Funding Rate · Curva 10Y-2Y.
 Sobram **seis extremos que importam**, e nenhum deles é leitura simples: dois estão
 travados em decisão do Gui, os outros quatro já têm a armadilha nomeada no comando.
+
+### ✅ A décima quinta: **ETF Net Inflow · min = $-1B em 25/02/2025** — a série sai inteira
+Vizinhos $-539M e $-755M, separando por dígito com folga larga.
+
+## O EMPATE PREVISTO **NÃO** ACONTECEU — e a diferença ensina
+Eu avisei que esperasse vários dias com o mesmo rótulo, como no máximo. **Só existe
+um.** A faixa abaixo de −$950M tem uma barra em toda a série.
+
+| | Máximo | Mínimo |
+|---|---|---|
+| Dias com o mesmo rótulo | **quatro** ($1B) | **um** ($-1B) |
+| Quem separou | altura de barra | **a tooltip sozinha** |
+| Método | pixel | dígito |
+
+**Mesmo formato, riscos opostos.** A lição, que o registro guarda:
+
+> A ambiguidade da notação compacta **depende do dado, não só do formato**. Ela colide
+> onde a série tem vários dias na mesma faixa de magnitude. Entradas acima de US$ 1 bi
+> aconteceram quatro vezes; saídas abaixo de −US$ 1 bi, uma só.
+
+*O aviso do comando continua certo — não dá para saber antes de olhar. O que muda é que
+"formato compacto" não é sinônimo de "vai precisar de pixel", e o registro agora diz com
+qual método cada lado foi resolvido.*
+
+**O segundo colocado (−$903M em 20/11/2025) fica FORA da faixa que colapsaria** — é por
+isso que a tooltip basta aqui. Folga de ~US$ 236 milhões.
+
+### 🐛 E o formatador escrevia o sinal no lugar errado
+O terminal escreve **`$-1B`** — cifrão, depois o sinal. Eu produzia `-$1B`. O comando
+**cita esse texto** para quem vai conferir, então a diferença atrapalha na hora de bater
+o que está na tela. Corrigido, com teste nos quatro formatos.
+
+## ONDE A CONFERÊNCIA CHEGOU
+**Seis séries inteiras:** MVRV Ratio · SOPR · DXY · Funding Rate · Curva 10Y-2Y ·
+ETF Net Inflow.
+
+**Cinco extremos que importam**, e os **dois primeiros da fila são os dois travados em
+decisão do Gui** — nada avança neles sem resposta. Os três restantes valem, somados,
+menos de 0,01 ponto de Índice.
+
+*E os extremos pré-2013 pararam de crescer: dos quinze já conferidos, seis são anteriores
+a 2013, e **tudo que falta conferir é recente**. A pendência da régua velha ficou com o
+retrato completo.*
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o

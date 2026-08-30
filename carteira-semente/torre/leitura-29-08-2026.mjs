@@ -402,7 +402,7 @@ export const VARREDURA_29_08_2026 = Object.freeze({
   'ETF Net Inflow': {
     valor: 242.3, min: -1138.9, max: 1373.8, data: '2026-08-27',
     dataMin: '2025-02-25', dataMax: '2024-11-07',
-    confirmado: { valor: '2026-08-29', min: null, max: '2026-08-29' },
+    confirmado: { valor: '2026-08-29', min: '2026-08-29', max: '2026-08-29' },
     // ⚠️ CORRECAO DE UNIDADE: eu tinha inferido "US$ mi". A tela diz USD, exibido em
     // milhoes/bilhoes por sufixo. Compativel na escala, errado como rotulo.
     unidadeLida: {
@@ -446,6 +446,36 @@ export const VARREDURA_29_08_2026 = Object.freeze({
                        'para 2025–2026, bloco próprio: o eixo topa em $1B e nenhuma barra o alcança — o maior do período fica em ~$940M.',
       metodoDeVarredura: 'separação por pixel entre rivais de mesmo rótulo, mais bloco próprio para 2025–2026',
       cruzamento: 'BTC PRICE na mesma tooltip: US$ 75.499 em 07/11; US$ 74.399 em 06/11 e US$ 76.271 em 08/11',
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }, {
+      campo: 'min', em: '2026-08-29',
+      metodo: 'Studio / ETF & Institutional / ETF Net Inflow, tooltip, blocos curtos com rivais um a um',
+      lido: '$-1B — cifrão, sinal de menos, um, B',
+      notacaoCompacta: {
+        registrado: -1138.9, naTela: '$-1B',
+        // O terminal escreve o sinal DEPOIS do cifrao: "$-1B", nao "-$1B".
+        formaExata: 'cifrão, depois o sinal',
+      },
+      vizinhos: { '2025-02-24': -539, '2025-02-25': '$-1B', '2025-02-26': -755 },
+      // ⚠️ O EMPATE PREVISTO NAO ACONTECEU, e a diferenca ensina algo sobre o formato.
+      empateDeRotulo: {
+        diasComOMesmoRotulo: ['2025-02-25'],
+        aTooltipDecideSozinha: 'só um dia da série inteira chega ao patamar de bilhão negativo',
+        contrasteComOMaximo: 'no máximo havia QUATRO dias lendo "$1B" e foi preciso separar por altura de barra; aqui a tooltip basta',
+        naturezaDoMetodo: 'leitura de dígito — sem pixel',
+        // A licao: o risco da notacao compacta nao e so do FORMATO, e do formato
+        // vezes quantos dias caem na faixa. Ela colide onde a serie tem companhia.
+        oQueIssoEnsina: 'a ambiguidade da notação compacta depende do dado, não só do formato: ' +
+                        'ela colide onde a série tem vários dias na mesma faixa de magnitude. ' +
+                        'Entradas acima de US$ 1 bi aconteceram quatro vezes; saídas abaixo de -US$ 1 bi, uma só.',
+      },
+      ehMinimoDaSerie: 'recortada a faixa abaixo de ~-$950M e varridos os dois anos e meio: uma única barra em toda a série. ' +
+                       'Confirmado por blocos curtos com rivais um a um — jan–dez/2024: o eixo do bloco para em -$500M e a pior saída do ano é 19/12/2024 = -$672M; ' +
+                       'dez/2024 → hoje: os seguintes são 20/11/2025 = -$903M e 13/11/2025 = -$867M.',
+      metodoDeVarredura: 'banda de altura mais blocos curtos com rivais na tooltip',
+      folgaAteOSegundo: '~US$ 236 milhões (-1.138,9 contra -903 em 20/11/2025) — fora da faixa que colapsaria',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 89.071 em 25/02; US$ 94.703 em 24/02 e US$ 86.999 em 26/02',
       telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
                       'nada publicado, alterado ou apagado, nenhum print salvo',
     }],
