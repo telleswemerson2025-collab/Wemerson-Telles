@@ -29,7 +29,7 @@ export const SERIES = Object.freeze([
   { n: 'US M2',               camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal', unidade: 'US$ tri' },
   { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'pregão', unidade: 'pontos percentuais' },
   { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11', calendario: 'pregão', unidade: 'US$ mi' },
-  { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01', calendario: '24/7', unidade: null },
+  { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01', calendario: '24/7', unidade: 'APR (%)', caminhoNoMenu: 'FUTUROS / Funding Rate — APR (%)' },
   // A escala é LINEAR e não pode ser outra: netflow é entrada menos saída, cruza o
   // zero, e log de zero ou de negativo não produz número errado — não produz número
   // nenhum. A D38 D chamou a série de logarítmica; a D39 corrigiu para linear.
@@ -68,6 +68,37 @@ export const SERIES = Object.freeze([
  * O resultado POSITIVO da banda continua valendo — o que enfraquece é o negativo,
  * "não há mais nada aqui", que é justamente o que a varredura precisa provar.
  */
+/**
+ * Casas decimais que a tooltip de cada série mostra, uma por série. Só entram as que
+ * uma conferência LEU — não é tabela adivinhada. A conferência do Funding Rate · max
+ * mostrou para que serve: o valor anotado (186,86) tem duas casas e a tooltip mostra
+ * uma (186,9). O número anotado não pode ter saído dali.
+ */
+export const CASAS_NA_TOOLTIP = Object.freeze({
+  'Preço do BTC': 0, 'MVRV Ratio': 3, 'SOPR': 4, 'Supply in Profit': 1,
+  'Liveliness': 4, 'DXY': 2, 'Fed Funds Rate': 2, 'Funding Rate': 1,
+});
+
+const casasDe = (x) => { const t = String(x); const i = t.indexOf('.'); return i < 0 ? 0 : t.length - i - 1; };
+
+/**
+ * O número registrado tem mais casas do que a tooltip consegue mostrar? Se tem, ele
+ * NÃO veio dali — e o documento 07 diz que os valores foram lidos "um por um" pela
+ * tooltip. Zero à direita não conta: 2.8740 vira 2.874 em JS e não é perda de leitura.
+ */
+export function excedeATooltip(serie, campo, varredura) {
+  const casas = CASAS_NA_TOOLTIP[serie];
+  const v = varredura?.[serie]?.[campo];
+  if (casas === undefined || typeof v !== 'number') return false;
+  return casasDe(v) > casas;
+}
+
+export const camposQueExcedemATooltip = (varredura) =>
+  Object.keys(CASAS_NA_TOOLTIP).flatMap((serie) =>
+    ['valor', 'min', 'max']
+      .filter((campo) => excedeATooltip(serie, campo, varredura))
+      .map((campo) => ({ serie, campo, registrado: varredura[serie][campo], casasNaTooltip: CASAS_NA_TOOLTIP[serie] })));
+
 export const METODOS_DE_VARREDURA = Object.freeze([
   { m: 'eixo auto-escalado por blocos', forca: 1,
     como: 'partir a série em blocos que se encostam e ler o topo do eixo de cada um; o eixo se recalcula com o máximo da janela',
@@ -352,7 +383,13 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
       'Antes de ler, conferir que a série é a certa:',
       ...(HOMONIMOS_NO_TERMINAL[serie] ? [`  ⚠️ ${HOMONIMOS_NO_TERMINAL[serie]}.`] : []),
       ...(caminho ? [`  o breadcrumb tem de ler exatamente: ${caminho}.`] : []),
-      ...(unidade ? [`  a unidade tem de ser ${unidade}, e o valor de hoje tem de bater com ${v.valor}.`] : []),
+      ...(unidade ? [(() => {
+        const casas = CASAS_NA_TOOLTIP[serie];
+        const excede = excedeATooltip(serie, 'valor', varredura);
+        const naTela = excede ? v.valor.toFixed(casas) : v.valor;
+        return `  a unidade tem de ser ${unidade}, e o valor de hoje tem de bater com ${naTela}` +
+          (excede ? ` (a tooltip dá ${casas} casa(s); o registro guarda ${v.valor}).` : '.');
+      })()] : []),
       // O valor corrente é senha FRACA onde há homônimo: no SOPR ele separou do STH por
       // 0,0001, que é uma casa de exibição. O breadcrumb é quem separa de verdade.
       ...(HOMONIMOS_NO_TERMINAL[serie] && !caminho ? [
@@ -368,6 +405,13 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
     '',
     'Passos: abrir a série · estreitar a janela em torno da data até o passo do cursor virar um dia ·',
     'ler a tooltip · anotar o valor dígito a dígito · voltar ao range ALL.',
+    ...(excedeATooltip(serie, campo, varredura) ? [
+      '',
+      `⚠️ O número anotado (${alvo}) tem mais casas do que esta tooltip mostra — ela dá`,
+      `${CASAS_NA_TOOLTIP[serie]} casa(s). Ele NÃO vai aparecer na tela assim.`,
+      'Anotar o que a tela mostra, sem completar e sem arredondar de volta. Se o exibido for',
+      'compatível com o anotado, dizer isso; a diferença de precisão é o achado, não um erro de leitura.',
+    ] : []),
     ...(ehExtremo && SERIES_EM_PATAMAR[serie] ? [
       '',
       `⚠️ ${serie} anda em PATAMAR — ${SERIES_EM_PATAMAR[serie]}. Espere ver o mesmo número por`,

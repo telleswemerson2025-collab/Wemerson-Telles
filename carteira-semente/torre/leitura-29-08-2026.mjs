@@ -318,5 +318,46 @@ export const VARREDURA_29_08_2026 = Object.freeze({
   'US M2':              { valor: 23.218,   min: 8.845,   max: 23.218,    data: '2026-08-29' , dataMin: '2011-01-01', dataMax: '2026-07-01', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Curva 10Y-2Y':       { valor: 0.38,     min: -0.93,   max: 2.81,      data: '2026-08-29' , dataMin: '2023-07-01', dataMax: '2011-02-01', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'ETF Net Inflow':     { valor: 242.3,    min: -1138.9, max: 1373.8,    data: '2026-08-27' , dataMin: '2025-02-25', dataMax: '2024-11-07', confirmado: { valor: '2026-08-29', min: null, max: null } },
-  'Funding Rate':       { valor: 1.84,     min: -139.23, max: 186.86,    data: '2026-08-29' , dataMin: '2020-03-13', dataMax: '2020-02-12', confirmado: { valor: '2026-08-29', min: null, max: null } },
+  'Funding Rate': {
+    valor: 1.84, min: -139.23, max: 186.86, data: '2026-08-29',
+    dataMin: '2020-03-13', dataMax: '2020-02-12',
+    confirmado: { valor: '2026-08-29', min: null, max: '2026-08-29' },
+    // A lacuna de unidade fechou: o terminal chama a serie de "Funding Rate — APR (%)",
+    // categoria FUTUROS. E funding ANUALIZADO em % ao ano, nao a taxa por periodo de 8h.
+    // Confirma a escala linear: APR de funding cruza o zero (negativo = short paga long),
+    // e log de negativo nao produz numero — mesma razao da D39 no netflow.
+    unidadeLida: {
+      em: '2026-08-29', unidade: 'APR (%)', categoria: 'FUTUROS',
+      onde: 'título da página e menu — dentro da tooltip o rótulo vem truncado ("Funding Rate — A…")',
+    },
+    conferencias: [{
+      campo: 'max', em: '2026-08-29',
+      metodo: 'FUTUROS · Funding Rate — APR (%), tooltip do terminal, modo SMA, janela em passo de 1 dia',
+      lido: '186.9 — um, oito, seis, ponto, nove',
+      casasNaTooltip: 1,
+      // ⚠️ O REGISTRO TEM MAIS PRECISAO QUE A TELA. 186,86 tem duas casas; a tooltip
+      // da uma. Os dois sao compativeis (186,86 arredonda para 186,9), mas o numero
+      // anotado NAO pode ter saido desta tooltip. O Gui nao corrigiu nada: anotou o
+      // que esta. Segundo caso, depois do Preco do BTC.
+      precisaoExcedente: {
+        registrado: 186.86, naTela: 186.9, casasRegistradas: 2, casasNaTooltip: 1,
+        compativel: true,
+        oQueSignifica: 'o número registrado não veio desta tooltip — e o documento 07 diz que os valores foram lidos "um por um" por ela',
+        naoCorrigido: 'anotado o que está na tela; trocar o registrado é retificação, não implementação',
+      },
+      vizinhos: { '2020-02-11': 58.0, '2020-02-12': 186.9, '2020-02-13': 90.7 },
+      topologia: 'barra isolada — mais que o triplo do vizinho de trás e o dobro do da frente',
+      // A margem mais apertada de todas as conferências até agora.
+      concorrentes: { '2021-01-06': 177.6, '2021-02-09': 174.8, '2021-02-22': 104.6 },
+      folgaAteOSegundo: '9,3 pontos de APR, ou ~4,98%',
+      ehMaximoDaSerie: 'concorrentes medidos um a um com janela em passo de 1 dia, não por faixa: ' +
+                       '06/01/2021 = 177.6 (segundo), 09/02/2021 = 174.8 (terceiro), 22/02/2021 = 104.6. ' +
+                       'Aberta também a janela 10/03/2020 → hoje, excluindo fev/2020: a barra mais alta dela é a de 06/01/2021. ' +
+                       'De 2022 em diante os picos param na casa dos 50–60.',
+      metodoDeVarredura: 'concorrentes um a um em passo de 1 dia — a folga de 5% não permitiria banda nem pixel',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 10.342 em 12/02; US$ 9.997 em 11/02 e US$ 10.265 em 13/02',
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }],
+  },
 });

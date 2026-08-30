@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -1083,11 +1083,14 @@ test('o comando checa a identidade da série antes de mandar ler', () => {
 });
 
 test('série sem unidade registrada recebe aviso, em vez de silêncio', () => {
-  assert.equal(SERIES.find((s) => s.n === 'Funding Rate').unidade, null);
-  const cmd = comandoDeConferencia({ serie: 'Funding Rate', campo: 'max' }, V);
-  assert.match(cmd, /A unidade de Funding Rate não está registrada/);
+  // O Funding Rate era o caso; a unidade dele foi lida em 29/08. Sobra o Exchange
+  // Netflow, que ainda não entrou na varredura — e o mecanismo continua de pé.
+  assert.equal(SERIES.find((s) => s.n === 'Exchange Netflow').unidade, null);
+  const comNf = { ...V, 'Exchange Netflow': { ...NETFLOW, dataMin: '2020-03-12', dataMax: '2024-03-05' } };
+  const cmd = comandoDeConferencia({ serie: 'Exchange Netflow', campo: 'max' }, comNf);
+  assert.match(cmd, /A unidade de Exchange Netflow não está registrada/);
   assert.match(cmd, /Ler a unidade na tela e reportar junto/);
-  // As treze com unidade não recebem o aviso.
+  // As catorze com unidade não recebem o aviso.
   assert.ok(!comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V)
     .includes('não está registrada em lugar nenhum'));
 });
@@ -1211,4 +1214,71 @@ test('os métodos de varredura estão ordenados por força, com a fraqueza de ca
   // O Supply in Profit usou o método 2 — o positivo dele vale, o negativo herda a ressalva.
   const sp = V['Supply in Profit'].conferencias.find((x) => x.campo === 'min');
   assert.equal(sp.metodoDeVarredura, METODOS_DE_VARREDURA[1].como.slice(0, 0) || 'banda de altura sobre a série inteira, e não trecho a trecho');
+});
+
+// ══ FUNDING RATE · MAX — A PRECISÃO REGISTRADA EXCEDE A TELA ══════════════
+test('a unidade do Funding Rate foi lida, e fecha a única lacuna de identidade', () => {
+  const u = V['Funding Rate'].unidadeLida;
+  assert.equal(u.unidade, 'APR (%)');
+  assert.equal(u.categoria, 'FUTUROS');
+  assert.equal(SERIES.find((s) => s.n === 'Funding Rate').unidade, 'APR (%)');
+  // Nenhuma das quinze fica sem unidade agora, exceto a que ainda não foi lida.
+  const semUnidade = SERIES.filter((s) => V[s.n] && !s.unidade).map((s) => s.n);
+  assert.deepEqual(semUnidade, [], 'as catorze da varredura têm unidade');
+  // APR cruza o zero, e é por isso que a escala é linear — mesma razão da D39.
+  assert.equal(SERIES.find((s) => s.n === 'Funding Rate').escala, 'lin');
+  assert.ok(V['Funding Rate'].min < 0 && V['Funding Rate'].max > 0);
+  assert.equal(Number.isNaN(normalizar(V['Funding Rate'].min, -200, 200, 'log')), true);
+});
+
+test('o número registrado do Funding Rate não pode ter saído desta tooltip', () => {
+  const c = V['Funding Rate'].conferencias.find((x) => x.campo === 'max');
+  assert.equal(c.precisaoExcedente.registrado, 186.86);
+  assert.equal(c.precisaoExcedente.naTela, 186.9);
+  assert.equal(c.precisaoExcedente.compativel, true, '186,86 arredonda para 186,9');
+  assert.equal(excedeATooltip('Funding Rate', 'max', V), true);
+  assert.match(c.precisaoExcedente.naoCorrigido, /retificação, não implementação/);
+});
+
+test('a auditoria de precisão acusa exatamente duas séries, e são as duas problemáticas', () => {
+  const fora = camposQueExcedemATooltip(V);
+  assert.deepEqual([...new Set(fora.map((f) => f.serie))].sort(), ['Funding Rate', 'Preço do BTC']);
+  assert.equal(fora.length, 6, 'as três casas das duas séries');
+  // São exatamente as duas onde uma conferência tropeçou: a do preço falhou de vez.
+  assert.equal(V['Preço do BTC'].tentativas.find((t) => t.campo === 'min').resultado, 'não confirmado');
+  // Zero à direita NÃO conta: 2.8740 vira 2.874 em JS e isso não é perda de leitura.
+  assert.equal(excedeATooltip('SOPR', 'max', V), false);
+  assert.equal(excedeATooltip('Liveliness', 'max', V), false);
+  assert.equal(excedeATooltip('Supply in Profit', 'max', V), false);
+  // E as sete séries com tooltip lida e precisão coerente não aparecem.
+  for (const n of ['MVRV Ratio', 'SOPR', 'Liveliness', 'DXY', 'Fed Funds Rate', 'Supply in Profit']) {
+    assert.ok(!fora.some((f) => f.serie === n), n);
+  }
+});
+
+test('o portão pede o valor COMO A TELA MOSTRA, não como o registro guarda', () => {
+  const cmd = comandoDeConferencia({ serie: 'Funding Rate', campo: 'min' }, V);
+  assert.match(cmd, /o valor de hoje tem de bater com 1\.8 \(a tooltip dá 1 casa\(s\); o registro guarda 1\.84\)/);
+  // Pedir 1.84 numa tooltip de uma casa seria pedir o que não pode acontecer.
+  assert.ok(!/bater com 1\.84\./.test(cmd));
+  // E onde não há excesso, o portão segue simples.
+  assert.match(comandoDeConferencia({ serie: 'DXY', campo: 'min' }, V),
+    /o valor de hoje tem de bater com 99\.16\./);
+});
+
+test('a folga do Funding Rate é a mais apertada, e por isso a varredura foi outra', () => {
+  const c = V['Funding Rate'].conferencias.find((x) => x.campo === 'max');
+  const folga = (c.vizinhos['2020-02-12'] - c.concorrentes['2021-01-06']) / c.vizinhos['2020-02-12'];
+  assert.ok(folga > 0.049 && folga < 0.05, `${(folga * 100).toFixed(2)}%`);
+  assert.ok(c.metodoDeVarredura.startsWith('concorrentes um a um'),
+    'com 5% de folga os concorrentes foram medidos na tooltip, não por banda nem por eixo');
+  // E os três concorrentes ficam todos abaixo do máximo.
+  for (const v of Object.values(c.concorrentes)) assert.ok(v < c.vizinhos['2020-02-12']);
+});
+
+test('trocar os três pelos números exibidos move o índice em 0,0016', () => {
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const exibido = { ...V, 'Funding Rate': { ...V['Funding Rate'], valor: 1.8, min: -139.2, max: 186.9 } };
+  const d = Math.abs(varrer({ varredura: exibido, hoje: HOJE }).indice - base);
+  assert.equal(d.toFixed(4), '0.0016', 'a diferença de precisão custa quase nada — mas custa medido');
 });

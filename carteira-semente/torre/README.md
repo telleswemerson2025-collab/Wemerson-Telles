@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.17 · 29/08/2026 — o breadcrumb entra no portão · varreduras têm força
+Conferência. Versão 1.18 · 29/08/2026 — o registro tem mais precisão que a tela
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -741,6 +741,61 @@ continua valendo — a marca apareceu. O que herda a ressalva é o **negativo**,
 há mais nada nesta faixa", que é justamente o que a varredura precisa provar. Não é
 motivo para desfazer a conferência; é motivo para o registro dizer com qual método
 cada uma foi feita, e agora diz.
+
+### ✅ A décima conferência: **Funding Rate · max — e a última lacuna de identidade fecha**
+**A unidade é `APR (%)`, categoria FUTUROS.** Funding anualizado em % ao ano, não a
+taxa por período de 8h. A pendência aberta duas conferências atrás está fechada, e
+`unidade` e `caminhoNoMenu` do Funding Rate entraram no registro.
+
+*Isso confirma a escala linear por um caminho novo: APR de funding cruza o zero
+(negativo = short paga long), e log de negativo não dá número errado — não dá número.
+Mesma razão da D39 no netflow, agora com a unidade nomeada em vez de inferida.*
+
+**Detalhe operacional que vale guardar:** dentro da tooltip o rótulo vem truncado
+(*"Funding Rate — A…"*). A unidade só se lê no título da página e no menu.
+
+### ⚠️ E o achado: **o registro tem mais precisão do que a tela consegue mostrar**
+A anotação diz **186,86**. A tooltip mostra **186,9** — uma casa. Os dois são
+compatíveis, mas **o número anotado não pode ter saído desta tooltip** — e o documento
+07 diz que os valores foram lidos *"um por um"* por ela.
+
+Fui auditar as catorze. `CASAS_NA_TOOLTIP` guarda a resolução de cada série lida numa
+conferência, e `camposQueExcedemATooltip()` compara com o registrado:
+
+| Série | Campos que excedem | Tooltip |
+|---|---|---|
+| **Funding Rate** | valor · min · max | 1 casa |
+| **Preço do BTC** | valor · min · max | 0 casas (dólar inteiro) |
+
+**Exatamente duas séries — e são exatamente as duas onde uma conferência tropeçou.**
+A do Preço do BTC falhou de vez, em janeiro de 2011 lendo "$0". Não é coincidência:
+é a mesma causa aparecendo duas vezes.
+
+*Zero à direita não conta na auditoria: 2,8740 vira `2.874` em JS, e isso é perda de
+representação, não de leitura. Há teste dos dois lados.*
+
+**Custo medido:** trocar os três campos do Funding Rate pelos números exibidos move o
+Índice em **0,0016**. Quase nada — mas medido.
+
+**Não corrigi.** Trocar o registrado é retificação, e o Gui também não corrigiu: anotou
+o que está. As duas coisas ficam lado a lado no dado.
+
+### 🐛 O portão estava contraditório consigo mesmo
+Ele pedia *"o valor de hoje tem de bater com 1.84"* — numa tooltip que só mostra uma
+casa. Pedia o que não pode acontecer, e teria feito o Gui parar e reportar um falso
+problema. Agora ele cita o valor **como a tela mostra**, com o registrado entre
+parênteses:
+
+```
+a unidade tem de ser APR (%), e o valor de hoje tem de bater com 1.8
+(a tooltip dá 1 casa(s); o registro guarda 1.84).
+```
+
+### A varredura foi uma quarta: **concorrentes um a um**
+A folga do primeiro para o segundo é de **4,98%** — a mais apertada de todas as
+conferências. Nem banda nem eixo serviriam: o Gui mediu os três concorrentes na
+tooltip, com janela em passo de um dia, e abriu ainda a janela 10/03/2020 → hoje
+excluindo fev/2020 para ver quem lidera sem o campeão.
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o
