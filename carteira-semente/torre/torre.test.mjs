@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -1185,7 +1185,7 @@ test('o valor corrente é senha fraca onde há homônimo: 0,0001 de margem', () 
 test('o comando passou a exigir o breadcrumb, e avisa quando não o tem', () => {
   assert.equal(SERIES.find((s) => s.n === 'SOPR').caminhoNoMenu, 'Spent Output Profit Ratio (SOPR) / SOPR');
   const comCaminho = comandoDeConferencia({ serie: 'SOPR', campo: 'max' }, V);
-  assert.match(comCaminho, /o breadcrumb tem de ler exatamente: Spent Output Profit Ratio \(SOPR\) \/ SOPR/);
+  assert.match(comCaminho, /o breadcrumb tem de TERMINAR em: Spent Output Profit Ratio \(SOPR\) \/ SOPR/);
   // Homônimo SEM breadcrumb registrado recebe o aviso de que a senha é fraca.
   assert.equal(SERIES.find((s) => s.n === 'Realized Price').caminhoNoMenu, undefined);
   const semCaminho = comandoDeConferencia({ serie: 'Realized Price', campo: 'max' }, V);
@@ -1206,14 +1206,14 @@ test('a varredura por banda falhou no SOPR, e o método mais forte é o eixo', (
 });
 
 test('os métodos de varredura estão ordenados por força, com a fraqueza de cada um', () => {
-  assert.equal(METODOS_DE_VARREDURA.length, 3);
-  assert.deepEqual(METODOS_DE_VARREDURA.map((m) => m.forca), [1, 2, 3]);
-  assert.match(METODOS_DE_VARREDURA[0].m, /eixo auto-escalado/);
-  assert.match(METODOS_DE_VARREDURA[0].porQue, /não depende de a barra ser visível/);
-  assert.match(METODOS_DE_VARREDURA[1].fraqueza, /falso negativo/);
-  // O Supply in Profit usou o método 2 — o positivo dele vale, o negativo herda a ressalva.
+  assert.equal(METODOS_DE_VARREDURA.length, 5);
+  assert.match(METODOS_DE_VARREDURA[0].m, /concorrentes um a um na tooltip/);
+  assert.match(METODOS_DE_VARREDURA[1].m, /eixo auto-escalado/);
+  assert.match(METODOS_DE_VARREDURA[1].porQue, /não depende de a barra ser visível/);
+  assert.match(METODOS_DE_VARREDURA[2].fraqueza, /falso negativo/);
+  // O Supply in Profit usou a banda — o positivo dele vale, o negativo herda a ressalva.
   const sp = V['Supply in Profit'].conferencias.find((x) => x.campo === 'min');
-  assert.equal(sp.metodoDeVarredura, METODOS_DE_VARREDURA[1].como.slice(0, 0) || 'banda de altura sobre a série inteira, e não trecho a trecho');
+  assert.match(sp.metodoDeVarredura, /banda de altura sobre a série inteira/);
 });
 
 // ══ FUNDING RATE · MAX — A PRECISÃO REGISTRADA EXCEDE A TELA ══════════════
@@ -1281,4 +1281,68 @@ test('trocar os três pelos números exibidos move o índice em 0,0016', () => {
   const exibido = { ...V, 'Funding Rate': { ...V['Funding Rate'], valor: 1.8, min: -139.2, max: 186.9 } };
   const d = Math.abs(varrer({ varredura: exibido, hoje: HOJE }).indice - base);
   assert.equal(d.toFixed(4), '0.0016', 'a diferença de precisão custa quase nada — mas custa medido');
+});
+
+// ══ FUNDING RATE · MIN — A SUAVIZAÇÃO DO ALL MENTE ════════════════════════
+test('o mínimo do Funding Rate bate, e o Funding Rate sai inteiro da fila', () => {
+  const c = V['Funding Rate'].conferencias.find((x) => x.campo === 'min');
+  assert.equal(V['Funding Rate'].confirmado.min, '2026-08-29');
+  assert.ok(!filaDeConferencia(V, HOJE).some((f) => f.serie === 'Funding Rate'));
+  assert.deepEqual(c.vizinhos, { '2020-03-12': 2.0, '2020-03-13': -139.2, '2020-03-14': -48.1 });
+  assert.ok(c.vizinhos['2020-03-12'] > 0, 'na véspera o funding ainda era positivo');
+});
+
+test('no ALL a barra não some — ela MENTE, e o modo SMA é a causa', () => {
+  const c = V['Funding Rate'].conferencias.find((x) => x.campo === 'min');
+  assert.equal(c.varreduraQueFalhou.leituraFalsa, -53);
+  assert.equal(c.varreduraQueFalhou.valorReal, -139.2);
+  assert.equal((139.2 / 53).toFixed(2), '2.63', 'fator 2,63 de erro');
+  // O custo é medido, e é maior que todos os arredondamentos de tooltip somados.
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const comEixo = { ...V, 'Funding Rate': { ...V['Funding Rate'], min: -53 } };
+  const custo = Math.abs(varrer({ varredura: comEixo, hoje: HOJE }).indice - base);
+  assert.equal(custo.toFixed(2), '1.39');
+  assert.equal(c.varreduraQueFalhou.custoSeTivesseSidoUsado, 1.39);
+  assert.equal(SUAVIZACAO_NO_ALL.fator, 2.63);
+  assert.match(c.varreduraQueFalhou.piorQueSumir, /aparece e o número parece plausível/);
+});
+
+test('ler eixo ou pixel no ALL inteiro está marcado como proibido', () => {
+  const proibido = METODOS_DE_VARREDURA.find((m) => m.proibido);
+  assert.equal(proibido.m, 'eixo ou pixel no ALL inteiro');
+  assert.match(proibido.fraqueza, /viés de um lado só/);
+  // A ordem por força ficou coerente, e o mais forte é a tooltip em todos os rivais.
+  const forcas = METODOS_DE_VARREDURA.map((m) => m.forca);
+  assert.deepEqual(forcas, [...forcas].sort((a, b) => a - b), 'ordenados por força');
+  assert.match(METODOS_DE_VARREDURA[0].m, /concorrentes um a um na tooltip/);
+});
+
+test('a medição mais fraca de todas caiu no único campo onde não pode custar nada', () => {
+  // O ~US$ 0,29-0,30 do Preço do BTC · min saiu de medição de eixo no ALL — o método
+  // que esta conferência acaba de marcar como proibido. Mas o mínimo do preço é
+  // inerte por construção, então o erro dele vale exatamente zero.
+  const t = V['Preço do BTC'].tentativas.find((x) => x.campo === 'min');
+  assert.match(t.oQueSeSustenta, /medição de eixo, não leitura de tooltip/);
+  assert.ok(EXTREMOS_INERTES.includes('Preço do BTC'));
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const dezVezes = { ...V, 'Preço do BTC': { ...V['Preço do BTC'], min: V['Preço do BTC'].min * 10 } };
+  assert.equal(varrer({ varredura: dezVezes, hoje: HOJE }).indice, base);
+});
+
+test('as duas formas do número ficam guardadas, como o Gui propôs', () => {
+  assert.deepEqual(comoATelaMostra('Funding Rate', 'min', V),
+    { registrado: -139.23, naTela: -139.2, casas: 1, excede: true });
+  // Onde não excede, as duas formas são a mesma — e o campo diz isso.
+  assert.deepEqual(comoATelaMostra('DXY', 'min', V),
+    { registrado: 72.93, naTela: 72.93, casas: 2, excede: false });
+  assert.equal(comoATelaMostra('Curva 10Y-2Y', 'min', V), null, 'tooltip ainda não lida');
+});
+
+test('o portão pede sufixo, não igualdade — os breadcrumbs foram lidos com raízes diferentes', () => {
+  assert.equal(SERIES.find((s) => s.n === 'Funding Rate').caminhoNoMenu,
+    'Studio / Futuros / Funding Rate — APR (%)');
+  const cmd = comandoDeConferencia({ serie: 'Funding Rate', campo: 'min' }, V);
+  assert.match(cmd, /o breadcrumb tem de TERMINAR em/);
+  assert.match(cmd, /a raiz do menu pode aparecer antes/);
+  assert.ok(!cmd.includes('tem de ler exatamente'), 'exigir igualdade reprovaria caminho certo');
 });

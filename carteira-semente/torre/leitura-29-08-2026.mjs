@@ -321,7 +321,7 @@ export const VARREDURA_29_08_2026 = Object.freeze({
   'Funding Rate': {
     valor: 1.84, min: -139.23, max: 186.86, data: '2026-08-29',
     dataMin: '2020-03-13', dataMax: '2020-02-12',
-    confirmado: { valor: '2026-08-29', min: null, max: '2026-08-29' },
+    confirmado: { valor: '2026-08-29', min: '2026-08-29', max: '2026-08-29' },
     // A lacuna de unidade fechou: o terminal chama a serie de "Funding Rate — APR (%)",
     // categoria FUTUROS. E funding ANUALIZADO em % ao ano, nao a taxa por periodo de 8h.
     // Confirma a escala linear: APR de funding cruza o zero (negativo = short paga long),
@@ -329,6 +329,7 @@ export const VARREDURA_29_08_2026 = Object.freeze({
     unidadeLida: {
       em: '2026-08-29', unidade: 'APR (%)', categoria: 'FUTUROS',
       onde: 'título da página e menu — dentro da tooltip o rótulo vem truncado ("Funding Rate — A…")',
+      breadcrumbCompleto: 'Studio / Futuros / Funding Rate — APR (%)',
     },
     conferencias: [{
       campo: 'max', em: '2026-08-29',
@@ -356,6 +357,39 @@ export const VARREDURA_29_08_2026 = Object.freeze({
                        'De 2022 em diante os picos param na casa dos 50–60.',
       metodoDeVarredura: 'concorrentes um a um em passo de 1 dia — a folga de 5% não permitiria banda nem pixel',
       cruzamento: 'BTC PRICE na mesma tooltip: US$ 10.342 em 12/02; US$ 9.997 em 11/02 e US$ 10.265 em 13/02',
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }, {
+      campo: 'min', em: '2026-08-29',
+      metodo: 'Studio / Futuros / Funding Rate — APR (%), tooltip, modo SMA, janela estreitada até o passo do cursor virar 1 dia',
+      lido: '-139.2 — menos, um, três, nove, ponto, dois',
+      casasNaTooltip: 1,
+      precisaoExcedente: {
+        registrado: -139.23, naTela: -139.2, casasRegistradas: 2, casasNaTooltip: 1,
+        compativel: true,
+        // Proposta do Gui, adotada: guardar as DUAS formas, senão a próxima conferência
+        // lê divergência onde há só resolução de tela.
+        guardarAsDuasFormas: 'valor de registro -139,23 · o que a tela mostra -139,2',
+      },
+      vizinhos: { '2020-03-12': 2.0, '2020-03-13': -139.2, '2020-03-14': -48.1 },
+      topologia: 'barra isolada — a Quinta-feira Negra da COVID. No dia anterior o funding ainda era positivo (2,0)',
+      // ⚠️ O FALSO NEGATIVO AQUI E PIOR QUE NO SOPR: a barra nao some, ela MENTE.
+      // No ALL o grafico agrega ~2 dias por pixel e o modo SMA suaviza dentro do
+      // balde — a leitura de eixo dava ~-53, contra -139,2 real. Fator 2,63.
+      varreduraQueFalhou: {
+        metodo: 'eixo ou pixel no ALL inteiro',
+        leituraFalsa: -53, valorReal: -139.2, fator: 2.63,
+        porQue: 'no ALL o gráfico agrega ~2 dias por pixel e o modo SMA suaviza dentro do balde — a barra aparece com menos da metade da profundidade',
+        custoSeTivesseSidoUsado: 1.39, // pontos de Índice
+        piorQueSumir: 'no SOPR a barra sumia e a falha era visível; aqui ela aparece e o número parece plausível',
+      },
+      ehMinimoDaSerie: 'eixo auto-escalado em dois blocos que se encostam. ' +
+                       'início → abr/2020: o eixo desce até -150 e a barra mais funda é a de 13/03/2020; a segunda do período fica em ~-56. ' +
+                       'abr/2020 → hoje: o eixo para em -100 — se houvesse qualquer dia em -139 nesses seis anos, teria de esticar até -150. ' +
+                       'Segundo fundo de toda a série, conferido em passo de 1 dia: 10/11/2022 = -93.1 (BTC US$ 17.025), a semana da FTX.',
+      metodoDeVarredura: 'eixo auto-escalado por blocos, com o segundo colocado conferido na tooltip',
+      folgaAteOSegundo: '46,1 pontos de APR, ou 33,1%',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 5.367 em 13/03; US$ 6.530 em 12/03 e US$ 5.425 em 14/03',
       telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
                       'nada publicado, alterado ou apagado, nenhum print salvo',
     }],

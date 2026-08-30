@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.18 · 29/08/2026 — o registro tem mais precisão que a tela
+Conferência. Versão 1.19 · 29/08/2026 — a suavização do ALL mente, e custa 1,39 ponto
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -796,6 +796,63 @@ A folga do primeiro para o segundo é de **4,98%** — a mais apertada de todas 
 conferências. Nem banda nem eixo serviriam: o Gui mediu os três concorrentes na
 tooltip, com janela em passo de um dia, e abriu ainda a janela 10/03/2020 → hoje
 excluindo fev/2020 para ver quem lidera sem o campeão.
+
+### ✅ A décima primeira: **Funding Rate · min = −139,2 em 13/03/2020** — a série sai inteira
+Vizinhos 2,0 e −48,1: na véspera o funding ainda era **positivo**. Barra isolada, a
+Quinta-feira Negra da COVID.
+
+## 🔴 O ACHADO MAIS CARO DE TODA A FILA: A SUAVIZAÇÃO DO ALL **MENTE**
+No SOPR a barra de um dia **sumia** no recorte — falha visível. Aqui é pior:
+
+> No ALL o gráfico agrega ~2 dias por pixel e o **modo SMA suaviza dentro do balde**.
+> A leitura de eixo dava **≈ −53**. O valor real, com a janela estreitada, é **−139,2**.
+> **Fator 2,63.**
+
+**A barra aparece, e o número parece plausível.** Não é ruído — é **viés de um lado
+só**: todo extremo de um dia lê mais raso do que é, sempre na mesma direção.
+
+**Custo medido: 1,39 ponto de Índice.** Mais do que *todos* os arredondamentos de
+tooltip somados, e mais do que qualquer outro erro que estas onze conferências
+poderiam ter produzido.
+
+`SUAVIZACAO_NO_ALL` guarda o caso, e `METODOS_DE_VARREDURA` foi reordenado — de três
+métodos para cinco, com o último **marcado como proibido**:
+
+| Força | Método | Nota |
+|---|---|---|
+| 1 | **concorrentes um a um na tooltip** | dígito em todos os rivais; só cabe com poucos candidatos |
+| 2 | eixo auto-escalado **por blocos** | o bloco é curto: a suavização não achata |
+| 3 | banda de altura no ALL | evento de um dia some — falso negativo |
+| 4 | trecho a trecho | o que não foi olhado não foi descartado |
+| **9** | **eixo ou pixel no ALL inteiro** | ⚠️ **proibido** — subestima extremo, sempre |
+
+*O eixo por blocos desceu de 1 para 2: com a folga apertada, a tooltip em cada rival é
+mais forte que qualquer leitura de tela.*
+
+### E isso enfraquece, retroativamente, a medição mais fraca do conjunto
+O **≈ US$ 0,29–0,30** do Preço do BTC · min saiu de **medição de eixo no ALL** — o
+método que acabou de ser proibido. Aquela conferência já tinha falhado por outro
+motivo (o terminal arredonda o preço para dólar inteiro), e a estimativa que restava
+era justamente a de menor confiança de todas.
+
+**E ela caiu no único campo do sistema onde não pode custar nada:** o mínimo do preço é
+**inerte por construção**. Um erro de dez vezes nele move o Índice em 0,000000. Há
+teste. *A medição mais fraca do conjunto inteiro está no lugar onde ser fraca não
+importa — por sorte, não por desenho.*
+
+### As duas formas do número, como o Gui propôs
+> *"vale guardar as duas formas: o valor de registro (−139,23) e o que a tela mostra
+> (−139,2), senão a próxima conferência vai parecer divergência."*
+
+Adotado. `comoATelaMostra()` devolve as duas e diz se há excesso:
+`{ registrado: -139.23, naTela: -139.2, casas: 1, excede: true }`.
+
+### 🐛 E o portão exigia igualdade onde só tinha sufixo
+O breadcrumb completo é `Studio / Futuros / Funding Rate — APR (%)` — eu tinha
+registrado sem a raiz, e o comando dizia *"tem de ler exatamente"*. **Um leitor estrito
+teria reprovado um caminho certo.** Os outros três breadcrumbs foram reportados sem
+raiz também. O comando agora pede que o breadcrumb **termine em** o registrado, e diz
+que a raiz pode aparecer antes.
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o

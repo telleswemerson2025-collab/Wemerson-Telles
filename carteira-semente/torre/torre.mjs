@@ -29,7 +29,7 @@ export const SERIES = Object.freeze([
   { n: 'US M2',               camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal', unidade: 'US$ tri' },
   { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'pregão', unidade: 'pontos percentuais' },
   { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11', calendario: 'pregão', unidade: 'US$ mi' },
-  { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01', calendario: '24/7', unidade: 'APR (%)', caminhoNoMenu: 'FUTUROS / Funding Rate — APR (%)' },
+  { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01', calendario: '24/7', unidade: 'APR (%)', caminhoNoMenu: 'Studio / Futuros / Funding Rate — APR (%)' },
   // A escala é LINEAR e não pode ser outra: netflow é entrada menos saída, cruza o
   // zero, e log de zero ou de negativo não produz número errado — não produz número
   // nenhum. A D38 D chamou a série de logarítmica; a D39 corrigiu para linear.
@@ -99,16 +99,50 @@ export const camposQueExcedemATooltip = (varredura) =>
       .filter((campo) => excedeATooltip(serie, campo, varredura))
       .map((campo) => ({ serie, campo, registrado: varredura[serie][campo], casasNaTooltip: CASAS_NA_TOOLTIP[serie] })));
 
+/**
+ * ⚠️ O RISCO QUE MAIS CUSTOU ATÉ AGORA. As leituras são feitas em MODO SMA, e no zoom
+ * ALL o gráfico agrega vários dias por pixel: o modo suaviza dentro do balde, e um
+ * extremo de um dia lê MAIS RASO do que é.
+ *
+ * Medido na conferência do Funding Rate · min: no ALL o eixo dava ~-53; o valor real,
+ * com a janela estreitada, é -139,2. Fator 2,63 — e usar o -53 teria mexido o Índice
+ * em 1,39 ponto, mais do que todos os arredondamentos de tooltip somados.
+ *
+ * A barra nem sempre some (SOPR · max) — às vezes ela aparece e MENTE, que é pior,
+ * porque o número parece plausível. Toda leitura de eixo ou de pixel feita no ALL
+ * inteiro subestima extremo. Só vale depois de estreitar.
+ */
+export const SUAVIZACAO_NO_ALL = Object.freeze({
+  modo: 'SMA', oQueFaz: 'agrega vários dias por pixel e suaviza dentro do balde',
+  medidoEm: 'Funding Rate · min, 13/03/2020',
+  noAll: -53, estreitado: -139.2, fator: 2.63, custoSeUsado: 1.39,
+});
+
 export const METODOS_DE_VARREDURA = Object.freeze([
-  { m: 'eixo auto-escalado por blocos', forca: 1,
+  { m: 'concorrentes um a um na tooltip, em passo de 1 dia', forca: 1,
+    como: 'medir cada rival com a janela estreitada, um por um',
+    porQue: 'leitura de dígito em todos os candidatos — o único que serve quando a folga é de poucos por cento',
+    custo: 'só cabe quando os candidatos são poucos e já se sabe quais são' },
+  { m: 'eixo auto-escalado por blocos', forca: 2,
     como: 'partir a série em blocos que se encostam e ler o topo do eixo de cada um; o eixo se recalcula com o máximo da janela',
-    porQue: 'não depende de a barra ser visível — o eixo sabe do ponto mesmo quando o desenho não o mostra' },
-  { m: 'banda de altura sobre a série inteira', forca: 2,
+    porQue: 'não depende de a barra ser visível — e o bloco é curto o bastante para a suavização não achatar o extremo' },
+  { m: 'banda de altura sobre a série inteira', forca: 3,
     como: 'recortar a faixa do gráfico além do extremo e varrer os quinze anos de uma vez',
     fraqueza: 'evento de UM dia ocupa ~0,19 px no ALL e pode sumir: risco de falso negativo' },
-  { m: 'trecho a trecho', forca: 3,
+  { m: 'trecho a trecho', forca: 4,
     fraqueza: 'depende de escolher quais trechos olhar, e o que não foi olhado não foi descartado' },
+  { m: 'eixo ou pixel no ALL inteiro', forca: 9, proibido: true,
+    fraqueza: 'o modo SMA suaviza dentro do pixel: extremo de um dia lê mais raso do que é. ' +
+              'Não é ruído — é viés de um lado só, e o número que sai parece plausível' },
 ]);
+
+/** Como a tooltip da série mostraria este número — proposta do Gui: guardar as duas formas. */
+export function comoATelaMostra(serie, campo, varredura) {
+  const casas = CASAS_NA_TOOLTIP[serie];
+  const v = varredura?.[serie]?.[campo];
+  if (casas === undefined || typeof v !== 'number') return null;
+  return { registrado: v, naTela: Number(v.toFixed(casas)), casas, excede: excedeATooltip(serie, campo, varredura) };
+}
 
 export const SERIES_EM_PATAMAR = Object.freeze({
   'Fed Funds Rate': 'taxa de política: fica parada entre reuniões do FOMC, por meses',
@@ -382,7 +416,10 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
       '',
       'Antes de ler, conferir que a série é a certa:',
       ...(HOMONIMOS_NO_TERMINAL[serie] ? [`  ⚠️ ${HOMONIMOS_NO_TERMINAL[serie]}.`] : []),
-      ...(caminho ? [`  o breadcrumb tem de ler exatamente: ${caminho}.`] : []),
+      ...(caminho ? [
+        `  o breadcrumb tem de TERMINAR em: ${caminho}`,
+        '     (a raiz do menu pode aparecer antes; o que não pode é o trecho final ser outro).',
+      ] : []),
       ...(unidade ? [(() => {
         const casas = CASAS_NA_TOOLTIP[serie];
         const excede = excedeATooltip(serie, 'valor', varredura);
