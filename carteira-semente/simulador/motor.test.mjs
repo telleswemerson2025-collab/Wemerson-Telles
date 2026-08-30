@@ -7,7 +7,7 @@ import { ESTADOS } from '../torre/torre.mjs';
 import { MARCO_INDICE } from '../registro/registro.mjs';
 import {
   ABRIGO_ATIVO_ANOS, INICIO_DA_RAMPA_ANOS, EXPOSICAO_ALVO, TETO_DEFASAGEM,
-  MESES_SEM_MODULACAO, VELOCIDADE_POR_ESTADO,
+  MESES_SEM_MODULACAO, VELOCIDADE_POR_ESTADO, BANDA_PONTOS, bandaDoMes,
 } from '../alocador/alocador.mjs';
 import {
   CENARIOS, FASES, PARTIDAS, TABELA_EXPO, LIMIAR_DA_FASE_3, MESES_NA_FASE, ENTREGA_AOS,
@@ -244,4 +244,59 @@ test('D13 regra 2: estourou uma célula, a revisão inteira fica retida', () => 
   const doPiso = g.linhas.find((l) => l.rotulo === capa.identidade);
   assert.equal(doPiso.celulas.some((c) => c.estourou), false, 'o piso estourou — o exemplo mudou');
   assert.equal(g.retida, true, 'a grade não reteve por linha, só olhou o piso');
+});
+
+// ── D51 · A BANDA NO ÚLTIMO ANO E A MODULAÇÃO NA PROJEÇÃO ─────────────────
+test('D51 A: a banda afunila de ponta a ponta do último ano, e não é suspensa', () => {
+  // Fora dos últimos doze meses ela é a âncora, inteira.
+  assert.equal(bandaDoMes(MESES_SEM_MODULACAO), BANDA_PONTOS);
+  assert.equal(bandaDoMes(MESES_SEM_MODULACAO * 5), BANDA_PONTOS);
+  // 1. NÃO É SUSPENSA: enquanto sobra mês do último ano, sobra banda.
+  for (let m = 1; m < MESES_SEM_MODULACAO; m++) {
+    assert.ok(bandaDoMes(m) > 0,
+      `a banda foi a zero faltando ${m} mês(es) — isso é suspender, não afunilar`);
+  }
+  // 2. AFUNILA EM LINHA RETA, não por degrau: cada mês vale a fração do que resta.
+  for (let m = 0; m <= MESES_SEM_MODULACAO; m++) {
+    const proporcional = Number((BANDA_PONTOS * (m / MESES_SEM_MODULACAO)).toFixed(4));
+    assert.equal(bandaDoMes(m), proporcional,
+      `faltando ${m} mês(es) a banda devia ser ${proporcional} e é ${bandaDoMes(m)}`);
+  }
+  // 3. E DECRESCE SEMPRE: nenhum mês do último ano tolera mais que o anterior.
+  for (let m = 0; m < MESES_SEM_MODULACAO; m++) {
+    assert.ok(bandaDoMes(m) < bandaDoMes(m + 1),
+      `a banda não encolheu de ${m + 1} para ${m} mês(es)`);
+  }
+  // 4. NA ENTREGA É ZERO: é isso que tira a folga da promessa central do produto.
+  assert.equal(bandaDoMes(0), 0, 'a banda não zerou na entrega');
+});
+
+test('D51 C: o afunilamento não mexe na liquidação da defasagem', () => {
+  // Banda e defasagem seguem coisas diferentes: a banda encolhe, a defasagem continua
+  // sendo liquidada até zero dentro do último ano, nas cinco partidas.
+  for (const p of PARTIDAS) {
+    const t = trajetoriaDaGlidepath({ anos: ENTREGA_AOS, fase: p.fase, mes: p.mes });
+    assert.equal(t.defasagemNaEntrega, 0, rotuloDaPartida(p));
+    // E dentro da banda a defasagem continua sem crescer — a banda não gera defasagem.
+    for (const l of t.linhas.filter((l) => l.dentroDaBanda)) {
+      assert.equal(l.defasagem, l.defasagemAntes, `mês ${l.t}: a banda gerou defasagem`);
+    }
+  }
+});
+
+test('⚠️ D51 A medido: a banda não é o que segura a folga da entrega', () => {
+  // Esta asserção não afirma que a regra está errada. Ela FIXA A MEDIDA que a decisão
+  // precisa ver: se a banda nunca decide nada no último ano, o afunilamento não tem
+  // onde morder, e quem congela a folga é `min(passo, distância)` da D25 C.
+  for (const p of PARTIDAS) {
+    const t = trajetoriaDaGlidepath({ anos: ENTREGA_AOS, fase: p.fase, mes: p.mes });
+    assert.equal(t.mesesEmQueABandaSegurou, 0,
+      `${rotuloDaPartida(p)}: a banda passou a segurar meses do último ano — a medida mudou, ` +
+      'e a conclusão registrada na D51 precisa ser refeita');
+    assert.equal(t.mesesTravadosNoPasso, t.mesesDoUltimoAno,
+      `${rotuloDaPartida(p)}: deixou de haver mês com distância acima do passo`);
+    // A folga é positiva e sobrevive à entrega, mesmo com a banda em zero no fim.
+    assert.ok(t.folgaNaEntrega > t.bandaNaEntrega,
+      `${rotuloDaPartida(p)}: a folga coube na banda — o diagnóstico mudou`);
+  }
 });

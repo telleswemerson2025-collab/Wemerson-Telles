@@ -57,7 +57,7 @@ export const EXPOSICAO_ALVO = Object.freeze({ 4: 100, 3: 66, 2: 45, 1: 25, 0: 15
 
 // 🔒 ÂNCORAS ESTRUTURAIS — mudam só por decisão registrada, com razão escrita,
 // passando pelo Gate 2 (D27 C · D30 · D31). Vale nos dois sentidos.
-export const BANDA_PONTOS = 3;          // âncora (D30) — determina a exposição da entrega
+export const BANDA_PONTOS = 3;          // âncora (D30) — vale fora dos últimos doze meses (D51 A)
 export const TETO_DEFASAGEM = 12;       // âncora — impede a assimetria de crescer sem limite
 export const MESES_SEM_MODULACAO = 12;  // D25 D — o último ano não modula
 
@@ -159,6 +159,23 @@ export const passoDoMes = (mesesAteEntrega) =>
   arred(alvoDaGlidepath(mesesAteEntrega + 1) - alvoDaGlidepath(mesesAteEntrega), 4);
 
 /**
+ * D51 A: a banda NÃO é suspensa no último ano — ela AFUNILA, linearmente, de
+ * BANDA_PONTOS até zero ao longo dos últimos doze meses.
+ *
+ *   banda do mês = BANDA_PONTOS × (meses restantes ÷ MESES_SEM_MODULACAO)
+ *
+ * Suspender de uma vez faria o sistema vender todo mês no fim, que é o que a banda
+ * existe para impedir (âncora D30). Manter em 3 entregaria a carteira acima do alvo,
+ * e o alvo do dia da entrega é a promessa central do produto. O afunilamento resolve
+ * os dois: no começo do ano final ainda segura ruído, e na entrega é zero.
+ *
+ * Fora dos últimos doze meses o valor não muda — continua sendo a âncora de 3.
+ */
+export const bandaDoMes = (mesesAteEntrega) => mesesAteEntrega >= MESES_SEM_MODULACAO
+  ? BANDA_PONTOS
+  : arred(BANDA_PONTOS * (Math.max(mesesAteEntrega, 0) / MESES_SEM_MODULACAO), 4);
+
+/**
  * A demanda da glidepath do mês.
  *
  * ⚠️ A modulação incide sobre o PASSO DO MÊS, não sobre a distância acumulada até o
@@ -167,9 +184,11 @@ export const passoDoMes = (mesesAteEntrega) =>
  * distância inteira contaria a defasagem duas vezes — ela já é, por definição, o que
  * a modulação deixou de mover.
  *
- * A banda de 3 pontos é tolerância de POSIÇÃO, e não suspende o cronograma: dentro
- * dela não se move nada, e a defasagem também não cresce, porque a defasagem é o que
- * a modulação deixou de mover, não o que a banda deixou de mover.
+ * A banda é tolerância de POSIÇÃO, e não suspende o cronograma: dentro dela não se
+ * move nada, e a defasagem também não cresce, porque a defasagem é o que a modulação
+ * deixou de mover, não o que a banda deixou de mover. No último ano ela afunila até
+ * zero (D51 A), e continua não gerando defasagem — banda e defasagem seguem coisas
+ * diferentes (D51 C).
  */
 export function demandaDaGlidepath({ exposicaoAtual, mesesAteEntrega, estado, defasagem = 0 }) {
   const alvo = alvoDaGlidepath(mesesAteEntrega);
@@ -179,10 +198,12 @@ export function demandaDaGlidepath({ exposicaoAtual, mesesAteEntrega, estado, de
 
   const ultimoAno = mesesAteEntrega <= MESES_SEM_MODULACAO;
   const passo = passoDoMes(mesesAteEntrega);
+  // A banda vem da função, não da constante: no último ano ela afunila (D51 A).
+  const banda = bandaDoMes(mesesAteEntrega);
 
-  // Banda de 3 pontos: sem ela o sistema venderia todo mês por ruído (âncora, D30).
-  if (Math.abs(distancia) <= BANDA_PONTOS && defasagem === 0) {
-    return { alvo, distancia, dentroDaBanda: true, mover: 0, passo, fator, motivo,
+  // Sem a banda o sistema venderia todo mês por ruído (âncora, D30).
+  if (Math.abs(distancia) <= banda && defasagem === 0) {
+    return { alvo, distancia, dentroDaBanda: true, mover: 0, passo, banda, fator, motivo,
       defasagemDepois: 0, defasagemNoTeto: false, liquidacaoDeDefasagem: 0, ultimoAno };
   }
 
@@ -203,7 +224,7 @@ export function demandaDaGlidepath({ exposicaoAtual, mesesAteEntrega, estado, de
     : arred(clamp(defasagem + naoMovido - aRecuperar, 0, TETO_DEFASAGEM), 4);
 
   return {
-    alvo, distancia, dentroDaBanda: false, passo, fator, motivo,
+    alvo, distancia, dentroDaBanda: false, passo, banda, fator, motivo,
     mover: arred(movidoPeloFator + aRecuperar + liquidacao, 4),
     naoMovido, recuperado: aRecuperar, liquidacaoDeDefasagem: liquidacao,
     defasagemDepois, defasagemNoTeto: defasagemDepois >= TETO_DEFASAGEM, ultimoAno,

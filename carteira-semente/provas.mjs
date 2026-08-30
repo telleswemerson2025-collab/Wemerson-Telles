@@ -287,6 +287,46 @@ const PROVAS = [
       "campo('Estado e índice', `${partida.estado}"],
     acusa: /a segunda linha usa a partida em uso/,
   },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'a banda afunila de ponta a ponta do último ano',
+    porque: 'a banda volta a ser suspensa de uma vez, que é o que a D51 A recusou',
+    quebra: ['alocador/alocador.mjs',
+      "  : arred(BANDA_PONTOS * (Math.max(mesesAteEntrega, 0) / MESES_SEM_MODULACAO), 4);",
+      "  : 0;"],
+    acusa: /a banda foi a zero faltando \d+ mês\(es\) — isso é suspender, não afunilar/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'a banda afunila de ponta a ponta do último ano',
+    porque: 'a banda deixa de zerar na entrega e a folga da promessa central volta',
+    quebra: ['alocador/alocador.mjs', 'export const bandaDoMes = (mesesAteEntrega) => mesesAteEntrega >= MESES_SEM_MODULACAO',
+      'export const bandaDoMes = (mesesAteEntrega) => mesesAteEntrega >= 0'],
+    acusa: /Expected values to be strictly equal:\n\s*3 !== 0|3 !== 0/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'o afunilamento não mexe na liquidação da defasagem',
+    porque: 'a banda passa a gerar defasagem — o erro que a D25 E e a D51 C separam',
+    quebra: ['alocador/alocador.mjs',
+      "    return { alvo, distancia, dentroDaBanda: true, mover: 0, passo, banda, fator, motivo,\n      defasagemDepois: 0,",
+      "    return { alvo, distancia, dentroDaBanda: true, mover: 0, passo, banda, fator, motivo,\n      defasagemDepois: defasagem + banda,"],
+    acusa: /a banda gerou defasagem/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'a banda não é o que segura a folga da entrega',
+    porque: 'a medida que sustenta o diagnóstico da D51 muda sem ninguém perceber',
+    quebra: ['simulador/motor.mjs', 'ultimoAno.filter((l) => l.distancia > l.passo).length',
+      'ultimoAno.filter((l) => l.distancia > l.passo * 10).length'],
+    acusa: /deixou de haver mês com distância acima do passo/,
+  },
+  {
+    teste: 'os números do simulador saem da constante',
+    porque: 'o aporte de referência volta a ser digitado — a D49 manda ele sair da constante',
+    quebra: ['simulador.html', 'aporte ${brl(APORTE_DE_REFERENCIA)}', 'aporte R$ 150'],
+    acusa: /devia sair de APORTE_DE_REFERENCIA/,
+  },
 ];
 
 const rodar = (nome, onde) => {

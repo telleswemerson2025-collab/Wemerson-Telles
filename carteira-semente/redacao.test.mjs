@@ -391,6 +391,8 @@ test('D44 A · D46: os números do simulador saem da constante, e ligados', () =
     [/limite é 15%/, 'TETO_DERIVA'],
     [/até os 18/, 'ENTREGA_AOS'],
     [/as 5 partidas/, 'PARTIDAS'],
+    [/aporte R\$ 150/, 'APORTE_DE_REFERENCIA'],
+    [/afunila de 3 a 0/, 'BANDA_PONTOS'],
   ];
   const voltaram = proibidos.filter(([re]) => re.test(script)).map(([re, n]) => `${re} — devia sair de ${n}`);
   assert.deepEqual(voltaram, [], `\n  ${voltaram.join('\n  ')}\n`);
@@ -400,7 +402,7 @@ test('D44 A · D46: os números do simulador saem da constante, e ligados', () =
     .flatMap((m) => m[1].match(/[A-Z][A-Z0-9_]{2,}/g) ?? []));
   for (const nome of ['ABRIGO_ATIVO_ANOS', 'MESES_SEM_MODULACAO', 'BANDA_PONTOS',
     'TETO_DEFASAGEM', 'LIMIAR_DA_FASE_3', 'CELULAS_DA_GRADE', 'TETO_DERIVA',
-    'ENTREGA_AOS', 'VERSAO_REFERENCIA', 'CENARIO_DA_CAPA']) {
+    'ENTREGA_AOS', 'VERSAO_REFERENCIA', 'CENARIO_DA_CAPA', 'APORTE_DE_REFERENCIA']) {
     assert.ok(interpolados.has(nome), `${nome} não gera texto nenhum no simulador`);
   }
 });

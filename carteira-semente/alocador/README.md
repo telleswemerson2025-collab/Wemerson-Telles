@@ -33,6 +33,7 @@ código existir. As **vinte células** batem, com o índice real de 29/08/2026:
 | doc 02 · teto absoluto **regra 3** | `mEfetivo()` | com Abrigo, `min(M,1)`: reduz, nunca eleva |
 | **D25 A** · alvo interpolado | `alvoDaGlidepath()` | os quatro passos: 2,83 · 1,75 · 1,67 · 0,83 |
 | **D30** · banda de 3 pontos 🔒 | `demandaDaGlidepath()` | dentro dela não se move nada |
+| **D51 A** · a banda afunila no último ano 🔒 | `bandaDoMes()` | `3 × (meses restantes ÷ 12)`, zero na entrega |
 | **D25 B** · velocidade pelo **estado** | `fatorDeVelocidade()` | 1,50 · 1,00 · 0,50 · 0,25, e o Índice não entra |
 | **D25 C** · defasagem | idem | acumula 1,31 em Capitulação, recupera 0,88 em Saudável |
 | **D25 C** · teto de 12 pontos 🔒 | idem | no teto o fator volta a 1,00 mesmo em Capitulação |
@@ -113,3 +114,31 @@ deixou de mover. Estar dentro da tolerância não é estar atrasado.
   de contagem estão na Torre (peça 2). Aqui só entram os **tetos de concentração**, que
   são decisão de alocação.
 - **Não confere a si mesmo.** Isso é o Auditor, e ele não está nesta peça.
+
+
+## ⚠️ O QUE A D51 A MEDIU, DEPOIS DE IMPLEMENTADA
+
+O afunilamento da banda **não moveu a exposição da entrega**. Mês a mês, a trajetória com banda
+afunilada é idêntica à com banda de 3, nas cinco partidas — a carteira segue chegando 2,83 a 3,19
+pontos acima do alvo.
+
+A banda nunca chega a ser consultada no último ano: **em 12 dos 12 meses a distância já é maior que
+o passo**, e nesse regime `mover = min(passo, distância) = passo`. O mês anda um passo, o alvo desce
+um passo, e a folga fica onde estava. Com banda 3 ou banda 0,25, dá no mesmo.
+
+E a folga não nasce no fim: **2,83 é o passo do primeiro trecho da rampa** (4a→3a). Ela aparece no
+primeiro mês em que a rampa move e é carregada intacta até a entrega.
+
+O que a fecharia — e **não foi feito, porque não foi decidido** — é deixar o mês corrigir a
+*posição* quando ela está fora da banda, em vez de só acompanhar o passo:
+
+```js
+programado = Math.min(distancia, Math.max(passo, distancia - banda))
+```
+
+Isso não mexe na D25 C: a modulação continuaria incidindo sobre `programado`. Muda o que
+`programado` é. **A decisão acertou o alvo e errou a arma** — o que segurava a exposição acima do
+alvo nunca foi a banda.
+
+A medida está fixada em teste (`mesesEmQueABandaSegurou === 0`, `mesesTravadosNoPasso === 12`), com
+a mensagem dizendo que, se ela mudar, a conclusão registrada na D51 precisa ser refeita.

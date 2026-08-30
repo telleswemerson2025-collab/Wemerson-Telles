@@ -277,3 +277,24 @@ passo do mês**, e não só o número.
 E os três caminhos foram abertos de verdade: a leitura de hoje (Mercado saudável · 51 · fase 2 ·
 mês 0), a recusa (*"faltam 4 de 4 séries de origem"*, sem projeção embaixo) e a hipotética (o
 seletor mudado marca **simulação hipotética** e a segunda linha continua sendo a do dia).
+
+---
+
+## D51 · O QUE ENTROU NA TELA DEPOIS DA CONFERÊNCIA
+| | O que a decisão manda | Onde ficou |
+|---|---|---|
+| 51 A | a banda afunila de 3 a zero no último ano | `bandaDoMes()` · painel *A trajetória desta partida* |
+| 51 B | o ganho da modulação é medido e mostrado, nunca aplicado | bloco *Ganho não projetado* |
+| 49 | os R$ 150 são referência, e saem rotulados | `APORTE_DE_REFERENCIA` · nota da base |
+
+O painel da trajetória ganhou três campos: **folga na entrega**, **banda no último mês** e **a banda
+segurou — 0 de 12 meses**. O terceiro existe porque o segundo, sozinho, deixaria a leitura acreditar
+que a banda passou a fazer o trabalho.
+
+### ⚠️ O afunilamento é inerte, e a tela diz isso
+A exposição na entrega não se moveu: 18,67 a 19,02 por cento, contra alvo de 15,83, as mesmas de
+antes. A banda não decidiu nada em nenhum dos doze meses do último ano — em 12 dos 12 a distância já
+era maior que o passo. Quem segura a folga é o teto `min(passo, distância)`, não a banda.
+
+A tela escreve isso **na própria nota**, com os números da partida em uso, e o registro completo com
+o que fecharia a folga está na D51 e no README do Alocador. Não foi feito porque não foi decidido.

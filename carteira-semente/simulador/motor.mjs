@@ -16,7 +16,7 @@ import { MARCO_INDICE } from '../registro/registro.mjs';
 import {
   EXPOSICAO_ALVO, INICIO_DA_RAMPA_ANOS, ABRIGO_ATIVO_ANOS, VELOCIDADE_POR_ESTADO,
   BANDA_PONTOS, TETO_DEFASAGEM, MESES_SEM_MODULACAO,
-  alvoDaGlidepath, passoDoMes, demandaDaGlidepath,
+  alvoDaGlidepath, passoDoMes, bandaDoMes, demandaDaGlidepath,
 } from '../alocador/alocador.mjs';
 
 const arred = (x, casas = 4) => Number(x.toFixed(casas));
@@ -39,6 +39,22 @@ export const CENARIOS = Object.freeze({
 });
 
 export const FASES = Object.freeze(['queda', 'recuperação', 'alta', 'correção']);
+
+/**
+ * D49: os R$ 150 por mês são REFERÊNCIA DE CÁLCULO, não regra de produto. Nada no
+ * sistema exige esse valor e nenhuma trava depende dele — o simulador aceita
+ * qualquer aporte. Ele existe aqui só porque as tabelas publicadas foram calculadas
+ * sobre ele, e comparar deriva exige base fixa. Onde aparecer, sai rotulado.
+ *
+ * Provisório até o Gui definir aporte mínimo, se houver. Se definir, vira regra e
+ * passa uma vez pelos quatro critérios da classe âncora.
+ */
+export const APORTE_DE_REFERENCIA = 150;
+export const IDADE_DE_REFERENCIA = 0;
+export const BASE_DA_PUBLICACAO = Object.freeze({
+  idade: IDADE_DE_REFERENCIA, aporte: APORTE_DE_REFERENCIA,
+  rotulo: 'referência de cálculo, não regra de produto',
+});
 export const MESES_NA_FASE = 12;
 export const ENTREGA_AOS = 18;
 
@@ -270,7 +286,7 @@ export function numeroDeCapa({ anos, aporte }) {
 
 // ── A GLIDEPATH MODULADA PELO ESTADO (D25 B · C · D) ──────────────────────
 export { VELOCIDADE_POR_ESTADO, BANDA_PONTOS, TETO_DEFASAGEM, MESES_SEM_MODULACAO,
-  EXPOSICAO_ALVO, ABRIGO_ATIVO_ANOS, INICIO_DA_RAMPA_ANOS, alvoDaGlidepath };
+  EXPOSICAO_ALVO, ABRIGO_ATIVO_ANOS, INICIO_DA_RAMPA_ANOS, alvoDaGlidepath, bandaDoMes };
 
 /**
  * A trajetória mês a mês da exposição REAL contra o alvo, com a velocidade modulada
@@ -303,17 +319,33 @@ export function trajetoriaDaGlidepath({ anos, fase, mes = 0 }) {
     linhas.push({
       t, mesesAteEntrega, anosRestantes: mesesAteEntrega / MESES_NA_FASE,
       fase: faseCorrente, estado, fator: d.fator, motivo: d.motivo,
-      alvo: d.alvo, exposicao, defasagemAntes, defasagem, dentroDaBanda: Boolean(d.dentroDaBanda),
+      alvo: d.alvo, exposicao, defasagemAntes, defasagem, banda: d.banda,
+      distancia: d.distancia, passo: d.passo, mover: d.mover, dentroDaBanda: Boolean(d.dentroDaBanda),
       noTeto: Boolean(d.defasagemNoTeto), ultimoAno: Boolean(d.ultimoAno),
     });
   }
+  const fim = linhas[linhas.length - 1];
+  const ultimoAno = linhas.filter((l) => l.ultimoAno);
   return {
     linhas,
     maiorDefasagem: Math.max(...linhas.map((l) => l.defasagem)),
     mesesNoTeto: linhas.filter((l) => l.noTeto).length,
-    defasagemNaEntrega: linhas[linhas.length - 1].defasagem,
-    exposicaoNaEntrega: linhas[linhas.length - 1].exposicao,
-    alvoNaEntrega: linhas[linhas.length - 1].alvo,
+    defasagemNaEntrega: fim.defasagem,
+    exposicaoNaEntrega: fim.exposicao,
+    alvoNaEntrega: fim.alvo,
+    bandaNaEntrega: fim.banda,
+    // A folga que sobra sobre o alvo na entrega. Não é defasagem — a defasagem chega a
+    // zero — e não é a banda, que já afunilou. É o que o teto do passo deixou de fora.
+    folgaNaEntrega: arred(fim.exposicao - fim.alvo, 4),
+    // ⚠️ MEDIDO: em quantos meses do último ano a banda chegou a DECIDIR alguma coisa.
+    // Se for zero, o afunilamento da D51 A não teve onde morder, e quem segura a folga
+    // é o teto `min(passo, distância)` da D25 C, não a banda.
+    mesesEmQueABandaSegurou: ultimoAno.filter((l) => l.dentroDaBanda).length,
+    // E em quantos a distância já era MAIOR que o passo do mês. Nesse regime o mês
+    // move um passo, o alvo desce um passo, e a folga fica exatamente onde estava:
+    // é `programado = min(passo, distância)` que a congela, não a banda.
+    mesesTravadosNoPasso: ultimoAno.filter((l) => l.distancia > l.passo).length,
+    mesesDoUltimoAno: ultimoAno.length,
   };
 }
 

@@ -297,6 +297,8 @@ button.link{background:none;border:1px solid var(--bd);border-radius:999px;color
   </div>
   <p class="note" id="notaVel"></p>
 
+  <div class="bloco" id="naoProjetado" style="border-color:rgba(216,167,64,.35);margin-bottom:40px"></div>
+
   <h2>Índice de Plantio</h2>
   <p class="cs" style="margin-bottom:14px">Estado do mercado × tempo até a entrega · quanto do aporte vai para o ativo</p>
   <div class="mxwrap">
@@ -351,18 +353,17 @@ button.link{background:none;border:1px solid var(--bd);border-radius:999px;color
 import { classificarLinhaDagua, faixaDoIndice, varrer } from './torre/torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './torre/leitura-29-08-2026.mjs';
 import { BASES_DO_ESTADO, VELOCIDADE_POR_ESTADO, ABRIGO_ATIVO_ANOS,
-  BANDA_PONTOS, TETO_DEFASAGEM, MESES_SEM_MODULACAO } from './alocador/alocador.mjs';
+  BANDA_PONTOS, TETO_DEFASAGEM, MESES_SEM_MODULACAO, bandaDoMes } from './alocador/alocador.mjs';
 import {
   CENARIOS, FASES, PARTIDAS, TABELA_EXPO, LIMIAR_DA_FASE_3, ENTREGA_AOS, MESES_NA_FASE,
   ESTACAO_DO_ESTADO, ABRIGO, CENARIO_DA_CAPA, CELULAS_DA_GRADE, TETO_DERIVA, VERSAO_REFERENCIA,
+  BASE_DA_PUBLICACAO, APORTE_DE_REFERENCIA,
   partidaDaLeitura, rotuloDaPartida, rotuloDoPar, mesesRestantesDaFase, estacoesPorAno,
   motorMensal, criterioDeAceiteD11, grade, numeroDeCapa, trajetoriaDaGlidepath,
   custoDaModulacaoNaProjecao, expoDoAno,
 } from './simulador/motor.mjs';
 
 const HOJE = '2026-08-29';
-// A base sobre a qual as tabelas do documento-mãe foram publicadas.
-const BASE_PUBLICADA = Object.freeze({ idade: 0, aporte: 150 });
 // As quatro séries de origem da Linha d'Água. Sem as quatro não há estado (D8).
 const SERIES_DA_LINHA = Object.freeze(
   ['Preço do BTC', 'Realized Price', 'Realized Price STH', 'Realized Price LTH']);
@@ -454,10 +455,14 @@ function render() {
   const idade = +$('idade').value, aporte = +$('aporte').value, anos = ENTREGA_AOS - idade;
   $('vIdade').textContent = idade;
   $('vAporte').textContent = aporte.toLocaleString('pt-BR');
-  const naBase = idade === BASE_PUBLICADA.idade && aporte === BASE_PUBLICADA.aporte;
-  $('notaBase').innerHTML = naBase
-    ? `<span class="ok">Na base de publicação</span> — idade ${BASE_PUBLICADA.idade}, aporte ${brl(BASE_PUBLICADA.aporte)}. Os números desta tela são os das tabelas publicadas.`
-    : `<span class="alerta">Fora da base de publicação</span> — as tabelas publicadas foram calculadas com idade ${BASE_PUBLICADA.idade} e aporte ${brl(BASE_PUBLICADA.aporte)}. O que está na tela é esta simulação, não o material de venda.`;
+  // D49: os R$ 150 são referência de cálculo, não regra de produto — e a tela diz isso
+  // onde o número aparece, porque é ali que alguém o leria como exigência.
+  const naBase = idade === BASE_DA_PUBLICACAO.idade && aporte === BASE_DA_PUBLICACAO.aporte;
+  const aBase = `idade ${BASE_DA_PUBLICACAO.idade} e aporte ${brl(APORTE_DE_REFERENCIA)} — ${BASE_DA_PUBLICACAO.rotulo}`;
+  $('notaBase').innerHTML = (naBase
+    ? `<span class="ok">Na base de publicação</span> — ${aBase}. Os números desta tela são os das tabelas publicadas.`
+    : `<span class="alerta">Fora da base de publicação</span> — as tabelas publicadas foram calculadas com ${aBase}. O que está na tela é esta simulação, não o material de venda.`)
+    + ` Nenhuma trava do sistema depende desse valor, e o simulador aceita qualquer aporte.`;
 
   const S = {}; for (const [k, padrao] of Object.entries(CENARIOS)) {
     S[k] = motorMensal({ anos, aporte, fase: partida.fase, mes: partida.mes, padrao });
@@ -531,13 +536,28 @@ function render() {
     campo('Defasagem na entrega', `${num(traj.defasagemNaEntrega, 2)} pt`,
       `liquidada nos últimos ${MESES_SEM_MODULACAO} meses, não perdoada`) +
     campo('Exposição na entrega', `${num(traj.exposicaoNaEntrega, 2)}%`,
-      `alvo ${num(traj.alvoNaEntrega, 2)}% · banda de ${BANDA_PONTOS} pontos`);
+      `alvo ${num(traj.alvoNaEntrega, 2)}% · folga de ${num(traj.folgaNaEntrega, 2)} pt`) +
+    campo('Banda no último mês', `${num(traj.bandaNaEntrega, 2)} pt`,
+      `afunila de ${BANDA_PONTOS} a 0 nos últimos ${MESES_SEM_MODULACAO} meses`) +
+    campo('A banda segurou', `${traj.mesesEmQueABandaSegurou} de ${traj.mesesDoUltimoAno} meses`,
+      `distância acima do passo em ${traj.mesesTravadosNoPasso} deles`);
   $('notaVel').innerHTML =
-    `A defasagem é o que a modulação deixou de mover, e só ela: a banda de ${BANDA_PONTOS} pontos é tolerância de posição e não gera defasagem. ` +
-    `Nos últimos ${MESES_SEM_MODULACAO} meses ninguém modula — modular pressupõe tempo para esperar o mercado virar, e no último ano não há esse tempo — e a defasagem é liquidada até zero dentro do período.<br><br>` +
-    `<b>Medido, não aplicado:</b> se a projeção usasse a exposição real em vez do alvo do ano, esta partida daria ` +
-    custo.map((c) => `${c.cenario} ${pct(c.diferenca)}`).join(' · ') +
-    `. As ${CELULAS_DA_GRADE} células publicadas e a referência ${VERSAO_REFERENCIA} foram todas calculadas com o alvo do ano; trocar a base moveria as ${CELULAS_DA_GRADE} de uma vez. A troca é decisão do Gui, não do simulador.`;
+    `A defasagem é o que a modulação deixou de mover, e só ela: a banda é tolerância de posição e não gera defasagem — no último ano ela afunila de ${BANDA_PONTOS} pontos até zero, e continua não gerando. ` +
+    `Nos últimos ${MESES_SEM_MODULACAO} meses ninguém modula — modular pressupõe tempo para esperar o mercado virar, e no último ano não há esse tempo — e a defasagem é liquidada até zero dentro do período.` +
+    (traj.mesesEmQueABandaSegurou === 0 ? `<br><br><b>⚠️ Medido nesta partida:</b> ` +
+      `a banda não decidiu nada em nenhum dos ${traj.mesesDoUltimoAno} meses do último ano, e a exposição chega na entrega ${num(traj.folgaNaEntrega, 2)} pontos acima do alvo. ` +
+      `Em ${traj.mesesTravadosNoPasso} dos ${traj.mesesDoUltimoAno} a distância já era maior que o passo do mês: o mês anda um passo, o alvo desce um passo, e a folga fica onde estava. ` +
+      `Quem a segura é o teto <code>min(passo, distância)</code>, não a banda.` : '');
+
+  // D51 B: o ganho da modulação fica MEDIDO E MOSTRADO, nunca aplicado à tabela.
+  $('naoProjetado').innerHTML =
+    `<h3>Ganho não projetado — medido, nunca aplicado à tabela publicada</h3><div class="par">` +
+    custo.map((c) => campo(c.cenario, pct(c.diferenca), `${brl(c.publicado)} → ${brl(c.comModulacao)}`)).join('') +
+    `</div><p class="note" style="margin:16px 0 0">` +
+    `A modulação existe para não vender no fundo, e o ganho que ela produz não entra na conta que a gente publica. ` +
+    `Aplicá-la moveria as ${CELULAS_DA_GRADE} células para cima de uma vez, que é exatamente a deriva direcional que a trava existe para pegar. ` +
+    `Sem ela o número publicado <b>subestima</b> — e é o único lado do erro que um material de venda pode permitir. ` +
+    `A referência ${VERSAO_REFERENCIA} da tabela de deriva também foi calculada com o alvo do ano.</p>`;
 
   // 6 · A TABELA DE DERIVA, POR LINHA, CONTRA A v1.3 — PERMANENTE.
   $('csDeriva').textContent =

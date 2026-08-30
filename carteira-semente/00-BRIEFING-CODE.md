@@ -112,7 +112,7 @@ depois que alguém percebe.
 | 5 | A validade de **180 dias** do degrau de invalidação | D18 | julgamento antigo com cara de número atual |
 | 6 | O teto de **8% por ativo**, com a faixa até **12%** | D15 · D16 | concentração crescendo ciclo a ciclo |
 | 7 | O piso de **2% por posição** | D22 | a cauda miúda voltando, com o custo operacional junto |
-| 8 | A **banda de 3 pontos** da glidepath | D24 · D30 | a exposição com que a criança recebe a carteira |
+| 8 | A **banda de 3 pontos** da glidepath, que afunila a zero no último ano | D24 · D30 · D51 A | a exposição com que a criança recebe a carteira |
 | 9 | A **trava 6** do Reforço de Fundo — caixa nunca abaixo de **10%** da carteira | D6 · D31 | a reserva sumindo acionamento a acionamento |
 | 10 | O **limiar de liquidez** — US$ 100 mi de volume diário de 30 dias, em ao menos **duas** exchanges medidas separadamente | D37 | a carteira ganhando ponta da qual não dá para sair |
 | 11 | A **lista de exchanges de primeira linha** — Binance · Coinbase · Kraken · OKX · Bybit · Bitget | D38 | a mesma promessa do membro 10 |

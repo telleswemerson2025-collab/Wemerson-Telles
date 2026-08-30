@@ -52,7 +52,9 @@ Checklist. Qualquer item falho VETA:
    ou de ETH estiver vencido, a camada sai SUSPENSA e nomeada, com a data — camada calculada sem um
    deles veta.
 10. **Peso e caixa** — o peso resultante respeita o limite; o caixa não fica abaixo do mínimo.
-11. **Abrigo** — se faltam 3 anos ou menos, a exposição respeita a glidepath.
+11. **Abrigo** — se faltam 3 anos ou menos, a exposição respeita a glidepath. *E no último ano a
+    banda afunila de 3 a zero (D51 A): tolerância que sobrevive à entrega é folga sobre a promessa
+    central, não tolerância.*
 12. **Fatia tática** — se houver, opera só com ganho realizado, nunca com o principal, e no máximo 5–10%.
 13. **Voz** — sem hype, sem emoji, Teste da Amiga passa, sem `=` e `≠`.
 14. **Rótulo de dado** — nada ilustrativo apresentado como real. Projeção traz a data, o estado, o
