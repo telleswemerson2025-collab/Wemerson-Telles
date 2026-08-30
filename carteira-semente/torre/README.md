@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.20 · 29/08/2026 — a Curva era mensal, e eu tinha marcado errado
+Conferência. Versão 1.21 · 29/08/2026 — notação compacta: a tela esconde uma faixa
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -913,6 +913,58 @@ Funds. Custo zero, confiança saturada. **Sobram DXY e US M2** sem leitura.
 *E o Funding Rate, também datado num sábado, está **certo**: série 24/7, e o Gui leu o
 último ponto em 29/08 mesmo. Nem toda data de sábado é problema — só as das séries que
 não operam no sábado.*
+
+### ✅ A décima terceira: **ETF Net Inflow · max = 07/11/2024** — e o formato quebrou o modelo
+Vizinhos imediatos separam por dígito ($622M e $293M). O problema está longe deles.
+
+## 🔴 A TOOLTIP NÃO PERDE CASA — ELA COLAPSA PARA UM DÍGITO
+O número anotado (**1.373,8**) **não aparece de forma alguma**. A tela mostra **"$1B"**.
+
+> Abaixo de mil milhões a tooltip dá o inteiro em milhões ($242M, $622M). **Acima,
+> colapsa para um dígito.**
+
+**Casas decimais não modelam isso.** O que `$1B` esconde não é uma casa, é uma
+**faixa**: tudo de **1.000 a 1.499** lê igual. E a faixa vale **0,44 ponto de Índice** —
+a segunda maior ambiguidade encontrada, atrás só da suavização do ALL (1,39).
+
+O código parou de fingir que sabe: o ETF **não tem entrada** em `CASAS_NA_TOOLTIP`.
+Ele tem `formato: 'compacto'`, e `comoATelaMostra()` devolve o rótulo em vez de um
+número arredondado:
+
+```
+{ registrado: 1373.8, naTela: '$1B', formato: 'compacto', excede: true }
+```
+
+### E quatro dias diferentes exibem "$1B"
+**12/03/2024 · 07/11/2024 · 11/11/2024 · 21/11/2024.** A tooltip não decide entre
+nenhum deles. O Gui separou por **altura de barra** numa janela curta:
+
+| Data | Exibido | Altura (y) |
+|---|---|---|
+| **07/11/2024** | $1B | **109** ← o mais alto |
+| 11/11/2024 | $1B | ≈145 |
+| 12/03/2024 | $1B | 167 |
+| 21/11/2024 | $1B | ≈180 |
+
+58 px entre o primeiro e o terceiro — **da ordem de US$ 300 milhões** nessa escala.
+
+**A frase que importa é dele:** *"sem a separação por pixel, essa conferência não teria
+como distinguir 07/11 de 12/03."* **A data deste extremo repousa em medição de pixel**,
+não em leitura de dígito — e isso ficou gravado junto do número, não numa nota de
+rodapé.
+
+*É o pixel usado para uma comparação de **magnitude**, não para um empate na quarta
+casa como no Liveliness. Mesmo método, outro problema.*
+
+## ⚠️ A UNIDADE ERA INFERÊNCIA MINHA, E A TELA CORRIGIU
+Eu tinha `US$ mi`. A tela diz **USD**, exibido com sufixo M/B. *Compatível na escala,
+errado como rótulo* — e o aviso que eu tinha posto uma conferência atrás existia
+exatamente para isso. Funcionou na primeira vez que foi usado.
+
+**Seis unidades lidas, oito ainda inferência minha.**
+
+*O calendário, esse, eu tinha acertado: a seção "Sobre esta métrica" diz **calendário
+NYSE, sem barras em fins de semana e feriados**. Agora está lido, não inferido.*
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o

@@ -28,7 +28,7 @@ export const SERIES = Object.freeze([
   { n: 'Fed Funds Rate',      camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão', unidade: '% a.a.', caminhoNoMenu: 'Macro / Fed Funds Rate (%)', unidadeConferida: true },
   { n: 'US M2',               camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal', unidade: 'US$ tri' },
   { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal', unidade: 'pontos percentuais', unidadeConferida: true, caminhoNoMenu: 'Studio / Macro / Yield Curve 10Y-2Y' },
-  { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11', calendario: 'pregão', unidade: 'US$ mi' },
+  { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11', calendario: 'pregão', unidade: 'USD', unidadeConferida: true, formato: 'compacto', caminhoNoMenu: 'Studio / ETF & Institutional / ETF Net Inflow', calendarioNota: 'janela operacional NYSE — sem barras em fins de semana e feriados' },
   { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01', calendario: '24/7', unidade: 'APR (%)', caminhoNoMenu: 'Studio / Futuros / Funding Rate — APR (%)', unidadeConferida: true },
   // A escala é LINEAR e não pode ser outra: netflow é entrada menos saída, cruza o
   // zero, e log de zero ou de negativo não produz número errado — não produz número
@@ -51,22 +51,50 @@ export const CASAS_NA_TOOLTIP = Object.freeze({
 const casasDe = (x) => { const t = String(x); const i = t.indexOf('.'); return i < 0 ? 0 : t.length - i - 1; };
 
 /**
+ * ⚠️ A conferência do ETF Net Inflow · max quebrou o modelo de "casas decimais": a
+ * tooltid dessa série usa NOTAÇÃO COMPACTA. Abaixo de mil milhões dá o inteiro em
+ * milhões ($242M, $622M); acima, colapsa para um dígito só ($1B).
+ *
+ * Casas decimais não representam isso. O que "$1B" esconde é uma FAIXA — tudo de
+ * 1.000 a 1.499 lê igual — e essa faixa vale 0,44 ponto de Índice. Quatro dias
+ * diferentes de 2024 exibem "$1B", e a tooltip não separa nenhum deles.
+ */
+export const FAIXA_DO_COMPACTO = Object.freeze({ piso: 1000, teto: 1499, custoNoIndice: 0.44 });
+
+const ehCompacto = (serie) => SERIES.find((x) => x.n === serie)?.formato === 'compacto';
+
+/** Formata como o terminal formataria: $242M, $1B. */
+export function formatoCompacto(v) {
+  const a = Math.abs(v);
+  const sinal = v < 0 ? '-' : '';
+  if (a >= 1000) return `${sinal}$${Math.round(a / 1000)}B`;
+  return `${sinal}$${Math.round(a)}M`;
+}
+
+/**
  * O número registrado tem mais casas do que a tooltip consegue mostrar? Se tem, ele
  * NÃO veio dali — e o documento 07 diz que os valores foram lidos "um por um" pela
  * tooltip. Zero à direita não conta: 2.8740 vira 2.874 em JS e não é perda de leitura.
  */
 export function excedeATooltip(serie, campo, varredura) {
-  const casas = CASAS_NA_TOOLTIP[serie];
   const v = varredura?.[serie]?.[campo];
-  if (casas === undefined || typeof v !== 'number') return false;
+  if (typeof v !== 'number') return false;
+  // Série compacta: o registrado excede sempre que a formatação perde dígito, e a
+  // perda é de FAIXA, não de casa decimal — comparar casas aqui seria mentir.
+  if (ehCompacto(serie)) return formatoCompacto(v) !== formatoCompacto(Number(v.toFixed(0)))
+    || Math.abs(v) >= 1000 || !Number.isInteger(v);
+  const casas = CASAS_NA_TOOLTIP[serie];
+  if (casas === undefined) return false;
   return casasDe(v) > casas;
 }
 
 export const camposQueExcedemATooltip = (varredura) =>
-  Object.keys(CASAS_NA_TOOLTIP).flatMap((serie) =>
+  [...Object.keys(CASAS_NA_TOOLTIP), ...SERIES.filter((x) => x.formato === 'compacto').map((x) => x.n)]
+    .flatMap((serie) =>
     ['valor', 'min', 'max']
       .filter((campo) => excedeATooltip(serie, campo, varredura))
-      .map((campo) => ({ serie, campo, registrado: varredura[serie][campo], casasNaTooltip: CASAS_NA_TOOLTIP[serie] })));
+      .map((campo) => ({ serie, campo, registrado: varredura[serie][campo],
+        casasNaTooltip: CASAS_NA_TOOLTIP[serie] ?? null, formato: ehCompacto(serie) ? 'compacto' : null })));
 
 /**
  * ⚠️ O RISCO QUE MAIS CUSTOU ATÉ AGORA. As leituras são feitas em MODO SMA, e no zoom
@@ -114,9 +142,12 @@ export const METODOS_DE_VARREDURA = Object.freeze([
 
 /** Como a tooltip da série mostraria este número — proposta do Gui: guardar as duas formas. */
 export function comoATelaMostra(serie, campo, varredura) {
-  const casas = CASAS_NA_TOOLTIP[serie];
   const v = varredura?.[serie]?.[campo];
-  if (casas === undefined || typeof v !== 'number') return null;
+  if (typeof v !== 'number') return null;
+  if (ehCompacto(serie)) return { registrado: v, naTela: formatoCompacto(v), formato: 'compacto',
+    excede: excedeATooltip(serie, campo, varredura) };
+  const casas = CASAS_NA_TOOLTIP[serie];
+  if (casas === undefined) return null;
   return { registrado: v, naTela: Number(v.toFixed(casas)), casas, excede: excedeATooltip(serie, campo, varredura) };
 }
 
@@ -433,6 +464,11 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
         '     (a raiz do menu pode aparecer antes; o que não pode é o trecho final ser outro).',
       ] : []),
       ...(unidade ? [(() => {
+        const t = comoATelaMostra(serie, 'valor', varredura);
+        if (t?.formato === 'compacto') {
+          return `  a unidade tem de ser ${unidade}, e o valor de hoje tem de bater com ${t.naTela}` +
+            ` (a tooltip usa notação compacta; o registro guarda ${v.valor}).`;
+        }
         const casas = CASAS_NA_TOOLTIP[serie];
         const excede = excedeATooltip(serie, 'valor', varredura);
         const naTela = excede ? v.valor.toFixed(casas) : v.valor;
@@ -458,7 +494,15 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
     '',
     'Passos: abrir a série · estreitar a janela em torno da data até o passo do cursor virar um dia ·',
     'ler a tooltip · anotar o valor dígito a dígito · voltar ao range ALL.',
-    ...(excedeATooltip(serie, campo, varredura) ? [
+    ...(excedeATooltip(serie, campo, varredura) && SERIES.find((x) => x.n === serie)?.formato === 'compacto' ? [
+      '',
+      `⚠️ Esta tooltip usa NOTAÇÃO COMPACTA. O número anotado (${alvo}) vai aparecer como`,
+      `"${formatoCompacto(alvo)}" — e nesse formato vários dias diferentes leem IGUAL.`,
+      `Acima de mil milhões ela colapsa para um dígito: tudo entre ~${FAIXA_DO_COMPACTO.piso} e`,
+      `~${FAIXA_DO_COMPACTO.teto} exibe o mesmo rótulo, e essa faixa vale ${FAIXA_DO_COMPACTO.custoNoIndice} ponto de Índice.`,
+      'Procurar TODOS os dias que exibem o mesmo rótulo, e separá-los por altura de barra numa',
+      'janela curta — a tooltip não decide aqui, e o método usado fica registrado junto do número.',
+    ] : excedeATooltip(serie, campo, varredura) ? [
       '',
       `⚠️ O número anotado (${alvo}) tem mais casas do que esta tooltip mostra — ela dá`,
       `${CASAS_NA_TOOLTIP[serie]} casa(s). Ele NÃO vai aparecer na tela assim.`,

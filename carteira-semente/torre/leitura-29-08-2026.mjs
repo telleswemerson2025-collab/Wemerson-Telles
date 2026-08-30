@@ -370,7 +370,57 @@ export const VARREDURA_29_08_2026 = Object.freeze({
                       'nada publicado, alterado ou apagado, nenhum print salvo',
     }],
   },
-  'ETF Net Inflow':     { valor: 242.3,    min: -1138.9, max: 1373.8,    data: '2026-08-27' , dataMin: '2025-02-25', dataMax: '2024-11-07', confirmado: { valor: '2026-08-29', min: null, max: null } },
+  'ETF Net Inflow': {
+    valor: 242.3, min: -1138.9, max: 1373.8, data: '2026-08-27',
+    dataMin: '2025-02-25', dataMax: '2024-11-07',
+    confirmado: { valor: '2026-08-29', min: null, max: '2026-08-29' },
+    // ⚠️ CORRECAO DE UNIDADE: eu tinha inferido "US$ mi". A tela diz USD, exibido em
+    // milhoes/bilhoes por sufixo. Compativel na escala, errado como rotulo.
+    unidadeLida: {
+      em: '2026-08-29', unidade: 'USD',
+      textoDaTela: 'Fluxo líquido diário, em USD, dos ETFs spot de Bitcoin nos EUA',
+      onde: 'seção "Sobre esta métrica" — o título não traz unidade',
+      exibicao: 'sufixo M/B: $500M, $1B, $2B',
+      euTinhaInferido: 'US$ mi',
+      breadcrumbCompleto: 'Studio / ETF & Institutional / ETF Net Inflow',
+      cabecalho: 'BITCOIN · ETF & INSTITUTIONAL',
+      // Confirma o calendario que eu tinha marcado — desta vez a inferencia bateu.
+      calendarioNaTela: 'janela operacional segue o calendário NYSE — sem barras em fins de semana e feriados',
+    },
+    conferencias: [{
+      campo: 'max', em: '2026-08-29',
+      metodo: 'Studio / ETF & Institutional / ETF Net Inflow, tooltip, janela jan–dez/2024 a ~4,5 px por dia útil, sem suavização',
+      lido: '$1B — cifrão, um, B',
+      // ⚠️ NOTACAO COMPACTA. Nao e "casas decimais": acima de mil milhoes a tooltip
+      // colapsa para UM digito. 1.373,8 vira "$1B". Abaixo de 1B da o inteiro em
+      // milhoes ($242M, $622M). O modelo de casas decimais nao representa isso.
+      notacaoCompacta: {
+        registrado: 1373.8, naTela: '$1B',
+        regra: 'acima de mil milhões colapsa para um dígito; abaixo dá o inteiro em milhões',
+        oQueEsconde: 'uma FAIXA, não uma casa: tudo de 1.000 a 1.499 exibe "$1B"',
+        custoDaFaixaNoIndice: 0.44,
+      },
+      vizinhos: { '2024-11-06': 622, '2024-11-07': '$1B', '2024-11-08': 293 },
+      // Os vizinhos imediatos separam por digito. O problema esta longe deles.
+      empateDeRotulo: {
+        diasComOMesmoRotulo: ['2024-03-12', '2024-11-07', '2024-11-11', '2024-11-21'],
+        aTooltipNaoDecide: 'os quatro leem "$1B"',
+        resolvidoPor: 'altura de barra na mesma janela (jan–dez/2024, ~4,5 px por dia útil, sem suavização)',
+        alturas: { '2024-11-07': 109, '2024-11-11': 145, '2024-03-12': 167, '2024-11-21': 180 },
+        separacao: '58 px entre 07/11 e 12/03 — da ordem de US$ 300 milhões nessa escala',
+        naturezaDoMetodo: 'separação por pixel entre rivais que exibem o mesmo rótulo',
+        // O Gui disse o que isso significa, e e o ponto: sem o pixel esta conferencia
+        // nao teria como distinguir 07/11 de 12/03.
+        semEleNaoDava: 'sem a separação por pixel a conferência não distinguiria 07/11 de 12/03',
+      },
+      ehMaximoDaSerie: 'rivais do mesmo rótulo medidos por altura na janela de 2024; ' +
+                       'para 2025–2026, bloco próprio: o eixo topa em $1B e nenhuma barra o alcança — o maior do período fica em ~$940M.',
+      metodoDeVarredura: 'separação por pixel entre rivais de mesmo rótulo, mais bloco próprio para 2025–2026',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 75.499 em 07/11; US$ 74.399 em 06/11 e US$ 76.271 em 08/11',
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }],
+  },
   'Funding Rate': {
     valor: 1.84, min: -139.23, max: 186.86, data: '2026-08-29',
     dataMin: '2020-03-13', dataMax: '2020-02-12',

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -1249,10 +1249,12 @@ test('o número registrado do Funding Rate não pode ter saído desta tooltip', 
   assert.match(c.precisaoExcedente.naoCorrigido, /retificação, não implementação/);
 });
 
-test('a auditoria de precisão acusa exatamente duas séries, e são as duas problemáticas', () => {
+test('a auditoria de precisão acusa as séries cujo registro não cabe na tela', () => {
   const fora = camposQueExcedemATooltip(V);
-  assert.deepEqual([...new Set(fora.map((f) => f.serie))].sort(), ['Funding Rate', 'Preço do BTC']);
-  assert.equal(fora.length, 6, 'as três casas das duas séries');
+  // Eram duas por casa decimal; o ETF entrou como terceira, por FORMATO.
+  assert.deepEqual([...new Set(fora.map((f) => f.serie))].sort(),
+    ['ETF Net Inflow', 'Funding Rate', 'Preço do BTC']);
+  assert.equal(fora.length, 9, 'as três casas de cada uma das três');
   // São exatamente as duas onde uma conferência tropeçou: a do preço falhou de vez.
   assert.equal(V['Preço do BTC'].tentativas.find((t) => t.campo === 'min').resultado, 'não confirmado');
   // Zero à direita NÃO conta: 2.8740 vira 2.874 em JS e isso não é perda de leitura.
@@ -1407,7 +1409,8 @@ test('o comando levanta a divergência quando o sinal e a marcação discordam',
 // ══ A PROCEDÊNCIA DAS UNIDADES ════════════════════════════════════════════
 test('unidade lida na tela e unidade inferida por mim são coisas diferentes', () => {
   const lidas = SERIES.filter((s) => s.unidadeConferida).map((s) => s.n).sort();
-  assert.deepEqual(lidas, ['Curva 10Y-2Y', 'Fed Funds Rate', 'Funding Rate', 'SOPR', 'Supply in Profit']);
+  assert.deepEqual(lidas, ['Curva 10Y-2Y', 'ETF Net Inflow', 'Fed Funds Rate',
+    'Funding Rate', 'SOPR', 'Supply in Profit']);
   // Onde a unidade é inferência minha, o comando diz isso — senão o portão reprova
   // uma série certa com base num palpite meu.
   const inferida = comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V);
@@ -1440,4 +1443,90 @@ test('a segunda das quatro datas de sábado ficou sabida, e continua custando ze
   const suspeitas = SERIES.filter((x) => V[x.n] && x.calendario !== '24/7'
     && semPregao(V[x.n].data) && !V[x.n].divergenciaDeData);
   assert.deepEqual(suspeitas.map((x) => x.n).sort(), ['DXY', 'US M2'], 'duas ainda sem leitura');
+});
+
+// ══ ETF NET INFLOW · MAX — A NOTAÇÃO COMPACTA ESCONDE UMA FAIXA ═══════════
+test('o máximo do ETF bate, e o registrado não aparece na tela de forma alguma', () => {
+  const c = V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'max');
+  assert.equal(V['ETF Net Inflow'].confirmado.max, '2026-08-29');
+  assert.equal(c.notacaoCompacta.registrado, 1373.8);
+  assert.equal(c.notacaoCompacta.naTela, '$1B');
+  assert.equal(formatoCompacto(1373.8), '$1B');
+  assert.equal(formatoCompacto(242.3), '$242M', 'abaixo de 1B dá o inteiro em milhões');
+  assert.equal(formatoCompacto(-1138.9), '-$1B');
+});
+
+test('casas decimais não modelam notação compacta, e o código parou de fingir que sim', () => {
+  // O que "$1B" esconde é uma FAIXA, não uma casa. Medido: 0,49 ponto de Índice.
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const com = (m) => varrer({ varredura: { ...V, 'ETF Net Inflow': { ...V['ETF Net Inflow'], max: m } }, hoje: HOJE }).indice;
+  const amplitude = Math.abs(com(FAIXA_DO_COMPACTO.piso) - com(FAIXA_DO_COMPACTO.teto));
+  assert.equal(amplitude.toFixed(2), '0.44');
+  assert.equal(FAIXA_DO_COMPACTO.custoNoIndice, 0.44);
+  // Os dois extremos da faixa exibem o mesmo rótulo.
+  assert.equal(formatoCompacto(FAIXA_DO_COMPACTO.piso), formatoCompacto(FAIXA_DO_COMPACTO.teto));
+  // E o ETF não tem entrada em CASAS_NA_TOOLTIP: o modelo não se aplica a ele.
+  assert.equal(CASAS_NA_TOOLTIP['ETF Net Inflow'], undefined);
+  assert.equal(comoATelaMostra('ETF Net Inflow', 'max', V).formato, 'compacto');
+  assert.equal(comoATelaMostra('ETF Net Inflow', 'max', V).naTela, '$1B');
+  assert.ok(base > 0);
+});
+
+test('quatro dias exibem o mesmo rótulo, e só o pixel os separa', () => {
+  const e = V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'max').empateDeRotulo;
+  assert.equal(e.diasComOMesmoRotulo.length, 4);
+  assert.ok(e.diasComOMesmoRotulo.includes('2024-11-07') && e.diasComOMesmoRotulo.includes('2024-03-12'));
+  // Altura menor = barra mais alta (y cresce para baixo). 07/11 é o topo.
+  const alturas = Object.entries(e.alturas).sort((a, b) => a[1] - b[1]);
+  assert.equal(alturas[0][0], '2024-11-07');
+  assert.equal(e.naturezaDoMetodo, 'separação por pixel entre rivais que exibem o mesmo rótulo');
+  assert.match(e.semEleNaoDava, /não distinguiria 07\/11 de 12\/03/);
+  // Os vizinhos imediatos, esses, separam por dígito.
+  const c = V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'max');
+  assert.equal(c.vizinhos['2024-11-06'], 622);
+  assert.equal(c.vizinhos['2024-11-08'], 293);
+});
+
+test('a auditoria de precisão passou a acusar três séries, e a terceira é por formato', () => {
+  const fora = camposQueExcedemATooltip(V);
+  assert.deepEqual([...new Set(fora.map((f) => f.serie))].sort(),
+    ['ETF Net Inflow', 'Funding Rate', 'Preço do BTC']);
+  const etf = fora.filter((f) => f.serie === 'ETF Net Inflow');
+  assert.equal(etf.length, 3);
+  for (const f of etf) assert.equal(f.formato, 'compacto');
+  // As outras duas seguem sendo perda de casa decimal, não de faixa.
+  for (const f of fora.filter((x) => x.serie !== 'ETF Net Inflow')) assert.equal(f.formato, null);
+});
+
+test('o comando avisa da notação compacta e manda procurar TODOS os rótulos iguais', () => {
+  const cmd = comandoDeConferencia({ serie: 'ETF Net Inflow', campo: 'min' }, V);
+  assert.match(cmd, /NOTAÇÃO COMPACTA/);
+  assert.match(cmd, /vários dias diferentes leem IGUAL/);
+  assert.match(cmd, /Procurar TODOS os dias que exibem o mesmo rótulo/);
+  assert.match(cmd, /separá-los por altura de barra numa/);
+  // E o portão cita o rótulo compacto, não o número guardado.
+  assert.match(cmd, /o valor de hoje tem de bater com \$242M \(a tooltip usa notação compacta; o registro guarda 242\.3\)/);
+  // Série de casas decimais continua com o aviso antigo.
+  assert.match(comandoDeConferencia({ serie: 'Funding Rate', campo: 'max' }, V), /tem mais casas do que esta tooltip mostra/);
+});
+
+test('a unidade do ETF era inferência minha, e a tela corrigiu o rótulo', () => {
+  const u = V['ETF Net Inflow'].unidadeLida;
+  assert.equal(u.euTinhaInferido, 'US$ mi');
+  assert.equal(u.unidade, 'USD');
+  assert.equal(SERIES.find((s) => s.n === 'ETF Net Inflow').unidade, 'USD');
+  assert.equal(SERIES.find((s) => s.n === 'ETF Net Inflow').unidadeConferida, true);
+  // Compatível na escala, errado como rótulo — foi por isso que o aviso existia.
+  assert.match(u.exibicao, /sufixo M\/B/);
+  // O calendário, esse, eu tinha acertado — e agora está lido, não inferido.
+  assert.equal(SERIES.find((s) => s.n === 'ETF Net Inflow').calendario, 'pregão');
+  assert.match(u.calendarioNaTela, /calendário NYSE/);
+});
+
+test('seis unidades lidas, oito ainda inferência minha', () => {
+  const lidas = SERIES.filter((s) => s.unidadeConferida).map((s) => s.n).sort();
+  assert.deepEqual(lidas, ['Curva 10Y-2Y', 'ETF Net Inflow', 'Fed Funds Rate',
+    'Funding Rate', 'SOPR', 'Supply in Profit']);
+  const inferidas = SERIES.filter((s) => V[s.n] && s.unidade && !s.unidadeConferida);
+  assert.equal(inferidas.length, 8);
 });
