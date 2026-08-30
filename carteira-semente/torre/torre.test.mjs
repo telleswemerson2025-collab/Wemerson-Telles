@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, comandoDeConferencia, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -656,4 +656,51 @@ test('o MVRV é o único com valor, mínima e máxima conferidos', () => {
   const m = V['MVRV Ratio'].confirmado;
   assert.ok(m.valor && m.min && m.max, 'os três campos com data');
   assert.ok(!filaDeConferencia(V).some((f) => f.serie === 'MVRV Ratio'), 'saiu inteiro da fila');
+});
+
+// ══ EXTREMOS INERTES POR CONSTRUÇÃO ═══════════════════════════════════════
+test('os extremos das quatro séries de preço não entram em conta nenhuma', () => {
+  assert.deepEqual(EXTREMOS_INERTES,
+    ['Preço do BTC', 'Realized Price', 'Realized Price STH', 'Realized Price LTH']);
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  for (const serie of EXTREMOS_INERTES) {
+    for (const campo of ['min', 'max']) {
+      const dezVezes = { ...V, [serie]: { ...V[serie], [campo]: V[serie][campo] * 10 } };
+      assert.equal(varrer({ varredura: dezVezes, hoje: HOJE }).indice, base,
+        `${serie} · ${campo} dez vezes errado não pode mudar o índice`);
+    }
+  }
+});
+
+test('a camada 1 usa a faixa do MVRV, e é por isso que as de preço são inertes', () => {
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const mvrvMexido = { ...V, 'MVRV Ratio': { ...V['MVRV Ratio'], min: V['MVRV Ratio'].min * 1.1 } };
+  assert.notEqual(varrer({ varredura: mvrvMexido, hoje: HOJE }).indice, base, 'a régua move o índice');
+});
+
+test('inerte por construção e inerte só hoje são coisas diferentes', () => {
+  const efeitos = efeitoDosExtremos(V, HOJE);
+  const preco = efeitos.find((e) => e.serie === 'Preço do BTC' && e.campo === 'min');
+  assert.equal(preco.inerte, 'por construção');
+  // O US M2 está encostado na própria máxima, então o mínimo se cancela — hoje.
+  const m2 = efeitos.find((e) => e.serie === 'US M2' && e.campo === 'min');
+  assert.equal(m2.efeito, 0);
+  assert.equal(m2.inerte, 'só na leitura de hoje');
+  assert.equal(V['US M2'].valor, V['US M2'].max, 'e a razão está no dado');
+});
+
+test('a contagem separa o que falta conferir do que falta e importa', () => {
+  const e = estadoDosExtremos(V);
+  assert.equal(e.inertesPendentes, 8, 'as quatro de preço, min e max');
+  assert.equal(e.provisoriosQueImportam, e.provisorios - 8);
+});
+
+test('a tentativa falha no mínimo do preço fica registrada, para ninguém repetir', () => {
+  const t = V['Preço do BTC'].tentativas.find((x) => x.campo === 'min');
+  assert.equal(t.resultado, 'não confirmado');
+  assert.equal(V['Preço do BTC'].confirmado.min, null, 'e o estado segue provisório');
+  assert.match(t.porQueNaoFecha, /arredonda o preço para inteiro/);
+  assert.match(t.caminhoQueFecharia, /fonte do dado/);
+  // cinco dias de janeiro/2011 leem o mesmo "$0": empate sem desempate no gráfico
+  assert.equal(new Set(Object.values(t.vizinhos)).size, 1);
 });

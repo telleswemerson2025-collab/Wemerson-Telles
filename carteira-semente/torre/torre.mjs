@@ -132,11 +132,48 @@ export function filaDeConferencia(varredura) {
     }
   }
   const ordemCampo = { min: 0, max: 1, valor: 2 };
+  for (const p of pendentes) p.inerte = inerte(p.serie, p.campo);
   return pendentes.sort((a, b) =>
     (a.escala === b.escala ? 0 : a.escala === 'log' ? -1 : 1) ||
     b.peso - a.peso ||
     a.serie.localeCompare(b.serie) ||
     ordemCampo[a.campo] - ordemCampo[b.campo]);
+}
+
+/**
+ * Séries cujos extremos NÃO entram em conta nenhuma, em nenhum estado de mercado.
+ * A camada 1 normaliza preço ÷ Realized Price contra a faixa do MVRV, não contra a
+ * faixa delas; e a Linha d'Água compara preços entre si, sem normalizar. Logo os
+ * extremos das quatro séries de preço são inertes por construção — conferi-los não
+ * muda o índice em nada, e um erro de dez vezes neles também não.
+ */
+export const EXTREMOS_INERTES = Object.freeze(
+  ['Preço do BTC', 'Realized Price', 'Realized Price STH', 'Realized Price LTH']);
+const inerte = (serie, campo) => campo !== 'valor' && EXTREMOS_INERTES.includes(serie);
+
+/**
+ * Mede o efeito real de um erro em cada extremo, perturbando e recalculando. É a
+ * única forma honesta de priorizar: peso de camada e escala são proxies, isto é a
+ * coisa. Cuidado ao ler — o efeito de hoje depende da leitura de hoje. Um extremo
+ * pode dar zero por o valor estar encostado no outro extremo, e voltar a pesar
+ * amanhã. Só os inertes por construção são zero para sempre.
+ */
+export function efeitoDosExtremos(varredura, hoje, erro = 0.10) {
+  const base = varrer({ varredura, hoje }).indice;
+  const fora = [];
+  for (const s of SERIES) {
+    if (!varredura?.[s.n]) continue;
+    for (const campo of ['min', 'max']) {
+      const alterada = { ...varredura, [s.n]: { ...varredura[s.n], [campo]: varredura[s.n][campo] * (1 + erro) } };
+      const efeito = Math.abs(varrer({ varredura: alterada, hoje }).indice - base);
+      fora.push({
+        serie: s.n, campo, efeito,
+        inerte: inerte(s.n, campo) ? 'por construção' : (efeito < 1e-9 ? 'só na leitura de hoje' : null),
+        confirmado: Boolean(varredura[s.n].confirmado?.[campo]),
+      });
+    }
+  }
+  return fora.sort((a, b) => b.efeito - a.efeito);
 }
 
 /** D35 C: quantos extremos são provisórios e em quais séries. Não bloqueia a leitura. */
@@ -149,10 +186,14 @@ export function estadoDosExtremos(varredura) {
     const v = varredura?.[s.n]; if (!v) continue;
     for (const campo of ['valor', 'min', 'max']) { total++; if (v.confirmado?.[campo]) confirmados++; }
   }
+  const inertesPendentes = fila.filter((f) => inerte(f.serie, f.campo)).length;
   return {
     total, confirmados, provisorios: total - confirmados,
     series: [...porSerie].map(([serie, campos]) => ({ serie, campos })),
     proximo: fila[0] ?? null,
+    // Dos provisórios, quantos não mudam o índice nem se estiverem dez vezes errados.
+    inertesPendentes,
+    provisoriosQueImportam: (total - confirmados) - inertesPendentes,
   };
 }
 

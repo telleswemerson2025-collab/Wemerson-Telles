@@ -1,11 +1,11 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.8 · 29/08/2026 — Decisões 35 a 40 · MVRV conferido por inteiro
+Conferência. Versão 1.9 · 29/08/2026 — MVRV conferido · 8 extremos descobertos inertes
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
 - `torre.mjs` — o módulo. Sem dependências. Lê o registro da peça 1, não guarda nada.
 - `leitura-29-08-2026.mjs` — as catorze leituras reais do documento 07, transcritas.
-- `torre.test.mjs` — 74 testes da Torre (123 no pacote inteiro). `node --test` na raiz.
+- `torre.test.mjs` — 79 testes da Torre (128 no pacote inteiro). `node --test` na raiz.
 
 ## ⭐ ITEM 5 — O TESTE QUE PROVA A LEITURA DE 29/08/2026
 Entrada: as catorze leituras reais do `07-leituras-29-08-2026.md`, com mínimas e
@@ -307,6 +307,69 @@ marcou 7,854 com BTC a US$ 16; em 08/06, com o preço **75% maior**, o MVRV esta
 **menor**. O Realized Price subiu 76% nesses quatro dias, quase no mesmo passo do
 preço — e por isso a razão não inflou. É o MVRV fazendo exatamente o que promete:
 blow-off que também levanta o custo da rede não vira leitura de euforia maior.
+
+### 🔴 A terceira conferência não fechou — e revelou que a fila está de trás para a frente
+**Preço do BTC · min = 0,29 em 03/01/2011: NÃO CONFIRMADO.** O terminal arredonda
+BTC PRICE para dólar inteiro, então 03/01/2011 lê **"$0"** — e 02, 04, 05 e 06/01
+leem "$0" também. Empate de cinco dias, sem desempate possível no gráfico. Só o
+item 3 se sustentou: na visão ALL o ponto mais baixo está no início da série.
+
+A tentativa ficou **registrada no dado**, com o motivo e o caminho que fecharia (a
+fonte do número cru, não o gráfico), para que ninguém repita.
+
+#### E aí veio o achado: **os extremos das quatro séries de preço são inertes**
+Medido, não deduzido — um erro de **dez vezes** em qualquer um deles muda o índice
+em **0,000000**:
+
+| Extremo | Efeito de um erro de 10% |
+|---|---|
+| Preço do BTC · min e max | **0,000000** |
+| Realized Price · min e max | **0,000000** |
+| Realized Price STH · min e max | **0,000000** |
+| Realized Price LTH · min e max | **0,000000** |
+| *(controle)* MVRV · min | 0,700364 |
+
+**O motivo é estrutural:** a camada 1 normaliza preço ÷ Realized Price contra a
+faixa do **MVRV**, não contra a faixa delas. E a Linha d'Água **compara** preços
+entre si — não normaliza, não usa extremo. Os oito números nunca entram em conta
+nenhuma, em nenhum estado de mercado.
+
+**A prioridade da D35 D manda conferi-los primeiro.** Eles são logarítmicos e de
+camada 1, os dois critérios da regra — e são os únicos oito estruturalmente
+inúteis dos vinte e oito. A conferência que não fechou foi gasta num deles, e os
+seis seguintes da fila são os outros.
+
+#### A ordem por efeito medido, dos que faltam e importam
+| Extremo | Efeito | |
+|---|---|---|
+| **Liveliness · max** | **1,1820** | quase o dobro do MVRV · min |
+| Supply in Profit · max | 0,6536 | |
+| US M2 · max | 0,6322 | |
+| DXY · max | 0,6282 | |
+| SOPR · min | 0,4318 | |
+| DXY · min | 0,3551 | |
+
+A Liveliness · max lidera porque o valor de hoje (0,6345) está encostado nela
+(0,6410): quando o valor mora perto do extremo, o extremo vira o denominador que
+manda.
+
+#### Uma distinção que o número sozinho esconde
+Nove extremos deram zero, mas **por dois motivos diferentes**:
+
+- **Inertes por construção (8):** os das quatro séries de preço. Zero hoje, zero
+  sempre, em qualquer mercado.
+- **Inerte só na leitura de hoje (1):** o **US M2 · min**. O valor está exatamente
+  na máxima (23,218 = 23,218), e aí `(v−min)/(max−min)` dá 1 para qualquer mínimo.
+  Volta a pesar no dia em que o M2 sair da máxima. *(Liveliness · min e Fed Funds ·
+  min estão quase lá, pelo mesmo motivo.)*
+
+Confundir os dois seria caro: dispensar o M2 · min porque "não afeta" o deixaria
+sem conferência justamente até o dia em que passa a afetar.
+
+**Não mudei a ordem da fila** — a D35 D é decisão. O que fiz foi medir e mostrar:
+`efeitoDosExtremos()` calcula o efeito real, `EXTREMOS_INERTES` nomeia os
+estruturais, e a contagem passou a separar **"26 provisórios"** de **"18
+provisórios que importam"**.
 
 ### 🐛 Um erro que a D35 B fez aparecer
 A primeira versão do comando mandava conferir o mínimo do MVRV **em 28/08/2026** —

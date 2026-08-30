@@ -10,7 +10,28 @@
 // dataMin e dataMax são as datas dos extremos, também do documento 07. Sem elas o
 // comando de conferência da D35 B não sabe para que dia estreitar a janela.
 export const VARREDURA_29_08_2026 = Object.freeze({
-  'Preço do BTC':       { valor: 77839.19, min: 0.29,    max: 124353.95, data: '2026-08-28' , dataMin: '2011-01-03', dataMax: '2025-10-06', confirmado: { valor: '2026-08-29', min: null, max: null } },
+  'Preço do BTC': {
+    valor: 77839.19, min: 0.29, max: 124353.95, data: '2026-08-28',
+    dataMin: '2011-01-03', dataMax: '2025-10-06',
+    confirmado: { valor: '2026-08-29', min: null, max: null },
+    // Tentativa registrada para que ninguém repita: a tooltip NÃO confirma este
+    // mínimo, e não por falta de zoom. O terminal arredonda BTC PRICE para dólar
+    // inteiro, então 03/01/2011 lê "$0" — e 02, 04, 05 e 06/01 leem "$0" também.
+    // Empate sem desempate possível no gráfico.
+    tentativas: [{
+      campo: 'min', em: '2026-08-29', resultado: 'não confirmado',
+      metodo: 'tooltip, modo SMA, zoom no máximo que a barra de range permite (janela 01–13/jan/2011)',
+      lido: 'JAN 3, 2011 · BTC PRICE $0 — cifrão, zero. O eixo da janela imprime só "$1" e "$0".',
+      vizinhos: { '2011-01-02': '$0', '2011-01-03': '$0', '2011-01-04': '$0', '2011-01-05': '$0', '2011-01-06': '$0' },
+      cruzamento: 'MVRV Ratio na mesma tooltip: 02/01 = 3.370 · 03/01 = 3.294 · 04/01 = 3.226',
+      oQueSeSustenta: 'só o item 3: na visão ALL o ponto mais baixo da série está nos primeiros dias de jan/2011, ' +
+                      'e o fundo seguinte (nov/2011) já está na casa de US$ 2. Medido contra o eixo log (~71 px por década) ' +
+                      'dá ≈ US$ 0,29–0,30 — mas isso é medição de eixo, não leitura de tooltip.',
+      porQueNaoFecha: 'o terminal arredonda o preço para inteiro; abaixo de US$ 1 a tooltip perde a informação inteira',
+      caminhoQueFecharia: 'a fonte do dado, o número cru por trás da série — não o gráfico',
+      telaRestaurada: 'range ALL, página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo',
+    }],
+  },
   'Realized Price':     { valor: 53057.77, min: 0.088,   max: 56449.62,  data: '2026-08-28' , dataMin: '2011-01-01', dataMax: '2025-11-26', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Realized Price STH': { valor: 69977.18, min: 0.19,    max: 114018.67, data: '2026-08-28' , dataMin: '2011-01-01', dataMax: '2025-10-09', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Realized Price LTH': { valor: 49449.51, min: 0.003,   max: 49991.21,  data: '2026-08-28' , dataMin: '2011-01-01', dataMax: '2026-07-26', confirmado: { valor: '2026-08-29', min: null, max: null } },
