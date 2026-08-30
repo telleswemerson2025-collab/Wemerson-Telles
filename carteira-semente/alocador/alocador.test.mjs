@@ -4,14 +4,15 @@ import {
   BASES_DO_ESTADO, EXPOSICAO_ALVO, BANDA_PONTOS, TETO_DEFASAGEM, MESES_SEM_MODULACAO,
   VELOCIDADE_POR_ESTADO, INICIO_DA_RAMPA_ANOS, ABRIGO_ATIVO_ANOS,
   modulador, mEfetivo, abrigoAtivo, fatorDoAbrigo, alvoDaGlidepath, fatorDeVelocidade,
-  demandaDaGlidepath, passoDoMes, destinacaoDoAporte, limitesDoPatamar, reforcoDeFundo, degrauDoAtivo,
+  demandaDaGlidepath, passoDoMes, bandaDoMes, destinacaoDoAporte, limitesDoPatamar, reforcoDeFundo, degrauDoAtivo,
   ordemDeVenda, propor, GATILHOS_DE_VENDA, TETO_POR_ATIVO, GATILHO_DE_VENDA, PISO_DO_CAIXA,
   FATIA_DO_CAIXA, ACIONAMENTOS_POR_CICLO, ESPACAMENTO_DIAS, INDICE_MAXIMO_REFORCO,
 } from './alocador.mjs';
 
 const HOJE = '2026-08-29';
 const INDICE = 50.7536;                       // a leitura real de 29/08/2026
-const perto = (a, b, tol = 0.06) => assert.ok(Math.abs(a - b) <= tol, `${a} contra ${b}`);
+const perto = (a, b, tol = 0.06, oQue = '') =>
+  assert.ok(Math.abs(a - b) <= tol, `${oQue ? oQue + ': ' : ''}${a} contra ${b}`);
 
 // ══ O TESTE QUE COMPARA COM NÚMERO CONFERIDO FORA DAQUI ═══════════════════
 // A matriz do aporte está publicada em 02-agentes.md. Ela foi derivada antes deste
@@ -114,7 +115,12 @@ test('D25 C: a defasagem acumula 1,5× mais rápido do que recupera', () => {
   // o PASSO que a modulação incide, não sobre a distância acumulada — foi esta tabela
   // que fixou isso, e ela é número derivado fora deste código.
   assert.equal(passoDoMes(30), 1.75);
-  const fora = alvoDaGlidepath(30) + 5;   // fora da banda, senão nada se move
+  // A distância tem de estar NO REGIME DO PASSO: fora da banda, senão nada se move, e
+  // a no máximo um passo dela, senão a correção de posição da D52 A dimensiona o mês
+  // pela distância e não pelo passo — e aí a tabela da D25 C não é o que está sendo
+  // exercitado. Antes da D52 qualquer distância acima da banda servia; agora não.
+  const banda = bandaDoMes(30);
+  const fora = alvoDaGlidepath(30) + banda + passoDoMes(30) - 0.75;
   const cap = demandaDaGlidepath({ exposicaoAtual: fora, mesesAteEntrega: 30, estado: 'Capitulação profunda' });
   perto(cap.defasagemDepois, 1.31, 0.01);
   perto(cap.mover, 0.44, 0.01);
@@ -130,6 +136,31 @@ test('D25 C: a defasagem acumula 1,5× mais rápido do que recupera', () => {
   // Nove meses de capitulação enchem o teto; treze e meio de saudável o esvaziam.
   perto(TETO_DEFASAGEM / cap.defasagemDepois, 9.1, 0.1);
   perto(TETO_DEFASAGEM / (5 - bom.defasagemDepois), 13.7, 0.1);
+});
+
+test('⚠️ D52 A medido: fora do regime do passo a defasagem acumula mais rápido que a tabela da D25 C', () => {
+  // A tabela da D25 C descreve a acumulação POR PASSO. Com a D52 A o mês passa a ser
+  // dimensionado pela posição quando ela está longe, e aí o que a modulação deixa de
+  // mover é maior — a mesma regra, sobre um `programado` maior.
+  const passo = passoDoMes(30), banda = bandaDoMes(30);
+  const noPasso = demandaDaGlidepath({ exposicaoAtual: alvoDaGlidepath(30) + banda + passo - 0.75,
+    mesesAteEntrega: 30, estado: 'Capitulação profunda' });
+  const longe = demandaDaGlidepath({ exposicaoAtual: alvoDaGlidepath(30) + 12,
+    mesesAteEntrega: 30, estado: 'Capitulação profunda' });
+  assert.equal(noPasso.naoMovido > 0 && longe.naoMovido > 0, true);
+  assert.ok(longe.naoMovido > noPasso.naoMovido,
+    'longe do alvo a defasagem tem de acumular mais que no regime do passo — se deixar de ' +
+    'acumular, a correção de posição da D52 A parou de dimensionar o mês pela distância');
+  // E o quanto: no regime do passo ela é (1 − fator) × passo; longe, (1 − fator) × (distância − banda).
+  perto(noPasso.naoMovido, (1 - 0.25) * passo, 0.01,
+    'no regime do passo a defasagem do mês é (1 − fator) × passo');
+  perto(longe.naoMovido, (1 - 0.25) * (12 - banda), 0.01,
+    'longe do alvo ela é (1 − fator) × (distância − banda) — se voltar a ser sobre o passo, ' +
+    'a correção de posição da D52 A deixou de dimensionar o mês');
+  // Consequência medida, e é ela que sustenta a leitura: o teto de 12 pontos passa a ser
+  // alcançado em menos meses do que os nove que a D25 C descreve para o regime do passo.
+  assert.ok(TETO_DEFASAGEM / longe.naoMovido < TETO_DEFASAGEM / noPasso.naoMovido,
+    'o teto deixou de ser alcançado mais rápido longe do alvo — a leitura da D52 precisa ser refeita');
 });
 
 test('a banda é tolerância de POSIÇÃO: dentro dela a defasagem não cresce', () => {

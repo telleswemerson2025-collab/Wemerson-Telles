@@ -45,6 +45,11 @@ Checklist. Qualquer item falho VETA:
    todos os gêmeos de uma vez — **e a prova nomeia a asserção que acusou** (Decisão 47). Mira
    ambígua ou asserção trocada **veta a prova**, não o teste. **E a asserção nasce da intenção, nunca
    da saída** (Decisão 48): confere o que a frase precisa dizer, não o texto que ela por acaso teve.
+   E o padrão da prova **tem de casar com um teste**: padrão órfão sai com zero e prova por vazio.
+11. **Medida citada como razão de decisão tem asserção** — todo número que aparece na justificativa
+   de uma decisão registrada ganha teste que quebra se ele mudar, e a mensagem **nomeia a decisão
+   que precisa ser refeita**. Medida sem asserção **veta**: a razão escrita sobrevive à medida que
+   a sustentava, e ninguém percebe. Decisão 52 D.
 9. **Camada 5 rotulada** — se está fora, a leitura diz que está fora, e nunca a apresenta valendo
    50. Se está dentro, vem com a etiqueta de julgamento completa: que carrega julgamento humano, a
    data do degrau mais antigo em vigor, e quantos ativos estão sem degrau. Faltando qualquer uma

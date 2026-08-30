@@ -207,8 +207,23 @@ export function demandaDaGlidepath({ exposicaoAtual, mesesAteEntrega, estado, de
       defasagemDepois: 0, defasagemNoTeto: false, liquidacaoDeDefasagem: 0, ultimoAno };
   }
 
-  // O que a modulação move deste mês, e o que ela deixa de mover.
-  const programado = Math.max(Math.min(passo, distancia), 0);
+  /**
+   * D52 A: o mês CORRIGE A POSIÇÃO, não só acompanha o passo.
+   *
+   *   programado = min(distância, max(passo, distância − banda))
+   *
+   * Enquanto era `min(passo, distância)`, o mês andava um passo e o alvo descia um
+   * passo: a folga nascia no primeiro mês da rampa e era carregada intacta por quatro
+   * anos, e a banda nunca chegava a ser consultada. *Sistema que persegue o alvo sem
+   * nunca alcançá-lo não é glidepath, é sombra do alvo.*
+   *
+   * O `max(passo, …)` é o que mantém o cronograma: mesmo dentro de um pedaço em que a
+   * posição já está quase certa, o mês anda pelo menos o passo do mês. O `min(distância,
+   * …)` é o que impede ultrapassar o alvo. E a modulação continua incidindo sobre
+   * `programado` — a D25 C não muda; muda o que `programado` é.
+   */
+  const programado = distancia <= 0 ? 0
+    : arred(Math.min(distancia, Math.max(passo, distancia - banda)), 4);
   const movidoPeloFator = arred(programado * Math.min(fator, 1), 4);
   const naoMovido = arred(programado - movidoPeloFator, 4);
   // D25 C: o fator 1,50 recupera defasagem ANTES de seguir o alvo corrente.
@@ -223,9 +238,24 @@ export function demandaDaGlidepath({ exposicaoAtual, mesesAteEntrega, estado, de
     ? arred(Math.max(defasagem - liquidacao, 0), 4)
     : arred(clamp(defasagem + naoMovido - aRecuperar, 0, TETO_DEFASAGEM), 4);
 
+  /**
+   * ⚠️ O MÊS NUNCA PASSA DO ALVO. Enquanto `programado` era o passo, o teto
+   * `min(passo, distância)` segurava isso por acidente. Com a D52 A o mês passa a ser
+   * dimensionado pela POSIÇÃO, e aí a liquidação da D25 D e a recuperação da D25 C
+   * passam a ser somadas por cima de um movimento que já fecha a distância — as duas
+   * contam a defasagem uma segunda vez, e a carteira atravessa o alvo para baixo.
+   *
+   * Medido antes da guarda: quatro das cinco partidas entregavam a 13,50% com alvo em
+   * 15,83% — abaixo do alvo, e ainda vendendo com a carteira já sub-exposta.
+   *
+   * A guarda é o que a D52 B afirma: banda zero, distância ZERO. Não negativa.
+   */
+  const moverBruto = arred(movidoPeloFator + aRecuperar + liquidacao, 4);
+  const mover = arred(Math.min(moverBruto, Math.max(distancia, 0)), 4);
+
   return {
     alvo, distancia, dentroDaBanda: false, passo, banda, fator, motivo,
-    mover: arred(movidoPeloFator + aRecuperar + liquidacao, 4),
+    mover, moverBruto, travadoNoAlvo: moverBruto > Math.max(distancia, 0),
     naoMovido, recuperado: aRecuperar, liquidacaoDeDefasagem: liquidacao,
     defasagemDepois, defasagemNoTeto: defasagemDepois >= TETO_DEFASAGEM, ultimoAno,
   };

@@ -239,6 +239,12 @@ o sistema calcula sem discricionariedade. **O Gate assina.** A invariante 1 perm
   se move nada — sem ela o sistema venderia todo mês por ruído. **É âncora estrutural** (Decisão 30):
   ela determina a exposição com que a criança recebe a carteira, e isso é a promessa central do
   produto. Com banda de 5 em vez de 3, a entrega aconteceria com 20% de exposição em vez de 18%.
+- **O mês corrige a POSIÇÃO, não só acompanha o passo** (Decisão 52 A):
+  `programado = min(distância, max(passo, distância − banda))`. A modulação continua incidindo
+  sobre `programado` — a Decisão 25 C não muda; muda o que `programado` é. Sem isso a folga nascia
+  no primeiro mês da rampa e era carregada intacta por quatro anos. **E o mês nunca passa do alvo:**
+  move no máximo a distância que existe para mover, senão a liquidação e a recuperação, somadas por
+  cima de um movimento que já fecha a distância, atravessam o alvo para baixo.
 - 🔒 **Nos últimos doze meses a banda AFUNILA, não é suspensa** (Decisão 51 A): decresce
   linearmente de 3 pontos até zero, `banda do mês = 3 × (meses restantes ÷ 12)`. Suspender de uma
   vez faria o sistema vender todo mês no fim, que é o que a banda existe para impedir; manter em 3
@@ -567,7 +573,7 @@ apaga a deriva registrada: a série fica completa e o gatilho lê sempre o acumu
    futuro. Sem isso, desdobrar uma linha zeraria a trava dela — e desdobramento viraria porta de
    saída.
 
-#### Estado atual (v1.9) — deriva contra a v1.3
+#### Estado atual (v1.10) — deriva contra a v1.3
 | Partida | Fase · mês | Conservador | Moderado | Forte |
 |---|---|---|---|---|
 | Capitulação profunda | 0 · 9 | R$ 94.071 **+15,7%** 🔴 | R$ 297.492 **+24,8%** 🔴 | R$ 1.051.848 **+36,1%** 🔴 |
@@ -589,6 +595,7 @@ material de venda até ele se pronunciar.
 | v1.7 | D12 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
 | v1.8 | D13 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
 | v1.9 | D51 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
+| v1.10 | D52 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
 
 **Rastreamento da identidade do piso (regra 4):** entre a **v1.3 e a v1.5 o valor do piso é o
 mesmo — R$ 67.725 — mas o dono mudou**, de Prejuízo do mercado para Saudável · Índice ≥ 65. A
@@ -605,14 +612,14 @@ estável com dono novo é informação, não silêncio.
 desdobramento da D10 e herda a referência da linha "Mercado saudável" da v1.3 (fase 2 · mês 0),
 pela regra 4 acima. É por isso que ela marca −22,7% em vez de ficar sem base.
 
-*Por que a v1.9 não move nenhuma célula:* a Decisão 51 A mexe na banda da glidepath, e a projeção
+*Por que a v1.9 e a v1.10 não movem nenhuma célula:* a Decisão 51 A mexe na banda da glidepath, e a projeção
 publicada **não usa a glidepath modulada** — usa o alvo do ano (Decisão 51 B). A linha entra na
 tabela mesmo assim, com deriva zero e o mesmo dono do piso: revisão registrada é revisão registrada,
 e a série não pula versão. É a regra 4 valendo do lado calmo — piso estável com dono estável também
 é informação.
 
-*Provisoriedade do limite (regra 6):* os 15% foram calibrados sobre sete linhas de série (v1.3 a
-v1.9). Na **décima segunda linha** o limite é recalculado com base na dispersão observada, e essa
+*Provisoriedade do limite (regra 6):* os 15% foram calibrados sobre oito linhas de série (v1.3 a
+v1.10). Na **décima segunda linha** o limite é recalculado com base na dispersão observada, e essa
 recalibragem é ela própria uma decisão registrada — nunca ajuste silencioso. **A base continua na
 v1.3**: o que se recalibra é o limite, não a referência.
 

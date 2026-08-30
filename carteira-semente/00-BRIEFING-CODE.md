@@ -99,6 +99,14 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
    intenção**. Decisão 48. A forma curta: **uma asserção nasce dizendo o que tem de ser; a outra
    pergunta ao réu o que ele fez e anota como gabarito.**
 
+16. **MEDIÇÃO QUE SUSTENTA DECISÃO VIRA ASSERÇÃO.** Todo número citado como *razão* de uma decisão
+   ganha teste que quebra se ele mudar, e a mensagem da falha **nomeia qual decisão precisa ser
+   refeita** — não basta ficar vermelho. *Diagnóstico que sustenta decisão vira asserção, senão
+   envelhece calado.* O caso que a nomeou: a D51 A foi decidida sobre a medida "a carteira entrega
+   2,8 pontos acima do alvo", e a D52 mudou essa medida. Sem asserção, a razão escrita na D51
+   continuaria de pé descrevendo um sistema que não existe mais. É irmã da 15 — a 15 diz de onde a
+   asserção vem, a 16 diz que **medida citada em decisão é coisa que se assere**. Decisão 52 D.
+
 ## ÂNCORAS ESTRUTURAIS (Decisão 27)
 **Parâmetro que existe para conter deriva lenta nasce marcado como âncora**, e não é protegido
 depois que alguém percebe.

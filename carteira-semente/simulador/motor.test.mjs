@@ -16,6 +16,7 @@ import {
   motorMensal, motorAnual, criterioDeAceiteD11, grade, numeroDeCapa,
   trajetoriaDaGlidepath, expoDoAno,
 } from './motor.mjs';
+import { passoDoMes } from '../alocador/alocador.mjs';
 
 // A base sobre a qual as tabelas do documento-mãe foram publicadas.
 const BASE = { anos: ENTREGA_AOS, aporte: 150 };
@@ -284,19 +285,65 @@ test('D51 C: o afunilamento não mexe na liquidação da defasagem', () => {
   }
 });
 
-test('⚠️ D51 A medido: a banda não é o que segura a folga da entrega', () => {
-  // Esta asserção não afirma que a regra está errada. Ela FIXA A MEDIDA que a decisão
-  // precisa ver: se a banda nunca decide nada no último ano, o afunilamento não tem
-  // onde morder, e quem congela a folga é `min(passo, distância)` da D25 C.
+test('D52 A: o mês fecha a posição — a exposição para no alvo do mês, nunca depois dele', () => {
   for (const p of PARTIDAS) {
     const t = trajetoriaDaGlidepath({ anos: ENTREGA_AOS, fase: p.fase, mes: p.mes });
+    // O que a D52 B afirma: banda zero, distância zero. Nunca distância NEGATIVA — a
+    // carteira não atravessa o alvo para baixo, e não vende estando sub-exposta.
+    assert.ok(t.folgaNoUltimoMes >= 0,
+      `${rotuloDaPartida(p)}: a carteira passou do alvo para baixo, entregando a ${t.exposicaoNaEntrega}%`);
+    // E o que sobra cabe na banda daquele mês: é tolerância, não folga carregada.
+    assert.ok(t.folgaNoUltimoMes <= t.bandaDoUltimoMes,
+      `${rotuloDaPartida(p)}: sobrou ${t.folgaNoUltimoMes} pt, acima da banda de ${t.bandaDoUltimoMes} pt`);
+    // Nenhum mês move mais do que a distância que existe para mover.
+    for (const l of t.linhas) {
+      assert.ok(l.mover <= Math.max(l.distancia, 0) + 1e-9,
+        `mês ${l.t}: moveu ${l.mover} com distância de ${l.distancia}`);
+    }
+  }
+});
+
+test('⚠️ D52 D: as medidas que sustentam a D51 e a D52 ficam fixadas, com os valores novos', () => {
+  // A frase virou regra: diagnóstico que sustenta decisão vira asserção, senão
+  // envelhece calado. Se qualquer número aqui mudar, a mensagem diz qual decisão
+  // precisa ser refeita — não basta o teste ficar vermelho.
+  for (const p of PARTIDAS) {
+    const t = trajetoriaDaGlidepath({ anos: ENTREGA_AOS, fase: p.fase, mes: p.mes });
+    const quem = rotuloDaPartida(p);
+
+    // 1. A cláusula "não mexe em nada" continua sem disparar no último ano — mas agora
+    //    por motivo OPOSTO: a banda é consultada todo mês e define onde a posição para,
+    //    só que a distância antes do movimento é sempre banda mais um passo.
     assert.equal(t.mesesEmQueABandaSegurou, 0,
-      `${rotuloDaPartida(p)}: a banda passou a segurar meses do último ano — a medida mudou, ` +
-      'e a conclusão registrada na D51 precisa ser refeita');
-    assert.equal(t.mesesTravadosNoPasso, t.mesesDoUltimoAno,
-      `${rotuloDaPartida(p)}: deixou de haver mês com distância acima do passo`);
-    // A folga é positiva e sobrevive à entrega, mesmo com a banda em zero no fim.
-    assert.ok(t.folgaNaEntrega > t.bandaNaEntrega,
-      `${rotuloDaPartida(p)}: a folga coube na banda — o diagnóstico mudou`);
+      `${quem}: a cláusula da banda passou a disparar — o diagnóstico da D51 A e da D52 A ` +
+      'precisa ser refeito, porque ele afirma que ela nunca dispara');
+
+    // 2. E a medida que passou a carregar o diagnóstico: sem defasagem acumulada é a
+    //    BANDA que dimensiona quase todo mês do último ano; com defasagem, é a
+    //    liquidação da D25 D que manda, e a banda não chega a dimensionar nada.
+    const temDefasagem = t.maiorDefasagem > 0;
+    assert.equal(t.mesesEmQueABandaDefiniuAPosicao > 0, !temDefasagem,
+      `${quem}: quem dimensiona o mês do último ano trocou — a razão escrita na D52 B, ` +
+      'de que a banda afunilada é a peça que força a exposição ao alvo, precisa ser refeita');
+
+    // 3. A defasagem continua liquidada até zero (D25 D · D51 C), e a D52 não mexeu nisso.
+    assert.equal(t.defasagemNaEntrega, 0, `${quem}: a defasagem sobreviveu à entrega`);
+  }
+});
+
+test('⚠️ D52 C medido: o marco da entrega fica um passo abaixo do último mês administrado', () => {
+  // Não é folga carregada — a D52 fechou aquela. É o passo entre o último mês que o
+  // cronograma administra e o marco da entrega, que nenhum mês executa.
+  const passoFinal = passoDoMes(0);
+  for (const p of PARTIDAS) {
+    const t = trajetoriaDaGlidepath({ anos: ENTREGA_AOS, fase: p.fase, mes: p.mes });
+    assert.equal(t.alvoDoMarcoDaEntrega, EXPOSICAO_ALVO[0],
+      'o marco da entrega deixou de ser a exposição de entrega da tabela');
+    assert.ok(t.alvoDoUltimoMes > t.alvoDoMarcoDaEntrega,
+      'o último mês administrado passou a mirar o próprio marco — a lacuna sumiu, ' +
+      'e a observação registrada na D52 C precisa ser refeita');
+    assert.ok(t.folgaContraOMarco <= passoFinal + t.bandaDoUltimoMes + 1e-9,
+      `${rotuloDaPartida(p)}: sobrou ${t.folgaContraOMarco} pt contra o marco, ` +
+      `acima do passo final (${passoFinal}) mais a banda do mês`);
   }
 });

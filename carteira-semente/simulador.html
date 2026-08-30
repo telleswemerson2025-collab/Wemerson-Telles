@@ -535,29 +535,43 @@ function render() {
     campo('Meses no teto', String(traj.mesesNoTeto), `no teto o fator volta a 1,00`) +
     campo('Defasagem na entrega', `${num(traj.defasagemNaEntrega, 2)} pt`,
       `liquidada nos últimos ${MESES_SEM_MODULACAO} meses, não perdoada`) +
-    campo('Exposição na entrega', `${num(traj.exposicaoNaEntrega, 2)}%`,
-      `alvo ${num(traj.alvoNaEntrega, 2)}% · folga de ${num(traj.folgaNaEntrega, 2)} pt`) +
-    campo('Banda no último mês', `${num(traj.bandaNaEntrega, 2)} pt`,
+    campo('Exposição no último mês', `${num(traj.exposicaoNaEntrega, 2)}%`,
+      `alvo do mês ${num(traj.alvoDoUltimoMes, 2)}% · folga de ${num(traj.folgaNoUltimoMes, 2)} pt`) +
+    campo('Contra o marco da entrega', `${num(traj.folgaContraOMarco, 2)} pt`,
+      `o marco é ${num(traj.alvoDoMarcoDaEntrega, 2)}% e o laço para a um mês dele`) +
+    campo('Banda no último mês', `${num(traj.bandaDoUltimoMes, 2)} pt`,
       `afunila de ${BANDA_PONTOS} a 0 nos últimos ${MESES_SEM_MODULACAO} meses`) +
-    campo('A banda segurou', `${traj.mesesEmQueABandaSegurou} de ${traj.mesesDoUltimoAno} meses`,
-      `distância acima do passo em ${traj.mesesTravadosNoPasso} deles`);
+    campo('A banda dimensionou o mês', `${traj.mesesEmQueABandaDefiniuAPosicao} de ${traj.mesesDoUltimoAno} meses`,
+      `a cláusula de não mexer disparou em ${traj.mesesEmQueABandaSegurou}`);
   $('notaVel').innerHTML =
     `A defasagem é o que a modulação deixou de mover, e só ela: a banda é tolerância de posição e não gera defasagem — no último ano ela afunila de ${BANDA_PONTOS} pontos até zero, e continua não gerando. ` +
     `Nos últimos ${MESES_SEM_MODULACAO} meses ninguém modula — modular pressupõe tempo para esperar o mercado virar, e no último ano não há esse tempo — e a defasagem é liquidada até zero dentro do período.` +
-    (traj.mesesEmQueABandaSegurou === 0 ? `<br><br><b>⚠️ Medido nesta partida:</b> ` +
-      `a banda não decidiu nada em nenhum dos ${traj.mesesDoUltimoAno} meses do último ano, e a exposição chega na entrega ${num(traj.folgaNaEntrega, 2)} pontos acima do alvo. ` +
-      `Em ${traj.mesesTravadosNoPasso} dos ${traj.mesesDoUltimoAno} a distância já era maior que o passo do mês: o mês anda um passo, o alvo desce um passo, e a folga fica onde estava. ` +
-      `Quem a segura é o teto <code>min(passo, distância)</code>, não a banda.` : '');
+    `<br><br><b>O mês corrige a posição, não só acompanha o passo</b> (D52 A): ` +
+      `<code>programado = min(distância, max(passo, distância − banda))</code>. ` +
+      `Nesta partida a exposição fecha o último mês ${traj.folgaNoUltimoMes === 0 ? 'exatamente no alvo do mês' : `${num(traj.folgaNoUltimoMes, 2)} ponto(s) acima do alvo do mês, dentro da banda de ${num(traj.bandaDoUltimoMes, 2)}`}, ` +
+      `e a banda dimensionou o movimento em ${traj.mesesEmQueABandaDefiniuAPosicao} dos ${traj.mesesDoUltimoAno} meses do último ano.` +
+      `<br><br><b>⚠️ O que ainda sobra:</b> ${num(traj.folgaContraOMarco, 2)} pontos contra o marco da entrega (${num(traj.alvoDoMarcoDaEntrega, 2)}%), ` +
+      `porque o cronograma administra até um mês antes da entrega e o alvo desse mês é ${num(traj.alvoDoUltimoMes, 2)}%. ` +
+      `Entre o último mês administrado e o marco ainda há um passo de rampa que nenhum mês executa.`;
 
   // D51 B: o ganho da modulação fica MEDIDO E MOSTRADO, nunca aplicado à tabela.
   $('naoProjetado').innerHTML =
-    `<h3>Ganho não projetado — medido, nunca aplicado à tabela publicada</h3><div class="par">` +
+    // ⚠️ A D51 B mandou rotular "ganho não projetado", e o rótulo nasceu quando o efeito
+    // era todo para cima. Depois da D52 ele pode ser negativo, e escrever "ganho" sobre
+    // um número negativo é rótulo falso em tela comercial. O rótulo passa a sair da
+    // MEDIDA, como manda a D44 — e a divergência está registrada na D52.
+    `<h3>${custo.every((c) => c.diferenca >= 0) ? 'Ganho' : 'Efeito'} não projetado — medido, nunca aplicado à tabela publicada</h3><div class="par">` +
     custo.map((c) => campo(c.cenario, pct(c.diferenca), `${brl(c.publicado)} → ${brl(c.comModulacao)}`)).join('') +
     `</div><p class="note" style="margin:16px 0 0">` +
     `A modulação existe para não vender no fundo, e o ganho que ela produz não entra na conta que a gente publica. ` +
-    `Aplicá-la moveria as ${CELULAS_DA_GRADE} células para cima de uma vez, que é exatamente a deriva direcional que a trava existe para pegar. ` +
-    `Sem ela o número publicado <b>subestima</b> — e é o único lado do erro que um material de venda pode permitir. ` +
-    `A referência ${VERSAO_REFERENCIA} da tabela de deriva também foi calculada com o alvo do ano.</p>`;
+    `Aplicá-la moveria as ${CELULAS_DA_GRADE} células de uma vez, e a referência ${VERSAO_REFERENCIA} da tabela de deriva ` +
+    `também foi calculada com o alvo do ano.` +
+    (custo.every((c) => c.diferenca >= 0)
+      ? ` Nesta partida o efeito é todo para cima, então o número publicado <b>subestima</b> — o lado do erro que um material de venda pode permitir.`
+      : ` <b>⚠️ Nesta partida o efeito não é todo para cima:</b> ` +
+        custo.filter((c) => c.diferenca < 0).map((c) => `${c.cenario} ${pct(c.diferenca)}`).join(' · ') +
+        `. Depois da D52 a exposição real acompanha o alvo em vez de ficar acima dele, e o sinal do efeito passou a depender da partida — a frase "sem ela o número subestima" deixou de valer para todas.`) +
+    `</p>`;
 
   // 6 · A TABELA DE DERIVA, POR LINHA, CONTRA A v1.3 — PERMANENTE.
   $('csDeriva').textContent =
@@ -782,11 +796,11 @@ function glidepath(traj) {
   ctx.fillStyle = c('--c2'); ctx.font = '10px "IBM Plex Mono",monospace';
   ctx.fillText(`TETO ${TETO_DEFASAGEM} PT`, L + 8, yTeto - 5);
   // E os dois da direita saem separados por altura mínima, não pela posição crua.
-  const yExp = Y(traj.exposicaoNaEntrega), yAlvo = Math.max(Y(traj.alvoNaEntrega) + 14, yExp + 15);
+  const yExp = Y(traj.exposicaoNaEntrega), yAlvo = Math.max(Y(traj.alvoDoUltimoMes) + 14, yExp + 15);
   ctx.fillStyle = c('--c4');
   ctx.fillText(`${num(traj.exposicaoNaEntrega, 1)}%`, L + w + 8, yExp + 3);
   ctx.fillStyle = c('--gold');
-  ctx.fillText(`ALVO ${num(traj.alvoNaEntrega, 1)}%`, L + w + 8, yAlvo);
+  ctx.fillText(`ALVO ${num(traj.alvoDoUltimoMes, 1)}%`, L + w + 8, yAlvo);
 }
 
 let t = 2 * 86400;

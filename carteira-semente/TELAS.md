@@ -298,3 +298,32 @@ era maior que o passo. Quem segura a folga é o teto `min(passo, distância)`, n
 
 A tela escreve isso **na própria nota**, com os números da partida em uso, e o registro completo com
 o que fecharia a folga está na D51 e no README do Alocador. Não foi feito porque não foi decidido.
+
+---
+
+## D52 · O MÊS CORRIGE A POSIÇÃO
+O painel da trajetória foi refeito, e por um motivo que não é cosmético: ele chamava **dois alvos
+diferentes de "entrega"**.
+
+| Campo | O que é |
+|---|---|
+| Exposição no último mês | onde a carteira fecha o último mês que o cronograma administra |
+| Contra o marco da entrega | quanto sobra contra os 15% da tabela — o passo que ninguém executa |
+| Banda no último mês | 0,25 pt, ponta do afunilamento da D51 A |
+| A banda dimensionou o mês | a medida que passou a carregar o diagnóstico (D52 D) |
+
+`alvoNaEntrega` era o alvo do **último mês administrado** (15,83%), não o marco da entrega (15%).
+Enquanto a folga era de 2,83 pontos, o mês escondido no nome não aparecia. Com a D52 fechando a
+folga, sobrou exatamente ele — **0,83 pontos, um passo de rampa** — e o nome errado ficou visível.
+
+### 🐛 Um rótulo comercial que virou falso
+A D51 B mandou rotular o bloco como **"ganho não projetado"**. Depois da D52 o efeito pode ser
+negativo, e na partida da leitura de hoje é: **−3,8% no conservador**. Escrever *ganho* sobre um
+número negativo em tela de venda é rótulo falso.
+
+O rótulo passou a sair da medida — *Ganho* quando o efeito é todo para cima, *Efeito* quando não é —
+como manda a D44. E a nota diz, com os números da partida, que a frase da D51 B sobre o número
+publicado subestimar deixou de valer para todas.
+
+### O checklist, item 4 outra vez
+`git show --stat` depois de gravar. Doze arquivos, conferidos.

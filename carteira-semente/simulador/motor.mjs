@@ -332,19 +332,31 @@ export function trajetoriaDaGlidepath({ anos, fase, mes = 0 }) {
     mesesNoTeto: linhas.filter((l) => l.noTeto).length,
     defasagemNaEntrega: fim.defasagem,
     exposicaoNaEntrega: fim.exposicao,
-    alvoNaEntrega: fim.alvo,
-    bandaNaEntrega: fim.banda,
-    // A folga que sobra sobre o alvo na entrega. Não é defasagem — a defasagem chega a
-    // zero — e não é a banda, que já afunilou. É o que o teto do passo deixou de fora.
-    folgaNaEntrega: arred(fim.exposicao - fim.alvo, 4),
-    // ⚠️ MEDIDO: em quantos meses do último ano a banda chegou a DECIDIR alguma coisa.
-    // Se for zero, o afunilamento da D51 A não teve onde morder, e quem segura a folga
-    // é o teto `min(passo, distância)` da D25 C, não a banda.
+    // ⚠️ DOIS ALVOS DIFERENTES, e chamar os dois de "entrega" escondia um mês inteiro.
+    // O último mês que o cronograma administra é o de UM mês para a entrega, e o alvo
+    // dele não é o marco da entrega: entre os dois ainda há um passo de rampa.
+    alvoDoUltimoMes: fim.alvo,
+    alvoDoMarcoDaEntrega: alvoDaGlidepath(0),
+    bandaDoUltimoMes: fim.banda,
+    // A folga contra o alvo DO MÊS: é ela que diz se o mês corrigiu a posição (D52 A).
+    folgaNoUltimoMes: arred(fim.exposicao - fim.alvo, 4),
+    // E a folga contra o MARCO da entrega, que inclui o passo do mês que ninguém
+    // administra, porque o laço termina a um mês da entrega.
+    folgaContraOMarco: arred(fim.exposicao - alvoDaGlidepath(0), 4),
+    // ⚠️ MEDIDO, e a D52 D manda manter: em quantos meses do último ano a cláusula da
+    // banda ("não mexe em nada") chegou a disparar. Continua ZERO depois da D52 — mas
+    // por motivo oposto. Antes a banda era irrelevante; agora ela é consultada todo mês
+    // e é ela que define ONDE a posição para, só que a distância antes do movimento é
+    // sempre banda + um passo, e por isso nunca cabe dentro dela.
     mesesEmQueABandaSegurou: ultimoAno.filter((l) => l.dentroDaBanda).length,
-    // E em quantos a distância já era MAIOR que o passo do mês. Nesse regime o mês
-    // move um passo, o alvo desce um passo, e a folga fica exatamente onde estava:
-    // é `programado = min(passo, distância)` que a congela, não a banda.
+    // Em quantos a distância já era maior que o passo. Antes da D52 isso valia 12 de 12
+    // e significava "a folga está congelada"; depois dela significa só que ainda há
+    // posição a corrigir, e a posição de fato encolhe.
     mesesTravadosNoPasso: ultimoAno.filter((l) => l.distancia > l.passo).length,
+    // A medida que passou a carregar o diagnóstico: em quantos meses foi a BANDA, e não
+    // o passo, que dimensionou o movimento. É isso que a D52 A ligou.
+    mesesEmQueABandaDefiniuAPosicao:
+      ultimoAno.filter((l) => !l.dentroDaBanda && l.distancia - l.banda > l.passo).length,
     mesesDoUltimoAno: ultimoAno.length,
   };
 }

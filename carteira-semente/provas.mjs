@@ -315,11 +315,11 @@ const PROVAS = [
   },
   {
     onde: 'simulador/motor.test.mjs',
-    teste: 'a banda não é o que segura a folga da entrega',
-    porque: 'a medida que sustenta o diagnóstico da D51 muda sem ninguém perceber',
-    quebra: ['simulador/motor.mjs', 'ultimoAno.filter((l) => l.distancia > l.passo).length',
-      'ultimoAno.filter((l) => l.distancia > l.passo * 10).length'],
-    acusa: /deixou de haver mês com distância acima do passo/,
+    teste: 'as medidas que sustentam a D51 e a D52 ficam fixadas',
+    porque: 'a cláusula da banda volta a disparar, e o diagnóstico das duas decisões cai',
+    quebra: ['alocador/alocador.mjs', 'if (Math.abs(distancia) <= banda && defasagem === 0) {',
+      'if (Math.abs(distancia) <= banda * 4) {'],
+    acusa: /a cláusula da banda passou a disparar/,
   },
   {
     teste: 'os números do simulador saem da constante',
@@ -327,13 +327,54 @@ const PROVAS = [
     quebra: ['simulador.html', 'aporte ${brl(APORTE_DE_REFERENCIA)}', 'aporte R$ 150'],
     acusa: /devia sair de APORTE_DE_REFERENCIA/,
   },
+  // ══ D52 · O MÊS CORRIGE A POSIÇÃO ══════════════════════════════════════
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'o mês fecha a posição',
+    porque: 'o mês volta a só acompanhar o passo, e a folga volta a ser carregada por quatro anos',
+    quebra: ['alocador/alocador.mjs',
+      '  const programado = distancia <= 0 ? 0\n    : arred(Math.min(distancia, Math.max(passo, distancia - banda)), 4);',
+      '  const programado = Math.max(Math.min(passo, distancia), 0);'],
+    acusa: /sobrou [\d.]+ pt, acima da banda de [\d.]+ pt/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'o mês fecha a posição',
+    porque: 'o mês volta a atravessar o alvo para baixo, vendendo com a carteira sub-exposta',
+    quebra: ['alocador/alocador.mjs', 'const mover = arred(Math.min(moverBruto, Math.max(distancia, 0)), 4);',
+      'const mover = moverBruto;'],
+    acusa: /a carteira passou do alvo para baixo, entregando a [\d.]+%/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'as medidas que sustentam a D51 e a D52 ficam fixadas',
+    porque: 'a banda deixa de dimensionar o mês, e a razão escrita na D52 B perde o que a sustenta',
+    quebra: ['alocador/alocador.mjs', 'Math.max(passo, distancia - banda)', 'Math.max(passo, distancia - banda * 8)'],
+    acusa: /quem dimensiona o mês do último ano trocou/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'o marco da entrega fica um passo abaixo do último mês administrado',
+    porque: 'a lacuna do último mês some sem ninguém notar, e a observação da D52 C fica sozinha',
+    quebra: ['simulador/motor.mjs', 'alvoDoMarcoDaEntrega: alvoDaGlidepath(0),',
+      'alvoDoMarcoDaEntrega: alvoDaGlidepath(1),'],
+    acusa: /o marco da entrega deixou de ser a exposição de entrega da tabela/,
+  },
+  {
+    onde: 'alocador/alocador.test.mjs',
+    teste: 'fora do regime do passo a defasagem acumula mais rápido',
+    porque: 'a modulação volta a incidir sobre o passo mesmo longe do alvo, e o teto para de encher',
+    quebra: ['alocador/alocador.mjs', 'const movidoPeloFator = arred(programado * Math.min(fator, 1), 4);',
+      'const movidoPeloFator = arred(Math.min(programado, passo) * Math.min(fator, 1), 4);'],
+    acusa: /a correção de posição da D52 A deixou de dimensionar o mês/,
+  },
 ];
 
 const rodar = (nome, onde) => {
   try {
-    execFileSync('node', ['--test', '--test-name-pattern', nome, arq(onde)],
+    const saida = execFileSync('node', ['--test', '--test-name-pattern', nome, arq(onde)],
       { encoding: 'utf8', stdio: 'pipe' });
-    return { falhou: false, saida: '' };
+    return { falhou: false, saida };
   } catch (e) {
     return { falhou: true, saida: (e.stdout ?? '') + (e.stderr ?? '') };
   }
@@ -368,7 +409,15 @@ for (const p of PROVAS) {
       writeFileSync(caminho, p.todas ? original.replaceAll(de, para) : original.replace(de, para));
       const r = rodar(p.teste, p.onde ?? 'redacao.test.mjs');
       const msg = mensagemDaFalha(r.saida);
-      veredito = !r.falhou
+      // ⚠️ Padrão que não casa com teste nenhum faz o node sair com zero, e a prova
+      // passaria por VAZIO — o mesmo defeito que a D45 existe para impedir, um nível
+      // acima. Aconteceu de verdade: um teste foi renomeado e a prova dele seguiu
+      // "provando" nada. Se o nome não aparece na saída, não houve réu.
+      const casou = r.saida.includes(p.teste);
+      veredito = !casou
+        ? { ok: false, nota: `O PADRÃO NÃO CASOU COM TESTE NENHUM em ${p.onde ?? 'redacao.test.mjs'}. ` +
+            'Sem réu não há prova — o teste foi renomeado ou removido.' }
+        : !r.falhou
         ? { ok: false, nota: 'o teste PASSOU com o arquivo quebrado — ele não pega o que devia' }
         : !p.acusa.test(r.saida)
         ? { ok: false, nota: `ACUSOU OUTRA COISA — a asserção que pegou foi «${msg}», e não ${p.acusa}. ` +

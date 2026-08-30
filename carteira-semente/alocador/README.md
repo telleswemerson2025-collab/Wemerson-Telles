@@ -34,6 +34,7 @@ código existir. As **vinte células** batem, com o índice real de 29/08/2026:
 | **D25 A** · alvo interpolado | `alvoDaGlidepath()` | os quatro passos: 2,83 · 1,75 · 1,67 · 0,83 |
 | **D30** · banda de 3 pontos 🔒 | `demandaDaGlidepath()` | dentro dela não se move nada |
 | **D51 A** · a banda afunila no último ano 🔒 | `bandaDoMes()` | `3 × (meses restantes ÷ 12)`, zero na entrega |
+| **D52 A** · o mês corrige a posição | `demandaDaGlidepath()` | `min(distância, max(passo, distância − banda))` |
 | **D25 B** · velocidade pelo **estado** | `fatorDeVelocidade()` | 1,50 · 1,00 · 0,50 · 0,25, e o Índice não entra |
 | **D25 C** · defasagem | idem | acumula 1,31 em Capitulação, recupera 0,88 em Saudável |
 | **D25 C** · teto de 12 pontos 🔒 | idem | no teto o fator volta a 1,00 mesmo em Capitulação |
@@ -116,7 +117,9 @@ deixou de mover. Estar dentro da tolerância não é estar atrasado.
 - **Não confere a si mesmo.** Isso é o Auditor, e ele não está nesta peça.
 
 
-## ⚠️ O QUE A D51 A MEDIU, DEPOIS DE IMPLEMENTADA
+## ⚠️ O QUE A D51 A MEDIU, DEPOIS DE IMPLEMENTADA — E O QUE A D52 FEZ COM ISSO
+*Superado pela D52 A, e mantido porque o registro guarda a decisão, a medição e a correção.*
+
 
 O afunilamento da banda **não moveu a exposição da entrega**. Mês a mês, a trajetória com banda
 afunilada é idêntica à com banda de 3, nas cinco partidas — a carteira segue chegando 2,83 a 3,19
@@ -142,3 +145,30 @@ alvo nunca foi a banda.
 
 A medida está fixada em teste (`mesesEmQueABandaSegurou === 0`, `mesesTravadosNoPasso === 12`), com
 a mensagem dizendo que, se ela mudar, a conclusão registrada na D51 precisa ser refeita.
+
+
+## A D52 A, E A GUARDA QUE ELA EXIGIU
+
+A correção de posição sozinha fez **quatro das cinco partidas entregarem ABAIXO do alvo** — 13,50%
+contra 15,83% —, ainda vendendo com a carteira sub-exposta nos últimos oito meses.
+
+A causa: `mover = movidoPeloFator + aRecuperar + liquidacao`. Os dois últimos termos foram escritos
+para um `programado` limitado ao passo, e passaram a ser somados por cima de um `programado` que já
+fecha a distância inteira. **Dupla contagem da defasagem, entrando pela outra porta** — a mesma que o
+comentário da D25 C alertava.
+
+A guarda é o que a D52 B já afirmava: **banda zero, distância zero. Não negativa.**
+
+```js
+const mover = Math.min(moverBruto, Math.max(distancia, 0));
+```
+
+Com ela, quatro partidas fecham o último mês exatamente no alvo do mês, e a quinta fecha 0,25 acima
+— que é a banda daquele mês.
+
+### E a tabela da D25 C passou a valer só num regime
+A acumulação da defasagem é `(1 − fator) × programado`. Com `programado` limitado ao passo, isso é
+`(1 − fator) × passo`, que é a tabela publicada. Longe do alvo, é `(1 − fator) × (distância − banda)`,
+que é maior — e o teto de 12 pontos é alcançado em menos meses que os nove que a D25 C descreve.
+As duas fórmulas têm asserção própria, e o fixture da tabela publicada foi movido para o regime que
+ela de fato descreve.
