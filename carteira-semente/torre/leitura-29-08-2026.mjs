@@ -17,7 +17,7 @@ export const VARREDURA_29_08_2026 = Object.freeze({
   'MVRV Ratio': {
     valor: 1.465, min: 0.384, max: 7.854, data: '2026-08-28',
     dataMin: '2011-10-19', dataMax: '2011-06-04',
-    confirmado: { valor: '2026-08-29', min: '2026-08-29', max: null },
+    confirmado: { valor: '2026-08-29', min: '2026-08-29', max: '2026-08-29' },
     conferencias: [{
       campo: 'min', em: '2026-08-29',
       metodo: 'tooltip do terminal, modo SMA, janela estreitada de 01/10/2011 a dez/2011 até o passo do cursor virar 1 dia',
@@ -28,6 +28,23 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       ehMinimoDaSerie: 'nenhum ponto da série no ALL fica abaixo; os fundos de 2015, 2018 e 2022 param acima',
       cruzamento: 'BTC PRICE na mesma tooltip: US$ 2 — implica Realized Price ~5,21 e MVRV abaixo de 1, que é capitulação profunda',
       telaRestaurada: 'range de volta em ALL, página no topo, sidebar reaberta; nada salvo, alterado, publicado ou apagado',
+    }, {
+      campo: 'max', em: '2026-08-29',
+      metodo: 'tooltip do terminal, modo SMA, janela estreitada de 13/04/2011 a 07/2011 até ~12,6 px por dia',
+      lido: '7.854 — sete, ponto, oito, cinco, quatro',
+      vizinhos: { '2011-06-03': 6.510, '2011-06-04': 7.854, '2011-06-05': 6.718 },
+      // Havia um segundo pico ao lado, conferido para não confundir os dois.
+      segundoPico: { '2011-06-07': 7.404, '2011-06-08': 7.809, '2011-06-09': 6.772 },
+      ehMaximoDaSerie: 'topos rivais medidos na mesma janela estreitada: 09/04/2013 = 5.846 e 17/11/2013 = 6.237; ' +
+                       '2017, 2021 e 2024 ficam visivelmente abaixo desses dois. Folga de ~26% até o segundo maior.',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 16 — implica Realized Price ~2,04. Em 08/06, MVRV 7.809 com BTC US$ 28 ' +
+                  'implica ~3,59: o custo da rede subiu 76% em quatro dias, no mesmo passo do preço, e por isso a razão não inflou.',
+      // ⚠️ A folga até o segundo pico é de 0,58%. A DATA do máximo depende dessa
+      // margem — outra suavização poderia virá-la de 04/06 para 08/06. Por isso o
+      // modo SMA fica registrado: sem ele a conferência não é reprodutível.
+      margemAteOSegundoPico: '0,58% (7.854 contra 7.809 em 08/06/2011)',
+      bateComDoc07: 'o documento 07 registra uma conferência avulsa de 05/jun/2011 = 6,718; esta leitura independente dá o mesmo número',
+      telaRestaurada: 'range ALL, página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo',
     }],
   },
   'SOPR':               { valor: 1.0112,   min: 0.6068,  max: 2.8740,    data: '2026-08-28' , dataMin: '2011-11-09', dataMax: '2011-04-29', confirmado: { valor: '2026-08-29', min: null, max: null } },

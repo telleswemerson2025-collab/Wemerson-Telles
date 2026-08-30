@@ -1,11 +1,11 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.7 · 29/08/2026 — Decisões 35 a 40 · primeira conferência de extremo feita
+Conferência. Versão 1.8 · 29/08/2026 — Decisões 35 a 40 · MVRV conferido por inteiro
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
 - `torre.mjs` — o módulo. Sem dependências. Lê o registro da peça 1, não guarda nada.
 - `leitura-29-08-2026.mjs` — as catorze leituras reais do documento 07, transcritas.
-- `torre.test.mjs` — 71 testes da Torre (120 no pacote inteiro). `node --test` na raiz.
+- `torre.test.mjs` — 74 testes da Torre (123 no pacote inteiro). `node --test` na raiz.
 
 ## ⭐ ITEM 5 — O TESTE QUE PROVA A LEITURA DE 29/08/2026
 Entrada: as catorze leituras reais do `07-leituras-29-08-2026.md`, com mínimas e
@@ -208,9 +208,11 @@ O estado ficou **no dado**, não em nota de rodapé. Cada número carrega `confi
 { valor, min, max }` com a data da conferência ou `null`.
 
 ```
-estado: 15 confirmados · 27 provisórios de 42
+estado: 16 confirmados · 26 provisórios de 42
 ```
-*Abertura: 14 e 28. O primeiro extremo foi conferido em 29/08/2026.*
+*Abertura: 14 e 28. **O MVRV saiu inteiro da fila** — valor, mínima e máxima
+conferidos em 29/08/2026. É a primeira série com a régua toda verificada, e é a
+que mais pesa: ela é a régua da camada 1, que vale 38,6% do índice.*
 
 Os 14 confirmados são os valores, que o documento 07 diz terem sido lidos "um por
 um" pela tooltip. Os 28 provisórios são as mínimas e as máximas, que o cursor no
@@ -271,6 +273,40 @@ desenho.**
 ~5,21 — e o documento 07 dá mínima de 0,088 em janeiro de 2011. De 0,088 a 5,21 em
 dez meses é o ciclo de 2011, e MVRV abaixo de 1 com o preço em US$ 2 é a definição
 de capitulação profunda: o mercado valendo menos do que custou.
+
+### A máxima: 7,854 em 04/06/2011, com o segundo pico descartado
+A conferência trouxe um vizinho perigoso que o comando não previa: **um segundo
+pico em 08/06/2011, em 7,809** — a **0,58%** do máximo. Foi conferido de propósito
+para não confundir os dois.
+
+Isso muda o estatuto do modo de leitura. **A data do máximo depende dessa margem de
+meio por cento**, e outra suavização poderia virá-la de 04/06 para 08/06 sem que o
+valor mudasse muito. Por isso o `modo SMA` ficou registrado no dado, não como
+detalhe: **sem ele a conferência não é reprodutível.**
+
+#### Três coisas que a leitura fechou por fora
+**1. Bate com a conferência avulsa do documento 07.** O doc registra
+*"MVRV 05/jun/2011 = 6,718"*, feita ao acaso, meses antes. Esta leitura
+independente deu **6,718** no mesmo dia. Duas leituras separadas da mesma tooltip,
+dígito a dígito.
+
+**2. O Realized Price implícito conta a história certa.**
+
+| Data | MVRV | BTC | Realized Price implícito |
+|---|---|---|---|
+| 04/06/2011 | 7,854 | US$ 16 | ~2,04 |
+| 08/06/2011 | 7,809 | US$ 28 | ~3,59 |
+| 19/10/2011 | 0,384 | US$ 2 | ~5,21 |
+
+De ~2,04 em junho para ~5,21 em outubro: **o custo da rede subindo enquanto o preço
+caía de US$ 16 para US$ 2.** É a assinatura de um topo — moeda cara comprada na
+alta puxando a base de custo para cima enquanto o preço já foi embora.
+
+**3. O pico do MVRV veio quatro dias antes do pico do preço.** Em 04/06 o MVRV
+marcou 7,854 com BTC a US$ 16; em 08/06, com o preço **75% maior**, o MVRV estava
+**menor**. O Realized Price subiu 76% nesses quatro dias, quase no mesmo passo do
+preço — e por isso a razão não inflou. É o MVRV fazendo exatamente o que promete:
+blow-off que também levanta o custo da rede não vira leitura de euforia maior.
 
 ### 🐛 Um erro que a D35 B fez aparecer
 A primeira versão do comando mandava conferir o mínimo do MVRV **em 28/08/2026** —

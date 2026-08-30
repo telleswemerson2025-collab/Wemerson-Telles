@@ -522,7 +522,6 @@ test('a conferência só anda para a frente: nunca menos que a abertura', () => 
 test('o mínimo do MVRV foi conferido por tooltip em 29/08/2026', () => {
   const m = V['MVRV Ratio'];
   assert.equal(m.confirmado.min, '2026-08-29');
-  assert.equal(m.confirmado.max, null, 'a máxima segue provisória');
   const c = m.conferencias.find((x) => x.campo === 'min');
   assert.match(c.metodo, /passo do cursor virar 1 dia/);
   // O que faz dela conferência de EXTREMO, e não só de valor:
@@ -633,4 +632,28 @@ test('o comando de extremo pede as três coisas, não só a tooltip', () => {
 test('o comando de valor não pede vizinhos — valor do dia não é extremo', () => {
   const cmd = comandoDeConferencia({ serie: 'MVRV Ratio', campo: 'valor' }, V);
   assert.ok(!cmd.includes('dias vizinhos'));
+});
+
+test('a máxima do MVRV foi conferida, com o segundo pico descartado', () => {
+  const c = V['MVRV Ratio'].conferencias.find((x) => x.campo === 'max');
+  assert.equal(V['MVRV Ratio'].confirmado.max, '2026-08-29');
+  assert.equal(c.vizinhos['2011-06-04'], 7.854);
+  assert.ok(c.vizinhos['2011-06-04'] > c.vizinhos['2011-06-03']);
+  assert.ok(c.vizinhos['2011-06-04'] > c.vizinhos['2011-06-05']);
+  // o segundo pico chega perto e fica abaixo — foi conferido para não confundir
+  assert.ok(c.segundoPico['2011-06-08'] < c.vizinhos['2011-06-04']);
+  assert.match(c.margemAteOSegundoPico, /0,58%/);
+  assert.match(c.metodo, /modo SMA/, 'o modo fica registrado: sem ele não é reprodutível');
+});
+
+test('a leitura de 05/06/2011 bate com a conferência avulsa do documento 07', () => {
+  const c = V['MVRV Ratio'].conferencias.find((x) => x.campo === 'max');
+  assert.equal(c.vizinhos['2011-06-05'], 6.718, 'o doc 07 registra 05/jun/2011 = 6,718');
+  assert.match(c.bateComDoc07, /mesmo número/);
+});
+
+test('o MVRV é o único com valor, mínima e máxima conferidos', () => {
+  const m = V['MVRV Ratio'].confirmado;
+  assert.ok(m.valor && m.min && m.max, 'os três campos com data');
+  assert.ok(!filaDeConferencia(V).some((f) => f.serie === 'MVRV Ratio'), 'saiu inteiro da fila');
 });
