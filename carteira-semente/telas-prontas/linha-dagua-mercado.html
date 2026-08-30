@@ -95,10 +95,17 @@ footer{margin-top:36px;padding-top:20px;border-top:1px solid var(--bd);font-size
 const DADOS = (()=>{
   const n=420, price=[],rp=[],sth=[],lth=[],labels=[];
   let p=28000, r=22000, s=26000, l=15000;
+  /* O ruído é SORTEADO COM SEMENTE FIXA, nunca com Math.random(). Com random a
+     página desenhava uma série diferente a cada carregamento — e o ESTADO junto:
+     recarregar duas vezes dava "Capitulação profunda" e depois "Prejuízo do
+     mercado". Série ilustrativa pode ser inventada; ela não pode ser INSTÁVEL,
+     porque aí ninguém consegue conferir a mesma tela duas vezes. */
+  let semente = 20260829;
+  const sorteio = () => (semente = (semente*1103515245 + 12345) % 2147483648) / 2147483648;
   for(let i=0;i<n;i++){
     const t=i/n;
     const onda = Math.sin(t*Math.PI*1.55-0.7);
-    const drift = 1 + (onda*0.020) + (Math.sin(i/9)*0.010) + (Math.random()-0.5)*0.020;
+    const drift = 1 + (onda*0.020) + (Math.sin(i/9)*0.010) + (sorteio()-0.5)*0.020;
     p=Math.max(9000,p*drift);
     r += (p-r)*0.012;                 // custo da rede: lento
     s += (p-s)*0.075;                 // recém-chegados: rápido
