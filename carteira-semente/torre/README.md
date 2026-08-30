@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.11 · 29/08/2026 — Liveliness conferido · três espécies de extremo
+Conferência. Versão 1.12 · 29/08/2026 — DXY conferido · a resolução da tooltip é por série
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -426,6 +426,52 @@ incerteza move o Índice em **±0,00105 ponto**. Mesmo que 12/12 fosse o topo de
 *O cruzamento de preço separou as duas datas por outra via: em 12/12 o BTC estava a
 US$ 91.629, 3,9% acima do de 20/12, com Liveliness igual. Duas datas com o mesmo
 número e comportamentos diferentes de preço.*
+
+### ✅ A quarta conferência: **DXY · max = 114,11 em 27/09/2022**
+Vizinhos 114,10 e 112,60. Cruzamento BTC US$ 19.634. Na visão ALL, de 2011 a 2018
+nenhum ponto entra na faixa de 107+; o segundo maior de toda a série é o repique do
+início de 2025, em ~110,5 — quase 4 pontos abaixo.
+
+**O caso oposto ao do Liveliness, e é por isso que ele importa.** 26/09 fica um
+centésimo abaixo — colado. Mas os **dígitos diferem** (114.10 ≠ 114.11) e a tooltip
+decide sozinha, sem zoom. Lá o empate era de exibição e só o pixel separou; aqui é
+desempate no dígito. As duas conferências ficam com o método nomeado, e agora há um
+par: dá para ver qual é qual.
+
+**A tooltip do DXY mostra duas casas, não quatro.** A resolução de exibição é **por
+série**, não do terminal. Isso não estava escrito em lugar nenhum e só aparece
+conferindo.
+
+### O arredondamento da tooltip nunca foi o elo fraco
+Com quatro extremos conferidos em três resoluções diferentes, dá para medir em vez
+de supor. Meia casa de exibição de cada um, na resolução da própria série:
+
+| Extremo | Casas | Meia casa | Efeito no Índice |
+|---|---|---|---|
+| **MVRV Ratio · min** | 3 | ±0,0005 | **0,00926** |
+| Liveliness · max | 4 | ±0,00005 | 0,00105 |
+| MVRV Ratio · max | 3 | ±0,0005 | 0,00036 |
+| DXY · max | 2 | ±0,005 | 0,00035 |
+
+Todos **abaixo de 0,01 ponto**, com teste que segura o limite. E o maior não é o de
+menos casas: é o **MVRV · min**, porque 0,384 é um número pequeno numa régua
+logarítmica, e log amplifica embaixo. Contra-intuitivo o bastante para ficar fixado
+num teste.
+
+### ⚠️ Uma anomalia que não é de dado: o menu do DXY
+No menu do terminal o DXY aparece com o **valor atual em "—"**, enquanto o histórico
+carrega normal. Nenhuma das outras treze séries faz isso.
+
+**Não move o Índice**, e o motivo é preciso: a confiança do DXY já está saturada em 1
+(série de 2011, e o fator da D7 satura em 5 anos), então pela D36 C nem uma série
+parada mudaria a conta. Medido: mover a data do DXY para junho/2026 ou dez/2025 dá
+**exatamente** o mesmo Índice.
+
+**Mas o valor do DXY é a maior alavanca que já medi:** 10% de erro nele move o Índice
+**1,09 ponto** — quase o do Liveliness · max, que é a cabeça da fila. O valor está
+marcado como conferido desde o documento 07, e não o reabri: reabrir confirmação é
+decisão, não implementação. Fica registrado em `anomaliaDeMenu`, com a alavanca
+medida, para o Gui decidir.
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o

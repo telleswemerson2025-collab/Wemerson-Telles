@@ -830,3 +830,66 @@ test('o comando empírico aprendeu a avisar do empate de exibição', () => {
   assert.match(cmd, /exibir o MESMO número, a tooltip não decide/);
   assert.match(cmd, /separação foi por pixel, não por dígito/);
 });
+
+// ══ A CONFERÊNCIA DO DXY · MAX ════════════════════════════════════════════
+test('o máximo do DXY foi conferido, e o quase-empate se resolveu no dígito', () => {
+  const c = V['DXY'].conferencias.find((x) => x.campo === 'max');
+  assert.equal(V['DXY'].confirmado.max, '2026-08-29');
+  assert.deepEqual(c.vizinhos, { '2022-09-26': 114.10, '2022-09-27': 114.11, '2022-09-28': 112.60 });
+  assert.equal(c.quaseEmpate.distancia, 0.01, 'um centésimo abaixo');
+  assert.match(c.quaseEmpate.naturezaDoMetodo, /leitura de dígito/);
+  // O caso oposto ao do Liveliness, e é por isso que o método fica nomeado nos dois.
+  const liv = V['Liveliness'].conferencias.find((x) => x.campo === 'max');
+  assert.match(liv.empateNaExibicao.naturezaDoMetodo, /separação por pixel/);
+  assert.notEqual(c.quaseEmpate.naturezaDoMetodo, liv.empateNaExibicao.naturezaDoMetodo);
+});
+
+test('a resolução da tooltip é por série, não do terminal', () => {
+  assert.equal(V['DXY'].conferencias.find((x) => x.campo === 'max').casasNaTooltip, 2);
+  // O Liveliness mostrou quatro: dois vizinhos separados por 0,0001.
+  const liv = V['Liveliness'].conferencias.find((x) => x.campo === 'max');
+  assert.equal(liv.vizinhos['2025-12-20'] - liv.vizinhos['2025-12-19'] < 0.00011, true);
+});
+
+test('o arredondamento da tooltip nunca é o elo fraco: menos de 0,01 ponto', () => {
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  // Meia casa de exibição de cada extremo já conferido, na resolução da própria série.
+  const meiaCasa = [
+    ['MVRV Ratio', 'min', 0.0005], ['MVRV Ratio', 'max', 0.0005],
+    ['Liveliness', 'max', 0.00005], ['DXY', 'max', 0.005],
+  ];
+  for (const [serie, campo, d] of meiaCasa) {
+    const alt = { ...V, [serie]: { ...V[serie], [campo]: V[serie][campo] + d } };
+    const efeito = Math.abs(varrer({ varredura: alt, hoje: HOJE }).indice - base);
+    assert.ok(efeito < 0.01, `${serie} · ${campo}: ${efeito.toFixed(6)} ponto`);
+  }
+  // E o maior deles é o MVRV · min, não o de mais casas: régua log amplifica embaixo.
+  const efeitoDe = (serie, campo, d) => {
+    const alt = { ...V, [serie]: { ...V[serie], [campo]: V[serie][campo] + d } };
+    return Math.abs(varrer({ varredura: alt, hoje: HOJE }).indice - base);
+  };
+  assert.ok(efeitoDe('MVRV Ratio', 'min', 0.0005) > efeitoDe('Liveliness', 'max', 0.00005));
+});
+
+test('a anomalia de menu do DXY está registrada, e não move o índice', () => {
+  const a = V['DXY'].anomaliaDeMenu;
+  assert.match(a.o_que, /"—" no menu/);
+  // Série parada não mudaria a conta: a confiança do DXY já está no teto.
+  assert.equal(confianca(SERIES.find((s) => s.n === 'DXY').inicioSerie, HOJE), 1);
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  for (const data of ['2026-06-30', '2025-12-31']) {
+    const alt = { ...V, 'DXY': { ...V['DXY'], data } };
+    assert.equal(varrer({ varredura: alt, hoje: HOJE }).indice, base, 'a data do DXY não move o índice');
+  }
+  // Mas o VALOR move, e muito: é a razão de a anomalia ficar registrada.
+  const dezPorCento = { ...V, 'DXY': { ...V['DXY'], valor: V['DXY'].valor * 1.1 } };
+  const alavanca = Math.abs(varrer({ varredura: dezPorCento, hoje: HOJE }).indice - base);
+  assert.ok(alavanca > 1, `10% no valor do DXY move ${alavanca.toFixed(4)} ponto`);
+  assert.equal(alavanca.toFixed(4), String(a.alavancaDoValor));
+});
+
+test('o DXY saiu da fila pela máxima, e o mínimo dele continua nela', () => {
+  const fila = filaDeConferencia(V, HOJE);
+  assert.ok(!fila.some((f) => f.serie === 'DXY' && f.campo === 'max'));
+  assert.ok(fila.some((f) => f.serie === 'DXY' && f.campo === 'min'));
+});

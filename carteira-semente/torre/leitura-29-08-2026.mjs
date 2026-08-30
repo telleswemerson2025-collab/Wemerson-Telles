@@ -103,7 +103,49 @@ export const VARREDURA_29_08_2026 = Object.freeze({
                       'nada publicado, alterado ou apagado, nenhum print salvo',
     }],
   },
-  'DXY':                { valor: 99.16,    min: 72.93,   max: 114.11,    data: '2026-08-29' , dataMin: '2011-04-29', dataMax: '2022-09-27', confirmado: { valor: '2026-08-29', min: null, max: null } },
+  'DXY': {
+    valor: 99.16, min: 72.93, max: 114.11, data: '2026-08-29',
+    dataMin: '2011-04-29', dataMax: '2022-09-27',
+    confirmado: { valor: '2026-08-29', min: null, max: '2026-08-29' },
+    // ⚠️ ANOMALIA DE MENU, não de dado: no menu do terminal o DXY aparece com o
+    // valor atual em "—" enquanto o histórico carrega normal. Nenhuma das outras
+    // treze séries faz isso. Não move o índice — a confiança do DXY já está no teto
+    // (série de 2011, e o fator da D7 satura em 5 anos), então mesmo série parada
+    // não mudaria a conta. Mas o VALOR do DXY é alavanca grande: 10% nele move o
+    // índice 1,09 ponto. Fica registrado para o Gui decidir se reabre a conferência
+    // do valor — reabrir confirmação é decisão, não implementação.
+    anomaliaDeMenu: {
+      observadaEm: '2026-08-29',
+      o_que: 'valor atual exibido como "—" no menu; o histórico do gráfico carrega normal',
+      efeitoNoIndice: 0, motivoDoEfeitoZero: 'confiança do DXY já saturada em 1 (D7)',
+      alavancaDoValor: 1.0945, // pontos de índice por 10% de erro no valor
+    },
+    conferencias: [{
+      campo: 'max', em: '2026-08-29',
+      metodo: 'Macro · DXY — Dollar Index, tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia',
+      lido: '114.11 — um, um, quatro, ponto, um, um',
+      // A tooltip do DXY mostra DUAS casas, não quatro como a do Liveliness. A
+      // resolução de exibição é por série, não do terminal.
+      casasNaTooltip: 2,
+      vizinhos: { '2022-09-26': 114.10, '2022-09-27': 114.11, '2022-09-28': 112.60 },
+      // O caso OPOSTO ao do Liveliness: 26/09 fica um centésimo abaixo, mas os
+      // dígitos diferem (114.10 ≠ 114.11) e a tooltip decide sozinha.
+      quaseEmpate: {
+        vizinho: '2022-09-26', lido: 114.10, distancia: 0.01,
+        resolvidoPor: 'dígito — a tooltip separa sozinha, sem zoom',
+        naturezaDoMetodo: 'leitura de dígito',
+        contrasteCom: 'Liveliness · max, onde 12/12 e 20/12 exibiam o MESMO número e só o pixel separou',
+      },
+      ehMaximoDaSerie: 'varrida a faixa de altura ~107+ na série inteira: de 2011 a 2018 nenhum ponto entra nela, ' +
+                       'e o topo do período fica abaixo de 104; de 2019 em diante o único pico na altura de 114 é o de set/2022. ' +
+                       'O segundo maior de toda a série é o repique do início de 2025, em torno de 110,5 — quase 4 pontos abaixo.',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 19.634 em 27/09; US$ 19.045 em 26/09 e US$ 19.144 em 28/09',
+      // Duas casas de exibição: a máxima só é conhecida até ±0,005.
+      incertezaDaExibicao: { faixa: [114.105, 114.115], efeitoNoIndice: 0.00035 },
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }],
+  },
   'Fed Funds Rate':     { valor: 3.63,     min: 0.05,    max: 5.33,      data: '2026-08-29' , dataMin: '2020-04-01', dataMax: '2023-08-01', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'US M2':              { valor: 23.218,   min: 8.845,   max: 23.218,    data: '2026-08-29' , dataMin: '2011-01-01', dataMax: '2026-07-01', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Curva 10Y-2Y':       { valor: 0.38,     min: -0.93,   max: 2.81,      data: '2026-08-29' , dataMin: '2023-07-01', dataMax: '2011-02-01', confirmado: { valor: '2026-08-29', min: null, max: null } },
