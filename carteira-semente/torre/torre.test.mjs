@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -638,9 +638,12 @@ test('o comando de conferência é de um extremo por vez e só de leitura', () =
 
 test('confirmar um extremo tira ele da fila e some no contador', () => {
   const antes = estadoDosExtremos(V).provisorios;
-  const conferido = { ...V, 'SOPR': { ...V['SOPR'], confirmado: { valor: '2026-08-29', min: '2026-08-30', max: null } } };
+  const alvo = filaDeConferencia(V, HOJE)[0];
+  const conferido = { ...V, [alvo.serie]: { ...V[alvo.serie],
+    confirmado: { ...V[alvo.serie].confirmado, [alvo.campo]: '2026-08-30' } } };
   assert.equal(estadoDosExtremos(conferido).provisorios, antes - 1);
-  assert.ok(!filaDeConferencia(conferido, HOJE).some((f) => f.serie === 'SOPR' && f.campo === 'min'));
+  assert.ok(!filaDeConferencia(conferido, HOJE)
+    .some((f) => f.serie === alvo.serie && f.campo === alvo.campo));
   // e o mínimo do MVRV, já conferido, não está mais na fila
   assert.ok(!filaDeConferencia(V, HOJE).some((f) => f.serie === 'MVRV Ratio' && f.campo === 'min'));
 });
@@ -892,4 +895,73 @@ test('o DXY saiu da fila pela máxima, e o mínimo dele continua nela', () => {
   const fila = filaDeConferencia(V, HOJE);
   assert.ok(!fila.some((f) => f.serie === 'DXY' && f.campo === 'max'));
   assert.ok(fila.some((f) => f.serie === 'DXY' && f.campo === 'min'));
+});
+
+// ══ A CONFERÊNCIA DO SOPR · MIN ═══════════════════════════════════════════
+test('o mínimo do SOPR é um pico isolado de um dia, e a forma ficou nomeada', () => {
+  const c = V['SOPR'].conferencias.find((x) => x.campo === 'min');
+  assert.equal(V['SOPR'].confirmado.min, '2026-08-29');
+  assert.deepEqual(c.vizinhos, { '2011-11-08': 0.9609, '2011-11-09': 0.6068, '2011-11-10': 0.9743 });
+  assert.equal(c.topologia, 'pico isolado de um dia');
+  // Cai 37% num dia e volta no seguinte: nem vale nem platô.
+  assert.equal((c.vizinhos['2011-11-08'] - c.vizinhos['2011-11-09']).toFixed(4), '0.3541');
+  assert.ok(c.vizinhos['2011-11-10'] > c.vizinhos['2011-11-08'], 'volta acima de onde estava');
+});
+
+test('os três métodos de conferência estão nomeados e não se misturam', () => {
+  assert.deepEqual(METODOS_DE_CONFERENCIA, ['dígito', 'pixel', 'eixo']);
+  const sopr = V['SOPR'].conferencias.find((x) => x.campo === 'min');
+  const liv = V['Liveliness'].conferencias.find((x) => x.campo === 'max');
+  const dxy = V['DXY'].conferencias.find((x) => x.campo === 'max');
+  assert.match(sopr.leiturasDeEixo.naturezaDoMetodo, /leitura de eixo, não de tooltip/);
+  assert.match(liv.empateNaExibicao.naturezaDoMetodo, /separação por pixel/);
+  assert.match(dxy.quaseEmpate.naturezaDoMetodo, /leitura de dígito/);
+  // O que sustenta o extremo do SOPR é dígito; o eixo só deu o piso do outro regime.
+  assert.match(sopr.lido, /0\.6068/);
+});
+
+test('o cruzamento de preço não cruza nada em 2011, e isso é consistente', () => {
+  const c = V['SOPR'].conferencias.find((x) => x.campo === 'min');
+  assert.match(c.cruzamento, /US\$ 3 nos três dias/);
+  // Mesma redondagem para dólar inteiro que derrubou a conferência do preço.
+  const t = V['Preço do BTC'].tentativas.find((x) => x.campo === 'min');
+  assert.equal(t.resultado, 'não confirmado');
+});
+
+// ══ AS RÉGUAS VÊM DE UM REGIME QUE ACABOU ═════════════════════════════════
+test('treze dos vinte e oito extremos são anteriores a 2013', () => {
+  let velhos = 0, total = 0;
+  for (const s of SERIES) {
+    const v = V[s.n]; if (!v) continue;
+    for (const campo of ['dataMin', 'dataMax']) {
+      if (!v[campo]) continue;
+      total++;
+      if (v[campo] < '2013-01-01') velhos++;
+    }
+  }
+  assert.equal(total, 28);
+  assert.equal(velhos, 13);
+  // E as duas réguas que mais pesam têm as DUAS pontas em 2011.
+  assert.ok(V['MVRV Ratio'].dataMin < '2012-01-01' && V['MVRV Ratio'].dataMax < '2012-01-01',
+    'a régua da camada 1 é inteira de 2011');
+  assert.ok(V['SOPR'].dataMin < '2012-01-01' && V['SOPR'].dataMax < '2012-01-01');
+});
+
+test('trocar as pontas velhas move ~1 ponto cada, e elas não apontam para o mesmo lado', () => {
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const com = (v) => varrer({ varredura: v, hoje: HOJE }).indice;
+  // Piso do SOPR no regime pós-2013 (~0,75, lido no eixo): empurra para BAIXO.
+  const soprNovo = { ...V, 'SOPR': { ...V['SOPR'], min: 0.75 } };
+  assert.equal((com(soprNovo) - base).toFixed(2), '-1.04');
+  // Teto do MVRV no topo pós-2013 (6.237, que o Gui conferiu): empurra para CIMA.
+  const mvrvNovo = { ...V, 'MVRV Ratio': { ...V['MVRV Ratio'], max: 6.237 } };
+  assert.equal((com(mvrvNovo) - base).toFixed(2), '1.42');
+  // Juntos quase se cancelam — reportar só um deles exageraria o caso.
+  const ambos = { ...V, 'SOPR': { ...V['SOPR'], min: 0.75 }, 'MVRV Ratio': { ...V['MVRV Ratio'], max: 6.237 } };
+  assert.equal((com(ambos) - base).toFixed(2), '0.38');
+  // E o que a leitura ENTREGA não muda: a faixa é a mesma nos três casos.
+  const faixa = varrer({ varredura: V, hoje: HOJE }).faixa;
+  for (const v of [soprNovo, mvrvNovo, ambos]) {
+    assert.equal(varrer({ varredura: v, hoje: HOJE }).faixa, faixa);
+  }
 });

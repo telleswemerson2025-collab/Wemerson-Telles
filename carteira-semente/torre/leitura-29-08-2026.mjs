@@ -68,7 +68,40 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       telaRestaurada: 'range ALL, página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo',
     }],
   },
-  'SOPR':               { valor: 1.0112,   min: 0.6068,  max: 2.8740,    data: '2026-08-28' , dataMin: '2011-11-09', dataMax: '2011-04-29', confirmado: { valor: '2026-08-29', min: null, max: null } },
+  'SOPR': {
+    valor: 1.0112, min: 0.6068, max: 2.8740, data: '2026-08-28',
+    dataMin: '2011-11-09', dataMax: '2011-04-29',
+    confirmado: { valor: '2026-08-29', min: '2026-08-29', max: null },
+    conferencias: [{
+      campo: 'min', em: '2026-08-29',
+      metodo: 'Spent Output Profit Ratio (SOPR) · SOPR simples, não LTH/STH; tooltip, modo SMA, janela estreitada até o passo do cursor virar 1 dia',
+      lido: '0.6068 — zero, ponto, seis, zero, seis, oito',
+      vizinhos: { '2011-11-08': 0.9609, '2011-11-09': 0.6068, '2011-11-10': 0.9743 },
+      // TOPOLOGIA NOVA: nem vale (MVRV · min) nem platô (Liveliness · max). É uma
+      // barra isolada cravada entre dois dias em ~0,96–0,97. É a forma que um erro
+      // de dado tem — e também a que um dia de capitulação tem, porque o SOPR é
+      // razão diária e um dia de pânico dá uma barra só. Fica nomeada.
+      topologia: 'pico isolado de um dia',
+      quedaDosVizinhos: 0.3541, // 0,9609 → 0,6068: 37% em um dia, e volta no seguinte
+      ehMinimoDaSerie: 'varrido em dois blocos, porque a série tem dois regimes. ' +
+        '2011–2012: os rivais mais próximos são 16/11/2011 = 0.6237 e 19/10/2011 = 0.6369, ambos acima. ' +
+        '2013 → hoje: abrindo só esse trecho o eixo se reescala e o piso vira 0,7 — em treze anos o SOPR nunca chegou perto.',
+      // ⚠️ MÉTODO MAIS FRACO, e o Gui nomeou como tal: o piso do regime pós-2013
+      // (~0,75–0,76) foi lido no EIXO, não na tooltip. Fica separado do que foi lido
+      // dígito a dígito, porque não tem a mesma força.
+      leiturasDeEixo: {
+        pisoPos2013: '~0,75–0,76',
+        fecho: 'na visão ALL o rótulo mais baixo do eixo direito é 0.6, o que só faz sentido com o mínimo logo acima dele',
+        naturezaDoMetodo: 'leitura de eixo, não de tooltip',
+      },
+      // BTC PRICE $3 nos três dias: a mesma redondagem para dólar inteiro que
+      // derrubou a conferência do Preço do BTC · min. Nesta escala o cruzamento não
+      // cruza nada, e isso é consistência, não achado novo.
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 3 nos três dias — o terminal arredonda para dólar inteiro, então nesta escala o cruzamento não separa nada',
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }],
+  },
   'Supply in Profit':   { valor: 67.4,     min: 35.6,    max: 100.0,     data: '2026-08-28' , dataMin: '2015-08-24', dataMax: '2011-02-04', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Liveliness': {
     valor: 0.6345, min: 0.1785, max: 0.6410, data: '2026-08-28',

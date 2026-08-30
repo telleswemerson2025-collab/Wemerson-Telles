@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.12 · 29/08/2026 — DXY conferido · a resolução da tooltip é por série
+Conferência. Versão 1.13 · 29/08/2026 — SOPR conferido · as réguas vêm de um regime que acabou
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -472,6 +472,69 @@ parada mudaria a conta. Medido: mover a data do DXY para junho/2026 ou dez/2025 
 marcado como conferido desde o documento 07, e não o reabri: reabrir confirmação é
 decisão, não implementação. Fica registrado em `anomaliaDeMenu`, com a alavanca
 medida, para o Gui decidir.
+
+### ✅ A quinta conferência: **SOPR · min = 0,6068 em 09/11/2011**
+Vizinhos **0,9609** e **0,9743** — cai 37% num dia e volta acima no seguinte.
+
+**Topologia nova.** As três conferências anteriores foram vale (MVRV · min), platô
+(Liveliness · max) e degrau (DXY · max). Esta é uma **barra isolada** cravada entre
+dois dias normais. É a forma que um erro de dado tem — e é também a que um dia de
+capitulação tem, porque o SOPR é razão diária e um dia de pânico dá uma barra só.
+Ficou nomeada no dado (`topologia`) em vez de virar impressão na cabeça de quem leu.
+
+**Sem ambiguidade:** os rivais de 2011–2012 são 0,6237 (16/11) e 0,6369 (19/10), e o
+fecho pelo eixo — o rótulo mais baixo na visão ALL é 0.6 — só faz sentido com o
+mínimo logo acima dele.
+
+*O cruzamento de preço deu US$ 3 nos três dias: a mesma redondagem para dólar inteiro
+que derrubou a conferência do Preço do BTC · min. Nesta escala o cruzamento não cruza
+nada — consistência, não achado novo.*
+
+## OS TRÊS MÉTODOS, AGORA NOMEADOS EM CÓDIGO
+O Gui nomeou o método fraco desta vez sem ninguém pedir: *"essa leitura é do eixo,
+não da tooltip"*. Com isso fecham três, e eles **não são intercambiáveis**:
+
+| Método | Onde apareceu | O que prova |
+|---|---|---|
+| **dígito** | MVRV, DXY, SOPR | o número. É o que confirma um valor |
+| **pixel** | Liveliness · max | **ordem** entre dois pontos, não o valor de nenhum |
+| **eixo** | piso pós-2013 do SOPR | ordem de grandeza. **Nunca confirma extremo sozinho** |
+
+`METODOS_DE_CONFERENCIA` fixa os três em código, do mais forte para o mais fraco, e
+cada conferência nomeia o seu. O que sustenta o mínimo do SOPR é **dígito**; o eixo
+só deu o piso do outro regime, e está gravado num campo separado por isso.
+
+## ⚠️ AS DUAS RÉGUAS QUE MAIS PESAM SÃO INTEIRAS DE 2011
+A varredura em dois blocos que o Gui fez para o SOPR deixou isso visível, e vale para
+o sistema todo: **13 dos 28 extremos são anteriores a 2013**.
+
+E não é distribuído por acaso — as duas réguas que mais pesam têm **as duas pontas**
+em 2011:
+
+| Régua | min | max | Peso |
+|---|---|---|---|
+| **MVRV Ratio** (é a régua inteira da camada 1) | 19/10/2011 | 04/06/2011 | 38,6% |
+| **SOPR** | 09/11/2011 | 29/04/2011 | ~9,8% (⅓ da camada 2) |
+
+O SOPR mostra o que isso significa: **em treze anos a série nunca chegou perto do
+próprio mínimo.** O piso do regime pós-2013 é ~0,75; o mínimo da régua é 0,6068. O
+fundo da régua é território que o mercado não visita desde 2012.
+
+### Quanto isso vale, medido
+| Troca | Efeito no Índice |
+|---|---|
+| Piso do SOPR → 0,75 (pós-2013) | **−1,04** |
+| Teto do MVRV → 6,237 (pós-2013, número que o Gui já conferiu) | **+1,42** |
+| **Os dois juntos** | **+0,38** |
+
+**Elas não apontam para o mesmo lado, e quase se cancelam.** Reportar só uma daria a
+impressão de um viés que não existe. E a **faixa da entrega é a mesma nos três
+casos** — o que o cliente recebe hoje não muda.
+
+*Não é proposta.* A normalização contra a faixa ALL própria de cada série é desenho,
+e trocá-la é decisão. O que fica registrado é que a **D7 não cobre isto**: o fator de
+confiança pune série *curta*, e não existe nada que trate régua *velha*. Uma série de
+quinze anos tem confiança 1 mesmo com as duas pontas fixadas no primeiro ano.
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o

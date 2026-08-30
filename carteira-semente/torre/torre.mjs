@@ -237,6 +237,19 @@ export function estadoDosExtremos(varredura) {
  * afrouxá-lo muda a leitura de HOJE, visível na hora (falha o critério 1), e está
  * registrado na tabela de exclusão do briefing.
  */
+/**
+ * Os três métodos que as conferências produziram, do mais forte para o mais fraco.
+ * Não são intercambiáveis, e por isso cada conferência nomeia o seu: misturar os
+ * três perderia a diferença entre "eu li o número" e "eu inferi do desenho".
+ *
+ * - dígito: a tooltip mostra o número. É o que confirma um VALOR.
+ * - pixel: dois pontos exibem o MESMO número e só se separam com a escala esticada
+ *   (Liveliness · max). Prova ordem entre dois pontos, não o valor de nenhum.
+ * - eixo: lido na escala do gráfico, sem tooltip (piso pós-2013 do SOPR). Dá ordem
+ *   de grandeza. Nunca confirma extremo sozinho.
+ */
+export const METODOS_DE_CONFERENCIA = Object.freeze(['dígito', 'pixel', 'eixo']);
+
 export const TETOS_DA_METRICA = Object.freeze({ 'Supply in Profit': { max: 100 } });
 
 export function especieDoExtremo(serie, campo, varredura) {
