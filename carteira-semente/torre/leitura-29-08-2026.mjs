@@ -319,7 +319,7 @@ export const VARREDURA_29_08_2026 = Object.freeze({
   'Curva 10Y-2Y': {
     valor: 0.38, min: -0.93, max: 2.81, data: '2026-08-29',
     dataMin: '2023-07-01', dataMax: '2011-02-01',
-    confirmado: { valor: '2026-08-29', min: null, max: '2026-08-29' },
+    confirmado: { valor: '2026-08-29', min: '2026-08-29', max: '2026-08-29' },
     // Mesma divergencia do Fed Funds, e agora sabida: o ultimo ponto desenhado e
     // 24/08/2026, nao 29/08. Custo zero — confianca saturada (D36 C).
     divergenciaDeData: {
@@ -366,6 +366,35 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       metodoDeVarredura: 'eixo auto-escalado por blocos, com os rivais conferidos na tooltip',
       folgaAteOSegundo: '0,25 pp (2,81 contra 2,56 em dez/2013)',
       cruzamento: 'BTC PRICE na mesma tooltip: US$ 1 nos três dias — dólar inteiro de novo, sem poder de separação',
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }, {
+      campo: 'min', em: '2026-08-29',
+      metodo: 'Studio / Macro / Yield Curve 10Y-2Y, tooltip, janela estreitada até o passo do cursor virar 1 dia',
+      lido: '-0.93 — menos, zero, ponto, nove, três',
+      casasNaTooltip: 2,
+      vizinhos: { '2023-06-30': -0.89, '2023-07-01': -0.93, '2023-07-02': -0.93 },
+      // As QUATRO pontas do patamar, que o comando passou a pedir depois do Fed Funds.
+      // Primeira conferencia em que ele pediu a coisa certa e voltou completa.
+      platoDeValor: {
+        inicio: '2023-07-01', fim: '2023-07-31', diasNoPatamar: 31,
+        degrauDeEntrada: { '2023-06-30': -0.89, '2023-07-01': -0.93 },
+        primeiraLeituraDepois: { '2023-07-31': -0.93, '2023-08-01': -0.73 },
+        conferidoNoMeio: { '2023-07-09': -0.93, '2023-07-30': -0.93 },
+        oQueADataSignifica: 'mês de referência jul/2023; 01/07 é o primeiro dia do patamar, não um ponto único',
+        naturezaDoMetodo: 'patamar mensal — as quatro pontas registradas juntas',
+      },
+      // O dia 1 cai num sábado, e desta vez isso é IRRELEVANTE: série mensal, o dia 1
+      // é referência de mês. Foi exatamente o aviso errado que a marcação antiga dava.
+      oSabadoNaoImporta: '01/07/2023 é sábado, mas a série é mensal — o dia 1 é referência de mês, não fechamento carregado da sexta',
+      ehMinimoDaSerie: 'dois blocos curtos que se encostam, rivais na tooltip, sem eixo nem pixel no ALL. ' +
+                       '2011 → jan/2022: o eixo da janela nem chega a zero — o piso do período é +0,05 (set/2019), a curva não fica negativa no trecho. ' +
+                       'jan/2022 → hoje: o degrau mais fundo de toda a inversão é o de jul/2023 (-0,93); os patamares vizinhos param em -0,76 e -0,70.',
+      metodoDeVarredura: 'eixo auto-escalado por blocos, com os rivais conferidos na tooltip',
+      folgaAteOSegundo: '0,17 pp (-0,93 contra -0,76)',
+      // Achado estrutural: TODO o território negativo desta régua é um episódio só.
+      territorioNegativo: 'a curva só fica negativa a partir de 2022 — em onze anos de série o piso foi +0,05',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 30.519 em 01/07; US$ 30.558 em 30/06 e US$ 30.542 em 02/07',
       telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
                       'nada publicado, alterado ou apagado, nenhum print salvo',
     }],

@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.21 · 29/08/2026 — notação compacta: a tela esconde uma faixa
+Conferência. Versão 1.22 · 29/08/2026 — a primeira conferência que não corrigiu nada
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -965,6 +965,48 @@ exatamente para isso. Funcionou na primeira vez que foi usado.
 
 *O calendário, esse, eu tinha acertado: a seção "Sobre esta métrica" diz **calendário
 NYSE, sem barras em fins de semana e feriados**. Agora está lido, não inferido.*
+
+### ✅ A décima quarta: **Curva 10Y-2Y · min = −0,93 · jul/2023** — e nada quebrou
+Primeira conferência em que **o comando pediu a coisa certa e voltou completa**. Sem
+bug meu, sem marcação errada, sem unidade inferida, sem método proibido.
+
+As quatro pontas do patamar, que o comando passou a pedir desde o Fed Funds:
+
+| | |
+|---|---|
+| Primeira ocorrência | **01/07/2023 = −0,93** |
+| Dia anterior (o degrau) | 30/06/2023 = −0,89 |
+| Último dia em que vale | 31/07/2023 = −0,93 |
+| Primeiro valor depois | 01/08/2023 = −0,73 |
+
+**Julho inteiro, 31 dias.** E o Gui amostrou o meio (09/07 e 30/07, ambos −0,93), coisa
+que nenhuma conferência de patamar tinha trazido — as pontas provam o intervalo, o
+meio prova que não há buraco dentro dele.
+
+**O sábado do dia 1 não importou**, e o registro diz por quê. Foi exatamente o aviso
+errado que a marcação antiga (pregão) fazia o comando dar, duas conferências atrás.
+A correção sobreviveu ao teste real.
+
+### Um achado estrutural, e ele contraria o da régua velha
+> **2011 → jan/2022: o eixo da janela nem chega a zero.** O piso do período é **+0,05**
+> (set/2019). A curva não fica negativa em onze anos de série.
+
+**Todo o território negativo desta régua é um episódio só** — a inversão de 2022–2024.
+E isso põe a Curva no contraste com o MVRV e o SOPR:
+
+| Régua | min | max |
+|---|---|---|
+| MVRV Ratio | 2011 | 2011 |
+| SOPR | 2011 | 2011 |
+| **Curva 10Y-2Y** | **2023** | 2011 |
+
+Para esta série a preocupação de *"régua velha"* vale para o **teto** e não para o piso.
+Metade dos catorze extremos já conferidos é anterior a 2013; a outra metade não.
+
+### Onde a conferência chegou
+**Cinco séries saíram inteiras:** MVRV Ratio · SOPR · DXY · Funding Rate · Curva 10Y-2Y.
+Sobram **seis extremos que importam**, e nenhum deles é leitura simples: dois estão
+travados em decisão do Gui, os outros quatro já têm a armadilha nomeada no comando.
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o

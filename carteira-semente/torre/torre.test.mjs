@@ -1530,3 +1530,64 @@ test('seis unidades lidas, oito ainda inferência minha', () => {
   const inferidas = SERIES.filter((s) => V[s.n] && s.unidade && !s.unidadeConferida);
   assert.equal(inferidas.length, 8);
 });
+
+// ══ CURVA 10Y-2Y · MIN — A PRIMEIRA CONFERÊNCIA SEM CORREÇÃO ══════════════
+test('o mínimo da Curva bate, e as quatro pontas do patamar voltaram completas', () => {
+  const c = V['Curva 10Y-2Y'].conferencias.find((x) => x.campo === 'min');
+  assert.equal(V['Curva 10Y-2Y'].confirmado.min, '2026-08-29');
+  const p = c.platoDeValor;
+  assert.equal(p.inicio, '2023-07-01');
+  assert.equal(p.fim, '2023-07-31');
+  assert.equal(p.diasNoPatamar, 31, 'julho inteiro');
+  assert.equal(p.degrauDeEntrada['2023-06-30'], -0.89);
+  assert.equal(p.primeiraLeituraDepois['2023-08-01'], -0.73);
+  // O comando pedia quatro coisas desde o Fed Funds; é a primeira vez que voltam as quatro.
+  for (const k of ['inicio', 'fim', 'degrauDeEntrada', 'primeiraLeituraDepois']) assert.ok(p[k]);
+  // E o meio do patamar foi amostrado, o que nenhuma outra trouxe.
+  assert.equal(p.conferidoNoMeio['2023-07-09'], -0.93);
+  assert.equal(p.conferidoNoMeio['2023-07-30'], -0.93);
+});
+
+test('o sábado do dia 1 é irrelevante aqui, e o registro diz por quê', () => {
+  const c = V['Curva 10Y-2Y'].conferencias.find((x) => x.campo === 'min');
+  assert.equal(semPregao('2023-07-01'), true);
+  assert.match(c.oSabadoNaoImporta, /a série é mensal — o dia 1 é referência de mês/);
+  // É exatamente o aviso errado que a marcação antiga (pregão) fazia o comando dar.
+  assert.equal(dataSuspeitaDeCarregamento('Curva 10Y-2Y', '2023-07-01'), false);
+  assert.equal(SERIES.find((s) => s.n === 'Curva 10Y-2Y').calendario, 'mensal');
+});
+
+test('todo o território negativo desta régua é um episódio só', () => {
+  const c = V['Curva 10Y-2Y'].conferencias.find((x) => x.campo === 'min');
+  assert.match(c.territorioNegativo, /só fica negativa a partir de 2022/);
+  assert.ok(V['Curva 10Y-2Y'].min < 0 && V['Curva 10Y-2Y'].max > 0, 'a régua cruza o zero');
+  // E é por isso que a escala é linear: log de negativo não produz número.
+  assert.equal(SERIES.find((s) => s.n === 'Curva 10Y-2Y').escala, 'lin');
+  assert.equal(Number.isNaN(normalizar(V['Curva 10Y-2Y'].min, -1, 3, 'log')), true);
+});
+
+test('a régua da Curva tem uma ponta de 2011 e outra de 2023', () => {
+  // Contraste com o MVRV e o SOPR, cujas DUAS pontas são de 2011: aqui a preocupação
+  // de "régua velha" vale para o teto e não para o piso.
+  assert.ok(V['Curva 10Y-2Y'].dataMax < '2012-01-01', 'máximo em fev/2011');
+  assert.ok(V['Curva 10Y-2Y'].dataMin > '2023-01-01', 'mínimo em jul/2023');
+  // Metade dos extremos já conferidos é anterior a 2013, metade não.
+  let velho = 0, novo = 0;
+  for (const x of SERIES) {
+    const v = V[x.n]; if (!v) continue;
+    for (const [campo, d] of [['min', v.dataMin], ['max', v.dataMax]]) {
+      if (!v.confirmado?.[campo] || !d) continue;
+      if (d < '2013-01-01') velho++; else novo++;
+    }
+  }
+  assert.equal(velho + novo, 14, 'catorze extremos conferidos');
+  assert.equal(velho, 6);
+  assert.equal(novo, 8);
+});
+
+test('cinco séries já saíram inteiras da fila', () => {
+  const inteiras = SERIES.filter((x) => V[x.n] &&
+    ['valor', 'min', 'max'].every((c) => V[x.n].confirmado?.[c])).map((x) => x.n).sort();
+  assert.deepEqual(inteiras, ['Curva 10Y-2Y', 'DXY', 'Funding Rate', 'MVRV Ratio', 'SOPR']);
+  for (const n of inteiras) assert.ok(!filaDeConferencia(V, HOJE).some((f) => f.serie === n));
+});
