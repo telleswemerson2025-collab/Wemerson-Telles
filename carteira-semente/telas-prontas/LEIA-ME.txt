@@ -1,0 +1,31 @@
+CARTEIRA SEMENTE — AS CINCO TELAS
+=================================
+
+Dê dois cliques em qualquer um dos arquivos .html desta pasta.
+Não precisa instalar nada. Não precisa de internet.
+
+  simulador.html            a projeção até os 18 anos, o número de capa e as travas
+  indice-semente.html       o Índice Semente de hoje, camada por camada
+  aporte-do-mes.html        quanto do aporte vai para o ativo, e as sete travas
+  registro-de-ciclo.html    o histórico do Reforço de Fundo, evento por evento
+  linha-dagua-mercado.html  o estado do mercado no tempo
+
+O QUE OLHAR EM CADA UMA
+-----------------------
+simulador           o número grande é o PISO (R$ 75.335), e a leitura do dia
+                    aparece embaixo, rotulada — nunca no lugar dele
+indice-semente      o número grande é 51, e o valor interno 50,7536 vem logo
+                    abaixo; a camada 5 tem de estar marcada como FORA
+aporte-do-mes       as sete travas aparecem todas, passem ou não, e a sétima
+                    (o Gate) nunca passa
+registro-de-ciclo   o log inteiro, em ordem, sem filtro
+linha-dagua         o estado do mercado, que é quem manda em tudo
+
+UMA COISA PARA TESTAR NO SIMULADOR
+----------------------------------
+Clique em "Ver a tela sem leitura da Linha d'Água".
+A projeção inteira tem de SUMIR, com o motivo escrito.
+Ela não pode virar um número qualquer. É a regra mais importante do sistema.
+
+Sem internet as letras ficam com a fonte do computador. Os números
+continuam certos.

@@ -1,0 +1,865 @@
+<meta charset="utf-8">
+<title>Registro de ciclo — Carteira Semente</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --side:#0a0e15;--main:#0b0f17;--card:#0d1219;--bd:rgba(255,255,255,.06);
+  --ink:#e6eaf0;--mut:#8a95a5;--dim:#5a6472;--hover:rgba(255,255,255,.045);
+  --z1:#3d7dff;--z2:#3ddc84;--z3:#f5c518;--z4:#f97316;--z5:#ef4444;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--main);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5}
+:focus-visible{outline:1px solid var(--z1);outline-offset:2px}
+.main{max-width:1120px;margin:0 auto;padding:0 24px 60px}
+.top{display:flex;align-items:baseline;gap:18px;padding:26px 0 4px;flex-wrap:wrap}
+.mark{font-family:"Playfair Display",Georgia,serif;font-size:24px;font-weight:600}.mark i{font-style:italic}
+.crumb{color:var(--dim);font-size:13.5px}.crumb b{color:var(--ink);font-weight:500}
+.selo{margin-left:auto;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--z4);
+  border:1px solid rgba(249,115,22,.35);border-radius:999px;padding:5px 12px}
+h2{font-family:"Playfair Display",serif;font-size:17px;font-weight:600;margin:30px 0 3px}
+.sub{color:var(--dim);font-size:12.5px;margin-bottom:12px}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:1px;background:var(--bd);
+  border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-top:12px}
+.rc{background:var(--card);padding:15px 17px}
+.rc .l{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.rc .v{font-family:"Playfair Display",serif;font-size:25px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.rc .s{font-size:11.5px;color:var(--dim);margin-top:5px}
+.rc.on{background:#111a24}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:500}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+td.dt{font-variant-numeric:tabular-nums;color:var(--mut);white-space:nowrap}
+.vazio{color:var(--dim);font-size:12.5px;padding:14px 2px;font-style:italic}
+.tag{display:inline-block;font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+  border:1px solid currentColor;border-radius:999px;padding:1px 7px;margin-right:6px;opacity:.9}
+.t-leitura{color:var(--dim)}.t-reforco{color:var(--z4)}.t-reset{color:var(--z2)}
+.t-crm{color:var(--z1)}.t-retif{color:var(--z3)}.t-anul{color:var(--z5)}.t-outro{color:var(--mut)}
+.nota{border:1px solid rgba(245,197,24,.28);background:rgba(245,197,24,.05);border-radius:12px;
+  padding:13px 16px;font-size:12.5px;color:var(--mut);margin-top:14px}
+.nota b{color:var(--z3);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:5px}
+.nota.calma{border-color:var(--bd);background:var(--card)}.nota.calma b{color:var(--dim)}
+.log{background:var(--card);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-top:12px}
+.log table{margin:0}
+.log tr:hover{background:var(--hover)}
+.seq{color:var(--dim);font-variant-numeric:tabular-nums}
+.det{color:var(--mut);font-size:12px}
+.det b{color:var(--ink);font-weight:500}
+.barra{height:6px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:10px}
+.barra i{display:block;height:100%;border-radius:4px;background:var(--z2)}
+@media(max-width:760px){table{font-size:11.5px}th,td{padding:7px 6px}}
+</style>
+
+<div class="main">
+  <div class="top">
+    <div class="mark">Carteira <i>Semente</i></div>
+    <div class="crumb">Registro de ciclo · <b>marco, acionamentos e log</b></div>
+    <div class="selo" id="selo"></div>
+  </div>
+  <div class="nota calma" id="ilustrativo"></div>
+
+  <h2>1 · O marco de virada</h2>
+  <div class="sub" id="subMarco"></div>
+  <div class="read" id="marco"></div>
+  <div class="barra"><i id="barraMarco"></i></div>
+  <div id="notaMarco"></div>
+
+  <h2>2 · Acionamentos do Reforço no ciclo corrente</h2>
+  <div class="sub" id="subCiclo"></div>
+  <table id="acionamentos"><thead><tr><th>Data</th><th class="n">Índice</th><th class="n">% do caixa</th><th>Coletado em</th></tr></thead><tbody></tbody></table>
+
+  <h2>3 · Resets do contador</h2>
+  <div class="sub">Cada reset nomeia o marco que o causou. Marco anulado sai da contagem e <b>continua no log</b>.</div>
+  <table id="resets"><thead><tr><th>Data</th><th>Marco</th><th>Sequência</th><th class="n">seq</th></tr></thead><tbody></tbody></table>
+
+  <h2>4 · Leituras retroativas e retificações</h2>
+  <div class="sub" id="subRetro"></div>
+  <table id="retro"><thead><tr><th>Refere-se a</th><th>Coletado em</th><th>O quê</th></tr></thead><tbody></tbody></table>
+
+  <h2>5 · Anulações de marco</h2>
+  <div class="sub">Uma retificação que derruba um dia da sequência desfaz o marco que ela sustentava. A anulação aponta para os dois.</div>
+  <table id="anulacoes"><thead><tr><th>Data</th><th>Marco anulado</th><th>Retificação que o desfez</th><th>Motivo</th></tr></thead><tbody></tbody></table>
+
+  <h2>6 · Composição da CRM</h2>
+  <div class="sub">Composição ilegível <b>congela</b> o universo no último estado conhecido, marcado desde quando. Nunca se presume que não mudou.</div>
+  <div class="read" id="crm"></div>
+
+  <h2>7 · O log inteiro, em ordem</h2>
+  <div class="sub">Sem filtro. O valor do append-only é poder ler a história como ela aconteceu — filtro ajuda depois, a leitura crua vem primeiro.</div>
+  <div class="log"><table id="log"><thead><tr><th class="n">seq</th><th>Data</th><th>Tipo</th><th>O que diz</th><th>Coletado em</th></tr></thead><tbody></tbody></table></div>
+</div>
+
+<script>
+(() => {
+  // registro/registro.mjs
+  var TIPOS = Object.freeze({
+    LEITURA: "leitura",
+    // {data, indice, estado}
+    REFORCO_ACIONADO: "reforco_acionado",
+    // {data, indice, pctCaixa}
+    CONTADOR_RESET: "contador_reset",
+    // {data, marco: 'virada'|'abrigo'}
+    CRM_COMPOSICAO: "crm_composicao",
+    // {data, legivel, ativos[]}
+    DEGRAU: "degrau",
+    // {data, ativo, valor, motivo}
+    TRANCHE: "tranche",
+    // {data, ativo, quantidade, exposicaoAntes, exposicaoDepois}
+    DEFASAGEM: "defasagem",
+    // {data, pontosNaoMovidos, fator, estado}
+    GATE_INVALIDAR: "gate_invalidar",
+    // {data, ativo, motivo}
+    FILTRO_HORIZONTE: "filtro_horizonte",
+    // {data, ativo, aprovado, motivo}
+    TETO_CONTAGEM: "teto_contagem",
+    // {data, ativo, posicao}
+    RETIFICACAO: "retificacao",
+    // {data, dataRetificada, campo, valorAntigo, valorNovo, motivo, aprovadoEm}
+    ANULACAO_MARCO: "anulacao_marco"
+    // {data, marcoSeq, retificacaoSeq, motivo}
+  });
+  var DEGRAUS_VALIDOS = Object.freeze([0, 33, 66, 100]);
+  var VALIDADE_DIAS = 180;
+  var MARCO_INDICE = 65;
+  var MARCO_DIAS = 30;
+  var ANCORAS_DE_TESE = Object.freeze(["BTC", "ETH"]);
+  var RECUPERACAO_DIAS = 30;
+  var DIA_MS = 864e5;
+  var dia = (d) => Math.floor(Date.parse(`${d}T00:00:00Z`) / DIA_MS);
+  var ehData = (d) => typeof d === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d) && !Number.isNaN(dia(d));
+  var naoVazio = (s) => typeof s === "string" && s.trim().length > 0;
+  var leCampo = (obj, caminho) => caminho.split(".").reduce((o, k) => o == null ? void 0 : o[k], obj);
+  var comCampo = (obj, caminho, valor) => {
+    const [chave, ...resto] = caminho.split(".");
+    return { ...obj, [chave]: resto.length === 0 ? valor : comCampo(obj[chave] ?? {}, resto.join("."), valor) };
+  };
+  var RegistroInvalido = class extends Error {
+  };
+  function valida(ev) {
+    if (!naoVazio(ev?.carteira)) throw new RegistroInvalido("evento sem carteira");
+    if (!Object.values(TIPOS).includes(ev?.tipo)) throw new RegistroInvalido(`tipo desconhecido: ${ev?.tipo}`);
+    if (!ehData(ev?.data)) throw new RegistroInvalido("data ausente ou fora do formato AAAA-MM-DD");
+    switch (ev.tipo) {
+      case TIPOS.LEITURA:
+        if (typeof ev.indice !== "number" || !Number.isFinite(ev.indice)) throw new RegistroInvalido("leitura sem índice numérico");
+        if (!naoVazio(ev.estado)) throw new RegistroInvalido("leitura sem estado da Linha dágua");
+        if (ev.indicadores !== void 0 && (typeof ev.indicadores !== "object" || ev.indicadores === null)) {
+          throw new RegistroInvalido("indicadores da varredura têm de vir como objeto");
+        }
+        if (ev.retroativa) {
+          if (!ehData(ev.coletadaEm)) throw new RegistroInvalido("leitura retroativa sem data de coleta");
+          const atraso = dia(ev.coletadaEm) - dia(ev.data);
+          if (atraso < 0) throw new RegistroInvalido("coleta anterior à data da leitura");
+          if (atraso > RECUPERACAO_DIAS) {
+            throw new RegistroInvalido(`recuperação fora da janela: ${atraso} dias depois de ${ev.data}, o limite é ${RECUPERACAO_DIAS}`);
+          }
+        }
+        break;
+      case TIPOS.REFORCO_ACIONADO:
+        if (typeof ev.indice !== "number") throw new RegistroInvalido("acionamento sem índice");
+        if (typeof ev.pctCaixa !== "number") throw new RegistroInvalido("acionamento sem percentual do caixa");
+        break;
+      case TIPOS.CONTADOR_RESET:
+        if (!["virada", "abrigo"].includes(ev.marco)) throw new RegistroInvalido("reset sem marco válido");
+        break;
+      case TIPOS.CRM_COMPOSICAO:
+        if (typeof ev.legivel !== "boolean") throw new RegistroInvalido("composição sem indicação de legibilidade");
+        if (ev.legivel && !Array.isArray(ev.ativos)) throw new RegistroInvalido("composição legível sem lista de ativos");
+        break;
+      case TIPOS.DEGRAU:
+        if (!naoVazio(ev.ativo)) throw new RegistroInvalido("degrau sem ativo");
+        if (!DEGRAUS_VALIDOS.includes(ev.valor)) throw new RegistroInvalido(`degrau fora da escala ordinal: ${ev.valor}`);
+        if (!naoVazio(ev.motivo)) throw new RegistroInvalido("degrau sem motivo escrito (D18 C)");
+        break;
+      case TIPOS.TRANCHE:
+        if (!naoVazio(ev.ativo)) throw new RegistroInvalido("tranche sem ativo");
+        for (const campo of ["quantidade", "exposicaoAntes", "exposicaoDepois"]) {
+          if (typeof ev[campo] !== "number") throw new RegistroInvalido(`tranche sem ${campo}`);
+        }
+        break;
+      case TIPOS.DEFASAGEM:
+        if (typeof ev.pontosNaoMovidos !== "number") throw new RegistroInvalido("defasagem sem pontos");
+        if (typeof ev.fator !== "number") throw new RegistroInvalido("defasagem sem fator do estado");
+        break;
+      case TIPOS.GATE_INVALIDAR:
+        if (!naoVazio(ev.ativo)) throw new RegistroInvalido("invalidação sem ativo");
+        if (!naoVazio(ev.motivo)) throw new RegistroInvalido("invalidação sem motivo escrito (D23 B)");
+        break;
+      case TIPOS.FILTRO_HORIZONTE:
+        if (!naoVazio(ev.ativo)) throw new RegistroInvalido("filtro sem ativo");
+        if (typeof ev.aprovado !== "boolean") throw new RegistroInvalido("filtro sem veredito");
+        if (!naoVazio(ev.motivo)) throw new RegistroInvalido("filtro sem motivo escrito (D16 B)");
+        break;
+      case TIPOS.TETO_CONTAGEM:
+        if (!naoVazio(ev.ativo)) throw new RegistroInvalido("exclusão por contagem sem ativo");
+        if (typeof ev.posicao !== "number") throw new RegistroInvalido("exclusão por contagem sem a posição do ativo");
+        break;
+      case TIPOS.RETIFICACAO:
+        if (!ehData(ev.dataRetificada)) throw new RegistroInvalido("retificação sem a data da leitura retificada");
+        if (!naoVazio(ev.campo)) throw new RegistroInvalido("retificação sem o campo retificado (D34 B)");
+        if (ev.valorAntigo === void 0) throw new RegistroInvalido("retificação sem o valor antigo");
+        if (ev.valorNovo === void 0) throw new RegistroInvalido("retificação sem o valor novo");
+        if (typeof ev.valorAntigo !== typeof ev.valorNovo) {
+          throw new RegistroInvalido("retificação com valor antigo e novo de tipos diferentes");
+        }
+        if (!naoVazio(ev.motivo)) throw new RegistroInvalido("retificação sem motivo escrito (D33 B)");
+        if (!ehData(ev.aprovadoEm)) throw new RegistroInvalido("retificação sem passagem pelo Gate 2 (D33 B)");
+        break;
+      case TIPOS.ANULACAO_MARCO:
+        if (typeof ev.marcoSeq !== "number") throw new RegistroInvalido("anulação sem o marco que anula");
+        break;
+    }
+  }
+  var ausente = (motivo) => ({ disponivel: false, motivo });
+  var presente = (valor) => ({ disponivel: true, ...valor });
+  var Registro = class {
+    #adaptador;
+    #eventos;
+    constructor(adaptador) {
+      this.#adaptador = adaptador;
+      this.#eventos = adaptador.ler();
+    }
+    /** Acrescenta um evento. É a única forma de escrita que existe. */
+    registrar(evento) {
+      valida(evento);
+      if (evento.tipo === TIPOS.LEITURA) {
+        const jaTem = this.eventos({ carteira: evento.carteira, tipo: TIPOS.LEITURA }).some((l) => l.data === evento.data);
+        if (jaTem) throw new RegistroInvalido(`já existe leitura de ${evento.data}; o log não sobrescreve — corrija por retificação (D33 B)`);
+      }
+      if (evento.tipo === TIPOS.RETIFICACAO) {
+        const vigente = this.#leiturasVigentes(evento.carteira).get(evento.dataRetificada);
+        if (!vigente) throw new RegistroInvalido(`não há leitura de ${evento.dataRetificada} para retificar`);
+        const atual = leCampo(vigente, evento.campo);
+        if (atual === void 0) {
+          throw new RegistroInvalido(`campo "${evento.campo}" não existe na leitura de ${evento.dataRetificada}`);
+        }
+        if (atual !== evento.valorAntigo) {
+          throw new RegistroInvalido(`valor antigo não confere: vigente em ${evento.dataRetificada}.${evento.campo} é ${atual}, não ${evento.valorAntigo}`);
+        }
+      }
+      const gravado = this.#anexar(evento);
+      if (evento.tipo === TIPOS.LEITURA) this.#gravarMarcoSeCompletou(evento.carteira);
+      if (evento.tipo === TIPOS.RETIFICACAO) {
+        this.#anularDerivacoesDesfeitas(evento.carteira, gravado);
+        this.#gravarMarcoSeCompletou(evento.carteira);
+      }
+      return gravado;
+    }
+    /**
+     * D33 C: a versão vigente de uma data é a última retificação que aponta para ela,
+     * ou a leitura original se não houver nenhuma. Toda derivação lê daqui, e por isso
+     * se recompõe sozinha.
+     */
+    #leiturasVigentes(carteira) {
+      const mapa = /* @__PURE__ */ new Map();
+      for (const l of this.#porData(carteira, TIPOS.LEITURA)) {
+        mapa.set(l.data, {
+          data: l.data,
+          indice: l.indice,
+          estado: l.estado,
+          ...l.indicadores ? { indicadores: { ...l.indicadores } } : {},
+          camposRetificados: []
+        });
+      }
+      for (const r2 of this.eventos({ carteira, tipo: TIPOS.RETIFICACAO }).sort((a, b) => a.seq - b.seq)) {
+        const atual = mapa.get(r2.dataRetificada);
+        if (!atual) continue;
+        mapa.set(r2.dataRetificada, {
+          ...comCampo(atual, r2.campo, r2.valorNovo),
+          camposRetificados: [.../* @__PURE__ */ new Set([...atual.camposRetificados, r2.campo])]
+        });
+      }
+      return mapa;
+    }
+    /**
+     * D33 D · D34 C: retificação não apaga o que foi derivado. Se a derivação deixou
+     * de valer, nasce uma anulação que aponta para ela e para a retificação que a
+     * desfez. Apagar seria exatamente o rastro que a D9 regra 5 existe para impedir.
+     *
+     * Hoje a única derivação gravada é o marco de virada, que depende só do índice.
+     * Quando a peça 3 gravar derivações que dependem do estado da Linha d'Água, elas
+     * entram nesta mesma varredura — a mecânica já é genérica, a lista é que é curta.
+     */
+    #anularDerivacoesDesfeitas(carteira, retificacao) {
+      const vigentes = this.#leiturasVigentes(carteira);
+      for (const reset of this.eventos({ carteira, tipo: TIPOS.CONTADOR_RESET })) {
+        if (reset.marco !== "virada" || this.#marcoAnulado(carteira, reset.seq)) continue;
+        let vale = true;
+        for (let d = dia(reset.desde); d <= dia(reset.ate); d++) {
+          const l = vigentes.get(new Date(d * DIA_MS).toISOString().slice(0, 10));
+          if (!l || l.indice < MARCO_INDICE) {
+            vale = false;
+            break;
+          }
+        }
+        if (!vale) {
+          this.#anexar({
+            carteira,
+            tipo: TIPOS.ANULACAO_MARCO,
+            data: retificacao.data,
+            marcoSeq: reset.seq,
+            retificacaoSeq: retificacao.seq,
+            motivo: `retificação de ${retificacao.dataRetificada} desfez a sequência ${reset.desde}–${reset.ate}`
+          });
+        }
+      }
+    }
+    #marcoAnulado(carteira, seq) {
+      return this.eventos({ carteira, tipo: TIPOS.ANULACAO_MARCO }).some((a) => a.marcoSeq === seq);
+    }
+    #anexar(evento) {
+      const gravado = Object.freeze({
+        ...evento,
+        seq: this.#eventos.length + 1,
+        gravadoEm: (/* @__PURE__ */ new Date()).toISOString()
+      });
+      this.#eventos = [...this.#eventos, gravado];
+      this.#adaptador.gravar(this.#eventos);
+      return gravado;
+    }
+    /**
+     * D32 B: o registro grava o reset, automaticamente, no dia em que o 30º
+     * fechamento consecutivo se completa. É derivação determinística de um log que
+     * já existe — não decisão, e nenhuma das quatro coisas que a invariante 1
+     * proíbe (comprar, vender, aportar, publicar). O que a D9 regra 5 quer é que o
+     * reset deixe rastro, e rastro derivado é rastro.
+     *
+     * D33 E — um marco por sequência: trinta fechamentos completam um marco, e um só.
+     * Sequência de 45 ou 200 dias produz o mesmo marco único; para nascer outro, ela
+     * precisa romper e se formar de novo. Um marco a cada 30 dias rearmaria o reforço
+     * repetidamente num bull longo, que é justamente quando ele não deve ser rearmado.
+     */
+    #gravarMarcoSeCompletou(carteira) {
+      const seq = this.#sequenciaNoMarco(carteira);
+      if (seq === null || seq.dias < MARCO_DIAS) return;
+      const completoEm = this.#somaDias(seq.desde, MARCO_DIAS - 1);
+      const jaGravado = this.eventos({ carteira, tipo: TIPOS.CONTADOR_RESET }).some((r2) => r2.marco === "virada" && r2.desde === seq.desde && !this.#marcoAnulado(carteira, r2.seq));
+      if (jaGravado) return;
+      this.#anexar({
+        carteira,
+        tipo: TIPOS.CONTADOR_RESET,
+        data: completoEm,
+        marco: "virada",
+        desde: seq.desde,
+        ate: completoEm
+      });
+    }
+    #somaDias(data, n) {
+      return new Date((dia(data) + n) * DIA_MS).toISOString().slice(0, 10);
+    }
+    /** A sequência corrente de fechamentos em 65 ou mais, ou null se não há. */
+    #sequenciaNoMarco(carteira) {
+      const leituras = [...this.#leiturasVigentes(carteira).values()].sort((a, b) => a.data < b.data ? -1 : 1);
+      if (leituras.length === 0) return null;
+      let inicio = null, anterior = null;
+      for (const l of leituras) {
+        const rompeu = l.indice < MARCO_INDICE;
+        const pulouDia = anterior !== null && dia(l.data) !== dia(anterior) + 1;
+        if (rompeu || pulouDia) inicio = rompeu ? null : l.data;
+        else if (inicio === null) inicio = l.data;
+        anterior = l.data;
+      }
+      if (inicio === null) return null;
+      return { desde: inicio, ate: anterior, dias: dia(anterior) - dia(inicio) + 1 };
+    }
+    eventos({ carteira, tipo } = {}) {
+      return this.#eventos.filter((e) => (carteira === void 0 || e.carteira === carteira) && (tipo === void 0 || e.tipo === tipo));
+    }
+    #porData(carteira, tipo) {
+      return this.eventos({ carteira, tipo }).slice().sort((a, b) => a.data < b.data ? -1 : a.data > b.data ? 1 : a.seq - b.seq);
+    }
+    // ── 1 · CICLO DO REFORÇO DE FUNDO ────────────────────────────────────────
+    // D9: contador por carteira; zera no dia em que o marco se completa, e também
+    // na entrada em Abrigo. Sem registro gravado, o reforço não é liberado.
+    cicloReforco(carteira) {
+      const resets2 = this.#porData(carteira, TIPOS.CONTADOR_RESET).filter((r2) => !this.#marcoAnulado(carteira, r2.seq));
+      const ultimoReset = resets2.at(-1) ?? null;
+      const desde = ultimoReset?.data ?? null;
+      const acionamentos = this.#porData(carteira, TIPOS.REFORCO_ACIONADO).filter((a) => desde === null || a.data > desde);
+      return {
+        desde,
+        // null = primeiro ciclo, desde a abertura da carteira
+        marcoDoReset: ultimoReset?.marco ?? null,
+        acionamentos,
+        contador: acionamentos.length,
+        ultimoAcionamento: acionamentos.at(-1)?.data ?? null
+      };
+    }
+    /**
+     * D9: "30 dias corridos consecutivos" é literal — um único fechamento abaixo de 65
+     * recomeça a contagem do zero. Dia sem leitura também interrompe: pela invariante 3
+     * não se pode presumir que o dia ausente fechou acima de 65.
+     */
+    diasConsecutivosNoMarco(carteira, hoje) {
+      const leituras = [...this.#leiturasVigentes(carteira).values()].sort((a, b) => a.data < b.data ? -1 : 1);
+      if (leituras.length === 0) return ausente("nenhuma leitura registrada");
+      const ultima = leituras.at(-1);
+      if (hoje !== void 0 && ehData(hoje) && dia(hoje) > dia(ultima.data)) {
+        const recuperavel = dia(hoje) - dia(ultima.data) <= RECUPERACAO_DIAS;
+        return ausente(`última leitura em ${ultima.data}; sem leitura de ${hoje}` + (recuperavel ? " — ainda recuperável por leitura retroativa" : " — fora da janela de recuperação"));
+      }
+      const seq = this.#sequenciaNoMarco(carteira);
+      if (seq === null) return presente({ dias: 0, desde: null, completo: false });
+      return presente({ dias: seq.dias, desde: seq.desde, completo: seq.dias >= MARCO_DIAS });
+    }
+    // ── 2 · ÚLTIMA COMPOSIÇÃO DA CRM ─────────────────────────────────────────
+    // D16 B: composição ilegível congela o universo no último estado conhecido,
+    // marcado como desatualizado desde tal data. Nunca se presume que não mudou.
+    composicaoCRM(carteira) {
+      const leituras = this.#porData(carteira, TIPOS.CRM_COMPOSICAO);
+      if (leituras.length === 0) return ausente("nenhuma composição da CRM registrada");
+      const ultima = leituras.at(-1);
+      if (ultima.legivel) {
+        return presente({ ativos: ultima.ativos, lidaEm: ultima.data, congelada: false });
+      }
+      const ultimaLegivel = leituras.filter((l) => l.legivel).at(-1);
+      if (!ultimaLegivel) return ausente(`composição ilegível desde ${ultima.data}, e nunca houve leitura legível`);
+      return presente({
+        ativos: ultimaLegivel.ativos,
+        lidaEm: ultimaLegivel.data,
+        congelada: true,
+        desatualizadaDesde: ultimaLegivel.data
+      });
+    }
+    // ── 3 · HISTÓRICO DE DEGRAUS ─────────────────────────────────────────────
+    // D18 A: validade de 180 dias; vencido vira ausência, não 0 e não valor herdado.
+    // D18 D: série completa por ativo, nunca sobrescrita.
+    /** A série completa de uma data: a leitura original e cada retificação sobre ela. */
+    historicoDaLeitura(carteira, data) {
+      const original = this.#porData(carteira, TIPOS.LEITURA).find((l) => l.data === data) ?? null;
+      const retificacoes2 = this.eventos({ carteira, tipo: TIPOS.RETIFICACAO }).filter((r2) => r2.dataRetificada === data).sort((a, b) => a.seq - b.seq);
+      const porCampo = /* @__PURE__ */ new Map();
+      for (const r2 of retificacoes2) porCampo.set(r2.campo, [...porCampo.get(r2.campo) ?? [], r2]);
+      return { original, retificacoes: retificacoes2, porCampo, vigente: this.#leiturasVigentes(carteira).get(data) ?? null };
+    }
+    historicoDegraus(carteira, ativo) {
+      return this.#porData(carteira, TIPOS.DEGRAU).filter((d) => ativo === void 0 || d.ativo === ativo);
+    }
+    degraus(carteira, hoje) {
+      if (!ehData(hoje)) throw new RegistroInvalido("degraus() exige a data de hoje");
+      const porAtivo = /* @__PURE__ */ new Map();
+      for (const d of this.#porData(carteira, TIPOS.DEGRAU)) porAtivo.set(d.ativo, d);
+      const saida = /* @__PURE__ */ new Map();
+      for (const [ativo, d] of porAtivo) {
+        const idade = dia(hoje) - dia(d.data);
+        saida.set(ativo, idade > VALIDADE_DIAS ? { status: "vencido", valor: null, atribuidoEm: d.data, idade, motivo: d.motivo } : { status: "vigente", valor: d.valor, atribuidoEm: d.data, idade, motivo: d.motivo });
+      }
+      return saida;
+    }
+    /** D18 B: aviso aos 150 dias — diário para BTC e ETH, semanal para os demais. */
+    degrausAVencer(carteira, hoje) {
+      const avisar = VALIDADE_DIAS - 30;
+      const fora = [];
+      for (const [ativo, d] of this.degraus(carteira, hoje)) {
+        if (d.status !== "vigente" || d.idade < avisar) continue;
+        const ancora = ANCORAS_DE_TESE.includes(ativo);
+        const devido = ancora || (d.idade - avisar) % 7 === 0;
+        if (devido) fora.push({ ativo, ancora, idade: d.idade, venceEm: VALIDADE_DIAS - d.idade, cadencia: ancora ? "diária" : "semanal" });
+      }
+      return fora;
+    }
+    /**
+     * D21 B: degrau de BTC ou ETH vencido — ou nunca atribuído — não vira ausência.
+     * A camada 5 é suspensa por inteiro, nomeada e com data. Não depende de pesos,
+     * por isso mora aqui e não no Alocador.
+     */
+    suspensaoDaCamada5(carteira, hoje) {
+      const atuais = this.degraus(carteira, hoje);
+      for (const ativo of ANCORAS_DE_TESE) {
+        const d = atuais.get(ativo);
+        if (!d) return { suspensa: true, ativo, razao: "nunca atribuído", desde: null };
+        if (d.status === "vencido") return { suspensa: true, ativo, razao: "tese vencida", desde: d.atribuidoEm };
+      }
+      return { suspensa: false };
+    }
+    /** D17 D: a etiqueta de julgamento — as três informações, ou não se publica. */
+    etiquetaDeJulgamento(carteira, hoje) {
+      const atuais = this.degraus(carteira, hoje);
+      const vigentes = [...atuais.values()].filter((d) => d.status === "vigente");
+      if (vigentes.length === 0) return ausente("nenhum degrau vigente");
+      const maisAntigo = vigentes.reduce((a, b) => a.idade >= b.idade ? a : b);
+      return presente({
+        carregaJulgamentoHumano: true,
+        degrauMaisAntigoEm: maisAntigo.atribuidoEm,
+        idadeDoMaisAntigo: maisAntigo.idade,
+        ativosSemDegrau: [...atuais.values()].filter((d) => d.status === "vencido").length
+      });
+    }
+    // ── 4 · TRANCHES E DEFASAGEM DA GLIDEPATH ────────────────────────────────
+    // D24 B: cada tranche com data, ativo, quantidade e exposição antes e depois.
+    // D25 C: a defasagem não se perde — fica registrada e é recuperada depois.
+    tranches(carteira) {
+      return this.#porData(carteira, TIPOS.TRANCHE);
+    }
+    // ── 5·6·7 · GATE, FILTRO E TETO DE CONTAGEM ─────────────────────────────
+    // D23 B · D16 B · D22 C. São três tipos distintos de propósito: a razão pela
+    // qual um ativo está fora determina se ele volta sozinho ou não.
+    /**
+     * Situação de um ativo, com a diferença que a D22 C exige preservada:
+     *   'reprovado_no_filtro' — não volta sem reexame;
+     *   'teto_de_contagem'    — volta sozinho se subir de posição;
+     *   'invalidado_pelo_gate'— saiu por decisão de tese, com saída ordenada.
+     */
+    situacaoDoAtivo(carteira, ativo) {
+      const ultimo = (tipo) => this.#porData(carteira, tipo).filter((e) => e.ativo === ativo).at(-1) ?? null;
+      const invalidacao = ultimo(TIPOS.GATE_INVALIDAR);
+      const filtro = ultimo(TIPOS.FILTRO_HORIZONTE);
+      const contagem = ultimo(TIPOS.TETO_CONTAGEM);
+      const candidatos = [
+        invalidacao && { evento: invalidacao, situacao: "invalidado_pelo_gate", voltaSozinho: false, motivo: invalidacao.motivo },
+        filtro && !filtro.aprovado && { evento: filtro, situacao: "reprovado_no_filtro", voltaSozinho: false, motivo: filtro.motivo },
+        contagem && { evento: contagem, situacao: "teto_de_contagem", voltaSozinho: true, motivo: `9ª posição ou além (${contagem.posicao}ª)` },
+        filtro && filtro.aprovado && { evento: filtro, situacao: "elegivel", voltaSozinho: null, motivo: filtro.motivo }
+      ].filter(Boolean);
+      if (candidatos.length === 0) return ausente(`nenhum registro de filtro, contagem ou invalidação para ${ativo}`);
+      const vigente = candidatos.reduce((a, b) => a.evento.data >= b.evento.data ? a : b);
+      return presente({ situacao: vigente.situacao, voltaSozinho: vigente.voltaSozinho, motivo: vigente.motivo, desde: vigente.evento.data });
+    }
+    /** Todo ativo que já passou pelo filtro, com a situação corrente de cada um. */
+    universo(carteira) {
+      const ativos = /* @__PURE__ */ new Set();
+      for (const t of [TIPOS.FILTRO_HORIZONTE, TIPOS.TETO_CONTAGEM, TIPOS.GATE_INVALIDAR]) {
+        for (const e of this.eventos({ carteira, tipo: t })) ativos.add(e.ativo);
+      }
+      return new Map([...ativos].sort().map((a) => [a, this.situacaoDoAtivo(carteira, a)]));
+    }
+    defasagemAcumulada(carteira) {
+      const eventos2 = this.#porData(carteira, TIPOS.DEFASAGEM);
+      const pontos = eventos2.reduce((s, e) => s + e.pontosNaoMovidos, 0);
+      return { pontos: Number(pontos.toFixed(6)), eventos: eventos2 };
+    }
+  };
+  var AdaptadorMemoria = class {
+    #eventos = [];
+    ler() {
+      return this.#eventos.slice();
+    }
+    gravar(eventos2) {
+      this.#eventos = eventos2.slice();
+    }
+  };
+
+  // torre/torre.mjs
+  var SERIES = Object.freeze([
+    { n: "Preço do BTC", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "Realized Price", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "Realized Price STH", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "Realized Price LTH", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "MVRV Ratio", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "regua", calendario: "24/7", unidade: "razão" },
+    { n: "SOPR", camada: 2, escala: "log", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "razão", caminhoNoMenu: "Spent Output Profit Ratio (SOPR) / SOPR", unidadeConferida: true },
+    { n: "Supply in Profit", camada: 2, escala: "lin", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "%", unidadeConferida: true },
+    { n: "Liveliness", camada: 2, escala: "lin", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "razão", caminhoNoMenu: "Cointime Statistics / Liveliness" },
+    { n: "DXY", camada: 3, escala: "lin", inicioSerie: "2011-01-01", invertido: true, calendario: "pregão", unidade: "pontos de índice", caminhoNoMenu: "Macro / DXY — Dollar Index" },
+    { n: "Fed Funds Rate", camada: 3, escala: "lin", inicioSerie: "2011-01-01", invertido: true, calendario: "pregão", unidade: "% a.a.", caminhoNoMenu: "Macro / Fed Funds Rate (%)", unidadeConferida: true },
+    { n: "US M2", camada: 3, escala: "lin", inicioSerie: "2011-01-01", calendario: "mensal", unidade: "US$ tri" },
+    { n: "Curva 10Y-2Y", camada: 3, escala: "lin", inicioSerie: "2011-01-01", calendario: "mensal", unidade: "pontos percentuais", unidadeConferida: true, caminhoNoMenu: "Studio / Macro / Yield Curve 10Y-2Y" },
+    { n: "ETF Net Inflow", camada: 4, escala: "lin", inicioSerie: "2024-01-11", calendario: "pregão", unidade: "USD", unidadeConferida: true, formato: "compacto", caminhoNoMenu: "Studio / ETF & Institutional / ETF Net Inflow", calendarioNota: "janela operacional NYSE — sem barras em fins de semana e feriados" },
+    { n: "Funding Rate", camada: 4, escala: "lin", inicioSerie: "2020-01-01", calendario: "24/7", unidade: "APR (%)", caminhoNoMenu: "Studio / Futuros / Funding Rate — APR (%)", unidadeConferida: true },
+    // A escala é LINEAR e não pode ser outra: netflow é entrada menos saída, cruza o
+    // zero, e log de zero ou de negativo não produz número errado — não produz número
+    // nenhum. A D38 D chamou a série de logarítmica; a D39 corrigiu para linear.
+    // Os extremos e o início da série são PROVISÓRIOS até a leitura no terminal.
+    { n: "Exchange Netflow", camada: 4, escala: "lin", inicioSerie: "2011-01-01", extremosProvisorios: true, calendario: "24/7", unidade: null }
+  ]);
+  var ESTADOS_DO_EXTREMO = Object.freeze(["confirmado", "posto confirmado", "provisório"]);
+  var CASAS_NA_TOOLTIP = Object.freeze({
+    "Preço do BTC": 0,
+    "MVRV Ratio": 3,
+    "SOPR": 4,
+    "Supply in Profit": 1,
+    "Liveliness": 4,
+    "DXY": 2,
+    "Fed Funds Rate": 2,
+    "Funding Rate": 1
+  });
+  var FAIXA_DO_COMPACTO = Object.freeze({ piso: 1e3, teto: 1499, custoNoIndice: 0.44 });
+  var SUAVIZACAO_NO_ALL = Object.freeze({
+    modo: "SMA",
+    oQueFaz: "agrega vários dias por pixel e suaviza dentro do balde",
+    medidoEm: "Funding Rate · min, 13/03/2020",
+    noAll: -53,
+    estreitado: -139.2,
+    fator: 2.63,
+    custoSeUsado: 1.39
+  });
+  var METODOS_DE_VARREDURA = Object.freeze([
+    {
+      m: "concorrentes um a um na tooltip, em passo de 1 dia",
+      forca: 1,
+      como: "medir cada rival com a janela estreitada, um por um",
+      porQue: "leitura de dígito em todos os candidatos — o único que serve quando a folga é de poucos por cento",
+      custo: "só cabe quando os candidatos são poucos e já se sabe quais são"
+    },
+    {
+      m: "eixo auto-escalado por blocos",
+      forca: 2,
+      como: "partir a série em blocos que se encostam e ler o topo do eixo de cada um; o eixo se recalcula com o máximo da janela",
+      porQue: "não depende de a barra ser visível — e o bloco é curto o bastante para a suavização não achatar o extremo"
+    },
+    {
+      m: "banda de altura sobre a série inteira",
+      forca: 3,
+      como: "recortar a faixa do gráfico além do extremo e varrer os quinze anos de uma vez",
+      fraqueza: "evento de UM dia ocupa ~0,19 px no ALL e pode sumir: risco de falso negativo"
+    },
+    {
+      m: "trecho a trecho",
+      forca: 4,
+      fraqueza: "depende de escolher quais trechos olhar, e o que não foi olhado não foi descartado"
+    },
+    {
+      m: "eixo ou pixel no ALL inteiro",
+      forca: 9,
+      proibido: true,
+      fraqueza: "o modo SMA suaviza dentro do pixel: extremo de um dia lê mais raso do que é. Não é ruído — é viés de um lado só, e o número que sai parece plausível"
+    }
+  ]);
+  var SERIES_EM_PATAMAR = Object.freeze({
+    "Fed Funds Rate": "fica parada por meses. ⚠️ o patamar lido (01/08/2023 → 31/08/2024) é alinhado ao MÊS, não a datas de FOMC — pode ser série mensal, e isso não foi conferido",
+    "US M2": "série mensal: cada leitura vale até a publicação do mês seguinte",
+    "Curva 10Y-2Y": "série MENSAL desenhada como escada diária: o mês inteiro carrega o mesmo valor (fev/2011 = 2,81 do dia 1 ao 28)"
+  });
+  var HOMONIMOS_NO_TERMINAL = Object.freeze({
+    "Supply in Profit": "há dois no menu: um em BTC (≈13,5M BTC) e um em percentual. O nosso é o PERCENTUAL",
+    "SOPR": "há o SOPR simples e os SOPR LTH e STH. O nosso é o SIMPLES",
+    "Realized Price": "há Realized Price, Realized Price STH e Realized Price LTH — as três estão na varredura, cada uma na sua linha"
+  });
+  var CALENDARIOS = Object.freeze(["24/7", "pregão", "mensal"]);
+  var DIAS_SEM_PREGAO = Object.freeze([0, 6]);
+  var EXCHANGES_PRIMEIRA_LINHA = Object.freeze([
+    "Binance",
+    "Coinbase",
+    "Kraken",
+    "OKX",
+    "Bybit",
+    "Bitget"
+  ]);
+  var PESOS = Object.freeze({ 1: 0.34, 2: 0.26, 3: 0.16, 4: 0.12, 5: 0.12 });
+  var CAMADAS = Object.freeze({
+    1: "Estado do preço",
+    2: "Comportamento",
+    3: "Macro",
+    4: "Fluxo",
+    5: "Carteira"
+  });
+  var TRAVA_AUSENCIA_NA_CAMADA = 1 / 3;
+  var FAIXAS = Object.freeze([
+    { ate: 20, nome: "Fundo" },
+    { ate: 40, nome: "Comprimido" },
+    { ate: 60, nome: "Equilíbrio" },
+    { ate: 80, nome: "Esticado" },
+    { ate: 101, nome: "Extremo" }
+  ]);
+  var ESTADOS = Object.freeze({
+    CAPITULACAO: "Capitulação profunda",
+    PREJUIZO: "Prejuízo do mercado",
+    ESTRESSE: "Estresse de curto prazo",
+    SAUDAVEL: "Mercado saudável"
+  });
+  var EXTREMOS_INERTES = Object.freeze(
+    ["Preço do BTC", "Realized Price", "Realized Price STH", "Realized Price LTH"]
+  );
+  var METODOS_DE_CONFERENCIA = Object.freeze(["dígito", "pixel", "eixo", "calendário"]);
+  var TETOS_DA_METRICA = Object.freeze({ "Supply in Profit": { max: 100 } });
+
+  // alocador/alocador.mjs
+  var BASES_DO_ESTADO = Object.freeze({
+    "Capitulação profunda": 100,
+    "Prejuízo do mercado": 90,
+    "Estresse de curto prazo": 65,
+    "Mercado saudável": 40
+  });
+  var ORDEM_DOS_ESTADOS = Object.freeze([
+    "Capitulação profunda",
+    "Prejuízo do mercado",
+    "Estresse de curto prazo",
+    "Mercado saudável"
+  ]);
+  var EXPOSICAO_ALVO = Object.freeze({ 4: 100, 3: 66, 2: 45, 1: 25, 0: 15 });
+  var VELOCIDADE_POR_ESTADO = Object.freeze({
+    "Mercado saudável": 1.5,
+    "Estresse de curto prazo": 1,
+    "Prejuízo do mercado": 0.5,
+    "Capitulação profunda": 0.25
+  });
+  var ESTADOS_DO_REFORCO = Object.freeze(["Capitulação profunda", "Prejuízo do mercado"]);
+  var ACIONAMENTOS_POR_CICLO = 3;
+  var GATILHO_DE_VENDA = 12;
+  var PISO_POR_POSICAO = 2;
+  var ANCORAS_DE_TESE2 = Object.freeze(["BTC", "ETH"]);
+  var GATILHOS_DE_VENDA = Object.freeze([
+    { n: 1, gatilho: `estouro acima de ${GATILHO_DE_VENDA}% do teto por ativo`, origem: "teto de concentração" },
+    { n: 2, gatilho: `queda abaixo de ${PISO_POR_POSICAO}% do piso de posição`, origem: "piso de posição" },
+    { n: 3, gatilho: "realização programada da glidepath", origem: "calendário e tabela do Abrigo" }
+  ]);
+  var ESTADOS_CONHECIDOS = Object.freeze(Object.keys(ESTADOS).map((k) => ESTADOS[k]));
+
+  // registro/historico-exemplo.mjs
+  var ILUSTRATIVO = "histórico construído para demonstração — não é leitura real";
+  var CARTEIRA = "exemplo";
+  var DIA = 864e5;
+  var maisDias = (d, n) => new Date(Date.parse(`${d}T00:00:00Z`) + n * DIA).toISOString().slice(0, 10);
+  function historicoDeExemplo() {
+    const r2 = new Registro(new AdaptadorMemoria());
+    const reg = (e) => r2.registrar({ carteira: CARTEIRA, ...e });
+    let d = "2025-01-06";
+    for (let i = 0; i < 12; i++, d = maisDias(d, 1)) {
+      reg({ tipo: TIPOS.LEITURA, data: d, indice: 22 + i * 0.4, estado: "Capitulação profunda" });
+    }
+    reg({ tipo: TIPOS.REFORCO_ACIONADO, data: "2025-01-08", indice: 22.8, pctCaixa: 25 });
+    reg({ tipo: TIPOS.CRM_COMPOSICAO, data: "2025-01-10", legivel: true, ativos: ["BTC", "ETH", "SOL"] });
+    reg({ tipo: TIPOS.REFORCO_ACIONADO, data: "2025-02-10", indice: 27.1, pctCaixa: 25 });
+    d = "2025-03-01";
+    for (let i = 0; i < MARCO_DIAS; i++, d = maisDias(d, 1)) {
+      reg({ tipo: TIPOS.LEITURA, data: d, indice: MARCO_INDICE + 2 + i * 0.3, estado: "Mercado saudável" });
+    }
+    reg({ tipo: TIPOS.LEITURA, data: "2025-04-02", indice: 71.4, estado: "Mercado saudável" });
+    reg({ tipo: TIPOS.LEITURA, data: "2025-04-03", indice: 70.8, estado: "Mercado saudável" });
+    reg({ tipo: TIPOS.CRM_COMPOSICAO, data: "2025-04-04", legivel: false, ativos: [] });
+    return r2;
+  }
+  function historicoComAnulacao() {
+    const r2 = historicoDeExemplo();
+    r2.registrar({
+      carteira: CARTEIRA,
+      tipo: TIPOS.RETIFICACAO,
+      data: "2025-04-10",
+      dataRetificada: "2025-03-15",
+      campo: "indice",
+      valorAntigo: 71.2,
+      valorNovo: 61.5,
+      motivo: "tooltip relida: o valor do dia era 61,5 e a leitura registrou o do dia anterior",
+      aprovadoEm: "2025-04-10"
+    });
+    return r2;
+  }
+  var POSICOES_EXEMPLO = Object.freeze({ BTC: 45, ETH: 20, SOL: 8, LINK: 4 });
+
+  // .empacota-tmp/registro-de-ciclo.mjs
+  var HOJE = "2025-04-03";
+  var $ = (id) => document.getElementById(id);
+  var num = (x, c = 0) => x === null || x === void 0 || Number.isNaN(x) ? "—" : Number(x).toLocaleString("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c });
+  var card = (l, v, s = "", on = false) => `<div class="rc${on ? " on" : ""}"><div class="l">${l}</div><div class="v">${v}</div>${s ? `<div class="s">${s}</div>` : ""}</div>`;
+  var vazio = (tbody, txt) => {
+    tbody.innerHTML = `<tr><td colspan="9" class="vazio">${txt}</td></tr>`;
+  };
+  var dia2 = (d) => Math.floor(Date.parse(`${d}T00:00:00Z`) / 864e5);
+  var coletaDe = (e) => (e.gravadoEm ?? "").slice(0, 10);
+  var atrasoDe = (e) => coletaDe(e) ? dia2(coletaDe(e)) - dia2(e.data) : null;
+  var r = historicoComAnulacao();
+  var eventos = r.eventos({ carteira: CARTEIRA });
+  $("selo").textContent = "ilustrativo";
+  $("ilustrativo").innerHTML = `<b>o que é este histórico</b>${ILUSTRATIVO}. Ele foi construído para exercitar as seis coisas
+   que esta tela mostra — o marco se completando, os acionamentos, o reset, uma leitura retroativa,
+   uma retificação que anula um marco, e a CRM congelada. <b style="display:inline;color:var(--ink)">Nenhum
+   número aqui é leitura real</b>, e a invariante 8 manda dizer isso onde o dado aparece.`;
+  var m = r.diasConsecutivosNoMarco(CARTEIRA, HOJE);
+  $("subMarco").innerHTML = `Fechar em <b>${MARCO_INDICE} ou mais</b> por <b>${MARCO_DIAS} dias corridos consecutivos</b>.
+   Um único fechamento abaixo de ${MARCO_INDICE} recomeça a contagem do zero — e dia sem leitura
+   também interrompe, porque não se pode presumir o que o dia ausente fechou.`;
+  var dias = m.disponivel ? m.dias : 0;
+  var faltam = Math.max(MARCO_DIAS - dias, 0);
+  $("marco").innerHTML = m.disponivel ? card("Dias na sequência", num(dias), m.desde ? `desde ${m.desde}` : "nenhuma sequência corrente", true) + card("Faltam para o marco", num(faltam), `de ${MARCO_DIAS} dias`) + card("Limiar", num(MARCO_INDICE), "Índice de fechamento") + card("Marco completo?", m.completo ? "sim" : "não", m.completo ? "zera o contador no 30º dia" : "") : card("Sequência", "—", "indisponível");
+  $("barraMarco").style.width = `${Math.min(dias / MARCO_DIAS * 100, 100)}%`;
+  $("notaMarco").innerHTML = m.disponivel ? "" : `<div class="nota"><b>sem sequência</b>${m.motivo}<br><br>A janela de recuperação por leitura
+   retroativa é de <b style="display:inline;color:var(--ink)">${RECUPERACAO_DIAS} dias</b>.</div>`;
+  var ciclo = r.cicloReforco(CARTEIRA);
+  var restam = Math.max(ACIONAMENTOS_POR_CICLO - ciclo.contador, 0);
+  var usados = `<b>${ciclo.contador}</b> de ${ACIONAMENTOS_POR_CICLO} usados, <b>${restam}</b> restante${restam === 1 ? "" : "s"}.`;
+  $("subCiclo").innerHTML = ciclo.desde ? `Ciclo aberto pelo reset de <b>${ciclo.desde}</b> (marco “${ciclo.marcoDoReset}”).
+     ${usados}` : `<b>Primeiro ciclo</b> — nenhum marco de virada anterior a consultar, e nenhum é presumido.
+     ${usados}`;
+  var tbA = $("acionamentos").tBodies[0];
+  if (ciclo.acionamentos.length === 0) vazio(tbA, "nenhum acionamento neste ciclo");
+  else tbA.innerHTML = ciclo.acionamentos.map((a) => `<tr>
+  <td class="dt">${a.data}</td><td class="n">${num(a.indice, 1)}</td>
+  <td class="n">${num(a.pctCaixa)}%</td><td class="dt">${coletaDe(a)}</td></tr>`).join("");
+  var resets = r.eventos({ carteira: CARTEIRA, tipo: TIPOS.CONTADOR_RESET });
+  var anulacoes = r.eventos({ carteira: CARTEIRA, tipo: TIPOS.ANULACAO_MARCO });
+  var anulado = new Set(anulacoes.map((a) => a.marcoSeq));
+  var tbR = $("resets").tBodies[0];
+  if (resets.length === 0) vazio(tbR, "nenhum reset registrado");
+  else tbR.innerHTML = resets.map((e) => `<tr${anulado.has(e.seq) ? ' style="opacity:.5"' : ""}>
+  <td class="dt">${e.data}</td>
+  <td>${e.marco}${anulado.has(e.seq) ? ' <span class="tag t-anul">anulado</span>' : ""}</td>
+  <td class="dt">${e.desde ?? "—"} → ${e.ate ?? "—"}</td><td class="n seq">${e.seq}</td></tr>`).join("");
+  $("subRetro").innerHTML = `A data a que o evento se refere fica ao lado da data em que foi coletado. Leitura gravada depois
+   do dia é <b>retroativa</b>, e a janela para recompor um dia é de <b>${RECUPERACAO_DIAS} dias</b>.
+   A tabela lista as <b>retificações</b>, que são retroativas por natureza; a nota abaixo dela diz
+   por que as leituras deste exemplo não entram.`;
+  var retificacoes = r.eventos({ carteira: CARTEIRA, tipo: TIPOS.RETIFICACAO });
+  var atrasadas = eventos.filter((e) => e.tipo === TIPOS.LEITURA && atrasoDe(e) > RECUPERACAO_DIAS);
+  var linhasRetro = retificacoes.map((e) => ({
+    refere: e.dataRetificada,
+    coleta: coletaDe(e),
+    o: `<span class="tag t-retif">retificação</span> <b>${e.campo}</b>: ${e.valorAntigo} → ${e.valorNovo}
+      <br><span class="det">${e.motivo}</span>
+      <br><span class="det">aprovada em ${e.aprovadoEm}</span>`
+  }));
+  var tbRe = $("retro").tBodies[0];
+  if (linhasRetro.length === 0) vazio(tbRe, "nenhuma retificação registrada");
+  else tbRe.innerHTML = linhasRetro.map((l) => `<tr>
+  <td class="dt">${l.refere}</td><td class="dt">${l.coleta}</td><td>${l.o}</td></tr>`).join("");
+  $("retro").insertAdjacentHTML(
+    "afterend",
+    `<div class="nota calma"><b>por que as leituras não estão nesta lista</b>
+   O carimbo de coleta é posto na hora da <b style="display:inline;color:var(--ink)">escrita</b>, e
+   este histórico de exemplo foi escrito de uma vez só — por essa medida as
+   <b style="display:inline;color:var(--ink)">${atrasadas.length}</b> leituras dele contam como
+   retroativas, o que reflete a construção do exemplo e não a operação. Na operação o ritual diário
+   grava a leitura do dia no próprio dia e o atraso é zero, então esta lista mostra o que sobra:
+   as <b style="display:inline;color:var(--ink)">retificações</b>, que são retroativas por natureza.
+   <br><br>A janela para recompor um dia continua sendo de
+   <b style="display:inline;color:var(--ink)">${RECUPERACAO_DIAS} dias</b>.</div>`
+  );
+  var porSeq = new Map(eventos.map((e) => [e.seq, e]));
+  var tbAn = $("anulacoes").tBodies[0];
+  if (anulacoes.length === 0) vazio(tbAn, "nenhum marco anulado");
+  else tbAn.innerHTML = anulacoes.map((a) => {
+    const marco = porSeq.get(a.marcoSeq), ret = porSeq.get(a.retificacaoSeq);
+    return `<tr><td class="dt">${a.data}</td>
+    <td class="seq">#${a.marcoSeq}<br><span class="det">${marco ? `${marco.data} · ${marco.desde} → ${marco.ate}` : "—"}</span></td>
+    <td class="seq">#${a.retificacaoSeq}<br><span class="det">${ret ? `${ret.dataRetificada} · ${ret.campo} ${ret.valorAntigo} → ${ret.valorNovo}` : "—"}</span></td>
+    <td class="det">${a.motivo}</td></tr>`;
+  }).join("");
+  var crm = r.composicaoCRM(CARTEIRA);
+  $("crm").innerHTML = !crm.disponivel ? card("Composição", "—", crm.motivo) : card("Ativos no universo", num(crm.ativos.length), crm.ativos.join(" · ")) + card("Lida em", crm.lidaEm, crm.congelada ? "última leitura legível" : "leitura corrente") + card(
+    "Estado",
+    crm.congelada ? "congelada" : "fresca",
+    crm.congelada ? `desatualizada desde ${crm.desatualizadaDesde}` : "sem congelamento",
+    crm.congelada
+  );
+  var CLASSE = {
+    [TIPOS.LEITURA]: "t-leitura",
+    [TIPOS.REFORCO_ACIONADO]: "t-reforco",
+    [TIPOS.CONTADOR_RESET]: "t-reset",
+    [TIPOS.CRM_COMPOSICAO]: "t-crm",
+    [TIPOS.RETIFICACAO]: "t-retif",
+    [TIPOS.ANULACAO_MARCO]: "t-anul"
+  };
+  var descrever = (e) => {
+    switch (e.tipo) {
+      case TIPOS.LEITURA:
+        return `Índice <b>${num(e.indice, 1)}</b> · ${e.estado}`;
+      case TIPOS.REFORCO_ACIONADO:
+        return `Índice <b>${num(e.indice, 1)}</b> · libera ${num(e.pctCaixa)}% do caixa`;
+      case TIPOS.CONTADOR_RESET:
+        return `marco <b>${e.marco}</b> · sequência ${e.desde} → ${e.ate}`;
+      case TIPOS.CRM_COMPOSICAO:
+        return e.legivel ? `legível · ${e.ativos.join(" · ")}` : "<b>ilegível</b> — o universo congela";
+      case TIPOS.RETIFICACAO:
+        return `sobre ${e.dataRetificada} · <b>${e.campo}</b> ${e.valorAntigo} → ${e.valorNovo}`;
+      case TIPOS.ANULACAO_MARCO:
+        return `marco #${e.marcoSeq} desfeito pela retificação #${e.retificacaoSeq}`;
+      default:
+        return Object.entries(e).filter(([k]) => !["carteira", "tipo", "seq", "gravadoEm", "data"].includes(k)).map(([k, v]) => `${k} ${v}`).join(" · ");
+    }
+  };
+  $("log").tBodies[0].innerHTML = eventos.map((e) => `<tr>
+  <td class="n seq">${e.seq}</td><td class="dt">${e.data}</td>
+  <td><span class="tag ${CLASSE[e.tipo] ?? "t-outro"}">${e.tipo.replace(/_/g, " ")}</span></td>
+  <td class="det">${descrever(e)}</td><td class="dt">${coletaDe(e)}</td></tr>`).join("");
+})();
+
+</script>

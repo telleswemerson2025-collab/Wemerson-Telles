@@ -1,0 +1,2187 @@
+<meta charset="utf-8">
+<title>Simulador da Semente</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#070b12; --bg-2:#0b1220; --glow:rgba(38,78,140,.38);
+  --card:rgba(255,255,255,.025); --card-2:rgba(255,255,255,.04); --bd:rgba(255,255,255,.075);
+  --ink:#e9edf4; --mut:#8b95a8; --dim:#5d6779;
+  --gold:#d8a740; --green:#4fd88a; --red:#ff6b7a;
+  --c1:#ff8a4c; --c2:#ff5d73; --c3:#f2c14e; --c4:#4cc9f0; --c5:#56d98a; --c6:#a78bfa;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.55;
+  background-image:radial-gradient(900px 460px at 22% -8%, var(--glow), transparent 70%);background-repeat:no-repeat}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* NAV */
+nav{display:flex;align-items:center;gap:26px;padding:14px 26px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.logo{width:34px;height:34px;border-radius:9px;background:#f2f4f8;color:#0a0e16;display:grid;place-items:center;
+  font-family:"Playfair Display",Georgia,serif;font-weight:700;font-size:20px;flex:none}
+.pill{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--bd);border-radius:999px;padding:6px 14px;
+  font-size:13px;color:var(--ink);background:var(--card)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.links{display:flex;gap:22px;flex-wrap:wrap}
+.links a{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.links a.on{color:var(--gold)}
+.ghost{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(216,167,64,.5);border-radius:999px;padding:6px 14px}
+.right{margin-left:auto;display:flex;align-items:center;gap:20px}
+.badge{position:relative}
+.badge b{position:absolute;top:-7px;right:-11px;background:var(--gold);color:#0a0e16;font-family:"IBM Plex Mono",monospace;
+  font-size:9px;border-radius:999px;padding:1px 5px}
+.av{width:30px;height:30px;border-radius:9px;background:var(--card-2);border:1px solid var(--bd);display:grid;place-items:center;
+  font-family:"Playfair Display",serif;font-size:14px;color:var(--ink)}
+
+.wrap{max-width:1180px;margin:0 auto;padding:34px 26px 130px}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:30px;margin-bottom:34px}
+.k .lab{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:7px}
+.k .num{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:clamp(26px,3.3vw,38px);line-height:1;
+  font-variant-numeric:tabular-nums}
+.k .num.g{color:var(--green)}
+.k .sub{font-size:12px;color:var(--dim);margin-top:6px}
+
+h1{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:clamp(28px,4vw,42px);line-height:1.08;margin:0 0 8px;text-wrap:balance}
+.kick{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:0 0 22px}
+h2{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:26px;margin:0 0 5px}
+.lede{color:var(--mut);max-width:64ch;margin:0 0 30px;font-size:15.5px}
+
+/* CONTROLES */
+.panel{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:26px;
+  background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:24px 26px;margin-bottom:36px}
+.field{display:flex;flex-direction:column;gap:9px}
+label{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.val{font-family:"Playfair Display",serif;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.val small{font-family:Inter,sans-serif;font-size:12.5px;font-weight:400;color:var(--mut);margin-left:6px}
+input[type=range]{width:100%;accent-color:var(--gold);height:20px;margin:0;background:transparent}
+select{font-family:Inter,sans-serif;font-size:14px;padding:9px 11px;background:var(--bg-2);color:var(--ink);
+  border:1px solid var(--bd);border-radius:9px;width:100%}
+
+/* CARTÃO GRÁFICO */
+.card{background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--bd);border-radius:18px;
+  padding:22px 20px 14px;margin-bottom:14px}
+.card .ct{font-family:"Playfair Display",serif;font-size:22px;font-weight:600;margin:0 0 4px}
+.card .cs{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 14px}
+canvas{width:100%;height:330px;display:block}
+
+/* ESTAÇÕES */
+.tl{display:flex;gap:4px;overflow-x:auto;padding:4px 0 10px}
+.yr{flex:1 0 44px;text-align:center;border:1px solid var(--bd);border-radius:10px;padding:10px 4px 8px;background:var(--card)}
+.yr b{display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;color:var(--mut)}
+.yr i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:.1em;
+  text-transform:uppercase;margin-top:4px;color:var(--dim)}
+.yr.plantio{border-color:rgba(79,216,138,.45)} .yr.plantio i{color:var(--green)}
+.yr.colheita{border-color:rgba(242,193,78,.5)} .yr.colheita i{color:var(--c3)}
+.yr.abrigo{border-color:rgba(76,201,240,.45)} .yr.abrigo i{color:var(--c4)}
+
+/* LINHA D'ÁGUA DA SEMENTE */
+.estado{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:0 0 16px}
+.estado .tag{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  border:1px solid var(--bd);border-radius:999px;padding:6px 13px;color:var(--mut)}
+.estado .tag b{color:var(--ink);font-weight:500}
+.estado .tag.on{border-color:var(--green);color:var(--green)}
+.leg{display:flex;flex-wrap:wrap;gap:18px;font-size:12.5px;color:var(--mut);padding:10px 4px 2px;
+  font-family:"IBM Plex Mono",monospace;letter-spacing:.06em}
+.leg span{display:inline-flex;align-items:center;gap:8px}
+.sw{width:18px;height:3px;border-radius:2px;display:inline-block}
+
+/* MATRIZ ÍNDICE DE PLANTIO */
+.mx{display:grid;grid-template-columns:150px repeat(5,1fr);gap:5px;min-width:620px}
+.mx .hd{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);display:flex;align-items:flex-end;justify-content:center;padding-bottom:7px;text-align:center}
+.mx .rw{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mut);display:flex;align-items:center;padding-right:8px}
+.cel{border:1px solid var(--bd);border-radius:10px;padding:11px 6px 9px;text-align:center;position:relative;transition:transform .15s}
+.cel .p{font-family:"Playfair Display",serif;font-size:19px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.cel .e{font-family:"IBM Plex Mono",monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;margin-top:5px;color:var(--dim)}
+.cel.here{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 0 22px rgba(216,167,64,.25);transform:translateY(-2px)}
+.cel.here::after{content:'VOCÊ';position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--gold);
+  color:#0a0e16;font-family:"IBM Plex Mono",monospace;font-size:7.5px;letter-spacing:.12em;border-radius:999px;padding:2px 7px}
+.mxwrap{overflow-x:auto;background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--bd);
+  border-radius:18px;padding:22px 20px 18px;margin-bottom:14px}
+.axl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+
+/* TABELA */
+.tw{overflow-x:auto;border:1px solid var(--bd);border-radius:16px;background:var(--card)}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:right;padding:14px 18px;border-bottom:1px solid var(--bd)}
+th:first-child,td:first-child{text-align:left}
+th{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:500}
+td{font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+td:first-child{white-space:normal}
+td.g{color:var(--green)}
+tr:last-child td{border-bottom:none}
+
+.note{font-size:13px;color:var(--dim);max-width:74ch;margin:14px 0 40px}
+footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--bd);font-size:12.5px;color:var(--dim);max-width:76ch}
+
+/* TOAST */
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;z-index:9;display:flex;align-items:center;gap:18px;
+  background:rgba(12,17,27,.94);border:1px solid var(--bd);border-radius:14px;padding:14px 18px;flex-wrap:wrap;
+  box-shadow:0 18px 50px rgba(0,0,0,.55);max-width:calc(100% - 36px)}
+.toast p{margin:0;font-size:14px;color:var(--mut)}
+.toast p b{color:var(--ink);font-weight:600}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);
+  border:1px solid var(--bd);border-radius:999px;padding:7px 13px}
+.chip span{color:var(--ink)}
+.cta{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);
+  color:#0a0e16;border:none;border-radius:999px;padding:9px 20px;cursor:pointer;font-weight:500}
+.x{background:none;border:none;color:var(--dim);font-size:17px;cursor:pointer;line-height:1;padding:4px}
+/* BLOCOS DA PEÇA 4 · ITEM 4 */
+.bloco{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:22px 24px;margin-bottom:14px}
+.bloco h3{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--dim);font-weight:500;margin:0 0 14px}
+.par{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px}
+.par .lab{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:5px}
+.par .v{font-size:16px;color:var(--ink);font-variant-numeric:tabular-nums}
+.par .v small{display:block;font-size:11.5px;color:var(--mut);margin-top:3px}
+.capa{display:grid;grid-template-columns:minmax(260px,1fr) minmax(300px,1.35fr);gap:26px;align-items:start;margin-bottom:14px}
+.capa .piso{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:clamp(34px,5.2vw,54px);line-height:1;
+  font-variant-numeric:tabular-nums}
+.capa .mult{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;color:var(--gold);margin-top:8px}
+.capa .ident{font-size:12.5px;color:var(--mut);margin-top:10px;max-width:36ch}
+.segunda{border-top:1px solid var(--bd);margin-top:18px;padding-top:14px}
+.rot{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.hip{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--c3);border:1px solid rgba(242,193,78,.5);border-radius:999px;padding:4px 11px;margin-left:8px}
+.recusa{border:1px solid rgba(255,107,122,.5);background:rgba(255,107,122,.05);border-radius:16px;padding:24px 26px;margin-bottom:20px}
+.recusa b{color:var(--red)}
+td.ruim{color:var(--red)}
+td.bom{color:var(--mut)}
+tr.retida td:first-child{border-left:2px solid var(--red);padding-left:16px}
+.mini{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--dim)}
+.ok{color:var(--green)} .alerta{color:var(--c3)}
+button.link{background:none;border:1px solid var(--bd);border-radius:999px;color:var(--mut);cursor:pointer;
+  font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;padding:6px 13px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<nav>
+  <div class="logo">B</div>
+  <div class="pill"><i class="dot"></i> Carteira Semente</div>
+  <div class="links">
+    <a href="#">Início</a><a href="#">Feed</a><a href="#" class="on">Simulador</a><a href="#">Estações</a><a href="#">Publicações</a>
+  </div>
+  <span class="ghost">Instalar</span>
+  <div class="right">
+    <span class="badge" style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)">Comentários<b>2</b></span>
+    <span class="av">B</span>
+  </div>
+</nav>
+
+<div class="wrap">
+  <p class="kick">Carteira Semente · BlockCapital Research</p>
+  <h1>O maior ativo do seu filho hoje não é dinheiro. É o tempo.</h1>
+  <p class="lede">Escolha a idade da criança e quanto cabe no seu mês. O simulador mostra o que esse hábito pode construir até os 18 anos, atravessando quatro ou cinco ciclos de mercado.</p>
+
+  <!-- 7 · SEM LINHA D'ÁGUA NÃO HÁ PROJEÇÃO (D8) -->
+  <div id="recusa" class="recusa" hidden></div>
+
+  <div id="tudo">
+
+  <!-- 2 · O PAR ESTADO-ÍNDICE QUE DEFINE A PARTIDA (D8 · D10 · D11) -->
+  <div class="bloco">
+    <h3>A leitura que define a partida <span id="hip"></span></h3>
+    <div class="par" id="parLeitura"></div>
+    <p class="note" style="margin:16px 0 0" id="notaPartida"></p>
+    <p style="margin:14px 0 0"><button class="link" id="semLeitura">Ver a tela sem leitura da Linha d'Água</button></p>
+  </div>
+
+  <!-- 5 · O NÚMERO DE CAPA É O PISO (D12 A) -->
+  <h2 style="margin-top:38px">O número que abre</h2>
+  <p class="cs" style="margin-bottom:14px">Piso entre as partidas possíveis, no cenário conservador</p>
+  <div class="capa">
+    <div class="bloco" style="margin:0">
+      <h3 id="capaRot">Piso</h3>
+      <div class="piso" id="capaValor">—</div>
+      <div class="mult" id="capaMult">—</div>
+      <div class="ident" id="capaIdent">—</div>
+      <div class="ident" id="capaOutros" style="margin-top:8px"></div>
+      <div class="segunda">
+        <div class="rot">Leitura do dia — não é o número de capa</div>
+        <div class="par" id="capaHoje" style="margin-top:10px"></div>
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Partida</th><th>Fase · mês</th><th>Conservador</th><th>Moderado</th><th>Forte</th></tr></thead>
+        <tbody id="tbPartidas"></tbody>
+      </table>
+    </div>
+  </div>
+  <p class="note" id="notaCapa"></p>
+
+  <div class="panel">
+    <div class="field">
+      <label for="idade">Idade da criança</label>
+      <div class="val"><span id="vIdade">0</span><small>anos</small></div>
+      <input type="range" id="idade" min="0" max="16" value="0" step="1">
+    </div>
+    <div class="field">
+      <label for="aporte">Aporte por mês</label>
+      <div class="val">R$&nbsp;<span id="vAporte">150</span></div>
+      <input type="range" id="aporte" min="50" max="1000" value="150" step="10">
+    </div>
+    <div class="field">
+      <label for="partida" id="labPartida">Partida</label>
+      <select id="partida"></select>
+    </div>
+  </div>
+  <p class="note" id="notaBase" style="margin-top:-22px"></p>
+
+  <div class="kpis">
+    <div class="k"><div class="lab">Anos até a entrega</div><div class="num" id="oAnos">18</div><div class="sub" id="oEntrega">—</div></div>
+    <div class="k"><div class="lab">Você terá aportado</div><div class="num" id="oAportado">—</div><div class="sub" id="oMeses">—</div></div>
+    <div class="k"><div class="lab">Pode virar</div><div class="num g" id="oFaixa">—</div><div class="sub" id="oMult">—</div></div>
+    <div class="k"><div class="lab">Partida</div><div class="num" id="oEst" style="font-size:clamp(18px,2.2vw,24px)">—</div><div class="sub" id="oPar">—</div></div>
+  </div>
+
+  <div class="card">
+    <p class="ct">A jornada, ano a ano</p>
+    <p class="cs">Valor da carteira a partir do aporte mensal · faixa entre cenários</p>
+    <canvas id="cv" height="330"></canvas>
+  </div>
+  <p class="note">A faixa vai do cenário conservador ao forte, com ciclos completos — as quedas estão dentro da conta, não só as altas. É uma perspectiva de mecanismo, nunca uma previsão. Rentabilidade passada não garante resultado futuro.</p>
+
+  <div class="card">
+    <p class="ct">Linha d'Água da Semente</p>
+    <p class="cs">Valor da carteira × o que já foi aportado × o piso já protegido</p>
+    <div class="estado" id="estado"></div>
+    <canvas id="wl" height="330"></canvas>
+    <div class="leg">
+      <span><i class="sw" style="background:var(--c5);box-shadow:0 0 8px var(--c5)"></i> Valor da carteira</span>
+      <span><i class="sw" style="background:var(--c4)"></i> Linha d'água · o que você aportou</span>
+      <span><i class="sw" style="background:var(--gold)"></i> Piso protegido</span>
+    </div>
+  </div>
+  <p class="note" style="margin-bottom:40px">Acima da linha d'água, a carteira está à frente do que saiu do seu bolso. Abaixo, está submersa — e é aí que o aporte do mês compra mais barato. O piso protegido sobe quando o Abrigo entra: é a parte que já não corre risco.</p>
+
+  <!-- 3 · A TABELA EXPO COMPLETA, COM O ABRIGO A 4 ANOS (D43) -->
+  <h2>O Abrigo</h2>
+  <p class="cs" style="margin-bottom:14px" id="csAbrigo"></p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Faltam</th><th>Exposição alvo</th><th>Passo por mês</th><th>Abrigo</th></tr></thead>
+      <tbody id="tbExpo"></tbody>
+    </table>
+  </div>
+  <p class="note" id="notaAbrigo"></p>
+
+  <!-- 4 · MODULAÇÃO DA VELOCIDADE, DEFASAGEM E TETO (D25 B · C · D) -->
+  <h2>A velocidade do Abrigo, modulada pelo estado</h2>
+  <p class="cs" style="margin-bottom:14px" id="csVel"></p>
+  <div class="tw" style="margin-bottom:14px">
+    <table>
+      <thead><tr><th>Estado da Linha d'Água</th><th>Fator de velocidade</th><th>O que ele faz com o passo do mês</th></tr></thead>
+      <tbody id="tbVel"></tbody>
+    </table>
+  </div>
+  <div class="bloco">
+    <h3>A trajetória desta partida</h3>
+    <div class="par" id="parTraj"></div>
+  </div>
+  <div class="card">
+    <p class="ct">Alvo × exposição real</p>
+    <p class="cs">A distância entre as duas linhas é a defasagem mais a banda</p>
+    <canvas id="gp" height="330"></canvas>
+    <div class="leg">
+      <span><i class="sw" style="background:var(--gold)"></i> Alvo da glidepath</span>
+      <span><i class="sw" style="background:var(--c4)"></i> Exposição real, com a velocidade modulada</span>
+      <span><i class="sw" style="background:var(--c2)"></i> Defasagem acumulada</span>
+    </div>
+  </div>
+  <p class="note" id="notaVel"></p>
+
+  <div class="bloco" id="naoProjetado" style="border-color:rgba(216,167,64,.35);margin-bottom:40px"></div>
+
+  <h2>Índice de Plantio</h2>
+  <p class="cs" style="margin-bottom:14px">Estado do mercado × tempo até a entrega · quanto do aporte vai para o ativo</p>
+  <div class="mxwrap">
+    <div class="axl" style="margin-bottom:12px">↓ Estado do mercado &nbsp;·&nbsp; Tempo restante até os 18 →</div>
+    <div class="mx" id="mx"></div>
+  </div>
+  <p class="note" style="margin-bottom:40px">O que sobra de cada percentual fica em caixa, esperando zona. Repare na coluna da direita: perto da entrega, o Abrigo derruba a exposição independentemente do que o mercado esteja fazendo — é ele que impede a criança de fazer 18 anos no fundo de um ciclo.</p>
+
+  <h2>As estações de cada ano</h2>
+  <p class="cs" style="margin-bottom:14px" id="csEstacoes"></p>
+  <div class="tl" id="tl"></div>
+
+  <h2 style="margin-top:38px">Os três cenários</h2>
+  <p class="cs" style="margin-bottom:14px">Mesmo no conservador, com queda a cada ciclo, o aportado mais que dobra</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Cenário</th><th>Média ao ano</th><th>Resultado aos 18</th><th>Multiplicador</th></tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </div>
+
+  <!-- 6 · TABELA DE DERIVA PERMANENTE, POR LINHA, CONTRA A v1.3 (D12 B · D13) -->
+  <h2 style="margin-top:38px">Deriva por linha</h2>
+  <p class="cs" style="margin-bottom:14px" id="csDeriva"></p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Partida</th><th>Conservador</th><th>Moderado</th><th>Forte</th></tr></thead>
+      <tbody id="tbDeriva"></tbody>
+    </table>
+  </div>
+  <p class="note" id="notaDeriva"></p>
+
+  <!-- D54 · A TRAVA DE SALTO ENTRE VERSÕES -->
+  <h2 style="margin-top:38px">Salto contra a versão anterior</h2>
+  <p class="cs" style="margin-bottom:14px" id="csSalto"></p>
+  <div class="bloco" id="saltoCapa" style="border-color:rgba(216,167,64,.35)"></div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Partida</th><th>Conservador</th><th>Moderado</th><th>Forte</th></tr></thead>
+      <tbody id="tbSalto"></tbody>
+    </table>
+  </div>
+  <p class="note" id="notaSalto"></p>
+
+  <div class="bloco">
+    <h3>Conferência do motor</h3>
+    <div class="par" id="parAceite"></div>
+  </div>
+
+  <footer>Material de estudo da BlockCapital Research. Não é recomendação de investimento. A conta é operada por um adulto responsável, com o compromisso de entregar aos 18 anos. Nenhum valor futuro é prometido.</footer>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <p><b>Semente: pague uma vez.</b> A jornada vai até os 18 anos.</p>
+  <span class="chip">Preço sobe em <span id="cd">2D 00:00:00</span></span>
+  <button class="cta">Quero</button>
+  <button class="x" id="fechar" aria-label="Fechar">✕</button>
+</div>
+
+<script>
+(() => {
+  // registro/registro.mjs
+  var TIPOS = Object.freeze({
+    LEITURA: "leitura",
+    // {data, indice, estado}
+    REFORCO_ACIONADO: "reforco_acionado",
+    // {data, indice, pctCaixa}
+    CONTADOR_RESET: "contador_reset",
+    // {data, marco: 'virada'|'abrigo'}
+    CRM_COMPOSICAO: "crm_composicao",
+    // {data, legivel, ativos[]}
+    DEGRAU: "degrau",
+    // {data, ativo, valor, motivo}
+    TRANCHE: "tranche",
+    // {data, ativo, quantidade, exposicaoAntes, exposicaoDepois}
+    DEFASAGEM: "defasagem",
+    // {data, pontosNaoMovidos, fator, estado}
+    GATE_INVALIDAR: "gate_invalidar",
+    // {data, ativo, motivo}
+    FILTRO_HORIZONTE: "filtro_horizonte",
+    // {data, ativo, aprovado, motivo}
+    TETO_CONTAGEM: "teto_contagem",
+    // {data, ativo, posicao}
+    RETIFICACAO: "retificacao",
+    // {data, dataRetificada, campo, valorAntigo, valorNovo, motivo, aprovadoEm}
+    ANULACAO_MARCO: "anulacao_marco"
+    // {data, marcoSeq, retificacaoSeq, motivo}
+  });
+  var DEGRAUS_VALIDOS = Object.freeze([0, 33, 66, 100]);
+  var MARCO_INDICE = 65;
+  var ANCORAS_DE_TESE = Object.freeze(["BTC", "ETH"]);
+
+  // torre/torre.mjs
+  var SERIES = Object.freeze([
+    { n: "Preço do BTC", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "Realized Price", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "Realized Price STH", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "Realized Price LTH", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "MVRV Ratio", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "regua", calendario: "24/7", unidade: "razão" },
+    { n: "SOPR", camada: 2, escala: "log", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "razão", caminhoNoMenu: "Spent Output Profit Ratio (SOPR) / SOPR", unidadeConferida: true },
+    { n: "Supply in Profit", camada: 2, escala: "lin", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "%", unidadeConferida: true },
+    { n: "Liveliness", camada: 2, escala: "lin", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "razão", caminhoNoMenu: "Cointime Statistics / Liveliness" },
+    { n: "DXY", camada: 3, escala: "lin", inicioSerie: "2011-01-01", invertido: true, calendario: "pregão", unidade: "pontos de índice", caminhoNoMenu: "Macro / DXY — Dollar Index" },
+    { n: "Fed Funds Rate", camada: 3, escala: "lin", inicioSerie: "2011-01-01", invertido: true, calendario: "pregão", unidade: "% a.a.", caminhoNoMenu: "Macro / Fed Funds Rate (%)", unidadeConferida: true },
+    { n: "US M2", camada: 3, escala: "lin", inicioSerie: "2011-01-01", calendario: "mensal", unidade: "US$ tri" },
+    { n: "Curva 10Y-2Y", camada: 3, escala: "lin", inicioSerie: "2011-01-01", calendario: "mensal", unidade: "pontos percentuais", unidadeConferida: true, caminhoNoMenu: "Studio / Macro / Yield Curve 10Y-2Y" },
+    { n: "ETF Net Inflow", camada: 4, escala: "lin", inicioSerie: "2024-01-11", calendario: "pregão", unidade: "USD", unidadeConferida: true, formato: "compacto", caminhoNoMenu: "Studio / ETF & Institutional / ETF Net Inflow", calendarioNota: "janela operacional NYSE — sem barras em fins de semana e feriados" },
+    { n: "Funding Rate", camada: 4, escala: "lin", inicioSerie: "2020-01-01", calendario: "24/7", unidade: "APR (%)", caminhoNoMenu: "Studio / Futuros / Funding Rate — APR (%)", unidadeConferida: true },
+    // A escala é LINEAR e não pode ser outra: netflow é entrada menos saída, cruza o
+    // zero, e log de zero ou de negativo não produz número errado — não produz número
+    // nenhum. A D38 D chamou a série de logarítmica; a D39 corrigiu para linear.
+    // Os extremos e o início da série são PROVISÓRIOS até a leitura no terminal.
+    { n: "Exchange Netflow", camada: 4, escala: "lin", inicioSerie: "2011-01-01", extremosProvisorios: true, calendario: "24/7", unidade: null }
+  ]);
+  var ESTADOS_DO_EXTREMO = Object.freeze(["confirmado", "posto confirmado", "provisório"]);
+  function estadoDoExtremo(serie, campo2, varredura) {
+    const v = varredura?.[serie];
+    if (v?.confirmado?.[campo2]) return "confirmado";
+    if (v?.postoConfirmado?.[campo2]) return "posto confirmado";
+    return "provisório";
+  }
+  var CASAS_NA_TOOLTIP = Object.freeze({
+    "Preço do BTC": 0,
+    "MVRV Ratio": 3,
+    "SOPR": 4,
+    "Supply in Profit": 1,
+    "Liveliness": 4,
+    "DXY": 2,
+    "Fed Funds Rate": 2,
+    "Funding Rate": 1
+  });
+  var FAIXA_DO_COMPACTO = Object.freeze({ piso: 1e3, teto: 1499, custoNoIndice: 0.44 });
+  var SUAVIZACAO_NO_ALL = Object.freeze({
+    modo: "SMA",
+    oQueFaz: "agrega vários dias por pixel e suaviza dentro do balde",
+    medidoEm: "Funding Rate · min, 13/03/2020",
+    noAll: -53,
+    estreitado: -139.2,
+    fator: 2.63,
+    custoSeUsado: 1.39
+  });
+  var METODOS_DE_VARREDURA = Object.freeze([
+    {
+      m: "concorrentes um a um na tooltip, em passo de 1 dia",
+      forca: 1,
+      como: "medir cada rival com a janela estreitada, um por um",
+      porQue: "leitura de dígito em todos os candidatos — o único que serve quando a folga é de poucos por cento",
+      custo: "só cabe quando os candidatos são poucos e já se sabe quais são"
+    },
+    {
+      m: "eixo auto-escalado por blocos",
+      forca: 2,
+      como: "partir a série em blocos que se encostam e ler o topo do eixo de cada um; o eixo se recalcula com o máximo da janela",
+      porQue: "não depende de a barra ser visível — e o bloco é curto o bastante para a suavização não achatar o extremo"
+    },
+    {
+      m: "banda de altura sobre a série inteira",
+      forca: 3,
+      como: "recortar a faixa do gráfico além do extremo e varrer os quinze anos de uma vez",
+      fraqueza: "evento de UM dia ocupa ~0,19 px no ALL e pode sumir: risco de falso negativo"
+    },
+    {
+      m: "trecho a trecho",
+      forca: 4,
+      fraqueza: "depende de escolher quais trechos olhar, e o que não foi olhado não foi descartado"
+    },
+    {
+      m: "eixo ou pixel no ALL inteiro",
+      forca: 9,
+      proibido: true,
+      fraqueza: "o modo SMA suaviza dentro do pixel: extremo de um dia lê mais raso do que é. Não é ruído — é viés de um lado só, e o número que sai parece plausível"
+    }
+  ]);
+  var SERIES_EM_PATAMAR = Object.freeze({
+    "Fed Funds Rate": "fica parada por meses. ⚠️ o patamar lido (01/08/2023 → 31/08/2024) é alinhado ao MÊS, não a datas de FOMC — pode ser série mensal, e isso não foi conferido",
+    "US M2": "série mensal: cada leitura vale até a publicação do mês seguinte",
+    "Curva 10Y-2Y": "série MENSAL desenhada como escada diária: o mês inteiro carrega o mesmo valor (fev/2011 = 2,81 do dia 1 ao 28)"
+  });
+  var HOMONIMOS_NO_TERMINAL = Object.freeze({
+    "Supply in Profit": "há dois no menu: um em BTC (≈13,5M BTC) e um em percentual. O nosso é o PERCENTUAL",
+    "SOPR": "há o SOPR simples e os SOPR LTH e STH. O nosso é o SIMPLES",
+    "Realized Price": "há Realized Price, Realized Price STH e Realized Price LTH — as três estão na varredura, cada uma na sua linha"
+  });
+  var CALENDARIOS = Object.freeze(["24/7", "pregão", "mensal"]);
+  var DIAS_SEM_PREGAO = Object.freeze([0, 6]);
+  var EXCHANGES_PRIMEIRA_LINHA = Object.freeze([
+    "Binance",
+    "Coinbase",
+    "Kraken",
+    "OKX",
+    "Bybit",
+    "Bitget"
+  ]);
+  var PESOS = Object.freeze({ 1: 0.34, 2: 0.26, 3: 0.16, 4: 0.12, 5: 0.12 });
+  var CAMADAS = Object.freeze({
+    1: "Estado do preço",
+    2: "Comportamento",
+    3: "Macro",
+    4: "Fluxo",
+    5: "Carteira"
+  });
+  var TRAVA_AUSENCIA_NA_CAMADA = 1 / 3;
+  var FAIXAS = Object.freeze([
+    { ate: 20, nome: "Fundo" },
+    { ate: 40, nome: "Comprimido" },
+    { ate: 60, nome: "Equilíbrio" },
+    { ate: 80, nome: "Esticado" },
+    { ate: 101, nome: "Extremo" }
+  ]);
+  var ESTADOS = Object.freeze({
+    CAPITULACAO: "Capitulação profunda",
+    PREJUIZO: "Prejuízo do mercado",
+    ESTRESSE: "Estresse de curto prazo",
+    SAUDAVEL: "Mercado saudável"
+  });
+  var DIA_MS = 864e5;
+  var anosEntre = (de, ate) => (Date.parse(`${ate}T00:00:00Z`) - Date.parse(`${de}T00:00:00Z`)) / (DIA_MS * 365.25);
+  var media = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
+  function normalizar(valor, min, max, escala, invertido = false) {
+    const p = escala === "log" ? (Math.log(valor) - Math.log(min)) / (Math.log(max) - Math.log(min)) : (valor - min) / (max - min);
+    const limitado = Math.max(0, Math.min(1, p)) * 100;
+    return invertido ? 100 - limitado : limitado;
+  }
+  var confianca = (inicioSerie, hoje) => Math.min(anosEntre(inicioSerie, hoje) / 5, 1);
+  var amortecer = (bruto, conf) => 50 + (bruto - 50) * conf;
+  function classificarLinhaDagua({ preco, realizedPrice, sth, lth }) {
+    if (preco < lth) return ESTADOS.CAPITULACAO;
+    if (preco < realizedPrice) return ESTADOS.PREJUIZO;
+    if (preco < sth) return ESTADOS.ESTRESSE;
+    return ESTADOS.SAUDAVEL;
+  }
+  var faixaDoIndice = (v) => FAIXAS.find((f) => v < f.ate).nome;
+  var seriesComExtremosProvisorios = () => SERIES.filter((s) => s.extremosProvisorios).map((s) => s.n);
+  var EXTREMOS_INERTES = Object.freeze(
+    ["Preço do BTC", "Realized Price", "Realized Price STH", "Realized Price LTH"]
+  );
+  var inerte = (serie, campo2) => campo2 !== "valor" && EXTREMOS_INERTES.includes(serie);
+  function estadoDosExtremos(varredura) {
+    const porSerie = /* @__PURE__ */ new Map();
+    let confirmadosPorInteiro = 0, postoConfirmado = 0, total = 0, inertesPendentes = 0;
+    for (const s of SERIES) {
+      const v = varredura?.[s.n];
+      if (!v) continue;
+      for (const campo2 of ["valor", "min", "max"]) {
+        total++;
+        const estado = estadoDoExtremo(s.n, campo2, varredura);
+        if (estado === "confirmado") {
+          confirmadosPorInteiro++;
+          continue;
+        }
+        if (estado === "posto confirmado") {
+          postoConfirmado++;
+          continue;
+        }
+        porSerie.set(s.n, [...porSerie.get(s.n) ?? [], campo2]);
+        if (inerte(s.n, campo2)) inertesPendentes++;
+      }
+    }
+    const confirmados = confirmadosPorInteiro + postoConfirmado;
+    return {
+      total,
+      confirmados,
+      confirmadosPorInteiro,
+      postoConfirmado,
+      provisorios: total - confirmados,
+      series: [...porSerie].map(([serie, campos]) => ({ serie, campos })),
+      // Dos provisórios, quantos não mudam o índice nem se estiverem dez vezes errados.
+      inertesPendentes,
+      provisoriosQueImportam: total - confirmados - inertesPendentes
+    };
+  }
+  var METODOS_DE_CONFERENCIA = Object.freeze(["dígito", "pixel", "eixo", "calendário"]);
+  var TETOS_DA_METRICA = Object.freeze({ "Supply in Profit": { max: 100 } });
+  function varrer({ varredura, hoje, camada5 = null, anterior = null }) {
+    const ausencias = [];
+    const lidos = /* @__PURE__ */ new Map();
+    for (const s of SERIES) {
+      const v = varredura?.[s.n];
+      if (!v || typeof v.valor !== "number" || !Number.isFinite(v.valor)) {
+        ausencias.push({ indicador: s.n, camada: s.camada, motivo: v === void 0 ? "não voltou da varredura" : "voltou zerado ou com traço" });
+        continue;
+      }
+      const bruto = normalizar(v.valor, v.min, v.max, s.escala, s.invertido);
+      const conf = confianca(s.inicioSerie, v.data ?? hoje);
+      lidos.set(s.n, {
+        ...s,
+        valor: v.valor,
+        data: v.data,
+        bruto,
+        confianca: conf,
+        posicao: amortecer(bruto, conf)
+      });
+    }
+    const p = (n) => lidos.get(n)?.valor;
+    const temLinhaDagua = ["Preço do BTC", "Realized Price", "Realized Price STH", "Realized Price LTH"].every((n) => lidos.has(n));
+    const estado = temLinhaDagua ? classificarLinhaDagua({ preco: p("Preço do BTC"), realizedPrice: p("Realized Price"), sth: p("Realized Price STH"), lth: p("Realized Price LTH") }) : null;
+    const camadas = /* @__PURE__ */ new Map();
+    const regua = lidos.get("MVRV Ratio");
+    if (lidos.has("Preço do BTC") && lidos.has("Realized Price") && regua) {
+      const razao = p("Preço do BTC") / p("Realized Price");
+      const bruto = normalizar(razao, varredura["MVRV Ratio"].min, varredura["MVRV Ratio"].max, "log");
+      camadas.set(1, { posicao: bruto, itens: [`preço ÷ Realized Price = ${razao.toFixed(5)}`] });
+    }
+    for (const camada of [2, 3, 4]) {
+      const daCamada = SERIES.filter((s) => s.camada === camada && s.papel === void 0);
+      const presentes = daCamada.map((s) => lidos.get(s.n)).filter(Boolean);
+      const faltando = daCamada.filter((s) => !lidos.has(s.n)).map((s) => s.n);
+      const pesoAusente = faltando.length / daCamada.length;
+      if (presentes.length > 0 && pesoAusente <= TRAVA_AUSENCIA_NA_CAMADA) {
+        camadas.set(camada, {
+          // D37 D: pesos internos iguais entre os indicadores da camada, até haver
+          // razão registrada para não serem. Peso inventado é pior que peso igual.
+          posicao: media(presentes.map((x) => x.posicao)),
+          // renormaliza sobre o que voltou
+          itens: presentes.map((x) => `${x.n} ${x.posicao.toFixed(1)}`),
+          ausentes: faltando,
+          pesoAusente
+        });
+      }
+    }
+    if (camada5?.disponivel) camadas.set(5, { posicao: camada5.posicao, itens: camada5.itens ?? [] });
+    const ativas = [...camadas.keys()].sort();
+    if (ativas.length === 0) {
+      return { disponivel: false, motivo: "nenhuma camada voltou inteira", ausencias, estado, hoje };
+    }
+    const somaPesos = ativas.reduce((s, c) => s + PESOS[c], 0);
+    const indice = ativas.reduce((s, c) => s + camadas.get(c).posicao * PESOS[c], 0) / somaPesos;
+    const faixa = faixaDoIndice(indice);
+    const mudou = compararComAnterior({ indice, faixa, estado }, anterior);
+    return {
+      disponivel: true,
+      hoje,
+      indice,
+      faixa,
+      estado,
+      camadas: ativas.map((c) => ({
+        camada: c,
+        nome: CAMADAS[c],
+        posicao: camadas.get(c).posicao,
+        pesoNominal: PESOS[c],
+        pesoAplicado: PESOS[c] / somaPesos,
+        itens: camadas.get(c).itens,
+        ausentes: camadas.get(c).ausentes ?? []
+      })),
+      camadasForaDaConta: [1, 2, 3, 4, 5].filter((c) => !camadas.has(c)).map((c) => {
+        if (c === 5) return { camada: 5, nome: CAMADAS[5], motivo: camada5?.motivo ?? "sem carteira ativa" };
+        const daCamada = SERIES.filter((s) => s.camada === c && s.papel === void 0);
+        const faltando = daCamada.filter((s) => !lidos.has(s.n)).map((s) => s.n);
+        const frac = daCamada.length ? faltando.length / daCamada.length : 1;
+        return {
+          camada: c,
+          nome: CAMADAS[c],
+          ausentes: faltando,
+          motivo: c === 1 ? "faltou preço, Realized Price ou a régua do MVRV" : `ausentes pesam ${(frac * 100).toFixed(0)}% da camada, acima do terço da trava`
+        };
+      }),
+      confiancas: [...lidos.values()].filter((x) => x.confianca < 1).map((x) => ({ indicador: x.n, confianca: x.confianca, bruto: x.bruto, ajustado: x.posicao })),
+      ausencias,
+      extremosProvisorios: seriesComExtremosProvisorios().filter((n) => varredura?.[n]),
+      extremos: estadoDosExtremos(varredura),
+      mudou,
+      semRecomendacao: true
+      // a Torre lê regime. Não decide nada.
+    };
+  }
+  function compararComAnterior(atual, anterior) {
+    if (!anterior) return { primeira: true, linha: "primeira leitura registrada" };
+    const faixaMudou = anterior.faixa !== atual.faixa;
+    const estadoMudou = anterior.estado !== atual.estado;
+    if (!faixaMudou && !estadoMudou) {
+      return { faixaMudou: false, estadoMudou: false, linha: `nada mudou de faixa nem de estado desde ${anterior.data ?? "a leitura anterior"}` };
+    }
+    const partes = [];
+    if (estadoMudou) partes.push(`estado: ${anterior.estado} → ${atual.estado}`);
+    if (faixaMudou) partes.push(`faixa: ${anterior.faixa} → ${atual.faixa}`);
+    return { faixaMudou, estadoMudou, linha: partes.join(" · "), indiceAntes: anterior.indice };
+  }
+
+  // torre/leitura-29-08-2026.mjs
+  var VARREDURA_29_08_2026 = Object.freeze({
+    "Preço do BTC": {
+      valor: 77839.19,
+      min: 0.29,
+      max: 124353.95,
+      data: "2026-08-28",
+      dataMin: "2011-01-03",
+      dataMax: "2025-10-06",
+      confirmado: { valor: "2026-08-29", min: null, max: null },
+      // Tentativa registrada para que ninguém repita: a tooltip NÃO confirma este
+      // mínimo, e não por falta de zoom. O terminal arredonda BTC PRICE para dólar
+      // inteiro, então 03/01/2011 lê "$0" — e 02, 04, 05 e 06/01 leem "$0" também.
+      // Empate sem desempate possível no gráfico.
+      tentativas: [{
+        campo: "min",
+        em: "2026-08-29",
+        resultado: "não confirmado",
+        metodo: "tooltip, modo SMA, zoom no máximo que a barra de range permite (janela 01–13/jan/2011)",
+        lido: 'JAN 3, 2011 · BTC PRICE $0 — cifrão, zero. O eixo da janela imprime só "$1" e "$0".',
+        vizinhos: { "2011-01-02": "$0", "2011-01-03": "$0", "2011-01-04": "$0", "2011-01-05": "$0", "2011-01-06": "$0" },
+        cruzamento: "MVRV Ratio na mesma tooltip: 02/01 = 3.370 · 03/01 = 3.294 · 04/01 = 3.226",
+        oQueSeSustenta: "só o item 3: na visão ALL o ponto mais baixo da série está nos primeiros dias de jan/2011, e o fundo seguinte (nov/2011) já está na casa de US$ 2. Medido contra o eixo log (~71 px por década) dá ≈ US$ 0,29–0,30 — mas isso é medição de eixo, não leitura de tooltip.",
+        porQueNaoFecha: "o terminal arredonda o preço para inteiro; abaixo de US$ 1 a tooltip perde a informação inteira",
+        caminhoQueFecharia: "a fonte do dado, o número cru por trás da série — não o gráfico",
+        telaRestaurada: "range ALL, página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo"
+      }]
+    },
+    "Realized Price": { valor: 53057.77, min: 0.088, max: 56449.62, data: "2026-08-28", dataMin: "2011-01-01", dataMax: "2025-11-26", confirmado: { valor: "2026-08-29", min: null, max: null } },
+    "Realized Price STH": { valor: 69977.18, min: 0.19, max: 114018.67, data: "2026-08-28", dataMin: "2011-01-01", dataMax: "2025-10-09", confirmado: { valor: "2026-08-29", min: null, max: null } },
+    "Realized Price LTH": { valor: 49449.51, min: 3e-3, max: 49991.21, data: "2026-08-28", dataMin: "2011-01-01", dataMax: "2026-07-26", confirmado: { valor: "2026-08-29", min: null, max: null } },
+    "MVRV Ratio": {
+      valor: 1.465,
+      min: 0.384,
+      max: 7.854,
+      data: "2026-08-28",
+      dataMin: "2011-10-19",
+      dataMax: "2011-06-04",
+      confirmado: { valor: "2026-08-29", min: "2026-08-29", max: "2026-08-29" },
+      conferencias: [{
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "tooltip do terminal, modo SMA, janela estreitada de 01/10/2011 a dez/2011 até o passo do cursor virar 1 dia",
+        lido: "0.384 — zero, ponto, três, oito, quatro (o terminal usa ponto decimal, não vírgula)",
+        casasNaTooltip: 3,
+        // dos próprios dígitos lidos: 0.384
+        // Vizinhos e varredura do ALL: provam que é o FUNDO, não só que o número
+        // daquele dia está certo. O comando pedia só a segunda coisa.
+        vizinhos: { "2011-10-18": 0.418, "2011-10-19": 0.384, "2011-10-20": 0.411 },
+        ehMinimoDaSerie: "nenhum ponto da série no ALL fica abaixo; os fundos de 2015, 2018 e 2022 param acima",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 2 — implica Realized Price ~5,21 e MVRV abaixo de 1, que é capitulação profunda",
+        telaRestaurada: "range de volta em ALL, página no topo, sidebar reaberta; nada salvo, alterado, publicado ou apagado"
+      }, {
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "tooltip do terminal, modo SMA, janela estreitada de 13/04/2011 a 07/2011 até ~12,6 px por dia",
+        lido: "7.854 — sete, ponto, oito, cinco, quatro",
+        casasNaTooltip: 3,
+        // 7.854
+        vizinhos: { "2011-06-03": 6.51, "2011-06-04": 7.854, "2011-06-05": 6.718 },
+        // Havia um segundo pico ao lado, conferido para não confundir os dois.
+        segundoPico: { "2011-06-07": 7.404, "2011-06-08": 7.809, "2011-06-09": 6.772 },
+        ehMaximoDaSerie: "topos rivais medidos na mesma janela estreitada: 09/04/2013 = 5.846 e 17/11/2013 = 6.237; 2017, 2021 e 2024 ficam visivelmente abaixo desses dois. Folga de ~26% até o segundo maior.",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 16 — implica Realized Price ~2,04. Em 08/06, MVRV 7.809 com BTC US$ 28 implica ~3,59: o custo da rede subiu 76% em quatro dias, no mesmo passo do preço, e por isso a razão não inflou.",
+        // ⚠️ A folga até o segundo pico é de 0,58%. A DATA do máximo depende dessa
+        // margem — outra suavização poderia virá-la de 04/06 para 08/06. Por isso o
+        // modo SMA fica registrado: sem ele a conferência não é reprodutível.
+        margemAteOSegundoPico: "0,58% (7.854 contra 7.809 em 08/06/2011)",
+        bateComDoc07: "o documento 07 registra uma conferência avulsa de 05/jun/2011 = 6,718; esta leitura independente dá o mesmo número",
+        telaRestaurada: "range ALL, página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo"
+      }]
+    },
+    "SOPR": {
+      valor: 1.0112,
+      min: 0.6068,
+      max: 2.874,
+      data: "2026-08-28",
+      dataMin: "2011-11-09",
+      dataMax: "2011-04-29",
+      confirmado: { valor: "2026-08-29", min: "2026-08-29", max: "2026-08-29" },
+      conferencias: [{
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "Spent Output Profit Ratio (SOPR) · SOPR simples, não LTH/STH; tooltip, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "0.6068 — zero, ponto, seis, zero, seis, oito",
+        casasNaTooltip: 4,
+        // 0.6068
+        vizinhos: { "2011-11-08": 0.9609, "2011-11-09": 0.6068, "2011-11-10": 0.9743 },
+        // TOPOLOGIA NOVA: nem vale (MVRV · min) nem platô (Liveliness · max). É uma
+        // barra isolada cravada entre dois dias em ~0,96–0,97. É a forma que um erro
+        // de dado tem — e também a que um dia de capitulação tem, porque o SOPR é
+        // razão diária e um dia de pânico dá uma barra só. Fica nomeada.
+        topologia: "pico isolado de um dia",
+        quedaDosVizinhos: 0.3541,
+        // 0,9609 → 0,6068: 37% em um dia, e volta no seguinte
+        ehMinimoDaSerie: "varrido em dois blocos, porque a série tem dois regimes. 2011–2012: os rivais mais próximos são 16/11/2011 = 0.6237 e 19/10/2011 = 0.6369, ambos acima. 2013 → hoje: abrindo só esse trecho o eixo se reescala e o piso vira 0,7 — em treze anos o SOPR nunca chegou perto.",
+        // ⚠️ MÉTODO MAIS FRACO, e o Gui nomeou como tal: o piso do regime pós-2013
+        // (~0,75–0,76) foi lido no EIXO, não na tooltip. Fica separado do que foi lido
+        // dígito a dígito, porque não tem a mesma força.
+        leiturasDeEixo: {
+          pisoPos2013: "~0,75–0,76",
+          fecho: "na visão ALL o rótulo mais baixo do eixo direito é 0.6, o que só faz sentido com o mínimo logo acima dele",
+          naturezaDoMetodo: "leitura de eixo, não de tooltip"
+        },
+        // BTC PRICE $3 nos três dias: a mesma redondagem para dólar inteiro que
+        // derrubou a conferência do Preço do BTC · min. Nesta escala o cruzamento não
+        // cruza nada, e isso é consistência, não achado novo.
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 3 nos três dias — o terminal arredonda para dólar inteiro, então nesta escala o cruzamento não separa nada",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }, {
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "SOPR simples, tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "2.8740 — dois, ponto, oito, sete, quatro, zero",
+        casasNaTooltip: 4,
+        // O portao passou, mas por 0,0001: o STH le 1.0111 contra 1.0112 do simples.
+        // Uma casa de exibicao. O valor corrente e senha FRACA onde ha homonimo.
+        portaoDeIdentidade: {
+          breadcrumb: "Spent Output Profit Ratio (SOPR) / SOPR",
+          ultimoPonto: { data: "2026-08-28", valor: 1.0112, btc: 77839 },
+          homonimosNoMesmoDia: { LTH: 1.0134, STH: 1.0111 },
+          margemAteOMaisProximo: 1e-4,
+          licao: "o valor corrente separou do STH por uma casa de exibição — quem separa de verdade é o breadcrumb"
+        },
+        vizinhos: { "2011-04-28": 1.4169, "2011-04-29": 2.874, "2011-04-30": 1.8046 },
+        topologia: "pico isolado de um dia — vale mais que o dobro do vizinho de trás",
+        semEmpate: "os dígitos separam com folga enorme",
+        // ⚠️ A VARREDURA POR BANDA FALHOU AQUI, e o Gui trocou de método.
+        varreduraQueFalhou: {
+          metodo: "banda de altura sobre a série inteira",
+          porQue: "no ALL o gráfico comprime ~5.700 dias em ~1.100 px, então um dia ocupa ~0,19 px e um pico de barra única some no recorte — daria falso negativo"
+        },
+        ehMaximoDaSerie: "eixo auto-escalado, em dois blocos que se encostam sem buraco. jan/2011 → 11/01/2012: topo do eixo 3.1, e a barra mais alta da janela é a de 29/04/2011. 11/01/2012 → hoje: topo do eixo 1.6 — em quatorze anos e meio as barras mais altas param em 1,2–1,5. O único trecho cujo eixo precisa subir até a casa dos 2,8 é o de abril/2011.",
+        metodoDeVarredura: "eixo auto-escalado por blocos — não depende de a barra ser visível",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 2 — de novo sem poder de separação nesta escala",
+        incertezaDaExibicao: { faixa: [2.87395, 2.87405], efeitoNoIndice: 36e-5 },
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "Supply in Profit": {
+      valor: 67.4,
+      min: 35.6,
+      max: 100,
+      data: "2026-08-28",
+      dataMin: "2015-08-24",
+      dataMax: "2011-02-04",
+      confirmado: { valor: "2026-08-29", min: "2026-08-29", max: null },
+      conferencias: [{
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "35.6% — três, cinco, ponto, seis, com sinal de porcento",
+        casasNaTooltip: 1,
+        // quarta resolução diferente encontrada: 4, 3, 2 e agora 1
+        // O menu tem DOIS "Supply in Profit": um em BTC (13,5M BTC) e um percentual.
+        // O Gui escolheu o percentual e avisou. A escolha se PROVA pelo dado, e por
+        // três vias independentes — nenhuma delas dependia de escolher certo.
+        serieEscolhida: {
+          entre: ["Supply in Profit em BTC (≈13,5M BTC)", "Supply in Profit em percentual"],
+          escolhida: "percentual",
+          provasNoDado: [
+            "o valor corrente registrado é 67,4 — percentual, não 13,5M",
+            "o máximo registrado é 100,0, que é o teto de um percentual e impossível numa série em BTC",
+            "o mínimo lido, 35,6%, é da mesma ordem dos outros dois"
+          ]
+        },
+        vizinhos: { "2015-08-23": 38.8, "2015-08-24": 35.6, "2015-08-25": 40 },
+        topologia: "mergulho de um dia — a Segunda-feira Negra dos mercados globais, 24/08/2015",
+        semEmpate: "folga de mais de 3 pontos percentuais para cada lado; os dígitos separam sozinhos",
+        // Método novo de varredura: recortar a BANDA de altura e varrer os quinze anos
+        // de uma vez, em vez de percorrer trecho a trecho.
+        ehMinimoDaSerie: "recortada a banda do gráfico abaixo de ~36% e varridos os quinze anos de uma vez: aparece uma única marca em toda a série, a de agosto de 2015. Concorrentes por trecho: dez/2014–out/2015 tem segundo mais baixo em ~39,7%; 2018–2019 para em 40–41%.",
+        metodoDeVarredura: "banda de altura sobre a série inteira, e não trecho a trecho",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 219 em 24/08; US$ 228 em 23/08 e US$ 214 em 25/08",
+        incertezaDaExibicao: { faixa: [35.55, 35.65], efeitoNoIndice: 387e-5 },
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "Liveliness": {
+      valor: 0.6345,
+      min: 0.1785,
+      max: 0.641,
+      data: "2026-08-28",
+      dataMin: "2011-01-09",
+      dataMax: "2025-12-20",
+      confirmado: { valor: "2026-08-29", min: null, max: "2026-08-29" },
+      conferencias: [{
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "Cointime Statistics · Liveliness, tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "0.6410 — zero, ponto, seis, quatro, um, zero",
+        vizinhos: { "2025-12-19": 0.6409, "2025-12-20": 0.641, "2025-12-21": 0.6409 },
+        // ⚠️ O EMPATE. 12/12/2025 exibe o MESMO 0.6410 na tooltip. Não é empate de
+        // valor, é empate de EXIBIÇÃO: o terminal mostra quatro casas e as duas datas
+        // caem no mesmo passo de arredondamento. A tooltip não decide, e nenhuma
+        // insistência nela decidiria — o número que ela mostra é o mesmo nas duas.
+        empateNaExibicao: {
+          candidato: "2025-12-12",
+          lido: 0.641,
+          precoNoDia: 91629,
+          resolvidoPor: "janela 23/11/2025 → 26/01/2026, onde 1 px vale ~0,000003 de Liveliness; 20/12 fica ~13 px acima de 12/12",
+          implicacao: "12/12 é ~0,64096 arredondado para cima na tela; 20/12 é o ponto mais alto de fato",
+          // Método diferente dos anteriores: não é leitura de dígito, é separação
+          // geométrica. Fica nomeado para não passar por leitura de tooltip.
+          naturezaDoMetodo: "separação por pixel, não leitura de dígito"
+        },
+        ehMaximoDaSerie: "na janela esticada nenhum ponto fica acima de 20/12; fora dela a folga é grande — o platô de 2017–2024 não passa de ~0,61–0,63, o pico de 13/01/2026 lê 0.6404 e o valor atual (ago/2026) é 0,6345. Na visão ALL os únicos pixels na altura de 0,641 estão em dez/2025.",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 88.181 em 20/12; US$ 87.394 em 19/12 e US$ 88.260 em 21/12. Em 12/12, US$ 91.629 — preço 3,9% MAIOR com Liveliness igual, o que separa as duas datas por comportamento e não só por altura.",
+        // O que o empate custa na régua, medido e não estimado: a máxima só é conhecida
+        // até ±0,00005, e essa incerteza move o Índice em ±0,00105 ponto.
+        incertezaDaExibicao: { faixa: [0.64095, 0.64105], efeitoNoIndice: 105e-5 },
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "DXY": {
+      valor: 99.16,
+      min: 72.93,
+      max: 114.11,
+      data: "2026-08-29",
+      dataMin: "2011-04-29",
+      dataMax: "2022-09-27",
+      confirmado: { valor: "2026-08-29", min: "2026-08-29", max: "2026-08-29" },
+      // ⚠️ ANOMALIA DE MENU, não de dado: no menu do terminal o DXY aparece com o
+      // valor atual em "—" enquanto o histórico carrega normal. Nenhuma das outras
+      // treze séries faz isso. Não move o índice — a confiança do DXY já está no teto
+      // (série de 2011, e o fator da D7 satura em 5 anos), então mesmo série parada
+      // não mudaria a conta. Mas o VALOR do DXY é alavanca grande: 10% nele move o
+      // índice 1,09 ponto. Fica registrado para o Gui decidir se reabre a conferência
+      // do valor — reabrir confirmação é decisão, não implementação.
+      anomaliaDeMenu: {
+        observadaEm: "2026-08-29",
+        o_que: 'valor atual exibido como "—" no menu; o histórico do gráfico carrega normal',
+        // EXPLICADA pela conferencia do DXY · min: 29/08/2026 e SABADO, e o DXY e serie
+        // de pregao. Nao ha cotacao de sabado para o menu mostrar; o historico carrega
+        // porque historico existe. Nao e falha do terminal nem do dado.
+        explicacao: "29/08/2026 é sábado e o DXY é série de pregão — não há cotação do dia para o menu exibir",
+        explicadaEm: "2026-08-29, na conferência do DXY · min",
+        efeitoNoIndice: 0,
+        motivoDoEfeitoZero: "confiança do DXY já saturada em 1 (D7)",
+        alavancaDoValor: 1.0945
+        // pontos de índice por 10% de erro no valor
+      },
+      conferencias: [{
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "Macro · DXY — Dollar Index, tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "114.11 — um, um, quatro, ponto, um, um",
+        // A tooltip do DXY mostra DUAS casas, não quatro como a do Liveliness. A
+        // resolução de exibição é por série, não do terminal.
+        casasNaTooltip: 2,
+        vizinhos: { "2022-09-26": 114.1, "2022-09-27": 114.11, "2022-09-28": 112.6 },
+        // O caso OPOSTO ao do Liveliness: 26/09 fica um centésimo abaixo, mas os
+        // dígitos diferem (114.10 ≠ 114.11) e a tooltip decide sozinha.
+        quaseEmpate: {
+          vizinho: "2022-09-26",
+          lido: 114.1,
+          distancia: 0.01,
+          resolvidoPor: "dígito — a tooltip separa sozinha, sem zoom",
+          naturezaDoMetodo: "leitura de dígito",
+          contrasteCom: "Liveliness · max, onde 12/12 e 20/12 exibiam o MESMO número e só o pixel separou"
+        },
+        ehMaximoDaSerie: "varrida a faixa de altura ~107+ na série inteira: de 2011 a 2018 nenhum ponto entra nela, e o topo do período fica abaixo de 104; de 2019 em diante o único pico na altura de 114 é o de set/2022. O segundo maior de toda a série é o repique do início de 2025, em torno de 110,5 — quase 4 pontos abaixo.",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 19.634 em 27/09; US$ 19.045 em 26/09 e US$ 19.144 em 28/09",
+        // Duas casas de exibição: a máxima só é conhecida até ±0,005.
+        incertezaDaExibicao: { faixa: [114.105, 114.115], efeitoNoIndice: 35e-5 },
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }, {
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "Macro · DXY — Dollar Index, tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "72.93 — sete, dois, ponto, nove, três",
+        casasNaTooltip: 2,
+        vizinhos: { "2011-04-28": 73.12, "2011-04-29": 72.93, "2011-04-30": 72.93, "2011-05-01": 72.93, "2011-05-02": 72.95 },
+        // EMPATE DE CALENDARIO, nao de exibicao. Tres dias exibem 72.93 e continuam no
+        // mesmo pixel com o eixo a ~0,009/px: nenhum zoom os separa, porque nao ha o
+        // que separar. 29/04/2011 foi SEXTA; 30/04 e 01/05 sao fim de semana e o
+        // terminal repete o fechamento. Na segunda o indice ja anda (72.95).
+        empateDeCalendario: {
+          diasIguais: ["2011-04-29", "2011-04-30", "2011-05-01"],
+          diaDeFormacao: "2011-04-29",
+          diaDaSemana: "sexta-feira",
+          porQueOPixelNaoResolve: "não é arredondamento — é o mesmo valor carregado adiante; a ~0,009/px os três ficam no mesmo pixel",
+          primeiroPregaoSeguinte: { "2011-05-02": 72.95 },
+          naturezaDoMetodo: "calendário — o único que não olha a tela"
+        },
+        ehMinimoDaSerie: "varrida a faixa de altura ~73 na série inteira: a linha só entra nela entre janeiro e meados de 2011. De 2012 em diante nenhum ponto chega perto — o fundo de 2014 fica em ~79, o de 2018 em ~88. Dentro de 2011 os rivais mais próximos ficam em 73,6–73,8 (fundos de fev/mar e de agosto).",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 2 — de novo a redondagem para dólar inteiro, que nesta escala não cruza nada",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "Fed Funds Rate": {
+      valor: 3.63,
+      min: 0.05,
+      max: 5.33,
+      data: "2026-08-29",
+      dataMin: "2020-04-01",
+      dataMax: "2023-08-01",
+      confirmado: { valor: "2026-08-29", min: null, max: "2026-08-29" },
+      // O portao de identidade (unidade + valor corrente) passou: titulo "Fed Funds
+      // Rate (%)" e ultimo ponto 3.63. E de quebra entregou um fato que o dado nao
+      // tinha: a data do ultimo ponto e 24/08/2026, nao 29/08. Cinco dias, nao um.
+      divergenciaDeData: {
+        registrado: "2026-08-29",
+        naTela: "2026-08-24",
+        diferencaEmDias: 5,
+        comoApareceu: "o portão de identidade da D35 B pediu o valor corrente, e o Gui reportou a data dele junto",
+        efeitoNoIndice: 0,
+        motivo: "confiança da série saturada em 1 — pela D36 C a data não entra na conta"
+      },
+      conferencias: [{
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "Macro · Fed Funds Rate (%), tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "5.33 — cinco, ponto, três, três",
+        casasNaTooltip: 2,
+        portaoDeIdentidade: "unidade em % no próprio título; último ponto 24/08/2026 = 3.63, que bate com o valor registrado",
+        vizinhos: { "2023-07-31": 5.12, "2023-08-01": 5.33, "2023-08-02": 5.33 },
+        // TERCEIRA ESPECIE DE EMPATE, depois da exibicao (Liveliness) e do fim de
+        // semana (DXY): o dado nao muda mesmo. 396 dias com o valor identico.
+        platoDeValor: {
+          inicio: "2023-08-01",
+          fim: "2024-08-31",
+          diasNoPatamar: 396,
+          degrauDeEntrada: { "2023-07-31": 5.12, "2023-08-01": 5.33 },
+          // 21 pontos-base
+          primeiraLeituraDepois: { "2024-08-30": 5.33, "2024-09-02": 5.13 },
+          porQueNemDigitoNemPixelDecidem: "a linha é horizontal sem um pixel de variação — não há o que separar, o dado é o mesmo",
+          oQueADataSignifica: "primeira ocorrência do patamar, o degrau — não um ponto único",
+          naturezaDoMetodo: "patamar — a data é o degrau de entrada, e as duas pontas se registram juntas"
+        },
+        ehMaximoDaSerie: "recortada a faixa do gráfico acima de 5,33 e varridos os quinze anos: nenhum traço entra nela. O ciclo de 2018–19 topou em ~2,4 e todo o período 2011–2015 ficou rente a zero.",
+        metodoDeVarredura: "banda de altura sobre a série inteira",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 29.019 em 01/08; US$ 29.330 em 31/07 e US$ 29.397 em 02/08",
+        incertezaDaExibicao: { faixa: [5.325, 5.335], efeitoNoIndice: 292e-5 },
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "US M2": { valor: 23.218, min: 8.845, max: 23.218, data: "2026-08-29", dataMin: "2011-01-01", dataMax: "2026-07-01", confirmado: { valor: "2026-08-29", min: null, max: null } },
+    "Curva 10Y-2Y": {
+      valor: 0.38,
+      min: -0.93,
+      max: 2.81,
+      data: "2026-08-29",
+      dataMin: "2023-07-01",
+      dataMax: "2011-02-01",
+      confirmado: { valor: "2026-08-29", min: "2026-08-29", max: "2026-08-29" },
+      // Mesma divergencia do Fed Funds, e agora sabida: o ultimo ponto desenhado e
+      // 24/08/2026, nao 29/08. Custo zero — confianca saturada (D36 C).
+      divergenciaDeData: {
+        registrado: "2026-08-29",
+        naTela: "2026-08-24",
+        diferencaEmDias: 5,
+        comoApareceu: "o portão de identidade pediu o valor corrente, e o Gui reportou a data junto",
+        efeitoNoIndice: 0
+      },
+      unidadeLida: {
+        em: "2026-08-29",
+        unidade: "pontos percentuais",
+        // ⚠️ LUGAR NOVO. O titulo NAO traz a unidade, diferente de "Fed Funds Rate (%)"
+        // e "Funding Rate — APR (%)". Ela esta na secao "Sobre esta metrica", abaixo do
+        // grafico: "spread entre o Treasury de 10 anos e o de 2 anos (em pontos percentuais)".
+        onde: 'seção "Sobre esta métrica", abaixo do gráfico — o título desta série não traz unidade',
+        breadcrumbCompleto: "Studio / Macro / Yield Curve 10Y-2Y",
+        cabecalho: "BITCOIN · MACRO"
+      },
+      conferencias: [{
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "Studio / Macro / Yield Curve 10Y-2Y, tooltip, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "2.81 — dois, ponto, oito, um",
+        casasNaTooltip: 2,
+        vizinhos: { "2011-01-31": 2.78, "2011-02-01": 2.81, "2011-02-02": 2.81 },
+        // ⚠️ A SERIE E MENSAL, e eu a tinha marcada como de PREGAO. O Gui provou
+        // conferindo as duas pontas: 28/02/2011 ainda le 2.81 e 01/03 cai para 2.71.
+        // Fevereiro inteiro carrega o mesmo valor. Nao e arredondamento nem pixel.
+        serieEhMensal: {
+          provaDoGui: "28/02/2011 ainda lê 2,81; 01/03/2011 cai para 2,71 — os 28 dias de fev/2011 carregam o mesmo valor",
+          desenho: "mensal desenhada como escada diária",
+          euTinhaMarcadoComo: "pregão",
+          oQueIssoQuebrava: "o comando ia avisar que 01/07/2023 (o mínimo) é sábado e o valor vinha da sexta — explicação errada: para série mensal o dia 1 é referência de MÊS, e o fim de semana não tem nada a ver",
+          sinalQueEuTinhaESemUsar: "as DUAS pontas caem no dia 1 do mês (01/07/2023 e 01/02/2011)"
+        },
+        platoDeValor: {
+          inicio: "2011-02-01",
+          fim: "2011-02-28",
+          diasNoPatamar: 28,
+          degrauDeEntrada: { "2011-01-31": 2.78, "2011-02-01": 2.81 },
+          primeiraLeituraDepois: { "2011-02-28": 2.81, "2011-03-01": 2.71 },
+          oQueADataSignifica: "mês de referência fev/2011; 01/02 é o primeiro dia, não um ponto único",
+          naturezaDoMetodo: "patamar mensal — o mês é a unidade, e as duas pontas se registram juntas"
+        },
+        ehMaximoDaSerie: "dois blocos curtos que se encostam, rivais conferidos na tooltip — sem eixo nem pixel no ALL. 11/01/2011 → 11/01/2012: o degrau mais alto do ano é fev/2011 (2,81); janeiro fica em 2,78 e de março em diante a escada só desce. 11/01/2012 → hoje: o topo é dez/2013 = 2,56 (BTC US$ 865), e o eixo dessa janela nem passa de 2,5.",
+        metodoDeVarredura: "eixo auto-escalado por blocos, com os rivais conferidos na tooltip",
+        folgaAteOSegundo: "0,25 pp (2,81 contra 2,56 em dez/2013)",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 1 nos três dias — dólar inteiro de novo, sem poder de separação",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }, {
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "Studio / Macro / Yield Curve 10Y-2Y, tooltip, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "-0.93 — menos, zero, ponto, nove, três",
+        casasNaTooltip: 2,
+        vizinhos: { "2023-06-30": -0.89, "2023-07-01": -0.93, "2023-07-02": -0.93 },
+        // As QUATRO pontas do patamar, que o comando passou a pedir depois do Fed Funds.
+        // Primeira conferencia em que ele pediu a coisa certa e voltou completa.
+        platoDeValor: {
+          inicio: "2023-07-01",
+          fim: "2023-07-31",
+          diasNoPatamar: 31,
+          degrauDeEntrada: { "2023-06-30": -0.89, "2023-07-01": -0.93 },
+          primeiraLeituraDepois: { "2023-07-31": -0.93, "2023-08-01": -0.73 },
+          conferidoNoMeio: { "2023-07-09": -0.93, "2023-07-30": -0.93 },
+          oQueADataSignifica: "mês de referência jul/2023; 01/07 é o primeiro dia do patamar, não um ponto único",
+          naturezaDoMetodo: "patamar mensal — as quatro pontas registradas juntas"
+        },
+        // O dia 1 cai num sábado, e desta vez isso é IRRELEVANTE: série mensal, o dia 1
+        // é referência de mês. Foi exatamente o aviso errado que a marcação antiga dava.
+        oSabadoNaoImporta: "01/07/2023 é sábado, mas a série é mensal — o dia 1 é referência de mês, não fechamento carregado da sexta",
+        ehMinimoDaSerie: "dois blocos curtos que se encostam, rivais na tooltip, sem eixo nem pixel no ALL. 2011 → jan/2022: o eixo da janela nem chega a zero — o piso do período é +0,05 (set/2019), a curva não fica negativa no trecho. jan/2022 → hoje: o degrau mais fundo de toda a inversão é o de jul/2023 (-0,93); os patamares vizinhos param em -0,76 e -0,70.",
+        metodoDeVarredura: "eixo auto-escalado por blocos, com os rivais conferidos na tooltip",
+        folgaAteOSegundo: "0,17 pp (-0,93 contra -0,76)",
+        // Achado estrutural: TODO o território negativo desta régua é um episódio só.
+        territorioNegativo: "a curva só fica negativa a partir de 2022 — em onze anos de série o piso foi +0,05",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 30.519 em 01/07; US$ 30.558 em 30/06 e US$ 30.542 em 02/07",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "ETF Net Inflow": {
+      valor: 242.3,
+      min: -1138.9,
+      max: 1373.8,
+      data: "2026-08-27",
+      dataMin: "2025-02-25",
+      dataMax: "2024-11-07",
+      // D42 A: o VALOR do dia foi lido ("$242M" bate com 242,3). Os dois extremos ficam
+      // em POSTO CONFIRMADO: data e posto provados na tela, valor não legível porque a
+      // notação compacta colapsa a magnitude. D42 D: é o teto alcançável nesta tela.
+      confirmado: { valor: "2026-08-29", min: null, max: null },
+      postoConfirmado: { valor: null, min: "2026-08-29", max: "2026-08-29" },
+      // ⚠️ CORRECAO DE UNIDADE: eu tinha inferido "US$ mi". A tela diz USD, exibido em
+      // milhoes/bilhoes por sufixo. Compativel na escala, errado como rotulo.
+      unidadeLida: {
+        em: "2026-08-29",
+        unidade: "USD",
+        textoDaTela: "Fluxo líquido diário, em USD, dos ETFs spot de Bitcoin nos EUA",
+        onde: 'seção "Sobre esta métrica" — o título não traz unidade',
+        exibicao: "sufixo M/B: $500M, $1B, $2B",
+        euTinhaInferido: "US$ mi",
+        breadcrumbCompleto: "Studio / ETF & Institutional / ETF Net Inflow",
+        cabecalho: "BITCOIN · ETF & INSTITUTIONAL",
+        // Confirma o calendario que eu tinha marcado — desta vez a inferencia bateu.
+        calendarioNaTela: "janela operacional segue o calendário NYSE — sem barras em fins de semana e feriados"
+      },
+      conferencias: [{
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "Studio / ETF & Institutional / ETF Net Inflow, tooltip, janela jan–dez/2024 a ~4,5 px por dia útil, sem suavização",
+        lido: "$1B — cifrão, um, B",
+        // ⚠️ NOTACAO COMPACTA. Nao e "casas decimais": acima de mil milhoes a tooltip
+        // colapsa para UM digito. 1.373,8 vira "$1B". Abaixo de 1B da o inteiro em
+        // milhoes ($242M, $622M). O modelo de casas decimais nao representa isso.
+        // D42 C, o registro completo de um posto confirmado.
+        postoConfirmado: {
+          estado: "posto confirmado",
+          em: "2026-08-29",
+          valorDeRegistro: 1373.8,
+          unidadeDoRegistro: "USD mi",
+          rotuloExibido: "$1B",
+          regra: "acima de mil milhões colapsa para um dígito; abaixo dá o inteiro em milhões",
+          oQueEsconde: 'uma FAIXA, não uma casa: tudo de 1.000 a 1.499 exibe "$1B"',
+          custoDaFaixaNoIndice: 0.44,
+          data: "2024-11-07",
+          posto: 'o mais alto entre os quatro dias que exibem "$1B"',
+          segundoColocado: { data: "2024-11-11", valor: null, nota: "exibe o mesmo rótulo; 36 px abaixo" },
+          metodoDeSeparacao: "altura de barra — a tooltip não decide entre os quatro",
+          oQueFaltaParaConfirmado: "o valor exato, que não sai desta tela (D42 D)"
+        },
+        vizinhos: { "2024-11-06": 622, "2024-11-07": "$1B", "2024-11-08": 293 },
+        // Os vizinhos imediatos separam por digito. O problema esta longe deles.
+        empateDeRotulo: {
+          diasComOMesmoRotulo: ["2024-03-12", "2024-11-07", "2024-11-11", "2024-11-21"],
+          aTooltipNaoDecide: 'os quatro leem "$1B"',
+          resolvidoPor: "altura de barra na mesma janela (jan–dez/2024, ~4,5 px por dia útil, sem suavização)",
+          alturas: { "2024-11-07": 109, "2024-11-11": 145, "2024-03-12": 167, "2024-11-21": 180 },
+          separacao: "58 px entre 07/11 e 12/03 — da ordem de US$ 300 milhões nessa escala",
+          naturezaDoMetodo: "separação por pixel entre rivais que exibem o mesmo rótulo",
+          // O Gui disse o que isso significa, e e o ponto: sem o pixel esta conferencia
+          // nao teria como distinguir 07/11 de 12/03.
+          semEleNaoDava: "sem a separação por pixel a conferência não distinguiria 07/11 de 12/03"
+        },
+        ehMaximoDaSerie: "rivais do mesmo rótulo medidos por altura na janela de 2024; para 2025–2026, bloco próprio: o eixo topa em $1B e nenhuma barra o alcança — o maior do período fica em ~$940M.",
+        metodoDeVarredura: "separação por pixel entre rivais de mesmo rótulo, mais bloco próprio para 2025–2026",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 75.499 em 07/11; US$ 74.399 em 06/11 e US$ 76.271 em 08/11",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }, {
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "Studio / ETF & Institutional / ETF Net Inflow, tooltip, blocos curtos com rivais um a um",
+        lido: "$-1B — cifrão, sinal de menos, um, B",
+        // D42 C, o registro completo de um posto confirmado.
+        postoConfirmado: {
+          estado: "posto confirmado",
+          em: "2026-08-29",
+          valorDeRegistro: -1138.9,
+          unidadeDoRegistro: "USD mi",
+          rotuloExibido: "$-1B",
+          formaExata: "cifrão, depois o sinal",
+          data: "2025-02-25",
+          posto: "único dia da série na faixa de bilhão negativo",
+          segundoColocado: { data: "2025-11-20", valor: -903 },
+          folga: "US$ 236 milhões",
+          metodoDeSeparacao: "tooltip — sem pixel, sem recorte de faixa",
+          oQueFaltaParaConfirmado: "o valor exato, que não sai desta tela (D42 D)"
+        },
+        vizinhos: { "2025-02-24": -539, "2025-02-25": "$-1B", "2025-02-26": -755 },
+        // ⚠️ O EMPATE PREVISTO NAO ACONTECEU, e a diferenca ensina algo sobre o formato.
+        empateDeRotulo: {
+          diasComOMesmoRotulo: ["2025-02-25"],
+          aTooltipDecideSozinha: "só um dia da série inteira chega ao patamar de bilhão negativo",
+          contrasteComOMaximo: 'no máximo havia QUATRO dias lendo "$1B" e foi preciso separar por altura de barra; aqui a tooltip basta',
+          naturezaDoMetodo: "leitura de dígito — sem pixel",
+          // A licao: o risco da notacao compacta nao e so do FORMATO, e do formato
+          // vezes quantos dias caem na faixa. Ela colide onde a serie tem companhia.
+          oQueIssoEnsina: "a ambiguidade da notação compacta depende do dado, não só do formato: ela colide onde a série tem vários dias na mesma faixa de magnitude. Entradas acima de US$ 1 bi aconteceram quatro vezes; saídas abaixo de -US$ 1 bi, uma só."
+        },
+        ehMinimoDaSerie: "recortada a faixa abaixo de ~-$950M e varridos os dois anos e meio: uma única barra em toda a série. Confirmado por blocos curtos com rivais um a um — jan–dez/2024: o eixo do bloco para em -$500M e a pior saída do ano é 19/12/2024 = -$672M; dez/2024 → hoje: os seguintes são 20/11/2025 = -$903M e 13/11/2025 = -$867M.",
+        metodoDeVarredura: "banda de altura mais blocos curtos com rivais na tooltip",
+        folgaAteOSegundo: "~US$ 236 milhões (-1.138,9 contra -903 em 20/11/2025) — fora da faixa que colapsaria",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 89.071 em 25/02; US$ 94.703 em 24/02 e US$ 86.999 em 26/02",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "Funding Rate": {
+      valor: 1.84,
+      min: -139.23,
+      max: 186.86,
+      data: "2026-08-29",
+      dataMin: "2020-03-13",
+      dataMax: "2020-02-12",
+      confirmado: { valor: "2026-08-29", min: "2026-08-29", max: "2026-08-29" },
+      // A lacuna de unidade fechou: o terminal chama a serie de "Funding Rate — APR (%)",
+      // categoria FUTUROS. E funding ANUALIZADO em % ao ano, nao a taxa por periodo de 8h.
+      // Confirma a escala linear: APR de funding cruza o zero (negativo = short paga long),
+      // e log de negativo nao produz numero — mesma razao da D39 no netflow.
+      unidadeLida: {
+        em: "2026-08-29",
+        unidade: "APR (%)",
+        categoria: "FUTUROS",
+        onde: 'título da página e menu — dentro da tooltip o rótulo vem truncado ("Funding Rate — A…")',
+        breadcrumbCompleto: "Studio / Futuros / Funding Rate — APR (%)"
+      },
+      conferencias: [{
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "FUTUROS · Funding Rate — APR (%), tooltip do terminal, modo SMA, janela em passo de 1 dia",
+        lido: "186.9 — um, oito, seis, ponto, nove",
+        casasNaTooltip: 1,
+        // ⚠️ O REGISTRO TEM MAIS PRECISAO QUE A TELA. 186,86 tem duas casas; a tooltip
+        // da uma. Os dois sao compativeis (186,86 arredonda para 186,9), mas o numero
+        // anotado NAO pode ter saido desta tooltip. O Gui nao corrigiu nada: anotou o
+        // que esta. Segundo caso, depois do Preco do BTC.
+        precisaoExcedente: {
+          registrado: 186.86,
+          naTela: 186.9,
+          casasRegistradas: 2,
+          casasNaTooltip: 1,
+          compativel: true,
+          oQueSignifica: 'o número registrado não veio desta tooltip — e o documento 07 diz que os valores foram lidos "um por um" por ela',
+          naoCorrigido: "anotado o que está na tela; trocar o registrado é retificação, não implementação"
+        },
+        vizinhos: { "2020-02-11": 58, "2020-02-12": 186.9, "2020-02-13": 90.7 },
+        topologia: "barra isolada — mais que o triplo do vizinho de trás e o dobro do da frente",
+        // A margem mais apertada de todas as conferências até agora.
+        concorrentes: { "2021-01-06": 177.6, "2021-02-09": 174.8, "2021-02-22": 104.6 },
+        folgaAteOSegundo: "9,3 pontos de APR, ou ~4,98%",
+        ehMaximoDaSerie: "concorrentes medidos um a um com janela em passo de 1 dia, não por faixa: 06/01/2021 = 177.6 (segundo), 09/02/2021 = 174.8 (terceiro), 22/02/2021 = 104.6. Aberta também a janela 10/03/2020 → hoje, excluindo fev/2020: a barra mais alta dela é a de 06/01/2021. De 2022 em diante os picos param na casa dos 50–60.",
+        metodoDeVarredura: "concorrentes um a um em passo de 1 dia — a folga de 5% não permitiria banda nem pixel",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 10.342 em 12/02; US$ 9.997 em 11/02 e US$ 10.265 em 13/02",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }, {
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "Studio / Futuros / Funding Rate — APR (%), tooltip, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "-139.2 — menos, um, três, nove, ponto, dois",
+        casasNaTooltip: 1,
+        precisaoExcedente: {
+          registrado: -139.23,
+          naTela: -139.2,
+          casasRegistradas: 2,
+          casasNaTooltip: 1,
+          compativel: true,
+          // Proposta do Gui, adotada: guardar as DUAS formas, senão a próxima conferência
+          // lê divergência onde há só resolução de tela.
+          guardarAsDuasFormas: "valor de registro -139,23 · o que a tela mostra -139,2"
+        },
+        vizinhos: { "2020-03-12": 2, "2020-03-13": -139.2, "2020-03-14": -48.1 },
+        topologia: "barra isolada — a Quinta-feira Negra da COVID. No dia anterior o funding ainda era positivo (2,0)",
+        // ⚠️ O FALSO NEGATIVO AQUI E PIOR QUE NO SOPR: a barra nao some, ela MENTE.
+        // No ALL o grafico agrega ~2 dias por pixel e o modo SMA suaviza dentro do
+        // balde — a leitura de eixo dava ~-53, contra -139,2 real. Fator 2,63.
+        varreduraQueFalhou: {
+          metodo: "eixo ou pixel no ALL inteiro",
+          leituraFalsa: -53,
+          valorReal: -139.2,
+          fator: 2.63,
+          porQue: "no ALL o gráfico agrega ~2 dias por pixel e o modo SMA suaviza dentro do balde — a barra aparece com menos da metade da profundidade",
+          custoSeTivesseSidoUsado: 1.39,
+          // pontos de Índice
+          piorQueSumir: "no SOPR a barra sumia e a falha era visível; aqui ela aparece e o número parece plausível"
+        },
+        ehMinimoDaSerie: "eixo auto-escalado em dois blocos que se encostam. início → abr/2020: o eixo desce até -150 e a barra mais funda é a de 13/03/2020; a segunda do período fica em ~-56. abr/2020 → hoje: o eixo para em -100 — se houvesse qualquer dia em -139 nesses seis anos, teria de esticar até -150. Segundo fundo de toda a série, conferido em passo de 1 dia: 10/11/2022 = -93.1 (BTC US$ 17.025), a semana da FTX.",
+        metodoDeVarredura: "eixo auto-escalado por blocos, com o segundo colocado conferido na tooltip",
+        folgaAteOSegundo: "46,1 pontos de APR, ou 33,1%",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 5.367 em 13/03; US$ 6.530 em 12/03 e US$ 5.425 em 14/03",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    }
+  });
+
+  // alocador/alocador.mjs
+  var BASES_DO_ESTADO = Object.freeze({
+    "Capitulação profunda": 100,
+    "Prejuízo do mercado": 90,
+    "Estresse de curto prazo": 65,
+    "Mercado saudável": 40
+  });
+  var ORDEM_DOS_ESTADOS = Object.freeze([
+    "Capitulação profunda",
+    "Prejuízo do mercado",
+    "Estresse de curto prazo",
+    "Mercado saudável"
+  ]);
+  var EXPOSICAO_ALVO = Object.freeze({ 4: 100, 3: 66, 2: 45, 1: 25, 0: 15 });
+  var BANDA_PONTOS = 3;
+  var TETO_DEFASAGEM = 12;
+  var MESES_SEM_MODULACAO = 12;
+  var VELOCIDADE_POR_ESTADO = Object.freeze({
+    "Mercado saudável": 1.5,
+    "Estresse de curto prazo": 1,
+    "Prejuízo do mercado": 0.5,
+    "Capitulação profunda": 0.25
+  });
+  var INICIO_DA_RAMPA_ANOS = 4;
+  var ABRIGO_ATIVO_ANOS = 4;
+  var FATOR_NEUTRO = 1;
+  var clamp = (x, min, max) => Math.min(Math.max(x, min), max);
+  var arred = (x, casas = 4) => Number(x.toFixed(casas));
+  function alvoDaGlidepath(mesesAteEntrega) {
+    const anos = mesesAteEntrega / 12;
+    if (anos >= INICIO_DA_RAMPA_ANOS) return EXPOSICAO_ALVO[4];
+    if (anos <= 0) return EXPOSICAO_ALVO[0];
+    const teto = Math.ceil(anos), piso = Math.floor(anos);
+    if (teto === piso) return EXPOSICAO_ALVO[piso];
+    const fracao = anos - piso;
+    return arred(EXPOSICAO_ALVO[piso] + (EXPOSICAO_ALVO[teto] - EXPOSICAO_ALVO[piso]) * fracao, 4);
+  }
+  function fatorDeVelocidade({ estado, mesesAteEntrega, defasagem = 0 }) {
+    if (mesesAteEntrega <= MESES_SEM_MODULACAO) {
+      return { fator: FATOR_NEUTRO, motivo: `últimos ${MESES_SEM_MODULACAO} meses não modulam (D25 D)` };
+    }
+    if (defasagem >= TETO_DEFASAGEM) {
+      return { fator: FATOR_NEUTRO, motivo: `defasagem no teto de ${TETO_DEFASAGEM} pontos (D25 C)` };
+    }
+    const fator = VELOCIDADE_POR_ESTADO[estado];
+    if (fator === void 0) return { fator: null, motivo: `estado não reconhecido: ${estado}` };
+    return { fator, motivo: `estado ${estado}` };
+  }
+  var passoDoMes = (mesesAteEntrega) => arred(alvoDaGlidepath(mesesAteEntrega + 1) - alvoDaGlidepath(mesesAteEntrega), 4);
+  var bandaDoMes = (mesesAteEntrega) => mesesAteEntrega >= MESES_SEM_MODULACAO ? BANDA_PONTOS : arred(BANDA_PONTOS * (Math.max(mesesAteEntrega, 0) / MESES_SEM_MODULACAO), 4);
+  function demandaDaGlidepath({ exposicaoAtual, mesesAteEntrega, estado, defasagem = 0 }) {
+    if (typeof defasagem !== "number" || !Number.isFinite(defasagem)) {
+      return { erro: `defasagem não é número: ${JSON.stringify(defasagem)} — o Registro devolve {pontos, eventos}, e o que entra aqui são os pontos` };
+    }
+    const noFechamento = Math.max(mesesAteEntrega - 1, 0);
+    const alvo = alvoDaGlidepath(noFechamento);
+    const distancia = arred(exposicaoAtual - alvo, 4);
+    const { fator, motivo } = fatorDeVelocidade({ estado, mesesAteEntrega, defasagem });
+    if (fator === null) return { erro: motivo };
+    const ultimoAno = mesesAteEntrega <= MESES_SEM_MODULACAO;
+    const passo = passoDoMes(noFechamento);
+    const banda = bandaDoMes(noFechamento);
+    if (Math.abs(distancia) <= banda && defasagem === 0) {
+      return {
+        alvo,
+        distancia,
+        dentroDaBanda: true,
+        mover: 0,
+        passo,
+        banda,
+        fator,
+        motivo,
+        defasagemDepois: 0,
+        defasagemNoTeto: false,
+        liquidacaoDeDefasagem: 0,
+        ultimoAno
+      };
+    }
+    const programado = distancia <= 0 ? 0 : arred(Math.min(distancia, Math.max(passo, distancia - banda)), 4);
+    const movidoPeloFator = arred(programado * Math.min(fator, 1), 4);
+    const naoMovido = arred(programado - movidoPeloFator, 4);
+    const aRecuperar = fator > 1 ? arred(Math.min(defasagem, (fator - 1) * programado), 4) : 0;
+    const liquidacao = ultimoAno ? arred(defasagem / Math.max(mesesAteEntrega, 1), 4) : 0;
+    const defasagemDepois = ultimoAno ? arred(Math.max(defasagem - liquidacao, 0), 4) : arred(clamp(defasagem + naoMovido - aRecuperar, 0, TETO_DEFASAGEM), 4);
+    const moverBruto = arred(movidoPeloFator + aRecuperar + liquidacao, 4);
+    const mover = arred(Math.min(moverBruto, Math.max(distancia, 0)), 4);
+    return {
+      alvo,
+      distancia,
+      dentroDaBanda: false,
+      passo,
+      banda,
+      fator,
+      motivo,
+      mover,
+      moverBruto,
+      travadoNoAlvo: moverBruto > Math.max(distancia, 0),
+      naoMovido,
+      recuperado: aRecuperar,
+      liquidacaoDeDefasagem: liquidacao,
+      defasagemDepois,
+      defasagemNoTeto: defasagemDepois >= TETO_DEFASAGEM,
+      ultimoAno
+    };
+  }
+  var ESTADOS_DO_REFORCO = Object.freeze(["Capitulação profunda", "Prejuízo do mercado"]);
+  var GATILHO_DE_VENDA = 12;
+  var PISO_POR_POSICAO = 2;
+  var ANCORAS_DE_TESE2 = Object.freeze(["BTC", "ETH"]);
+  var GATILHOS_DE_VENDA = Object.freeze([
+    { n: 1, gatilho: `estouro acima de ${GATILHO_DE_VENDA}% do teto por ativo`, origem: "teto de concentração" },
+    { n: 2, gatilho: `queda abaixo de ${PISO_POR_POSICAO}% do piso de posição`, origem: "piso de posição" },
+    { n: 3, gatilho: "realização programada da glidepath", origem: "calendário e tabela do Abrigo" }
+  ]);
+  var ESTADOS_CONHECIDOS = Object.freeze(Object.keys(ESTADOS).map((k) => ESTADOS[k]));
+
+  // simulador/historico-publicado.mjs
+  var HISTORICO_PUBLICADO = Object.freeze([
+    Object.freeze({ versao: "v1.3", decisao: "—", capa: 67725, donoDoPiso: "Prejuízo do mercado" }),
+    Object.freeze({ versao: "v1.4", decisao: "D8", capa: 81316, donoDoPiso: "Capitulação + Prejuízo" }),
+    Object.freeze({ versao: "v1.5", decisao: "D10", capa: 67725, donoDoPiso: "Mercado saudável · Índice ≥ 65" }),
+    Object.freeze({ versao: "v1.6", decisao: "D11", capa: 67725, donoDoPiso: "Mercado saudável · Índice ≥ 65" }),
+    Object.freeze({ versao: "v1.7", decisao: "D12", capa: 67725, donoDoPiso: "Mercado saudável · Índice ≥ 65" }),
+    Object.freeze({ versao: "v1.8", decisao: "D13", capa: 67725, donoDoPiso: "Mercado saudável · Índice ≥ 65" }),
+    Object.freeze({ versao: "v1.9", decisao: "D51", capa: 67725, donoDoPiso: "Mercado saudável · Índice ≥ 65" }),
+    Object.freeze({
+      versao: "v1.10",
+      decisao: "D52",
+      capa: 67725,
+      donoDoPiso: "Mercado saudável · Índice ≥ 65",
+      // A grade inteira, como publicada. Motor da v1.10: alvo do ano, sem modulação.
+      celulas: Object.freeze({
+        "Capitulação profunda": Object.freeze({ Conservador: 94071, Moderado: 297492, Forte: 1051848 }),
+        "Prejuízo do mercado": Object.freeze({ Conservador: 85820, Moderado: 259084, Forte: 869200 }),
+        "Estresse de curto prazo": Object.freeze({ Conservador: 97384, Moderado: 311730, Forte: 1115616 }),
+        "Mercado saudável · Índice < 65": Object.freeze({ Conservador: 87561, Moderado: 262311, Forte: 867667 }),
+        "Mercado saudável · Índice ≥ 65": Object.freeze({ Conservador: 67725, Moderado: 185653, Forte: 557020 })
+      })
+    })
+  ]);
+  var ultimaPublicada = () => HISTORICO_PUBLICADO[HISTORICO_PUBLICADO.length - 1];
+
+  // simulador/motor.mjs
+  var arred2 = (x, casas = 4) => Number(x.toFixed(casas));
+  var faseDoMes = (fase, mes, t2) => Math.floor((fase * MESES_NA_FASE + mes + t2) / MESES_NA_FASE) % FASES.length;
+  var CENARIOS = Object.freeze({
+    Conservador: Object.freeze([-0.55, 0.35, 1.2, 0.1]),
+    Moderado: Object.freeze([-0.6, 0.5, 2, 0.2]),
+    Forte: Object.freeze([-0.65, 0.7, 3, 0.3])
+  });
+  var FASES = Object.freeze(["queda", "recuperação", "alta", "correção"]);
+  var APORTE_DE_REFERENCIA = 150;
+  var IDADE_DE_REFERENCIA = 0;
+  var BASE_DA_PUBLICACAO = Object.freeze({
+    idade: IDADE_DE_REFERENCIA,
+    aporte: APORTE_DE_REFERENCIA,
+    rotulo: "referência de cálculo, não regra de produto"
+  });
+  var MESES_NA_FASE = 12;
+  var ENTREGA_AOS = 18;
+  var LIMIAR_DA_FASE_3 = MARCO_INDICE;
+  var PARTIDAS = Object.freeze([
+    Object.freeze({ estado: ESTADOS.CAPITULACAO, indice: null, fase: 0, mes: 9, faseNaV13: 0 }),
+    Object.freeze({ estado: ESTADOS.PREJUIZO, indice: null, fase: 0, mes: 3, faseNaV13: 3 }),
+    Object.freeze({ estado: ESTADOS.ESTRESSE, indice: null, fase: 1, mes: 0, faseNaV13: 1 }),
+    Object.freeze({ estado: ESTADOS.SAUDAVEL, indice: "abaixo", fase: 2, mes: 0, faseNaV13: 2 }),
+    Object.freeze({ estado: ESTADOS.SAUDAVEL, indice: "acima", fase: 3, mes: 0, faseNaV13: 2 })
+  ]);
+  var rotuloDaPartida = (p) => p.indice === null ? p.estado : `${p.estado} · Índice ${p.indice === "acima" ? "≥" : "<"} ${LIMIAR_DA_FASE_3}`;
+  var rotuloDoPar = (p) => `fase ${p.fase} · ${FASES[p.fase]} · mês ${p.mes}`;
+  var mesesRestantesDaFase = (p) => MESES_NA_FASE - p.mes;
+  function partidaDaLeitura(leitura) {
+    if (!leitura || leitura.disponivel === false || !leitura.estado) {
+      return {
+        disponivel: false,
+        motivo: "sem leitura da Linha d'Água não há projeção — estado indisponível (D8)",
+        detalhe: leitura?.motivo ?? null
+      };
+    }
+    const { estado, indice } = leitura;
+    const candidatas = PARTIDAS.filter((p) => p.estado === estado);
+    if (candidatas.length === 0) {
+      return { disponivel: false, motivo: `estado sem partida definida: ${estado}` };
+    }
+    if (candidatas.length === 1) return { disponivel: true, partida: candidatas[0], indice };
+    if (typeof indice !== "number" || !Number.isFinite(indice)) {
+      return {
+        disponivel: false,
+        motivo: `${estado} se parte em duas pelo Índice (D10) e o Índice não veio — sem ele não há partida`
+      };
+    }
+    const lado = indice >= LIMIAR_DA_FASE_3 ? "acima" : "abaixo";
+    return { disponivel: true, partida: candidatas.find((p) => p.indice === lado), indice };
+  }
+  function estadoDaFase(fase, mesNaFase) {
+    const candidatas = PARTIDAS.filter((p) => p.fase === fase).sort((a, b) => b.mes - a.mes);
+    if (candidatas.length === 0) return null;
+    return (candidatas.find((p) => mesNaFase >= p.mes) ?? candidatas[candidatas.length - 1]).estado;
+  }
+  var expoDoAno = (anosRestantes) => EXPOSICAO_ALVO[Math.min(Math.max(anosRestantes, 0), INICIO_DA_RAMPA_ANOS)] / 100;
+  var TABELA_EXPO = Object.freeze(
+    Object.keys(EXPOSICAO_ALVO).map(Number).sort((a, b) => b - a).map((anos) => Object.freeze({
+      anos,
+      rotulo: anos === 0 ? "entrega" : `${anos} ${anos === 1 ? "ano" : "anos"}`,
+      exposicao: EXPOSICAO_ALVO[anos],
+      // Passo do mês DENTRO do trecho que desce até este marco. No topo da rampa não
+      // há trecho acima, e na entrega o trecho é o de 1 ano para 0.
+      passoMensal: anos >= INICIO_DA_RAMPA_ANOS ? null : arred2(passoDoMes(anos * 12), 4),
+      abrigoAtivo: anos <= ABRIGO_ATIVO_ANOS
+    }))
+  );
+  function motorMensal({ anos, aporte, fase, mes = 0, padrao, exposicaoDoMes = null }) {
+    const exposicao = exposicaoDoMes ?? ((t2) => expoDoAno(anos - Math.floor(t2 / MESES_NA_FASE) - 1));
+    const pontos = [{ ano: 0, saldo: 0, aportado: 0, exposicao: exposicao(0) * 100 }];
+    let saldo = 0, aportado = 0;
+    for (let t2 = 0; t2 < anos * MESES_NA_FASE; t2++) {
+      const exp = exposicao(t2);
+      const f = faseDoMes(fase, mes, t2);
+      const m = (1 + padrao[f] * exp) ** (1 / 12) - 1;
+      saldo = (saldo + aporte) * (1 + m);
+      aportado += aporte;
+      if (t2 % MESES_NA_FASE === MESES_NA_FASE - 1) {
+        pontos.push({ ano: Math.floor(t2 / MESES_NA_FASE) + 1, saldo, aportado, exposicao: exp * 100 });
+      }
+    }
+    return { pontos, saldo, aportado };
+  }
+  function exposicaoModulada({ anos, fase, mes = 0 }) {
+    const traj = trajetoriaDaGlidepath({ anos, fase, mes });
+    if (traj.erro) return null;
+    return (t2) => traj.linhas[t2].exposicao / 100;
+  }
+  var motorDaV13 = ({ anos, aporte, fase, padrao }) => motorMensal({ anos, aporte, fase, mes: 0, padrao, exposicaoDoMes: null });
+  function motorAnual({ anos, aporte, fase, padrao }) {
+    let saldo = 0, aportado = 0;
+    for (let y = 0; y < anos; y++) {
+      const exp = expoDoAno(anos - y - 1);
+      const m = (1 + padrao[(fase + y) % FASES.length] * exp) ** (1 / 12) - 1;
+      for (let i = 0; i < MESES_NA_FASE; i++) {
+        saldo = (saldo + aporte) * (1 + m);
+        aportado += aporte;
+      }
+    }
+    return { saldo, aportado };
+  }
+  function criterioDeAceiteD11({ anos, aporte }) {
+    const combinacoes = [];
+    for (let fase = 0; fase < FASES.length; fase++) {
+      for (const [cenario, padrao] of Object.entries(CENARIOS)) {
+        const mensal = motorMensal({ anos, aporte, fase, mes: 0, padrao }).saldo;
+        const anual = motorAnual({ anos, aporte, fase, padrao }).saldo;
+        combinacoes.push({ fase, cenario, mensal, anual, diferenca: mensal - anual });
+      }
+    }
+    const maiorDiferenca = Math.max(...combinacoes.map((c) => Math.abs(c.diferenca)));
+    return { combinacoes, maiorDiferenca, passa: maiorDiferenca === 0 };
+  }
+  var TETO_DERIVA = 15;
+  var VERSAO_REFERENCIA = "v1.3";
+  var CENARIO_DA_CAPA = "Conservador";
+  var CELULAS_DA_GRADE = PARTIDAS.length * Object.keys(CENARIOS).length;
+  function grade({ anos, aporte }) {
+    const linhas = PARTIDAS.map((partida) => {
+      const exposicaoDoMes = exposicaoModulada({ anos, fase: partida.fase, mes: partida.mes });
+      const celulas = Object.entries(CENARIOS).map(([cenario, padrao]) => {
+        const atual = motorMensal({
+          anos,
+          aporte,
+          fase: partida.fase,
+          mes: partida.mes,
+          padrao,
+          exposicaoDoMes
+        }).saldo;
+        const referencia = motorDaV13({ anos, aporte, fase: partida.faseNaV13, padrao }).saldo;
+        const deriva = (atual / referencia - 1) * 100;
+        return { cenario, atual, referencia, deriva, estourou: deriva > TETO_DERIVA };
+      });
+      const aportado = motorMensal({
+        anos,
+        aporte,
+        fase: partida.fase,
+        mes: partida.mes,
+        padrao: CENARIOS[CENARIO_DA_CAPA]
+      }).aportado;
+      return { partida, rotulo: rotuloDaPartida(partida), par: rotuloDoPar(partida), aportado, celulas };
+    });
+    const estouradas = linhas.flatMap((l) => l.celulas.filter((c) => c.estourou));
+    return {
+      linhas,
+      aportado: linhas[0].aportado,
+      celulas: CELULAS_DA_GRADE,
+      estouradas: estouradas.length,
+      // D13 regra 2: estourou qualquer célula, A REVISÃO INTEIRA vai para o Gui.
+      retida: estouradas.length > 0
+    };
+  }
+  var TETO_SALTO_DA_CAPA = 5;
+  var TETO_SALTO_DA_CELULA = 10;
+  function saltoEntreVersoes({ anos, aporte, anterior = ultimaPublicada() }) {
+    const g = grade({ anos, aporte });
+    const capaAgora = numeroDeCapa({ anos, aporte });
+    const salto = (de, para) => arred2((para / de - 1) * 100, 4);
+    const saltoDaCapa = salto(anterior.capa, capaAgora.valor);
+    const celulas = g.linhas.flatMap((l) => l.celulas.map((c) => {
+      const de = anterior.celulas?.[l.rotulo]?.[c.cenario] ?? null;
+      return {
+        partida: l.rotulo,
+        cenario: c.cenario,
+        de,
+        para: c.atual,
+        // Sem registro da versão anterior não há salto — e "não calculável" nunca vira
+        // zero. Zero silencioso aqui seria a trava dizendo "passou" sobre o que não viu.
+        salto: de === null ? null : salto(de, c.atual),
+        semRegistro: de === null,
+        vaiAoGate: de === null ? false : Math.abs(salto(de, c.atual)) > TETO_SALTO_DA_CELULA
+      };
+    }));
+    return {
+      versaoAnterior: anterior.versao,
+      decisaoAnterior: anterior.decisao,
+      capa: {
+        de: anterior.capa,
+        para: capaAgora.valor,
+        salto: saltoDaCapa,
+        teto: TETO_SALTO_DA_CAPA,
+        vaiAoGate: Math.abs(saltoDaCapa) > TETO_SALTO_DA_CAPA,
+        donoAntes: anterior.donoDoPiso,
+        donoAgora: capaAgora.identidade,
+        // D13 regra 4 outra vez: dono novo é informação mesmo com o valor parado.
+        trocouDeDono: anterior.donoDoPiso !== capaAgora.identidade
+      },
+      celulas,
+      celulasNoGate: celulas.filter((c) => c.vaiAoGate).length,
+      celulasSemRegistro: celulas.filter((c) => c.semRegistro).length,
+      vaiAoGate: Math.abs(saltoDaCapa) > TETO_SALTO_DA_CAPA || celulas.some((c) => c.vaiAoGate)
+    };
+  }
+  function numeroDeCapa({ anos, aporte }) {
+    const g = grade({ anos, aporte });
+    const piso = g.linhas.reduce((menor, l) => {
+      const v = l.celulas.find((c) => c.cenario === CENARIO_DA_CAPA).atual;
+      return menor === null || v < menor.valor ? { valor: v, linha: l } : menor;
+    }, null);
+    return {
+      cenario: CENARIO_DA_CAPA,
+      valor: piso.valor,
+      aportado: g.aportado,
+      multiplicador: piso.valor / g.aportado,
+      identidade: piso.linha.rotulo,
+      par: piso.linha.par,
+      // Os outros dois cenários da MESMA partida — piso é partida, não é célula solta.
+      outros: piso.linha.celulas.filter((c) => c.cenario !== CENARIO_DA_CAPA).map((c) => ({ cenario: c.cenario, valor: c.atual, multiplicador: c.atual / g.aportado }))
+    };
+  }
+  function trajetoriaDaGlidepath({ anos, fase, mes = 0 }) {
+    const total = anos * MESES_NA_FASE;
+    let exposicao = alvoDaGlidepath(total);
+    let defasagem = 0;
+    const linhas = [];
+    for (let t2 = 0; t2 < total; t2++) {
+      const mesesAteEntrega = total - t2;
+      const absoluto = fase * MESES_NA_FASE + mes + t2;
+      const faseCorrente = faseDoMes(fase, mes, t2);
+      const estado = estadoDaFase(faseCorrente, absoluto % MESES_NA_FASE);
+      const d = demandaDaGlidepath({ exposicaoAtual: exposicao, mesesAteEntrega, estado, defasagem });
+      if (d.erro) return { erro: d.erro };
+      exposicao = arred2(exposicao - d.mover, 4);
+      const defasagemAntes = defasagem;
+      defasagem = d.defasagemDepois;
+      linhas.push({
+        t: t2,
+        mesesAteEntrega,
+        anosRestantes: mesesAteEntrega / MESES_NA_FASE,
+        fase: faseCorrente,
+        estado,
+        fator: d.fator,
+        motivo: d.motivo,
+        alvo: d.alvo,
+        exposicao,
+        defasagemAntes,
+        defasagem,
+        banda: d.banda,
+        distancia: d.distancia,
+        passo: d.passo,
+        mover: d.mover,
+        dentroDaBanda: Boolean(d.dentroDaBanda),
+        noTeto: Boolean(d.defasagemNoTeto),
+        ultimoAno: Boolean(d.ultimoAno)
+      });
+    }
+    const fim = linhas[linhas.length - 1];
+    const ultimoAno = linhas.filter((l) => l.ultimoAno);
+    return {
+      linhas,
+      maiorDefasagem: Math.max(...linhas.map((l) => l.defasagem)),
+      mesesNoTeto: linhas.filter((l) => l.noTeto).length,
+      defasagemNaEntrega: fim.defasagem,
+      exposicaoNaEntrega: fim.exposicao,
+      // ⚠️ DOIS ALVOS DIFERENTES, e chamar os dois de "entrega" escondia um mês inteiro.
+      // O último mês que o cronograma administra é o de UM mês para a entrega, e o alvo
+      // dele não é o marco da entrega: entre os dois ainda há um passo de rampa.
+      alvoDoUltimoMes: fim.alvo,
+      alvoDoMarcoDaEntrega: alvoDaGlidepath(0),
+      bandaDoUltimoMes: fim.banda,
+      // A folga contra o alvo DO MÊS: é ela que diz se o mês corrigiu a posição (D52 A).
+      folgaNoUltimoMes: arred2(fim.exposicao - fim.alvo, 4),
+      // E a folga contra o MARCO da entrega, que inclui o passo do mês que ninguém
+      // administra, porque o laço termina a um mês da entrega.
+      folgaContraOMarco: arred2(fim.exposicao - alvoDaGlidepath(0), 4),
+      // ⚠️ MEDIDO, e a D52 D manda manter: em quantos meses do último ano a cláusula da
+      // banda ("não mexe em nada") chegou a disparar. Continua ZERO depois da D52 — mas
+      // por motivo oposto. Antes a banda era irrelevante; agora ela é consultada todo mês
+      // e é ela que define ONDE a posição para, só que a distância antes do movimento é
+      // sempre banda + um passo, e por isso nunca cabe dentro dela.
+      mesesEmQueABandaSegurou: ultimoAno.filter((l) => l.dentroDaBanda).length,
+      // Em quantos a distância já era maior que o passo. Antes da D52 isso valia 12 de 12
+      // e significava "a folga está congelada"; depois dela significa só que ainda há
+      // posição a corrigir, e a posição de fato encolhe.
+      mesesTravadosNoPasso: ultimoAno.filter((l) => l.distancia > l.passo).length,
+      // A medida que passou a carregar o diagnóstico: em quantos meses foi a BANDA, e não
+      // o passo, que dimensionou o movimento. É isso que a D52 A ligou.
+      mesesEmQueABandaDefiniuAPosicao: ultimoAno.filter((l) => !l.dentroDaBanda && l.distancia - l.banda > l.passo).length,
+      mesesDoUltimoAno: ultimoAno.length
+    };
+  }
+  function efeitoDaModulacao({ anos, aporte, fase, mes = 0 }) {
+    const exposicaoDoMes = exposicaoModulada({ anos, fase, mes });
+    if (!exposicaoDoMes) return { erro: "trajetória indisponível" };
+    return Object.entries(CENARIOS).map(([cenario, padrao]) => {
+      const publicado = motorMensal({ anos, aporte, fase, mes, padrao, exposicaoDoMes }).saldo;
+      const semModulacao = motorMensal({ anos, aporte, fase, mes, padrao }).saldo;
+      return { cenario, publicado, semModulacao, diferenca: (publicado / semModulacao - 1) * 100 };
+    });
+  }
+  var ESTACAO_DO_ESTADO = Object.freeze({
+    [ESTADOS.CAPITULACAO]: "Plantio",
+    [ESTADOS.PREJUIZO]: "Plantio",
+    [ESTADOS.ESTRESSE]: "Crescimento",
+    [ESTADOS.SAUDAVEL]: "Colheita"
+  });
+  var ABRIGO = "Abrigo";
+  function estacaoDoMes({ fase, mes = 0, t: t2, anosRestantes }) {
+    if (anosRestantes <= ABRIGO_ATIVO_ANOS) return { estacao: ABRIGO, estado: null, abrigo: true };
+    const absoluto = fase * MESES_NA_FASE + mes + t2;
+    const estado = estadoDaFase(faseDoMes(fase, mes, t2), absoluto % MESES_NA_FASE);
+    return { estacao: ESTACAO_DO_ESTADO[estado] ?? null, estado, abrigo: false };
+  }
+  var estacoesPorAno = ({ anos, fase, mes = 0 }) => Array.from({ length: anos }, (_, ano) => ({
+    ano,
+    anosRestantes: anos - ano - 1,
+    ...estacaoDoMes({ fase, mes, t: ano * MESES_NA_FASE, anosRestantes: anos - ano - 1 })
+  }));
+
+  // .empacota-tmp/simulador.mjs
+  var HOJE = "2026-08-29";
+  var SERIES_DA_LINHA = Object.freeze(
+    ["Preço do BTC", "Realized Price", "Realized Price STH", "Realized Price LTH"]
+  );
+  var $ = (id) => document.getElementById(id);
+  var brl = (n) => "R$ " + Math.round(n).toLocaleString("pt-BR");
+  var curto = (n) => n >= 1e6 ? "R$ " + (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(".", ",") + " mi" : n >= 1e3 ? "R$ " + Math.round(n / 1e3) + " mil" : brl(n);
+  var num = (v, casas = 2) => v.toFixed(casas).replace(".", ",");
+  var pct = (v) => (v > 0 ? "+" : "") + num(v, 1) + "%";
+  var mult = (v) => num(v, 1) + "x";
+  function leituraDeHoje(varredura) {
+    const faltam = SERIES_DA_LINHA.filter((n) => typeof varredura?.[n]?.valor !== "number");
+    if (faltam.length) {
+      return { disponivel: false, motivo: `faltam ${faltam.length} de ${SERIES_DA_LINHA.length} séries de origem: ${faltam.join(" · ")}` };
+    }
+    const estado = classificarLinhaDagua({
+      preco: varredura["Preço do BTC"].valor,
+      realizedPrice: varredura["Realized Price"].valor,
+      sth: varredura["Realized Price STH"].valor,
+      lth: varredura["Realized Price LTH"].valor
+    });
+    const r = varrer({ varredura, hoje: HOJE });
+    return { disponivel: true, estado, indice: r.indice, exibido: Math.round(r.indice), faixa: faixaDoIndice(r.indice) };
+  }
+  var semLeitura = false;
+  var escolhida = null;
+  var selPartida = $("partida");
+  PARTIDAS.forEach((p, i) => selPartida.insertAdjacentHTML(
+    "beforeend",
+    `<option value="${i}">${rotuloDaPartida(p)} — ${rotuloDoPar(p)}</option>`
+  ));
+  $("semLeitura").onclick = () => {
+    semLeitura = !semLeitura;
+    escolhida = null;
+    render();
+  };
+  selPartida.addEventListener("change", () => {
+    escolhida = +selPartida.value;
+    render();
+  });
+  ["idade", "aporte"].forEach((id) => $(id).addEventListener("input", render));
+  addEventListener("resize", render);
+  $("fechar").onclick = () => $("toast").remove();
+  function campo(rotulo, valor, sub) {
+    return `<div><div class="lab">${rotulo}</div><div class="v">${valor}` + (sub ? `<small>${sub}</small>` : "") + "</div></div>";
+  }
+  function render() {
+    const leitura = leituraDeHoje(semLeitura ? {} : VARREDURA_29_08_2026);
+    const lida = partidaDaLeitura(leitura);
+    $("semLeitura").textContent = semLeitura ? "Voltar à leitura da Linha d'Água" : "Ver a tela sem leitura da Linha d'Água";
+    if (!lida.disponivel) {
+      $("tudo").hidden = true;
+      $("recusa").hidden = false;
+      $("recusa").innerHTML = `<div class="rot">Estado indisponível</div><p style="margin:10px 0 0"><b>Sem leitura da Linha d'Água não há projeção.</b> A tela não assume fase, não usa a última leitura conhecida e não cai em partida padrão.</p><p class="mini" style="margin:12px 0 0">Motivo: ${lida.motivo}` + (lida.detalhe ? ` · ${lida.detalhe}` : "") + `</p><p style="margin:16px 0 0"><button class="link" id="voltar">Voltar à leitura da Linha d'Água</button></p>`;
+      $("voltar").onclick = () => {
+        semLeitura = false;
+        render();
+      };
+      return;
+    }
+    $("recusa").hidden = true;
+    $("tudo").hidden = false;
+    const iLida = PARTIDAS.indexOf(lida.partida);
+    const iUsada = escolhida === null ? iLida : escolhida;
+    const partida = PARTIDAS[iUsada];
+    const hipotetica = iUsada !== iLida;
+    selPartida.value = String(iUsada);
+    $("labPartida").textContent = hipotetica ? "Partida — alterada à mão" : "Partida — lida hoje na Linha d'Água";
+    $("hip").innerHTML = hipotetica ? '<span class="hip">Simulação hipotética</span>' : "";
+    $("parLeitura").innerHTML = campo("Estado · Linha d'Água", leitura.estado, `leitura de ${HOJE}`) + campo("Índice Semente", num(leitura.exibido, 0), `faixa ${leitura.faixa} · valor interno ${num(leitura.indice, 4)}`) + campo(
+      "Fase de partida",
+      `${partida.fase} · ${FASES[partida.fase]}`,
+      `corte da fase 3 em Índice ${LIMIAR_DA_FASE_3}`
+    ) + campo(
+      "Mês de entrada na fase",
+      String(partida.mes),
+      `restam ${mesesRestantesDaFase(partida)} meses desta fase`
+    );
+    $("notaPartida").textContent = hipotetica ? `A partida em uso não é a lida hoje: a leitura de ${HOJE} é ${rotuloDaPartida(lida.partida)}, ${rotuloDoPar(lida.partida)}. Tudo abaixo é hipotético.` : `A partida é lida da Linha d'Água, não escolhida. O mês de entrada diz onde o padrão começa a ser lido: os ${partida.mes} meses já consumidos da fase não voltam no fim.`;
+    const idade = +$("idade").value, aporte = +$("aporte").value, anos = ENTREGA_AOS - idade;
+    $("vIdade").textContent = idade;
+    $("vAporte").textContent = aporte.toLocaleString("pt-BR");
+    const naBase = idade === BASE_DA_PUBLICACAO.idade && aporte === BASE_DA_PUBLICACAO.aporte;
+    const aBase = `idade ${BASE_DA_PUBLICACAO.idade} e aporte ${brl(APORTE_DE_REFERENCIA)} — ${BASE_DA_PUBLICACAO.rotulo}`;
+    $("notaBase").innerHTML = (naBase ? `<span class="ok">Na base de publicação</span> — ${aBase}. Os números desta tela são os das tabelas publicadas.` : `<span class="alerta">Fora da base de publicação</span> — as tabelas publicadas foram calculadas com ${aBase}. O que está na tela é esta simulação, não o material de venda.`) + ` Nenhuma trava do sistema depende desse valor, e o simulador aceita qualquer aporte.`;
+    const exposicaoDoMes = exposicaoModulada({ anos, fase: partida.fase, mes: partida.mes });
+    const S = {};
+    for (const [k, padrao] of Object.entries(CENARIOS)) {
+      S[k] = motorMensal({ anos, aporte, fase: partida.fase, mes: partida.mes, padrao, exposicaoDoMes });
+    }
+    const aportado = S[CENARIO_DA_CAPA].aportado;
+    const capa = numeroDeCapa({ anos, aporte });
+    $("capaRot").textContent = `Piso · cenário ${capa.cenario}`;
+    $("capaValor").textContent = brl(capa.valor);
+    $("capaMult").textContent = `${mult(capa.multiplicador)} o aportado`;
+    $("capaIdent").textContent = `Partida: ${capa.identidade} (${capa.par}). É o menor resultado entre as ${PARTIDAS.length} partidas possíveis — nunca a leitura do dia.`;
+    $("capaOutros").textContent = "Mesma partida nos outros cenários: " + capa.outros.map((o) => `${o.cenario} ${brl(o.valor)} (${mult(o.multiplicador)})`).join(" · ") + ".";
+    const daLeitura = grade({ anos, aporte }).linhas[iLida];
+    const cLeitura = daLeitura.celulas.find((c) => c.cenario === CENARIO_DA_CAPA);
+    $("capaHoje").innerHTML = campo("Estado e índice", `${lida.partida.estado} · ${num(leitura.exibido, 0)}`, rotuloDaPartida(lida.partida)) + campo("Fase e mês", rotuloDoPar(lida.partida), `restam ${mesesRestantesDaFase(lida.partida)} meses da fase`) + campo(`Resultado · ${CENARIO_DA_CAPA}`, brl(cLeitura.atual), `${mult(cLeitura.atual / daLeitura.aportado)} o aportado`);
+    $("notaCapa").textContent = `O piso é a única linha que uma revisão de mapeamento não empurra para cima sem que o próprio pior caso tenha melhorado. Por isso o material abre por ele, e a leitura do dia aparece em segunda linha, rotulada.`;
+    const g = grade({ anos, aporte });
+    $("tbPartidas").innerHTML = g.linhas.map((l, i) => {
+      const marca = i === iLida ? ' style="color:var(--gold)"' : "";
+      return `<tr><td${marca}>${l.rotulo}${i === iLida ? " · hoje" : ""}</td><td class="mini">${l.par}</td>` + l.celulas.map((c) => `<td>${brl(c.atual)}<br><span class="mini">${mult(c.atual / l.aportado)}</span></td>`).join("") + "</tr>";
+    }).join("");
+    $("oAnos").textContent = anos;
+    $("oEntrega").textContent = `entrega aos ${ENTREGA_AOS}`;
+    $("oAportado").textContent = brl(aportado);
+    $("oMeses").textContent = `${anos * MESES_NA_FASE} aportes`;
+    $("oFaixa").textContent = `${curto(S.Conservador.saldo)} – ${curto(S.Forte.saldo)}`;
+    $("oMult").textContent = `${mult(S.Conservador.saldo / aportado)} a ${mult(S.Forte.saldo / aportado)} o aportado`;
+    $("oEst").textContent = rotuloDaPartida(partida);
+    $("oPar").textContent = rotuloDoPar(partida);
+    $("tb").innerHTML = Object.entries(CENARIOS).map(([k, padrao]) => {
+      const ciclo = padrao.reduce((p, r) => p * (1 + r), 1) ** (1 / FASES.length) - 1;
+      return `<tr><td>${k}</td><td>${num(ciclo * 100, 0)}%</td><td class="g">${brl(S[k].saldo)}</td><td>${mult(S[k].saldo / S[k].aportado)}</td></tr>`;
+    }).join("");
+    $("csAbrigo").textContent = `Exposição alvo por anos restantes · o Abrigo fica ativo a partir de ${ABRIGO_ATIVO_ANOS} anos da entrega`;
+    $("tbExpo").innerHTML = TABELA_EXPO.map((e) => `<tr><td>${e.rotulo}</td><td>${e.exposicao}%</td><td>${e.passoMensal === null ? "—" : num(e.passoMensal, 2) + " pt"}</td><td class="${e.abrigoAtivo ? "" : "bom"}">${e.abrigoAtivo ? "ativo" : "fora"}</td></tr>`).join("");
+    const ligaAqui = TABELA_EXPO.find((e) => e.anos === ABRIGO_ATIVO_ANOS);
+    $("notaAbrigo").textContent = `A ${ligaAqui.rotulo} a exposição ainda é ${ligaAqui.exposicao}% e o Abrigo já está ativo: é ele que passa a mandar no teto do aporte e a bloquear o Reforço de Fundo, mesmo antes de a rampa tirar o primeiro ponto. Entre os marcos o alvo é interpolado mês a mês — a rampa desce todo mês, não uma vez por ano.`;
+    $("csVel").textContent = `Quem modula a velocidade é o estado da Linha d'Água, não o Índice · a modulação incide sobre o passo do mês, nunca sobre a distância acumulada`;
+    $("tbVel").innerHTML = Object.entries(VELOCIDADE_POR_ESTADO).map(([estado, fator]) => `<tr><td>${estado}</td><td>${num(fator, 2)}</td><td class="mini">` + (fator > 1 ? `anda o passo inteiro e ainda recupera defasagem, até ${num(fator - 1, 2)} do passo` : fator === 1 ? "anda o passo inteiro; nada sobra para defasagem" : `anda ${num(fator * 100, 0)}% do passo; os outros ${num((1 - fator) * 100, 0)}% viram defasagem`) + "</td></tr>").join("");
+    const traj = trajetoriaDaGlidepath({ anos, fase: partida.fase, mes: partida.mes });
+    const efeito = efeitoDaModulacao({ anos, aporte, fase: partida.fase, mes: partida.mes });
+    $("parTraj").innerHTML = campo("Maior defasagem", `${num(traj.maiorDefasagem, 2)} pt`, `teto de ${TETO_DEFASAGEM} pontos`) + campo("Meses no teto", String(traj.mesesNoTeto), `no teto o fator volta a 1,00`) + campo(
+      "Defasagem na entrega",
+      `${num(traj.defasagemNaEntrega, 2)} pt`,
+      `liquidada nos últimos ${MESES_SEM_MODULACAO} meses, não perdoada`
+    ) + campo(
+      "Exposição na entrega",
+      `${num(traj.exposicaoNaEntrega, 2)}%`,
+      `alvo do último mês administrado ${num(traj.alvoDoUltimoMes, 2)}%`
+    ) + campo(
+      "Contra o marco da entrega",
+      `${num(traj.folgaContraOMarco, 2)} pt`,
+      `o marco é ${num(traj.alvoDoMarcoDaEntrega, 2)}%, e o último mês mira ele`
+    ) + campo(
+      "Banda no último mês",
+      `${num(traj.bandaDoUltimoMes, 2)} pt`,
+      `afunila de ${BANDA_PONTOS} a 0 nos últimos ${MESES_SEM_MODULACAO} meses`
+    ) + campo(
+      "A banda dimensionou o mês",
+      `${traj.mesesEmQueABandaDefiniuAPosicao} de ${traj.mesesDoUltimoAno} meses`,
+      `a cláusula de não mexer disparou em ${traj.mesesEmQueABandaSegurou}`
+    );
+    $("notaVel").innerHTML = `A defasagem é o que a modulação deixou de mover, e só ela: a banda é tolerância de posição e não gera defasagem — no último ano ela afunila de ${BANDA_PONTOS} pontos até zero, e continua não gerando. Nos últimos ${MESES_SEM_MODULACAO} meses ninguém modula — modular pressupõe tempo para esperar o mercado virar, e no último ano não há esse tempo — e a defasagem é liquidada até zero dentro do período.<br><br><b>O mês corrige a posição, não só acompanha o passo</b> (D52 A): <code>programado = min(distância, max(passo, distância − banda))</code>, e ele mira onde a rampa precisa estar quando o mês FECHAR, não quando abre (D53 C). Por isso o último mês administrado mira o próprio marco da entrega, e a carteira chega a ${num(traj.exposicaoNaEntrega, 2)}% com o marco em ${num(traj.alvoDoMarcoDaEntrega, 2)}% — folga de ${num(traj.folgaContraOMarco, 2)} ponto.<br><br>A banda dimensionou o movimento em ${traj.mesesEmQueABandaDefiniuAPosicao} dos ${traj.mesesDoUltimoAno} meses do último ano. ` + (traj.maiorDefasagem > 0 ? `Nesta partida há defasagem acumulada, e quem traz a exposição ao alvo é a liquidação da D25 D — a banda quase não dimensiona nada.` : `Nesta partida não há defasagem para liquidar, e é o afunilamento da banda que traz a exposição ao alvo, mês a mês.`) + ` As duas peças cobrem regimes diferentes, e nenhuma é redundante (D53 D).`;
+    const todoParaCima = efeito.every((c) => c.diferenca >= 0);
+    const sinal = todoParaCima ? "Quanto a modulação acrescenta" : efeito.every((c) => c.diferenca <= 0) ? "Quanto a modulação subtrai" : "Quanto a modulação move, para os dois lados";
+    $("naoProjetado").innerHTML = `<h3>${sinal} — já aplicado à projeção publicada</h3><div class="par">` + efeito.map((c) => campo(c.cenario, pct(c.diferenca), `sem modular ${brl(c.semModulacao)} → ${brl(c.publicado)}`)).join("") + `</div><p class="note" style="margin:16px 0 0">A modulação existe para não vender no fundo, e desde a D53 A ela entra na conta que a gente publica — a D51 B, que a mantinha fora, está revogada. O sinal depende da partida: ela acelera a saída em mercado saudável e segura em capitulação, e o efeito sobre a projeção segue daí. A referência ${VERSAO_REFERENCIA} da tabela de deriva <b>não</b> acompanhou: ela ficou congelada no alvo do ano, que é a regra que produziu os números publicados. Se ela seguisse o motor, os dois lados se moveriam juntos e a deriva mediria zero por construção.</p>`;
+    $("csDeriva").textContent = `As ${CELULAS_DA_GRADE} células contra a ${VERSAO_REFERENCIA} · o limite é ${TETO_DERIVA}% por célula, e estourar uma retém a revisão inteira`;
+    $("tbDeriva").innerHTML = g.linhas.map((l) => `<tr class="${l.celulas.some((c) => c.estourou) ? "retida" : ""}"><td>${l.rotulo}<br><span class="mini">${l.par}</span></td>` + l.celulas.map((c) => `<td class="${c.estourou ? "ruim" : "bom"}">${pct(c.deriva)}<br><span class="mini">${brl(c.referencia)} → ${brl(c.atual)}</span></td>`).join("") + "</tr>").join("");
+    $("notaDeriva").innerHTML = `${g.estouradas} de ${CELULAS_DA_GRADE} células acima de ${TETO_DERIVA}%. ` + (g.retida ? `<span class="alerta">A revisão inteira fica retida</span> — não se publica a parte que não estourou. ` : `Nenhuma célula estourou. `) + `A tabela é permanente: nunca é apagada nem resumida, e a deriva não zera por compensação — mede-se sempre contra a ${VERSAO_REFERENCIA}. O piso está em ${capa.identidade}, e a identidade dele é rastreada junto com o valor: se a partida que ocupa o piso mudar, isso é reportado mesmo que o número não se mova.`;
+    const salto = saltoEntreVersoes({ anos, aporte });
+    $("csSalto").textContent = `Movimento de uma versão para a seguinte · a capa vai ao Gate 2 acima de ${TETO_SALTO_DA_CAPA}%, as demais células acima de ${TETO_SALTO_DA_CELULA}%, em qualquer direção`;
+    $("saltoCapa").innerHTML = `<h3>O número de capa contra a ${salto.versaoAnterior}</h3><div class="par">` + campo("Antes", brl(salto.capa.de), `${salto.versaoAnterior} · ${salto.decisaoAnterior}`) + campo("Agora", brl(salto.capa.para), salto.capa.donoAgora) + campo(
+      "Salto",
+      pct(salto.capa.salto),
+      `teto de ${TETO_SALTO_DA_CAPA}% · ${salto.capa.vaiAoGate ? "vai ao Gate 2" : "dentro do limite"}`
+    ) + campo(
+      "Dono do piso",
+      salto.capa.trocouDeDono ? "mudou" : "o mesmo",
+      salto.capa.trocouDeDono ? `de ${salto.capa.donoAntes}` : salto.capa.donoAgora
+    ) + "</div>";
+    const porPartida = /* @__PURE__ */ new Map();
+    for (const c of salto.celulas) {
+      if (!porPartida.has(c.partida)) porPartida.set(c.partida, []);
+      porPartida.get(c.partida).push(c);
+    }
+    $("tbSalto").innerHTML = [...porPartida].map(([partida2, cs]) => `<tr class="${cs.some((c) => c.vaiAoGate) ? "retida" : ""}"><td>${partida2}</td>` + cs.map((c) => `<td class="${c.vaiAoGate ? "ruim" : "bom"}">` + (c.semRegistro ? "sem registro" : pct(c.salto)) + `<br><span class="mini">${c.semRegistro ? "a versão anterior não registrou esta célula" : `${brl(c.de)} → ${brl(c.para)}`}</span></td>`).join("") + "</tr>").join("");
+    $("notaSalto").innerHTML = `${salto.celulasNoGate} de ${CELULAS_DA_GRADE} células saltaram acima de ${TETO_SALTO_DA_CELULA}%` + (salto.capa.vaiAoGate ? `, e a capa saltou ${pct(salto.capa.salto)}` : "") + `. <b>As duas travas não pegam as mesmas células.</b> A de deriva mede o afastamento acumulado desde a ${VERSAO_REFERENCIA}; esta mede o degrau de uma rodada. Uma linha pode estar retida por uma e liberada pela outra — e o caso que criou esta trava foi exatamente esse: a capa subiu ${pct(salto.capa.salto)} de uma vez com a célula dela longe do gatilho acumulado.` + (salto.celulasSemRegistro > 0 ? ` <span class="alerta">${salto.celulasSemRegistro} células sem registro na versão anterior</span> — salto não calculável, e não calculável nunca vira zero.` : "");
+    const aceite = criterioDeAceiteD11({ anos, aporte });
+    $("parAceite").innerHTML = campo("Motor", "mensal", `fase indexada ao mês · Abrigo indexado ao ano`) + campo(
+      "Critério de aceite",
+      aceite.passa ? "passa" : "REPROVA",
+      `${aceite.combinacoes.length} combinações de fase e cenário, com mês de entrada 0`
+    ) + campo(
+      "Maior diferença contra o motor anual",
+      num(aceite.maiorDiferenca, 6),
+      aceite.passa ? "identidade algébrica, não arredondamento" : "o laço divergiu do motor anual"
+    );
+    const est = estacoesPorAno({ anos, fase: partida.fase, mes: partida.mes });
+    $("csEstacoes").textContent = `A estação vem do estado do mercado; o Abrigo prevalece nos últimos ${ABRIGO_ATIVO_ANOS} anos`;
+    $("tl").innerHTML = est.map((e) => {
+      const cls = e.abrigo ? "abrigo" : e.estacao === "Colheita" ? "colheita" : e.estacao === "Plantio" ? "plantio" : "";
+      return `<div class="yr ${cls}"><b>${idade + e.ano + 1}a</b><i>${e.estacao}</i></div>`;
+    }).join("");
+    $("estado").innerHTML = `<span class="tag on">Hoje · <b>${lida.partida.estado}</b></span><span class="tag">Índice · <b>${num(leitura.exibido, 0)}</b></span><span class="tag">Fase · <b>${partida.fase} · ${FASES[partida.fase]}</b></span><span class="tag">Mês de entrada · <b>${partida.mes}</b></span>` + (hipotetica ? '<span class="tag" style="border-color:var(--c3);color:var(--c3)">Hipotética</span>' : "");
+    matriz(anos, partida);
+    jornada(S, anos, idade);
+    linhaDagua(S, anos, idade, partida);
+    glidepath(traj);
+  }
+  var COR = { Conservador: "--c4", Moderado: "--c5", Forte: "--c3" };
+  var COR_DA_ESTACAO = { Plantio: "--green", Crescimento: "--mut", Colheita: "--c3", [ABRIGO]: "--c4" };
+  var COLUNAS = [
+    { rotulo: `mais de ${ABRIGO_ATIVO_ANOS} anos`, anos: null, fator: 1, abrigo: false },
+    ...TABELA_EXPO.map((e) => ({ rotulo: e.rotulo, anos: e.anos, fator: e.exposicao / 100, abrigo: e.abrigoAtivo }))
+  ];
+  function matriz(anos, partida) {
+    const mx = $("mx");
+    mx.style.gridTemplateColumns = `150px repeat(${COLUNAS.length},1fr)`;
+    mx.innerHTML = "<div></div>" + COLUNAS.map((c) => `<div class="hd">${c.rotulo}</div>`).join("");
+    const restam = anos - 1;
+    const colAqui = restam > ABRIGO_ATIVO_ANOS ? 0 : COLUNAS.findIndex((c) => c.anos === restam);
+    const estadoAqui = partida.estado;
+    Object.entries(BASES_DO_ESTADO).forEach(([estado, base]) => {
+      mx.insertAdjacentHTML("beforeend", `<div class="rw">${estado}</div>`);
+      COLUNAS.forEach((c, ci) => {
+        const p = Math.round(base * c.fator);
+        const estacao = c.abrigo ? ABRIGO : ESTACAO_DO_ESTADO[estado];
+        const cor = COR_DA_ESTACAO[estacao];
+        const aqui = estado === estadoAqui && ci === colAqui ? " here" : "";
+        mx.insertAdjacentHTML(
+          "beforeend",
+          `<div class="cel${aqui}" style="background:color-mix(in srgb, var(${cor}) ${Math.round(p * 0.3 + 4)}%, transparent)">
+           <div class="p" style="color:var(${cor})">${p}%</div><div class="e">${estacao}</div></div>`
+        );
+      });
+    });
+  }
+  function tela(id) {
+    const cv = $(id), ctx = cv.getContext("2d");
+    const dpr = devicePixelRatio || 1, W = cv.clientWidth, H = 330;
+    cv.width = W * dpr;
+    cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    const cs = getComputedStyle(document.body);
+    return { ctx, W, H, c: (n) => cs.getPropertyValue(n).trim() };
+  }
+  function jornada(S, anos, idade) {
+    const { ctx, W, H, c } = tela("cv");
+    const L = 54, R = 132, T = 18, B = 32, w = W - L - R, h = H - T - B;
+    const max = Math.max(S.Forte.saldo, 1) * 1.08;
+    const X = (i) => L + i / anos * w, Y = (v) => T + h - v / max * h;
+    if (anos > ABRIGO_ATIVO_ANOS) {
+      const x = X(anos - ABRIGO_ATIVO_ANOS);
+      ctx.fillStyle = "rgba(76,201,240,.07)";
+      ctx.fillRect(x, T, X(anos) - x, h);
+      ctx.strokeStyle = "rgba(76,201,240,.3)";
+      ctx.setLineDash([3, 4]);
+      ctx.beginPath();
+      ctx.moveTo(x, T);
+      ctx.lineTo(x, T + h);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = c("--c4");
+      ctx.font = '10px "IBM Plex Mono",monospace';
+      ctx.fillText(ABRIGO.toUpperCase(), x + 7, T + 13);
+    }
+    grade2(ctx, c, L, T, w, h, max, (v) => curto(v).replace("R$ ", ""), Y);
+    ctx.fillStyle = c("--dim");
+    for (let y = 0; y <= anos; y += Math.max(1, Math.ceil(anos / 9))) ctx.fillText(String(idade + y), X(y) - 6, H - 10);
+    ctx.beginPath();
+    S.Forte.pontos.forEach((p, i) => i ? ctx.lineTo(X(i), Y(p.saldo)) : ctx.moveTo(X(i), Y(p.saldo)));
+    for (let i = anos; i >= 0; i--) ctx.lineTo(X(i), Y(S.Conservador.pontos[i].saldo));
+    ctx.closePath();
+    ctx.fillStyle = "rgba(86,217,138,.10)";
+    ctx.fill();
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    S.Moderado.pontos.forEach((p, i) => i ? ctx.lineTo(X(i), Y(p.aportado)) : ctx.moveTo(X(i), Y(p.aportado)));
+    ctx.strokeStyle = c("--dim");
+    ctx.lineWidth = 1.4;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = c("--mut");
+    ctx.fillText("APORTADO " + curto(S.Moderado.aportado).replace("R$ ", ""), X(anos) + 10, Y(S.Moderado.aportado) + 3);
+    ["Forte", "Moderado", "Conservador"].forEach((k) => {
+      const col = c(COR[k]);
+      ctx.beginPath();
+      S[k].pontos.forEach((p, i) => i ? ctx.lineTo(X(i), Y(p.saldo)) : ctx.moveTo(X(i), Y(p.saldo)));
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 2.1;
+      ctx.lineJoin = "round";
+      ctx.shadowColor = col;
+      ctx.shadowBlur = 9;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      const yv = Y(S[k].saldo);
+      ctx.beginPath();
+      ctx.arc(X(anos), yv, 3.4, 0, 7);
+      ctx.fillStyle = col;
+      ctx.fill();
+      ctx.font = '11px "IBM Plex Mono",monospace';
+      ctx.fillText(k.toUpperCase().slice(0, 5) + " " + curto(S[k].saldo).replace("R$ ", ""), X(anos) + 10, yv + 4);
+    });
+  }
+  function grade2(ctx, c, L, T, w, h, max, fmt, Y) {
+    ctx.strokeStyle = "rgba(255,255,255,.06)";
+    ctx.fillStyle = c("--dim");
+    ctx.font = '10px "IBM Plex Mono",monospace';
+    ctx.lineWidth = 1;
+    for (let g = 0; g <= 4; g++) {
+      const v = max * g / 4, y = Y(v);
+      ctx.beginPath();
+      ctx.moveTo(L, y);
+      ctx.lineTo(L + w, y);
+      ctx.stroke();
+      ctx.fillText(fmt(v), 4, y + 3);
+    }
+  }
+  function linhaDagua(S, anos, idade, partida) {
+    const { ctx, W, H, c } = tela("wl");
+    const L = 54, R = 118, T = 18, B = 34, w = W - L - R, h = H - T - B;
+    const M = S.Moderado.pontos;
+    const piso = M.map((p, i) => {
+      const exp = expoDoAno(anos - i);
+      return p.aportado + (p.saldo - p.aportado) * (1 - exp);
+    });
+    const max = Math.max(S.Moderado.saldo, 1) * 1.08;
+    const X = (i) => L + i / anos * w, Y = (v) => T + h - v / max * h;
+    const est = estacoesPorAno({ anos, fase: partida.fase, mes: partida.mes });
+    const FUNDO = {
+      Plantio: "rgba(79,216,138,.09)",
+      Crescimento: "rgba(255,255,255,.015)",
+      Colheita: "rgba(242,193,78,.09)",
+      [ABRIGO]: "rgba(76,201,240,.10)"
+    };
+    est.forEach((e) => {
+      ctx.fillStyle = FUNDO[e.estacao];
+      ctx.fillRect(X(e.ano), T, X(e.ano + 1) - X(e.ano), h);
+    });
+    grade2(ctx, c, L, T, w, h, max, (v) => curto(v).replace("R$ ", ""), Y);
+    ctx.fillStyle = c("--dim");
+    for (let y = 0; y <= anos; y += Math.max(1, Math.ceil(anos / 9))) ctx.fillText(String(idade + y) + "a", X(y) - 7, H - 11);
+    ctx.beginPath();
+    M.forEach((p, i) => i ? ctx.lineTo(X(i), Y(p.saldo)) : ctx.moveTo(X(i), Y(p.saldo)));
+    for (let i = anos; i >= 0; i--) ctx.lineTo(X(i), Y(M[i].aportado));
+    ctx.closePath();
+    ctx.fillStyle = "rgba(86,217,138,.13)";
+    ctx.fill();
+    const linha = (vals, col, wd, dash, glow) => {
+      ctx.beginPath();
+      ctx.setLineDash(dash || []);
+      vals.forEach((v, i) => i ? ctx.lineTo(X(i), Y(v)) : ctx.moveTo(X(i), Y(v)));
+      ctx.strokeStyle = col;
+      ctx.lineWidth = wd;
+      ctx.lineJoin = "round";
+      if (glow) {
+        ctx.shadowColor = col;
+        ctx.shadowBlur = 10;
+      }
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.setLineDash([]);
+    };
+    linha(piso, c("--gold"), 1.6, [5, 4]);
+    linha(M.map((p) => p.aportado), c("--c4"), 1.9);
+    linha(M.map((p) => p.saldo), c("--c5"), 2.4, null, true);
+    const rot = (v, col, txt) => {
+      ctx.fillStyle = col;
+      ctx.font = '11px "IBM Plex Mono",monospace';
+      ctx.beginPath();
+      ctx.arc(X(anos), Y(v), 3.4, 0, 7);
+      ctx.fill();
+      ctx.fillText(txt, X(anos) + 10, Y(v) + 4);
+    };
+    rot(S.Moderado.saldo, c("--c5"), curto(S.Moderado.saldo).replace("R$ ", ""));
+    rot(S.Moderado.aportado, c("--c4"), curto(S.Moderado.aportado).replace("R$ ", ""));
+    rot(piso[anos], c("--gold"), "PISO " + curto(piso[anos]).replace("R$ ", ""));
+  }
+  function glidepath(traj) {
+    const { ctx, W, H, c } = tela("gp");
+    const L = 44, R = 96, T = 18, B = 32, w = W - L - R, h = H - T - B;
+    const n = traj.linhas.length;
+    const X = (i) => L + i / (n - 1) * w, Y = (v) => T + h - v / 100 * h;
+    ctx.strokeStyle = "rgba(255,255,255,.06)";
+    ctx.fillStyle = c("--dim");
+    ctx.font = '10px "IBM Plex Mono",monospace';
+    ctx.lineWidth = 1;
+    for (let g = 0; g <= 4; g++) {
+      const v = g * 25, y = Y(v);
+      ctx.beginPath();
+      ctx.moveTo(L, y);
+      ctx.lineTo(L + w, y);
+      ctx.stroke();
+      ctx.fillText(v + "%", 4, y + 3);
+    }
+    const iUlt = traj.linhas.findIndex((l) => l.ultimoAno);
+    if (iUlt >= 0) {
+      ctx.fillStyle = "rgba(216,167,64,.07)";
+      ctx.fillRect(X(iUlt), T, X(n - 1) - X(iUlt), h);
+      ctx.fillStyle = c("--gold");
+      ctx.textAlign = "right";
+      ctx.fillText(`ÚLTIMOS ${MESES_SEM_MODULACAO} MESES`, X(iUlt) - 6, T + 13);
+      ctx.textAlign = "left";
+    }
+    ctx.fillStyle = c("--dim");
+    for (let i = 0; i < n; i += Math.max(1, Math.round(n / 8))) {
+      ctx.fillText(num(traj.linhas[i].anosRestantes, 0) + "a", X(i) - 6, H - 10);
+    }
+    const linha = (get, col, wd, dash) => {
+      ctx.beginPath();
+      ctx.setLineDash(dash || []);
+      traj.linhas.forEach((l, i) => i ? ctx.lineTo(X(i), Y(get(l))) : ctx.moveTo(X(i), Y(get(l))));
+      ctx.strokeStyle = col;
+      ctx.lineWidth = wd;
+      ctx.lineJoin = "round";
+      ctx.stroke();
+      ctx.setLineDash([]);
+    };
+    linha((l) => l.alvo, c("--gold"), 1.6, [5, 4]);
+    linha((l) => l.exposicao, c("--c4"), 2.2);
+    linha((l) => l.defasagem, c("--c2"), 1.6);
+    const yTeto = Y(TETO_DEFASAGEM);
+    ctx.strokeStyle = "rgba(255,93,115,.35)";
+    ctx.setLineDash([2, 5]);
+    ctx.beginPath();
+    ctx.moveTo(L, yTeto);
+    ctx.lineTo(L + w, yTeto);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = c("--c2");
+    ctx.font = '10px "IBM Plex Mono",monospace';
+    ctx.fillText(`TETO ${TETO_DEFASAGEM} PT`, L + 8, yTeto - 5);
+    const yExp = Y(traj.exposicaoNaEntrega), yAlvo = Math.max(Y(traj.alvoDoUltimoMes) + 14, yExp + 15);
+    ctx.fillStyle = c("--c4");
+    ctx.fillText(`${num(traj.exposicaoNaEntrega, 1)}%`, L + w + 8, yExp + 3);
+    ctx.fillStyle = c("--gold");
+    ctx.fillText(`ALVO ${num(traj.alvoDoUltimoMes, 1)}%`, L + w + 8, yAlvo);
+  }
+  var t = 2 * 86400;
+  setInterval(() => {
+    t--;
+    const d = Math.floor(t / 86400), r = t % 86400;
+    $("cd").textContent = d + "D " + String(Math.floor(r / 3600)).padStart(2, "0") + ":" + String(Math.floor(r % 3600 / 60)).padStart(2, "0") + ":" + String(r % 60).padStart(2, "0");
+  }, 1e3);
+  render();
+})();
+
+</script>

@@ -1,0 +1,1628 @@
+<meta charset="utf-8">
+<title>Índice Semente</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --side:#0a0e15;--main:#0b0f17;--card:#0d1219;--bd:rgba(255,255,255,.06);
+  --ink:#e6eaf0;--mut:#8a95a5;--dim:#5a6472;--hover:rgba(255,255,255,.045);
+  --z1:#3d7dff;--z2:#3ddc84;--z3:#f5c518;--z4:#f97316;--z5:#ef4444;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--main);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5}
+:focus-visible{outline:1px solid var(--z1);outline-offset:2px}
+.main{max-width:1120px;margin:0 auto;padding:0 24px 60px}
+.top{display:flex;align-items:baseline;gap:18px;padding:26px 0 4px;flex-wrap:wrap}
+.mark{font-family:"Playfair Display",Georgia,serif;font-size:24px;font-weight:600}.mark i{font-style:italic}
+.crumb{color:var(--dim);font-size:13.5px}.crumb b{color:var(--ink);font-weight:500}
+.selo{margin-left:auto;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--z1);
+  border:1px solid rgba(61,125,255,.35);border-radius:999px;padding:5px 12px}
+h2{font-family:"Playfair Display",serif;font-size:17px;font-weight:600;margin:30px 0 3px}
+.sub{color:var(--dim);font-size:12.5px;margin-bottom:12px}
+.capa{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:var(--card);
+  border:1px solid var(--bd);border-radius:14px;padding:24px 26px;margin-top:14px}
+.big{font-family:"Playfair Display",serif;font-size:76px;font-weight:600;line-height:.9;font-variant-numeric:tabular-nums}
+.big small{display:block;font-family:Inter,sans-serif;font-size:11px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--dim);font-weight:500;margin-top:9px}
+.faixas{display:flex;gap:1px;background:var(--bd);border-radius:8px;overflow:hidden;margin-top:4px}
+.fx{flex:1;background:#0f141d;padding:8px 10px;font-size:11px;color:var(--dim);text-align:center}
+.fx.on{background:#16202c;color:var(--ink)}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(172px,1fr));gap:1px;background:var(--bd);
+  border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-top:12px}
+.rc{background:var(--card);padding:15px 17px}
+.rc .l{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.rc .v{font-family:"Playfair Display",serif;font-size:24px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.rc .s{font-size:11.5px;color:var(--dim);margin-top:5px}
+.rc.on{background:#111a24}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:500}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+.barra{height:6px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:6px;min-width:80px}
+.barra i{display:block;height:100%;border-radius:4px;background:var(--z1)}
+.tag{display:inline-block;font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+  border:1px solid currentColor;border-radius:999px;padding:1px 7px;opacity:.9}
+.t-ok{color:var(--z2)}.t-posto{color:var(--z3)}.t-prov{color:var(--dim)}.t-fora{color:var(--z5)}
+.nota{border:1px solid rgba(245,197,24,.28);background:rgba(245,197,24,.05);border-radius:12px;
+  padding:13px 16px;font-size:12.5px;color:var(--mut);margin-top:14px}
+.nota b{color:var(--z3);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:5px}
+.nota.calma{border-color:var(--bd);background:var(--card)}.nota.calma b{color:var(--dim)}
+.det{color:var(--mut);font-size:11.5px}
+@media(max-width:760px){.capa{grid-template-columns:1fr;gap:16px}.big{font-size:60px}}
+</style>
+
+<div class="main">
+  <div class="top">
+    <div class="mark">Carteira <i>Semente</i></div>
+    <div class="crumb">Índice Semente · <b>intensidade, não estado</b></div>
+    <div class="selo" id="selo"></div>
+  </div>
+
+  <div class="capa">
+    <div><div class="big" id="exibido">—<small id="interno"></small></div></div>
+    <div>
+      <div class="faixas" id="faixas"></div>
+      <div class="read" id="capaCards" style="margin-top:12px"></div>
+    </div>
+  </div>
+  <div id="notaD2"></div>
+
+  <h2>As camadas na conta</h2>
+  <div class="sub" id="subCamadas"></div>
+  <table id="camadas"><thead><tr><th>Camada</th><th class="n">Posição</th><th>Peso</th><th>O que entrou</th></tr></thead><tbody></tbody></table>
+
+  <h2>Fora da conta</h2>
+  <div class="sub">Camada que sai não vale 50 — ela sai, e os pesos das que ficaram renormalizam.</div>
+  <table id="fora"><thead><tr><th>Camada</th><th>Por quê</th></tr></thead><tbody></tbody></table>
+
+  <h2>Camada 5 suspensa</h2>
+  <div class="sub">Degrau de âncora vencido ou nunca atribuído suspende a camada <b>inteira</b>, nomeada e datada.</div>
+  <div id="camada5"></div>
+
+  <h2>Confiança por janela</h2>
+  <div class="sub" id="subConf"></div>
+  <table id="conf"><thead><tr><th>Indicador</th><th class="n">Confiança</th><th class="n">Bruto</th><th class="n">Ajustado</th></tr></thead><tbody></tbody></table>
+
+  <h2>Estado de conferência dos extremos</h2>
+  <div class="sub" id="subExtremos"></div>
+  <div class="read" id="extremos"></div>
+  <table id="provisorios"><thead><tr><th>Série</th><th>Campos provisórios</th><th>Importa?</th></tr></thead><tbody></tbody></table>
+</div>
+
+<script>
+(() => {
+  // registro/registro.mjs
+  var TIPOS = Object.freeze({
+    LEITURA: "leitura",
+    // {data, indice, estado}
+    REFORCO_ACIONADO: "reforco_acionado",
+    // {data, indice, pctCaixa}
+    CONTADOR_RESET: "contador_reset",
+    // {data, marco: 'virada'|'abrigo'}
+    CRM_COMPOSICAO: "crm_composicao",
+    // {data, legivel, ativos[]}
+    DEGRAU: "degrau",
+    // {data, ativo, valor, motivo}
+    TRANCHE: "tranche",
+    // {data, ativo, quantidade, exposicaoAntes, exposicaoDepois}
+    DEFASAGEM: "defasagem",
+    // {data, pontosNaoMovidos, fator, estado}
+    GATE_INVALIDAR: "gate_invalidar",
+    // {data, ativo, motivo}
+    FILTRO_HORIZONTE: "filtro_horizonte",
+    // {data, ativo, aprovado, motivo}
+    TETO_CONTAGEM: "teto_contagem",
+    // {data, ativo, posicao}
+    RETIFICACAO: "retificacao",
+    // {data, dataRetificada, campo, valorAntigo, valorNovo, motivo, aprovadoEm}
+    ANULACAO_MARCO: "anulacao_marco"
+    // {data, marcoSeq, retificacaoSeq, motivo}
+  });
+  var DEGRAUS_VALIDOS = Object.freeze([0, 33, 66, 100]);
+  var VALIDADE_DIAS = 180;
+  var MARCO_INDICE = 65;
+  var MARCO_DIAS = 30;
+  var ANCORAS_DE_TESE = Object.freeze(["BTC", "ETH"]);
+  var RECUPERACAO_DIAS = 30;
+  var DIA_MS = 864e5;
+  var dia = (d) => Math.floor(Date.parse(`${d}T00:00:00Z`) / DIA_MS);
+  var ehData = (d) => typeof d === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d) && !Number.isNaN(dia(d));
+  var naoVazio = (s) => typeof s === "string" && s.trim().length > 0;
+  var leCampo = (obj, caminho) => caminho.split(".").reduce((o, k) => o == null ? void 0 : o[k], obj);
+  var comCampo = (obj, caminho, valor) => {
+    const [chave, ...resto] = caminho.split(".");
+    return { ...obj, [chave]: resto.length === 0 ? valor : comCampo(obj[chave] ?? {}, resto.join("."), valor) };
+  };
+  var RegistroInvalido = class extends Error {
+  };
+  function valida(ev) {
+    if (!naoVazio(ev?.carteira)) throw new RegistroInvalido("evento sem carteira");
+    if (!Object.values(TIPOS).includes(ev?.tipo)) throw new RegistroInvalido(`tipo desconhecido: ${ev?.tipo}`);
+    if (!ehData(ev?.data)) throw new RegistroInvalido("data ausente ou fora do formato AAAA-MM-DD");
+    switch (ev.tipo) {
+      case TIPOS.LEITURA:
+        if (typeof ev.indice !== "number" || !Number.isFinite(ev.indice)) throw new RegistroInvalido("leitura sem índice numérico");
+        if (!naoVazio(ev.estado)) throw new RegistroInvalido("leitura sem estado da Linha dágua");
+        if (ev.indicadores !== void 0 && (typeof ev.indicadores !== "object" || ev.indicadores === null)) {
+          throw new RegistroInvalido("indicadores da varredura têm de vir como objeto");
+        }
+        if (ev.retroativa) {
+          if (!ehData(ev.coletadaEm)) throw new RegistroInvalido("leitura retroativa sem data de coleta");
+          const atraso = dia(ev.coletadaEm) - dia(ev.data);
+          if (atraso < 0) throw new RegistroInvalido("coleta anterior à data da leitura");
+          if (atraso > RECUPERACAO_DIAS) {
+            throw new RegistroInvalido(`recuperação fora da janela: ${atraso} dias depois de ${ev.data}, o limite é ${RECUPERACAO_DIAS}`);
+          }
+        }
+        break;
+      case TIPOS.REFORCO_ACIONADO:
+        if (typeof ev.indice !== "number") throw new RegistroInvalido("acionamento sem índice");
+        if (typeof ev.pctCaixa !== "number") throw new RegistroInvalido("acionamento sem percentual do caixa");
+        break;
+      case TIPOS.CONTADOR_RESET:
+        if (!["virada", "abrigo"].includes(ev.marco)) throw new RegistroInvalido("reset sem marco válido");
+        break;
+      case TIPOS.CRM_COMPOSICAO:
+        if (typeof ev.legivel !== "boolean") throw new RegistroInvalido("composição sem indicação de legibilidade");
+        if (ev.legivel && !Array.isArray(ev.ativos)) throw new RegistroInvalido("composição legível sem lista de ativos");
+        break;
+      case TIPOS.DEGRAU:
+        if (!naoVazio(ev.ativo)) throw new RegistroInvalido("degrau sem ativo");
+        if (!DEGRAUS_VALIDOS.includes(ev.valor)) throw new RegistroInvalido(`degrau fora da escala ordinal: ${ev.valor}`);
+        if (!naoVazio(ev.motivo)) throw new RegistroInvalido("degrau sem motivo escrito (D18 C)");
+        break;
+      case TIPOS.TRANCHE:
+        if (!naoVazio(ev.ativo)) throw new RegistroInvalido("tranche sem ativo");
+        for (const campo of ["quantidade", "exposicaoAntes", "exposicaoDepois"]) {
+          if (typeof ev[campo] !== "number") throw new RegistroInvalido(`tranche sem ${campo}`);
+        }
+        break;
+      case TIPOS.DEFASAGEM:
+        if (typeof ev.pontosNaoMovidos !== "number") throw new RegistroInvalido("defasagem sem pontos");
+        if (typeof ev.fator !== "number") throw new RegistroInvalido("defasagem sem fator do estado");
+        break;
+      case TIPOS.GATE_INVALIDAR:
+        if (!naoVazio(ev.ativo)) throw new RegistroInvalido("invalidação sem ativo");
+        if (!naoVazio(ev.motivo)) throw new RegistroInvalido("invalidação sem motivo escrito (D23 B)");
+        break;
+      case TIPOS.FILTRO_HORIZONTE:
+        if (!naoVazio(ev.ativo)) throw new RegistroInvalido("filtro sem ativo");
+        if (typeof ev.aprovado !== "boolean") throw new RegistroInvalido("filtro sem veredito");
+        if (!naoVazio(ev.motivo)) throw new RegistroInvalido("filtro sem motivo escrito (D16 B)");
+        break;
+      case TIPOS.TETO_CONTAGEM:
+        if (!naoVazio(ev.ativo)) throw new RegistroInvalido("exclusão por contagem sem ativo");
+        if (typeof ev.posicao !== "number") throw new RegistroInvalido("exclusão por contagem sem a posição do ativo");
+        break;
+      case TIPOS.RETIFICACAO:
+        if (!ehData(ev.dataRetificada)) throw new RegistroInvalido("retificação sem a data da leitura retificada");
+        if (!naoVazio(ev.campo)) throw new RegistroInvalido("retificação sem o campo retificado (D34 B)");
+        if (ev.valorAntigo === void 0) throw new RegistroInvalido("retificação sem o valor antigo");
+        if (ev.valorNovo === void 0) throw new RegistroInvalido("retificação sem o valor novo");
+        if (typeof ev.valorAntigo !== typeof ev.valorNovo) {
+          throw new RegistroInvalido("retificação com valor antigo e novo de tipos diferentes");
+        }
+        if (!naoVazio(ev.motivo)) throw new RegistroInvalido("retificação sem motivo escrito (D33 B)");
+        if (!ehData(ev.aprovadoEm)) throw new RegistroInvalido("retificação sem passagem pelo Gate 2 (D33 B)");
+        break;
+      case TIPOS.ANULACAO_MARCO:
+        if (typeof ev.marcoSeq !== "number") throw new RegistroInvalido("anulação sem o marco que anula");
+        break;
+    }
+  }
+  var ausente = (motivo) => ({ disponivel: false, motivo });
+  var presente = (valor) => ({ disponivel: true, ...valor });
+  var Registro = class {
+    #adaptador;
+    #eventos;
+    constructor(adaptador) {
+      this.#adaptador = adaptador;
+      this.#eventos = adaptador.ler();
+    }
+    /** Acrescenta um evento. É a única forma de escrita que existe. */
+    registrar(evento) {
+      valida(evento);
+      if (evento.tipo === TIPOS.LEITURA) {
+        const jaTem = this.eventos({ carteira: evento.carteira, tipo: TIPOS.LEITURA }).some((l) => l.data === evento.data);
+        if (jaTem) throw new RegistroInvalido(`já existe leitura de ${evento.data}; o log não sobrescreve — corrija por retificação (D33 B)`);
+      }
+      if (evento.tipo === TIPOS.RETIFICACAO) {
+        const vigente = this.#leiturasVigentes(evento.carteira).get(evento.dataRetificada);
+        if (!vigente) throw new RegistroInvalido(`não há leitura de ${evento.dataRetificada} para retificar`);
+        const atual = leCampo(vigente, evento.campo);
+        if (atual === void 0) {
+          throw new RegistroInvalido(`campo "${evento.campo}" não existe na leitura de ${evento.dataRetificada}`);
+        }
+        if (atual !== evento.valorAntigo) {
+          throw new RegistroInvalido(`valor antigo não confere: vigente em ${evento.dataRetificada}.${evento.campo} é ${atual}, não ${evento.valorAntigo}`);
+        }
+      }
+      const gravado = this.#anexar(evento);
+      if (evento.tipo === TIPOS.LEITURA) this.#gravarMarcoSeCompletou(evento.carteira);
+      if (evento.tipo === TIPOS.RETIFICACAO) {
+        this.#anularDerivacoesDesfeitas(evento.carteira, gravado);
+        this.#gravarMarcoSeCompletou(evento.carteira);
+      }
+      return gravado;
+    }
+    /**
+     * D33 C: a versão vigente de uma data é a última retificação que aponta para ela,
+     * ou a leitura original se não houver nenhuma. Toda derivação lê daqui, e por isso
+     * se recompõe sozinha.
+     */
+    #leiturasVigentes(carteira) {
+      const mapa = /* @__PURE__ */ new Map();
+      for (const l of this.#porData(carteira, TIPOS.LEITURA)) {
+        mapa.set(l.data, {
+          data: l.data,
+          indice: l.indice,
+          estado: l.estado,
+          ...l.indicadores ? { indicadores: { ...l.indicadores } } : {},
+          camposRetificados: []
+        });
+      }
+      for (const r2 of this.eventos({ carteira, tipo: TIPOS.RETIFICACAO }).sort((a, b) => a.seq - b.seq)) {
+        const atual = mapa.get(r2.dataRetificada);
+        if (!atual) continue;
+        mapa.set(r2.dataRetificada, {
+          ...comCampo(atual, r2.campo, r2.valorNovo),
+          camposRetificados: [.../* @__PURE__ */ new Set([...atual.camposRetificados, r2.campo])]
+        });
+      }
+      return mapa;
+    }
+    /**
+     * D33 D · D34 C: retificação não apaga o que foi derivado. Se a derivação deixou
+     * de valer, nasce uma anulação que aponta para ela e para a retificação que a
+     * desfez. Apagar seria exatamente o rastro que a D9 regra 5 existe para impedir.
+     *
+     * Hoje a única derivação gravada é o marco de virada, que depende só do índice.
+     * Quando a peça 3 gravar derivações que dependem do estado da Linha d'Água, elas
+     * entram nesta mesma varredura — a mecânica já é genérica, a lista é que é curta.
+     */
+    #anularDerivacoesDesfeitas(carteira, retificacao) {
+      const vigentes = this.#leiturasVigentes(carteira);
+      for (const reset of this.eventos({ carteira, tipo: TIPOS.CONTADOR_RESET })) {
+        if (reset.marco !== "virada" || this.#marcoAnulado(carteira, reset.seq)) continue;
+        let vale = true;
+        for (let d = dia(reset.desde); d <= dia(reset.ate); d++) {
+          const l = vigentes.get(new Date(d * DIA_MS).toISOString().slice(0, 10));
+          if (!l || l.indice < MARCO_INDICE) {
+            vale = false;
+            break;
+          }
+        }
+        if (!vale) {
+          this.#anexar({
+            carteira,
+            tipo: TIPOS.ANULACAO_MARCO,
+            data: retificacao.data,
+            marcoSeq: reset.seq,
+            retificacaoSeq: retificacao.seq,
+            motivo: `retificação de ${retificacao.dataRetificada} desfez a sequência ${reset.desde}–${reset.ate}`
+          });
+        }
+      }
+    }
+    #marcoAnulado(carteira, seq) {
+      return this.eventos({ carteira, tipo: TIPOS.ANULACAO_MARCO }).some((a) => a.marcoSeq === seq);
+    }
+    #anexar(evento) {
+      const gravado = Object.freeze({
+        ...evento,
+        seq: this.#eventos.length + 1,
+        gravadoEm: (/* @__PURE__ */ new Date()).toISOString()
+      });
+      this.#eventos = [...this.#eventos, gravado];
+      this.#adaptador.gravar(this.#eventos);
+      return gravado;
+    }
+    /**
+     * D32 B: o registro grava o reset, automaticamente, no dia em que o 30º
+     * fechamento consecutivo se completa. É derivação determinística de um log que
+     * já existe — não decisão, e nenhuma das quatro coisas que a invariante 1
+     * proíbe (comprar, vender, aportar, publicar). O que a D9 regra 5 quer é que o
+     * reset deixe rastro, e rastro derivado é rastro.
+     *
+     * D33 E — um marco por sequência: trinta fechamentos completam um marco, e um só.
+     * Sequência de 45 ou 200 dias produz o mesmo marco único; para nascer outro, ela
+     * precisa romper e se formar de novo. Um marco a cada 30 dias rearmaria o reforço
+     * repetidamente num bull longo, que é justamente quando ele não deve ser rearmado.
+     */
+    #gravarMarcoSeCompletou(carteira) {
+      const seq = this.#sequenciaNoMarco(carteira);
+      if (seq === null || seq.dias < MARCO_DIAS) return;
+      const completoEm = this.#somaDias(seq.desde, MARCO_DIAS - 1);
+      const jaGravado = this.eventos({ carteira, tipo: TIPOS.CONTADOR_RESET }).some((r2) => r2.marco === "virada" && r2.desde === seq.desde && !this.#marcoAnulado(carteira, r2.seq));
+      if (jaGravado) return;
+      this.#anexar({
+        carteira,
+        tipo: TIPOS.CONTADOR_RESET,
+        data: completoEm,
+        marco: "virada",
+        desde: seq.desde,
+        ate: completoEm
+      });
+    }
+    #somaDias(data, n) {
+      return new Date((dia(data) + n) * DIA_MS).toISOString().slice(0, 10);
+    }
+    /** A sequência corrente de fechamentos em 65 ou mais, ou null se não há. */
+    #sequenciaNoMarco(carteira) {
+      const leituras = [...this.#leiturasVigentes(carteira).values()].sort((a, b) => a.data < b.data ? -1 : 1);
+      if (leituras.length === 0) return null;
+      let inicio = null, anterior = null;
+      for (const l of leituras) {
+        const rompeu = l.indice < MARCO_INDICE;
+        const pulouDia = anterior !== null && dia(l.data) !== dia(anterior) + 1;
+        if (rompeu || pulouDia) inicio = rompeu ? null : l.data;
+        else if (inicio === null) inicio = l.data;
+        anterior = l.data;
+      }
+      if (inicio === null) return null;
+      return { desde: inicio, ate: anterior, dias: dia(anterior) - dia(inicio) + 1 };
+    }
+    eventos({ carteira, tipo } = {}) {
+      return this.#eventos.filter((e2) => (carteira === void 0 || e2.carteira === carteira) && (tipo === void 0 || e2.tipo === tipo));
+    }
+    #porData(carteira, tipo) {
+      return this.eventos({ carteira, tipo }).slice().sort((a, b) => a.data < b.data ? -1 : a.data > b.data ? 1 : a.seq - b.seq);
+    }
+    // ── 1 · CICLO DO REFORÇO DE FUNDO ────────────────────────────────────────
+    // D9: contador por carteira; zera no dia em que o marco se completa, e também
+    // na entrada em Abrigo. Sem registro gravado, o reforço não é liberado.
+    cicloReforco(carteira) {
+      const resets = this.#porData(carteira, TIPOS.CONTADOR_RESET).filter((r2) => !this.#marcoAnulado(carteira, r2.seq));
+      const ultimoReset = resets.at(-1) ?? null;
+      const desde = ultimoReset?.data ?? null;
+      const acionamentos = this.#porData(carteira, TIPOS.REFORCO_ACIONADO).filter((a) => desde === null || a.data > desde);
+      return {
+        desde,
+        // null = primeiro ciclo, desde a abertura da carteira
+        marcoDoReset: ultimoReset?.marco ?? null,
+        acionamentos,
+        contador: acionamentos.length,
+        ultimoAcionamento: acionamentos.at(-1)?.data ?? null
+      };
+    }
+    /**
+     * D9: "30 dias corridos consecutivos" é literal — um único fechamento abaixo de 65
+     * recomeça a contagem do zero. Dia sem leitura também interrompe: pela invariante 3
+     * não se pode presumir que o dia ausente fechou acima de 65.
+     */
+    diasConsecutivosNoMarco(carteira, hoje) {
+      const leituras = [...this.#leiturasVigentes(carteira).values()].sort((a, b) => a.data < b.data ? -1 : 1);
+      if (leituras.length === 0) return ausente("nenhuma leitura registrada");
+      const ultima = leituras.at(-1);
+      if (hoje !== void 0 && ehData(hoje) && dia(hoje) > dia(ultima.data)) {
+        const recuperavel = dia(hoje) - dia(ultima.data) <= RECUPERACAO_DIAS;
+        return ausente(`última leitura em ${ultima.data}; sem leitura de ${hoje}` + (recuperavel ? " — ainda recuperável por leitura retroativa" : " — fora da janela de recuperação"));
+      }
+      const seq = this.#sequenciaNoMarco(carteira);
+      if (seq === null) return presente({ dias: 0, desde: null, completo: false });
+      return presente({ dias: seq.dias, desde: seq.desde, completo: seq.dias >= MARCO_DIAS });
+    }
+    // ── 2 · ÚLTIMA COMPOSIÇÃO DA CRM ─────────────────────────────────────────
+    // D16 B: composição ilegível congela o universo no último estado conhecido,
+    // marcado como desatualizado desde tal data. Nunca se presume que não mudou.
+    composicaoCRM(carteira) {
+      const leituras = this.#porData(carteira, TIPOS.CRM_COMPOSICAO);
+      if (leituras.length === 0) return ausente("nenhuma composição da CRM registrada");
+      const ultima = leituras.at(-1);
+      if (ultima.legivel) {
+        return presente({ ativos: ultima.ativos, lidaEm: ultima.data, congelada: false });
+      }
+      const ultimaLegivel = leituras.filter((l) => l.legivel).at(-1);
+      if (!ultimaLegivel) return ausente(`composição ilegível desde ${ultima.data}, e nunca houve leitura legível`);
+      return presente({
+        ativos: ultimaLegivel.ativos,
+        lidaEm: ultimaLegivel.data,
+        congelada: true,
+        desatualizadaDesde: ultimaLegivel.data
+      });
+    }
+    // ── 3 · HISTÓRICO DE DEGRAUS ─────────────────────────────────────────────
+    // D18 A: validade de 180 dias; vencido vira ausência, não 0 e não valor herdado.
+    // D18 D: série completa por ativo, nunca sobrescrita.
+    /** A série completa de uma data: a leitura original e cada retificação sobre ela. */
+    historicoDaLeitura(carteira, data) {
+      const original = this.#porData(carteira, TIPOS.LEITURA).find((l) => l.data === data) ?? null;
+      const retificacoes = this.eventos({ carteira, tipo: TIPOS.RETIFICACAO }).filter((r2) => r2.dataRetificada === data).sort((a, b) => a.seq - b.seq);
+      const porCampo = /* @__PURE__ */ new Map();
+      for (const r2 of retificacoes) porCampo.set(r2.campo, [...porCampo.get(r2.campo) ?? [], r2]);
+      return { original, retificacoes, porCampo, vigente: this.#leiturasVigentes(carteira).get(data) ?? null };
+    }
+    historicoDegraus(carteira, ativo) {
+      return this.#porData(carteira, TIPOS.DEGRAU).filter((d) => ativo === void 0 || d.ativo === ativo);
+    }
+    degraus(carteira, hoje) {
+      if (!ehData(hoje)) throw new RegistroInvalido("degraus() exige a data de hoje");
+      const porAtivo = /* @__PURE__ */ new Map();
+      for (const d of this.#porData(carteira, TIPOS.DEGRAU)) porAtivo.set(d.ativo, d);
+      const saida = /* @__PURE__ */ new Map();
+      for (const [ativo, d] of porAtivo) {
+        const idade = dia(hoje) - dia(d.data);
+        saida.set(ativo, idade > VALIDADE_DIAS ? { status: "vencido", valor: null, atribuidoEm: d.data, idade, motivo: d.motivo } : { status: "vigente", valor: d.valor, atribuidoEm: d.data, idade, motivo: d.motivo });
+      }
+      return saida;
+    }
+    /** D18 B: aviso aos 150 dias — diário para BTC e ETH, semanal para os demais. */
+    degrausAVencer(carteira, hoje) {
+      const avisar = VALIDADE_DIAS - 30;
+      const fora = [];
+      for (const [ativo, d] of this.degraus(carteira, hoje)) {
+        if (d.status !== "vigente" || d.idade < avisar) continue;
+        const ancora = ANCORAS_DE_TESE.includes(ativo);
+        const devido = ancora || (d.idade - avisar) % 7 === 0;
+        if (devido) fora.push({ ativo, ancora, idade: d.idade, venceEm: VALIDADE_DIAS - d.idade, cadencia: ancora ? "diária" : "semanal" });
+      }
+      return fora;
+    }
+    /**
+     * D21 B: degrau de BTC ou ETH vencido — ou nunca atribuído — não vira ausência.
+     * A camada 5 é suspensa por inteiro, nomeada e com data. Não depende de pesos,
+     * por isso mora aqui e não no Alocador.
+     */
+    suspensaoDaCamada5(carteira, hoje) {
+      const atuais = this.degraus(carteira, hoje);
+      for (const ativo of ANCORAS_DE_TESE) {
+        const d = atuais.get(ativo);
+        if (!d) return { suspensa: true, ativo, razao: "nunca atribuído", desde: null };
+        if (d.status === "vencido") return { suspensa: true, ativo, razao: "tese vencida", desde: d.atribuidoEm };
+      }
+      return { suspensa: false };
+    }
+    /** D17 D: a etiqueta de julgamento — as três informações, ou não se publica. */
+    etiquetaDeJulgamento(carteira, hoje) {
+      const atuais = this.degraus(carteira, hoje);
+      const vigentes = [...atuais.values()].filter((d) => d.status === "vigente");
+      if (vigentes.length === 0) return ausente("nenhum degrau vigente");
+      const maisAntigo = vigentes.reduce((a, b) => a.idade >= b.idade ? a : b);
+      return presente({
+        carregaJulgamentoHumano: true,
+        degrauMaisAntigoEm: maisAntigo.atribuidoEm,
+        idadeDoMaisAntigo: maisAntigo.idade,
+        ativosSemDegrau: [...atuais.values()].filter((d) => d.status === "vencido").length
+      });
+    }
+    // ── 4 · TRANCHES E DEFASAGEM DA GLIDEPATH ────────────────────────────────
+    // D24 B: cada tranche com data, ativo, quantidade e exposição antes e depois.
+    // D25 C: a defasagem não se perde — fica registrada e é recuperada depois.
+    tranches(carteira) {
+      return this.#porData(carteira, TIPOS.TRANCHE);
+    }
+    // ── 5·6·7 · GATE, FILTRO E TETO DE CONTAGEM ─────────────────────────────
+    // D23 B · D16 B · D22 C. São três tipos distintos de propósito: a razão pela
+    // qual um ativo está fora determina se ele volta sozinho ou não.
+    /**
+     * Situação de um ativo, com a diferença que a D22 C exige preservada:
+     *   'reprovado_no_filtro' — não volta sem reexame;
+     *   'teto_de_contagem'    — volta sozinho se subir de posição;
+     *   'invalidado_pelo_gate'— saiu por decisão de tese, com saída ordenada.
+     */
+    situacaoDoAtivo(carteira, ativo) {
+      const ultimo = (tipo) => this.#porData(carteira, tipo).filter((e2) => e2.ativo === ativo).at(-1) ?? null;
+      const invalidacao = ultimo(TIPOS.GATE_INVALIDAR);
+      const filtro = ultimo(TIPOS.FILTRO_HORIZONTE);
+      const contagem = ultimo(TIPOS.TETO_CONTAGEM);
+      const candidatos = [
+        invalidacao && { evento: invalidacao, situacao: "invalidado_pelo_gate", voltaSozinho: false, motivo: invalidacao.motivo },
+        filtro && !filtro.aprovado && { evento: filtro, situacao: "reprovado_no_filtro", voltaSozinho: false, motivo: filtro.motivo },
+        contagem && { evento: contagem, situacao: "teto_de_contagem", voltaSozinho: true, motivo: `9ª posição ou além (${contagem.posicao}ª)` },
+        filtro && filtro.aprovado && { evento: filtro, situacao: "elegivel", voltaSozinho: null, motivo: filtro.motivo }
+      ].filter(Boolean);
+      if (candidatos.length === 0) return ausente(`nenhum registro de filtro, contagem ou invalidação para ${ativo}`);
+      const vigente = candidatos.reduce((a, b) => a.evento.data >= b.evento.data ? a : b);
+      return presente({ situacao: vigente.situacao, voltaSozinho: vigente.voltaSozinho, motivo: vigente.motivo, desde: vigente.evento.data });
+    }
+    /** Todo ativo que já passou pelo filtro, com a situação corrente de cada um. */
+    universo(carteira) {
+      const ativos = /* @__PURE__ */ new Set();
+      for (const t of [TIPOS.FILTRO_HORIZONTE, TIPOS.TETO_CONTAGEM, TIPOS.GATE_INVALIDAR]) {
+        for (const e2 of this.eventos({ carteira, tipo: t })) ativos.add(e2.ativo);
+      }
+      return new Map([...ativos].sort().map((a) => [a, this.situacaoDoAtivo(carteira, a)]));
+    }
+    defasagemAcumulada(carteira) {
+      const eventos = this.#porData(carteira, TIPOS.DEFASAGEM);
+      const pontos = eventos.reduce((s, e2) => s + e2.pontosNaoMovidos, 0);
+      return { pontos: Number(pontos.toFixed(6)), eventos };
+    }
+  };
+  var AdaptadorMemoria = class {
+    #eventos = [];
+    ler() {
+      return this.#eventos.slice();
+    }
+    gravar(eventos) {
+      this.#eventos = eventos.slice();
+    }
+  };
+
+  // torre/torre.mjs
+  var SERIES = Object.freeze([
+    { n: "Preço do BTC", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "Realized Price", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "Realized Price STH", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "Realized Price LTH", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "MVRV Ratio", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "regua", calendario: "24/7", unidade: "razão" },
+    { n: "SOPR", camada: 2, escala: "log", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "razão", caminhoNoMenu: "Spent Output Profit Ratio (SOPR) / SOPR", unidadeConferida: true },
+    { n: "Supply in Profit", camada: 2, escala: "lin", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "%", unidadeConferida: true },
+    { n: "Liveliness", camada: 2, escala: "lin", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "razão", caminhoNoMenu: "Cointime Statistics / Liveliness" },
+    { n: "DXY", camada: 3, escala: "lin", inicioSerie: "2011-01-01", invertido: true, calendario: "pregão", unidade: "pontos de índice", caminhoNoMenu: "Macro / DXY — Dollar Index" },
+    { n: "Fed Funds Rate", camada: 3, escala: "lin", inicioSerie: "2011-01-01", invertido: true, calendario: "pregão", unidade: "% a.a.", caminhoNoMenu: "Macro / Fed Funds Rate (%)", unidadeConferida: true },
+    { n: "US M2", camada: 3, escala: "lin", inicioSerie: "2011-01-01", calendario: "mensal", unidade: "US$ tri" },
+    { n: "Curva 10Y-2Y", camada: 3, escala: "lin", inicioSerie: "2011-01-01", calendario: "mensal", unidade: "pontos percentuais", unidadeConferida: true, caminhoNoMenu: "Studio / Macro / Yield Curve 10Y-2Y" },
+    { n: "ETF Net Inflow", camada: 4, escala: "lin", inicioSerie: "2024-01-11", calendario: "pregão", unidade: "USD", unidadeConferida: true, formato: "compacto", caminhoNoMenu: "Studio / ETF & Institutional / ETF Net Inflow", calendarioNota: "janela operacional NYSE — sem barras em fins de semana e feriados" },
+    { n: "Funding Rate", camada: 4, escala: "lin", inicioSerie: "2020-01-01", calendario: "24/7", unidade: "APR (%)", caminhoNoMenu: "Studio / Futuros / Funding Rate — APR (%)", unidadeConferida: true },
+    // A escala é LINEAR e não pode ser outra: netflow é entrada menos saída, cruza o
+    // zero, e log de zero ou de negativo não produz número errado — não produz número
+    // nenhum. A D38 D chamou a série de logarítmica; a D39 corrigiu para linear.
+    // Os extremos e o início da série são PROVISÓRIOS até a leitura no terminal.
+    { n: "Exchange Netflow", camada: 4, escala: "lin", inicioSerie: "2011-01-01", extremosProvisorios: true, calendario: "24/7", unidade: null }
+  ]);
+  var ESTADOS_DO_EXTREMO = Object.freeze(["confirmado", "posto confirmado", "provisório"]);
+  function estadoDoExtremo(serie, campo, varredura) {
+    const v = varredura?.[serie];
+    if (v?.confirmado?.[campo]) return "confirmado";
+    if (v?.postoConfirmado?.[campo]) return "posto confirmado";
+    return "provisório";
+  }
+  var noTetoAlcancavel = (varredura) => SERIES.flatMap((s) => ["valor", "min", "max"].filter((campo) => estadoDoExtremo(s.n, campo, varredura) === "posto confirmado").map((campo) => ({
+    serie: s.n,
+    campo,
+    naTela: comoATelaMostra(s.n, campo, varredura)?.naTela ?? null,
+    registrado: varredura[s.n][campo],
+    porQue: "notação compacta — o valor exato não sai desta tela"
+  })));
+  var CASAS_NA_TOOLTIP = Object.freeze({
+    "Preço do BTC": 0,
+    "MVRV Ratio": 3,
+    "SOPR": 4,
+    "Supply in Profit": 1,
+    "Liveliness": 4,
+    "DXY": 2,
+    "Fed Funds Rate": 2,
+    "Funding Rate": 1
+  });
+  var casasDe = (x) => {
+    const t = String(x);
+    const i = t.indexOf(".");
+    return i < 0 ? 0 : t.length - i - 1;
+  };
+  var FAIXA_DO_COMPACTO = Object.freeze({ piso: 1e3, teto: 1499, custoNoIndice: 0.44 });
+  var ehCompacto = (serie) => SERIES.find((x) => x.n === serie)?.formato === "compacto";
+  function formatoCompacto(v) {
+    const a = Math.abs(v);
+    const sinal = v < 0 ? "-" : "";
+    if (a >= 1e3) return `$${sinal}${Math.round(a / 1e3)}B`;
+    return `$${sinal}${Math.round(a)}M`;
+  }
+  function excedeATooltip(serie, campo, varredura) {
+    const v = varredura?.[serie]?.[campo];
+    if (typeof v !== "number") return false;
+    if (ehCompacto(serie)) return formatoCompacto(v) !== formatoCompacto(Number(v.toFixed(0))) || Math.abs(v) >= 1e3 || !Number.isInteger(v);
+    const casas = CASAS_NA_TOOLTIP[serie];
+    if (casas === void 0) return false;
+    return casasDe(v) > casas;
+  }
+  var SUAVIZACAO_NO_ALL = Object.freeze({
+    modo: "SMA",
+    oQueFaz: "agrega vários dias por pixel e suaviza dentro do balde",
+    medidoEm: "Funding Rate · min, 13/03/2020",
+    noAll: -53,
+    estreitado: -139.2,
+    fator: 2.63,
+    custoSeUsado: 1.39
+  });
+  var METODOS_DE_VARREDURA = Object.freeze([
+    {
+      m: "concorrentes um a um na tooltip, em passo de 1 dia",
+      forca: 1,
+      como: "medir cada rival com a janela estreitada, um por um",
+      porQue: "leitura de dígito em todos os candidatos — o único que serve quando a folga é de poucos por cento",
+      custo: "só cabe quando os candidatos são poucos e já se sabe quais são"
+    },
+    {
+      m: "eixo auto-escalado por blocos",
+      forca: 2,
+      como: "partir a série em blocos que se encostam e ler o topo do eixo de cada um; o eixo se recalcula com o máximo da janela",
+      porQue: "não depende de a barra ser visível — e o bloco é curto o bastante para a suavização não achatar o extremo"
+    },
+    {
+      m: "banda de altura sobre a série inteira",
+      forca: 3,
+      como: "recortar a faixa do gráfico além do extremo e varrer os quinze anos de uma vez",
+      fraqueza: "evento de UM dia ocupa ~0,19 px no ALL e pode sumir: risco de falso negativo"
+    },
+    {
+      m: "trecho a trecho",
+      forca: 4,
+      fraqueza: "depende de escolher quais trechos olhar, e o que não foi olhado não foi descartado"
+    },
+    {
+      m: "eixo ou pixel no ALL inteiro",
+      forca: 9,
+      proibido: true,
+      fraqueza: "o modo SMA suaviza dentro do pixel: extremo de um dia lê mais raso do que é. Não é ruído — é viés de um lado só, e o número que sai parece plausível"
+    }
+  ]);
+  function comoATelaMostra(serie, campo, varredura) {
+    const v = varredura?.[serie]?.[campo];
+    if (typeof v !== "number") return null;
+    if (ehCompacto(serie)) return {
+      registrado: v,
+      naTela: formatoCompacto(v),
+      formato: "compacto",
+      excede: excedeATooltip(serie, campo, varredura)
+    };
+    const casas = CASAS_NA_TOOLTIP[serie];
+    if (casas === void 0) return null;
+    return { registrado: v, naTela: Number(v.toFixed(casas)), casas, excede: excedeATooltip(serie, campo, varredura) };
+  }
+  var SERIES_EM_PATAMAR = Object.freeze({
+    "Fed Funds Rate": "fica parada por meses. ⚠️ o patamar lido (01/08/2023 → 31/08/2024) é alinhado ao MÊS, não a datas de FOMC — pode ser série mensal, e isso não foi conferido",
+    "US M2": "série mensal: cada leitura vale até a publicação do mês seguinte",
+    "Curva 10Y-2Y": "série MENSAL desenhada como escada diária: o mês inteiro carrega o mesmo valor (fev/2011 = 2,81 do dia 1 ao 28)"
+  });
+  var HOMONIMOS_NO_TERMINAL = Object.freeze({
+    "Supply in Profit": "há dois no menu: um em BTC (≈13,5M BTC) e um em percentual. O nosso é o PERCENTUAL",
+    "SOPR": "há o SOPR simples e os SOPR LTH e STH. O nosso é o SIMPLES",
+    "Realized Price": "há Realized Price, Realized Price STH e Realized Price LTH — as três estão na varredura, cada uma na sua linha"
+  });
+  var CALENDARIOS = Object.freeze(["24/7", "pregão", "mensal"]);
+  var DIAS_SEM_PREGAO = Object.freeze([0, 6]);
+  var EXCHANGES_PRIMEIRA_LINHA = Object.freeze([
+    "Binance",
+    "Coinbase",
+    "Kraken",
+    "OKX",
+    "Bybit",
+    "Bitget"
+  ]);
+  var PESOS = Object.freeze({ 1: 0.34, 2: 0.26, 3: 0.16, 4: 0.12, 5: 0.12 });
+  var CAMADAS = Object.freeze({
+    1: "Estado do preço",
+    2: "Comportamento",
+    3: "Macro",
+    4: "Fluxo",
+    5: "Carteira"
+  });
+  var TRAVA_AUSENCIA_NA_CAMADA = 1 / 3;
+  var FAIXAS = Object.freeze([
+    { ate: 20, nome: "Fundo" },
+    { ate: 40, nome: "Comprimido" },
+    { ate: 60, nome: "Equilíbrio" },
+    { ate: 80, nome: "Esticado" },
+    { ate: 101, nome: "Extremo" }
+  ]);
+  var ESTADOS = Object.freeze({
+    CAPITULACAO: "Capitulação profunda",
+    PREJUIZO: "Prejuízo do mercado",
+    ESTRESSE: "Estresse de curto prazo",
+    SAUDAVEL: "Mercado saudável"
+  });
+  var DIA_MS2 = 864e5;
+  var anosEntre = (de, ate) => (Date.parse(`${ate}T00:00:00Z`) - Date.parse(`${de}T00:00:00Z`)) / (DIA_MS2 * 365.25);
+  var media = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
+  function normalizar(valor, min, max, escala, invertido = false) {
+    const p = escala === "log" ? (Math.log(valor) - Math.log(min)) / (Math.log(max) - Math.log(min)) : (valor - min) / (max - min);
+    const limitado = Math.max(0, Math.min(1, p)) * 100;
+    return invertido ? 100 - limitado : limitado;
+  }
+  var confianca = (inicioSerie, hoje) => Math.min(anosEntre(inicioSerie, hoje) / 5, 1);
+  var amortecer = (bruto, conf) => 50 + (bruto - 50) * conf;
+  function classificarLinhaDagua({ preco, realizedPrice, sth, lth }) {
+    if (preco < lth) return ESTADOS.CAPITULACAO;
+    if (preco < realizedPrice) return ESTADOS.PREJUIZO;
+    if (preco < sth) return ESTADOS.ESTRESSE;
+    return ESTADOS.SAUDAVEL;
+  }
+  var faixaDoIndice = (v) => FAIXAS.find((f) => v < f.ate).nome;
+  var seriesComExtremosProvisorios = () => SERIES.filter((s) => s.extremosProvisorios).map((s) => s.n);
+  var EXTREMOS_INERTES = Object.freeze(
+    ["Preço do BTC", "Realized Price", "Realized Price STH", "Realized Price LTH"]
+  );
+  var inerte = (serie, campo) => campo !== "valor" && EXTREMOS_INERTES.includes(serie);
+  function estadoDosExtremos(varredura) {
+    const porSerie = /* @__PURE__ */ new Map();
+    let confirmadosPorInteiro = 0, postoConfirmado = 0, total = 0, inertesPendentes = 0;
+    for (const s of SERIES) {
+      const v = varredura?.[s.n];
+      if (!v) continue;
+      for (const campo of ["valor", "min", "max"]) {
+        total++;
+        const estado = estadoDoExtremo(s.n, campo, varredura);
+        if (estado === "confirmado") {
+          confirmadosPorInteiro++;
+          continue;
+        }
+        if (estado === "posto confirmado") {
+          postoConfirmado++;
+          continue;
+        }
+        porSerie.set(s.n, [...porSerie.get(s.n) ?? [], campo]);
+        if (inerte(s.n, campo)) inertesPendentes++;
+      }
+    }
+    const confirmados = confirmadosPorInteiro + postoConfirmado;
+    return {
+      total,
+      confirmados,
+      confirmadosPorInteiro,
+      postoConfirmado,
+      provisorios: total - confirmados,
+      series: [...porSerie].map(([serie, campos]) => ({ serie, campos })),
+      // Dos provisórios, quantos não mudam o índice nem se estiverem dez vezes errados.
+      inertesPendentes,
+      provisoriosQueImportam: total - confirmados - inertesPendentes
+    };
+  }
+  var METODOS_DE_CONFERENCIA = Object.freeze(["dígito", "pixel", "eixo", "calendário"]);
+  var TETOS_DA_METRICA = Object.freeze({ "Supply in Profit": { max: 100 } });
+  function varrer({ varredura, hoje, camada5: camada52 = null, anterior = null }) {
+    const ausencias = [];
+    const lidos = /* @__PURE__ */ new Map();
+    for (const s of SERIES) {
+      const v = varredura?.[s.n];
+      if (!v || typeof v.valor !== "number" || !Number.isFinite(v.valor)) {
+        ausencias.push({ indicador: s.n, camada: s.camada, motivo: v === void 0 ? "não voltou da varredura" : "voltou zerado ou com traço" });
+        continue;
+      }
+      const bruto = normalizar(v.valor, v.min, v.max, s.escala, s.invertido);
+      const conf = confianca(s.inicioSerie, v.data ?? hoje);
+      lidos.set(s.n, {
+        ...s,
+        valor: v.valor,
+        data: v.data,
+        bruto,
+        confianca: conf,
+        posicao: amortecer(bruto, conf)
+      });
+    }
+    const p = (n) => lidos.get(n)?.valor;
+    const temLinhaDagua = ["Preço do BTC", "Realized Price", "Realized Price STH", "Realized Price LTH"].every((n) => lidos.has(n));
+    const estado = temLinhaDagua ? classificarLinhaDagua({ preco: p("Preço do BTC"), realizedPrice: p("Realized Price"), sth: p("Realized Price STH"), lth: p("Realized Price LTH") }) : null;
+    const camadas = /* @__PURE__ */ new Map();
+    const regua = lidos.get("MVRV Ratio");
+    if (lidos.has("Preço do BTC") && lidos.has("Realized Price") && regua) {
+      const razao = p("Preço do BTC") / p("Realized Price");
+      const bruto = normalizar(razao, varredura["MVRV Ratio"].min, varredura["MVRV Ratio"].max, "log");
+      camadas.set(1, { posicao: bruto, itens: [`preço ÷ Realized Price = ${razao.toFixed(5)}`] });
+    }
+    for (const camada of [2, 3, 4]) {
+      const daCamada = SERIES.filter((s) => s.camada === camada && s.papel === void 0);
+      const presentes = daCamada.map((s) => lidos.get(s.n)).filter(Boolean);
+      const faltando = daCamada.filter((s) => !lidos.has(s.n)).map((s) => s.n);
+      const pesoAusente = faltando.length / daCamada.length;
+      if (presentes.length > 0 && pesoAusente <= TRAVA_AUSENCIA_NA_CAMADA) {
+        camadas.set(camada, {
+          // D37 D: pesos internos iguais entre os indicadores da camada, até haver
+          // razão registrada para não serem. Peso inventado é pior que peso igual.
+          posicao: media(presentes.map((x) => x.posicao)),
+          // renormaliza sobre o que voltou
+          itens: presentes.map((x) => `${x.n} ${x.posicao.toFixed(1)}`),
+          ausentes: faltando,
+          pesoAusente
+        });
+      }
+    }
+    if (camada52?.disponivel) camadas.set(5, { posicao: camada52.posicao, itens: camada52.itens ?? [] });
+    const ativas = [...camadas.keys()].sort();
+    if (ativas.length === 0) {
+      return { disponivel: false, motivo: "nenhuma camada voltou inteira", ausencias, estado, hoje };
+    }
+    const somaPesos = ativas.reduce((s, c) => s + PESOS[c], 0);
+    const indice = ativas.reduce((s, c) => s + camadas.get(c).posicao * PESOS[c], 0) / somaPesos;
+    const faixa = faixaDoIndice(indice);
+    const mudou = compararComAnterior({ indice, faixa, estado }, anterior);
+    return {
+      disponivel: true,
+      hoje,
+      indice,
+      faixa,
+      estado,
+      camadas: ativas.map((c) => ({
+        camada: c,
+        nome: CAMADAS[c],
+        posicao: camadas.get(c).posicao,
+        pesoNominal: PESOS[c],
+        pesoAplicado: PESOS[c] / somaPesos,
+        itens: camadas.get(c).itens,
+        ausentes: camadas.get(c).ausentes ?? []
+      })),
+      camadasForaDaConta: [1, 2, 3, 4, 5].filter((c) => !camadas.has(c)).map((c) => {
+        if (c === 5) return { camada: 5, nome: CAMADAS[5], motivo: camada52?.motivo ?? "sem carteira ativa" };
+        const daCamada = SERIES.filter((s) => s.camada === c && s.papel === void 0);
+        const faltando = daCamada.filter((s) => !lidos.has(s.n)).map((s) => s.n);
+        const frac = daCamada.length ? faltando.length / daCamada.length : 1;
+        return {
+          camada: c,
+          nome: CAMADAS[c],
+          ausentes: faltando,
+          motivo: c === 1 ? "faltou preço, Realized Price ou a régua do MVRV" : `ausentes pesam ${(frac * 100).toFixed(0)}% da camada, acima do terço da trava`
+        };
+      }),
+      confiancas: [...lidos.values()].filter((x) => x.confianca < 1).map((x) => ({ indicador: x.n, confianca: x.confianca, bruto: x.bruto, ajustado: x.posicao })),
+      ausencias,
+      extremosProvisorios: seriesComExtremosProvisorios().filter((n) => varredura?.[n]),
+      extremos: estadoDosExtremos(varredura),
+      mudou,
+      semRecomendacao: true
+      // a Torre lê regime. Não decide nada.
+    };
+  }
+  function compararComAnterior(atual, anterior) {
+    if (!anterior) return { primeira: true, linha: "primeira leitura registrada" };
+    const faixaMudou = anterior.faixa !== atual.faixa;
+    const estadoMudou = anterior.estado !== atual.estado;
+    if (!faixaMudou && !estadoMudou) {
+      return { faixaMudou: false, estadoMudou: false, linha: `nada mudou de faixa nem de estado desde ${anterior.data ?? "a leitura anterior"}` };
+    }
+    const partes = [];
+    if (estadoMudou) partes.push(`estado: ${anterior.estado} → ${atual.estado}`);
+    if (faixaMudou) partes.push(`faixa: ${anterior.faixa} → ${atual.faixa}`);
+    return { faixaMudou, estadoMudou, linha: partes.join(" · "), indiceAntes: anterior.indice };
+  }
+  var TRAVA_SEM_DEGRAU = 30;
+  function camada5({ registro, carteira, hoje, posicoes }) {
+    if (!posicoes || Object.keys(posicoes).length === 0) {
+      return { disponivel: false, motivo: "sem carteira ativa" };
+    }
+    const suspensao = registro.suspensaoDaCamada5(carteira, hoje);
+    if (suspensao.suspensa) {
+      return {
+        disponivel: false,
+        suspensa: true,
+        ativo: suspensao.ativo,
+        desde: suspensao.desde,
+        motivo: `camada 5 suspensa: degrau de ${suspensao.ativo} ${suspensao.razao}` + (suspensao.desde ? `, desde ${suspensao.desde}` : "")
+      };
+    }
+    const degraus = registro.degraus(carteira, hoje);
+    const semDegrau = [], comDegrau = [];
+    for (const [ativo, peso] of Object.entries(posicoes)) {
+      const d = degraus.get(ativo);
+      (d && d.status === "vigente" ? comDegrau : semDegrau).push({ ativo, peso, valor: d?.valor });
+    }
+    const pesoSemDegrau = semDegrau.filter((x) => !["BTC", "ETH"].includes(x.ativo)).reduce((s, x) => s + x.peso, 0);
+    if (pesoSemDegrau > TRAVA_SEM_DEGRAU) {
+      return {
+        disponivel: false,
+        motivo: `ativos sem degrau somam ${pesoSemDegrau.toFixed(1)}% da parte exposta, acima da trava de ${TRAVA_SEM_DEGRAU}% — a camada descreveria menos de dois terços da carteira`,
+        semDegrau: semDegrau.map((x) => x.ativo)
+      };
+    }
+    const somaPesos = comDegrau.reduce((s, x) => s + x.peso, 0);
+    if (somaPesos === 0) return { disponivel: false, motivo: "nenhum ativo com degrau vigente" };
+    const posicao = comDegrau.reduce((s, x) => s + x.valor * x.peso, 0) / somaPesos;
+    return {
+      disponivel: true,
+      posicao,
+      itens: comDegrau.map((x) => `${x.ativo} ${x.valor} (${x.peso.toFixed(1)}%)`),
+      semDegrau: semDegrau.map((x) => x.ativo),
+      etiqueta: registro.etiquetaDeJulgamento(carteira, hoje)
+    };
+  }
+
+  // torre/leitura-29-08-2026.mjs
+  var VARREDURA_29_08_2026 = Object.freeze({
+    "Preço do BTC": {
+      valor: 77839.19,
+      min: 0.29,
+      max: 124353.95,
+      data: "2026-08-28",
+      dataMin: "2011-01-03",
+      dataMax: "2025-10-06",
+      confirmado: { valor: "2026-08-29", min: null, max: null },
+      // Tentativa registrada para que ninguém repita: a tooltip NÃO confirma este
+      // mínimo, e não por falta de zoom. O terminal arredonda BTC PRICE para dólar
+      // inteiro, então 03/01/2011 lê "$0" — e 02, 04, 05 e 06/01 leem "$0" também.
+      // Empate sem desempate possível no gráfico.
+      tentativas: [{
+        campo: "min",
+        em: "2026-08-29",
+        resultado: "não confirmado",
+        metodo: "tooltip, modo SMA, zoom no máximo que a barra de range permite (janela 01–13/jan/2011)",
+        lido: 'JAN 3, 2011 · BTC PRICE $0 — cifrão, zero. O eixo da janela imprime só "$1" e "$0".',
+        vizinhos: { "2011-01-02": "$0", "2011-01-03": "$0", "2011-01-04": "$0", "2011-01-05": "$0", "2011-01-06": "$0" },
+        cruzamento: "MVRV Ratio na mesma tooltip: 02/01 = 3.370 · 03/01 = 3.294 · 04/01 = 3.226",
+        oQueSeSustenta: "só o item 3: na visão ALL o ponto mais baixo da série está nos primeiros dias de jan/2011, e o fundo seguinte (nov/2011) já está na casa de US$ 2. Medido contra o eixo log (~71 px por década) dá ≈ US$ 0,29–0,30 — mas isso é medição de eixo, não leitura de tooltip.",
+        porQueNaoFecha: "o terminal arredonda o preço para inteiro; abaixo de US$ 1 a tooltip perde a informação inteira",
+        caminhoQueFecharia: "a fonte do dado, o número cru por trás da série — não o gráfico",
+        telaRestaurada: "range ALL, página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo"
+      }]
+    },
+    "Realized Price": { valor: 53057.77, min: 0.088, max: 56449.62, data: "2026-08-28", dataMin: "2011-01-01", dataMax: "2025-11-26", confirmado: { valor: "2026-08-29", min: null, max: null } },
+    "Realized Price STH": { valor: 69977.18, min: 0.19, max: 114018.67, data: "2026-08-28", dataMin: "2011-01-01", dataMax: "2025-10-09", confirmado: { valor: "2026-08-29", min: null, max: null } },
+    "Realized Price LTH": { valor: 49449.51, min: 3e-3, max: 49991.21, data: "2026-08-28", dataMin: "2011-01-01", dataMax: "2026-07-26", confirmado: { valor: "2026-08-29", min: null, max: null } },
+    "MVRV Ratio": {
+      valor: 1.465,
+      min: 0.384,
+      max: 7.854,
+      data: "2026-08-28",
+      dataMin: "2011-10-19",
+      dataMax: "2011-06-04",
+      confirmado: { valor: "2026-08-29", min: "2026-08-29", max: "2026-08-29" },
+      conferencias: [{
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "tooltip do terminal, modo SMA, janela estreitada de 01/10/2011 a dez/2011 até o passo do cursor virar 1 dia",
+        lido: "0.384 — zero, ponto, três, oito, quatro (o terminal usa ponto decimal, não vírgula)",
+        casasNaTooltip: 3,
+        // dos próprios dígitos lidos: 0.384
+        // Vizinhos e varredura do ALL: provam que é o FUNDO, não só que o número
+        // daquele dia está certo. O comando pedia só a segunda coisa.
+        vizinhos: { "2011-10-18": 0.418, "2011-10-19": 0.384, "2011-10-20": 0.411 },
+        ehMinimoDaSerie: "nenhum ponto da série no ALL fica abaixo; os fundos de 2015, 2018 e 2022 param acima",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 2 — implica Realized Price ~5,21 e MVRV abaixo de 1, que é capitulação profunda",
+        telaRestaurada: "range de volta em ALL, página no topo, sidebar reaberta; nada salvo, alterado, publicado ou apagado"
+      }, {
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "tooltip do terminal, modo SMA, janela estreitada de 13/04/2011 a 07/2011 até ~12,6 px por dia",
+        lido: "7.854 — sete, ponto, oito, cinco, quatro",
+        casasNaTooltip: 3,
+        // 7.854
+        vizinhos: { "2011-06-03": 6.51, "2011-06-04": 7.854, "2011-06-05": 6.718 },
+        // Havia um segundo pico ao lado, conferido para não confundir os dois.
+        segundoPico: { "2011-06-07": 7.404, "2011-06-08": 7.809, "2011-06-09": 6.772 },
+        ehMaximoDaSerie: "topos rivais medidos na mesma janela estreitada: 09/04/2013 = 5.846 e 17/11/2013 = 6.237; 2017, 2021 e 2024 ficam visivelmente abaixo desses dois. Folga de ~26% até o segundo maior.",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 16 — implica Realized Price ~2,04. Em 08/06, MVRV 7.809 com BTC US$ 28 implica ~3,59: o custo da rede subiu 76% em quatro dias, no mesmo passo do preço, e por isso a razão não inflou.",
+        // ⚠️ A folga até o segundo pico é de 0,58%. A DATA do máximo depende dessa
+        // margem — outra suavização poderia virá-la de 04/06 para 08/06. Por isso o
+        // modo SMA fica registrado: sem ele a conferência não é reprodutível.
+        margemAteOSegundoPico: "0,58% (7.854 contra 7.809 em 08/06/2011)",
+        bateComDoc07: "o documento 07 registra uma conferência avulsa de 05/jun/2011 = 6,718; esta leitura independente dá o mesmo número",
+        telaRestaurada: "range ALL, página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo"
+      }]
+    },
+    "SOPR": {
+      valor: 1.0112,
+      min: 0.6068,
+      max: 2.874,
+      data: "2026-08-28",
+      dataMin: "2011-11-09",
+      dataMax: "2011-04-29",
+      confirmado: { valor: "2026-08-29", min: "2026-08-29", max: "2026-08-29" },
+      conferencias: [{
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "Spent Output Profit Ratio (SOPR) · SOPR simples, não LTH/STH; tooltip, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "0.6068 — zero, ponto, seis, zero, seis, oito",
+        casasNaTooltip: 4,
+        // 0.6068
+        vizinhos: { "2011-11-08": 0.9609, "2011-11-09": 0.6068, "2011-11-10": 0.9743 },
+        // TOPOLOGIA NOVA: nem vale (MVRV · min) nem platô (Liveliness · max). É uma
+        // barra isolada cravada entre dois dias em ~0,96–0,97. É a forma que um erro
+        // de dado tem — e também a que um dia de capitulação tem, porque o SOPR é
+        // razão diária e um dia de pânico dá uma barra só. Fica nomeada.
+        topologia: "pico isolado de um dia",
+        quedaDosVizinhos: 0.3541,
+        // 0,9609 → 0,6068: 37% em um dia, e volta no seguinte
+        ehMinimoDaSerie: "varrido em dois blocos, porque a série tem dois regimes. 2011–2012: os rivais mais próximos são 16/11/2011 = 0.6237 e 19/10/2011 = 0.6369, ambos acima. 2013 → hoje: abrindo só esse trecho o eixo se reescala e o piso vira 0,7 — em treze anos o SOPR nunca chegou perto.",
+        // ⚠️ MÉTODO MAIS FRACO, e o Gui nomeou como tal: o piso do regime pós-2013
+        // (~0,75–0,76) foi lido no EIXO, não na tooltip. Fica separado do que foi lido
+        // dígito a dígito, porque não tem a mesma força.
+        leiturasDeEixo: {
+          pisoPos2013: "~0,75–0,76",
+          fecho: "na visão ALL o rótulo mais baixo do eixo direito é 0.6, o que só faz sentido com o mínimo logo acima dele",
+          naturezaDoMetodo: "leitura de eixo, não de tooltip"
+        },
+        // BTC PRICE $3 nos três dias: a mesma redondagem para dólar inteiro que
+        // derrubou a conferência do Preço do BTC · min. Nesta escala o cruzamento não
+        // cruza nada, e isso é consistência, não achado novo.
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 3 nos três dias — o terminal arredonda para dólar inteiro, então nesta escala o cruzamento não separa nada",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }, {
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "SOPR simples, tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "2.8740 — dois, ponto, oito, sete, quatro, zero",
+        casasNaTooltip: 4,
+        // O portao passou, mas por 0,0001: o STH le 1.0111 contra 1.0112 do simples.
+        // Uma casa de exibicao. O valor corrente e senha FRACA onde ha homonimo.
+        portaoDeIdentidade: {
+          breadcrumb: "Spent Output Profit Ratio (SOPR) / SOPR",
+          ultimoPonto: { data: "2026-08-28", valor: 1.0112, btc: 77839 },
+          homonimosNoMesmoDia: { LTH: 1.0134, STH: 1.0111 },
+          margemAteOMaisProximo: 1e-4,
+          licao: "o valor corrente separou do STH por uma casa de exibição — quem separa de verdade é o breadcrumb"
+        },
+        vizinhos: { "2011-04-28": 1.4169, "2011-04-29": 2.874, "2011-04-30": 1.8046 },
+        topologia: "pico isolado de um dia — vale mais que o dobro do vizinho de trás",
+        semEmpate: "os dígitos separam com folga enorme",
+        // ⚠️ A VARREDURA POR BANDA FALHOU AQUI, e o Gui trocou de método.
+        varreduraQueFalhou: {
+          metodo: "banda de altura sobre a série inteira",
+          porQue: "no ALL o gráfico comprime ~5.700 dias em ~1.100 px, então um dia ocupa ~0,19 px e um pico de barra única some no recorte — daria falso negativo"
+        },
+        ehMaximoDaSerie: "eixo auto-escalado, em dois blocos que se encostam sem buraco. jan/2011 → 11/01/2012: topo do eixo 3.1, e a barra mais alta da janela é a de 29/04/2011. 11/01/2012 → hoje: topo do eixo 1.6 — em quatorze anos e meio as barras mais altas param em 1,2–1,5. O único trecho cujo eixo precisa subir até a casa dos 2,8 é o de abril/2011.",
+        metodoDeVarredura: "eixo auto-escalado por blocos — não depende de a barra ser visível",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 2 — de novo sem poder de separação nesta escala",
+        incertezaDaExibicao: { faixa: [2.87395, 2.87405], efeitoNoIndice: 36e-5 },
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "Supply in Profit": {
+      valor: 67.4,
+      min: 35.6,
+      max: 100,
+      data: "2026-08-28",
+      dataMin: "2015-08-24",
+      dataMax: "2011-02-04",
+      confirmado: { valor: "2026-08-29", min: "2026-08-29", max: null },
+      conferencias: [{
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "35.6% — três, cinco, ponto, seis, com sinal de porcento",
+        casasNaTooltip: 1,
+        // quarta resolução diferente encontrada: 4, 3, 2 e agora 1
+        // O menu tem DOIS "Supply in Profit": um em BTC (13,5M BTC) e um percentual.
+        // O Gui escolheu o percentual e avisou. A escolha se PROVA pelo dado, e por
+        // três vias independentes — nenhuma delas dependia de escolher certo.
+        serieEscolhida: {
+          entre: ["Supply in Profit em BTC (≈13,5M BTC)", "Supply in Profit em percentual"],
+          escolhida: "percentual",
+          provasNoDado: [
+            "o valor corrente registrado é 67,4 — percentual, não 13,5M",
+            "o máximo registrado é 100,0, que é o teto de um percentual e impossível numa série em BTC",
+            "o mínimo lido, 35,6%, é da mesma ordem dos outros dois"
+          ]
+        },
+        vizinhos: { "2015-08-23": 38.8, "2015-08-24": 35.6, "2015-08-25": 40 },
+        topologia: "mergulho de um dia — a Segunda-feira Negra dos mercados globais, 24/08/2015",
+        semEmpate: "folga de mais de 3 pontos percentuais para cada lado; os dígitos separam sozinhos",
+        // Método novo de varredura: recortar a BANDA de altura e varrer os quinze anos
+        // de uma vez, em vez de percorrer trecho a trecho.
+        ehMinimoDaSerie: "recortada a banda do gráfico abaixo de ~36% e varridos os quinze anos de uma vez: aparece uma única marca em toda a série, a de agosto de 2015. Concorrentes por trecho: dez/2014–out/2015 tem segundo mais baixo em ~39,7%; 2018–2019 para em 40–41%.",
+        metodoDeVarredura: "banda de altura sobre a série inteira, e não trecho a trecho",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 219 em 24/08; US$ 228 em 23/08 e US$ 214 em 25/08",
+        incertezaDaExibicao: { faixa: [35.55, 35.65], efeitoNoIndice: 387e-5 },
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "Liveliness": {
+      valor: 0.6345,
+      min: 0.1785,
+      max: 0.641,
+      data: "2026-08-28",
+      dataMin: "2011-01-09",
+      dataMax: "2025-12-20",
+      confirmado: { valor: "2026-08-29", min: null, max: "2026-08-29" },
+      conferencias: [{
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "Cointime Statistics · Liveliness, tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "0.6410 — zero, ponto, seis, quatro, um, zero",
+        vizinhos: { "2025-12-19": 0.6409, "2025-12-20": 0.641, "2025-12-21": 0.6409 },
+        // ⚠️ O EMPATE. 12/12/2025 exibe o MESMO 0.6410 na tooltip. Não é empate de
+        // valor, é empate de EXIBIÇÃO: o terminal mostra quatro casas e as duas datas
+        // caem no mesmo passo de arredondamento. A tooltip não decide, e nenhuma
+        // insistência nela decidiria — o número que ela mostra é o mesmo nas duas.
+        empateNaExibicao: {
+          candidato: "2025-12-12",
+          lido: 0.641,
+          precoNoDia: 91629,
+          resolvidoPor: "janela 23/11/2025 → 26/01/2026, onde 1 px vale ~0,000003 de Liveliness; 20/12 fica ~13 px acima de 12/12",
+          implicacao: "12/12 é ~0,64096 arredondado para cima na tela; 20/12 é o ponto mais alto de fato",
+          // Método diferente dos anteriores: não é leitura de dígito, é separação
+          // geométrica. Fica nomeado para não passar por leitura de tooltip.
+          naturezaDoMetodo: "separação por pixel, não leitura de dígito"
+        },
+        ehMaximoDaSerie: "na janela esticada nenhum ponto fica acima de 20/12; fora dela a folga é grande — o platô de 2017–2024 não passa de ~0,61–0,63, o pico de 13/01/2026 lê 0.6404 e o valor atual (ago/2026) é 0,6345. Na visão ALL os únicos pixels na altura de 0,641 estão em dez/2025.",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 88.181 em 20/12; US$ 87.394 em 19/12 e US$ 88.260 em 21/12. Em 12/12, US$ 91.629 — preço 3,9% MAIOR com Liveliness igual, o que separa as duas datas por comportamento e não só por altura.",
+        // O que o empate custa na régua, medido e não estimado: a máxima só é conhecida
+        // até ±0,00005, e essa incerteza move o Índice em ±0,00105 ponto.
+        incertezaDaExibicao: { faixa: [0.64095, 0.64105], efeitoNoIndice: 105e-5 },
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "DXY": {
+      valor: 99.16,
+      min: 72.93,
+      max: 114.11,
+      data: "2026-08-29",
+      dataMin: "2011-04-29",
+      dataMax: "2022-09-27",
+      confirmado: { valor: "2026-08-29", min: "2026-08-29", max: "2026-08-29" },
+      // ⚠️ ANOMALIA DE MENU, não de dado: no menu do terminal o DXY aparece com o
+      // valor atual em "—" enquanto o histórico carrega normal. Nenhuma das outras
+      // treze séries faz isso. Não move o índice — a confiança do DXY já está no teto
+      // (série de 2011, e o fator da D7 satura em 5 anos), então mesmo série parada
+      // não mudaria a conta. Mas o VALOR do DXY é alavanca grande: 10% nele move o
+      // índice 1,09 ponto. Fica registrado para o Gui decidir se reabre a conferência
+      // do valor — reabrir confirmação é decisão, não implementação.
+      anomaliaDeMenu: {
+        observadaEm: "2026-08-29",
+        o_que: 'valor atual exibido como "—" no menu; o histórico do gráfico carrega normal',
+        // EXPLICADA pela conferencia do DXY · min: 29/08/2026 e SABADO, e o DXY e serie
+        // de pregao. Nao ha cotacao de sabado para o menu mostrar; o historico carrega
+        // porque historico existe. Nao e falha do terminal nem do dado.
+        explicacao: "29/08/2026 é sábado e o DXY é série de pregão — não há cotação do dia para o menu exibir",
+        explicadaEm: "2026-08-29, na conferência do DXY · min",
+        efeitoNoIndice: 0,
+        motivoDoEfeitoZero: "confiança do DXY já saturada em 1 (D7)",
+        alavancaDoValor: 1.0945
+        // pontos de índice por 10% de erro no valor
+      },
+      conferencias: [{
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "Macro · DXY — Dollar Index, tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "114.11 — um, um, quatro, ponto, um, um",
+        // A tooltip do DXY mostra DUAS casas, não quatro como a do Liveliness. A
+        // resolução de exibição é por série, não do terminal.
+        casasNaTooltip: 2,
+        vizinhos: { "2022-09-26": 114.1, "2022-09-27": 114.11, "2022-09-28": 112.6 },
+        // O caso OPOSTO ao do Liveliness: 26/09 fica um centésimo abaixo, mas os
+        // dígitos diferem (114.10 ≠ 114.11) e a tooltip decide sozinha.
+        quaseEmpate: {
+          vizinho: "2022-09-26",
+          lido: 114.1,
+          distancia: 0.01,
+          resolvidoPor: "dígito — a tooltip separa sozinha, sem zoom",
+          naturezaDoMetodo: "leitura de dígito",
+          contrasteCom: "Liveliness · max, onde 12/12 e 20/12 exibiam o MESMO número e só o pixel separou"
+        },
+        ehMaximoDaSerie: "varrida a faixa de altura ~107+ na série inteira: de 2011 a 2018 nenhum ponto entra nela, e o topo do período fica abaixo de 104; de 2019 em diante o único pico na altura de 114 é o de set/2022. O segundo maior de toda a série é o repique do início de 2025, em torno de 110,5 — quase 4 pontos abaixo.",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 19.634 em 27/09; US$ 19.045 em 26/09 e US$ 19.144 em 28/09",
+        // Duas casas de exibição: a máxima só é conhecida até ±0,005.
+        incertezaDaExibicao: { faixa: [114.105, 114.115], efeitoNoIndice: 35e-5 },
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }, {
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "Macro · DXY — Dollar Index, tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "72.93 — sete, dois, ponto, nove, três",
+        casasNaTooltip: 2,
+        vizinhos: { "2011-04-28": 73.12, "2011-04-29": 72.93, "2011-04-30": 72.93, "2011-05-01": 72.93, "2011-05-02": 72.95 },
+        // EMPATE DE CALENDARIO, nao de exibicao. Tres dias exibem 72.93 e continuam no
+        // mesmo pixel com o eixo a ~0,009/px: nenhum zoom os separa, porque nao ha o
+        // que separar. 29/04/2011 foi SEXTA; 30/04 e 01/05 sao fim de semana e o
+        // terminal repete o fechamento. Na segunda o indice ja anda (72.95).
+        empateDeCalendario: {
+          diasIguais: ["2011-04-29", "2011-04-30", "2011-05-01"],
+          diaDeFormacao: "2011-04-29",
+          diaDaSemana: "sexta-feira",
+          porQueOPixelNaoResolve: "não é arredondamento — é o mesmo valor carregado adiante; a ~0,009/px os três ficam no mesmo pixel",
+          primeiroPregaoSeguinte: { "2011-05-02": 72.95 },
+          naturezaDoMetodo: "calendário — o único que não olha a tela"
+        },
+        ehMinimoDaSerie: "varrida a faixa de altura ~73 na série inteira: a linha só entra nela entre janeiro e meados de 2011. De 2012 em diante nenhum ponto chega perto — o fundo de 2014 fica em ~79, o de 2018 em ~88. Dentro de 2011 os rivais mais próximos ficam em 73,6–73,8 (fundos de fev/mar e de agosto).",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 2 — de novo a redondagem para dólar inteiro, que nesta escala não cruza nada",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "Fed Funds Rate": {
+      valor: 3.63,
+      min: 0.05,
+      max: 5.33,
+      data: "2026-08-29",
+      dataMin: "2020-04-01",
+      dataMax: "2023-08-01",
+      confirmado: { valor: "2026-08-29", min: null, max: "2026-08-29" },
+      // O portao de identidade (unidade + valor corrente) passou: titulo "Fed Funds
+      // Rate (%)" e ultimo ponto 3.63. E de quebra entregou um fato que o dado nao
+      // tinha: a data do ultimo ponto e 24/08/2026, nao 29/08. Cinco dias, nao um.
+      divergenciaDeData: {
+        registrado: "2026-08-29",
+        naTela: "2026-08-24",
+        diferencaEmDias: 5,
+        comoApareceu: "o portão de identidade da D35 B pediu o valor corrente, e o Gui reportou a data dele junto",
+        efeitoNoIndice: 0,
+        motivo: "confiança da série saturada em 1 — pela D36 C a data não entra na conta"
+      },
+      conferencias: [{
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "Macro · Fed Funds Rate (%), tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "5.33 — cinco, ponto, três, três",
+        casasNaTooltip: 2,
+        portaoDeIdentidade: "unidade em % no próprio título; último ponto 24/08/2026 = 3.63, que bate com o valor registrado",
+        vizinhos: { "2023-07-31": 5.12, "2023-08-01": 5.33, "2023-08-02": 5.33 },
+        // TERCEIRA ESPECIE DE EMPATE, depois da exibicao (Liveliness) e do fim de
+        // semana (DXY): o dado nao muda mesmo. 396 dias com o valor identico.
+        platoDeValor: {
+          inicio: "2023-08-01",
+          fim: "2024-08-31",
+          diasNoPatamar: 396,
+          degrauDeEntrada: { "2023-07-31": 5.12, "2023-08-01": 5.33 },
+          // 21 pontos-base
+          primeiraLeituraDepois: { "2024-08-30": 5.33, "2024-09-02": 5.13 },
+          porQueNemDigitoNemPixelDecidem: "a linha é horizontal sem um pixel de variação — não há o que separar, o dado é o mesmo",
+          oQueADataSignifica: "primeira ocorrência do patamar, o degrau — não um ponto único",
+          naturezaDoMetodo: "patamar — a data é o degrau de entrada, e as duas pontas se registram juntas"
+        },
+        ehMaximoDaSerie: "recortada a faixa do gráfico acima de 5,33 e varridos os quinze anos: nenhum traço entra nela. O ciclo de 2018–19 topou em ~2,4 e todo o período 2011–2015 ficou rente a zero.",
+        metodoDeVarredura: "banda de altura sobre a série inteira",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 29.019 em 01/08; US$ 29.330 em 31/07 e US$ 29.397 em 02/08",
+        incertezaDaExibicao: { faixa: [5.325, 5.335], efeitoNoIndice: 292e-5 },
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "US M2": { valor: 23.218, min: 8.845, max: 23.218, data: "2026-08-29", dataMin: "2011-01-01", dataMax: "2026-07-01", confirmado: { valor: "2026-08-29", min: null, max: null } },
+    "Curva 10Y-2Y": {
+      valor: 0.38,
+      min: -0.93,
+      max: 2.81,
+      data: "2026-08-29",
+      dataMin: "2023-07-01",
+      dataMax: "2011-02-01",
+      confirmado: { valor: "2026-08-29", min: "2026-08-29", max: "2026-08-29" },
+      // Mesma divergencia do Fed Funds, e agora sabida: o ultimo ponto desenhado e
+      // 24/08/2026, nao 29/08. Custo zero — confianca saturada (D36 C).
+      divergenciaDeData: {
+        registrado: "2026-08-29",
+        naTela: "2026-08-24",
+        diferencaEmDias: 5,
+        comoApareceu: "o portão de identidade pediu o valor corrente, e o Gui reportou a data junto",
+        efeitoNoIndice: 0
+      },
+      unidadeLida: {
+        em: "2026-08-29",
+        unidade: "pontos percentuais",
+        // ⚠️ LUGAR NOVO. O titulo NAO traz a unidade, diferente de "Fed Funds Rate (%)"
+        // e "Funding Rate — APR (%)". Ela esta na secao "Sobre esta metrica", abaixo do
+        // grafico: "spread entre o Treasury de 10 anos e o de 2 anos (em pontos percentuais)".
+        onde: 'seção "Sobre esta métrica", abaixo do gráfico — o título desta série não traz unidade',
+        breadcrumbCompleto: "Studio / Macro / Yield Curve 10Y-2Y",
+        cabecalho: "BITCOIN · MACRO"
+      },
+      conferencias: [{
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "Studio / Macro / Yield Curve 10Y-2Y, tooltip, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "2.81 — dois, ponto, oito, um",
+        casasNaTooltip: 2,
+        vizinhos: { "2011-01-31": 2.78, "2011-02-01": 2.81, "2011-02-02": 2.81 },
+        // ⚠️ A SERIE E MENSAL, e eu a tinha marcada como de PREGAO. O Gui provou
+        // conferindo as duas pontas: 28/02/2011 ainda le 2.81 e 01/03 cai para 2.71.
+        // Fevereiro inteiro carrega o mesmo valor. Nao e arredondamento nem pixel.
+        serieEhMensal: {
+          provaDoGui: "28/02/2011 ainda lê 2,81; 01/03/2011 cai para 2,71 — os 28 dias de fev/2011 carregam o mesmo valor",
+          desenho: "mensal desenhada como escada diária",
+          euTinhaMarcadoComo: "pregão",
+          oQueIssoQuebrava: "o comando ia avisar que 01/07/2023 (o mínimo) é sábado e o valor vinha da sexta — explicação errada: para série mensal o dia 1 é referência de MÊS, e o fim de semana não tem nada a ver",
+          sinalQueEuTinhaESemUsar: "as DUAS pontas caem no dia 1 do mês (01/07/2023 e 01/02/2011)"
+        },
+        platoDeValor: {
+          inicio: "2011-02-01",
+          fim: "2011-02-28",
+          diasNoPatamar: 28,
+          degrauDeEntrada: { "2011-01-31": 2.78, "2011-02-01": 2.81 },
+          primeiraLeituraDepois: { "2011-02-28": 2.81, "2011-03-01": 2.71 },
+          oQueADataSignifica: "mês de referência fev/2011; 01/02 é o primeiro dia, não um ponto único",
+          naturezaDoMetodo: "patamar mensal — o mês é a unidade, e as duas pontas se registram juntas"
+        },
+        ehMaximoDaSerie: "dois blocos curtos que se encostam, rivais conferidos na tooltip — sem eixo nem pixel no ALL. 11/01/2011 → 11/01/2012: o degrau mais alto do ano é fev/2011 (2,81); janeiro fica em 2,78 e de março em diante a escada só desce. 11/01/2012 → hoje: o topo é dez/2013 = 2,56 (BTC US$ 865), e o eixo dessa janela nem passa de 2,5.",
+        metodoDeVarredura: "eixo auto-escalado por blocos, com os rivais conferidos na tooltip",
+        folgaAteOSegundo: "0,25 pp (2,81 contra 2,56 em dez/2013)",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 1 nos três dias — dólar inteiro de novo, sem poder de separação",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }, {
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "Studio / Macro / Yield Curve 10Y-2Y, tooltip, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "-0.93 — menos, zero, ponto, nove, três",
+        casasNaTooltip: 2,
+        vizinhos: { "2023-06-30": -0.89, "2023-07-01": -0.93, "2023-07-02": -0.93 },
+        // As QUATRO pontas do patamar, que o comando passou a pedir depois do Fed Funds.
+        // Primeira conferencia em que ele pediu a coisa certa e voltou completa.
+        platoDeValor: {
+          inicio: "2023-07-01",
+          fim: "2023-07-31",
+          diasNoPatamar: 31,
+          degrauDeEntrada: { "2023-06-30": -0.89, "2023-07-01": -0.93 },
+          primeiraLeituraDepois: { "2023-07-31": -0.93, "2023-08-01": -0.73 },
+          conferidoNoMeio: { "2023-07-09": -0.93, "2023-07-30": -0.93 },
+          oQueADataSignifica: "mês de referência jul/2023; 01/07 é o primeiro dia do patamar, não um ponto único",
+          naturezaDoMetodo: "patamar mensal — as quatro pontas registradas juntas"
+        },
+        // O dia 1 cai num sábado, e desta vez isso é IRRELEVANTE: série mensal, o dia 1
+        // é referência de mês. Foi exatamente o aviso errado que a marcação antiga dava.
+        oSabadoNaoImporta: "01/07/2023 é sábado, mas a série é mensal — o dia 1 é referência de mês, não fechamento carregado da sexta",
+        ehMinimoDaSerie: "dois blocos curtos que se encostam, rivais na tooltip, sem eixo nem pixel no ALL. 2011 → jan/2022: o eixo da janela nem chega a zero — o piso do período é +0,05 (set/2019), a curva não fica negativa no trecho. jan/2022 → hoje: o degrau mais fundo de toda a inversão é o de jul/2023 (-0,93); os patamares vizinhos param em -0,76 e -0,70.",
+        metodoDeVarredura: "eixo auto-escalado por blocos, com os rivais conferidos na tooltip",
+        folgaAteOSegundo: "0,17 pp (-0,93 contra -0,76)",
+        // Achado estrutural: TODO o território negativo desta régua é um episódio só.
+        territorioNegativo: "a curva só fica negativa a partir de 2022 — em onze anos de série o piso foi +0,05",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 30.519 em 01/07; US$ 30.558 em 30/06 e US$ 30.542 em 02/07",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "ETF Net Inflow": {
+      valor: 242.3,
+      min: -1138.9,
+      max: 1373.8,
+      data: "2026-08-27",
+      dataMin: "2025-02-25",
+      dataMax: "2024-11-07",
+      // D42 A: o VALOR do dia foi lido ("$242M" bate com 242,3). Os dois extremos ficam
+      // em POSTO CONFIRMADO: data e posto provados na tela, valor não legível porque a
+      // notação compacta colapsa a magnitude. D42 D: é o teto alcançável nesta tela.
+      confirmado: { valor: "2026-08-29", min: null, max: null },
+      postoConfirmado: { valor: null, min: "2026-08-29", max: "2026-08-29" },
+      // ⚠️ CORRECAO DE UNIDADE: eu tinha inferido "US$ mi". A tela diz USD, exibido em
+      // milhoes/bilhoes por sufixo. Compativel na escala, errado como rotulo.
+      unidadeLida: {
+        em: "2026-08-29",
+        unidade: "USD",
+        textoDaTela: "Fluxo líquido diário, em USD, dos ETFs spot de Bitcoin nos EUA",
+        onde: 'seção "Sobre esta métrica" — o título não traz unidade',
+        exibicao: "sufixo M/B: $500M, $1B, $2B",
+        euTinhaInferido: "US$ mi",
+        breadcrumbCompleto: "Studio / ETF & Institutional / ETF Net Inflow",
+        cabecalho: "BITCOIN · ETF & INSTITUTIONAL",
+        // Confirma o calendario que eu tinha marcado — desta vez a inferencia bateu.
+        calendarioNaTela: "janela operacional segue o calendário NYSE — sem barras em fins de semana e feriados"
+      },
+      conferencias: [{
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "Studio / ETF & Institutional / ETF Net Inflow, tooltip, janela jan–dez/2024 a ~4,5 px por dia útil, sem suavização",
+        lido: "$1B — cifrão, um, B",
+        // ⚠️ NOTACAO COMPACTA. Nao e "casas decimais": acima de mil milhoes a tooltip
+        // colapsa para UM digito. 1.373,8 vira "$1B". Abaixo de 1B da o inteiro em
+        // milhoes ($242M, $622M). O modelo de casas decimais nao representa isso.
+        // D42 C, o registro completo de um posto confirmado.
+        postoConfirmado: {
+          estado: "posto confirmado",
+          em: "2026-08-29",
+          valorDeRegistro: 1373.8,
+          unidadeDoRegistro: "USD mi",
+          rotuloExibido: "$1B",
+          regra: "acima de mil milhões colapsa para um dígito; abaixo dá o inteiro em milhões",
+          oQueEsconde: 'uma FAIXA, não uma casa: tudo de 1.000 a 1.499 exibe "$1B"',
+          custoDaFaixaNoIndice: 0.44,
+          data: "2024-11-07",
+          posto: 'o mais alto entre os quatro dias que exibem "$1B"',
+          segundoColocado: { data: "2024-11-11", valor: null, nota: "exibe o mesmo rótulo; 36 px abaixo" },
+          metodoDeSeparacao: "altura de barra — a tooltip não decide entre os quatro",
+          oQueFaltaParaConfirmado: "o valor exato, que não sai desta tela (D42 D)"
+        },
+        vizinhos: { "2024-11-06": 622, "2024-11-07": "$1B", "2024-11-08": 293 },
+        // Os vizinhos imediatos separam por digito. O problema esta longe deles.
+        empateDeRotulo: {
+          diasComOMesmoRotulo: ["2024-03-12", "2024-11-07", "2024-11-11", "2024-11-21"],
+          aTooltipNaoDecide: 'os quatro leem "$1B"',
+          resolvidoPor: "altura de barra na mesma janela (jan–dez/2024, ~4,5 px por dia útil, sem suavização)",
+          alturas: { "2024-11-07": 109, "2024-11-11": 145, "2024-03-12": 167, "2024-11-21": 180 },
+          separacao: "58 px entre 07/11 e 12/03 — da ordem de US$ 300 milhões nessa escala",
+          naturezaDoMetodo: "separação por pixel entre rivais que exibem o mesmo rótulo",
+          // O Gui disse o que isso significa, e e o ponto: sem o pixel esta conferencia
+          // nao teria como distinguir 07/11 de 12/03.
+          semEleNaoDava: "sem a separação por pixel a conferência não distinguiria 07/11 de 12/03"
+        },
+        ehMaximoDaSerie: "rivais do mesmo rótulo medidos por altura na janela de 2024; para 2025–2026, bloco próprio: o eixo topa em $1B e nenhuma barra o alcança — o maior do período fica em ~$940M.",
+        metodoDeVarredura: "separação por pixel entre rivais de mesmo rótulo, mais bloco próprio para 2025–2026",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 75.499 em 07/11; US$ 74.399 em 06/11 e US$ 76.271 em 08/11",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }, {
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "Studio / ETF & Institutional / ETF Net Inflow, tooltip, blocos curtos com rivais um a um",
+        lido: "$-1B — cifrão, sinal de menos, um, B",
+        // D42 C, o registro completo de um posto confirmado.
+        postoConfirmado: {
+          estado: "posto confirmado",
+          em: "2026-08-29",
+          valorDeRegistro: -1138.9,
+          unidadeDoRegistro: "USD mi",
+          rotuloExibido: "$-1B",
+          formaExata: "cifrão, depois o sinal",
+          data: "2025-02-25",
+          posto: "único dia da série na faixa de bilhão negativo",
+          segundoColocado: { data: "2025-11-20", valor: -903 },
+          folga: "US$ 236 milhões",
+          metodoDeSeparacao: "tooltip — sem pixel, sem recorte de faixa",
+          oQueFaltaParaConfirmado: "o valor exato, que não sai desta tela (D42 D)"
+        },
+        vizinhos: { "2025-02-24": -539, "2025-02-25": "$-1B", "2025-02-26": -755 },
+        // ⚠️ O EMPATE PREVISTO NAO ACONTECEU, e a diferenca ensina algo sobre o formato.
+        empateDeRotulo: {
+          diasComOMesmoRotulo: ["2025-02-25"],
+          aTooltipDecideSozinha: "só um dia da série inteira chega ao patamar de bilhão negativo",
+          contrasteComOMaximo: 'no máximo havia QUATRO dias lendo "$1B" e foi preciso separar por altura de barra; aqui a tooltip basta',
+          naturezaDoMetodo: "leitura de dígito — sem pixel",
+          // A licao: o risco da notacao compacta nao e so do FORMATO, e do formato
+          // vezes quantos dias caem na faixa. Ela colide onde a serie tem companhia.
+          oQueIssoEnsina: "a ambiguidade da notação compacta depende do dado, não só do formato: ela colide onde a série tem vários dias na mesma faixa de magnitude. Entradas acima de US$ 1 bi aconteceram quatro vezes; saídas abaixo de -US$ 1 bi, uma só."
+        },
+        ehMinimoDaSerie: "recortada a faixa abaixo de ~-$950M e varridos os dois anos e meio: uma única barra em toda a série. Confirmado por blocos curtos com rivais um a um — jan–dez/2024: o eixo do bloco para em -$500M e a pior saída do ano é 19/12/2024 = -$672M; dez/2024 → hoje: os seguintes são 20/11/2025 = -$903M e 13/11/2025 = -$867M.",
+        metodoDeVarredura: "banda de altura mais blocos curtos com rivais na tooltip",
+        folgaAteOSegundo: "~US$ 236 milhões (-1.138,9 contra -903 em 20/11/2025) — fora da faixa que colapsaria",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 89.071 em 25/02; US$ 94.703 em 24/02 e US$ 86.999 em 26/02",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    },
+    "Funding Rate": {
+      valor: 1.84,
+      min: -139.23,
+      max: 186.86,
+      data: "2026-08-29",
+      dataMin: "2020-03-13",
+      dataMax: "2020-02-12",
+      confirmado: { valor: "2026-08-29", min: "2026-08-29", max: "2026-08-29" },
+      // A lacuna de unidade fechou: o terminal chama a serie de "Funding Rate — APR (%)",
+      // categoria FUTUROS. E funding ANUALIZADO em % ao ano, nao a taxa por periodo de 8h.
+      // Confirma a escala linear: APR de funding cruza o zero (negativo = short paga long),
+      // e log de negativo nao produz numero — mesma razao da D39 no netflow.
+      unidadeLida: {
+        em: "2026-08-29",
+        unidade: "APR (%)",
+        categoria: "FUTUROS",
+        onde: 'título da página e menu — dentro da tooltip o rótulo vem truncado ("Funding Rate — A…")',
+        breadcrumbCompleto: "Studio / Futuros / Funding Rate — APR (%)"
+      },
+      conferencias: [{
+        campo: "max",
+        em: "2026-08-29",
+        metodo: "FUTUROS · Funding Rate — APR (%), tooltip do terminal, modo SMA, janela em passo de 1 dia",
+        lido: "186.9 — um, oito, seis, ponto, nove",
+        casasNaTooltip: 1,
+        // ⚠️ O REGISTRO TEM MAIS PRECISAO QUE A TELA. 186,86 tem duas casas; a tooltip
+        // da uma. Os dois sao compativeis (186,86 arredonda para 186,9), mas o numero
+        // anotado NAO pode ter saido desta tooltip. O Gui nao corrigiu nada: anotou o
+        // que esta. Segundo caso, depois do Preco do BTC.
+        precisaoExcedente: {
+          registrado: 186.86,
+          naTela: 186.9,
+          casasRegistradas: 2,
+          casasNaTooltip: 1,
+          compativel: true,
+          oQueSignifica: 'o número registrado não veio desta tooltip — e o documento 07 diz que os valores foram lidos "um por um" por ela',
+          naoCorrigido: "anotado o que está na tela; trocar o registrado é retificação, não implementação"
+        },
+        vizinhos: { "2020-02-11": 58, "2020-02-12": 186.9, "2020-02-13": 90.7 },
+        topologia: "barra isolada — mais que o triplo do vizinho de trás e o dobro do da frente",
+        // A margem mais apertada de todas as conferências até agora.
+        concorrentes: { "2021-01-06": 177.6, "2021-02-09": 174.8, "2021-02-22": 104.6 },
+        folgaAteOSegundo: "9,3 pontos de APR, ou ~4,98%",
+        ehMaximoDaSerie: "concorrentes medidos um a um com janela em passo de 1 dia, não por faixa: 06/01/2021 = 177.6 (segundo), 09/02/2021 = 174.8 (terceiro), 22/02/2021 = 104.6. Aberta também a janela 10/03/2020 → hoje, excluindo fev/2020: a barra mais alta dela é a de 06/01/2021. De 2022 em diante os picos param na casa dos 50–60.",
+        metodoDeVarredura: "concorrentes um a um em passo de 1 dia — a folga de 5% não permitiria banda nem pixel",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 10.342 em 12/02; US$ 9.997 em 11/02 e US$ 10.265 em 13/02",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }, {
+        campo: "min",
+        em: "2026-08-29",
+        metodo: "Studio / Futuros / Funding Rate — APR (%), tooltip, modo SMA, janela estreitada até o passo do cursor virar 1 dia",
+        lido: "-139.2 — menos, um, três, nove, ponto, dois",
+        casasNaTooltip: 1,
+        precisaoExcedente: {
+          registrado: -139.23,
+          naTela: -139.2,
+          casasRegistradas: 2,
+          casasNaTooltip: 1,
+          compativel: true,
+          // Proposta do Gui, adotada: guardar as DUAS formas, senão a próxima conferência
+          // lê divergência onde há só resolução de tela.
+          guardarAsDuasFormas: "valor de registro -139,23 · o que a tela mostra -139,2"
+        },
+        vizinhos: { "2020-03-12": 2, "2020-03-13": -139.2, "2020-03-14": -48.1 },
+        topologia: "barra isolada — a Quinta-feira Negra da COVID. No dia anterior o funding ainda era positivo (2,0)",
+        // ⚠️ O FALSO NEGATIVO AQUI E PIOR QUE NO SOPR: a barra nao some, ela MENTE.
+        // No ALL o grafico agrega ~2 dias por pixel e o modo SMA suaviza dentro do
+        // balde — a leitura de eixo dava ~-53, contra -139,2 real. Fator 2,63.
+        varreduraQueFalhou: {
+          metodo: "eixo ou pixel no ALL inteiro",
+          leituraFalsa: -53,
+          valorReal: -139.2,
+          fator: 2.63,
+          porQue: "no ALL o gráfico agrega ~2 dias por pixel e o modo SMA suaviza dentro do balde — a barra aparece com menos da metade da profundidade",
+          custoSeTivesseSidoUsado: 1.39,
+          // pontos de Índice
+          piorQueSumir: "no SOPR a barra sumia e a falha era visível; aqui ela aparece e o número parece plausível"
+        },
+        ehMinimoDaSerie: "eixo auto-escalado em dois blocos que se encostam. início → abr/2020: o eixo desce até -150 e a barra mais funda é a de 13/03/2020; a segunda do período fica em ~-56. abr/2020 → hoje: o eixo para em -100 — se houvesse qualquer dia em -139 nesses seis anos, teria de esticar até -150. Segundo fundo de toda a série, conferido em passo de 1 dia: 10/11/2022 = -93.1 (BTC US$ 17.025), a semana da FTX.",
+        metodoDeVarredura: "eixo auto-escalado por blocos, com o segundo colocado conferido na tooltip",
+        folgaAteOSegundo: "46,1 pontos de APR, ou 33,1%",
+        cruzamento: "BTC PRICE na mesma tooltip: US$ 5.367 em 13/03; US$ 6.530 em 12/03 e US$ 5.425 em 14/03",
+        telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }]
+    }
+  });
+
+  // registro/historico-exemplo.mjs
+  var ILUSTRATIVO = "histórico construído para demonstração — não é leitura real";
+  var CARTEIRA = "exemplo";
+  var POSICOES_EXEMPLO = Object.freeze({ BTC: 45, ETH: 20, SOL: 8, LINK: 4 });
+  function historicoComCamada5Suspensa() {
+    const r2 = new Registro(new AdaptadorMemoria());
+    const reg = (e2) => r2.registrar({ carteira: CARTEIRA, ...e2 });
+    reg({ tipo: TIPOS.DEGRAU, data: "2025-06-01", ativo: "BTC", valor: 100, motivo: "tese intacta na revisão de junho" });
+    for (const [ativo, data] of [["ETH", "2026-07-10"], ["SOL", "2026-07-10"], ["LINK", "2026-07-10"]]) {
+      reg({ tipo: TIPOS.DEGRAU, data, ativo, valor: 66, motivo: "tese com ressalva, sem evento datado" });
+    }
+    return r2;
+  }
+
+  // .empacota-tmp/indice-semente.mjs
+  var HOJE = "2026-08-29";
+  var $ = (id) => document.getElementById(id);
+  var num = (x, c = 0) => x === null || x === void 0 || Number.isNaN(x) ? "—" : Number(x).toLocaleString("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c });
+  var pct = (x, c = 1) => num(x, c) + "%";
+  var card = (l, v, s = "", on = false) => `<div class="rc${on ? " on" : ""}"><div class="l">${l}</div><div class="v">${v}</div>${s ? `<div class="s">${s}</div>` : ""}</div>`;
+  var vazio = (tb, t) => {
+    tb.innerHTML = `<tr><td colspan="9" style="color:var(--dim);font-style:italic;padding:14px 2px">${t}</td></tr>`;
+  };
+  var r = varrer({ varredura: VARREDURA_29_08_2026, hoje: HOJE });
+  $("selo").textContent = `leitura de ${r.hoje}`;
+  $("exibido").innerHTML = `${num(r.indice)}<small id="interno">índice exibido · valor interno ${num(r.indice, 4)}</small>`;
+  $("faixas").innerHTML = FAIXAS.map((f, i) => {
+    const de = i === 0 ? 0 : FAIXAS[i - 1].ate;
+    return `<div class="fx${f.nome === r.faixa ? " on" : ""}">${f.nome}<br><span style="opacity:.7">${num(de)}–${num(Math.min(f.ate, 100))}</span></div>`;
+  }).join("");
+  $("capaCards").innerHTML = card("Faixa", r.faixa, "intensidade dentro do estado") + card("Estado", r.estado, "quem classifica é a Linha d’Água") + card(
+    "Camadas na conta",
+    `${r.camadas.length} de ${Object.keys(PESOS).length}`,
+    r.camadasForaDaConta.map((c) => c.nome).join(" · ") || "todas dentro"
+  );
+  $("notaD2").innerHTML = `<div class="nota"><b>o que este número não faz</b>
+   O Índice Semente <b style="display:inline;color:var(--ink)">não classifica estado e não dispara
+   estação</b>. Quem classifica é a Linha d’Água; ele mede a <b style="display:inline;color:var(--ink)">intensidade</b>
+   dentro do estado já definido, e modula o tamanho do aporte dentro daquela faixa. Não existem dois juízes.
+   ${r.semRecomendacao ? "<br><br>Esta leitura não traz recomendação de aporte: isso é do Índice de Plantio, que é outra peça." : ""}</div>`;
+  $("subCamadas").innerHTML = `O peso aplicado é o nominal renormalizado sobre as camadas que ficaram. Dentro de cada camada,
+   indicador ausente faz a camada renormalizar internamente — e ela sai inteira se os ausentes
+   passarem de <b>${num(TRAVA_AUSENCIA_NA_CAMADA * 100)}%</b> dela.`;
+  $("camadas").tBodies[0].innerHTML = r.camadas.map((c) => `<tr>
+  <td><b>${c.nome}</b><br><span class="det">camada ${c.camada}</span></td>
+  <td class="n">${num(c.posicao, 2)}<div class="barra"><i style="width:${Math.min(c.posicao, 100)}%"></i></div></td>
+  <td class="n">${pct(c.pesoAplicado * 100)}<br><span class="det">nominal ${pct(c.pesoNominal * 100)}</span></td>
+  <td class="det">${c.itens.join("<br>")}
+    ${c.ausentes.length ? `<br><span style="color:var(--z4)">ausente: ${c.ausentes.join(" · ")} — a camada renormalizou sobre os que voltaram</span>` : ""}</td>
+</tr>`).join("");
+  var tbF = $("fora").tBodies[0];
+  if (r.camadasForaDaConta.length === 0) vazio(tbF, "nenhuma camada fora da conta");
+  else tbF.innerHTML = r.camadasForaDaConta.map((c) => `<tr>
+  <td><b>${c.nome}</b> <span class="tag t-fora">fora</span><br><span class="det">camada ${c.camada}</span></td>
+  <td class="det">${c.motivo}${c.ausentes?.length ? `<br>ausentes: ${c.ausentes.join(" · ")}` : ""}</td></tr>`).join("");
+  var c5 = camada5({
+    registro: historicoComCamada5Suspensa(),
+    carteira: CARTEIRA,
+    hoje: HOJE,
+    posicoes: POSICOES_EXEMPLO
+  });
+  var comC5 = varrer({ varredura: VARREDURA_29_08_2026, hoje: HOJE, camada5: c5 });
+  $("camada5").innerHTML = `<div class="nota"><b>como a suspensão aparece</b>
+   <span class="det">${ILUSTRATIVO}</span><br><br>
+   Com o degrau de uma âncora vencido, a camada 5 sai <b style="display:inline;color:var(--ink)">por
+   inteiro</b>, e a leitura diz isso em texto, com a data:
+   <br><br><b style="display:inline;color:var(--z5)">${c5.motivo}</b>
+   <br><br>Renormalizar sem um ativo de 30% ou mais descreveria outra carteira — por isso ela não
+   sai em partes. As âncoras de tese são <b style="display:inline;color:var(--ink)">${ANCORAS_DE_TESE.join(" e ")}</b>,
+   e o degrau vale ${num(VALIDADE_DIAS)} dias.
+   <br><br>O índice segue publicável: <b style="display:inline;color:var(--ink)">${num(comC5.indice, 4)}</b>,
+   ${comC5.camadas.length} camadas na conta — o mesmo de hoje, porque a camada 5 já estava fora.</div>`;
+  $("subConf").innerHTML = `Série curta é <b>amortecida em direção ao neutro</b>, não descartada. A janela vai do início da
+   série até a <b>última data em que aquele indicador tem dado</b> — não até hoje: série parada não
+   ganha confiança por ficar parada.`;
+  var tbC = $("conf").tBodies[0];
+  if (r.confiancas.length === 0) vazio(tbC, "nenhuma série abaixo da confiança plena");
+  else tbC.innerHTML = r.confiancas.map((c) => `<tr>
+  <td>${c.indicador}</td><td class="n">${num(c.confianca, 4)}</td>
+  <td class="n">${num(c.bruto, 2)}</td><td class="n"><b>${num(c.ajustado, 2)}</b></td></tr>`).join("");
+  var e = r.extremos;
+  $("subExtremos").innerHTML = `Três estados: <span class="tag t-ok">confirmado</span> valor, data e posto lidos;
+   <span class="tag t-posto">posto confirmado</span> data e posto provados, valor não legível por
+   notação compacta; <span class="tag t-prov">provisório</span> nada conferido.
+   <b>Risco e trabalho são contagens diferentes.</b>`;
+  $("extremos").innerHTML = card("Conferidos para risco", num(e.confirmados), `de ${num(e.total)} campos`, true) + card("Confirmados", num(e.confirmadosPorInteiro), "valor, data e posto") + card("Posto confirmado", num(e.postoConfirmado), noTetoAlcancavel(VARREDURA_29_08_2026).map((t) => `${t.serie} · ${t.campo}`).join(" · ") || "—") + card("Provisórios", num(e.provisorios), "nada conferido ainda") + card(
+    "Que importam",
+    num(e.provisoriosQueImportam),
+    `${num(e.inertesPendentes)} são inertes por construção`,
+    true
+  );
+  var tbP = $("provisorios").tBodies[0];
+  if (e.series.length === 0) vazio(tbP, "nenhum extremo provisório");
+  else tbP.innerHTML = e.series.map((s) => {
+    const inerte2 = EXTREMOS_INERTES.includes(s.serie);
+    return `<tr${inerte2 ? ' style="opacity:.55"' : ""}>
+    <td>${s.serie}</td><td class="det">${s.campos.join(" · ")}</td>
+    <td class="det">${inerte2 ? '<span class="tag t-prov">inerte por construção</span> não muda o índice nem dez vezes errado' : "sim"}</td></tr>`;
+  }).join("");
+})();
+
+</script>

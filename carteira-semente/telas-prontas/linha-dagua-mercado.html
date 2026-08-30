@@ -1,0 +1,209 @@
+<meta charset="utf-8">
+<title>Linha d'Água do Mercado</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#070b12;--glow:rgba(38,78,140,.38);
+  --card:rgba(255,255,255,.025);--card-2:rgba(255,255,255,.04);--bd:rgba(255,255,255,.075);
+  --ink:#e9edf4;--mut:#8b95a8;--dim:#5d6779;--gold:#d8a740;
+  --z0:#ff5d73;--z1:#ff8a4c;--z2:#f2c14e;--z3:#4fd88a;
+  --price:#e9edf4;--rp:#4cc9f0;--sth:#a78bfa;--lth:#56d98a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.55;
+  background-image:radial-gradient(900px 460px at 22% -8%,var(--glow),transparent 70%);background-repeat:no-repeat}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+nav{display:flex;align-items:center;gap:24px;padding:14px 26px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.logo{width:34px;height:34px;border-radius:9px;background:#f2f4f8;color:#0a0e16;display:grid;place-items:center;
+  font-family:"Playfair Display",serif;font-weight:700;font-size:20px}
+.pill{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--bd);border-radius:999px;padding:6px 14px;font-size:13px;background:var(--card)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--z3);box-shadow:0 0 8px var(--z3)}
+.mono{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.wrap{max-width:1180px;margin:0 auto;padding:34px 26px 90px}
+h1{font-family:"Playfair Display",serif;font-weight:600;font-size:clamp(28px,4vw,42px);line-height:1.08;margin:0 0 8px;text-wrap:balance}
+.lede{color:var(--mut);max-width:66ch;margin:0 0 30px;font-size:15.5px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:30px;margin-bottom:30px}
+.k .lab{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:7px}
+.k .num{font-family:"Playfair Display",serif;font-weight:600;font-size:clamp(24px,3.1vw,35px);line-height:1;font-variant-numeric:tabular-nums}
+.k .sub{font-size:12px;color:var(--dim);margin-top:6px}
+.card{background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--bd);border-radius:18px;padding:22px 20px 14px;margin-bottom:14px}
+.card .ct{font-family:"Playfair Display",serif;font-size:22px;font-weight:600;margin:0 0 4px}
+.card .cs{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 6px}
+canvas{width:100%;height:360px;display:block}
+.leg{display:flex;flex-wrap:wrap;gap:18px;font-size:12.5px;color:var(--mut);padding:12px 4px 4px;font-family:"IBM Plex Mono",monospace;letter-spacing:.06em}
+.leg span{display:inline-flex;align-items:center;gap:8px}
+.sw{width:18px;height:3px;border-radius:2px;display:inline-block}
+.zonas{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px;margin:22px 0 8px}
+.z{border:1px solid var(--bd);border-radius:14px;padding:15px 16px;background:var(--card)}
+.z .t{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;margin-bottom:7px}
+.z .d{font-size:13px;color:var(--mut)}
+.z .r{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:9px}
+.z.on{box-shadow:0 0 0 1px currentColor}
+.warn{border:1px solid rgba(216,167,64,.35);background:rgba(216,167,64,.06);border-radius:14px;padding:15px 18px;margin:26px 0 0;
+  font-size:13.5px;color:var(--mut)}
+.warn b{color:var(--gold);font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:6px}
+footer{margin-top:36px;padding-top:20px;border-top:1px solid var(--bd);font-size:12.5px;color:var(--dim);max-width:76ch}
+</style>
+
+<nav>
+  <div class="logo">B</div>
+  <div class="pill"><i class="dot"></i> Torre de Controle</div>
+  <span class="mono" style="color:var(--gold)">Linha d'Água</span>
+  <span class="mono">Índice de Plantio</span>
+  <span class="mono">Guardiões</span>
+</nav>
+
+<div class="wrap">
+  <p class="mono" style="margin:0 0 18px">Carteira Semente · de onde vem a leitura</p>
+  <h1>O preço contra o que o mercado pagou.</h1>
+  <p class="lede">Três custos de referência dizem em que estado o mercado está: o custo médio de toda a rede, o de quem comprou há pouco e o de quem segura há anos. É a posição do preço em relação a essas linhas que classifica a leitura — e é essa leitura que o Índice de Plantio usa para decidir o destino do aporte.</p>
+
+  <div class="kpis">
+    <div class="k"><div class="lab">Estado de hoje</div><div class="num" id="oEstado">—</div><div class="sub" id="oSub">—</div></div>
+    <div class="k"><div class="lab">Preço</div><div class="num" id="oPreco">—</div><div class="sub">último fechamento</div></div>
+    <div class="k"><div class="lab">Linha d'água da rede</div><div class="num" id="oRP" style="color:var(--rp)">—</div><div class="sub" id="oDist">—</div></div>
+    <div class="k"><div class="lab">Dias no estado</div><div class="num" id="oDias">—</div><div class="sub">sem mudar de zona</div></div>
+  </div>
+
+  <div class="card">
+    <p class="ct">Linha d'Água do Mercado</p>
+    <p class="cs">Preço × custo da rede × recém-chegados × quem segura há anos</p>
+    <canvas id="cv" height="360"></canvas>
+    <div class="leg">
+      <span><i class="sw" style="background:var(--price)"></i> Preço</span>
+      <span><i class="sw" style="background:var(--rp)"></i> Custo da rede · a linha d'água</span>
+      <span><i class="sw" style="background:var(--sth)"></i> Recém-chegados</span>
+      <span><i class="sw" style="background:var(--lth)"></i> Quem segura há anos</span>
+    </div>
+  </div>
+
+  <div class="zonas" id="zonas"></div>
+
+  <div class="warn">
+    <b>Dados ilustrativos</b>
+    A série desta página é uma reconstrução de demonstração, para validar a mecânica da leitura. Os números reais vêm da varredura diária do terminal — quando ela estiver ligada, substituem esta série sem mudar nada do resto da página.
+  </div>
+
+  <footer>Material de estudo da BlockCapital Research. Não é recomendação de investimento. A leitura classifica um estado de mercado; a decisão é sempre humana.</footer>
+</div>
+
+<script>
+/* ── PONTO ÚNICO DE DADOS ───────────────────────────────────────────
+   Substituir DADOS por: {labels:[...], price:[...], rp:[...], sth:[...], lth:[...]}
+   vindos da varredura do terminal. Nada mais na página precisa mudar.  */
+const DADOS = (()=>{
+  const n=420, price=[],rp=[],sth=[],lth=[],labels=[];
+  let p=28000, r=22000, s=26000, l=15000;
+  for(let i=0;i<n;i++){
+    const t=i/n;
+    const onda = Math.sin(t*Math.PI*1.55-0.7);
+    const drift = 1 + (onda*0.020) + (Math.sin(i/9)*0.010) + (Math.random()-0.5)*0.020;
+    p=Math.max(9000,p*drift);
+    r += (p-r)*0.012;                 // custo da rede: lento
+    s += (p-s)*0.075;                 // recém-chegados: rápido
+    l += (p-l)*0.0045;                // quem segura há anos: lentíssimo
+    price.push(p); rp.push(r); sth.push(s); lth.push(l);
+    const d=new Date(2023,5,1); d.setDate(d.getDate()+i*3);
+    labels.push(d);
+  }
+  return {labels,price,rp,sth,lth};
+})();
+
+const ZONAS=[
+  {n:'Capitulação profunda', v:'--z0', d:'O preço caiu abaixo do custo de quem segura há anos. Quase todo mundo está no prejuízo.', r:'Plantio · aporte integral'},
+  {n:'Prejuízo do mercado',  v:'--z1', d:'O preço está abaixo do custo médio da rede. Quem comprou na média está perdendo.', r:'Plantio · aporte integral'},
+  {n:'Estresse de curto prazo', v:'--z2', d:'O preço está acima da rede, mas abaixo do custo de quem entrou há pouco.', r:'Crescimento · aporte parcial'},
+  {n:'Mercado saudável',     v:'--z3', d:'O preço está acima de todos os custos de referência. A maioria está no lucro.', r:'Colheita · caixa começa a crescer'}
+];
+
+const est=i=>{
+  const p=DADOS.price[i], r=DADOS.rp[i], s=DADOS.sth[i], l=DADOS.lth[i];
+  if(p<Math.min(l,r)) return 0;
+  if(p<r) return 1;
+  if(p<s) return 2;
+  return 3;
+};
+const usd=v=>'US$ '+Math.round(v).toLocaleString('pt-BR');
+const curto=v=>v>=1000?'US$ '+(v/1000).toFixed(1).replace('.',',')+'k':usd(v);
+
+function draw(){
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+  const dpr=devicePixelRatio||1,W=cv.clientWidth,H=360;
+  cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+  const cs=getComputedStyle(document.body),c=n=>cs.getPropertyValue(n).trim();
+  const L=58,R=118,T=18,B=34,w=W-L-R,h=H-T-B,n=DADOS.price.length;
+  const all=DADOS.price.concat(DADOS.rp,DADOS.sth,DADOS.lth);
+  const mn=Math.min(...all)*0.92, mx=Math.max(...all)*1.06;
+  const X=i=>L+i/(n-1)*w, Y=v=>T+h-(v-mn)/(mx-mn)*h;
+
+  // faixas de estado no fundo
+  let ini=0, e0=est(0);
+  for(let i=1;i<=n;i++){
+    const e=i<n?est(i):-1;
+    if(e!==e0){
+      ctx.fillStyle=c(ZONAS[e0].v)+'1f';
+      ctx.globalAlpha=.16; ctx.fillStyle=c(ZONAS[e0].v);
+      ctx.fillRect(X(ini),T,X(i-1)-X(ini)+1,h); ctx.globalAlpha=1;
+      ini=i; e0=e;
+    }
+  }
+  // grade
+  ctx.strokeStyle='rgba(255,255,255,.06)';ctx.fillStyle=c('--dim');
+  ctx.font='10px "IBM Plex Mono",monospace';ctx.lineWidth=1;
+  for(let g=0;g<=4;g++){const v=mn+(mx-mn)*g/4,y=Y(v);
+    ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(L+w,y);ctx.stroke();
+    ctx.fillText(curto(v).replace('US$ ',''),4,y+3);}
+  for(let i=0;i<n;i+=Math.floor(n/6)){
+    const d=DADOS.labels[i];
+    ctx.fillText(('0'+(d.getMonth()+1)).slice(-2)+'/'+String(d.getFullYear()).slice(2),X(i)-13,H-11);
+  }
+  const linha=(arr,col,wd,glow)=>{
+    ctx.beginPath();
+    arr.forEach((v,i)=>i?ctx.lineTo(X(i),Y(v)):ctx.moveTo(X(i),Y(v)));
+    ctx.strokeStyle=col;ctx.lineWidth=wd;ctx.lineJoin='round';
+    if(glow){ctx.shadowColor=col;ctx.shadowBlur=9;}
+    ctx.stroke();ctx.shadowBlur=0;
+  };
+  linha(DADOS.lth,c('--lth'),1.5);
+  linha(DADOS.sth,c('--sth'),1.5);
+  linha(DADOS.rp,c('--rp'),2.0,true);
+  linha(DADOS.price,c('--price'),1.9);
+
+  const rot=(arr,col,txt)=>{const v=arr[n-1];
+    ctx.beginPath();ctx.arc(X(n-1),Y(v),3.4,0,7);ctx.fillStyle=col;ctx.fill();
+    ctx.fillStyle=col;ctx.font='11px "IBM Plex Mono",monospace';ctx.fillText(txt,X(n-1)+10,Y(v)+4);};
+  rot(DADOS.price,c('--price'),'PREÇO '+curto(DADOS.price[n-1]).replace('US$ ',''));
+  rot(DADOS.rp,c('--rp'),'REDE '+curto(DADOS.rp[n-1]).replace('US$ ',''));
+  rot(DADOS.sth,c('--sth'),'STH '+curto(DADOS.sth[n-1]).replace('US$ ',''));
+  rot(DADOS.lth,c('--lth'),'LTH '+curto(DADOS.lth[n-1]).replace('US$ ',''));
+}
+
+function render(){
+  const n=DADOS.price.length, e=est(n-1), Z=ZONAS[e];
+  const cs=getComputedStyle(document.body);
+  document.getElementById('oEstado').textContent=Z.n;
+  document.getElementById('oEstado').style.color=cs.getPropertyValue(Z.v).trim();
+  document.getElementById('oSub').textContent=Z.r;
+  document.getElementById('oPreco').textContent=curto(DADOS.price[n-1]);
+  document.getElementById('oRP').textContent=curto(DADOS.rp[n-1]);
+  const d=(DADOS.price[n-1]/DADOS.rp[n-1]-1)*100;
+  document.getElementById('oDist').textContent=(d>=0?'+':'')+d.toFixed(1).replace('.',',')+'% em relação ao preço';
+  let dias=0; for(let i=n-1;i>0&&est(i)===e;i--) dias+=3;
+  document.getElementById('oDias').textContent=dias;
+
+  const z=document.getElementById('zonas'); z.innerHTML='';
+  ZONAS.forEach((Zx,i)=>{
+    const col=cs.getPropertyValue(Zx.v).trim();
+    z.insertAdjacentHTML('beforeend',
+      `<div class="z${i===e?' on':''}" style="color:${col}">
+         <div class="t">${Zx.n}</div>
+         <div class="d">${Zx.d}</div>
+         <div class="r">→ ${Zx.r}</div>
+       </div>`);
+  });
+  draw();
+}
+addEventListener('resize',draw);
+render();
+</script>

@@ -1,0 +1,603 @@
+<meta charset="utf-8">
+<title>Aporte do mês — modulação e Reforço de Fundo</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --side:#0a0e15;--main:#0b0f17;--card:#0d1219;--bd:rgba(255,255,255,.06);
+  --ink:#e6eaf0;--mut:#8a95a5;--dim:#5a6472;--hover:rgba(255,255,255,.045);
+  --z1:#3d7dff;--z2:#3ddc84;--z3:#f5c518;--z4:#f97316;--z5:#ef4444;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--main);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5}
+:focus-visible{outline:1px solid var(--z1);outline-offset:2px}
+.main{max-width:1080px;margin:0 auto;padding:0 24px 60px}
+.top{display:flex;align-items:baseline;gap:18px;padding:26px 0 6px;flex-wrap:wrap}
+.mark{font-family:"Playfair Display",Georgia,serif;font-size:24px;font-weight:600}.mark i{font-style:italic}
+.crumb{color:var(--dim);font-size:13.5px}.crumb b{color:var(--ink);font-weight:500}
+.gate{margin-left:auto;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--z3);
+  border:1px solid rgba(245,197,24,.3);border-radius:999px;padding:5px 12px}
+h2{font-family:"Playfair Display",serif;font-size:18px;font-weight:600;margin:30px 0 4px}
+.sub{color:var(--dim);font-size:12.5px;margin-bottom:14px}
+.ctl{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-end;background:var(--card);border:1px solid var(--bd);
+  border-radius:12px;padding:16px 18px;margin-top:14px}
+.ctl label{display:block;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin-bottom:7px}
+.ctl select,.ctl input[type=range]{background:#111722;color:var(--ink);border:1px solid var(--bd);border-radius:8px;
+  padding:7px 9px;font:inherit;font-size:13px}
+.ctl input[type=range]{padding:0;width:190px;accent-color:var(--z1)}
+.ctl .val{font-family:"Playfair Display",serif;font-size:19px;font-variant-numeric:tabular-nums;margin-left:9px}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--bd);
+  border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-top:14px}
+.rc{background:var(--card);padding:15px 17px}
+.rc .l{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.rc .v{font-family:"Playfair Display",serif;font-size:25px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.rc .s{font-size:11.5px;color:var(--dim);margin-top:5px}
+.rc.on{background:#111a24}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--bd)}
+th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:500}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+tr.mordeu td{color:var(--z3)}
+.passa{color:var(--z2)}.falha{color:var(--z5)}.gateflag{color:var(--z3)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:8px;vertical-align:middle}
+.nota{border:1px solid rgba(245,197,24,.28);background:rgba(245,197,24,.05);border-radius:12px;
+  padding:14px 17px;font-size:12.5px;color:var(--mut);margin-top:16px}
+.nota b{color:var(--z3);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:6px}
+.nota.calma{border-color:var(--bd);background:var(--card)}
+.nota.calma b{color:var(--dim)}
+.formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--mut);
+  background:#0a0e15;border:1px solid var(--bd);border-radius:9px;padding:11px 13px;margin-top:12px;overflow-x:auto}
+.formula em{color:var(--ink);font-style:normal}
+.erro{border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.06);border-radius:12px;padding:16px 18px;margin-top:20px}
+@media(max-width:760px){.ctl{gap:14px}.ctl input[type=range]{width:100%}}
+</style>
+
+<div class="main">
+  <div class="top">
+    <div class="mark">Carteira <i>Semente</i></div>
+    <div class="crumb">Aporte do mês · <b>modulação e Reforço de Fundo</b></div>
+    <div class="gate">propõe — quem assina é o Gui</div>
+  </div>
+
+  <div class="ctl">
+    <div>
+      <label for="estado">Estado — Linha d'Água</label>
+      <select id="estado"></select>
+    </div>
+    <div>
+      <label for="indice">Índice Semente</label>
+      <input type="range" id="indice" min="0" max="100" step="0.01" value="50.7536">
+      <span class="val" id="indiceV"></span>
+    </div>
+    <div>
+      <label for="meses">Meses até a entrega</label>
+      <input type="range" id="meses" min="0" max="120" step="1" value="120">
+      <span class="val" id="mesesV"></span>
+    </div>
+  </div>
+
+  <h2>1 · Modulação do aporte <span style="color:var(--dim);font-weight:400">— Decisão 4</span></h2>
+  <div class="sub">O Índice mede intensidade dentro do estado que a Linha d'Água já definiu. Ajuste fino, nunca troca de estação.</div>
+  <div class="formula" id="formula"></div>
+  <div class="read" id="aporte"></div>
+  <table id="tetos"><thead><tr><th>Teto absoluto</th><th>Regra</th><th style="text-align:right">Mordeu?</th></tr></thead><tbody></tbody></table>
+
+  <h2>2 · Modulação da glidepath <span style="color:var(--dim);font-weight:400">— Decisão 25</span></h2>
+  <div class="sub">A velocidade da proteção vem do <b>estado</b>, não do Índice. Acelera no bom, segura no ruim, nunca força proteção no fundo.</div>
+  <div class="read" id="glide"></div>
+  <div id="glideNota"></div>
+
+  <h2>3 · Reforço de Fundo <span style="color:var(--dim);font-weight:400">— Decisões 6, 9 e 31</span></h2>
+  <div class="sub">A segunda torneira, e ela é o <b>caixa</b> — nunca o aporte. Sete travas, todas obrigatórias.</div>
+  <div class="ctl">
+    <div><label for="caixa">Caixa</label><input type="range" id="caixa" min="0" max="30000" step="100" value="10000"><span class="val" id="caixaV"></span></div>
+    <div><label for="total">Carteira</label><input type="range" id="total" min="1000" max="200000" step="1000" value="50000"><span class="val" id="totalV"></span></div>
+    <div><label for="acion">Acionamentos no ciclo</label><select id="acion"><option>0</option><option>1</option><option>2</option><option>3</option><option value="sem">sem registro gravado</option></select></div>
+  </div>
+  <table id="travas"><thead><tr><th style="width:34px">#</th><th>Trava</th><th>Leitura de agora</th><th style="text-align:right">Estado</th></tr></thead><tbody></tbody></table>
+  <div id="reforcoNota"></div>
+</div>
+
+<script>
+(() => {
+  // registro/registro.mjs
+  var TIPOS = Object.freeze({
+    LEITURA: "leitura",
+    // {data, indice, estado}
+    REFORCO_ACIONADO: "reforco_acionado",
+    // {data, indice, pctCaixa}
+    CONTADOR_RESET: "contador_reset",
+    // {data, marco: 'virada'|'abrigo'}
+    CRM_COMPOSICAO: "crm_composicao",
+    // {data, legivel, ativos[]}
+    DEGRAU: "degrau",
+    // {data, ativo, valor, motivo}
+    TRANCHE: "tranche",
+    // {data, ativo, quantidade, exposicaoAntes, exposicaoDepois}
+    DEFASAGEM: "defasagem",
+    // {data, pontosNaoMovidos, fator, estado}
+    GATE_INVALIDAR: "gate_invalidar",
+    // {data, ativo, motivo}
+    FILTRO_HORIZONTE: "filtro_horizonte",
+    // {data, ativo, aprovado, motivo}
+    TETO_CONTAGEM: "teto_contagem",
+    // {data, ativo, posicao}
+    RETIFICACAO: "retificacao",
+    // {data, dataRetificada, campo, valorAntigo, valorNovo, motivo, aprovadoEm}
+    ANULACAO_MARCO: "anulacao_marco"
+    // {data, marcoSeq, retificacaoSeq, motivo}
+  });
+  var DEGRAUS_VALIDOS = Object.freeze([0, 33, 66, 100]);
+  var ANCORAS_DE_TESE = Object.freeze(["BTC", "ETH"]);
+
+  // torre/torre.mjs
+  var SERIES = Object.freeze([
+    { n: "Preço do BTC", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "Realized Price", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "Realized Price STH", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "Realized Price LTH", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "linha-dagua", calendario: "24/7", unidade: "US$" },
+    { n: "MVRV Ratio", camada: 1, escala: "log", inicioSerie: "2011-01-01", papel: "regua", calendario: "24/7", unidade: "razão" },
+    { n: "SOPR", camada: 2, escala: "log", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "razão", caminhoNoMenu: "Spent Output Profit Ratio (SOPR) / SOPR", unidadeConferida: true },
+    { n: "Supply in Profit", camada: 2, escala: "lin", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "%", unidadeConferida: true },
+    { n: "Liveliness", camada: 2, escala: "lin", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "razão", caminhoNoMenu: "Cointime Statistics / Liveliness" },
+    { n: "DXY", camada: 3, escala: "lin", inicioSerie: "2011-01-01", invertido: true, calendario: "pregão", unidade: "pontos de índice", caminhoNoMenu: "Macro / DXY — Dollar Index" },
+    { n: "Fed Funds Rate", camada: 3, escala: "lin", inicioSerie: "2011-01-01", invertido: true, calendario: "pregão", unidade: "% a.a.", caminhoNoMenu: "Macro / Fed Funds Rate (%)", unidadeConferida: true },
+    { n: "US M2", camada: 3, escala: "lin", inicioSerie: "2011-01-01", calendario: "mensal", unidade: "US$ tri" },
+    { n: "Curva 10Y-2Y", camada: 3, escala: "lin", inicioSerie: "2011-01-01", calendario: "mensal", unidade: "pontos percentuais", unidadeConferida: true, caminhoNoMenu: "Studio / Macro / Yield Curve 10Y-2Y" },
+    { n: "ETF Net Inflow", camada: 4, escala: "lin", inicioSerie: "2024-01-11", calendario: "pregão", unidade: "USD", unidadeConferida: true, formato: "compacto", caminhoNoMenu: "Studio / ETF & Institutional / ETF Net Inflow", calendarioNota: "janela operacional NYSE — sem barras em fins de semana e feriados" },
+    { n: "Funding Rate", camada: 4, escala: "lin", inicioSerie: "2020-01-01", calendario: "24/7", unidade: "APR (%)", caminhoNoMenu: "Studio / Futuros / Funding Rate — APR (%)", unidadeConferida: true },
+    // A escala é LINEAR e não pode ser outra: netflow é entrada menos saída, cruza o
+    // zero, e log de zero ou de negativo não produz número errado — não produz número
+    // nenhum. A D38 D chamou a série de logarítmica; a D39 corrigiu para linear.
+    // Os extremos e o início da série são PROVISÓRIOS até a leitura no terminal.
+    { n: "Exchange Netflow", camada: 4, escala: "lin", inicioSerie: "2011-01-01", extremosProvisorios: true, calendario: "24/7", unidade: null }
+  ]);
+  var ESTADOS_DO_EXTREMO = Object.freeze(["confirmado", "posto confirmado", "provisório"]);
+  var CASAS_NA_TOOLTIP = Object.freeze({
+    "Preço do BTC": 0,
+    "MVRV Ratio": 3,
+    "SOPR": 4,
+    "Supply in Profit": 1,
+    "Liveliness": 4,
+    "DXY": 2,
+    "Fed Funds Rate": 2,
+    "Funding Rate": 1
+  });
+  var FAIXA_DO_COMPACTO = Object.freeze({ piso: 1e3, teto: 1499, custoNoIndice: 0.44 });
+  var SUAVIZACAO_NO_ALL = Object.freeze({
+    modo: "SMA",
+    oQueFaz: "agrega vários dias por pixel e suaviza dentro do balde",
+    medidoEm: "Funding Rate · min, 13/03/2020",
+    noAll: -53,
+    estreitado: -139.2,
+    fator: 2.63,
+    custoSeUsado: 1.39
+  });
+  var METODOS_DE_VARREDURA = Object.freeze([
+    {
+      m: "concorrentes um a um na tooltip, em passo de 1 dia",
+      forca: 1,
+      como: "medir cada rival com a janela estreitada, um por um",
+      porQue: "leitura de dígito em todos os candidatos — o único que serve quando a folga é de poucos por cento",
+      custo: "só cabe quando os candidatos são poucos e já se sabe quais são"
+    },
+    {
+      m: "eixo auto-escalado por blocos",
+      forca: 2,
+      como: "partir a série em blocos que se encostam e ler o topo do eixo de cada um; o eixo se recalcula com o máximo da janela",
+      porQue: "não depende de a barra ser visível — e o bloco é curto o bastante para a suavização não achatar o extremo"
+    },
+    {
+      m: "banda de altura sobre a série inteira",
+      forca: 3,
+      como: "recortar a faixa do gráfico além do extremo e varrer os quinze anos de uma vez",
+      fraqueza: "evento de UM dia ocupa ~0,19 px no ALL e pode sumir: risco de falso negativo"
+    },
+    {
+      m: "trecho a trecho",
+      forca: 4,
+      fraqueza: "depende de escolher quais trechos olhar, e o que não foi olhado não foi descartado"
+    },
+    {
+      m: "eixo ou pixel no ALL inteiro",
+      forca: 9,
+      proibido: true,
+      fraqueza: "o modo SMA suaviza dentro do pixel: extremo de um dia lê mais raso do que é. Não é ruído — é viés de um lado só, e o número que sai parece plausível"
+    }
+  ]);
+  var SERIES_EM_PATAMAR = Object.freeze({
+    "Fed Funds Rate": "fica parada por meses. ⚠️ o patamar lido (01/08/2023 → 31/08/2024) é alinhado ao MÊS, não a datas de FOMC — pode ser série mensal, e isso não foi conferido",
+    "US M2": "série mensal: cada leitura vale até a publicação do mês seguinte",
+    "Curva 10Y-2Y": "série MENSAL desenhada como escada diária: o mês inteiro carrega o mesmo valor (fev/2011 = 2,81 do dia 1 ao 28)"
+  });
+  var HOMONIMOS_NO_TERMINAL = Object.freeze({
+    "Supply in Profit": "há dois no menu: um em BTC (≈13,5M BTC) e um em percentual. O nosso é o PERCENTUAL",
+    "SOPR": "há o SOPR simples e os SOPR LTH e STH. O nosso é o SIMPLES",
+    "Realized Price": "há Realized Price, Realized Price STH e Realized Price LTH — as três estão na varredura, cada uma na sua linha"
+  });
+  var CALENDARIOS = Object.freeze(["24/7", "pregão", "mensal"]);
+  var DIAS_SEM_PREGAO = Object.freeze([0, 6]);
+  var EXCHANGES_PRIMEIRA_LINHA = Object.freeze([
+    "Binance",
+    "Coinbase",
+    "Kraken",
+    "OKX",
+    "Bybit",
+    "Bitget"
+  ]);
+  var PESOS = Object.freeze({ 1: 0.34, 2: 0.26, 3: 0.16, 4: 0.12, 5: 0.12 });
+  var CAMADAS = Object.freeze({
+    1: "Estado do preço",
+    2: "Comportamento",
+    3: "Macro",
+    4: "Fluxo",
+    5: "Carteira"
+  });
+  var TRAVA_AUSENCIA_NA_CAMADA = 1 / 3;
+  var FAIXAS = Object.freeze([
+    { ate: 20, nome: "Fundo" },
+    { ate: 40, nome: "Comprimido" },
+    { ate: 60, nome: "Equilíbrio" },
+    { ate: 80, nome: "Esticado" },
+    { ate: 101, nome: "Extremo" }
+  ]);
+  var ESTADOS = Object.freeze({
+    CAPITULACAO: "Capitulação profunda",
+    PREJUIZO: "Prejuízo do mercado",
+    ESTRESSE: "Estresse de curto prazo",
+    SAUDAVEL: "Mercado saudável"
+  });
+  var EXTREMOS_INERTES = Object.freeze(
+    ["Preço do BTC", "Realized Price", "Realized Price STH", "Realized Price LTH"]
+  );
+  var METODOS_DE_CONFERENCIA = Object.freeze(["dígito", "pixel", "eixo", "calendário"]);
+  var TETOS_DA_METRICA = Object.freeze({ "Supply in Profit": { max: 100 } });
+
+  // alocador/alocador.mjs
+  var BASES_DO_ESTADO = Object.freeze({
+    "Capitulação profunda": 100,
+    "Prejuízo do mercado": 90,
+    "Estresse de curto prazo": 65,
+    "Mercado saudável": 40
+  });
+  var ORDEM_DOS_ESTADOS = Object.freeze([
+    "Capitulação profunda",
+    "Prejuízo do mercado",
+    "Estresse de curto prazo",
+    "Mercado saudável"
+  ]);
+  function limitesDoPatamar(estado) {
+    const i = ORDEM_DOS_ESTADOS.indexOf(estado);
+    if (i < 0) return null;
+    const base = BASES_DO_ESTADO[estado];
+    const acima = i > 0 ? BASES_DO_ESTADO[ORDEM_DOS_ESTADOS[i - 1]] : 100;
+    const abaixo = i < ORDEM_DOS_ESTADOS.length - 1 ? BASES_DO_ESTADO[ORDEM_DOS_ESTADOS[i + 1]] : 0;
+    return { base, piso: Math.max(abaixo, base * (1 - BANDA_MODULACAO)), teto: Math.min(acima, base * 1.2, 100) };
+  }
+  var EXPOSICAO_ALVO = Object.freeze({ 4: 100, 3: 66, 2: 45, 1: 25, 0: 15 });
+  var BANDA_PONTOS = 3;
+  var TETO_DEFASAGEM = 12;
+  var MESES_SEM_MODULACAO = 12;
+  var VELOCIDADE_POR_ESTADO = Object.freeze({
+    "Mercado saudável": 1.5,
+    "Estresse de curto prazo": 1,
+    "Prejuízo do mercado": 0.5,
+    "Capitulação profunda": 0.25
+  });
+  var INICIO_DA_RAMPA_ANOS = 4;
+  var ABRIGO_ATIVO_ANOS = 4;
+  var TETO_APORTE = 100;
+  var PISO_APORTE = 0;
+  var BANDA_MODULACAO = 0.2;
+  var FATOR_NEUTRO = 1;
+  var TETO_M_EM_ABRIGO = 1;
+  var clamp = (x, min, max) => Math.min(Math.max(x, min), max);
+  var arred = (x, casas = 4) => Number(x.toFixed(casas));
+  function modulador(indice) {
+    if (typeof indice !== "number" || !Number.isFinite(indice)) return null;
+    return clamp(1 + (50 - indice) / 50 * BANDA_MODULACAO, 1 - BANDA_MODULACAO, 1 + BANDA_MODULACAO);
+  }
+  var mEfetivo = (indice, abrigoAtivo2) => {
+    const m = modulador(indice);
+    return m === null ? null : abrigoAtivo2 ? Math.min(m, TETO_M_EM_ABRIGO) : m;
+  };
+  var abrigoAtivo = (mesesAteEntrega) => mesesAteEntrega <= ABRIGO_ATIVO_ANOS * 12;
+  var fatorDoAbrigo = (mesesAteEntrega) => alvoDaGlidepath(mesesAteEntrega) / 100;
+  function alvoDaGlidepath(mesesAteEntrega) {
+    const anos = mesesAteEntrega / 12;
+    if (anos >= INICIO_DA_RAMPA_ANOS) return EXPOSICAO_ALVO[4];
+    if (anos <= 0) return EXPOSICAO_ALVO[0];
+    const teto = Math.ceil(anos), piso = Math.floor(anos);
+    if (teto === piso) return EXPOSICAO_ALVO[piso];
+    const fracao = anos - piso;
+    return arred(EXPOSICAO_ALVO[piso] + (EXPOSICAO_ALVO[teto] - EXPOSICAO_ALVO[piso]) * fracao, 4);
+  }
+  function fatorDeVelocidade({ estado, mesesAteEntrega, defasagem = 0 }) {
+    if (mesesAteEntrega <= MESES_SEM_MODULACAO) {
+      return { fator: FATOR_NEUTRO, motivo: `últimos ${MESES_SEM_MODULACAO} meses não modulam (D25 D)` };
+    }
+    if (defasagem >= TETO_DEFASAGEM) {
+      return { fator: FATOR_NEUTRO, motivo: `defasagem no teto de ${TETO_DEFASAGEM} pontos (D25 C)` };
+    }
+    const fator = VELOCIDADE_POR_ESTADO[estado];
+    if (fator === void 0) return { fator: null, motivo: `estado não reconhecido: ${estado}` };
+    return { fator, motivo: `estado ${estado}` };
+  }
+  var passoDoMes = (mesesAteEntrega) => arred(alvoDaGlidepath(mesesAteEntrega + 1) - alvoDaGlidepath(mesesAteEntrega), 4);
+  var bandaDoMes = (mesesAteEntrega) => mesesAteEntrega >= MESES_SEM_MODULACAO ? BANDA_PONTOS : arred(BANDA_PONTOS * (Math.max(mesesAteEntrega, 0) / MESES_SEM_MODULACAO), 4);
+  function demandaDaGlidepath({ exposicaoAtual, mesesAteEntrega, estado, defasagem = 0 }) {
+    if (typeof defasagem !== "number" || !Number.isFinite(defasagem)) {
+      return { erro: `defasagem não é número: ${JSON.stringify(defasagem)} — o Registro devolve {pontos, eventos}, e o que entra aqui são os pontos` };
+    }
+    const noFechamento = Math.max(mesesAteEntrega - 1, 0);
+    const alvo = alvoDaGlidepath(noFechamento);
+    const distancia = arred(exposicaoAtual - alvo, 4);
+    const { fator, motivo } = fatorDeVelocidade({ estado, mesesAteEntrega, defasagem });
+    if (fator === null) return { erro: motivo };
+    const ultimoAno = mesesAteEntrega <= MESES_SEM_MODULACAO;
+    const passo = passoDoMes(noFechamento);
+    const banda = bandaDoMes(noFechamento);
+    if (Math.abs(distancia) <= banda && defasagem === 0) {
+      return {
+        alvo,
+        distancia,
+        dentroDaBanda: true,
+        mover: 0,
+        passo,
+        banda,
+        fator,
+        motivo,
+        defasagemDepois: 0,
+        defasagemNoTeto: false,
+        liquidacaoDeDefasagem: 0,
+        ultimoAno
+      };
+    }
+    const programado = distancia <= 0 ? 0 : arred(Math.min(distancia, Math.max(passo, distancia - banda)), 4);
+    const movidoPeloFator = arred(programado * Math.min(fator, 1), 4);
+    const naoMovido = arred(programado - movidoPeloFator, 4);
+    const aRecuperar = fator > 1 ? arred(Math.min(defasagem, (fator - 1) * programado), 4) : 0;
+    const liquidacao = ultimoAno ? arred(defasagem / Math.max(mesesAteEntrega, 1), 4) : 0;
+    const defasagemDepois = ultimoAno ? arred(Math.max(defasagem - liquidacao, 0), 4) : arred(clamp(defasagem + naoMovido - aRecuperar, 0, TETO_DEFASAGEM), 4);
+    const moverBruto = arred(movidoPeloFator + aRecuperar + liquidacao, 4);
+    const mover = arred(Math.min(moverBruto, Math.max(distancia, 0)), 4);
+    return {
+      alvo,
+      distancia,
+      dentroDaBanda: false,
+      passo,
+      banda,
+      fator,
+      motivo,
+      mover,
+      moverBruto,
+      travadoNoAlvo: moverBruto > Math.max(distancia, 0),
+      naoMovido,
+      recuperado: aRecuperar,
+      liquidacaoDeDefasagem: liquidacao,
+      defasagemDepois,
+      defasagemNoTeto: defasagemDepois >= TETO_DEFASAGEM,
+      ultimoAno
+    };
+  }
+  function destinacaoDoAporte({
+    aporte,
+    carteira,
+    caixa = 0,
+    exposicaoAtual,
+    mesesAteEntrega,
+    estado,
+    indice,
+    defasagem = 0
+  }) {
+    const emAbrigo = abrigoAtivo(mesesAteEntrega);
+    const demanda = demandaDaGlidepath({ exposicaoAtual, mesesAteEntrega, estado, defasagem });
+    if (demanda.erro) return { erro: demanda.erro };
+    const demandaEmDinheiro = arred(demanda.mover / 100 * carteira, 2);
+    const caixaDisponivel = emAbrigo ? caixa : 0;
+    const doCaixa = Math.min(caixaDisponivel, demandaEmDinheiro);
+    const restanteAposCaixa = arred(demandaEmDinheiro - doCaixa, 2);
+    const doAporte = Math.min(aporte, restanteAposCaixa);
+    const porVenda = arred(restanteAposCaixa - doAporte, 2);
+    const sobra = arred(aporte - doAporte, 2);
+    const m = mEfetivo(indice, emAbrigo);
+    const base = BASES_DO_ESTADO[estado];
+    if (base === void 0) return { erro: `estado sem base definida: ${estado}` };
+    const lim = limitesDoPatamar(estado);
+    const semAbrigo = m === null ? null : clamp(base * m, lim.piso, lim.teto);
+    const percentual = semAbrigo === null ? null : clamp(semAbrigo * fatorDoAbrigo(mesesAteEntrega), PISO_APORTE, TETO_APORTE);
+    const paraOAtivo = percentual === null ? null : arred(percentual / 100 * sobra, 2);
+    const excedente = paraOAtivo === null ? null : arred(sobra - paraOAtivo, 2);
+    return {
+      emAbrigo,
+      glidepath: demanda,
+      defesa: {
+        demandaEmPontos: demanda.mover,
+        demandaEmDinheiro,
+        doCaixa: arred(doCaixa, 2),
+        doAporte: arred(doAporte, 2),
+        porVenda,
+        // D27: em todo mês em que o caixa cobre a demanda, a venda é zero.
+        vendaZeradaPeloCaixa: doCaixa > 0 && porVenda === 0 && doAporte === 0
+      },
+      plantio: {
+        base,
+        fatorDoAbrigo: arred(fatorDoAbrigo(mesesAteEntrega), 4),
+        m: m === null ? null : arred(m, 5),
+        patamar: lim,
+        mordeuARegra2: semAbrigo !== null && arred(semAbrigo, 4) !== arred(clamp(base * m, PISO_APORTE, TETO_APORTE), 4),
+        percentual: percentual === null ? null : arred(percentual, 4),
+        sobreOAporte: sobra,
+        paraOAtivo,
+        // A frase é da própria decisão, e é assim que a leitura tem de dizer.
+        nota: sobra === 0 ? "aporte integralmente destinado à proteção" : null
+      },
+      // D27: com o Abrigo ativo o excedente vai para a parte protegida, não para o caixa.
+      excedente: { valor: excedente, destino: emAbrigo ? "parte protegida" : "caixa" }
+    };
+  }
+  var ESTADOS_DO_REFORCO = Object.freeze(["Capitulação profunda", "Prejuízo do mercado"]);
+  var INDICE_MAXIMO_REFORCO = 30;
+  var FATIA_DO_CAIXA = 0.25;
+  var ACIONAMENTOS_POR_CICLO = 3;
+  var ESPACAMENTO_DIAS = 30;
+  var PISO_DO_CAIXA = 0.1;
+  function reforcoDeFundo({ estado, indice, mesesAteEntrega, caixa, carteira, ciclo, hoje }) {
+    const travas = [
+      {
+        n: 1,
+        o: "estado de fundo",
+        passa: ESTADOS_DO_REFORCO.includes(estado),
+        leitura: estado
+      },
+      {
+        n: 2,
+        o: `Índice ≤ ${INDICE_MAXIMO_REFORCO}`,
+        passa: typeof indice === "number" && indice <= INDICE_MAXIMO_REFORCO,
+        leitura: indice
+      },
+      {
+        n: 3,
+        o: `mais de ${ABRIGO_ATIVO_ANOS} anos até a entrega`,
+        passa: !abrigoAtivo(mesesAteEntrega),
+        leitura: `${mesesAteEntrega} meses`
+      },
+      {
+        n: 4,
+        o: `no máximo ${FATIA_DO_CAIXA * 100}% do caixa`,
+        passa: true,
+        leitura: `libera ${arred(caixa * FATIA_DO_CAIXA, 2)}`
+      },
+      {
+        n: 5,
+        o: `no máximo ${ACIONAMENTOS_POR_CICLO} por ciclo, espaçados ${ESPACAMENTO_DIAS} dias`,
+        passa: Boolean(ciclo) && ciclo.acionamentos < ACIONAMENTOS_POR_CICLO && (ciclo.ultimoAcionamento === null || diasEntre(ciclo.ultimoAcionamento, hoje) >= ESPACAMENTO_DIAS),
+        leitura: ciclo ? `${ciclo.acionamentos} acionamentos · último ${ciclo.ultimoAcionamento ?? "nenhum"}` : "SEM REGISTRO"
+      },
+      {
+        n: 6,
+        o: `caixa nunca abaixo de ${PISO_DO_CAIXA * 100}% da carteira`,
+        passa: arred(caixa - caixa * FATIA_DO_CAIXA, 2) >= arred(carteira * PISO_DO_CAIXA, 2),
+        leitura: `caixa ficaria em ${arred(caixa - caixa * FATIA_DO_CAIXA, 2)}, piso é ${arred(carteira * PISO_DO_CAIXA, 2)}`
+      },
+      {
+        n: 7,
+        o: "Gate humano como decisão própria, separada do aporte",
+        passa: false,
+        leitura: "só o Gui assina — nunca passa aqui"
+      }
+    ];
+    const semRegistro = !ciclo;
+    const bloqueiam = travas.filter((t) => t.n !== 7 && !t.passa);
+    return {
+      // Nunca "liberado": a trava 7 é o Gate, e ela não passa por código nenhum.
+      situacao: semRegistro ? "bloqueado — sem registro gravado" : bloqueiam.length ? "bloqueado" : "condições reunidas — vai ao Gate como decisão própria",
+      travas,
+      bloqueiam: bloqueiam.map((t) => t.n),
+      valorProposto: bloqueiam.length || semRegistro ? null : arred(caixa * FATIA_DO_CAIXA, 2),
+      separadoDoAporte: true,
+      registroDoCiclo: ciclo ?? null
+    };
+  }
+  var DIA_MS = 864e5;
+  var diasEntre = (de, ate) => Math.round((Date.parse(`${ate}T00:00:00Z`) - Date.parse(`${de}T00:00:00Z`)) / DIA_MS);
+  var GATILHO_DE_VENDA = 12;
+  var PISO_POR_POSICAO = 2;
+  var ANCORAS_DE_TESE2 = Object.freeze(["BTC", "ETH"]);
+  var GATILHOS_DE_VENDA = Object.freeze([
+    { n: 1, gatilho: `estouro acima de ${GATILHO_DE_VENDA}% do teto por ativo`, origem: "teto de concentração" },
+    { n: 2, gatilho: `queda abaixo de ${PISO_POR_POSICAO}% do piso de posição`, origem: "piso de posição" },
+    { n: 3, gatilho: "realização programada da glidepath", origem: "calendário e tabela do Abrigo" }
+  ]);
+  var ESTADOS_CONHECIDOS = Object.freeze(Object.keys(ESTADOS).map((k) => ESTADOS[k]));
+
+  // .empacota-tmp/aporte-do-mes.mjs
+  var ACIMA_DO_ALVO = 5;
+  var NEUTRO_DO_INDICE = 50;
+  var DATA_DA_LEITURA = "2026-08-29";
+  var $ = (id) => document.getElementById(id);
+  var num = (x, c = 2) => x === null || x === void 0 ? "—" : Number(x).toLocaleString("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c });
+  var pct = (x, c = 1) => x === null ? "—" : num(x, c) + "%";
+  var brl = (x) => "R$ " + num(x, 0);
+  var card = (l, v, s = "", on = false) => `<div class="rc${on ? " on" : ""}"><div class="l">${l}</div><div class="v">${v}</div>${s ? `<div class="s">${s}</div>` : ""}</div>`;
+  $("estado").innerHTML = Object.keys(BASES_DO_ESTADO).map((e, i) => `<option${i === 3 ? " selected" : ""}>${e}</option>`).join("");
+  function desenhar() {
+    const estado = $("estado").value;
+    const indice = Number($("indice").value);
+    const meses = Number($("meses").value);
+    const caixa = Number($("caixa").value);
+    const total = Number($("total").value);
+    const acion = $("acion").value;
+    $("indiceV").textContent = num(indice, 4);
+    $("mesesV").textContent = meses + " (" + num(meses / 12, 1) + " anos)";
+    $("caixaV").textContent = brl(caixa);
+    $("totalV").textContent = brl(total);
+    const emAbrigo = abrigoAtivo(meses);
+    const M = modulador(indice), Me = mEfetivo(indice, emAbrigo);
+    const base = BASES_DO_ESTADO[estado], fAbrigo = fatorDoAbrigo(meses);
+    const lim = limitesDoPatamar(estado);
+    $("formula").innerHTML = `aporte = base_do_estado × fator_do_Abrigo × M<br>M = 1 + (${NEUTRO_DO_INDICE} − <em>${num(indice, 4)}</em>) / ${NEUTRO_DO_INDICE} × ${num(BANDA_MODULACAO)} = <em>${num(M, 5)}</em>` + (emAbrigo ? `<br>Abrigo ativo ⇒ M_efetivo = min(M, ${num(TETO_M_EM_ABRIGO, 0)}) = <em>${num(Me, 5)}</em>` : "");
+    const r = destinacaoDoAporte({
+      aporte: 150,
+      carteira: total,
+      caixa,
+      exposicaoAtual: alvoDaGlidepath(meses),
+      mesesAteEntrega: meses,
+      estado,
+      indice
+    });
+    $("aporte").innerHTML = card("Base do estado", pct(base, 0), estado) + card("Fator do Abrigo", num(fAbrigo, 4), emAbrigo ? `ativo — ${ABRIGO_ATIVO_ANOS} anos ou menos` : "carteira cheia") + card("Modulador M", num(Me, 5), M !== Me ? `travado em ${num(TETO_M_EM_ABRIGO, 0)} pelo Abrigo (era ${num(M, 5)})` : `ajuste fino, ±${pct(BANDA_MODULACAO * 100, 0)} no máximo`) + card("Aporte do mês", pct(r.plantio.percentual), r.plantio.mordeuARegra2 ? "a regra 2 segurou" : "sem trava mordendo", true);
+    const passouDoTeto = base * fAbrigo * Me > TETO_APORTE;
+    const linhas = [
+      [
+        `1 · nunca passa de ${pct(TETO_APORTE, 0)} nem fica abaixo de ${pct(PISO_APORTE, 0)}`,
+        "teto do próprio aporte",
+        passouDoTeto
+      ],
+      ["2 · não alcança o patamar do estado vizinho", `banda efetiva ${pct(lim.piso, 0)} a ${pct(lim.teto, 0)}`, r.plantio.mordeuARegra2],
+      [
+        "3 · o teto do Abrigo prevalece sobre a modulação",
+        emAbrigo ? `M_efetivo = min(M, ${num(TETO_M_EM_ABRIGO, 0)})` : "Abrigo inativo",
+        emAbrigo && M > TETO_M_EM_ABRIGO
+      ]
+    ];
+    $("tetos").tBodies[0].innerHTML = linhas.map(([t, d, m]) => `<tr class="${m ? "mordeu" : ""}"><td>${t}</td><td style="color:var(--dim)">${d}</td><td style="text-align:right">${m ? "mordeu" : "—"}</td></tr>`).join("");
+    const alvo = alvoDaGlidepath(meses);
+    const g = demandaDaGlidepath({ exposicaoAtual: alvo + ACIMA_DO_ALVO, mesesAteEntrega: meses, estado });
+    const vel = VELOCIDADE_POR_ESTADO[estado];
+    $("glide").innerHTML = card("Exposição alvo", pct(alvo), meses > ABRIGO_ATIVO_ANOS * 12 ? "antes da rampa" : "na rampa") + card("Passo do mês", num(passoDoMes(meses), 2) + " pts", "é sobre ele que a modulação incide") + card("Fator do estado", num(g.fator, 2), g.motivo) + card(
+      "Move neste mês",
+      num(g.mover, 4) + " pts",
+      passoDoMes(meses) === 0 ? "antes da rampa — não há passo programado" : g.dentroDaBanda ? `dentro da banda de ${BANDA_PONTOS} pts` : "fora da banda",
+      true
+    ) + card("Defasagem depois", num(g.defasagemDepois, 4) + " pts", `teto ${TETO_DEFASAGEM} pts`);
+    $("glideNota").innerHTML = g.ultimoAno ? `<div class="nota"><b>últimos ${MESES_SEM_MODULACAO} meses</b>O fator é ${num(FATOR_NEUTRO)} em qualquer estado, e a defasagem é
+       <b style="display:inline">liquidada</b>, não perdoada — trabalhada até zero dentro do período.
+       Modular pressupõe tempo para esperar o mercado virar; no último ano não há esse tempo.</div>` : g.defasagemNoTeto ? `<div class="nota"><b>defasagem no teto</b>O fator volta a ${num(FATOR_NEUTRO)} mesmo em Capitulação. Abaixo disso
+       a modulação deixaria de ser prudência e viraria aposta de que o fundo passa antes dos 18 anos.</div>` : `<div class="nota calma"><b>como ler</b>A simulação põe a exposição ${ACIMA_DO_ALVO} pontos acima do alvo, para o mecanismo
+       aparecer. Dentro da banda de ${BANDA_PONTOS} pontos nada se move — e estar dentro dela
+       <b style="display:inline;color:var(--ink)">não é estar atrasado</b>: a banda é tolerância de posição
+       e não gera defasagem.</div>`;
+    const ciclo = acion === "sem" ? null : { acionamentos: Number(acion), ultimoAcionamento: Number(acion) > 0 ? "2026-06-01" : null };
+    const rf = reforcoDeFundo({ estado, indice, mesesAteEntrega: meses, caixa, carteira: total, ciclo, hoje: DATA_DA_LEITURA });
+    $("travas").tBodies[0].innerHTML = rf.travas.map((t) => {
+      const gate = t.n === 7;
+      const cor = gate ? "gateflag" : t.passa ? "passa" : "falha";
+      const rot = gate ? "Gate" : t.passa ? "passa" : "bloqueia";
+      return `<tr><td class="n" style="color:var(--dim)">${t.n}</td><td>${t.o}</td><td style="color:var(--dim)">${t.leitura}</td><td style="text-align:right" class="${cor}"><span class="dot" style="background:currentColor"></span>${rot}</td></tr>`;
+    }).join("");
+    const semRegistro = /sem registro/.test(rf.situacao);
+    $("reforcoNota").innerHTML = semRegistro ? `<div class="erro"><b style="color:var(--z5)">SEM REGISTRO GRAVADO</b><br>
+       O contador de acionamentos não pôde ser lido do registro. <b>Sem registro gravado, o reforço não
+       é liberado</b> — Decisão 9, regra 5. Não se reconta de memória.</div>` : `<div class="nota"><b>situação</b>${rf.situacao}${rf.valorProposto !== null ? ` — proporia <b style="display:inline;color:var(--ink)">${brl(rf.valorProposto)}</b>
+            (${pct(FATIA_DO_CAIXA * 100, 0)} do caixa), separado do aporte do mês.` : "."}
+       <br><br>A trava 7 <b style="display:inline;color:var(--ink)">nunca passa por código nenhum</b>.
+       Mesmo com as outras seis reunidas, o reforço vai ao Gate como decisão própria.</div>`;
+  }
+  for (const id of ["estado", "indice", "meses", "caixa", "total", "acion"]) {
+    $(id).addEventListener("input", desenhar);
+  }
+  desenhar();
+})();
+
+</script>
