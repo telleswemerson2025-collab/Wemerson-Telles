@@ -20,7 +20,8 @@ import {
 } from './alocador/alocador.mjs';
 import { VALIDADE_DIAS, MARCO_INDICE, MARCO_DIAS, RECUPERACAO_DIAS, TIPOS } from './registro/registro.mjs';
 import { historicoComAnulacao, CARTEIRA, ILUSTRATIVO } from './registro/historico-exemplo.mjs';
-import { LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, PESOS } from './torre/torre.mjs';
+import { LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, PESOS, varrer, TRAVA_AUSENCIA_NA_CAMADA } from './torre/torre.mjs';
+import { VARREDURA_29_08_2026 as VARREDURA } from './torre/leitura-29-08-2026.mjs';
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const ler = (f) => readFileSync(join(AQUI, f), 'utf8');
@@ -260,4 +261,79 @@ test('o histórico de exemplo exercita as seis seções, e é rotulado como ilus
   // E o marco anulado tira o reset da contagem: o ciclo volta a ser o primeiro.
   assert.equal(r.cicloReforco(CARTEIRA).desde, null);
   assert.equal(r.cicloReforco(CARTEIRA).contador, 2, 'os dois acionamentos voltam para o ciclo');
+});
+
+// ══ A TELA DO ÍNDICE — item 3 da peça 4 ═══════════════════════════════════
+test('critério de aceite: a tela exibe 51, com o valor interno que a Torre produz', () => {
+  // O briefing fixou o número que as quatro correções tinham de produzir. Ele é
+  // derivado FORA desta tela — é a checagem que não é o código conferindo a si mesmo.
+  const r = varrer({ varredura: VARREDURA, hoje: '2026-08-29' });
+  assert.equal(Math.round(r.indice), 51, 'exibido');
+  assert.equal(r.indice.toFixed(4), '50.7536', 'interno');
+  assert.equal(r.faixa, 'Equilíbrio');
+  // E a tela exibe o arredondado e o interno, os dois gerados do mesmo objeto.
+  const s = doc('indice-semente.html');
+  assert.match(s, /\$\{num\(r\.indice\)\}/, 'o exibido sai de r.indice');
+  assert.match(s, /valor interno \$\{num\(r\.indice, 4\)\}/, 'e o interno também');
+});
+
+test('D1 · D5 · D36 B: a tela não tem régua própria — ela pergunta à Torre', () => {
+  const s = doc('indice-semente.html');
+  const script = s.slice(s.indexOf('<script type="module">'));
+  // A versão anterior desta tela tinha a tabela de indicadores, os pesos e a
+  // normalização dentro do HTML. Nada disso pode voltar.
+  for (const proibido of [/\bc:\s*[12345]\b/, /Math\.log\(/, /posCamada/, /\bFAIXAS\s*=/, /PESOS\s*=\s*\{/]) {
+    assert.ok(!proibido.test(script), `a tela voltou a calcular: ${proibido}`);
+  }
+  // E chama a Torre para tudo.
+  assert.match(script, /varrer\(\{ varredura: V, hoje: HOJE \}\)/);
+  assert.match(script, /camada5\(\{/);
+});
+
+test('D2: a tela diz, onde o número aparece, que o Índice não dispara decisão', () => {
+  const s = doc('indice-semente.html');
+  assert.match(s, /não classifica estado e não dispara\s*\n?\s*estação/i);
+  assert.match(s, /Quem classifica é a Linha d’Água/);
+  // A versão anterior trazia recomendação de aporte nas faixas. Não pode voltar.
+  for (const p of [/Plantio · aporte integral/, /aporte integral/, /r:\s*'/]) {
+    assert.ok(!p.test(s), `a tela voltou a disparar decisão: ${p}`);
+  }
+});
+
+test('D41 D · D42 E: as duas contagens de extremo aparecem separadas', () => {
+  const s = doc('indice-semente.html');
+  for (const campo of ['confirmados', 'confirmadosPorInteiro', 'postoConfirmado',
+    'provisorios', 'provisoriosQueImportam', 'inertesPendentes']) {
+    assert.match(s, new RegExp(`e\\.${campo}`), `a tela não mostra ${campo}`);
+  }
+  // Risco e trabalho são contagens diferentes, e a tela diz isso.
+  assert.match(s, /Risco e trabalho são contagens diferentes/);
+});
+
+test('D44 A · D46: os números da tela do Índice saem da constante, e ligados', () => {
+  const s = doc('indice-semente.html');
+  const script = s.slice(s.indexOf('<script type="module">'))
+    .split('\n').filter((l) => !/^\s*\/\//.test(l)).join('\n');
+  const proibidos = [
+    [/passarem de <b>33%<\/b>/, 'TRAVA_AUSENCIA_NA_CAMADA'],
+    [/vale 180 dias|de 180 dias/, 'VALIDADE_DIAS'],
+    [/<b>BTC e ETH<\/b>/, 'ANCORAS_DE_TESE'],
+  ];
+  const voltaram = proibidos.filter(([re]) => re.test(script)).map(([re, n]) => `${re} — devia sair de ${n}`);
+  assert.deepEqual(voltaram, [], `\n  ${voltaram.join('\n  ')}\n`);
+  const interpolados = new Set([...script.matchAll(/\$\{([^}]*)\}/g)]
+    .flatMap((m) => m[1].match(/[A-Z][A-Z0-9_]{2,}/g) ?? []));
+  for (const nome of ['TRAVA_AUSENCIA_NA_CAMADA', 'VALIDADE_DIAS', 'ANCORAS_DE_TESE']) {
+    assert.ok(interpolados.has(nome), `${nome} não gera texto nenhum na tela do Índice`);
+  }
+});
+
+test('D21 B: a suspensão da camada 5 nomeia o ativo e a data, sem palavra duplicada', () => {
+  const s = doc('indice-semente.html');
+  assert.match(s, /c5\.motivo/, 'a tela mostra o motivo que a Torre monta');
+  // A frase vem do módulo; aqui se confere que ela não tem o defeito que um teste
+  // chegou a congelar — "por tese tese vencida".
+  const torre = ler('torre/torre.mjs');
+  assert.ok(!/por tese \$\{suspensao\.razao\}/.test(torre), 'o prefixo duplicado voltou');
+  assert.match(torre, /camada 5 suspensa: degrau de \$\{suspensao\.ativo\} \$\{suspensao\.razao\}/);
 });

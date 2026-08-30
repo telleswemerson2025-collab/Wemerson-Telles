@@ -6,212 +6,207 @@
 :root{
   --side:#0a0e15;--main:#0b0f17;--card:#0d1219;--bd:rgba(255,255,255,.06);
   --ink:#e6eaf0;--mut:#8a95a5;--dim:#5a6472;--hover:rgba(255,255,255,.045);
-  --z1:#3d7dff;--z2:#3ddc84;--z3:#f5c518;--z4:#f97316;--z5:#ef4444;--price:#9aa3ad;
+  --z1:#3d7dff;--z2:#3ddc84;--z3:#f5c518;--z4:#f97316;--z5:#ef4444;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--main);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5}
 :focus-visible{outline:1px solid var(--z1);outline-offset:2px}
-.app{display:grid;grid-template-columns:296px 1fr;min-height:100vh}
-.side{background:var(--side);border-right:1px solid var(--bd);display:flex;flex-direction:column;padding:14px 12px 0}
-.search{display:flex;align-items:center;gap:9px;border:1px solid var(--bd);border-radius:9px;padding:9px 12px;color:var(--dim);font-size:13px;margin-bottom:16px}
-.tree{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:1px;padding-bottom:12px}
-.row{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;color:var(--mut);font-size:13.5px}
-.row:hover{background:var(--hover)}
-.row .ic{width:14px;height:14px;border:1.4px solid currentColor;border-radius:50%;position:relative;flex:none;opacity:.75}
-.row .ic::after{content:'';position:absolute;left:2.4px;right:2.4px;top:5px;height:1.4px;background:currentColor}
-.row .n{flex:1}.row .c{font-size:12px;color:var(--dim)}.row .ch{color:var(--dim);font-size:11px}
-.row.sub{padding-left:34px;font-size:13px}.row.sub .em{margin-left:auto;color:var(--dim);font-size:12px}
-.row.on{background:#151b25;color:var(--ink)}
-.row.bullet::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--z3);margin-left:2px;flex:none}
-.user{border-top:1px solid var(--bd);display:flex;align-items:center;gap:11px;padding:14px 8px;margin-top:auto}
-.av{width:32px;height:32px;border-radius:50%;background:#1b2230;display:grid;place-items:center;font-size:13px;color:var(--mut)}
-.user .nm{font-size:13px;line-height:1.25}.user .em{font-size:11.5px;color:var(--dim)}.user .out{margin-left:auto;color:var(--dim)}
-.main{display:flex;flex-direction:column;min-width:0}
-.top{display:flex;align-items:center;gap:22px;padding:16px 24px}
-.tgl{width:24px;height:20px;border:1.4px solid var(--dim);border-radius:5px;position:relative;flex:none}
-.tgl::after{content:'';position:absolute;left:7px;top:-1.4px;bottom:-1.4px;width:1.4px;background:var(--dim)}
-.mark{font-family:"Playfair Display",Georgia,serif;font-size:22px;font-weight:600}.mark i{font-style:italic}
-.crumb{display:flex;align-items:center;gap:9px;color:var(--dim);font-size:13.5px}.crumb b{color:var(--ink);font-weight:500}
-.bell{margin-left:auto;color:var(--dim)}
-.plot{margin:0 24px 16px;background:var(--card);border:1px solid var(--bd);border-radius:14px;position:relative;overflow:hidden;padding:20px 6px 4px}
-.wm{position:absolute;inset:0;display:grid;place-items:center;font-family:"Playfair Display",serif;font-size:clamp(38px,6vw,72px);
-  letter-spacing:.14em;color:rgba(255,255,255,.04);pointer-events:none;user-select:none}
-canvas{width:100%;height:470px;display:block}
-.foot{display:flex;justify-content:space-between;padding:0 26px 14px;font-size:11.5px;color:var(--dim);letter-spacing:.04em}
-.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:1px;background:var(--bd);
-  margin:0 24px 16px;border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+.main{max-width:1120px;margin:0 auto;padding:0 24px 60px}
+.top{display:flex;align-items:baseline;gap:18px;padding:26px 0 4px;flex-wrap:wrap}
+.mark{font-family:"Playfair Display",Georgia,serif;font-size:24px;font-weight:600}.mark i{font-style:italic}
+.crumb{color:var(--dim);font-size:13.5px}.crumb b{color:var(--ink);font-weight:500}
+.selo{margin-left:auto;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--z1);
+  border:1px solid rgba(61,125,255,.35);border-radius:999px;padding:5px 12px}
+h2{font-family:"Playfair Display",serif;font-size:17px;font-weight:600;margin:30px 0 3px}
+.sub{color:var(--dim);font-size:12.5px;margin-bottom:12px}
+.capa{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:var(--card);
+  border:1px solid var(--bd);border-radius:14px;padding:24px 26px;margin-top:14px}
+.big{font-family:"Playfair Display",serif;font-size:76px;font-weight:600;line-height:.9;font-variant-numeric:tabular-nums}
+.big small{display:block;font-family:Inter,sans-serif;font-size:11px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--dim);font-weight:500;margin-top:9px}
+.faixas{display:flex;gap:1px;background:var(--bd);border-radius:8px;overflow:hidden;margin-top:4px}
+.fx{flex:1;background:#0f141d;padding:8px 10px;font-size:11px;color:var(--dim);text-align:center}
+.fx.on{background:#16202c;color:var(--ink)}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(172px,1fr));gap:1px;background:var(--bd);
+  border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-top:12px}
 .rc{background:var(--card);padding:15px 17px}
 .rc .l{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
-.rc .v{font-family:"Playfair Display",serif;font-size:26px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.rc .v{font-family:"Playfair Display",serif;font-size:24px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
 .rc .s{font-size:11.5px;color:var(--dim);margin-top:5px}
-.bars{display:flex;flex-direction:column;gap:7px}
-.bar{display:grid;grid-template-columns:118px 1fr 34px;align-items:center;gap:10px;font-size:11.5px;color:var(--mut)}
-.bar .t{height:5px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden}
-.bar .f{height:100%;border-radius:3px}
-.bar .p{text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
-.nota{margin:0 24px 26px;border:1px solid rgba(245,197,24,.28);background:rgba(245,197,24,.05);border-radius:12px;padding:14px 17px;font-size:12.5px;color:var(--mut)}
-.nota b{color:var(--z3);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:6px}
-@media(max-width:900px){.app{grid-template-columns:1fr}.side{display:none}}
+.rc.on{background:#111a24}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:500}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+.barra{height:6px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:6px;min-width:80px}
+.barra i{display:block;height:100%;border-radius:4px;background:var(--z1)}
+.tag{display:inline-block;font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+  border:1px solid currentColor;border-radius:999px;padding:1px 7px;opacity:.9}
+.t-ok{color:var(--z2)}.t-posto{color:var(--z3)}.t-prov{color:var(--dim)}.t-fora{color:var(--z5)}
+.nota{border:1px solid rgba(245,197,24,.28);background:rgba(245,197,24,.05);border-radius:12px;
+  padding:13px 16px;font-size:12.5px;color:var(--mut);margin-top:14px}
+.nota b{color:var(--z3);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:5px}
+.nota.calma{border-color:var(--bd);background:var(--card)}.nota.calma b{color:var(--dim)}
+.det{color:var(--mut);font-size:11.5px}
+@media(max-width:760px){.capa{grid-template-columns:1fr;gap:16px}.big{font-size:60px}}
 </style>
 
-<div class="app">
-  <aside class="side">
-    <div class="search">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      Pesquisar métricas, endereços...
-    </div>
-    <div class="tree" id="tree"></div>
-    <div class="user">
-      <div class="av">W</div>
-      <div><div class="nm">Wemerson Telles</div><div class="em">Carteira Semente</div></div>
-      <svg class="out" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4H6a2 2 0 00-2 2v12a2 2 0 002 2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
-    </div>
-  </aside>
+<div class="main">
+  <div class="top">
+    <div class="mark">Carteira <i>Semente</i></div>
+    <div class="crumb">Índice Semente · <b>intensidade, não estado</b></div>
+    <div class="selo" id="selo"></div>
+  </div>
 
-  <div class="main">
-    <div class="top">
-      <div class="tgl"></div>
-      <div class="mark">Vantage<i>Node</i></div>
-      <div class="crumb">Studio <span>/</span> Carteira Semente <span>/</span> <b>Índice Semente</b></div>
-      <svg class="bell" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
-    </div>
-
-    <div class="read" id="read"></div>
-
-    <div class="plot">
-      <div class="wm">VANTAGENODE</div>
-      <canvas id="cv"></canvas>
-      <div class="foot"><span>Posição de cada leitura na própria faixa histórica do terminal</span><span>VantageNode</span></div>
-    </div>
-
-    <div class="nota">
-      <b>Sobre as janelas</b>
-      O ALL do terminal começa em 01/jan/2011, então os extremos de macro são os da janela, não os absolutos. ETF Net Inflow só existe desde 11/jan/2024 e Funding Rate desde 01/jan/2020 — comparar o extremo dessas duas com o de MVRV é comparar 2 anos com 15. O US M2 está exatamente na máxima e é série mensal, chapada desde 01/jul/2026. Fechamentos: onchain em 28/ago, macro e funding em 29/ago, ETF em 27/ago.
+  <div class="capa">
+    <div><div class="big" id="exibido">—<small id="interno"></small></div></div>
+    <div>
+      <div class="faixas" id="faixas"></div>
+      <div class="read" id="capaCards" style="margin-top:12px"></div>
     </div>
   </div>
+  <div id="notaD2"></div>
+
+  <h2>As camadas na conta</h2>
+  <div class="sub" id="subCamadas"></div>
+  <table id="camadas"><thead><tr><th>Camada</th><th class="n">Posição</th><th>Peso</th><th>O que entrou</th></tr></thead><tbody></tbody></table>
+
+  <h2>Fora da conta</h2>
+  <div class="sub">Camada que sai não vale 50 — ela sai, e os pesos das que ficaram renormalizam.</div>
+  <table id="fora"><thead><tr><th>Camada</th><th>Por quê</th></tr></thead><tbody></tbody></table>
+
+  <h2>Camada 5 suspensa</h2>
+  <div class="sub">Degrau de âncora vencido ou nunca atribuído suspende a camada <b>inteira</b>, nomeada e datada.</div>
+  <div id="camada5"></div>
+
+  <h2>Confiança por janela</h2>
+  <div class="sub" id="subConf"></div>
+  <table id="conf"><thead><tr><th>Indicador</th><th class="n">Confiança</th><th class="n">Bruto</th><th class="n">Ajustado</th></tr></thead><tbody></tbody></table>
+
+  <h2>Estado de conferência dos extremos</h2>
+  <div class="sub" id="subExtremos"></div>
+  <div class="read" id="extremos"></div>
+  <table id="provisorios"><thead><tr><th>Série</th><th>Campos provisórios</th><th>Importa?</th></tr></thead><tbody></tbody></table>
 </div>
 
-<script>
-const LEITURAS=[
- {c:1,n:'Preço do BTC',       v:77839.19, mn:0.29,     mx:124353.95, f:'US$', d:'28/ago', esc:'log', pos:null},
- {c:1,n:'Realized Price',     v:53057.77, mn:0.088,    mx:56449.62,  f:'US$', d:'28/ago', esc:'log'},
- {c:1,n:'Realized Price STH', v:69977.18, mn:0.19,     mx:114018.67, f:'US$', d:'28/ago', esc:'log'},
- {c:1,n:'Realized Price LTH', v:49449.51, mn:0.003,    mx:49991.21,  f:'US$', d:'28/ago', esc:'log'},
- {c:2,n:'MVRV Ratio',         v:1.465,    mn:0.384,    mx:7.854,     f:'',    d:'28/ago', esc:'log'},
- {c:2,n:'SOPR',               v:1.0112,   mn:0.6068,   mx:2.8740,    f:'',    d:'28/ago', esc:'log'},
- {c:2,n:'Supply in Profit',   v:67.4,     mn:35.6,     mx:100.0,     f:'%',   d:'28/ago', esc:'lin'},
- {c:2,n:'Liveliness',         v:0.6345,   mn:0.1785,   mx:0.6410,    f:'',    d:'28/ago', esc:'lin'},
- {c:3,n:'DXY',                v:99.16,    mn:72.93,    mx:114.11,    f:'',    d:'29/ago', esc:'lin', inv:1},
- {c:3,n:'Fed Funds Rate',     v:3.63,     mn:0.05,     mx:5.33,      f:'%',   d:'29/ago', esc:'lin', inv:1},
- {c:3,n:'US M2',              v:23.218,   mn:8.845,    mx:23.218,    f:'T',   d:'29/ago', esc:'lin'},
- {c:3,n:'Curva 10Y-2Y',       v:0.38,     mn:-0.93,    mx:2.81,      f:'',    d:'29/ago', esc:'lin'},
- {c:4,n:'ETF Net Inflow',     v:242.3,    mn:-1138.9,  mx:1373.8,    f:'M',   d:'27/ago', esc:'lin'},
- {c:4,n:'Funding Rate',       v:1.84,     mn:-139.23,  mx:186.86,    f:'%',   d:'29/ago', esc:'lin'}
-];
-const CAMADAS=[
- {id:1,n:'Estado do preço',p:.34},
- {id:2,n:'Comportamento', p:.26},
- {id:3,n:'Macro',         p:.16},
- {id:4,n:'Fluxo',         p:.12},
- {id:5,n:'Carteira',      p:.12}
-];
-const FAIXAS=[
- {ate:20,n:'Capitulação profunda',c:'--z1',r:'Plantio · aporte integral'},
- {ate:40,n:'Prejuízo do mercado', c:'--z2',r:'Plantio · aporte integral'},
- {ate:60,n:'Equilíbrio',          c:'--z3',r:'Crescimento · aporte parcial'},
- {ate:80,n:'Aquecido',            c:'--z4',r:'Colheita · caixa cresce'},
- {ate:101,n:'Euforia',            c:'--z5',r:'Colheita · proteger o ganho'}
-];
-const faixa=v=>FAIXAS.find(f=>v<f.ate);
-const cvar=n=>getComputedStyle(document.body).getPropertyValue(n).trim();
-const clamp=v=>Math.max(0,Math.min(1,v));
+<script type="module">
+// A tela pergunta à TORRE. Não normaliza, não pondera, não classifica — invariante 11.
+// Todo rótulo com número sai da constante — invariante 12.
+import {
+  varrer, camada5, FAIXAS, PESOS, CAMADAS, ESTADOS, TRAVA_AUSENCIA_NA_CAMADA,
+  EXTREMOS_INERTES, noTetoAlcancavel,
+} from './torre/torre.mjs';
+import { ANCORAS_DE_TESE, VALIDADE_DIAS } from './registro/registro.mjs';
+import { VARREDURA_29_08_2026 as V } from './torre/leitura-29-08-2026.mjs';
+import { historicoComCamada5Suspensa, POSICOES_EXEMPLO, CARTEIRA, ILUSTRATIVO }
+  from './registro/historico-exemplo.mjs';
 
-LEITURAS.forEach(L=>{
-  let p = L.esc==='log' ? Math.log(L.v/L.mn)/Math.log(L.mx/L.mn) : (L.v-L.mn)/(L.mx-L.mn);
-  p=clamp(p); if(L.inv) p=1-p; L.pos=p*100;
-});
-// camada 1 usa preço ÷ custo da rede (MVRV) como régua de posição
-const posCamada=id=>{
-  if(id===1) return LEITURAS.find(l=>l.n==='MVRV Ratio').pos;
-  if(id===5) return 50;
-  const L=LEITURAS.filter(l=>l.c===id);
-  return L.reduce((s,l)=>s+l.pos,0)/L.length;
-};
-CAMADAS.forEach(c=>c.v=posCamada(c.id));
-const SCORE=Math.round(CAMADAS.reduce((s,c)=>s+c.v*c.p,0));
+const HOJE = '2026-08-29';
+const $ = (id) => document.getElementById(id);
+const num = (x, c = 0) => x === null || x === undefined || Number.isNaN(x) ? '—'
+  : Number(x).toLocaleString('pt-BR', { minimumFractionDigits: c, maximumFractionDigits: c });
+const pct = (x, c = 1) => num(x, c) + '%';
+const card = (l, v, s = '', on = false) =>
+  `<div class="rc${on ? ' on' : ''}"><div class="l">${l}</div><div class="v">${v}</div>${s ? `<div class="s">${s}</div>` : ''}</div>`;
+const vazio = (tb, t) => { tb.innerHTML = `<tr><td colspan="9" style="color:var(--dim);font-style:italic;padding:14px 2px">${t}</td></tr>`; };
 
-const fmt=L=>{
-  const v=L.v;
-  if(L.f==='US$') return 'US$ '+(v>=1000?Math.round(v).toLocaleString('pt-BR'):v.toFixed(2).replace('.',','));
-  if(L.f==='%')  return v.toFixed(2).replace('.',',')+'%';
-  if(L.f==='M')  return (v>=0?'+':'')+'US$ '+v.toFixed(1).replace('.',',')+'M';
-  if(L.f==='T')  return 'US$ '+v.toFixed(3).replace('.',',')+' tri';
-  return v.toFixed(v<10?4:2).replace('.',',');
-};
+const r = varrer({ varredura: V, hoje: HOJE });
+$('selo').textContent = `leitura de ${r.hoje}`;
 
-(()=>{const t=document.getElementById('tree');
- const row=(n,c)=>`<div class="row"><i class="ic"></i><span class="n">${n}</span><span class="c">${c}</span><span class="ch">›</span></div>`;
- t.innerHTML=[['Supply in Profit/Loss',6],['Histograms',8],['Cointime Statistics',15],['UTXO Dormancy',4],['UTXO CoinDays',2],['Unspent Outputs by Age',3]].map(p=>row(p[0],p[1])).join('')
-  +`<div class="row"><i class="ic"></i><span class="n">Carteira Semente</span><span class="c">3</span><span class="ch">⌄</span></div>`
-  +`<div class="row sub">Linha d’Água<span class="em">—</span></div>`
-  +`<div class="row sub on">Índice Semente<span class="em">${SCORE}</span></div>`
-  +`<div class="row sub bullet">Índice de Plantio<span class="em">—</span></div>`
-  +[['Spent Output by Age',4],['Network Statistics',5],['Address Statistics',1]].map(p=>row(p[0],p[1])).join('');
-})();
+// ── A CAPA ───────────────────────────────────────────────────────────────
+$('exibido').innerHTML = `${num(r.indice)}` +
+  `<small id="interno">índice exibido · valor interno ${num(r.indice, 4)}</small>`;
+$('faixas').innerHTML = FAIXAS.map((f, i) => {
+  const de = i === 0 ? 0 : FAIXAS[i - 1].ate;
+  return `<div class="fx${f.nome === r.faixa ? ' on' : ''}">${f.nome}<br><span style="opacity:.7">${num(de)}–${num(Math.min(f.ate, 100))}</span></div>`;
+}).join('');
+$('capaCards').innerHTML =
+  card('Faixa', r.faixa, 'intensidade dentro do estado') +
+  card('Estado', r.estado, 'quem classifica é a Linha d’Água') +
+  card('Camadas na conta', `${r.camadas.length} de ${Object.keys(PESOS).length}`,
+    r.camadasForaDaConta.map((c) => c.nome).join(' · ') || 'todas dentro');
 
-(()=>{const f=faixa(SCORE), col=cvar(f.c);
- document.getElementById('read').innerHTML=
-  `<div class="rc"><div class="l">Índice Semente</div><div class="v" style="color:${col}">${SCORE}</div><div class="s">${f.n}</div></div>
-   <div class="rc"><div class="l">Decisão do aporte</div><div class="v" style="font-size:19px">${f.r.split('·')[0].trim()}</div><div class="s">${f.r.split('·')[1].trim()}</div></div>
-   <div class="rc"><div class="l">Estado do preço</div><div class="v" style="font-size:19px;color:var(--z2)">Mercado saudável</div><div class="s">acima dos três custos de referência</div></div>
-   <div class="rc" style="grid-column:span 2"><div class="l">Composição da leitura</div>
-     <div class="bars">${CAMADAS.map(c=>
-       `<div class="bar"><span>${c.n}</span><span class="t"><span class="f" style="width:${c.v}%;background:${cvar(faixa(c.v).c)}"></span></span><span class="p">${Math.round(c.v)}</span></div>`).join('')}</div>
-     <div class="s" style="margin-top:9px">Pesos 34 · 26 · 16 · 12 · 12 · a camada Carteira fica em 50 até existir carteira ativa</div></div>`;
-})();
+// D2: o Índice mede intensidade e NÃO dispara decisão. A tela diz isso onde o número
+// aparece, e não em nota de rodapé — a versão anterior desta tela disparava estação.
+$('notaD2').innerHTML =
+  `<div class="nota"><b>o que este número não faz</b>
+   O Índice Semente <b style="display:inline;color:var(--ink)">não classifica estado e não dispara
+   estação</b>. Quem classifica é a Linha d’Água; ele mede a <b style="display:inline;color:var(--ink)">intensidade</b>
+   dentro do estado já definido, e modula o tamanho do aporte dentro daquela faixa. Não existem dois juízes.
+   ${r.semRecomendacao ? '<br><br>Esta leitura não traz recomendação de aporte: isso é do Índice de Plantio, que é outra peça.' : ''}</div>`;
 
-function draw(){
-  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
-  const dpr=devicePixelRatio||1,W=cv.clientWidth,H=470;
-  cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
-  const L=178,R=118,T=34,B=30,w=W-L-R,h=H-T-B;
-  const n=LEITURAS.length, step=h/n;
-  const X=p=>L+p/100*w;
+// ── AS CAMADAS ───────────────────────────────────────────────────────────
+$('subCamadas').innerHTML =
+  `O peso aplicado é o nominal renormalizado sobre as camadas que ficaram. Dentro de cada camada,
+   indicador ausente faz a camada renormalizar internamente — e ela sai inteira se os ausentes
+   passarem de <b>${num(TRAVA_AUSENCIA_NA_CAMADA * 100)}%</b> dela.`;
+$('camadas').tBodies[0].innerHTML = r.camadas.map((c) => `<tr>
+  <td><b>${c.nome}</b><br><span class="det">camada ${c.camada}</span></td>
+  <td class="n">${num(c.posicao, 2)}<div class="barra"><i style="width:${Math.min(c.posicao, 100)}%"></i></div></td>
+  <td class="n">${pct(c.pesoAplicado * 100)}<br><span class="det">nominal ${pct(c.pesoNominal * 100)}</span></td>
+  <td class="det">${c.itens.join('<br>')}
+    ${c.ausentes.length ? `<br><span style="color:var(--z4)">ausente: ${c.ausentes.join(' · ')} — a camada renormalizou sobre os que voltaram</span>` : ''}</td>
+</tr>`).join('');
 
-  ctx.font='10px Inter,sans-serif';ctx.fillStyle=cvar('--dim');
-  FAIXAS.forEach((f,i)=>{
-    const a=i?FAIXAS[i-1].ate:0, b=Math.min(f.ate,100);
-    ctx.globalAlpha=.055;ctx.fillStyle=cvar(f.c);ctx.fillRect(X(a),T-16,X(b)-X(a),h+18);ctx.globalAlpha=1;
-    ctx.fillStyle=cvar(f.c);ctx.globalAlpha=.85;
-    ctx.fillText(f.n.toUpperCase(),X(a)+5,T-22);ctx.globalAlpha=1;
-  });
-  [0,20,40,60,80,100].forEach(v=>{
-    ctx.strokeStyle='rgba(255,255,255,.07)';ctx.beginPath();ctx.moveTo(X(v),T-16);ctx.lineTo(X(v),T+h);ctx.stroke();
-    ctx.fillStyle=cvar('--dim');ctx.fillText(String(v),X(v)-4,H-12);
-  });
+// ── FORA DA CONTA ────────────────────────────────────────────────────────
+const tbF = $('fora').tBodies[0];
+if (r.camadasForaDaConta.length === 0) vazio(tbF, 'nenhuma camada fora da conta');
+else tbF.innerHTML = r.camadasForaDaConta.map((c) => `<tr>
+  <td><b>${c.nome}</b> <span class="tag t-fora">fora</span><br><span class="det">camada ${c.camada}</span></td>
+  <td class="det">${c.motivo}${c.ausentes?.length ? `<br>ausentes: ${c.ausentes.join(' · ')}` : ''}</td></tr>`).join('');
 
-  LEITURAS.forEach((Lx,i)=>{
-    const y=T+step*i+step/2;
-    ctx.fillStyle=cvar('--mut');ctx.font='12px Inter,sans-serif';
-    ctx.fillText(Lx.n,10,y+4);
-    ctx.fillStyle=cvar('--dim');ctx.font='10px Inter,sans-serif';
-    ctx.fillText('C'+Lx.c,150,y+4);
-    // trilho
-    ctx.strokeStyle='rgba(255,255,255,.10)';ctx.lineWidth=3;ctx.lineCap='round';
-    ctx.beginPath();ctx.moveTo(X(0),y);ctx.lineTo(X(100),y);ctx.stroke();
-    // preenchimento até a posição
-    const col=cvar(faixa(Lx.pos).c);
-    ctx.strokeStyle=col;ctx.globalAlpha=.55;ctx.beginPath();ctx.moveTo(X(0),y);ctx.lineTo(X(Lx.pos),y);ctx.stroke();ctx.globalAlpha=1;
-    // marcador
-    ctx.beginPath();ctx.arc(X(Lx.pos),y,4.6,0,7);ctx.fillStyle=col;ctx.fill();
-    ctx.strokeStyle=cvar('--card');ctx.lineWidth=1.6;ctx.stroke();
-    // valor
-    ctx.fillStyle=cvar('--ink');ctx.font='11.5px Inter,sans-serif';
-    ctx.fillText(fmt(Lx),W-R+10,y+4);
-  });
-  ctx.fillStyle=cvar('--dim');ctx.font='10px Inter,sans-serif';
-  ctx.fillText('0 = mínima da série · 100 = máxima da série',10,H-12);
-}
-addEventListener('resize',draw);
-draw();
+// ── A CAMADA 5 SUSPENSA (D21 B) ──────────────────────────────────────────
+// Hoje a camada 5 sai por "sem carteira ativa", que não exercita a SUSPENSÃO. O caso
+// abaixo é ilustrativo e rotulado como tal (invariante 8): uma carteira cujo degrau de
+// BTC venceu. A camada sai INTEIRA, nomeada e datada — não renormaliza sem a âncora.
+const c5 = camada5({ registro: historicoComCamada5Suspensa(), carteira: CARTEIRA,
+  hoje: HOJE, posicoes: POSICOES_EXEMPLO });
+const comC5 = varrer({ varredura: V, hoje: HOJE, camada5: c5 });
+$('camada5').innerHTML =
+  `<div class="nota"><b>como a suspensão aparece</b>
+   <span class="det">${ILUSTRATIVO}</span><br><br>
+   Com o degrau de uma âncora vencido, a camada 5 sai <b style="display:inline;color:var(--ink)">por
+   inteiro</b>, e a leitura diz isso em texto, com a data:
+   <br><br><b style="display:inline;color:var(--z5)">${c5.motivo}</b>
+   <br><br>Renormalizar sem um ativo de 30% ou mais descreveria outra carteira — por isso ela não
+   sai em partes. As âncoras de tese são <b style="display:inline;color:var(--ink)">${ANCORAS_DE_TESE.join(' e ')}</b>,
+   e o degrau vale ${num(VALIDADE_DIAS)} dias.
+   <br><br>O índice segue publicável: <b style="display:inline;color:var(--ink)">${num(comC5.indice, 4)}</b>,
+   ${comC5.camadas.length} camadas na conta — o mesmo de hoje, porque a camada 5 já estava fora.</div>`;
+
+// ── CONFIANÇA ────────────────────────────────────────────────────────────
+$('subConf').innerHTML =
+  `Série curta é <b>amortecida em direção ao neutro</b>, não descartada. A janela vai do início da
+   série até a <b>última data em que aquele indicador tem dado</b> — não até hoje: série parada não
+   ganha confiança por ficar parada.`;
+const tbC = $('conf').tBodies[0];
+if (r.confiancas.length === 0) vazio(tbC, 'nenhuma série abaixo da confiança plena');
+else tbC.innerHTML = r.confiancas.map((c) => `<tr>
+  <td>${c.indicador}</td><td class="n">${num(c.confianca, 4)}</td>
+  <td class="n">${num(c.bruto, 2)}</td><td class="n"><b>${num(c.ajustado, 2)}</b></td></tr>`).join('');
+
+// ── EXTREMOS ─────────────────────────────────────────────────────────────
+const e = r.extremos;
+$('subExtremos').innerHTML =
+  `Três estados: <span class="tag t-ok">confirmado</span> valor, data e posto lidos;
+   <span class="tag t-posto">posto confirmado</span> data e posto provados, valor não legível por
+   notação compacta; <span class="tag t-prov">provisório</span> nada conferido.
+   <b>Risco e trabalho são contagens diferentes.</b>`;
+$('extremos').innerHTML =
+  card('Conferidos para risco', num(e.confirmados), `de ${num(e.total)} campos`, true) +
+  card('Confirmados', num(e.confirmadosPorInteiro), 'valor, data e posto') +
+  card('Posto confirmado', num(e.postoConfirmado), noTetoAlcancavel(V).map((t) => `${t.serie} · ${t.campo}`).join(' · ') || '—') +
+  card('Provisórios', num(e.provisorios), 'nada conferido ainda') +
+  card('Que importam', num(e.provisoriosQueImportam),
+    `${num(e.inertesPendentes)} são inertes por construção`, true);
+const tbP = $('provisorios').tBodies[0];
+if (e.series.length === 0) vazio(tbP, 'nenhum extremo provisório');
+else tbP.innerHTML = e.series.map((s) => {
+  const inerte = EXTREMOS_INERTES.includes(s.serie);
+  return `<tr${inerte ? ' style="opacity:.55"' : ''}>
+    <td>${s.serie}</td><td class="det">${s.campos.join(' · ')}</td>
+    <td class="det">${inerte
+      ? '<span class="tag t-prov">inerte por construção</span> não muda o índice nem dez vezes errado'
+      : 'sim'}</td></tr>`;
+}).join('');
 </script>

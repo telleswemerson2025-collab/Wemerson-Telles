@@ -60,3 +60,21 @@ export function historicoComAnulacao() {
   });
   return r;
 }
+
+/**
+ * Terceiro caso: uma carteira com degraus, onde o de BTC está VENCIDO. Serve para a
+ * tela do Índice mostrar a camada 5 suspensa por inteiro, nomeada e datada (D21 B) —
+ * que é a coisa que "sem carteira ativa" não exercita.
+ */
+export const POSICOES_EXEMPLO = Object.freeze({ BTC: 45, ETH: 20, SOL: 8, LINK: 4 });
+
+export function historicoComCamada5Suspensa() {
+  const r = new Registro(new AdaptadorMemoria());
+  const reg = (e) => r.registrar({ carteira: CARTEIRA, ...e });
+  // O degrau de BTC é antigo: passou dos 180 dias e venceu.
+  reg({ tipo: TIPOS.DEGRAU, data: '2025-06-01', ativo: 'BTC', valor: 100, motivo: 'tese intacta na revisão de junho' });
+  for (const [ativo, data] of [['ETH', '2026-07-10'], ['SOL', '2026-07-10'], ['LINK', '2026-07-10']]) {
+    reg({ tipo: TIPOS.DEGRAU, data, ativo, valor: 66, motivo: 'tese com ressalva, sem evento datado' });
+  }
+  return r;
+}

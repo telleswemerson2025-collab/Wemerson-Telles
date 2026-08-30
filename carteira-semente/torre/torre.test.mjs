@@ -185,7 +185,13 @@ test('BTC vencido suspende a camada 5 inteira, nomeada e datada', () => {
   assert.equal(c.suspensa, true);
   assert.equal(c.ativo, 'BTC');
   assert.equal(c.desde, '2026-01-01');
-  assert.match(c.motivo, /suspensa por tese tese vencida em BTC, desde 2026-01-01/);
+  // A frase tem de nomear o ativo e datar. Conferir o texto inteiro literalmente foi o
+  // que congelou o defeito "por tese tese vencida" — o teste copiou a saída em vez de
+  // conferir a intenção.
+  assert.match(c.motivo, /camada 5 suspensa/);
+  assert.match(c.motivo, new RegExp(c.ativo), 'a frase nomeia o ativo');
+  assert.match(c.motivo, new RegExp(c.desde), 'e traz a data');
+  assert.ok(!/tese tese/.test(c.motivo), 'sem palavra duplicada');
 });
 
 test('BTC sem degrau nenhum também suspende — não é ausência diluída', () => {
@@ -193,7 +199,11 @@ test('BTC sem degrau nenhum também suspende — não é ausência diluída', ()
   for (const a of Object.keys(POS).filter((x) => x !== 'BTC')) degrau(reg, '2026-08-01', a, 100);
   const c = camada5({ registro: reg, carteira: CT, hoje: '2026-08-29', posicoes: POS });
   assert.equal(c.suspensa, true);
-  assert.match(c.motivo, /nunca atribuído em BTC/);
+  assert.match(c.motivo, /camada 5 suspensa/);
+  assert.match(c.motivo, /BTC/, 'a frase nomeia o ativo');
+  assert.match(c.motivo, /nunca atribuído/);
+  assert.equal(c.desde, null, 'nunca atribuído não tem data — e a frase não inventa uma');
+  assert.ok(!/desde/.test(c.motivo), 'sem "desde" pendurado sem data');
 });
 
 test('a suspensão entra no índice como camada fora, e os pesos renormalizam', () => {

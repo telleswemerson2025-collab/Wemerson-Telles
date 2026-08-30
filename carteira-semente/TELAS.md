@@ -1,11 +1,11 @@
 # PEÇA 4 — TELAS
-Conferência. Versão 1.2 · 29/08/2026 — itens 1 e 2 de 4
+Conferência. Versão 1.3 · 29/08/2026 — itens 1, 2 e 3 de 4
 
 | Item | Tela | Estado |
 |---|---|---|
 | **1** | **`aporte-do-mes.html`** — modulação e Reforço de Fundo | ✅ **feito** |
 | **2** | **`registro-de-ciclo.html`** — marco, acionamentos e o log inteiro | ✅ **feito** |
-| 3 | divergências do `indice-semente.html` | a fazer |
+| **3** | **`indice-semente.html`** — reescrita para perguntar à Torre | ✅ **feito** |
 | 4 | divergências do `simulador.html`, com o motor mensal | a fazer |
 
 ---
@@ -117,6 +117,50 @@ própria limitação em vez de esconder atrás de um filtro.*
 
 ---
 
+## ITEM 3 · `indice-semente.html`
+**Critério de aceite batido: exibe 51, valor interno 50,7536, faixa Equilíbrio** — o número que a
+Torre já produz, e que o briefing fixou antes desta tela existir.
+
+A tela foi **reescrita para perguntar**. A versão anterior tinha a tabela de indicadores, os pesos e
+a normalização dentro do HTML; agora chama `varrer()` e `camada5()` e mostra o que volta. Há teste de
+que `Math.log`, `posCamada`, `c:1` e uma tabela `PESOS` própria **não voltam** ao script.
+
+### As oito divergências, e onde cada uma foi resolvida
+| | Divergência | Como se resolve |
+|---|---|---|
+| 1 | dupla contagem do MVRV | a Torre já lê o MVRV como régua da camada 1, e a camada 2 tem três itens |
+| 2 | faixas disparando decisão | a faixa é rótulo de **intensidade**; a nota da D2 fica **onde o número aparece** |
+| 3 | camada 5 como 50 fixo | ela aparece em **Fora da conta**, com o motivo, e os pesos renormalizam |
+| 4 | confiança por janela | seção própria, com bruto e ajustado — ETF 54,97 → **52,61** |
+| 5 | netflow na camada Fluxo | a camada mostra os que entraram e nomeia o **ausente** |
+| 6 | renormalização interna | o peso **aplicado** aparece ao lado do **nominal**, e a trava do terço é dita |
+| 7 | estados dos extremos | os três estados, e as **cinco contagens** separadas |
+| 8 | camada 5 suspensa | seção própria, nomeada e datada |
+
+**Os pesos aplicados aparecem ao lado dos nominais** — 38,6% contra 34,0% — que é a renormalização
+da D5 visível em vez de deduzida.
+
+### 🐛 Um defeito no MÓDULO que só a tela expôs
+Para exercitar a divergência 8 precisei de uma carteira com degrau vencido. A frase que a Torre monta
+saiu assim:
+
+> *camada 5 suspensa por tese **tese vencida** em BTC, desde 2025-06-01*
+
+O template dizia `por tese ${razao}` e `razao` já era *"tese vencida"*. **E havia um teste fixando a
+duplicação** — escrito a partir da saída, não da intenção, ele congelou o defeito.
+
+Corrigido para *"camada 5 suspensa: degrau de BTC tese vencida, desde 2025-06-01"*, e os dois testes
+passaram a conferir **o que a frase precisa dizer** — nomeia o ativo, traz a data, não duplica
+palavra — em vez do texto exato. *É a D46 aplicada a um teste que já existia: ele procurava a frase,
+não a ligação.*
+
+### 🐛 E um meu, na primeira renderização
+`$('exibido').innerHTML` destruía o `<small id="interno">` que vivia dentro dele, e a linha seguinte
+morria em `null`. A página abria com um traço no lugar do índice. **Nenhum teste pegaria** — é DOM,
+e só aparece abrindo.
+
+---
+
 ## ✅ A D44 FECHOU O PADRÃO QUE ESTES ERROS FORMAVAM
 
 ### O checklist de toda tela nova
@@ -127,7 +171,7 @@ própria limitação em vez de esconder atrás de um filtro.*
 | 3 | a tela é **renderizada e olhada** antes de dada por pronta | Gate 2, item 9 |
 
 ### O teste de redação — `redacao.test.mjs`
-Dez testes que ligam **texto** a **constante**, e que quebram quando os dois divergem:
+Dezesseis testes que ligam **texto** a **constante**, e que quebram quando os dois divergem:
 
 - **28 trechos de documento** conferidos contra a constante que o sistema usa — o início do
   Abrigo, os quatro pontos da glidepath, a banda, o teto de defasagem, as sete travas, os tetos
@@ -139,7 +183,7 @@ Dez testes que ligam **texto** a **constante**, e que quebram quando os dois div
 - **Onze números** que já estiveram escritos à mão na tela, e o nome que passou a gerá-los.
 - **Os rótulos das sete travas** que viajam do módulo para a tela.
 
-**Provei que ele morde** — `provas.mjs`, **15 provas**, quebrando cada uma de propósito: trocar *"Começa a 4 anos"* por *3* no
+**Provei que ele morde** — `provas.mjs`, **21 provas**, quebrando cada uma de propósito: trocar *"Começa a 4 anos"* por *3* no
 documento 01 e devolver `±20%` como literal na tela. Os dois acusaram, com a linha e a constante
 esperada. *Teste que não pode falhar não é teste.*
 

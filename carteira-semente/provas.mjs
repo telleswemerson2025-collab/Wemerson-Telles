@@ -136,6 +136,48 @@ const PROVAS = [
       'valorAntigo: 71.2, valorNovo: 71.9'],
     acusa: /o exemplo não produz nenhum evento do tipo anulacao_marco/,
   },
+  // ── A TELA DO ÍNDICE (item 3 da peça 4) ────────────────────────────────
+  {
+    teste: 'critério de aceite: a tela exibe 51',
+    porque: 'o exibido deixa de sair do índice da Torre e vira número solto',
+    quebra: ['indice-semente.html', '$('+"'exibido'"+').innerHTML = `${num(r.indice)}`',
+      '$('+"'exibido'"+').innerHTML = `51`'],
+    acusa: /o exibido sai de r\.indice/,
+  },
+  {
+    teste: 'a tela não tem régua própria — ela pergunta à Torre',
+    porque: 'a tela volta a normalizar por conta própria, como a versão anterior fazia',
+    quebra: ['indice-semente.html', 'const r = varrer({ varredura: V, hoje: HOJE });',
+      'const r = varrer({ varredura: V, hoje: HOJE }); const x = Math.log(2);'],
+    acusa: /a tela voltou a calcular/,
+  },
+  {
+    teste: 'a tela diz, onde o número aparece, que o Índice não dispara decisão',
+    porque: 'a faixa volta a trazer recomendação de aporte, como na versão anterior',
+    quebra: ['indice-semente.html', 'intensidade dentro do estado', 'Plantio · aporte integral'],
+    acusa: /a tela voltou a disparar decisão/,
+  },
+  {
+    teste: 'as duas contagens de extremo aparecem separadas',
+    porque: 'a tela passa a mostrar só o total, e some com "os que importam"',
+    quebra: ['indice-semente.html', 'card('+"'Que importam'"+', num(e.provisoriosQueImportam)',
+      'card('+"'Que importam'"+', num(e.provisorios)'],
+    acusa: /a tela não mostra provisoriosQueImportam/,
+  },
+  {
+    teste: 'os números da tela do Índice saem da constante',
+    porque: 'a trava do terço volta a ser escrita à mão',
+    quebra: ['indice-semente.html', 'passarem de <b>${num(TRAVA_AUSENCIA_NA_CAMADA * 100)}%</b>',
+      'passarem de <b>33%</b>'],
+    acusa: /devia sair de TRAVA_AUSENCIA_NA_CAMADA/,
+  },
+  {
+    teste: 'a suspensão da camada 5 nomeia o ativo e a data',
+    porque: 'o prefixo duplicado "por tese tese vencida" volta ao módulo',
+    quebra: ['torre/torre.mjs', 'camada 5 suspensa: degrau de ${suspensao.ativo} ${suspensao.razao}',
+      'camada 5 suspensa por tese ${suspensao.razao} em ${suspensao.ativo}'],
+    acusa: /o prefixo duplicado voltou/,
+  },
 ];
 
 const rodar = (nome) => {

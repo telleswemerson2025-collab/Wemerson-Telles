@@ -757,7 +757,7 @@ export function camada5({ registro, carteira, hoje, posicoes }) {
   if (suspensao.suspensa) {
     return {
       disponivel: false, suspensa: true, ativo: suspensao.ativo, desde: suspensao.desde,
-      motivo: `camada 5 suspensa por tese ${suspensao.razao} em ${suspensao.ativo}` +
+      motivo: `camada 5 suspensa: degrau de ${suspensao.ativo} ${suspensao.razao}` +
               (suspensao.desde ? `, desde ${suspensao.desde}` : ''),
     };
   }

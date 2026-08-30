@@ -133,3 +133,36 @@ decisões anteriores. Nada a submeter aos quatro critérios da classe âncora.
 o reset, e os registros fora das quatro coisas — foram todas decididas pela
 Decisão 32 e estão resolvidas acima. O histórico completo delas está em
 `../08-decisoes-29-08-2026.md`.*
+
+
+---
+
+## POR QUE APPEND-ONLY — O CASO QUE A TELA DO CICLO MOSTROU
+A tela do item 2 da peça 4 rodou o histórico de exemplo e produziu a melhor demonstração que o
+sistema deu de si mesmo até aqui.
+
+**A sequência.** Um fundo de ciclo com dois acionamentos do Reforço. Depois, trinta fechamentos em
+65 ou mais completam o marco de virada, e o registro grava o reset sozinho — o contador zera, e os
+dois acionamentos ficam para trás, gastos.
+
+**A retificação.** Meses depois, uma tooltip é relida: o dia 15/03 fechou em **61,5**, e a leitura
+tinha registrado **71,2** — o valor do dia anterior. Uma retificação entra no log.
+
+**O que acontece sozinho:** aquele dia era um dos trinta. A sequência se rompe, o marco cai, e a
+`anulacao_marco` entra apontando para os dois — o marco desfeito e a retificação que o desfez. O
+ciclo **volta a ser o primeiro**, e os **dois acionamentos voltam para a contagem**.
+
+> **Um reforço que parecia gasto volta a estar disponível, porque a leitura que fechava o ciclo
+> estava errada.**
+
+**Sistema que sobrescreve nunca devolveria.** Se a leitura de 15/03 tivesse sido corrigida por cima,
+o log diria 61,5 desde sempre, o marco continuaria gravado como se a sequência tivesse existido, e o
+contador continuaria em três. A carteira perderia dois acionamentos de Reforço — no fundo de ciclo,
+que é o único momento em que eles importam — **e ninguém saberia**, porque não haveria o que comparar.
+
+O append-only não guarda o passado por respeito ao passado. Guarda porque **o passado ainda pode
+mudar de significado**, e só quem manteve os eventos consegue recalcular o que eles implicavam.
+
+*O reset gravado, a anulação e a retificação continuam todos no log, lado a lado. O marco anulado
+aparece riscado na tela, e não some: quem ler daqui a dez anos vê que ele existiu e por que deixou
+de valer.*
