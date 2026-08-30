@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.9 · 29/08/2026 — MVRV conferido · 8 extremos descobertos inertes
+Conferência. Versão 1.10 · 29/08/2026 — a fila passa a ser ordenada por efeito medido (D41)
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -219,18 +219,42 @@ um" pela tooltip. Os 28 provisórios são as mínimas e as máximas, que o curso
 zoom ALL não alcança. O netflow nasce provisório inteiro — valor e extremos —
 levando o total a 45 e os provisórios a 31 quando ele entra na varredura.
 
-### A fila, na prioridade da D35 D
+### A fila, ordenada por efeito medido (D41 A)
 ```
-MVRV Ratio · min           log · camada 1 (34%)
-MVRV Ratio · max           log · camada 1 (34%)
-Preço do BTC · min         log · camada 1 (34%)
-Preço do BTC · max         log · camada 1 (34%)
-Realized Price · min       log · camada 1 (34%)
+Liveliness · max         1,1820   lin · Comportamento (26%)
+Supply in Profit · max   0,6536   lin · Comportamento (26%)
+US M2 · max              0,6322   log · Macro (16%)
+DXY · max                0,6282   log · Macro (16%)
+SOPR · min               0,4318   log · Comportamento (26%)
+DXY · min                0,3551   log · Macro (16%)
 ...
+US M2 · min              0,0000   inerte só na leitura de hoje
+Preço do BTC · min       0,0000   inerte por construção
+Preço do BTC · max       0,0000   inerte por construção
+(mais seis inertes por construção)
 ```
-Logarítmicas primeiro, e dentro delas por peso de camada. Está testado que o MVRV
-(camada 1) vem antes do SOPR (camada 2), e que nenhuma linear aparece antes da
-última log.
+A ordem antiga não sobrevive a nenhuma linha dessa tabela: **a cabeça é linear**, e
+**camada 3 vem antes de camada 2**. Escala e peso de camada eram estimativas do
+efeito; com `efeitoDosExtremos()` medindo o efeito de verdade, a estimativa perde a
+função — é o mesmo movimento da D14.
+
+Três testes seguram isso: a fila desce monotonicamente por efeito (fora os inertes),
+a cabeça de hoje é o Liveliness · max com 1,1820, e os oito inertes por construção
+ocupam exatamente as oito últimas posições **sem sair da fila** (D41 B) — se a
+camada 1 trocar de régua um dia, eles voltam a contar, e uma fila que os tivesse
+descartado não saberia.
+
+O **US M2 · min** é o caso da D41 C: efeito zero, e mesmo assim **acima** dos oito.
+Zero de hoje não é zero de sempre. Só a inércia estrutural rebaixa.
+
+**Os valores saíram da fila de extremos** (D41 D). Valor não tem efeito de régua —
+errar um valor move a leitura de um dia, errar um extremo move a régua inteira. Eles
+se conferem à parte, por `valoresPendentes()`; hoje são zero, os catorze já foram
+lidos um a um pela tooltip.
+
+A fila é **recalculada a cada leitura** (D41 E), porque o efeito de um extremo anda
+com o valor corrente. Há teste: mexer no valor do Liveliness muda o efeito do
+próprio máximo dele.
 
 *Os testes de contagem foram reescritos para medir **progresso**, não um instante:
 fixam que a conta fecha e que a conferência nunca anda para trás, em vez de fixar
@@ -366,10 +390,18 @@ Nove extremos deram zero, mas **por dois motivos diferentes**:
 Confundir os dois seria caro: dispensar o M2 · min porque "não afeta" o deixaria
 sem conferência justamente até o dia em que passa a afetar.
 
-**Não mudei a ordem da fila** — a D35 D é decisão. O que fiz foi medir e mostrar:
-`efeitoDosExtremos()` calcula o efeito real, `EXTREMOS_INERTES` nomeia os
-estruturais, e a contagem passou a separar **"26 provisórios"** de **"18
-provisórios que importam"**.
+**Não mudei a ordem da fila por conta própria** — a D35 D era decisão. O que fiz foi
+medir e mostrar: `efeitoDosExtremos()` calcula o efeito real, `EXTREMOS_INERTES`
+nomeia os estruturais, e a contagem passou a separar **"26 provisórios"** de **"18
+provisórios que importam"**. A **D41** veio depois e trocou a régua da fila pelo
+efeito medido.
+
+### Uma armadilha de recursão que a D41 criou
+Ordenar por efeito custa recalcular o índice, e quem entrega a contagem de extremos
+é o `varrer()`. Se `estadoDosExtremos()` continuasse chamando a fila, `varrer` →
+`estadoDosExtremos` → `filaDeConferencia` → `efeitoDosExtremos` → `varrer` fechava o
+ciclo. `estadoDosExtremos()` virou **contagem e só contagem**: não ordena, não
+devolve `proximo`. Contagem dentro do `varrer`, ordem fora dele.
 
 ### 🐛 Um erro que a D35 B fez aparecer
 A primeira versão do comando mandava conferir o mínimo do MVRV **em 28/08/2026** —

@@ -1,5 +1,5 @@
 # 09 — RITUAL OPERACIONAL DA CARTEIRA SEMENTE
-Versão 1.14 · 29/08/2026 — conciliado com as Decisões 1 a 38.
+Versão 1.15 · 29/08/2026 — conciliado com as Decisões 1 a 41.
 *Alterações em relação ao original do Mr. G estão listadas no fim do arquivo.*
 
 Como o Mr. G aciona o sistema no dia a dia. Espelha o ritual da
@@ -54,6 +54,10 @@ Três acionamentos. Dois por frase, um automático.
   SUSPENSA e nomeada, com a data, em vez de recalculada.
 - **Degraus a vencer**: a partir dos 150 dias, diário para BTC e
   ETH, semanal para os demais.
+- **Estado de conferência dos extremos**: quantos confirmados,
+  quantos provisórios e, destes, quantos importam (Decisões 35 C
+  e 41 D). É contagem, não trava: leitura com extremo provisório
+  se publica normalmente, marcada.
 
 ### O passo humano do Filtro de Horizonte (Decisão 36 A)
 
@@ -75,6 +79,35 @@ universo elegível. O caminho é:
    aporte**. Ausência de julgamento nunca vira aprovação.
 
 É o único passo do ritual diário que espera por uma pessoa.
+
+### A conferência dos extremos (Decisões 35 e 41)
+
+Os valores das séries foram lidos um a um na tooltip. As **mínimas
+e máximas** de cada série, que são a régua da normalização, nasceram
+provisórias: o cursor no zoom ALL salta sete dias e não alcança o
+ponto. Elas se conferem uma por vez, fora da hora da leitura.
+
+- A fila é ordenada pelo **efeito medido** de cada extremo sobre o
+  Índice, do maior para o menor — perturba 10% e recalcula
+  (Decisão 41 A). Peso de camada e escala eram estimativas disso;
+  com a medida no lugar, saíram.
+- Os **oito extremos das quatro séries de preço** ficam no fim,
+  marcados como inertes por construção: a camada 1 normaliza contra
+  a faixa do MVRV e a Linha d'Água compara preços sem normalizar,
+  então errá-los dez vezes não move o Índice. **Não saem da fila** —
+  se a régua da camada 1 mudar, eles voltam a contar (Decisão 41 B).
+- Efeito zero por o valor corrente estar encostado no outro extremo
+  **não rebaixa** ninguém. Zero de hoje não é zero de sempre
+  (Decisão 41 C).
+- A fila é **recalculada a cada leitura**, porque o efeito anda com
+  o valor corrente (Decisão 41 E).
+
+O comando para o terminal é de **um extremo por vez** e pede três
+coisas, não uma: o valor do dia dígito a dígito, os dois dias
+vizinhos, e que nenhum outro ponto da série no ALL fique além dele.
+Sem as três, o que se confirma é o número do dia — não que o dia
+seja o extremo. Somente leitura: nunca publica, nunca altera, nunca
+apaga, restaura o estado da tela, e a sidebar nunca aparece.
 
 ### Regras
 

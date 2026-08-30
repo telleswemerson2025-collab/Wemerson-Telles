@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -539,20 +539,69 @@ test('o netflow nasce provisório inteiro — valor e extremos', () => {
   assert.equal(e.provisorios, estadoDosExtremos(V).provisorios + 3, 'os três do netflow entram provisórios');
 });
 
-test('a fila segue a prioridade da D35 D: logarítmicas primeiro, e por peso de camada', () => {
-  const fila = filaDeConferencia(V);
-  const primeiras = fila.slice(0, 10).map((f) => f.serie);
-  for (const n of primeiras) {
-    assert.equal(SERIES.find((s) => s.n === n).escala, 'log', `${n} deveria ser logarítmica`);
+// ══ D41 · A FILA É ORDENADA PELO EFEITO MEDIDO ════════════════════════════
+test('D41 A: a fila desce por efeito medido, não por escala nem por peso de camada', () => {
+  const fila = filaDeConferencia(V, HOJE);
+  const uteis = fila.filter((f) => f.inerte !== 'por construção');
+  for (let i = 1; i < uteis.length; i++) {
+    assert.ok(uteis[i - 1].efeito >= uteis[i].efeito,
+      `${uteis[i - 1].serie}·${uteis[i - 1].campo} deveria pesar ao menos tanto quanto ${uteis[i].serie}·${uteis[i].campo}`);
   }
-  // dentro das log, camada 1 (34%) antes de camada 2 (26%)
-  const soprPos = fila.findIndex((f) => f.serie === 'SOPR');
-  const mvrvPos = fila.findIndex((f) => f.serie === 'MVRV Ratio');
-  assert.ok(mvrvPos < soprPos, 'MVRV, camada 1, vem antes do SOPR, camada 2');
-  // e as lineares só depois de todas as log
-  const primeiraLinear = fila.findIndex((f) => f.escala === 'lin');
-  const ultimaLog = fila.map((f) => f.escala).lastIndexOf('log');
-  assert.ok(ultimaLog < primeiraLinear);
+  // E a ordem antiga não sobrevive: a cabeça de hoje é linear, e uma log vem depois.
+  assert.equal(fila[0].escala, 'lin', 'a cabeça da fila é o Liveliness, série linear');
+  assert.ok(fila.findIndex((f) => f.escala === 'log') > 0, 'log já não vem primeiro por ser log');
+  // e a heurística de camada também não: camada 3 (16%) antes de camada 2 (26%).
+  const m2 = fila.findIndex((f) => f.serie === 'US M2' && f.campo === 'max');
+  const sopr = fila.findIndex((f) => f.serie === 'SOPR' && f.campo === 'max');
+  assert.ok(m2 < sopr, 'US M2 é camada 3 e vem antes do SOPR, camada 2, porque mede mais');
+});
+
+test('D41 A: a cabeça da fila de 29/08/2026 é o máximo do Liveliness', () => {
+  const fila = filaDeConferencia(V, HOJE);
+  assert.equal(fila[0].serie, 'Liveliness');
+  assert.equal(fila[0].campo, 'max');
+  assert.equal(fila[0].efeito.toFixed(4), '1.1820');
+});
+
+test('D41 B: os oito inertes por construção ficam no fim, e não saem da fila', () => {
+  const fila = filaDeConferencia(V, HOJE);
+  const inertes = fila.filter((f) => f.inerte === 'por construção');
+  assert.equal(inertes.length, 8, 'as quatro séries de preço, min e max');
+  assert.equal(fila.slice(-8).filter((f) => f.inerte === 'por construção').length, 8,
+    'ocupam exatamente o rabo da fila');
+  // Não saem: se a camada 1 mudar de régua um dia, eles voltam a contar.
+  for (const s of EXTREMOS_INERTES) {
+    for (const campo of ['min', 'max']) {
+      assert.ok(fila.some((f) => f.serie === s && f.campo === campo), `${s} · ${campo} continua na fila`);
+    }
+  }
+});
+
+test('D41 C: efeito zero só na leitura de hoje NÃO rebaixa para o fim', () => {
+  const fila = filaDeConferencia(V, HOJE);
+  const m2 = fila.find((f) => f.serie === 'US M2' && f.campo === 'min');
+  assert.equal(m2.efeito, 0, 'o valor corrente encosta na máxima, então o mínimo se cancela hoje');
+  assert.equal(m2.inerte, 'só na leitura de hoje');
+  const primeiroInerteEstrutural = fila.findIndex((f) => f.inerte === 'por construção');
+  assert.ok(fila.indexOf(m2) < primeiroInerteEstrutural,
+    'zero de hoje fica acima dos inertes por construção — só a inércia estrutural rebaixa');
+});
+
+test('D41 D: valor não entra na fila de extremos — não tem efeito de régua', () => {
+  const fila = filaDeConferencia(V, HOJE);
+  assert.ok(!fila.some((f) => f.campo === 'valor'), 'a fila é só de min e max');
+  const conferido = { ...V, 'SOPR': { ...V['SOPR'], confirmado: { valor: null, min: null, max: null } } };
+  assert.ok(valoresPendentes(conferido).some((x) => x.serie === 'SOPR'),
+    'os valores por conferir se listam à parte');
+  assert.equal(valoresPendentes(V).length, 0, 'os catorze valores da leitura de hoje já foram conferidos');
+});
+
+test('D41 E: a fila é recalculada a cada leitura, porque o efeito anda com o valor', () => {
+  const outra = { ...V, 'Liveliness': { ...V['Liveliness'], valor: V['Liveliness'].max } };
+  const antes = filaDeConferencia(V, HOJE);
+  const depois = filaDeConferencia(outra, HOJE);
+  const alvo = depois.find((f) => f.serie === 'Liveliness' && f.campo === 'max');
+  assert.notEqual(antes[0].efeito, alvo.efeito, 'mudou o valor corrente, mudou o efeito do extremo');
 });
 
 test('a leitura publicada informa quantos são provisórios, sem bloquear', () => {
@@ -564,7 +613,7 @@ test('a leitura publicada informa quantos são provisórios, sem bloquear', () =
 });
 
 test('o comando de conferência é de um extremo por vez e só de leitura', () => {
-  const fila = filaDeConferencia(V);
+  const fila = filaDeConferencia(V, HOJE);
   const cmd = comandoDeConferencia(fila[0], V);
   assert.match(cmd, /somente leitura/);
   assert.match(cmd, /Nunca publica, nunca altera, nunca apaga/);
@@ -578,9 +627,9 @@ test('confirmar um extremo tira ele da fila e some no contador', () => {
   const antes = estadoDosExtremos(V).provisorios;
   const conferido = { ...V, 'SOPR': { ...V['SOPR'], confirmado: { valor: '2026-08-29', min: '2026-08-30', max: null } } };
   assert.equal(estadoDosExtremos(conferido).provisorios, antes - 1);
-  assert.ok(!filaDeConferencia(conferido).some((f) => f.serie === 'SOPR' && f.campo === 'min'));
+  assert.ok(!filaDeConferencia(conferido, HOJE).some((f) => f.serie === 'SOPR' && f.campo === 'min'));
   // e o mínimo do MVRV, já conferido, não está mais na fila
-  assert.ok(!filaDeConferencia(V).some((f) => f.serie === 'MVRV Ratio' && f.campo === 'min'));
+  assert.ok(!filaDeConferencia(V, HOJE).some((f) => f.serie === 'MVRV Ratio' && f.campo === 'min'));
 });
 
 test('o comando aponta a data do EXTREMO, não a data da leitura', () => {
@@ -655,7 +704,7 @@ test('a leitura de 05/06/2011 bate com a conferência avulsa do documento 07', (
 test('o MVRV é o único com valor, mínima e máxima conferidos', () => {
   const m = V['MVRV Ratio'].confirmado;
   assert.ok(m.valor && m.min && m.max, 'os três campos com data');
-  assert.ok(!filaDeConferencia(V).some((f) => f.serie === 'MVRV Ratio'), 'saiu inteiro da fila');
+  assert.ok(!filaDeConferencia(V, HOJE).some((f) => f.serie === 'MVRV Ratio'), 'saiu inteiro da fila');
 });
 
 // ══ EXTREMOS INERTES POR CONSTRUÇÃO ═══════════════════════════════════════

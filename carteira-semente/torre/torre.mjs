@@ -119,25 +119,46 @@ export const faixaDoIndice = (v) => FAIXAS.find((f) => v < f.ate).nome;
 export const seriesComExtremosProvisorios = () => SERIES.filter((s) => s.extremosProvisorios).map((s) => s.n);
 
 /**
- * D35 D: primeiro as séries logarítmicas, depois as lineares, e dentro de cada
- * grupo por peso de camada. A régua log é a que amplifica erro de extremo.
+ * D41 A: a fila é ordenada pelo EFEITO MEDIDO de cada extremo sobre o índice, do
+ * maior para o menor. O peso de camada era heurística para estimar efeito; com o
+ * efeito calculado, a heurística perde a função — mesmo princípio da D14, nenhuma
+ * régua se mantém quando existe a medida direta do que ela aproximava.
+ *
+ * D41 B: os inertes por construção vão para o FIM, marcados. Não saem: se um dia a
+ * camada 1 mudar de normalização, eles voltam a contar, e uma fila que os tivesse
+ * descartado não saberia disso.
+ *
+ * D41 C: efeito zero por o valor corrente encostar no outro extremo NÃO rebaixa.
+ * O efeito medido ordena; a inércia estrutural é a única coisa que rebaixa.
+ *
+ * D41 E: recalculada a cada leitura, porque o efeito anda com o valor corrente.
+ *
+ * Precisa de `hoje` porque medir efeito é recalcular o índice. Por isso ela NÃO é
+ * chamada de dentro de varrer() — seria recursão. A contagem, que varrer entrega,
+ * não depende de ordem.
  */
-export function filaDeConferencia(varredura) {
+export function filaDeConferencia(varredura, hoje) {
+  const efeitos = efeitoDosExtremos(varredura, hoje);
   const pendentes = [];
-  for (const s of SERIES) {
-    const v = varredura?.[s.n];
-    if (!v) continue;
-    for (const campo of ['valor', 'min', 'max']) {
-      if (!v.confirmado?.[campo]) pendentes.push({ serie: s.n, campo, escala: s.escala, camada: s.camada, peso: PESOS[s.camada] });
-    }
+  for (const e of efeitos) {
+    if (varredura[e.serie]?.confirmado?.[e.campo]) continue;
+    const s = SERIES.find((x) => x.n === e.serie);
+    pendentes.push({
+      serie: e.serie, campo: e.campo, efeito: e.efeito, inerte: e.inerte,
+      escala: s.escala, camada: s.camada, nome: CAMADAS[s.camada],
+    });
   }
-  const ordemCampo = { min: 0, max: 1, valor: 2 };
-  for (const p of pendentes) p.inerte = inerte(p.serie, p.campo);
+  // Estruturalmente inerte vai para o fim; dentro de cada grupo, efeito decrescente.
   return pendentes.sort((a, b) =>
-    (a.escala === b.escala ? 0 : a.escala === 'log' ? -1 : 1) ||
-    b.peso - a.peso ||
-    a.serie.localeCompare(b.serie) ||
-    ordemCampo[a.campo] - ordemCampo[b.campo]);
+    (a.inerte === 'por construção' ? 1 : 0) - (b.inerte === 'por construção' ? 1 : 0) ||
+    b.efeito - a.efeito ||
+    a.serie.localeCompare(b.serie));
+}
+
+/** Os valores, que não têm efeito de régua e se conferem à parte dos extremos. */
+export function valoresPendentes(varredura) {
+  return SERIES.filter((s) => varredura?.[s.n] && !varredura[s.n].confirmado?.valor)
+    .map((s) => ({ serie: s.n, campo: 'valor' }));
 }
 
 /**
@@ -156,7 +177,8 @@ const inerte = (serie, campo) => campo !== 'valor' && EXTREMOS_INERTES.includes(
  * única forma honesta de priorizar: peso de camada e escala são proxies, isto é a
  * coisa. Cuidado ao ler — o efeito de hoje depende da leitura de hoje. Um extremo
  * pode dar zero por o valor estar encostado no outro extremo, e voltar a pesar
- * amanhã. Só os inertes por construção são zero para sempre.
+ * amanhã (D41 C: isso não rebaixa na fila). Só os inertes por construção são zero
+ * para sempre.
  */
 export function efeitoDosExtremos(varredura, hoje, erro = 0.10) {
   const base = varrer({ varredura, hoje }).indice;
@@ -176,21 +198,28 @@ export function efeitoDosExtremos(varredura, hoje, erro = 0.10) {
   return fora.sort((a, b) => b.efeito - a.efeito);
 }
 
-/** D35 C: quantos extremos são provisórios e em quais séries. Não bloqueia a leitura. */
+/**
+ * D35 C: quantos extremos são provisórios e em quais séries. Não bloqueia a leitura.
+ *
+ * É contagem, e só contagem: não ordena, não devolve `proximo`. A ordem agora custa
+ * uma medição de efeito, que custa recalcular o índice — e quem chama isto é o
+ * varrer(). Contagem dentro do varrer, ordem fora dele, senão é recursão.
+ */
 export function estadoDosExtremos(varredura) {
-  const fila = filaDeConferencia(varredura);
   const porSerie = new Map();
-  for (const p of fila) porSerie.set(p.serie, [...(porSerie.get(p.serie) ?? []), p.campo]);
-  let confirmados = 0, total = 0;
+  let confirmados = 0, total = 0, inertesPendentes = 0;
   for (const s of SERIES) {
     const v = varredura?.[s.n]; if (!v) continue;
-    for (const campo of ['valor', 'min', 'max']) { total++; if (v.confirmado?.[campo]) confirmados++; }
+    for (const campo of ['valor', 'min', 'max']) {
+      total++;
+      if (v.confirmado?.[campo]) { confirmados++; continue; }
+      porSerie.set(s.n, [...(porSerie.get(s.n) ?? []), campo]);
+      if (inerte(s.n, campo)) inertesPendentes++;
+    }
   }
-  const inertesPendentes = fila.filter((f) => inerte(f.serie, f.campo)).length;
   return {
     total, confirmados, provisorios: total - confirmados,
     series: [...porSerie].map(([serie, campos]) => ({ serie, campos })),
-    proximo: fila[0] ?? null,
     // Dos provisórios, quantos não mudam o índice nem se estiverem dez vezes errados.
     inertesPendentes,
     provisoriosQueImportam: (total - confirmados) - inertesPendentes,
