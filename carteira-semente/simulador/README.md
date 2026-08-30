@@ -54,17 +54,25 @@ O mesmo caminho tirou o `NOME` escrito à mão da tela antiga, que mandava a fas
 A fase 3 é entrada de **Mercado saudável** (D10), e Mercado saudável é **Colheita** (doc 01). A
 estação passou a sair do estado, nunca da fase.
 
-## O QUE ESTÁ MEDIDO E NÃO APLICADO
+## A MODULAÇÃO ESTÁ APLICADA, E A REFERÊNCIA NÃO A SEGUE
 
-`custoDaModulacaoNaProjecao()` mede o que a modulação da D25 custaria **se a projeção passasse a
-usar a exposição real em vez do alvo do ano**. Na partida de hoje: +4,5% no conservador, +11,4% no
-moderado, +17,1% no forte.
+`exposicaoModulada()` alimenta a projeção publicada desde a D53 A — a D51 B, que a mantinha fora,
+está revogada. `efeitoDaModulacao()` mostra quanto ela move, em cada partida, **com o sinal que
+tiver**: hoje é −3,2% no conservador e +0,1% no forte, e por isso nenhum rótulo fixo serve.
 
-Não está aplicado, e o motivo está dito na tela: as quinze células publicadas — e a própria
-referência v1.3 — foram todas calculadas com o alvo do ano. Trocar a base moveria as quinze de uma
-vez, e a D13 regra 2 mandaria a revisão inteira para o Gui. **A troca é decisão dele, não do
-implementador** (invariante 9). Enquanto não houver decisão, a tela mostra a diferença e diz que
-ela não está aplicada.
+**`motorDaV13` é o ponto mais fácil de errar deste arquivo.** A referência da tabela de deriva é *a
+v1.3*, não "o mapeamento da v1.3 rodado pelo motor de hoje". Enquanto o motor não mudava, os dois
+davam no mesmo. Com a regra de exposição trocada, deixar a referência seguir o motor faria os dois
+lados se moverem juntos e a deriva mediria **zero por construção** — a trava da D13 ficaria cega
+justamente para a revisão que ela existe para pegar. Ela fica congelada no alvo do ano, que é o que
+produziu os R$ 67.725 publicados, e há asserção disso nas quinze células.
+
+## O MÊS MIRA O FECHAMENTO
+
+`demandaDaGlidepath` mira `alvo(mesesAteEntrega − 1)` (D53 C). Mirando a abertura, todo mês ficava
+um passo atrasado e nenhum mês jamais mirava o marco da entrega — a carteira parava em 15,83% com o
+marco publicado em 15,00%. Não foi preciso acrescentar mês ao laço: bastou corrigir a mira. As cinco
+partidas entregam a **15,0000%**.
 
 ## O QUE ESTE MÓDULO NÃO FAZ
 

@@ -327,3 +327,32 @@ publicado subestimar deixou de valer para todas.
 
 ### O checklist, item 4 outra vez
 `git show --stat` depois de gravar. Doze arquivos, conferidos.
+
+---
+
+## D53 · A MODULAÇÃO ENTRA NA PROJEÇÃO
+A tela deixou de ter dois números. Antes, o gráfico e os KPIs mostravam a projeção **sem** modulação
+e um bloco ao lado dizia quanto ela moveria. Agora a projeção é a modulada, e o bloco mostra o
+mecanismo: quanto a modulação move, com o sinal que tiver.
+
+| Antes | Agora |
+|---|---|
+| *Ganho não projetado — medido, nunca aplicado* | *Quanto a modulação move, para os dois lados — já aplicado* |
+| −3,8% escrito sob a palavra "Ganho" | título escolhido pela medida, três formas |
+| exposição na entrega 15,83% · folga 0,83 | exposição na entrega **15,00%** · folga **0,00** |
+
+O título tem três formas — *acrescenta*, *subtrai*, *move para os dois lados* — e quem escolhe é a
+medida. Hoje é a terceira: dois cenários negativos e um positivo.
+
+### 🐛 A asserção que olhava só a primeira linha
+A prova de que a referência v1.3 está congelada **passou com o arquivo quebrado**. A asserção
+conferia uma linha só — a de cima —, e nela a fase de hoje e a da v1.3 coincidem por acaso. Trocar
+`faseNaV13` por `fase` passava invisível. Passou a percorrer as quinze células.
+
+*Asserção que só olha a primeira linha é asserção que não olha as que importam.*
+
+### O teste que faltava, e que só agora ficou óbvio
+Nada ligava a **tabela publicada no documento-mãe** ao que o motor produz. Quinze células
+transcritas à mão a cada revisão, e uma decisão que mexesse na projeção e esquecesse o documento
+deixaria as duas versões convivendo. Agora há asserção célula a célula, mais a do número de capa —
+valor e multiplicador na mesma linha.

@@ -173,22 +173,52 @@ export const TABELA_EXPO = Object.freeze(
  * motor anual — identidade algébrica, não arredondamento. `criterioDeAceiteD11`
  * roda essa igualdade nas doze combinações.
  */
-export function motorMensal({ anos, aporte, fase, mes = 0, padrao }) {
-  const pontos = [{ ano: 0, saldo: 0, aportado: 0, exposicao: expoDoAno(anos - 1) * 100 }];
+export function motorMensal({ anos, aporte, fase, mes = 0, padrao, exposicaoDoMes = null }) {
+  // Sem regra de exposição declarada, vale a da v1.3: o alvo do ANO, sem modulação.
+  const exposicao = exposicaoDoMes ?? ((t) => expoDoAno(anos - Math.floor(t / MESES_NA_FASE) - 1));
+  const pontos = [{ ano: 0, saldo: 0, aportado: 0, exposicao: exposicao(0) * 100 }];
   let saldo = 0, aportado = 0;
   for (let t = 0; t < anos * MESES_NA_FASE; t++) {
-    const ano = Math.floor(t / MESES_NA_FASE);
-    const exp = expoDoAno(anos - ano - 1);
+    const exp = exposicao(t);
     const f = faseDoMes(fase, mes, t);
     const m = (1 + padrao[f] * exp) ** (1 / 12) - 1;
     saldo = (saldo + aporte) * (1 + m);
     aportado += aporte;
     if (t % MESES_NA_FASE === MESES_NA_FASE - 1) {
-      pontos.push({ ano: ano + 1, saldo, aportado, exposicao: exp * 100 });
+      pontos.push({ ano: Math.floor(t / MESES_NA_FASE) + 1, saldo, aportado, exposicao: exp * 100 });
     }
   }
   return { pontos, saldo, aportado };
 }
+
+/**
+ * D53 A: a exposição REAL, com a velocidade modulada pelo estado — é ela que passa a
+ * alimentar a projeção publicada. A D51 B, que a mantinha fora, está revogada.
+ *
+ * O valor de cada mês é a exposição DEPOIS do movimento daquele mês: rebalanceia-se no
+ * começo do mês e carrega-se a posição até o fim dele.
+ */
+export function exposicaoModulada({ anos, fase, mes = 0 }) {
+  const traj = trajetoriaDaGlidepath({ anos, fase, mes });
+  if (traj.erro) return null;
+  return (t) => traj.linhas[t].exposicao / 100;
+}
+
+/**
+ * ⚠️ A REGRA DE EXPOSIÇÃO DA v1.3, CONGELADA.
+ *
+ * A referência da tabela de deriva é *a v1.3*, não "o mapeamento da v1.3 rodado pelo
+ * motor de hoje". Enquanto o motor não mudava, os dois davam no mesmo e a distinção era
+ * invisível. Com a D53 A trocando a regra de exposição, deixar a referência seguir o
+ * motor faria a deriva medir **zero por construção** — os dois lados se moveriam juntos,
+ * e a trava da D13 ficaria cega justamente para a revisão que ela existe para pegar.
+ *
+ * Então ela fica presa aqui: alvo do ano, sem modulação, que é o que produziu os
+ * R$ 67.725 publicados.
+ */
+export const EXPOSICAO_DA_V13 = 'alvo do ano, sem modulação';
+export const motorDaV13 = ({ anos, aporte, fase, padrao }) =>
+  motorMensal({ anos, aporte, fase, mes: 0, padrao, exposicaoDoMes: null });
 
 /**
  * O motor ANTERIOR, anual, mantido por um motivo só: ser o réu do critério de aceite
@@ -241,9 +271,13 @@ export const CELULAS_DA_GRADE = PARTIDAS.length * Object.keys(CENARIOS).length;
  */
 export function grade({ anos, aporte }) {
   const linhas = PARTIDAS.map((partida) => {
+    // D53 A: o valor publicado passa a usar a exposição modulada.
+    const exposicaoDoMes = exposicaoModulada({ anos, fase: partida.fase, mes: partida.mes });
     const celulas = Object.entries(CENARIOS).map(([cenario, padrao]) => {
-      const atual = motorMensal({ anos, aporte, fase: partida.fase, mes: partida.mes, padrao }).saldo;
-      const referencia = motorMensal({ anos, aporte, fase: partida.faseNaV13, mes: 0, padrao }).saldo;
+      const atual = motorMensal({ anos, aporte, fase: partida.fase, mes: partida.mes, padrao,
+        exposicaoDoMes }).saldo;
+      // E a referência fica na regra da v1.3, congelada — ver `motorDaV13`.
+      const referencia = motorDaV13({ anos, aporte, fase: partida.faseNaV13, padrao }).saldo;
       const deriva = (atual / referencia - 1) * 100;
       return { cenario, atual, referencia, deriva, estourou: deriva > TETO_DERIVA };
     });
@@ -362,27 +396,20 @@ export function trajetoriaDaGlidepath({ anos, fase, mes = 0 }) {
 }
 
 /**
- * O que a modulação da D25 CUSTARIA na projeção, se a projeção passasse a usar a
- * exposição real em vez do alvo do ano.
+ * D53 B: quanto a modulação MOVE, em cada partida, com o sinal que tiver.
  *
- * ⚠️ MEDIDO, NÃO APLICADO. As quinze células publicadas — e a própria referência
- * v1.3 da tabela de deriva — foram todas calculadas com o alvo do ano. Trocar a base
- * moveria as quinze de uma vez, e a D13 regra 2 mandaria a revisão inteira para o
- * Gui. A troca é decisão dele, não do implementador (invariante 9). Enquanto não
- * houver decisão, a tela mostra a diferença e diz que ela não está aplicada.
+ * Deixou de ser "o que ela custaria se fosse aplicada" — ela É aplicada desde a D53 A.
+ * Passou a ser demonstração de mecanismo: a mesma partida, com e sem a modulação, e a
+ * diferença entre as duas. O sinal varia por partida, e por isso nenhum rótulo fixo
+ * serve (invariante 12).
  */
-export function custoDaModulacaoNaProjecao({ anos, aporte, fase, mes = 0 }) {
-  const traj = trajetoriaDaGlidepath({ anos, fase, mes });
-  if (traj.erro) return { erro: traj.erro };
+export function efeitoDaModulacao({ anos, aporte, fase, mes = 0 }) {
+  const exposicaoDoMes = exposicaoModulada({ anos, fase, mes });
+  if (!exposicaoDoMes) return { erro: 'trajetória indisponível' };
   return Object.entries(CENARIOS).map(([cenario, padrao]) => {
-    const publicado = motorMensal({ anos, aporte, fase, mes, padrao }).saldo;
-    let saldo = 0;
-    for (let t = 0; t < anos * MESES_NA_FASE; t++) {
-      const f = faseDoMes(fase, mes, t);
-      const m = (1 + padrao[f] * (traj.linhas[t].exposicao / 100)) ** (1 / 12) - 1;
-      saldo = (saldo + aporte) * (1 + m);
-    }
-    return { cenario, publicado, comModulacao: saldo, diferenca: (saldo / publicado - 1) * 100 };
+    const publicado = motorMensal({ anos, aporte, fase, mes, padrao, exposicaoDoMes }).saldo;
+    const semModulacao = motorMensal({ anos, aporte, fase, mes, padrao }).saldo;
+    return { cenario, publicado, semModulacao, diferenca: (publicado / semModulacao - 1) * 100 };
   });
 }
 

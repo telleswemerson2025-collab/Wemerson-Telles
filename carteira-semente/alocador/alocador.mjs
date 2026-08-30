@@ -191,15 +191,29 @@ export const bandaDoMes = (mesesAteEntrega) => mesesAteEntrega >= MESES_SEM_MODU
  * diferentes (D51 C).
  */
 export function demandaDaGlidepath({ exposicaoAtual, mesesAteEntrega, estado, defasagem = 0 }) {
-  const alvo = alvoDaGlidepath(mesesAteEntrega);
+  /**
+   * D53 C: o mês mira onde a rampa precisa estar QUANDO ELE FECHAR, não onde ela está
+   * quando ele abre. Estando a `mesesAteEntrega` meses da entrega, a carteira já devia
+   * estar em `alvo(mesesAteEntrega)`; o trabalho deste mês é levá-la a
+   * `alvo(mesesAteEntrega − 1)`.
+   *
+   * Mirar o alvo de abertura deixava todo mês um passo atrasado, e no fim da rampa isso
+   * virava um passo órfão: nenhum mês mirava o marco da entrega, e a carteira parava em
+   * 15,83% com o marco publicado em 15,00%. Com a mira no fechamento, o último mês
+   * administrado é o que aterrissa no marco.
+   */
+  const noFechamento = Math.max(mesesAteEntrega - 1, 0);
+  const alvo = alvoDaGlidepath(noFechamento);
   const distancia = arred(exposicaoAtual - alvo, 4);   // positivo = exposto demais
   const { fator, motivo } = fatorDeVelocidade({ estado, mesesAteEntrega, defasagem });
   if (fator === null) return { erro: motivo };
 
+  // Quanto tempo resta é pergunta sobre o mês que começa, e continua lendo
+  // `mesesAteEntrega`. Onde a carteira tem de estar é pergunta sobre o mês que fecha.
   const ultimoAno = mesesAteEntrega <= MESES_SEM_MODULACAO;
-  const passo = passoDoMes(mesesAteEntrega);
+  const passo = passoDoMes(noFechamento);
   // A banda vem da função, não da constante: no último ano ela afunila (D51 A).
-  const banda = bandaDoMes(mesesAteEntrega);
+  const banda = bandaDoMes(noFechamento);
 
   // Sem a banda o sistema venderia todo mês por ruído (âncora, D30).
   if (Math.abs(distancia) <= banda && defasagem === 0) {

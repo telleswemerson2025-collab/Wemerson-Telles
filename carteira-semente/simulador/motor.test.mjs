@@ -13,7 +13,7 @@ import {
   CENARIOS, FASES, PARTIDAS, TABELA_EXPO, LIMIAR_DA_FASE_3, MESES_NA_FASE, ENTREGA_AOS,
   ESTACAO_DO_ESTADO, ABRIGO, TETO_DERIVA, CELULAS_DA_GRADE, CENARIO_DA_CAPA,
   partidaDaLeitura, rotuloDaPartida, mesesRestantesDaFase, estadoDaFase, estacoesPorAno,
-  motorMensal, motorAnual, criterioDeAceiteD11, grade, numeroDeCapa,
+  motorMensal, motorAnual, motorDaV13, exposicaoModulada, criterioDeAceiteD11, grade, numeroDeCapa,
   trajetoriaDaGlidepath, expoDoAno,
 } from './motor.mjs';
 import { passoDoMes } from '../alocador/alocador.mjs';
@@ -204,6 +204,24 @@ test('D25 B: a velocidade é do estado, e os quatro fatores estão ligados ao se
 });
 
 // ── A CAPA E A DERIVA (D12 · D13) ─────────────────────────────────────────
+test('D53 A: a projeção publicada usa a exposição modulada, e não mais o alvo do ano', () => {
+  for (const p of PARTIDAS) {
+    const exposicaoDoMes = exposicaoModulada({ anos: BASE.anos, fase: p.fase, mes: p.mes });
+    assert.ok(exposicaoDoMes, `${rotuloDaPartida(p)}: sem trajetória não há exposição modulada`);
+    const comum = { ...BASE, fase: p.fase, mes: p.mes, padrao: CENARIOS[CENARIO_DA_CAPA] };
+    const modulada = motorMensal({ ...comum, exposicaoDoMes }).saldo;
+    const alvoDoAno = motorMensal(comum).saldo;
+    // Se as duas dessem o mesmo, a D53 A não teria trocado nada.
+    assert.notEqual(modulada, alvoDoAno,
+      `${rotuloDaPartida(p)}: a modulação não muda a projeção — a D53 A não está aplicada`);
+    // E é a modulada que vai para a grade publicada.
+    const naGrade = grade(BASE).linhas.find((l) => l.partida === p)
+      .celulas.find((c) => c.cenario === CENARIO_DA_CAPA).atual;
+    assert.equal(naGrade, modulada,
+      `${rotuloDaPartida(p)}: a grade publicada ainda está no alvo do ano`);
+  }
+});
+
 test('D12 A: o número de capa é o piso entre as partidas, e traz a identidade junto', () => {
   const capa = numeroDeCapa(BASE);
   const g = grade(BASE);
@@ -222,13 +240,29 @@ test('D12 B regra 1 · D13 regra 1: a grade sai inteira, e a deriva é medida co
   assert.equal(g.celulas, CELULAS_DA_GRADE);
   assert.equal(g.linhas.length * g.linhas[0].celulas.length, CELULAS_DA_GRADE,
     'a grade publicada não tem as cinco partidas nos três cenários');
-  // A referência é RODADA, não transcrita: onde a v1.3 já usava a mesma fase e o mês 0,
-  // a deriva tem de ser exatamente zero.
+  // A referência é RODADA, não transcrita — e rodada na REGRA DA v1.3, congelada.
+  // Antes da D53 A a referência usava o motor corrente com o mapeamento da v1.3, e por
+  // isso as partidas que a v1.3 já mapeava igual davam deriva exatamente zero. Com a
+  // regra de exposição trocada isso deixou de valer, e tinha de deixar: se a referência
+  // seguisse o motor, os dois lados se moveriam juntos e a deriva mediria zero por
+  // construção — a trava ficaria cega justamente para a revisão que ela existe pegar.
   for (const l of g.linhas) {
-    const igual = l.partida.fase === l.partida.faseNaV13 && l.partida.mes === 0;
     for (const c of l.celulas) {
-      if (igual) assert.equal(c.deriva, 0, `${l.rotulo} · ${c.cenario}: mesma partida, deriva não zero`);
-      else assert.notEqual(c.deriva, 0, `${l.rotulo} · ${c.cenario}: mudou de partida e não derivou`);
+      assert.ok(Number.isFinite(c.deriva), `${l.rotulo} · ${c.cenario}: deriva não numérica`);
+      assert.notEqual(c.atual, c.referencia,
+        `${l.rotulo} · ${c.cenario}: a referência acompanhou o motor — ela tem de ficar na regra da v1.3`);
+    }
+  }
+  // E a prova de que a referência está mesmo congelada, EM TODAS AS LINHAS: só a linha
+  // de cima não bastaria, porque nela a fase de hoje e a da v1.3 por acaso coincidem, e
+  // uma troca de mapeamento passaria invisível. A asserção que só olha a primeira linha
+  // é a asserção que não olha as que importam.
+  for (const l of g.linhas) {
+    for (const c of l.celulas) {
+      assert.equal(c.referencia,
+        motorDaV13({ anos: BASE.anos, aporte: BASE.aporte, fase: l.partida.faseNaV13,
+          padrao: CENARIOS[c.cenario] }).saldo,
+        `${l.rotulo} · ${c.cenario}: a referência da grade deixou de ser o motor da v1.3`);
     }
   }
 });
@@ -292,7 +326,8 @@ test('D52 A: o mês fecha a posição — a exposição para no alvo do mês, nu
     // carteira não atravessa o alvo para baixo, e não vende estando sub-exposta.
     assert.ok(t.folgaNoUltimoMes >= 0,
       `${rotuloDaPartida(p)}: a carteira passou do alvo para baixo, entregando a ${t.exposicaoNaEntrega}%`);
-    // E o que sobra cabe na banda daquele mês: é tolerância, não folga carregada.
+    // E o que sobra cabe na banda daquele mês: é tolerância, não folga carregada. No
+    // último mês administrado a banda é zero, então "cabe na banda" quer dizer zero.
     assert.ok(t.folgaNoUltimoMes <= t.bandaDoUltimoMes,
       `${rotuloDaPartida(p)}: sobrou ${t.folgaNoUltimoMes} pt, acima da banda de ${t.bandaDoUltimoMes} pt`);
     // Nenhum mês move mais do que a distância que existe para mover.
@@ -318,32 +353,33 @@ test('⚠️ D52 D: as medidas que sustentam a D51 e a D52 ficam fixadas, com os
       `${quem}: a cláusula da banda passou a disparar — o diagnóstico da D51 A e da D52 A ` +
       'precisa ser refeito, porque ele afirma que ela nunca dispara');
 
-    // 2. E a medida que passou a carregar o diagnóstico: sem defasagem acumulada é a
-    //    BANDA que dimensiona quase todo mês do último ano; com defasagem, é a
-    //    liquidação da D25 D que manda, e a banda não chega a dimensionar nada.
+    // 2. E a medida que passou a carregar o diagnóstico. D53 D fixa o escopo: sem
+    //    defasagem acumulada a BANDA dimensiona TODO mês do último ano; com defasagem,
+    //    quem traz ao alvo é a liquidação da D25 D, e a banda dimensiona quase nada.
+    //    As duas peças cobrem regimes diferentes, e nenhuma é redundante.
     const temDefasagem = t.maiorDefasagem > 0;
-    assert.equal(t.mesesEmQueABandaDefiniuAPosicao > 0, !temDefasagem,
-      `${quem}: quem dimensiona o mês do último ano trocou — a razão escrita na D52 B, ` +
-      'de que a banda afunilada é a peça que força a exposição ao alvo, precisa ser refeita');
+    assert.equal(t.mesesEmQueABandaDefiniuAPosicao === t.mesesDoUltimoAno, !temDefasagem,
+      `${quem}: quem dimensiona o mês do último ano trocou — o escopo registrado na D53 D, ` +
+      'de que a banda manda onde não há defasagem e a liquidação manda onde há, precisa ser refeito');
 
     // 3. A defasagem continua liquidada até zero (D25 D · D51 C), e a D52 não mexeu nisso.
     assert.equal(t.defasagemNaEntrega, 0, `${quem}: a defasagem sobreviveu à entrega`);
   }
 });
 
-test('⚠️ D52 C medido: o marco da entrega fica um passo abaixo do último mês administrado', () => {
-  // Não é folga carregada — a D52 fechou aquela. É o passo entre o último mês que o
-  // cronograma administra e o marco da entrega, que nenhum mês executa.
-  const passoFinal = passoDoMes(0);
+test('D53 C: o último mês executa — os dois alvos batem no marco, e a carteira chega nele', () => {
+  // O passo órfão da D52 C não existe mais. Os dois campos continuam separados na tela,
+  // porque foi a separação que tornou o mês escondido visível — mas agora eles batem.
   for (const p of PARTIDAS) {
     const t = trajetoriaDaGlidepath({ anos: ENTREGA_AOS, fase: p.fase, mes: p.mes });
+    const quem = rotuloDaPartida(p);
     assert.equal(t.alvoDoMarcoDaEntrega, EXPOSICAO_ALVO[0],
       'o marco da entrega deixou de ser a exposição de entrega da tabela');
-    assert.ok(t.alvoDoUltimoMes > t.alvoDoMarcoDaEntrega,
-      'o último mês administrado passou a mirar o próprio marco — a lacuna sumiu, ' +
-      'e a observação registrada na D52 C precisa ser refeita');
-    assert.ok(t.folgaContraOMarco <= passoFinal + t.bandaDoUltimoMes + 1e-9,
-      `${rotuloDaPartida(p)}: sobrou ${t.folgaContraOMarco} pt contra o marco, ` +
-      `acima do passo final (${passoFinal}) mais a banda do mês`);
+    assert.equal(t.alvoDoUltimoMes, t.alvoDoMarcoDaEntrega,
+      `${quem}: o último mês administrado voltou a mirar um ponto anterior ao marco`);
+    assert.equal(t.exposicaoNaEntrega, EXPOSICAO_ALVO[0],
+      `${quem}: a carteira chega a ${t.exposicaoNaEntrega}% com o marco publicado em ${EXPOSICAO_ALVO[0]}%`);
+    assert.equal(t.folgaContraOMarco, 0, `${quem}: sobrou folga contra o marco`);
+    assert.equal(t.bandaDoUltimoMes, 0, `${quem}: sobrou tolerância no mês que aterrissa`);
   }
 });

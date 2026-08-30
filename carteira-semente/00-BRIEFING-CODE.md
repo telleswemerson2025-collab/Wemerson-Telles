@@ -91,6 +91,10 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
    **mensagem** da falha, não só que falhou — teste pode reprovar pelo motivo errado, e prova que só
    pergunta "falhou?" aceitaria isso. Decisão 46.
 
+*A invariante 13 vale para o próprio harness (Decisão 53 E): **prova que não casa com teste nenhum é
+falha, nunca sucesso.** Ausência de réu é ausência de prova. Fecha o único lugar onde a pilha de
+verificação ainda podia passar por vazio.*
+
 15. **TESTE NASCE DA INTENÇÃO, NUNCA DA SAÍDA.** Asserção de conferência é escrita a partir do que a
    frase **precisa dizer** — nomeia o ativo, traz a data, não duplica palavra — e nunca copiando o
    que o sistema produziu. *Teste derivado da saída não confere: **carimba**.* O caso que a nomeou:

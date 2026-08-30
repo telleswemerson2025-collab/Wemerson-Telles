@@ -360,7 +360,7 @@ import {
   BASE_DA_PUBLICACAO, APORTE_DE_REFERENCIA,
   partidaDaLeitura, rotuloDaPartida, rotuloDoPar, mesesRestantesDaFase, estacoesPorAno,
   motorMensal, criterioDeAceiteD11, grade, numeroDeCapa, trajetoriaDaGlidepath,
-  custoDaModulacaoNaProjecao, expoDoAno,
+  efeitoDaModulacao, exposicaoModulada, expoDoAno,
 } from './simulador/motor.mjs';
 
 const HOJE = '2026-08-29';
@@ -464,8 +464,10 @@ function render() {
     : `<span class="alerta">Fora da base de publicação</span> — as tabelas publicadas foram calculadas com ${aBase}. O que está na tela é esta simulação, não o material de venda.`)
     + ` Nenhuma trava do sistema depende desse valor, e o simulador aceita qualquer aporte.`;
 
+  // D53 A: a projeção publicada usa a exposição modulada. A D51 B está revogada.
+  const exposicaoDoMes = exposicaoModulada({ anos, fase: partida.fase, mes: partida.mes });
   const S = {}; for (const [k, padrao] of Object.entries(CENARIOS)) {
-    S[k] = motorMensal({ anos, aporte, fase: partida.fase, mes: partida.mes, padrao });
+    S[k] = motorMensal({ anos, aporte, fase: partida.fase, mes: partida.mes, padrao, exposicaoDoMes });
   }
   const aportado = S[CENARIO_DA_CAPA].aportado;
 
@@ -529,16 +531,16 @@ function render() {
     '</td></tr>').join('');
 
   const traj = trajetoriaDaGlidepath({ anos, fase: partida.fase, mes: partida.mes });
-  const custo = custoDaModulacaoNaProjecao({ anos, aporte, fase: partida.fase, mes: partida.mes });
+  const efeito = efeitoDaModulacao({ anos, aporte, fase: partida.fase, mes: partida.mes });
   $('parTraj').innerHTML =
     campo('Maior defasagem', `${num(traj.maiorDefasagem, 2)} pt`, `teto de ${TETO_DEFASAGEM} pontos`) +
     campo('Meses no teto', String(traj.mesesNoTeto), `no teto o fator volta a 1,00`) +
     campo('Defasagem na entrega', `${num(traj.defasagemNaEntrega, 2)} pt`,
       `liquidada nos últimos ${MESES_SEM_MODULACAO} meses, não perdoada`) +
-    campo('Exposição no último mês', `${num(traj.exposicaoNaEntrega, 2)}%`,
-      `alvo do mês ${num(traj.alvoDoUltimoMes, 2)}% · folga de ${num(traj.folgaNoUltimoMes, 2)} pt`) +
+    campo('Exposição na entrega', `${num(traj.exposicaoNaEntrega, 2)}%`,
+      `alvo do último mês administrado ${num(traj.alvoDoUltimoMes, 2)}%`) +
     campo('Contra o marco da entrega', `${num(traj.folgaContraOMarco, 2)} pt`,
-      `o marco é ${num(traj.alvoDoMarcoDaEntrega, 2)}% e o laço para a um mês dele`) +
+      `o marco é ${num(traj.alvoDoMarcoDaEntrega, 2)}%, e o último mês mira ele`) +
     campo('Banda no último mês', `${num(traj.bandaDoUltimoMes, 2)} pt`,
       `afunila de ${BANDA_PONTOS} a 0 nos últimos ${MESES_SEM_MODULACAO} meses`) +
     campo('A banda dimensionou o mês', `${traj.mesesEmQueABandaDefiniuAPosicao} de ${traj.mesesDoUltimoAno} meses`,
@@ -547,30 +549,33 @@ function render() {
     `A defasagem é o que a modulação deixou de mover, e só ela: a banda é tolerância de posição e não gera defasagem — no último ano ela afunila de ${BANDA_PONTOS} pontos até zero, e continua não gerando. ` +
     `Nos últimos ${MESES_SEM_MODULACAO} meses ninguém modula — modular pressupõe tempo para esperar o mercado virar, e no último ano não há esse tempo — e a defasagem é liquidada até zero dentro do período.` +
     `<br><br><b>O mês corrige a posição, não só acompanha o passo</b> (D52 A): ` +
-      `<code>programado = min(distância, max(passo, distância − banda))</code>. ` +
-      `Nesta partida a exposição fecha o último mês ${traj.folgaNoUltimoMes === 0 ? 'exatamente no alvo do mês' : `${num(traj.folgaNoUltimoMes, 2)} ponto(s) acima do alvo do mês, dentro da banda de ${num(traj.bandaDoUltimoMes, 2)}`}, ` +
-      `e a banda dimensionou o movimento em ${traj.mesesEmQueABandaDefiniuAPosicao} dos ${traj.mesesDoUltimoAno} meses do último ano.` +
-      `<br><br><b>⚠️ O que ainda sobra:</b> ${num(traj.folgaContraOMarco, 2)} pontos contra o marco da entrega (${num(traj.alvoDoMarcoDaEntrega, 2)}%), ` +
-      `porque o cronograma administra até um mês antes da entrega e o alvo desse mês é ${num(traj.alvoDoUltimoMes, 2)}%. ` +
-      `Entre o último mês administrado e o marco ainda há um passo de rampa que nenhum mês executa.`;
+      `<code>programado = min(distância, max(passo, distância − banda))</code>, ` +
+      `e ele mira onde a rampa precisa estar quando o mês FECHAR, não quando abre (D53 C). ` +
+      `Por isso o último mês administrado mira o próprio marco da entrega, e a carteira chega a ` +
+      `${num(traj.exposicaoNaEntrega, 2)}% com o marco em ${num(traj.alvoDoMarcoDaEntrega, 2)}% — ` +
+      `folga de ${num(traj.folgaContraOMarco, 2)} ponto.` +
+      `<br><br>A banda dimensionou o movimento em ${traj.mesesEmQueABandaDefiniuAPosicao} dos ${traj.mesesDoUltimoAno} meses do último ano. ` +
+      (traj.maiorDefasagem > 0
+        ? `Nesta partida há defasagem acumulada, e quem traz a exposição ao alvo é a liquidação da D25 D — a banda quase não dimensiona nada.`
+        : `Nesta partida não há defasagem para liquidar, e é o afunilamento da banda que traz a exposição ao alvo, mês a mês.`) +
+      ` As duas peças cobrem regimes diferentes, e nenhuma é redundante (D53 D).`;
 
-  // D51 B: o ganho da modulação fica MEDIDO E MOSTRADO, nunca aplicado à tabela.
+  // D53 B: com a modulação aplicada, o bloco deixa de ser "efeito não projetado" e passa
+  // a ser demonstração de mecanismo — quanto a modulação move, com o sinal que tiver.
+  // Rótulo fixo está proibido (invariante 12): "Ganho" sobre −3,2% contradiz o número
+  // ao lado. O rótulo sai da MEDIDA.
+  const todoParaCima = efeito.every((c) => c.diferenca >= 0);
+  const sinal = todoParaCima ? 'Quanto a modulação acrescenta'
+    : efeito.every((c) => c.diferenca <= 0) ? 'Quanto a modulação subtrai'
+    : 'Quanto a modulação move, para os dois lados';
   $('naoProjetado').innerHTML =
-    // ⚠️ A D51 B mandou rotular "ganho não projetado", e o rótulo nasceu quando o efeito
-    // era todo para cima. Depois da D52 ele pode ser negativo, e escrever "ganho" sobre
-    // um número negativo é rótulo falso em tela comercial. O rótulo passa a sair da
-    // MEDIDA, como manda a D44 — e a divergência está registrada na D52.
-    `<h3>${custo.every((c) => c.diferenca >= 0) ? 'Ganho' : 'Efeito'} não projetado — medido, nunca aplicado à tabela publicada</h3><div class="par">` +
-    custo.map((c) => campo(c.cenario, pct(c.diferenca), `${brl(c.publicado)} → ${brl(c.comModulacao)}`)).join('') +
+    `<h3>${sinal} — já aplicado à projeção publicada</h3><div class="par">` +
+    efeito.map((c) => campo(c.cenario, pct(c.diferenca), `sem modular ${brl(c.semModulacao)} → ${brl(c.publicado)}`)).join('') +
     `</div><p class="note" style="margin:16px 0 0">` +
-    `A modulação existe para não vender no fundo, e o ganho que ela produz não entra na conta que a gente publica. ` +
-    `Aplicá-la moveria as ${CELULAS_DA_GRADE} células de uma vez, e a referência ${VERSAO_REFERENCIA} da tabela de deriva ` +
-    `também foi calculada com o alvo do ano.` +
-    (custo.every((c) => c.diferenca >= 0)
-      ? ` Nesta partida o efeito é todo para cima, então o número publicado <b>subestima</b> — o lado do erro que um material de venda pode permitir.`
-      : ` <b>⚠️ Nesta partida o efeito não é todo para cima:</b> ` +
-        custo.filter((c) => c.diferenca < 0).map((c) => `${c.cenario} ${pct(c.diferenca)}`).join(' · ') +
-        `. Depois da D52 a exposição real acompanha o alvo em vez de ficar acima dele, e o sinal do efeito passou a depender da partida — a frase "sem ela o número subestima" deixou de valer para todas.`) +
+    `A modulação existe para não vender no fundo, e desde a D53 A ela entra na conta que a gente publica — a D51 B, que a mantinha fora, está revogada. ` +
+    `O sinal depende da partida: ela acelera a saída em mercado saudável e segura em capitulação, e o efeito sobre a projeção segue daí. ` +
+    `A referência ${VERSAO_REFERENCIA} da tabela de deriva <b>não</b> acompanhou: ela ficou congelada no alvo do ano, que é a regra que produziu os números publicados. ` +
+    `Se ela seguisse o motor, os dois lados se moveriam juntos e a deriva mediria zero por construção.` +
     `</p>`;
 
   // 6 · A TABELA DE DERIVA, POR LINHA, CONTRA A v1.3 — PERMANENTE.

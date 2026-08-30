@@ -22,6 +22,7 @@ import { VALIDADE_DIAS, MARCO_INDICE, MARCO_DIAS, RECUPERACAO_DIAS, TIPOS } from
 import { historicoComAnulacao, CARTEIRA, ILUSTRATIVO } from './registro/historico-exemplo.mjs';
 import { LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, PESOS, varrer, TRAVA_AUSENCIA_NA_CAMADA } from './torre/torre.mjs';
 import { VARREDURA_29_08_2026 as VARREDURA } from './torre/leitura-29-08-2026.mjs';
+import { grade, numeroDeCapa, ENTREGA_AOS, APORTE_DE_REFERENCIA } from './simulador/motor.mjs';
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const ler = (f) => readFileSync(join(AQUI, f), 'utf8');
@@ -450,4 +451,45 @@ test('D12 A: a capa é o piso e a leitura do dia vai em segunda linha, rotulada'
   assert.match(segunda, /lida\.partida/, 'a segunda linha seguiu o seletor em vez da leitura');
   assert.ok(!/(?<!lida\.)\bpartida\.(estado|fase|mes)\b/.test(segunda),
     'a segunda linha usa a partida em uso — ela tem de ser a lida do dia');
+});
+
+// ══ D53 A · O QUE O DOCUMENTO PUBLICA TEM DE SER O QUE O MOTOR PRODUZ ═════
+test('D12 B regra 1: as quinze células publicadas são as que o motor produz, célula a célula', () => {
+  // Esta é a asserção que faltava. A grade do documento-mãe foi transcrita à mão em
+  // cada revisão, e nada ligava o texto ao motor — uma decisão que mexesse na projeção
+  // e esquecesse o documento deixaria as duas versões convivendo sem ninguém ver.
+  const doc01 = doc('01-documento-mae.md');
+  const g = grade({ anos: ENTREGA_AOS, aporte: APORTE_DE_REFERENCIA });
+  const bloco = doc01.slice(doc01.indexOf('#### Estado atual'), doc01.indexOf('#### Histórico do gatilho'));
+  assert.ok(bloco.length > 0, 'o documento-mãe não tem a tabela de deriva');
+
+  for (const l of g.linhas) {
+    // A linha é achada pelo par (fase · mês), que é o que identifica a partida.
+    const linha = bloco.split('\n').find((t) => t.includes(`| ${l.partida.fase} · ${l.partida.mes} |`));
+    assert.ok(linha, `o documento não tem a linha da partida ${l.partida.fase} · ${l.partida.mes}`);
+    for (const c of l.celulas) {
+      const valor = Math.round(c.atual).toLocaleString('pt-BR');
+      assert.ok(linha.includes(`R$ ${valor}`),
+        `${l.rotulo} · ${c.cenario}: o motor produz R$ ${valor} e a linha do documento é "${linha.trim()}"`);
+      // E a deriva ao lado, com o sinal — presente E na mesma linha da célula (D46).
+      const deriva = Math.abs(c.deriva).toFixed(1).replace('.', ',');
+      assert.ok(linha.includes(deriva),
+        `${l.rotulo} · ${c.cenario}: a deriva calculada é ${deriva}% e não está na linha`);
+    }
+  }
+});
+
+test('D12 A: o número de capa do documento é o piso que o motor calcula', () => {
+  const doc01 = doc('01-documento-mae.md');
+  const capa = numeroDeCapa({ anos: ENTREGA_AOS, aporte: APORTE_DE_REFERENCIA });
+  const valor = Math.round(capa.valor).toLocaleString('pt-BR');
+  const mult = capa.multiplicador.toFixed(1).replace('.', ',');
+  // Ligado, não presente: o valor e o multiplicador na MESMA linha da capa.
+  const linha = doc01.split('\n').find((t) => t.startsWith('> ### R$'));
+  assert.ok(linha, 'o documento-mãe não abre por um número de capa');
+  assert.equal(linha.trim(), `> ### R$ ${valor} · ${mult}x o aportado`,
+    `a capa do documento não é o piso que o motor calcula (R$ ${valor} · ${mult}x)`);
+  // E a identidade da partida do piso, que a D13 regra 4 manda rastrear junto.
+  assert.ok(doc01.includes(capa.identidade.replace('Mercado saudável', 'Mercado saudável')),
+    'o documento não nomeia a partida que ocupa o piso');
 });

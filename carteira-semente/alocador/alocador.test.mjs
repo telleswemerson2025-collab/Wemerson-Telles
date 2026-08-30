@@ -11,6 +11,13 @@ import {
 
 const HOJE = '2026-08-29';
 const INDICE = 50.7536;                       // a leitura real de 29/08/2026
+// D53 C: o mês mira onde a rampa precisa estar QUANDO ELE FECHAR. Todo fixture que
+// monta uma posição "a tantos pontos do alvo" tem de partir do alvo de fechamento —
+// partir do de abertura testa um mês que não existe mais.
+const alvoDoFechamento = (m) => alvoDaGlidepath(Math.max(m - 1, 0));
+const bandaDoFechamento = (m) => bandaDoMes(Math.max(m - 1, 0));
+const passoDoFechamento = (m) => passoDoMes(Math.max(m - 1, 0));
+
 const perto = (a, b, tol = 0.06, oQue = '') =>
   assert.ok(Math.abs(a - b) <= tol, `${oQue ? oQue + ': ' : ''}${a} contra ${b}`);
 
@@ -90,12 +97,32 @@ test('D25 A: os quatro passos mensais batem com a tabela publicada', () => {
 
 test('a banda de 3 pontos existe para o sistema não vender por ruído', () => {
   assert.equal(BANDA_PONTOS, 3);
-  const dentro = demandaDaGlidepath({ exposicaoAtual: 68, mesesAteEntrega: 36, estado: 'Mercado saudável' });
+  const dentro = demandaDaGlidepath({ exposicaoAtual: alvoDoFechamento(36) + BANDA_PONTOS - 1,
+    mesesAteEntrega: 36, estado: 'Mercado saudável' });
   assert.equal(dentro.dentroDaBanda, true);
   assert.equal(dentro.mover, 0, 'dentro da banda não se move nada');
-  const fora = demandaDaGlidepath({ exposicaoAtual: 72, mesesAteEntrega: 36, estado: 'Mercado saudável' });
+  const fora = demandaDaGlidepath({ exposicaoAtual: alvoDoFechamento(36) + BANDA_PONTOS + 1,
+    mesesAteEntrega: 36, estado: 'Mercado saudável' });
   assert.equal(fora.dentroDaBanda, false);
   assert.ok(fora.mover > 0);
+});
+
+test('D53 C: o mês mira o fechamento — o último mês administrado aterrissa no marco', () => {
+  // A um mês da entrega, o alvo do mês é o MARCO da entrega, não o ponto da rampa onde
+  // a carteira está agora. Sem isso nenhum mês jamais mira o marco publicado.
+  const ultimo = demandaDaGlidepath({ exposicaoAtual: 30, mesesAteEntrega: 1, estado: 'Mercado saudável' });
+  assert.equal(ultimo.alvo, EXPOSICAO_ALVO[0],
+    'o último mês administrado não mira o marco da entrega — o passo órfão voltou');
+  // E a banda daquele mês é zero: na entrega não há tolerância (D51 A).
+  assert.equal(ultimo.banda, 0, 'sobrou tolerância no mês que aterrissa');
+  // O mês anterior mira o ponto anterior da rampa, e não o mesmo marco.
+  const penultimo = demandaDaGlidepath({ exposicaoAtual: 30, mesesAteEntrega: 2, estado: 'Mercado saudável' });
+  assert.ok(penultimo.alvo > ultimo.alvo, 'a rampa parou de descer no fim');
+  // Em qualquer mês, o alvo é o da rampa um mês à frente.
+  for (const m of [48, 36, 24, 12, 6, 1]) {
+    assert.equal(demandaDaGlidepath({ exposicaoAtual: 100, mesesAteEntrega: m, estado: 'Mercado saudável' }).alvo,
+      alvoDaGlidepath(m - 1), `a ${m} meses da entrega o mês não mira o fechamento`);
+  }
 });
 
 test('D25 B: a velocidade vem do ESTADO, e nunca do Índice', () => {
@@ -119,8 +146,8 @@ test('D25 C: a defasagem acumula 1,5× mais rápido do que recupera', () => {
   // a no máximo um passo dela, senão a correção de posição da D52 A dimensiona o mês
   // pela distância e não pelo passo — e aí a tabela da D25 C não é o que está sendo
   // exercitado. Antes da D52 qualquer distância acima da banda servia; agora não.
-  const banda = bandaDoMes(30);
-  const fora = alvoDaGlidepath(30) + banda + passoDoMes(30) - 0.75;
+  const banda = bandaDoFechamento(30);
+  const fora = alvoDoFechamento(30) + banda + passoDoFechamento(30) - 0.75;
   const cap = demandaDaGlidepath({ exposicaoAtual: fora, mesesAteEntrega: 30, estado: 'Capitulação profunda' });
   perto(cap.defasagemDepois, 1.31, 0.01);
   perto(cap.mover, 0.44, 0.01);
@@ -142,10 +169,10 @@ test('⚠️ D52 A medido: fora do regime do passo a defasagem acumula mais ráp
   // A tabela da D25 C descreve a acumulação POR PASSO. Com a D52 A o mês passa a ser
   // dimensionado pela posição quando ela está longe, e aí o que a modulação deixa de
   // mover é maior — a mesma regra, sobre um `programado` maior.
-  const passo = passoDoMes(30), banda = bandaDoMes(30);
-  const noPasso = demandaDaGlidepath({ exposicaoAtual: alvoDaGlidepath(30) + banda + passo - 0.75,
+  const passo = passoDoFechamento(30), banda = bandaDoFechamento(30);
+  const noPasso = demandaDaGlidepath({ exposicaoAtual: alvoDoFechamento(30) + banda + passo - 0.75,
     mesesAteEntrega: 30, estado: 'Capitulação profunda' });
-  const longe = demandaDaGlidepath({ exposicaoAtual: alvoDaGlidepath(30) + 12,
+  const longe = demandaDaGlidepath({ exposicaoAtual: alvoDoFechamento(30) + 12,
     mesesAteEntrega: 30, estado: 'Capitulação profunda' });
   assert.equal(noPasso.naoMovido > 0 && longe.naoMovido > 0, true);
   assert.ok(longe.naoMovido > noPasso.naoMovido,
@@ -165,7 +192,7 @@ test('⚠️ D52 A medido: fora do regime do passo a defasagem acumula mais ráp
 
 test('a banda é tolerância de POSIÇÃO: dentro dela a defasagem não cresce', () => {
   // A defasagem é o que a MODULAÇÃO deixou de mover, não o que a banda deixou.
-  const dentro = demandaDaGlidepath({ exposicaoAtual: alvoDaGlidepath(30) + 2,
+  const dentro = demandaDaGlidepath({ exposicaoAtual: alvoDoFechamento(30) + BANDA_PONTOS - 1,
     mesesAteEntrega: 30, estado: 'Capitulação profunda' });
   assert.equal(dentro.dentroDaBanda, true);
   assert.equal(dentro.mover, 0);

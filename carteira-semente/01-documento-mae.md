@@ -226,6 +226,20 @@ o sistema calcula sem discricionariedade. **O Gate assina.** A invariante 1 perm
   mais do que recuperar na alta, e é assim que deve ser numa carteira com data de entrega. **O teto
   de 12 pontos é a peça que impede a assimetria de crescer sem limite, e por isso é estrutural, não
   parâmetro de ajuste — mexer nele é decisão registrada.***
+
+  🔎 **Em qual regime esses números valem** (Decisão 53 F, como as duas tabelas da Decisão 27). A
+  acumulação do mês é `(1 − fator) × programado`, e `programado` depende de onde a carteira está:
+
+  | Regime | Quando | Acumulação do mês |
+  |---|---|---|
+  | **do passo** | a posição está a no máximo um passo da banda | `(1 − fator) × passo` — os 1,31 acima |
+  | **de correção** | a posição está mais longe que isso (Decisão 52 A) | `(1 − fator) × (distância − banda)`, maior |
+
+  *Os 1,31 e os 0,88 são do regime do passo.* No regime de correção o teto de 12 pontos é alcançado
+  em **menos** meses do que os nove que a tabela sugere — e é coerente: quanto mais longe do alvo,
+  menos o sistema pode se dar ao luxo de ir devagar. Medido nas cinco partidas, os meses com o fator
+  travado no teto passaram de 13 para 17 em Estresse e de 27 para **30** em Saudável · Índice < 65
+  (17 e 29 logo após a Decisão 52; a Decisão 53 C moveu o segundo mais um mês).
 - **Os últimos doze meses não modulam.** Faltando 12 meses ou menos, o fator é sempre 1,00, qualquer
   que seja o estado, e a defasagem acumulada é **liquidada** dentro desse período — trabalhada até
   zero, não perdoada. *Modular pressupõe
@@ -239,6 +253,11 @@ o sistema calcula sem discricionariedade. **O Gate assina.** A invariante 1 perm
   se move nada — sem ela o sistema venderia todo mês por ruído. **É âncora estrutural** (Decisão 30):
   ela determina a exposição com que a criança recebe a carteira, e isso é a promessa central do
   produto. Com banda de 5 em vez de 3, a entrega aconteceria com 20% de exposição em vez de 18%.
+- **O mês mira onde a rampa precisa estar QUANDO ELE FECHAR**, não quando abre (Decisão 53 C).
+  Estando a N meses da entrega, a carteira já devia estar em `alvo(N)`; o trabalho do mês é levá-la
+  a `alvo(N − 1)`. Sem isso todo mês ficava um passo atrasado e **nenhum mês mirava o marco da
+  entrega** — a carteira parava em 15,83% com o marco publicado em 15,00%. Com a mira no
+  fechamento, o último mês administrado é o que aterrissa no marco, e a banda dele é zero.
 - **O mês corrige a POSIÇÃO, não só acompanha o passo** (Decisão 52 A):
   `programado = min(distância, max(passo, distância − banda))`. A modulação continua incidindo
   sobre `programado` — a Decisão 25 C não muda; muda o que `programado` é. Sem isso a folga nascia
@@ -505,7 +524,7 @@ estado indisponível e não gera projeção. Nunca cair em default silencioso.
 ### ⭐ O NÚMERO DE CAPA É O PISO (Decisão 12)
 **Todo material comercial abre por este número:**
 
-> ### R$ 67.725 · 2,1x o aportado
+> ### R$ 75.335 · 2,3x o aportado
 > Piso do cenário conservador — o menor resultado entre as cinco partidas possíveis.
 > Partida: Mercado saudável com Índice ≥ 65 (fase 3 · mês 0), a mais adversa de todas.
 
@@ -513,8 +532,15 @@ estado indisponível e não gera projeção. Nunca cair em default silencioso.
 consegue empurrar para cima sem que o próprio pior caso tenha melhorado. Vender pelo piso torna a
 deriva estruturalmente impossível na capa.
 
-Piso nos outros dois cenários, mesma partida: **R$ 185.653 (5,7x)** no moderado e
-**R$ 557.020 (17,2x)** no forte.
+Piso nos outros dois cenários, mesma partida: **R$ 218.849 (6,8x)** no moderado e
+**R$ 690.653 (21,3x)** no forte.
+
+> ⚠️ **A capa subiu 11,2% na v1.11, e nenhuma regra pegou.** A Decisão 53 A aplicou a modulação à
+> projeção, e o piso saiu de R$ 67.725 para R$ 75.335. A trava da Decisão 13 mede contra a **v1.3**,
+> e a célula do piso está em −14,0% — muito abaixo do gatilho. *A trava protege contra deriva
+> acumulada desde a v1.3, não contra movimento de uma versão para a seguinte.* Registrado como
+> informação para o Gui: a capa mudou de patamar, e quem decide se isso vai para material de venda
+> é ele, não a regra.
 
 ### Segunda linha: a leitura do dia (29/08/2026)
 Rotulada como leitura do dia, com a partida visível. Muda quando o estado muda; quem calcula é o
@@ -525,22 +551,22 @@ simulador, não este documento.
 | Estado (Linha d'Água) | Mercado saudável |
 | Índice Semente | 50,75 |
 | Fase · mês de entrada | 2 · 0 |
-| Conservador | R$ 88 mil (2,7x) |
-| Moderado | R$ 262 mil (8,1x) |
+| Conservador | R$ 85 mil (2,6x) |
+| Moderado | R$ 259 mil (8,0x) |
 | Forte | R$ 868 mil (26,8x) |
 
 ### As cinco partidas, ao lado
 
 | Estado na abertura | Fase · mês | Conservador | Moderado | Forte |
 |---|---|---|---|---|
-| Capitulação profunda | 0 · 9 | R$ 94 mil (2,9x) | R$ 297 mil (9,2x) | R$ 1,05 mi (32,5x) |
-| Prejuízo do mercado | 0 · 3 | R$ 86 mil (2,6x) | R$ 259 mil (8,0x) | R$ 869 mil (26,8x) |
-| Estresse de curto prazo | 1 · 0 | R$ 97 mil (3,0x) | R$ 312 mil (9,6x) | R$ 1,12 mi (34,4x) |
-| **Mercado saudável · Índice < 65** (hoje) | 2 · 0 | **R$ 88 mil (2,7x)** | **R$ 262 mil (8,1x)** | **R$ 868 mil (26,8x)** |
-| Mercado saudável · Índice ≥ 65 | 3 · 0 | R$ 68 mil (2,1x) | R$ 186 mil (5,7x) | R$ 557 mil (17,2x) |
+| Capitulação profunda | 0 · 9 | R$ 96 mil (3,0x) | R$ 314 mil (9,7x) | R$ 1,15 mi (35,4x) |
+| Prejuízo do mercado | 0 · 3 | R$ 89 mil (2,8x) | R$ 281 mil (8,7x) | R$ 972 mil (30,0x) |
+| Estresse de curto prazo | 1 · 0 | R$ 97 mil (3,0x) | R$ 323 mil (10,0x) | R$ 1,20 mi (37,0x) |
+| **Mercado saudável · Índice < 65** (hoje) | 2 · 0 | **R$ 85 mil (2,6x)** | **R$ 259 mil (8,0x)** | **R$ 868 mil (26,8x)** |
+| Mercado saudável · Índice ≥ 65 | 3 · 0 | R$ 75 mil (2,3x) | R$ 219 mil (6,8x) | R$ 691 mil (21,3x) |
 
 **Em todos os estados e em todos os cenários conservadores, o valor aportado mais que dobra** — o
-menor resultado da tabela é 2,1x. O produto funciona até quando o mercado não colabora.
+menor resultado da tabela é 2,3x. O produto funciona até quando o mercado não colabora.
 
 ### A leitura mais aquecida é a de projeção mais baixa
 Mercado saudável com o Índice já esticado dá **os menores números da tabela nos três cenários**.
@@ -573,17 +599,23 @@ apaga a deriva registrada: a série fica completa e o gatilho lê sempre o acumu
    futuro. Sem isso, desdobrar uma linha zeraria a trava dela — e desdobramento viraria porta de
    saída.
 
-#### Estado atual (v1.10) — deriva contra a v1.3
+#### Estado atual (v1.11) — deriva contra a v1.3
 | Partida | Fase · mês | Conservador | Moderado | Forte |
 |---|---|---|---|---|
-| Capitulação profunda | 0 · 9 | R$ 94.071 **+15,7%** 🔴 | R$ 297.492 **+24,8%** 🔴 | R$ 1.051.848 **+36,1%** 🔴 |
-| Prejuízo do mercado | 0 · 3 | R$ 85.820 **+26,7%** 🔴 | R$ 259.084 **+39,6%** 🔴 | R$ 869.200 **+56,0%** 🔴 |
-| Estresse de curto prazo | 1 · 0 | R$ 97.384 +0,0% | R$ 311.730 +0,0% | R$ 1.115.616 +0,0% |
-| Saudável · Índice < 65 | 2 · 0 | R$ 87.561 +0,0% | R$ 262.311 +0,0% | R$ 867.667 +0,0% |
-| Saudável · Índice ≥ 65 | 3 · 0 | R$ 67.725 −22,7% | R$ 185.653 −29,2% | R$ 557.020 −35,8% |
+| Capitulação profunda | 0 · 9 | R$ 95.731 **+17,7%** 🔴 | R$ 313.963 **+31,8%** 🔴 | R$ 1.148.006 **+48,5%** 🔴 |
+| Prejuízo do mercado | 0 · 3 | R$ 89.477 **+32,1%** 🔴 | R$ 280.884 **+51,3%** 🔴 | R$ 971.745 **+74,5%** 🔴 |
+| Estresse de curto prazo | 1 · 0 | R$ 97.292 −0,1% | R$ 322.652 +3,5% | R$ 1.197.821 +7,4% |
+| Saudável · Índice < 65 | 2 · 0 | R$ 84.721 −3,2% | R$ 258.753 −1,4% | R$ 868.192 +0,1% |
+| Saudável · Índice ≥ 65 | 3 · 0 | R$ 75.335 −14,0% | R$ 218.849 −16,6% | R$ 690.653 −20,4% |
 
-**Seis das quinze células estão acima de +15%.** 🔴 = pendente de revisão do Gui, não vai para
-material de venda até ele se pronunciar.
+**Seis das quinze células estão acima de +15%** — as mesmas seis linhas de antes, com magnitude
+maior. 🔴 = pendente de revisão do Gui, não vai para material de venda até ele se pronunciar.
+
+⚠️ **A v1.11 moveu TODAS as quinze células**, inclusive as que estavam em +0,0%. A Decisão 53 A
+trocou a regra de exposição da projeção, e a referência v1.3 **não acompanhou** — ela ficou
+congelada no alvo do ano, que é a regra que produziu os números publicados. Se ela seguisse o motor,
+os dois lados se moveriam juntos e a deriva mediria **zero por construção**: a trava ficaria cega
+exatamente para a revisão que ela existe para pegar.
 
 #### Histórico do gatilho, por versão
 | Versão | Decisão | Células acima de +15% | Piso conservador | Dono do piso |
@@ -596,6 +628,7 @@ material de venda até ele se pronunciar.
 | v1.8 | D13 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
 | v1.9 | D51 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
 | v1.10 | D52 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
+| **v1.11** | **D53** | 6 | **R$ 75.335** ⚠️ patamar novo | Saudável · Índice ≥ 65 |
 
 **Rastreamento da identidade do piso (regra 4):** entre a **v1.3 e a v1.5 o valor do piso é o
 mesmo — R$ 67.725 — mas o dono mudou**, de Prejuízo do mercado para Saudável · Índice ≥ 65. A
@@ -603,23 +636,28 @@ tabela da v1.7 marcava aquela linha como "+0,0%" sem dizer que o piso tinha troc
 estável com dono novo é informação, não silêncio.
 
 #### O que está publicável hoje
-- **O número de capa (R$ 67.725, piso conservador) está liberado.** A partida que o ocupa está em
-  −22,7%, muito longe do gatilho.
-- **Estresse de curto prazo e Saudável · Índice < 65** estão em +0,0% e seguem publicáveis.
-- **Capitulação profunda e Prejuízo do mercado estão retidas** nos três cenários, aguardando o Gui.
+- **O número de capa (R$ 75.335, piso conservador) está liberado pela trava.** A partida que o ocupa
+  está em −14,0%, longe do gatilho — mas ele **subiu 11,2%** sobre o que estava publicado, e isso é
+  movimento de versão, que a trava não mede. Ver o aviso ao lado do número de capa.
+- **Estresse de curto prazo e Saudável · Índice < 65** estão entre −3,2% e +7,4% e seguem publicáveis.
+- **Capitulação profunda e Prejuízo do mercado estão retidas** nos três cenários, aguardando o Gui —
+  e agora mais fundo: o forte de Prejuízo passou de +56,0% para **+74,5%**.
 
 *Herança de referência aplicada:* a linha Saudável · Índice ≥ 65 não existia na v1.3 — nasceu do
 desdobramento da D10 e herda a referência da linha "Mercado saudável" da v1.3 (fase 2 · mês 0),
 pela regra 4 acima. É por isso que ela marca −22,7% em vez de ficar sem base.
 
-*Por que a v1.9 e a v1.10 não movem nenhuma célula:* a Decisão 51 A mexe na banda da glidepath, e a projeção
-publicada **não usa a glidepath modulada** — usa o alvo do ano (Decisão 51 B). A linha entra na
-tabela mesmo assim, com deriva zero e o mesmo dono do piso: revisão registrada é revisão registrada,
-e a série não pula versão. É a regra 4 valendo do lado calmo — piso estável com dono estável também
-é informação.
+*Por que a v1.9 e a v1.10 não moveram nenhuma célula:* as Decisões 51 A e 52 mexem na glidepath, e
+naquele momento a projeção publicada **não usava a glidepath modulada** — usava o alvo do ano
+(Decisão 51 B). As linhas entraram na tabela mesmo assim, com deriva zero e o mesmo dono do piso:
+revisão registrada é revisão registrada, e a série não pula versão.
 
-*Provisoriedade do limite (regra 6):* os 15% foram calibrados sobre oito linhas de série (v1.3 a
-v1.10). Na **décima segunda linha** o limite é recalculado com base na dispersão observada, e essa
+*E por que a v1.11 moveu todas:* a Decisão 53 A revogou a 51 B. A regra de exposição da projeção
+mudou, a referência ficou onde estava, e a deriva passou a medir também a troca de motor — que é o
+que ela tem de medir.
+
+*Provisoriedade do limite (regra 6):* os 15% foram calibrados sobre nove linhas de série (v1.3 a
+v1.11). Na **décima segunda linha** o limite é recalculado com base na dispersão observada, e essa
 recalibragem é ela própria uma decisão registrada — nunca ajuste silencioso. **A base continua na
 v1.3**: o que se recalibra é o limite, não a referência.
 
