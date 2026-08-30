@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.28 — decisões 1 a 47 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.29 — decisões 1 a 48 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -90,6 +90,13 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
    quase sempre verdade; ligação é o que se quer provar.* E a prova da invariante 13 confere a
    **mensagem** da falha, não só que falhou — teste pode reprovar pelo motivo errado, e prova que só
    pergunta "falhou?" aceitaria isso. Decisão 46.
+
+15. **TESTE NASCE DA INTENÇÃO, NUNCA DA SAÍDA.** Asserção de conferência é escrita a partir do que a
+   frase **precisa dizer** — nomeia o ativo, traz a data, não duplica palavra — e nunca copiando o
+   que o sistema produziu. *Teste derivado da saída não confere: **carimba**.* O caso que a nomeou:
+   `"por tese tese vencida em BTC"` tinha um teste fixando o texto exato, e ele congelou a duplicação
+   como se fosse o certo. Asserção já escrita que veio de uma saída é **suspeita até ser reescrita da
+   intenção**. Decisão 48.
 
 ## ÂNCORAS ESTRUTURAIS (Decisão 27)
 **Parâmetro que existe para conter deriva lenta nasce marcado como âncora**, e não é protegido
