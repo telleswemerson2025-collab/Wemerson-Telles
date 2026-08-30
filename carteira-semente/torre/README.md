@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.19 · 29/08/2026 — a suavização do ALL mente, e custa 1,39 ponto
+Conferência. Versão 1.20 · 29/08/2026 — a Curva era mensal, e eu tinha marcado errado
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -853,6 +853,66 @@ registrado sem a raiz, e o comando dizia *"tem de ler exatamente"*. **Um leitor 
 teria reprovado um caminho certo.** Os outros três breadcrumbs foram reportados sem
 raiz também. O comando agora pede que o breadcrumb **termine em** o registrado, e diz
 que a raiz pode aparecer antes.
+
+### ✅ A décima segunda: **Curva 10Y-2Y · max = 2,81 em 01/02/2011**
+Degrau de entrada limpo (31/01 = 2,78). O da frente não separa — e o Gui descobriu
+por quê conferindo as duas pontas: **28/02/2011 ainda lê 2,81 e 01/03 cai para 2,71.**
+Fevereiro inteiro carrega o mesmo valor.
+
+## 🐛 A SÉRIE É MENSAL, E EU A TINHA MARCADO COMO DE PREGÃO
+Não é detalhe de catálogo. Com a marcação errada, o comando do **mínimo** dela ia dar
+a explicação **errada**:
+
+> *"Curva 10Y-2Y é série de PREGÃO e 2023-07-01 caiu num fim de semana: o terminal
+> repete o fechamento da sexta…"*
+
+01/07/2023 **é** sábado — mas isso não tem nada a ver. Numa série mensal o dia 1 é
+**referência de mês**, e julho inteiro carrega o valor. O aviso teria mandado o Gui
+procurar a causa errada, com um argumento que soa correto.
+
+### E o sinal estava no dado, sem eu usar
+`pareceMensal()`: quando **as duas pontas caem no dia 1 do mês**, a série provavelmente
+é mensal desenhada como escada diária. Acendem exatamente três — e são exatamente as
+três de `SERIES_EM_PATAMAR`:
+
+| Série | dataMin | dataMax | Marcada como |
+|---|---|---|---|
+| US M2 | 2011-01-**01** | 2026-07-**01** | mensal ✅ |
+| **Curva 10Y-2Y** | 2023-07-**01** | 2011-02-**01** | ~~pregão~~ → **mensal** |
+| **Fed Funds Rate** | 2020-04-**01** | 2023-08-**01** | pregão — **⚠️ não conferido** |
+
+**O Fed Funds acende o sinal e continua marcado como pregão.** E há uma segunda
+evidência: o patamar que o Gui leu vai de **01/08/2023 a 31/08/2024** — treze meses
+**exatos**, alinhados ao mês. Uma taxa que degrau em reunião de FOMC degrauria no meio
+do mês, não no dia 1.
+
+**Não mudei.** O comando agora **levanta a divergência** quando o sinal e a marcação
+discordam, e pede que se confira de que dia o valor muda. É a invariante 9 aplicada a
+mim mesmo: quem implementa levanta, não escolhe.
+
+## ⚠️ E UMA COISA MINHA QUE PRECISAVA DE MARCA: AS UNIDADES INFERIDAS
+O título da Curva **não traz** a unidade — o Gui achou em *"Sobre esta métrica"*,
+abaixo do gráfico. Isso me fez olhar de onde vieram as outras, e a resposta é
+desconfortável: **cinco foram lidas na tela, nove são inferência minha.**
+
+O portão diz *"a unidade tem de ser X"*. Se X é palpite meu e a tela diz outra coisa,
+o portão reprova uma série **certa** — e manda parar. `unidadeConferida` marca as cinco
+lidas, e onde a unidade é minha o comando avisa:
+
+```
+⚠️ "US$ tri" é inferência minha, não leitura de tela. Se a tela disser outra coisa, a tela manda:
+   conferir no título, e se não estiver lá, na seção "Sobre esta métrica" abaixo do gráfico.
+```
+
+*Lidas: SOPR · Supply in Profit · Fed Funds · Funding Rate · Curva 10Y-2Y.*
+
+### A segunda das quatro datas de sábado ficou sabida
+Curva: último ponto **24/08/2026**, não 29/08 — mesma data e mesma diferença do Fed
+Funds. Custo zero, confiança saturada. **Sobram DXY e US M2** sem leitura.
+
+*E o Funding Rate, também datado num sábado, está **certo**: série 24/7, e o Gui leu o
+último ponto em 29/08 mesmo. Nem toda data de sábado é problema — só as das séries que
+não operam no sábado.*
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o

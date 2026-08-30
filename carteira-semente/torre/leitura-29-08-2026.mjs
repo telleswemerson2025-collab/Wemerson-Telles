@@ -316,7 +316,60 @@ export const VARREDURA_29_08_2026 = Object.freeze({
     }],
   },
   'US M2':              { valor: 23.218,   min: 8.845,   max: 23.218,    data: '2026-08-29' , dataMin: '2011-01-01', dataMax: '2026-07-01', confirmado: { valor: '2026-08-29', min: null, max: null } },
-  'Curva 10Y-2Y':       { valor: 0.38,     min: -0.93,   max: 2.81,      data: '2026-08-29' , dataMin: '2023-07-01', dataMax: '2011-02-01', confirmado: { valor: '2026-08-29', min: null, max: null } },
+  'Curva 10Y-2Y': {
+    valor: 0.38, min: -0.93, max: 2.81, data: '2026-08-29',
+    dataMin: '2023-07-01', dataMax: '2011-02-01',
+    confirmado: { valor: '2026-08-29', min: null, max: '2026-08-29' },
+    // Mesma divergencia do Fed Funds, e agora sabida: o ultimo ponto desenhado e
+    // 24/08/2026, nao 29/08. Custo zero — confianca saturada (D36 C).
+    divergenciaDeData: {
+      registrado: '2026-08-29', naTela: '2026-08-24', diferencaEmDias: 5,
+      comoApareceu: 'o portão de identidade pediu o valor corrente, e o Gui reportou a data junto',
+      efeitoNoIndice: 0,
+    },
+    unidadeLida: {
+      em: '2026-08-29', unidade: 'pontos percentuais',
+      // ⚠️ LUGAR NOVO. O titulo NAO traz a unidade, diferente de "Fed Funds Rate (%)"
+      // e "Funding Rate — APR (%)". Ela esta na secao "Sobre esta metrica", abaixo do
+      // grafico: "spread entre o Treasury de 10 anos e o de 2 anos (em pontos percentuais)".
+      onde: 'seção "Sobre esta métrica", abaixo do gráfico — o título desta série não traz unidade',
+      breadcrumbCompleto: 'Studio / Macro / Yield Curve 10Y-2Y',
+      cabecalho: 'BITCOIN · MACRO',
+    },
+    conferencias: [{
+      campo: 'max', em: '2026-08-29',
+      metodo: 'Studio / Macro / Yield Curve 10Y-2Y, tooltip, modo SMA, janela estreitada até o passo do cursor virar 1 dia',
+      lido: '2.81 — dois, ponto, oito, um',
+      casasNaTooltip: 2,
+      vizinhos: { '2011-01-31': 2.78, '2011-02-01': 2.81, '2011-02-02': 2.81 },
+      // ⚠️ A SERIE E MENSAL, e eu a tinha marcada como de PREGAO. O Gui provou
+      // conferindo as duas pontas: 28/02/2011 ainda le 2.81 e 01/03 cai para 2.71.
+      // Fevereiro inteiro carrega o mesmo valor. Nao e arredondamento nem pixel.
+      serieEhMensal: {
+        provaDoGui: '28/02/2011 ainda lê 2,81; 01/03/2011 cai para 2,71 — os 28 dias de fev/2011 carregam o mesmo valor',
+        desenho: 'mensal desenhada como escada diária',
+        euTinhaMarcadoComo: 'pregão',
+        oQueIssoQuebrava: 'o comando ia avisar que 01/07/2023 (o mínimo) é sábado e o valor vinha da sexta — explicação errada: ' +
+                          'para série mensal o dia 1 é referência de MÊS, e o fim de semana não tem nada a ver',
+        sinalQueEuTinhaESemUsar: 'as DUAS pontas caem no dia 1 do mês (01/07/2023 e 01/02/2011)',
+      },
+      platoDeValor: {
+        inicio: '2011-02-01', fim: '2011-02-28', diasNoPatamar: 28,
+        degrauDeEntrada: { '2011-01-31': 2.78, '2011-02-01': 2.81 },
+        primeiraLeituraDepois: { '2011-02-28': 2.81, '2011-03-01': 2.71 },
+        oQueADataSignifica: 'mês de referência fev/2011; 01/02 é o primeiro dia, não um ponto único',
+        naturezaDoMetodo: 'patamar mensal — o mês é a unidade, e as duas pontas se registram juntas',
+      },
+      ehMaximoDaSerie: 'dois blocos curtos que se encostam, rivais conferidos na tooltip — sem eixo nem pixel no ALL. ' +
+                       '11/01/2011 → 11/01/2012: o degrau mais alto do ano é fev/2011 (2,81); janeiro fica em 2,78 e de março em diante a escada só desce. ' +
+                       '11/01/2012 → hoje: o topo é dez/2013 = 2,56 (BTC US$ 865), e o eixo dessa janela nem passa de 2,5.',
+      metodoDeVarredura: 'eixo auto-escalado por blocos, com os rivais conferidos na tooltip',
+      folgaAteOSegundo: '0,25 pp (2,81 contra 2,56 em dez/2013)',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 1 nos três dias — dólar inteiro de novo, sem poder de separação',
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }],
+  },
   'ETF Net Inflow':     { valor: 242.3,    min: -1138.9, max: 1373.8,    data: '2026-08-27' , dataMin: '2025-02-25', dataMax: '2024-11-07', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Funding Rate': {
     valor: 1.84, min: -139.23, max: 186.86, data: '2026-08-29',

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -1004,12 +1004,21 @@ test('o calendário é por série: sábado é dia de dado numa série 24/7', () 
 });
 
 test('o comando avisa do carregamento ANTES, em vez de a pessoa descobrir na tela', () => {
-  // A Curva 10Y-2Y tem o mínimo datado em 01/07/2023, que é um SÁBADO.
-  assert.equal(semPregao('2023-07-01'), true);
-  assert.equal(dataSuspeitaDeCarregamento('Curva 10Y-2Y', '2023-07-01'), true);
-  const cmd = comandoDeConferencia({ serie: 'Curva 10Y-2Y', campo: 'min' }, V);
+  assert.equal(semPregao('2023-07-01'), true, 'é sábado');
+  // A Curva era o exemplo até se descobrir que ela é MENSAL: para série mensal o dia 1
+  // é referência de mês, e o aviso de fim de semana seria a explicação errada.
+  assert.equal(dataSuspeitaDeCarregamento('Curva 10Y-2Y', '2023-07-01'), false);
+  assert.ok(!comandoDeConferencia({ serie: 'Curva 10Y-2Y', campo: 'min' }, V).includes('série de PREGÃO'));
+  // O mecanismo continua de pé, com uma data de pregão que caia em fim de semana.
+  assert.equal(dataSuspeitaDeCarregamento('DXY', '2023-07-01'), true);
+  const forjada = { ...V, 'DXY': { ...V['DXY'], dataMin: '2023-07-01' } };
+  const cmd = comandoDeConferencia({ serie: 'DXY', campo: 'min' }, forjada);
   assert.match(cmd, /série de PREGÃO e 2023-07-01 caiu num fim de semana/);
   assert.match(cmd, /nenhum zoom os separa/);
+  // Nenhuma série real tem hoje extremo de pregão em fim de semana.
+  const disparam = SERIES.filter((x) => V[x.n] &&
+    (dataSuspeitaDeCarregamento(x.n, V[x.n].dataMin) || dataSuspeitaDeCarregamento(x.n, V[x.n].dataMax)));
+  assert.deepEqual(disparam, []);
   // E numa série 24/7 o aviso não aparece.
   assert.ok(!comandoDeConferencia({ serie: 'SOPR', campo: 'max' }, V).includes('série de PREGÃO'));
 });
@@ -1138,7 +1147,7 @@ test('as três espécies de empate são distintas, e nenhuma se resolve como a o
 });
 
 test('o comando avisa do patamar antes, e só nas séries que andam em patamar', () => {
-  assert.deepEqual(Object.keys(SERIES_EM_PATAMAR).sort(), ['Fed Funds Rate', 'US M2']);
+  assert.deepEqual(Object.keys(SERIES_EM_PATAMAR).sort(), ['Curva 10Y-2Y', 'Fed Funds Rate', 'US M2']);
   const cmd = comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V);
   assert.match(cmd, /anda em PATAMAR/);
   assert.match(cmd, /a data é a PRIMEIRA ocorrência dele — o degrau/);
@@ -1345,4 +1354,90 @@ test('o portão pede sufixo, não igualdade — os breadcrumbs foram lidos com r
   assert.match(cmd, /o breadcrumb tem de TERMINAR em/);
   assert.match(cmd, /a raiz do menu pode aparecer antes/);
   assert.ok(!cmd.includes('tem de ler exatamente'), 'exigir igualdade reprovaria caminho certo');
+});
+
+// ══ CURVA 10Y-2Y · MAX — A SÉRIE ERA MENSAL, E ESTAVA MARCADA ERRADA ══════
+test('o máximo da Curva bate, e o mês inteiro carrega o valor', () => {
+  const c = V['Curva 10Y-2Y'].conferencias.find((x) => x.campo === 'max');
+  assert.equal(V['Curva 10Y-2Y'].confirmado.max, '2026-08-29');
+  assert.equal(c.vizinhos['2011-01-31'], 2.78, 'degrau de entrada limpo');
+  assert.equal(c.vizinhos['2011-02-02'], c.vizinhos['2011-02-01'], 'o dia seguinte é idêntico');
+  assert.equal(c.platoDeValor.diasNoPatamar, 28, 'fevereiro de 2011 inteiro');
+  assert.equal(c.platoDeValor.primeiraLeituraDepois['2011-03-01'], 2.71);
+  assert.match(c.platoDeValor.oQueADataSignifica, /mês de referência fev\/2011/);
+});
+
+test('a Curva é mensal, e o comando dava a explicação errada quando eu a marcava como pregão', () => {
+  assert.equal(SERIES.find((s) => s.n === 'Curva 10Y-2Y').calendario, 'mensal');
+  assert.ok(SERIES_EM_PATAMAR['Curva 10Y-2Y']);
+  // O aviso que ela recebia era o de fim de semana — explicação errada para o dia 1.
+  assert.equal(semPregao('2023-07-01'), true, 'é sábado, mas isso não é o motivo');
+  assert.equal(dataSuspeitaDeCarregamento('Curva 10Y-2Y', '2023-07-01'), false);
+  const cmd = comandoDeConferencia({ serie: 'Curva 10Y-2Y', campo: 'min' }, V);
+  assert.ok(!cmd.includes('série de PREGÃO'), 'o aviso errado sumiu');
+  assert.match(cmd, /anda em PATAMAR/, 'e entrou o certo');
+});
+
+test('o sinal de série mensal estava no dado, e eu não tinha usado', () => {
+  // Duas pontas no dia 1 do mês. As três que acendem são exatamente as três em patamar.
+  const acendem = SERIES.filter((x) => V[x.n] && pareceMensal(x.n, V)).map((x) => x.n).sort();
+  assert.deepEqual(acendem, ['Curva 10Y-2Y', 'Fed Funds Rate', 'US M2']);
+  assert.deepEqual(acendem, Object.keys(SERIES_EM_PATAMAR).sort());
+  // Nenhuma série 24/7 acende.
+  for (const n of acendem) assert.notEqual(SERIES.find((x) => x.n === n).calendario, '24/7');
+});
+
+test('o comando levanta a divergência quando o sinal e a marcação discordam', () => {
+  // O Fed Funds acende o sinal e está marcado como pregão: pode ser mensal, e não foi
+  // conferido. O comando levanta, em vez de eu decidir sozinho.
+  assert.equal(pareceMensal('Fed Funds Rate', V), true);
+  assert.equal(SERIES.find((s) => s.n === 'Fed Funds Rate').calendario, 'pregão');
+  const cmd = comandoDeConferencia({ serie: 'Fed Funds Rate', campo: 'min' }, V);
+  assert.match(cmd, /caem no dia 1 do mês, o que costuma indicar série MENSAL/);
+  assert.match(cmd, /Reportar antes de qualquer conclusão sobre a data/);
+  // E o patamar lido é alinhado ao mês, que é a evidência a favor.
+  const plato = V['Fed Funds Rate'].conferencias.find((x) => x.campo === 'max').platoDeValor;
+  assert.equal(plato.inicio, '2023-08-01', 'primeiro dia de um mês');
+  assert.equal(plato.fim, '2024-08-31', 'último dia de um mês');
+  assert.match(SERIES_EM_PATAMAR['Fed Funds Rate'], /pode ser série mensal, e isso não foi conferido/);
+  // Onde marcação e sinal concordam, o comando não levanta nada.
+  assert.ok(!comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V).includes('costuma indicar série MENSAL'));
+});
+
+// ══ A PROCEDÊNCIA DAS UNIDADES ════════════════════════════════════════════
+test('unidade lida na tela e unidade inferida por mim são coisas diferentes', () => {
+  const lidas = SERIES.filter((s) => s.unidadeConferida).map((s) => s.n).sort();
+  assert.deepEqual(lidas, ['Curva 10Y-2Y', 'Fed Funds Rate', 'Funding Rate', 'SOPR', 'Supply in Profit']);
+  // Onde a unidade é inferência minha, o comando diz isso — senão o portão reprova
+  // uma série certa com base num palpite meu.
+  const inferida = comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V);
+  assert.match(inferida, /"US\$ tri" é inferência minha, não leitura de tela/);
+  assert.match(inferida, /na seção "Sobre esta métrica" abaixo do gráfico/);
+  // E onde foi lida, não há ressalva.
+  assert.ok(!comandoDeConferencia({ serie: 'Curva 10Y-2Y', campo: 'min' }, V)
+    .includes('é inferência minha'));
+});
+
+test('a unidade nem sempre está no título — a Curva mostrou o segundo lugar', () => {
+  const u = V['Curva 10Y-2Y'].unidadeLida;
+  assert.match(u.onde, /Sobre esta métrica/);
+  assert.match(u.onde, /o título desta série não traz unidade/);
+  assert.equal(u.breadcrumbCompleto, 'Studio / Macro / Yield Curve 10Y-2Y');
+  assert.equal(SERIES.find((s) => s.n === 'Curva 10Y-2Y').caminhoNoMenu, u.breadcrumbCompleto);
+});
+
+test('a segunda das quatro datas de sábado ficou sabida, e continua custando zero', () => {
+  const d = V['Curva 10Y-2Y'].divergenciaDeData;
+  assert.equal(d.naTela, '2026-08-24');
+  assert.equal(d.diferencaEmDias, 5);
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const corrigida = { ...V, 'Curva 10Y-2Y': { ...V['Curva 10Y-2Y'], data: '2026-08-24' } };
+  assert.equal(varrer({ varredura: corrigida, hoje: HOJE }).indice, base);
+  // O Funding Rate também está datado num sábado, e ali o sábado é LEGÍTIMO: série
+  // 24/7, e o Gui leu o último ponto em 29/08 mesmo. Só as não-24/7 são suspeitas.
+  assert.equal(SERIES.find((x) => x.n === 'Funding Rate').calendario, '24/7');
+  assert.equal(semPregao(V['Funding Rate'].data), true);
+  const suspeitas = SERIES.filter((x) => V[x.n] && x.calendario !== '24/7'
+    && semPregao(V[x.n].data) && !V[x.n].divergenciaDeData);
+  assert.deepEqual(suspeitas.map((x) => x.n).sort(), ['DXY', 'US M2'], 'duas ainda sem leitura');
 });

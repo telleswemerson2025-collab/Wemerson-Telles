@@ -21,15 +21,15 @@ export const SERIES = Object.freeze([
   { n: 'Realized Price STH',  camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7', unidade: 'US$' },
   { n: 'Realized Price LTH',  camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7', unidade: 'US$' },
   { n: 'MVRV Ratio',          camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'regua', calendario: '24/7', unidade: 'razão' },
-  { n: 'SOPR',                camada: 2, escala: 'log', inicioSerie: '2011-01-01', calendario: '24/7', unidade: 'razão', caminhoNoMenu: 'Spent Output Profit Ratio (SOPR) / SOPR' },
-  { n: 'Supply in Profit',    camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7', unidade: '%' },
+  { n: 'SOPR',                camada: 2, escala: 'log', inicioSerie: '2011-01-01', calendario: '24/7', unidade: 'razão', caminhoNoMenu: 'Spent Output Profit Ratio (SOPR) / SOPR', unidadeConferida: true },
+  { n: 'Supply in Profit',    camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7', unidade: '%', unidadeConferida: true },
   { n: 'Liveliness',          camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7', unidade: 'razão', caminhoNoMenu: 'Cointime Statistics / Liveliness' },
   { n: 'DXY',                 camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão', unidade: 'pontos de índice', caminhoNoMenu: 'Macro / DXY — Dollar Index' },
-  { n: 'Fed Funds Rate',      camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão', unidade: '% a.a.', caminhoNoMenu: 'Macro / Fed Funds Rate (%)' },
+  { n: 'Fed Funds Rate',      camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão', unidade: '% a.a.', caminhoNoMenu: 'Macro / Fed Funds Rate (%)', unidadeConferida: true },
   { n: 'US M2',               camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal', unidade: 'US$ tri' },
-  { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'pregão', unidade: 'pontos percentuais' },
+  { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal', unidade: 'pontos percentuais', unidadeConferida: true, caminhoNoMenu: 'Studio / Macro / Yield Curve 10Y-2Y' },
   { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11', calendario: 'pregão', unidade: 'US$ mi' },
-  { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01', calendario: '24/7', unidade: 'APR (%)', caminhoNoMenu: 'Studio / Futuros / Funding Rate — APR (%)' },
+  { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01', calendario: '24/7', unidade: 'APR (%)', caminhoNoMenu: 'Studio / Futuros / Funding Rate — APR (%)', unidadeConferida: true },
   // A escala é LINEAR e não pode ser outra: netflow é entrada menos saída, cruza o
   // zero, e log de zero ou de negativo não produz número errado — não produz número
   // nenhum. A D38 D chamou a série de logarítmica; a D39 corrigiu para linear.
@@ -37,37 +37,6 @@ export const SERIES = Object.freeze([
   { n: 'Exchange Netflow',    camada: 4, escala: 'lin', inicioSerie: '2011-01-01', extremosProvisorios: true, calendario: '24/7', unidade: null },
 ]);
 
-/**
- * D35 B, aprendido na conferência do DXY · min: série de PREGÃO repete o fechamento
- * de sexta no sábado e no domingo. Três dias exibindo o mesmo número não é empate de
- * arredondamento — é o mesmo valor carregado adiante, e nenhum zoom os separa. Quem
- * decide qual dia é o extremo é o CALENDÁRIO, não a tela.
- *
- * Série 24/7 não tem isso: sábado é dia de dado como qualquer outro (a máxima do
- * Liveliness é um sábado, e é legítima).
- */
-/**
- * O terminal tem séries HOMÔNIMAS, e a conferência do Supply in Profit · min mostrou
- * o risco: dois "Supply in Profit" no menu, um em BTC e um em percentual. Abrir o
- * errado dá um número plausível de uma série que não é a nossa, e nada na tela avisa.
- *
- * Só entram aqui os homônimos que uma conferência REPORTOU. Não é lista adivinhada.
- */
-/**
- * Séries cujo valor fica PARADO por construção entre atualizações. A conferência do
- * Fed Funds · max encontrou 396 dias seguidos com o mesmo 5.33 — não é arredondamento
- * nem fim de semana: é uma taxa de política mantida no lugar. Nem dígito nem pixel
- * decidem, porque o dado é literalmente o mesmo.
- *
- * Para elas o extremo é um PATAMAR, e a data é a primeira ocorrência — o degrau.
- */
-/**
- * Como varrer o ALL para provar que nada passa do extremo, do mais forte ao mais fraco.
- * A conferência do SOPR · max derrubou o segundo: no ALL o gráfico comprime ~5.700 dias
- * em ~1.100 px, então UM dia ocupa 0,19 px e um pico de barra única some no recorte.
- * O resultado POSITIVO da banda continua valendo — o que enfraquece é o negativo,
- * "não há mais nada aqui", que é justamente o que a varredura precisa provar.
- */
 /**
  * Casas decimais que a tooltip de cada série mostra, uma por série. Só entram as que
  * uma conferência LEU — não é tabela adivinhada. A conferência do Funding Rate · max
@@ -118,6 +87,13 @@ export const SUAVIZACAO_NO_ALL = Object.freeze({
   noAll: -53, estreitado: -139.2, fator: 2.63, custoSeUsado: 1.39,
 });
 
+/**
+ * Como varrer o ALL para provar que nada passa do extremo, do mais forte ao mais fraco.
+ * A conferência do SOPR · max derrubou o segundo: no ALL o gráfico comprime ~5.700 dias
+ * em ~1.100 px, então UM dia ocupa 0,19 px e um pico de barra única some no recorte.
+ * O resultado POSITIVO da banda continua valendo — o que enfraquece é o negativo,
+ * "não há mais nada aqui", que é justamente o que a varredura precisa provar.
+ */
 export const METODOS_DE_VARREDURA = Object.freeze([
   { m: 'concorrentes um a um na tooltip, em passo de 1 dia', forca: 1,
     como: 'medir cada rival com a janela estreitada, um por um',
@@ -144,17 +120,53 @@ export function comoATelaMostra(serie, campo, varredura) {
   return { registrado: v, naTela: Number(v.toFixed(casas)), casas, excede: excedeATooltip(serie, campo, varredura) };
 }
 
+/**
+ * Séries cujo valor fica PARADO por construção entre atualizações. A conferência do
+ * Fed Funds · max encontrou 396 dias seguidos com o mesmo 5.33 — não é arredondamento
+ * nem fim de semana: é uma taxa de política mantida no lugar. Nem dígito nem pixel
+ * decidem, porque o dado é literalmente o mesmo.
+ *
+ * Para elas o extremo é um PATAMAR, e a data é a primeira ocorrência — o degrau.
+ */
 export const SERIES_EM_PATAMAR = Object.freeze({
-  'Fed Funds Rate': 'taxa de política: fica parada entre reuniões do FOMC, por meses',
+  'Fed Funds Rate': 'fica parada por meses. ⚠️ o patamar lido (01/08/2023 → 31/08/2024) é alinhado ao MÊS, não a datas de FOMC — pode ser série mensal, e isso não foi conferido',
   'US M2': 'série mensal: cada leitura vale até a publicação do mês seguinte',
+  'Curva 10Y-2Y': 'série MENSAL desenhada como escada diária: o mês inteiro carrega o mesmo valor (fev/2011 = 2,81 do dia 1 ao 28)',
 });
 
+/**
+ * Sinal barato de série mensal, e que eu já tinha no dado sem usar: quando as DUAS
+ * pontas caem no dia 1 do mês, a série provavelmente é mensal desenhada como escada
+ * diária. A conferência do Curva 10Y-2Y · max mostrou isso — e a Curva estava marcada
+ * como série de pregão, o que fazia o comando dar o aviso ERRADO no mínimo dela.
+ */
+export const pareceMensal = (serie, varredura) => {
+  const v = varredura?.[serie];
+  return Boolean(v?.dataMin?.endsWith('-01') && v?.dataMax?.endsWith('-01'));
+};
+
+/**
+ * O terminal tem séries HOMÔNIMAS, e a conferência do Supply in Profit · min mostrou
+ * o risco: dois "Supply in Profit" no menu, um em BTC e um em percentual. Abrir o
+ * errado dá um número plausível de uma série que não é a nossa, e nada na tela avisa.
+ *
+ * Só entram aqui os homônimos que uma conferência REPORTOU. Não é lista adivinhada.
+ */
 export const HOMONIMOS_NO_TERMINAL = Object.freeze({
   'Supply in Profit': 'há dois no menu: um em BTC (≈13,5M BTC) e um em percentual. O nosso é o PERCENTUAL',
   'SOPR': 'há o SOPR simples e os SOPR LTH e STH. O nosso é o SIMPLES',
   'Realized Price': 'há Realized Price, Realized Price STH e Realized Price LTH — as três estão na varredura, cada uma na sua linha',
 });
 
+/**
+ * D35 B, aprendido na conferência do DXY · min: série de PREGÃO repete o fechamento
+ * de sexta no sábado e no domingo. Três dias exibindo o mesmo número não é empate de
+ * arredondamento — é o mesmo valor carregado adiante, e nenhum zoom os separa. Quem
+ * decide qual dia é o extremo é o CALENDÁRIO, não a tela.
+ *
+ * Série 24/7 não tem isso: sábado é dia de dado como qualquer outro (a máxima do
+ * Liveliness é um sábado, e é legítima).
+ */
 export const CALENDARIOS = Object.freeze(['24/7', 'pregão', 'mensal']);
 const DIAS_SEM_PREGAO = Object.freeze([0, 6]); // domingo e sábado
 export const semPregao = (data) => DIAS_SEM_PREGAO.includes(new Date(`${data}T00:00:00Z`).getUTCDay());
@@ -434,6 +446,10 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
         '     separar por uma casa decimal só. Anotar o breadcrumb e reportar junto: ele entra no registro.',
       ] : []),
       '  Se o valor de hoje não bater, a série aberta é outra: parar e reportar, não ajustar a leitura.',
+      ...(unidade && !SERIES.find((x) => x.n === serie)?.unidadeConferida ? [
+        `  ⚠️ "${unidade}" é inferência minha, não leitura de tela. Se a tela disser outra coisa, a tela manda:`,
+        '     conferir no título, e se não estiver lá, na seção "Sobre esta métrica" abaixo do gráfico.',
+      ] : []),
     ] : [
       '',
       `⚠️ A unidade de ${serie} não está registrada em lugar nenhum, então este comando não tem como`,
@@ -448,6 +464,13 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
       `${CASAS_NA_TOOLTIP[serie]} casa(s). Ele NÃO vai aparecer na tela assim.`,
       'Anotar o que a tela mostra, sem completar e sem arredondar de volta. Se o exibido for',
       'compatível com o anotado, dizer isso; a diferença de precisão é o achado, não um erro de leitura.',
+    ] : []),
+    ...(ehExtremo && pareceMensal(serie, varredura) && SERIES.find((x) => x.n === serie)?.calendario !== 'mensal' ? [
+      '',
+      `⚠️ As duas pontas de ${serie} caem no dia 1 do mês, o que costuma indicar série MENSAL`,
+      `desenhada como escada diária — mas ela está marcada como '${SERIES.find((x) => x.n === serie)?.calendario}'.`,
+      'Conferir de que dia a dia o valor muda: se o mês inteiro carregar o mesmo número, é mensal',
+      'e a marcação está errada. Reportar antes de qualquer conclusão sobre a data.',
     ] : []),
     ...(ehExtremo && SERIES_EM_PATAMAR[serie] ? [
       '',
