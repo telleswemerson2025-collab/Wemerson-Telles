@@ -139,7 +139,7 @@ export const VARREDURA_29_08_2026 = Object.freeze({
   'DXY': {
     valor: 99.16, min: 72.93, max: 114.11, data: '2026-08-29',
     dataMin: '2011-04-29', dataMax: '2022-09-27',
-    confirmado: { valor: '2026-08-29', min: null, max: '2026-08-29' },
+    confirmado: { valor: '2026-08-29', min: '2026-08-29', max: '2026-08-29' },
     // ⚠️ ANOMALIA DE MENU, não de dado: no menu do terminal o DXY aparece com o
     // valor atual em "—" enquanto o histórico carrega normal. Nenhuma das outras
     // treze séries faz isso. Não move o índice — a confiança do DXY já está no teto
@@ -150,6 +150,11 @@ export const VARREDURA_29_08_2026 = Object.freeze({
     anomaliaDeMenu: {
       observadaEm: '2026-08-29',
       o_que: 'valor atual exibido como "—" no menu; o histórico do gráfico carrega normal',
+      // EXPLICADA pela conferencia do DXY · min: 29/08/2026 e SABADO, e o DXY e serie
+      // de pregao. Nao ha cotacao de sabado para o menu mostrar; o historico carrega
+      // porque historico existe. Nao e falha do terminal nem do dado.
+      explicacao: '29/08/2026 é sábado e o DXY é série de pregão — não há cotação do dia para o menu exibir',
+      explicadaEm: '2026-08-29, na conferência do DXY · min',
       efeitoNoIndice: 0, motivoDoEfeitoZero: 'confiança do DXY já saturada em 1 (D7)',
       alavancaDoValor: 1.0945, // pontos de índice por 10% de erro no valor
     },
@@ -175,6 +180,29 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       cruzamento: 'BTC PRICE na mesma tooltip: US$ 19.634 em 27/09; US$ 19.045 em 26/09 e US$ 19.144 em 28/09',
       // Duas casas de exibição: a máxima só é conhecida até ±0,005.
       incertezaDaExibicao: { faixa: [114.105, 114.115], efeitoNoIndice: 0.00035 },
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }, {
+      campo: 'min', em: '2026-08-29',
+      metodo: 'Macro · DXY — Dollar Index, tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia',
+      lido: '72.93 — sete, dois, ponto, nove, três',
+      casasNaTooltip: 2,
+      vizinhos: { '2011-04-28': 73.12, '2011-04-29': 72.93, '2011-04-30': 72.93, '2011-05-01': 72.93, '2011-05-02': 72.95 },
+      // EMPATE DE CALENDARIO, nao de exibicao. Tres dias exibem 72.93 e continuam no
+      // mesmo pixel com o eixo a ~0,009/px: nenhum zoom os separa, porque nao ha o
+      // que separar. 29/04/2011 foi SEXTA; 30/04 e 01/05 sao fim de semana e o
+      // terminal repete o fechamento. Na segunda o indice ja anda (72.95).
+      empateDeCalendario: {
+        diasIguais: ['2011-04-29', '2011-04-30', '2011-05-01'],
+        diaDeFormacao: '2011-04-29', diaDaSemana: 'sexta-feira',
+        porQueOPixelNaoResolve: 'não é arredondamento — é o mesmo valor carregado adiante; a ~0,009/px os três ficam no mesmo pixel',
+        primeiroPregaoSeguinte: { '2011-05-02': 72.95 },
+        naturezaDoMetodo: 'calendário — o único que não olha a tela',
+      },
+      ehMinimoDaSerie: 'varrida a faixa de altura ~73 na série inteira: a linha só entra nela entre janeiro e meados de 2011. ' +
+                       'De 2012 em diante nenhum ponto chega perto — o fundo de 2014 fica em ~79, o de 2018 em ~88. ' +
+                       'Dentro de 2011 os rivais mais próximos ficam em 73,6–73,8 (fundos de fev/mar e de agosto).',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 2 — de novo a redondagem para dólar inteiro, que nesta escala não cruza nada',
       telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
                       'nada publicado, alterado ou apagado, nenhum print salvo',
     }],

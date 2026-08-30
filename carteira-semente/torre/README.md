@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.13 · 29/08/2026 — SOPR conferido · as réguas vêm de um regime que acabou
+Conferência. Versão 1.14 · 29/08/2026 — DXY inteiro · o calendário entra como método
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -535,6 +535,62 @@ casos** — o que o cliente recebe hoje não muda.
 e trocá-la é decisão. O que fica registrado é que a **D7 não cobre isto**: o fator de
 confiança pune série *curta*, e não existe nada que trate régua *velha*. Uma série de
 quinze anos tem confiança 1 mesmo com as duas pontas fixadas no primeiro ano.
+
+### ✅ A sexta conferência: **DXY · min = 72,93 em 29/04/2011** — e o quarto método
+O valor bate. **Três dias exibem 72.93**, e continuam no mesmo pixel com o eixo a
+~0,009/px. O pixel não resolve — e a razão é que **não há o que separar**:
+
+> 29/04/2011 foi **sexta-feira**. 30/04 e 01/05 são fim de semana, e o terminal repete
+> o fechamento. Na segunda (02/05) o índice já anda: 72,95.
+
+**Não é empate de exibição, é o mesmo valor carregado adiante.** Quem decide é o
+**calendário**, que é o único dos quatro métodos que não olha a tela — e o único que
+*prova* em vez de aproximar.
+
+| Empate | Liveliness · max | DXY · min |
+|---|---|---|
+| O que é | números **diferentes** que a tela arredonda igual | o **mesmo** número, repetido |
+| Resolve com | zoom até separar os pixels | calendário |
+| Força | inferência do desenho | dedutivo, verificável sem terminal |
+
+`CALENDARIOS` marca cada série como `24/7`, `pregão` ou `mensal`, e o comando agora
+**avisa antes**: a próxima com este problema é a **Curva 10Y-2Y · min**, datada em
+01/07/2023, que é um sábado. Sem o aviso, o empate reapareceria parecendo erro.
+
+*E o calendário é por série: a máxima do Liveliness é um sábado e é legítima, porque
+a série é onchain. Há teste dos dois lados.*
+
+### ✅ E o "—" do DXY tem explicação
+**29/08/2026 é sábado.** O DXY é série de pregão: não há cotação do dia para o menu
+mostrar, e o histórico carrega porque histórico existe. Não era falha do terminal nem
+do dado. A pergunta que ficou aberta na conferência anterior está fechada, e a
+explicação está gravada em `anomaliaDeMenu.explicacao`.
+
+### ⚠️ Mas isso deixou quatro datas erradas no dado
+A leitura foi feita num sábado, e quatro séries de pregão levaram a **data do dia da
+leitura** em vez da data do próprio dado: **DXY, Fed Funds Rate, Curva 10Y-2Y e US
+M2** (esta última é mensal — o último dado real é de 01/07/2026).
+
+**Custo medido: zero.** As quatro têm confiança saturada em 1, então pela D36 C a
+data não entra na conta. Corrigi-las dá **exatamente** o mesmo Índice, e há teste.
+
+**Não corrigi.** O `data` vem do documento 07, que é fonte primária, e sobrescrever
+leitura registrada é retificação — decisão, não implementação. Fica medido e
+apontado.
+
+*A única série onde a data tem dente é o **ETF Net Inflow**, a única com confiança
+abaixo de 1 (0,525). E a data dela é 27/08, uma quinta-feira de verdade. Dois dias de
+erro nela moveriam o Índice em 0,00037 — pouco, mas diferente de zero, que é o que as
+outras quatro dão.*
+
+### 🐛 Um erro meu nesta rodada, e como apareceu
+Marquei `confirmado.min` no **Liveliness** em vez de no DXY: os dois tinham o campo
+com o texto idêntico, e o replace pegou o primeiro. A contagem **não** teria pego —
+dava 20 dos dois jeitos. O que pegou foi a **fila**, que continuou listando o
+DXY · min depois de eu ter dito que ele saiu. Desfeito e reaplicado no lugar certo.
+
+*É o mesmo padrão do bug da data do comando: teste de formato passa, contagem passa, e
+quem denuncia é olhar a saída que deveria ter mudado.*
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o

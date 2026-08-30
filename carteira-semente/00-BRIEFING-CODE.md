@@ -145,6 +145,7 @@ de quem testou.
 | A **fórmula de espaçamento** | **4** | Idem. Muda **quando**, não **o quê**. |
 | O **teto de 8 ativos** | **1** | Afrouxar rompe a régua dos 30% e o mapa do Auditor acusa na mesma rodada. É restrição derivada, não âncora. |
 | A revisão de **90 dias** da vaga bloqueada | **4** | O cliente não recebe promessa de cadência de rotação. |
+| O **calendário por série** — 24/7 · pregão · mensal *(nasceu na implementação)* | **1** | Mesmo caso do 100: não é calibragem, é fato sobre a fonte. Marcar o DXY como 24/7 muda a leitura de datas **na hora**. Fatos sobre o dado nunca são âncoras — a âncora protege promessa, não descreve fonte. |
 | O **100** do Supply in Profit *(nasceu na implementação)* | **1** | Não é calibragem nossa: é o **teto da métrica**, que mede percentual de supply. "Afrouxá-lo" para 99 muda a normalização e move o Índice **hoje**, visível na hora. Fato sobre o que a série mede, não parâmetro — entra pela regra da D31 C e para aqui. |
 | A **trava 4** do Reforço de Fundo — 25% do caixa por acionamento | **4** | Não guarda promessa publicada própria. A promessa do reforço é **coletiva** (*"sete travas, para que ele não vire gatilho de impulso"*) e sobrevive ao afrouxamento dela, porque as travas 1, 2, 3, 5 e 7 seguem inteiras. E a trava 6, agora âncora, já limita o mesmo dano: com o caixa abaixo de 23,7% da carteira é ela que binda, e a trava 4 fica folgada. |
 

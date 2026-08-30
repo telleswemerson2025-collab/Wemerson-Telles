@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -891,10 +891,10 @@ test('a anomalia de menu do DXY está registrada, e não move o índice', () => 
   assert.equal(alavanca.toFixed(4), String(a.alavancaDoValor));
 });
 
-test('o DXY saiu da fila pela máxima, e o mínimo dele continua nela', () => {
+test('o DXY saiu inteiro da fila — valor, mínima e máxima', () => {
   const fila = filaDeConferencia(V, HOJE);
-  assert.ok(!fila.some((f) => f.serie === 'DXY' && f.campo === 'max'));
-  assert.ok(fila.some((f) => f.serie === 'DXY' && f.campo === 'min'));
+  assert.ok(!fila.some((f) => f.serie === 'DXY'), 'as duas pontas conferidas em 29/08');
+  assert.equal(V['DXY'].conferencias.length, 2);
 });
 
 // ══ A CONFERÊNCIA DO SOPR · MIN ═══════════════════════════════════════════
@@ -909,7 +909,7 @@ test('o mínimo do SOPR é um pico isolado de um dia, e a forma ficou nomeada', 
 });
 
 test('os três métodos de conferência estão nomeados e não se misturam', () => {
-  assert.deepEqual(METODOS_DE_CONFERENCIA, ['dígito', 'pixel', 'eixo']);
+  assert.deepEqual(METODOS_DE_CONFERENCIA, ['dígito', 'pixel', 'eixo', 'calendário']);
   const sopr = V['SOPR'].conferencias.find((x) => x.campo === 'min');
   const liv = V['Liveliness'].conferencias.find((x) => x.campo === 'max');
   const dxy = V['DXY'].conferencias.find((x) => x.campo === 'max');
@@ -964,4 +964,77 @@ test('trocar as pontas velhas move ~1 ponto cada, e elas não apontam para o mes
   for (const v of [soprNovo, mvrvNovo, ambos]) {
     assert.equal(varrer({ varredura: v, hoje: HOJE }).faixa, faixa);
   }
+});
+
+// ══ A CONFERÊNCIA DO DXY · MIN — O EMPATE DE CALENDÁRIO ═══════════════════
+test('o mínimo do DXY bate, e três dias exibem o mesmo número por fim de semana', () => {
+  const c = V['DXY'].conferencias.find((x) => x.campo === 'min');
+  assert.equal(V['DXY'].confirmado.min, '2026-08-29');
+  assert.deepEqual(c.empateDeCalendario.diasIguais, ['2011-04-29', '2011-04-30', '2011-05-01']);
+  assert.equal(c.empateDeCalendario.diaDeFormacao, '2011-04-29');
+  // O calendário sustenta a afirmação, e ele é verificável sem terminal nenhum.
+  assert.equal(semPregao('2011-04-29'), false, 'sexta-feira');
+  assert.equal(semPregao('2011-04-30'), true, 'sábado');
+  assert.equal(semPregao('2011-05-01'), true, 'domingo');
+  assert.equal(semPregao('2011-05-02'), false, 'segunda, e o índice já anda: 72.95');
+  assert.equal(c.empateDeCalendario.primeiroPregaoSeguinte['2011-05-02'], 72.95);
+});
+
+test('o pixel não resolveria este empate, e a razão é outra', () => {
+  const dxy = V['DXY'].conferencias.find((x) => x.campo === 'min');
+  const liv = V['Liveliness'].conferencias.find((x) => x.campo === 'max');
+  // Liveliness: números DIFERENTES que a tela arredonda igual — o zoom separa.
+  assert.match(liv.empateNaExibicao.resolvidoPor, /1 px vale ~0,000003/);
+  // DXY: o MESMO número carregado adiante — não há o que separar.
+  assert.match(dxy.empateDeCalendario.porQueOPixelNaoResolve, /não é arredondamento/);
+  assert.equal(dxy.empateDeCalendario.naturezaDoMetodo, 'calendário — o único que não olha a tela');
+});
+
+test('o calendário é por série: sábado é dia de dado numa série 24/7', () => {
+  assert.deepEqual(CALENDARIOS, ['24/7', 'pregão', 'mensal']);
+  // A máxima do Liveliness é um sábado, e é legítima — a série é onchain.
+  assert.equal(semPregao(V['Liveliness'].dataMax), true, '20/12/2025 é sábado');
+  assert.equal(SERIES.find((s) => s.n === 'Liveliness').calendario, '24/7');
+  assert.equal(dataSuspeitaDeCarregamento('Liveliness', V['Liveliness'].dataMax), false);
+  // O mínimo do DXY também cai em dia útil; quem carrega são os dois dias seguintes.
+  assert.equal(dataSuspeitaDeCarregamento('DXY', V['DXY'].dataMin), false);
+});
+
+test('o comando avisa do carregamento ANTES, em vez de a pessoa descobrir na tela', () => {
+  // A Curva 10Y-2Y tem o mínimo datado em 01/07/2023, que é um SÁBADO.
+  assert.equal(semPregao('2023-07-01'), true);
+  assert.equal(dataSuspeitaDeCarregamento('Curva 10Y-2Y', '2023-07-01'), true);
+  const cmd = comandoDeConferencia({ serie: 'Curva 10Y-2Y', campo: 'min' }, V);
+  assert.match(cmd, /série de PREGÃO e 2023-07-01 caiu num fim de semana/);
+  assert.match(cmd, /nenhum zoom os separa/);
+  // E numa série 24/7 o aviso não aparece.
+  assert.ok(!comandoDeConferencia({ serie: 'SOPR', campo: 'max' }, V).includes('série de PREGÃO'));
+});
+
+// ══ A DATA DE SÁBADO NAS SÉRIES DE PREGÃO ═════════════════════════════════
+test('a leitura foi feita num sábado, e quatro séries de pregão levaram a data do dia', () => {
+  assert.equal(semPregao(HOJE), true, '29/08/2026 é sábado');
+  const comDataDeSabado = SERIES.filter((s) => V[s.n] && s.calendario !== '24/7' && semPregao(V[s.n].data));
+  assert.deepEqual(comDataDeSabado.map((s) => s.n).sort(),
+    ['Curva 10Y-2Y', 'DXY', 'Fed Funds Rate', 'US M2']);
+  // É a mesma causa do "—" no menu do DXY, e agora ela está escrita no dado.
+  assert.match(V['DXY'].anomaliaDeMenu.explicacao, /sábado e o DXY é série de pregão/);
+});
+
+test('corrigir essas datas não move o índice — todas têm confiança saturada', () => {
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const corrigida = { ...V };
+  for (const n of ['DXY', 'Fed Funds Rate', 'Curva 10Y-2Y']) corrigida[n] = { ...V[n], data: '2026-08-28' };
+  corrigida['US M2'] = { ...V['US M2'], data: '2026-07-01' };
+  assert.equal(varrer({ varredura: corrigida, hoje: HOJE }).indice, base);
+  for (const n of ['DXY', 'Fed Funds Rate', 'Curva 10Y-2Y', 'US M2']) {
+    assert.equal(confianca(SERIES.find((s) => s.n === n).inicioSerie, V[n].data), 1);
+  }
+  // O ETF é a única com confiança abaixo de 1, e é a única onde a data teria dente.
+  const etf = SERIES.find((s) => s.n === 'ETF Net Inflow');
+  assert.ok(confianca(etf.inicioSerie, V['ETF Net Inflow'].data) < 1);
+  assert.equal(semPregao(V['ETF Net Inflow'].data), false, 'e a data dela é um dia útil de verdade');
+  const doisDias = { ...V, 'ETF Net Inflow': { ...V['ETF Net Inflow'], data: '2026-08-29' } };
+  assert.ok(Math.abs(varrer({ varredura: doisDias, hoje: HOJE }).indice - base) > 0,
+    'nela, dois dias de data errada moveriam o índice — pouco, mas moveriam');
 });

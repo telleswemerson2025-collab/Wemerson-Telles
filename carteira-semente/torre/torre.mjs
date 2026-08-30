@@ -16,26 +16,45 @@ import { TIPOS } from '../registro/registro.mjs';
 // escala: 'log' para série multiplicativa, 'lin' para aditiva (D03).
 // inicioSerie alimenta o fator de confiança da D7.
 export const SERIES = Object.freeze([
-  { n: 'Preço do BTC',        camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua' },
-  { n: 'Realized Price',      camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua' },
-  { n: 'Realized Price STH',  camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua' },
-  { n: 'Realized Price LTH',  camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua' },
-  { n: 'MVRV Ratio',          camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'regua' },
-  { n: 'SOPR',                camada: 2, escala: 'log', inicioSerie: '2011-01-01' },
-  { n: 'Supply in Profit',    camada: 2, escala: 'lin', inicioSerie: '2011-01-01' },
-  { n: 'Liveliness',          camada: 2, escala: 'lin', inicioSerie: '2011-01-01' },
-  { n: 'DXY',                 camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true },
-  { n: 'Fed Funds Rate',      camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true },
-  { n: 'US M2',               camada: 3, escala: 'lin', inicioSerie: '2011-01-01' },
-  { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01' },
-  { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11' },
-  { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01' },
+  { n: 'Preço do BTC',        camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7' },
+  { n: 'Realized Price',      camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7' },
+  { n: 'Realized Price STH',  camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7' },
+  { n: 'Realized Price LTH',  camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7' },
+  { n: 'MVRV Ratio',          camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'regua', calendario: '24/7' },
+  { n: 'SOPR',                camada: 2, escala: 'log', inicioSerie: '2011-01-01', calendario: '24/7' },
+  { n: 'Supply in Profit',    camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7' },
+  { n: 'Liveliness',          camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7' },
+  { n: 'DXY',                 camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão' },
+  { n: 'Fed Funds Rate',      camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão' },
+  { n: 'US M2',               camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal' },
+  { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'pregão' },
+  { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11', calendario: 'pregão' },
+  { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01', calendario: '24/7' },
   // A escala é LINEAR e não pode ser outra: netflow é entrada menos saída, cruza o
   // zero, e log de zero ou de negativo não produz número errado — não produz número
   // nenhum. A D38 D chamou a série de logarítmica; a D39 corrigiu para linear.
   // Os extremos e o início da série são PROVISÓRIOS até a leitura no terminal.
-  { n: 'Exchange Netflow',    camada: 4, escala: 'lin', inicioSerie: '2011-01-01', extremosProvisorios: true },
+  { n: 'Exchange Netflow',    camada: 4, escala: 'lin', inicioSerie: '2011-01-01', extremosProvisorios: true, calendario: '24/7' },
 ]);
+
+/**
+ * D35 B, aprendido na conferência do DXY · min: série de PREGÃO repete o fechamento
+ * de sexta no sábado e no domingo. Três dias exibindo o mesmo número não é empate de
+ * arredondamento — é o mesmo valor carregado adiante, e nenhum zoom os separa. Quem
+ * decide qual dia é o extremo é o CALENDÁRIO, não a tela.
+ *
+ * Série 24/7 não tem isso: sábado é dia de dado como qualquer outro (a máxima do
+ * Liveliness é um sábado, e é legítima).
+ */
+export const CALENDARIOS = Object.freeze(['24/7', 'pregão', 'mensal']);
+const DIAS_SEM_PREGAO = Object.freeze([0, 6]); // domingo e sábado
+export const semPregao = (data) => DIAS_SEM_PREGAO.includes(new Date(`${data}T00:00:00Z`).getUTCDay());
+
+/** Data de pregão registrada num fim de semana: o valor é da sexta, carregado. */
+export function dataSuspeitaDeCarregamento(serie, data) {
+  const s = SERIES.find((x) => x.n === serie);
+  return Boolean(s && s.calendario === 'pregão' && data && semPregao(data));
+}
 
 // D37 A: alínea (a) do Filtro de Horizonte, com número.
 // Duas exchanges porque volume concentrado numa só não é liquidez, é dependência.
@@ -247,8 +266,11 @@ export function estadoDosExtremos(varredura) {
  *   (Liveliness · max). Prova ordem entre dois pontos, não o valor de nenhum.
  * - eixo: lido na escala do gráfico, sem tooltip (piso pós-2013 do SOPR). Dá ordem
  *   de grandeza. Nunca confirma extremo sozinho.
+ * - calendário: decide entre dias que exibem o MESMO valor porque a série é de
+ *   pregão e repete o fechamento no fim de semana (DXY · min). É o único que não
+ *   olha a tela — e o único que PROVA em vez de aproximar, quando cabe.
  */
-export const METODOS_DE_CONFERENCIA = Object.freeze(['dígito', 'pixel', 'eixo']);
+export const METODOS_DE_CONFERENCIA = Object.freeze(['dígito', 'pixel', 'eixo', 'calendário']);
 
 export const TETOS_DA_METRICA = Object.freeze({ 'Supply in Profit': { max: 100 } });
 
@@ -281,6 +303,14 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
     '',
     'Passos: abrir a série · estreitar a janela em torno da data até o passo do cursor virar um dia ·',
     'ler a tooltip · anotar o valor dígito a dígito · voltar ao range ALL.',
+    ...(dataSuspeitaDeCarregamento(serie, data) ? [
+      '',
+      `⚠️ ${serie} é série de PREGÃO e ${data} caiu num fim de semana: o terminal repete o fechamento`,
+      'da sexta no sábado e no domingo. Espere ver o mesmo número em três dias seguidos — não é empate',
+      'de arredondamento e nenhum zoom os separa. O dia do extremo é o último pregão, e quem decide',
+      'isso é o calendário, não a tela. Registrar os dias repetidos assim mesmo: sem isso o empate',
+      'reaparece na próxima conferência e parece erro.',
+    ] : []),
     ...(especie === 'teto da métrica' ? [
       '',
       `⚠️ ${alvo} é o TETO DA MÉTRICA, não uma leitura de um dia — ${serie} é percentual, e 100 é o`,
