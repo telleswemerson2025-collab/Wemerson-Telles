@@ -24,6 +24,13 @@ const arq = (f) => join(AQUI, f);
  * quebra — arquivo, o trecho e o que ele vira
  * acusa  — o que a mensagem de falha tem de dizer; sem isso o teste podia estar
  *          quebrando por outro motivo, e a prova não provaria nada
+ * todas  — D47 A: quando o trecho não é único no arquivo, muta TODAS as ocorrências.
+ *          Sem isso a mutação deixa um gêmeo de pé, o teste passa, e a prova falha por
+ *          MIRA ERRADA — não por fraqueza do teste. O harness recusa mira ambígua.
+ *
+ * D47 B: a prova diz qual asserção deve acusar (`acusa`), e o harness mostra a que
+ * acusou de fato. Se outra asserção do mesmo teste pega a mutação primeiro, a regra
+ * que se queria demonstrar segue sem prova, com aparência de provada.
  */
 const PROVAS = [
   {
@@ -73,6 +80,17 @@ const PROVAS = [
     acusa: /não liga Mercado saudável ao fator 1,50/,
   },
   {
+    // D47 A, o outro lado: quando NÃO há ponto único, mutam-se todos de uma vez.
+    // "3 pontos" aparece três vezes no documento 01 — a banda da glidepath e duas
+    // menções em prosa. Mutar uma só deixaria as outras, e o teste que confere a
+    // banda continuaria passando pela ocorrência que sobrou.
+    teste: 'todo número escrito nos documentos bate com a constante',
+    porque: 'a banda de tolerância descola da âncora, e o número aparece em três lugares',
+    quebra: ['01-documento-mae.md', '3 pontos', '5 pontos'],
+    todas: true,
+    acusa: /o texto diz 5 e a constante é 3/,
+  },
+  {
     teste: 'toda tela declara charset',
     porque: 'uma tela nasce sem charset, e todo acento dela corrompe no primeiro servidor',
     quebra: ['simulador.html', '<meta charset="utf-8">\n', ''],
@@ -103,6 +121,14 @@ const rodar = (nome) => {
   }
 };
 
+/** D47 B: a frase que o assert produziu — é ela que diz QUAL asserção acusou. */
+const mensagemDaFalha = (saida) => {
+  const m = saida.match(/error: \|-\n((?:\s+.*\n)+)/);
+  if (!m) return (saida.match(/error: '([^']+)'/) ?? [, ''])[1].trim();
+  return m[1].split('\n').map((l) => l.trim()).filter(Boolean)
+    .filter((l) => !/^[+\-]|^actual|^expected|^\.\.\.$/.test(l))[0] ?? '';
+};
+
 let ok = 0, ruim = 0;
 console.log('D45 · provando que cada teste de conferência reprova quando deve\n');
 
@@ -112,16 +138,24 @@ for (const p of PROVAS) {
   const original = readFileSync(caminho, 'utf8');
   let veredito;
   try {
-    if (!original.includes(de)) {
+    const ocorrencias = original.split(de).length - 1;
+    if (ocorrencias === 0) {
       veredito = { ok: false, nota: `o trecho a quebrar não existe mais em ${ficheiro}` };
+    } else if (ocorrencias > 1 && !p.todas) {
+      // D47 A: mira ambígua. Mutar uma de várias deixa gêmeo de pé.
+      veredito = { ok: false, nota:
+        `MIRA ERRADA — o trecho aparece ${ocorrencias} vezes em ${ficheiro}. ` +
+        'Ou se escolhe um ponto único, ou se declara todas: true e mutam-se todas de uma vez.' };
     } else {
-      writeFileSync(caminho, original.replace(de, para));
+      writeFileSync(caminho, p.todas ? original.replaceAll(de, para) : original.replace(de, para));
       const r = rodar(p.teste);
+      const msg = mensagemDaFalha(r.saida);
       veredito = !r.falhou
         ? { ok: false, nota: 'o teste PASSOU com o arquivo quebrado — ele não pega o que devia' }
         : !p.acusa.test(r.saida)
-        ? { ok: false, nota: `falhou, mas não pela razão certa — a mensagem não bate com ${p.acusa}` }
-        : { ok: true, nota: 'acusou, com a linha e o valor esperado' };
+        ? { ok: false, nota: `ACUSOU OUTRA COISA — a asserção que pegou foi «${msg}», e não ${p.acusa}. ` +
+            'A regra que esta prova queria demonstrar segue sem prova.' }
+        : { ok: true, nota: `acusou: «${msg}»`, mutadas: ocorrencias };
     }
   } finally {
     writeFileSync(caminho, original);   // desfaz sempre, dê no que der
@@ -129,7 +163,8 @@ for (const p of PROVAS) {
   const antes = readFileSync(caminho, 'utf8');
   if (antes !== original) veredito = { ok: false, nota: 'a prova deixou rastro no arquivo' };
   console.log(`${veredito.ok ? '✅' : '❌'} ${p.teste}`);
-  console.log(`   quebrei: ${ficheiro} — ${JSON.stringify(de).slice(0, 72)}`);
+  console.log(`   quebrei: ${ficheiro} — ${JSON.stringify(de).slice(0, 68)}` +
+    (veredito.mutadas > 1 ? ` (${veredito.mutadas} ocorrências)` : ''));
   console.log(`   porque:  ${p.porque}`);
   console.log(`   ${veredito.nota}\n`);
   veredito.ok ? ok++ : ruim++;

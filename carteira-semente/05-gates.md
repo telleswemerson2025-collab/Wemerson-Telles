@@ -1,6 +1,6 @@
 # GATES DA CARTEIRA SEMENTE
 Nenhum agente aprova. Só o humano.
-Versão 1.17 · 29/08/2026 — Decisões 1 a 22 e 44 a 46 aplicadas.
+Versão 1.18 · 29/08/2026 — Decisões 1 a 22 e 44 a 47 aplicadas.
 
 ## GATE 1 — DIREÇÃO (antes de produzir)
 Perguntas:
@@ -39,7 +39,9 @@ Checklist. Qualquer item falho VETA:
    `provas.mjs`. Teste que entra sem essa passagem **veta**: passar por vazio é pior que não
    existir. Decisão 45. **A asserção liga, não procura** — nunca "este número existe no
    documento", sempre "este número está ligado a esta regra, nesta linha" (Decisão 46). E a prova
-   confere a **mensagem** da falha, não só que falhou.
+   confere a **mensagem** da falha, não só que falhou. **A mutação mira ponto de uso único** — ou muta
+   todos os gêmeos de uma vez — **e a prova nomeia a asserção que acusou** (Decisão 47). Mira
+   ambígua ou asserção trocada **veta a prova**, não o teste.
 9. **Camada 5 rotulada** — se está fora, a leitura diz que está fora, e nunca a apresenta valendo
    50. Se está dentro, vem com a etiqueta de julgamento completa: que carrega julgamento humano, a
    data do degrau mais antigo em vigor, e quantos ativos estão sem degrau. Faltando qualquer uma

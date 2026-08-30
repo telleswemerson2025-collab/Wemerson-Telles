@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.27 — decisões 1 a 46 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.28 — decisões 1 a 47 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -74,6 +74,15 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
    foi quebrado para provar cada um fica registrado, e o registro é **executável**
    (`carteira-semente/provas.mjs`). *Teste que passa por vazio é pior que ausência de teste, porque
    cria sensação de cobertura — e sensação de cobertura é o que faz ninguém mais olhar.* Decisão 45.
+
+   **Como se mira a mutação** (Decisão 47): **(a)** ela recai sobre um ponto **de uso único** que o
+   teste confere — mutar um de dois gêmeos deixa o outro de pé, o teste passa, e a prova falha por
+   **mira errada**, não por fraqueza do teste; sem ponto único, mutam-se **todos de uma vez**.
+   **(b)** a prova diz **qual asserção** deve acusar, e confere que foi ela — se outra asserção do
+   mesmo teste pega a mutação primeiro, a regra que se queria demonstrar **segue sem prova, com
+   aparência de provada**. *As duas só são detectáveis porque a prova lê a **mensagem** da falha, e
+   não o "falhou?" — a prova provando o método da prova.* O harness recusa mira ambígua e nomeia a
+   asserção que acusou.
 
 14. **CONFERÊNCIA LIGA, NÃO PROCURA.** Teste de conferência nunca pergunta se um número **existe** no
    documento — pergunta se ele está **ligado** ao que deveria estar ligado, **na linha que os
