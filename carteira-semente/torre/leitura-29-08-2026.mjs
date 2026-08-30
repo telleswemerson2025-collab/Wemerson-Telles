@@ -70,7 +70,39 @@ export const VARREDURA_29_08_2026 = Object.freeze({
   },
   'SOPR':               { valor: 1.0112,   min: 0.6068,  max: 2.8740,    data: '2026-08-28' , dataMin: '2011-11-09', dataMax: '2011-04-29', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Supply in Profit':   { valor: 67.4,     min: 35.6,    max: 100.0,     data: '2026-08-28' , dataMin: '2015-08-24', dataMax: '2011-02-04', confirmado: { valor: '2026-08-29', min: null, max: null } },
-  'Liveliness':         { valor: 0.6345,   min: 0.1785,  max: 0.6410,    data: '2026-08-28' , dataMin: '2011-01-09', dataMax: '2025-12-20', confirmado: { valor: '2026-08-29', min: null, max: null } },
+  'Liveliness': {
+    valor: 0.6345, min: 0.1785, max: 0.6410, data: '2026-08-28',
+    dataMin: '2011-01-09', dataMax: '2025-12-20',
+    confirmado: { valor: '2026-08-29', min: null, max: '2026-08-29' },
+    conferencias: [{
+      campo: 'max', em: '2026-08-29',
+      metodo: 'Cointime Statistics · Liveliness, tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia',
+      lido: '0.6410 — zero, ponto, seis, quatro, um, zero',
+      vizinhos: { '2025-12-19': 0.6409, '2025-12-20': 0.6410, '2025-12-21': 0.6409 },
+      // ⚠️ O EMPATE. 12/12/2025 exibe o MESMO 0.6410 na tooltip. Não é empate de
+      // valor, é empate de EXIBIÇÃO: o terminal mostra quatro casas e as duas datas
+      // caem no mesmo passo de arredondamento. A tooltip não decide, e nenhuma
+      // insistência nela decidiria — o número que ela mostra é o mesmo nas duas.
+      empateNaExibicao: {
+        candidato: '2025-12-12', lido: 0.6410, precoNoDia: 91629,
+        resolvidoPor: 'janela 23/11/2025 → 26/01/2026, onde 1 px vale ~0,000003 de Liveliness; 20/12 fica ~13 px acima de 12/12',
+        implicacao: '12/12 é ~0,64096 arredondado para cima na tela; 20/12 é o ponto mais alto de fato',
+        // Método diferente dos anteriores: não é leitura de dígito, é separação
+        // geométrica. Fica nomeado para não passar por leitura de tooltip.
+        naturezaDoMetodo: 'separação por pixel, não leitura de dígito',
+      },
+      ehMaximoDaSerie: 'na janela esticada nenhum ponto fica acima de 20/12; fora dela a folga é grande — ' +
+                       'o platô de 2017–2024 não passa de ~0,61–0,63, o pico de 13/01/2026 lê 0.6404 e o valor atual (ago/2026) é 0,6345. ' +
+                       'Na visão ALL os únicos pixels na altura de 0,641 estão em dez/2025.',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 88.181 em 20/12; US$ 87.394 em 19/12 e US$ 88.260 em 21/12. ' +
+                  'Em 12/12, US$ 91.629 — preço 3,9% MAIOR com Liveliness igual, o que separa as duas datas por comportamento e não só por altura.',
+      // O que o empate custa na régua, medido e não estimado: a máxima só é conhecida
+      // até ±0,00005, e essa incerteza move o Índice em ±0,00105 ponto.
+      incertezaDaExibicao: { faixa: [0.64095, 0.64105], efeitoNoIndice: 0.00105 },
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }],
+  },
   'DXY':                { valor: 99.16,    min: 72.93,   max: 114.11,    data: '2026-08-29' , dataMin: '2011-04-29', dataMax: '2022-09-27', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Fed Funds Rate':     { valor: 3.63,     min: 0.05,    max: 5.33,      data: '2026-08-29' , dataMin: '2020-04-01', dataMax: '2023-08-01', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'US M2':              { valor: 23.218,   min: 8.845,   max: 23.218,    data: '2026-08-29' , dataMin: '2011-01-01', dataMax: '2026-07-01', confirmado: { valor: '2026-08-29', min: null, max: null } },

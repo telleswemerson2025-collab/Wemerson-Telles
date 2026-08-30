@@ -227,6 +227,27 @@ export function estadoDosExtremos(varredura) {
 }
 
 /**
+ * Extremos que NÃO são leitura empírica de um dia. A conferência do Liveliness
+ * mostrou o problema: o comando manda provar "que este é o dia", e há extremos para
+ * os quais isso é falso por construção, não por erro de leitura.
+ *
+ * `TETOS_DA_METRICA` são limites do que a métrica pode medir, não calibrações
+ * nossas: Supply in Profit é percentual de supply, e 100 é o teto da própria
+ * definição. Não passou pelo teste da classe âncora porque não é parâmetro —
+ * afrouxá-lo muda a leitura de HOJE, visível na hora (falha o critério 1), e está
+ * registrado na tabela de exclusão do briefing.
+ */
+export const TETOS_DA_METRICA = Object.freeze({ 'Supply in Profit': { max: 100 } });
+
+export function especieDoExtremo(serie, campo, varredura) {
+  if (TETOS_DA_METRICA[serie]?.[campo] === varredura?.[serie]?.[campo]) return 'teto da métrica';
+  // O valor corrente É o extremo: a régua não tem ponta fixa, ela anda com a série.
+  // É o mesmo fato que zera o efeito do outro extremo (D41 C).
+  if (varredura?.[serie] && varredura[serie].valor === varredura[serie][campo]) return 'extremo móvel';
+  return 'empírico';
+}
+
+/**
  * D35 B: comando pro Chrome, UM extremo por vez, somente leitura. O salto de sete
  * dias do cursor é efeito do zoom ALL, não do terminal — estreitar a janela em
  * torno da data até o passo virar um dia, ler a tooltip, voltar ao ALL.
@@ -240,13 +261,30 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
   const data = campo === 'valor' ? v.data : v[`data${campo[0].toUpperCase()}${campo.slice(1)}`];
   if (!data) return { erro: `sem a data do ${campo} de ${serie} — não dá para dizer onde estreitar a janela` };
   const ehExtremo = campo !== 'valor';
+  const especie = ehExtremo ? especieDoExtremo(serie, campo, varredura) : 'empírico';
   return [
     `Conferir no terminal VantageNode, somente leitura: ${serie} · ${campo}.`,
     `Valor a bater: ${alvo} na data ${data}.`,
     '',
     'Passos: abrir a série · estreitar a janela em torno da data até o passo do cursor virar um dia ·',
     'ler a tooltip · anotar o valor dígito a dígito · voltar ao range ALL.',
-    ...(ehExtremo ? [
+    ...(especie === 'teto da métrica' ? [
+      '',
+      `⚠️ ${alvo} é o TETO DA MÉTRICA, não uma leitura de um dia — ${serie} é percentual, e 100 é o`,
+      'limite da definição. Não peça para provar que esta é a data: a série encosta no teto em muitos',
+      'dias, e nenhum deles é "o" extremo. Duas coisas, e a data não é uma delas:',
+      `  1. que a série realmente ENCOSTA em ${alvo} — a tooltip de ${data} lendo ${alvo} basta;`,
+      `  2. que a escala do gráfico no ALL não passa de ${alvo} em ponto nenhum.`,
+      'Se a série nunca encostar no teto, o extremo é empírico e a régua está errada: reportar.',
+    ] : especie === 'extremo móvel' ? [
+      '',
+      `⚠️ Este extremo é MÓVEL: o valor corrente de ${serie} É a ${campo === 'min' ? 'mínima' : 'máxima'}`,
+      `(${alvo}), então a régua anda junto com a série e esta conferência vale só para a leitura de hoje.`,
+      `  1. o valor de ${data}, dígito a dígito;`,
+      `  2. na visão ALL, que nenhum ponto anterior fica ${campo === 'min' ? 'abaixo' : 'acima'} dele.`,
+      'Não há dois dias vizinhos para pedir: um dos lados é o fim da série.',
+      'Reconferir a cada leitura nova do indicador, não uma vez só.',
+    ] : ehExtremo ? [
       '',
       // A conferência de 19/10/2011 mostrou que o comando pedia pouco: ler a tooltip',
       // prova que o NÚMERO daquele dia está certo, não que aquele dia é o extremo.
@@ -255,6 +293,11 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
       '  2. os dois dias vizinhos, para provar que este é o ponto e não um qualquer;',
       `  3. na visão ALL, que nenhum outro ponto da série fica ${campo === 'min' ? 'abaixo' : 'acima'} dele.`,
       'Sem as três, o que se confirma é o número do dia — não que o dia seja o extremo.',
+      // A conferência do Liveliness · max: 12/12 e 20/12 exibiam o MESMO 0.6410, e a
+      // tooltip não podia decidir — o número que ela mostra é o mesmo nos dois dias.
+      'Se um vizinho ou outro ponto exibir o MESMO número, a tooltip não decide: ela mostra quatro',
+      'casas e os dois caem no mesmo arredondamento. Estreitar até os dois se separarem na tela, e',
+      'registrar que a separação foi por pixel, não por dígito — é outro método, e fica nomeado.',
       'Se houver outro indicador na mesma tooltip, anotar também: serve de cruzamento.',
     ] : []),
     '',

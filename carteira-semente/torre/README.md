@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.10 · 29/08/2026 — a fila passa a ser ordenada por efeito medido (D41)
+Conferência. Versão 1.11 · 29/08/2026 — Liveliness conferido · três espécies de extremo
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -402,6 +402,61 @@ Ordenar por efeito custa recalcular o índice, e quem entrega a contagem de extr
 `estadoDosExtremos` → `filaDeConferencia` → `efeitoDosExtremos` → `varrer` fechava o
 ciclo. `estadoDosExtremos()` virou **contagem e só contagem**: não ordena, não
 devolve `proximo`. Contagem dentro do `varrer`, ordem fora dele.
+
+### ✅ A terceira conferência: **Liveliness · max = 0,6410 em 20/12/2025**
+Vizinhos 0,6409 e 0,6409 — diferença de **0,0001**, que é o menor passo que a tela
+representa. Cruzamento: BTC US$ 88.181.
+
+**O empate.** 12/12/2025 exibe o **mesmo** 0.6410 na tooltip. Não é empate de valor,
+é empate de **exibição**: o terminal mostra quatro casas e as duas datas caem no
+mesmo arredondamento. A tooltip não podia decidir, e insistir nela não decidiria —
+o número que ela mostra é igual nos dois dias. Resolvido por zoom: na janela
+23/11/2025 → 26/01/2026, onde 1 px vale ~0,000003, 20/12 fica ~13 px acima.
+
+**Isso é outro método**, e ficou nomeado no dado como tal: `separação por pixel, não
+leitura de dígito`. As duas conferências anteriores foram leitura de dígito; esta
+não. Misturar as duas sem dizer qual foi seria perder a diferença entre "eu li" e
+"eu inferi do desenho".
+
+**O que o empate custa, medido:** a máxima só é conhecida até ±0,00005, e essa
+incerteza move o Índice em **±0,00105 ponto**. Mesmo que 12/12 fosse o topo de fato
+(≈0,64096), o Índice sai de 50,7536 para 50,7545. Irrelevante — mas é irrelevante
+**medido**, não irrelevante suposto.
+
+*O cruzamento de preço separou as duas datas por outra via: em 12/12 o BTC estava a
+US$ 91.629, 3,9% acima do de 20/12, com Liveliness igual. Duas datas com o mesmo
+número e comportamentos diferentes de preço.*
+
+## AS TRÊS ESPÉCIES DE EXTREMO
+A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o
+extremo é sempre a leitura de um dia?** Não é. E os dois primeiros da fila depois
+dele são os dois casos em que não é.
+
+| Espécie | Caso | O que o comando pede |
+|---|---|---|
+| **Empírico** | MVRV, SOPR, Liveliness, DXY… | as três coisas: dígito, vizinhos, nada além no ALL |
+| **Teto da métrica** | **Supply in Profit · max = 100** | que a série *encoste* em 100 e que a escala não passe dele. **A data não** |
+| **Extremo móvel** | **US M2 · max = 23,218** | dígito e nada acima **antes** dele; e reconferir a cada leitura |
+
+**Supply in Profit é percentual de supply: 100 é o limite da definição.** A série
+encosta no teto em muitos dias, e nenhum é "o" extremo. Mandar provar que 04/02/2011
+é a data seria mandar provar o que é falso — a mesma espécie de erro do comando que
+apontava a data da leitura, e igualmente silencioso: a pessoa acharia um dia com
+100, confirmaria, e teria confirmado nada.
+
+**US M2 · max é o valor corrente**: 23,218 é a última leitura, e M2 cresce. A régua
+não tem ponta fixa, anda com a série. Conferir "uma vez" não significa nada, e o
+comando agora diz isso. *É o mesmo fato que zera o efeito do US M2 · min (D41 C) —
+valor encostado num extremo aparece nas duas pontas.*
+
+O comando empírico também aprendeu com o empate: passou a avisar que, se outro ponto
+exibir o mesmo número, a tooltip não decide, e que a separação por pixel deve ser
+registrada como método diferente.
+
+**`TETOS_DA_METRICA` passou pelos quatro critérios da classe âncora** e **não entrou**
+— falha o critério 1, porque afrouxar o 100 muda a leitura de hoje, visível na hora.
+Está na tabela de exclusão do briefing com a razão. É o segundo evento da regra da
+D31 parte C, e o primeiro que termina em exclusão em vez de admissão.
 
 ### 🐛 Um erro que a D35 B fez aparecer
 A primeira versão do comando mandava conferir o mínimo do MVRV **em 28/08/2026** —

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -556,11 +556,22 @@ test('D41 A: a fila desce por efeito medido, não por escala nem por peso de cam
   assert.ok(m2 < sopr, 'US M2 é camada 3 e vem antes do SOPR, camada 2, porque mede mais');
 });
 
-test('D41 A: a cabeça da fila de 29/08/2026 é o máximo do Liveliness', () => {
+test('D41 A: a cabeça da fila é sempre o maior efeito ainda por conferir', () => {
   const fila = filaDeConferencia(V, HOJE);
-  assert.equal(fila[0].serie, 'Liveliness');
-  assert.equal(fila[0].campo, 'max');
-  assert.equal(fila[0].efeito.toFixed(4), '1.1820');
+  const uteis = fila.filter((f) => f.inerte !== 'por construção');
+  const maior = Math.max(...uteis.map((f) => f.efeito));
+  assert.equal(uteis[0].efeito, maior);
+  assert.equal(fila[0], uteis[0], 'e nenhum inerte estrutural passa na frente');
+});
+
+test('D41 A: na abertura da D41 a cabeça era o máximo do Liveliness, com 1,1820', () => {
+  // Fica como registro do que a D41 mediu, e independe de quem já foi conferido:
+  // efeitoDosExtremos mede todos, confirmados inclusive.
+  const efeitos = efeitoDosExtremos(V, HOJE);
+  assert.equal(efeitos[0].serie, 'Liveliness');
+  assert.equal(efeitos[0].campo, 'max');
+  assert.equal(efeitos[0].efeito.toFixed(4), '1.1820');
+  assert.ok(efeitos[0].efeito > efeitos[1].efeito * 1.5, 'quase o dobro do segundo');
 });
 
 test('D41 B: os oito inertes por construção ficam no fim, e não saem da fila', () => {
@@ -597,11 +608,13 @@ test('D41 D: valor não entra na fila de extremos — não tem efeito de régua'
 });
 
 test('D41 E: a fila é recalculada a cada leitura, porque o efeito anda com o valor', () => {
-  const outra = { ...V, 'Liveliness': { ...V['Liveliness'], valor: V['Liveliness'].max } };
-  const antes = filaDeConferencia(V, HOJE);
-  const depois = filaDeConferencia(outra, HOJE);
-  const alvo = depois.find((f) => f.serie === 'Liveliness' && f.campo === 'max');
-  assert.notEqual(antes[0].efeito, alvo.efeito, 'mudou o valor corrente, mudou o efeito do extremo');
+  const dobrado = (x) => ({ ...V, 'Supply in Profit': { ...V['Supply in Profit'], valor: x } });
+  const efeito = (varredura) => filaDeConferencia(varredura, HOJE)
+    .find((f) => f.serie === 'Supply in Profit' && f.campo === 'max').efeito;
+  assert.notEqual(efeito(V), efeito(dobrado(40)), 'mudou o valor corrente, mudou o efeito do extremo');
+  // E a ordem da fila é consequência: mexer no valor pode trocar a cabeça.
+  const fila = filaDeConferencia(dobrado(99.9), HOJE);
+  assert.ok(fila.length > 0);
 });
 
 test('a leitura publicada informa quantos são provisórios, sem bloquear', () => {
@@ -752,4 +765,68 @@ test('a tentativa falha no mínimo do preço fica registrada, para ninguém repe
   assert.match(t.caminhoQueFecharia, /fonte do dado/);
   // cinco dias de janeiro/2011 leem o mesmo "$0": empate sem desempate no gráfico
   assert.equal(new Set(Object.values(t.vizinhos)).size, 1);
+});
+
+// ══ A CONFERÊNCIA DO LIVELINESS · MAX ═════════════════════════════════════
+test('o máximo do Liveliness foi conferido, e o empate de exibição ficou registrado', () => {
+  const c = V['Liveliness'].conferencias.find((x) => x.campo === 'max');
+  assert.equal(V['Liveliness'].confirmado.max, '2026-08-29');
+  assert.deepEqual(c.vizinhos, { '2025-12-19': 0.6409, '2025-12-20': 0.6410, '2025-12-21': 0.6409 });
+  // Os vizinhos diferem por 0,0001 — o menor passo que a tela representa.
+  assert.equal(c.vizinhos['2025-12-20'] - c.vizinhos['2025-12-19'] < 0.00011, true);
+  assert.equal(c.empateNaExibicao.candidato, '2025-12-12');
+  assert.equal(c.empateNaExibicao.lido, 0.6410, 'a outra data exibe o MESMO número');
+  assert.match(c.empateNaExibicao.naturezaDoMetodo, /separação por pixel, não leitura de dígito/);
+});
+
+test('o empate de exibição custa 0,001 ponto no índice, e isso está medido', () => {
+  const c = V['Liveliness'].conferencias.find((x) => x.campo === 'max');
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const [piso, teto] = c.empateNaExibicao ? c.incertezaDaExibicao.faixa : [];
+  for (const m of [piso, teto]) {
+    const alt = { ...V, 'Liveliness': { ...V['Liveliness'], max: m } };
+    const d = Math.abs(varrer({ varredura: alt, hoje: HOJE }).indice - base);
+    assert.ok(d <= 0.0011, `a incerteza de exibição move o índice em ${d.toFixed(6)}, não mais`);
+  }
+  // Mesmo se 12/12 fosse o topo de fato, o índice mal se mexe.
+  const seFosse1212 = { ...V, 'Liveliness': { ...V['Liveliness'], max: 0.64096 } };
+  assert.ok(Math.abs(varrer({ varredura: seFosse1212, hoje: HOJE }).indice - base) < 0.001);
+});
+
+test('o Liveliness saiu da fila e a conta andou', () => {
+  const fila = filaDeConferencia(V, HOJE);
+  assert.ok(!fila.some((f) => f.serie === 'Liveliness' && f.campo === 'max'));
+  assert.equal(fila[0].serie, 'Supply in Profit', 'a nova cabeça');
+  assert.equal(fila[0].campo, 'max');
+});
+
+// ══ ESPÉCIES DE EXTREMO ═══════════════════════════════════════════════════
+test('nem todo extremo é leitura empírica de um dia', () => {
+  assert.equal(especieDoExtremo('Supply in Profit', 'max', V), 'teto da métrica');
+  assert.equal(TETOS_DA_METRICA['Supply in Profit'].max, 100);
+  assert.equal(especieDoExtremo('US M2', 'max', V), 'extremo móvel');
+  assert.equal(V['US M2'].valor, V['US M2'].max, 'o valor corrente É a máxima');
+  assert.equal(especieDoExtremo('DXY', 'max', V), 'empírico');
+  assert.equal(especieDoExtremo('MVRV Ratio', 'min', V), 'empírico');
+});
+
+test('o comando não manda provar a data de um teto de métrica', () => {
+  const cmd = comandoDeConferencia({ serie: 'Supply in Profit', campo: 'max' }, V);
+  assert.match(cmd, /TETO DA MÉTRICA/);
+  assert.match(cmd, /Não peça para provar que esta é a data/);
+  assert.ok(!cmd.includes('os dois dias vizinhos'), 'pedir vizinhos aqui seria pedir o impossível');
+});
+
+test('o comando avisa que extremo móvel se reconfere a cada leitura', () => {
+  const cmd = comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V);
+  assert.match(cmd, /MÓVEL/);
+  assert.match(cmd, /Reconferir a cada leitura nova do indicador, não uma vez só/);
+  assert.ok(!cmd.includes('os dois dias vizinhos'), 'um dos lados é o fim da série');
+});
+
+test('o comando empírico aprendeu a avisar do empate de exibição', () => {
+  const cmd = comandoDeConferencia({ serie: 'DXY', campo: 'max' }, V);
+  assert.match(cmd, /Três coisas, não uma/, 'segue empírico');
+  assert.match(cmd, /exibir o MESMO número, a tooltip não decide/);
+  assert.match(cmd, /separação foi por pixel, não por dígito/);
 });

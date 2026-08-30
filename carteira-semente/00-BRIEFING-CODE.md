@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.23 — decisões 1 a 40 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.24 — decisões 1 a 41 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -145,6 +145,7 @@ de quem testou.
 | A **fórmula de espaçamento** | **4** | Idem. Muda **quando**, não **o quê**. |
 | O **teto de 8 ativos** | **1** | Afrouxar rompe a régua dos 30% e o mapa do Auditor acusa na mesma rodada. É restrição derivada, não âncora. |
 | A revisão de **90 dias** da vaga bloqueada | **4** | O cliente não recebe promessa de cadência de rotação. |
+| O **100** do Supply in Profit *(nasceu na implementação)* | **1** | Não é calibragem nossa: é o **teto da métrica**, que mede percentual de supply. "Afrouxá-lo" para 99 muda a normalização e move o Índice **hoje**, visível na hora. Fato sobre o que a série mede, não parâmetro — entra pela regra da D31 C e para aqui. |
 | A **trava 4** do Reforço de Fundo — 25% do caixa por acionamento | **4** | Não guarda promessa publicada própria. A promessa do reforço é **coletiva** (*"sete travas, para que ele não vire gatilho de impulso"*) e sobrevive ao afrouxamento dela, porque as travas 1, 2, 3, 5 e 7 seguem inteiras. E a trava 6, agora âncora, já limita o mesmo dano: com o caixa abaixo de 23,7% da carteira é ela que binda, e a trava 4 fica folgada. |
 
 **Regra da classe:** alterar uma âncora exige **decisão registrada com a razão escrita**, passa pelo
