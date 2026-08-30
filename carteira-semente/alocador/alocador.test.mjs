@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   BASES_DO_ESTADO, EXPOSICAO_ALVO, BANDA_PONTOS, TETO_DEFASAGEM, MESES_SEM_MODULACAO,
-  VELOCIDADE_POR_ESTADO, INICIO_DA_RAMPA_ANOS, ABRIGO_ATIVO_ANOS, divergenciaDoInicioDaGlidepath,
+  VELOCIDADE_POR_ESTADO, INICIO_DA_RAMPA_ANOS, ABRIGO_ATIVO_ANOS,
   modulador, mEfetivo, abrigoAtivo, fatorDoAbrigo, alvoDaGlidepath, fatorDeVelocidade,
   demandaDaGlidepath, passoDoMes, destinacaoDoAporte, limitesDoPatamar, reforcoDeFundo, degrauDoAtivo,
   ordemDeVenda, propor, GATILHOS_DE_VENDA, TETO_POR_ATIVO, GATILHO_DE_VENDA, PISO_DO_CAIXA,
@@ -213,31 +213,51 @@ test('proteção vence convicção mesmo com a modulação no máximo', () => {
 });
 
 // ══ A DIVERGÊNCIA DE ESPECIFICAÇÃO, LEVANTADA E NÃO RESOLVIDA ═════════════
-test('a rampa começa a 4 anos porque começar a 3 seria um degrau de 34 pontos', () => {
+test('D43 A: a rampa e o Abrigo começam no mesmo dia — não há mais janela', () => {
   assert.equal(INICIO_DA_RAMPA_ANOS, 4);
-  assert.equal(ABRIGO_ATIVO_ANOS, 3);
-  // O maior trecho da glidepath inteira acontece antes de o Abrigo ficar "ativo".
+  assert.equal(ABRIGO_ATIVO_ANOS, 4, 'alinhados pela D43');
+  assert.equal(INICIO_DA_RAMPA_ANOS, ABRIGO_ATIVO_ANOS);
+  // A 3,5 anos a rampa move E o Abrigo está ativo. Antes da D43 só a primeira valia.
+  assert.equal(alvoDaGlidepath(42), 83);
+  assert.equal(abrigoAtivo(42), true);
+  assert.equal(abrigoAtivo(48), true, 'no marco de 4 anos já está ativo');
+  assert.equal(abrigoAtivo(49), false);
+});
+
+test('D43 A: as três regras que estavam desalinhadas passam a valer juntas', () => {
+  const m = 42;   // 3,5 anos — o meio da janela que a D43 fechou
+  // 1. o teto M_efetivo = min(M,1) vale
+  assert.equal(mEfetivo(10, abrigoAtivo(m)), 1, 'M seria 1,08 e fica em 1');
+  // 2. a trava 3 do Reforço bloqueia
+  const r = reforcoDeFundo({ estado: 'Capitulação profunda', indice: 20, mesesAteEntrega: m,
+    caixa: 10000, carteira: 50000, ciclo: CICLO_LIMPO, hoje: HOJE });
+  assert.ok(r.bloqueiam.includes(3));
+  // 3. a ordem caixa → aporte → venda está aberta
+  const d = destinacaoDoAporte({ aporte: 150, carteira: 53074, caixa: 50000, exposicaoAtual: 90,
+    mesesAteEntrega: m, estado: 'Estresse de curto prazo', indice: INDICE });
+  assert.ok(d.defesa.doCaixa > 0, 'o caixa atende a demanda em vez de vender');
+  assert.equal(d.defesa.porVenda, 0);
+});
+
+test('D43 C: o preço está medido, e o maior trecho é o que passa a ser protegido', () => {
+  // O trecho 4→3 é o maior da glidepath inteira: 34 pontos.
   const trecho = EXPOSICAO_ALVO[4] - EXPOSICAO_ALVO[3];
   assert.equal(trecho, 34);
   assert.ok(trecho > EXPOSICAO_ALVO[3] - EXPOSICAO_ALVO[2]);
-  assert.ok(trecho > EXPOSICAO_ALVO[2] - EXPOSICAO_ALVO[1]);
-  assert.ok(trecho > EXPOSICAO_ALVO[1] - EXPOSICAO_ALVO[0]);
-  // A 3,5 anos a rampa já move e o Abrigo ainda não está ativo.
-  assert.equal(alvoDaGlidepath(42), 83);
-  assert.equal(abrigoAtivo(42), false);
+  // E o teto do M passa a morder ali. Em Capitulação a 3,5 anos com Índice 10:
+  const livre = BASES_DO_ESTADO['Capitulação profunda'] * fatorDoAbrigo(42) * modulador(10);
+  const travado = BASES_DO_ESTADO['Capitulação profunda'] * fatorDoAbrigo(42) * mEfetivo(10, true);
+  perto(livre - travado, 13.3, 0.1, );
+  assert.ok(travado < livre, 'perda real de munição, e é o ponto da decisão');
 });
 
-test('a divergência vai em toda proposta, em vez de virar nota de rodapé', () => {
-  const d = divergenciaDoInicioDaGlidepath();
-  assert.equal(d.precisaDeDecisao, true);
-  assert.match(d.origem, /D25 A .* contra doc 01 §7/);
-  assert.match(d.porQueImplementeiAssim, /degrau de 34 pontos/);
-  const r = destinacaoDoAporte({ aporte: 150, carteira: 1e5, caixa: 1000, exposicaoAtual: 90,
-    mesesAteEntrega: 42, estado: 'Mercado saudável', indice: INDICE });
-  assert.equal(r.divergencia.precisaDeDecisao, true);
-  // E o efeito concreto: a 3,5 anos há demanda e o caixa não a atende.
-  assert.ok(r.glidepath.mover > 0);
-  assert.equal(r.defesa.doCaixa, 0, 'o caixa só entra depois que o Abrigo começa (D27)');
+test('D43: a matriz publicada não muda, porque hoje M já é menor que 1', () => {
+  // M(50,7536) = 0,99699. O min(M,1) não morde na leitura de hoje, então as vinte
+  // células ficam iguais — a decisão muda o comportamento, não o número publicado.
+  assert.ok(modulador(INDICE) < 1);
+  const r = destinacaoDoAporte({ aporte: 150, carteira: 53074, caixa: 0, exposicaoAtual: 100,
+    mesesAteEntrega: 48, estado: 'Mercado saudável', indice: INDICE });
+  perto(r.plantio.percentual, 39.9);
 });
 
 // ══ FLUXO 2 · AS SETE TRAVAS ══════════════════════════════════════════════
@@ -368,9 +388,11 @@ test('sem leitura não há proposta — nunca se estima o estado', () => {
   assert.match(p.motivo, /sem estado não há proposta/);
 });
 
-test('a divergência aberta viaja junto da proposta', () => {
+test('a divergência saiu da proposta porque a D43 a resolveu', () => {
   const p = propor({ leitura: { disponivel: true, estado: 'Mercado saudável', indice: INDICE },
     carteira: CARTEIRA, registro: null, hoje: HOJE });
-  assert.equal(p.divergenciasAbertas.length, 1);
-  assert.equal(p.divergenciasAbertas[0].precisaDeDecisao, true);
+  assert.equal(p.divergenciasAbertas, undefined, 'decidida, não pendente');
+  const d = destinacaoDoAporte({ aporte: 150, carteira: 1e5, caixa: 1000, exposicaoAtual: 90,
+    mesesAteEntrega: 42, estado: 'Mercado saudável', indice: INDICE });
+  assert.equal(d.divergencia, undefined);
 });

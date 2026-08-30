@@ -1,6 +1,6 @@
 # CARTEIRA SEMENTE — DOCUMENTO-MÃE
 *Fonte de verdade do produto. Todo material futuro nasce daqui.*
-Versão 1.20 · 29/08/2026 · BlockCapital Research — Decisões 2 a 31 aplicadas.
+Versão 1.21 · 29/08/2026 · BlockCapital Research — Decisões 2 a 31 e 43 aplicadas.
 
 > **"O maior ativo do seu filho hoje não é dinheiro. É o tempo que ele tem pela frente."**
 
@@ -178,7 +178,7 @@ Em pontos da carteira inteira, ao longo da glidepath:
 
 | Anos restantes | Exposição | BTC+ETH no mínimo | Teto por ativo | Gatilho de venda (12%) |
 |---|---|---|---|---|
-| +3 anos | 100% | 60,0 pts | 8,00 pts | 12,00 pts |
+| +4 anos | 100% | 60,0 pts | 8,00 pts | 12,00 pts |
 | 3 anos | 66% | 39,6 pts | 5,28 pts | 7,92 pts |
 | 2 anos | 45% | 27,0 pts | 3,60 pts | 5,40 pts |
 | 1 ano | 25% | 15,0 pts | 2,00 pts | 3,00 pts |
@@ -248,8 +248,8 @@ o sistema calcula sem discricionariedade. **O Gate assina.** A invariante 1 perm
 2. **O que sobrar segue o Índice de Plantio** normalmente.
 3. Sobrando ainda, **o excedente vai para a parte protegida**.
 
-**Com o Abrigo ativo, o caixa não recebe mais** (Decisão 27). A partir dos três anos da entrega, o
-passo 3 substitui a regra do caixa: o excedente vai direto para a parte protegida.
+**Com o Abrigo ativo, o caixa não recebe mais** (Decisão 27). A partir dos **quatro** anos da entrega
+(Decisão 43), o passo 3 substitui a regra do caixa: o excedente vai direto para a parte protegida.
 
 > *O caixa é pólvora seca para o Reforço de Fundo e para a compra na zona. A trava 3 já bloqueia o
 > reforço em Abrigo, e a compra na zona vai encolhendo com a exposição alvo. **Caixa que ninguém
@@ -265,6 +265,11 @@ gradual por construção. E **em todo mês em que o caixa cobre a demanda, a ven
 nem chega a ser tocado.
 
 Quantos meses de glidepath um caixa cobre sozinho, com carteira de R$ 53.074 a três anos da entrega:
+
+*Os números abaixo foram calculados no marco de **3 anos**, quando o passo mensal é 1,75 pt. Depois
+da Decisão 43 o Abrigo começa a 4 anos, onde o passo é 2,83 pt — no primeiro ano da rampa o caixa
+cobre **menos** meses do que esta tabela mostra. A tabela não foi recalculada: ela vale para o marco
+que nomeia, e recalcular exigiria derivar números novos.*
 
 | Caixa | Mercado saudável | Estresse | Prejuízo | Capitulação |
 |---|---|---|---|---|
@@ -283,7 +288,9 @@ leitura diz isso com estas palavras: **"aporte integralmente destinado à prote�
 > proteção.*
 
 Em números, a partir de 3 anos da entrega, com carteira de R$ 53.074 e aporte de R$ 150: a demanda
-da glidepath supera o aporte em **todos** os estados. Nos meses em que a banda rompe — 88% deles em
+da glidepath supera o aporte em **todos** os estados. *(Medido no marco de 3 anos. No trecho de 4→3,
+aberto pela Decisão 43, o passo é maior — 2,83 contra 1,75 pt — então a conclusão só fica mais
+forte.)* Nos meses em que a banda rompe — 88% deles em
 Mercado saudável, 15% em Capitulação — o aporte vai inteiro para a defesa. A modulação da Decisão 25
 é o que preserva a tese de acumulação onde ela importa, mas a regra acima é o que garante isso
 **mesmo se a modulação for recalibrada.**
@@ -348,7 +355,8 @@ desânimo, e no fundo do ciclo o aporte sozinho não dá conta. Por isso existe 
 separado**: em fundo de ciclo, parte do **caixa acumulado** é liberada. É para isso que o caixa é
 guardado.
 
-Só nos dois estados ruins, só com o Índice em 30 ou menos, só com mais de três anos até a entrega,
+Só nos dois estados ruins, só com o Índice em 30 ou menos, só com mais de **quatro** anos até a
+entrega (Decisão 43),
 no máximo 25% do caixa por vez, no máximo três vezes por ciclo, 🔒 **nunca deixando o caixa abaixo
 de 10% da carteira** — e sempre passando pelo Gate como decisão própria. Sete travas, para que ele não
 vire gatilho de impulso justamente no momento em que o medo é maior.
@@ -365,18 +373,23 @@ vire gatilho de impulso justamente no momento em que o medo é maior.
 
 Garante que a criança não faça 18 anos no fundo de um bear market.
 
-**Começa a 3 anos da entrega.** Razão: um ciclo dura ~4 anos e a recuperação leva de 2 a 3.
-A carteira precisa parar de correr risco antes de restar menos tempo do que uma recuperação leva.
+**Começa a 4 anos da entrega** (Decisão 43). Razão: um ciclo dura ~4 anos e a recuperação leva de 2
+a 3. A carteira precisa parar de correr risco antes de restar menos tempo do que uma recuperação leva.
+
+*Era "3 anos" até a Decisão 43. A rampa da Decisão 25 A já começava a mover a 4 anos — começar a 3
+exigiria ir de 100% a 66% em zero mês, um degrau de 34 pontos que o parágrafo seguinte proíbe. O
+início do Abrigo foi alinhado à rampa, e não o contrário.*
 
 **É progressivo**, não de uma vez — desligar o risco num único dia transforma a data num sorteio.
 
-| Tempo restante | Postura |
-|---|---|
-| +3 anos | Carteira cheia. O Índice de Plantio manda sozinho. |
-| 3 anos | Defesa sobe para ~1/3. Aportes reforçam mais a defesa. |
-| 2 anos | Defesa passa de metade. Realização gradual nos momentos bons. |
-| 1 ano | Majoritariamente protegida; exposição pequena. |
-| Ano da entrega | Essencialmente defensiva. O objetivo é ENTREGAR, não crescer. |
+| Tempo restante | Exposição alvo | Postura |
+|---|---|---|
+| +4 anos | 100% | Carteira cheia. O Índice de Plantio manda sozinho. |
+| 4 anos | 100% | A rampa começa a mover. O Abrigo fica ativo daqui em diante. |
+| 3 anos | 66% | Defesa sobe para ~1/3. Aportes reforçam mais a defesa. |
+| 2 anos | 45% | Defesa passa de metade. Realização gradual nos momentos bons. |
+| 1 ano | 25% | Majoritariamente protegida; exposição pequena. |
+| Ano da entrega | 15% | Essencialmente defensiva. O objetivo é ENTREGAR, não crescer. |
 
 **Refinamento:** o Abrigo não olha só o calendário. Ele **acelera quando o mercado está bom** e
 **segura a mão quando está ruim** — nunca força proteção no fundo.

@@ -70,40 +70,21 @@ export const VELOCIDADE_POR_ESTADO = Object.freeze({
 });
 
 /**
- * ⚠️ DIVERGÊNCIA DE ESPECIFICAÇÃO — LEVANTADA, NÃO RESOLVIDA (invariante 9).
+ * D43 A: o Abrigo fica ativo a partir de QUATRO anos da entrega, não três.
  *
- * A D25 A publica a tabela de passos com um trecho "4 → 3 anos · 2,83 pts". Isso
- * põe o início da rampa em QUATRO anos. Já o doc 01 §7 diz "Começa a 3 anos da
- * entrega" e "+3 anos: carteira cheia", e o doc 02 define Abrigo ativo como
- * "3 anos ou menos".
+ * A divergência que a peça 3 levantou está resolvida, e resolvida do lado da
+ * aritmética: a rampa da D25 A estava certa, e as outras três fontes é que estavam
+ * desalinhadas. Alinhar o início resolve os três problemas de uma vez — o teto
+ * `M_efetivo = min(M,1)`, a trava 3 do Reforço e a ordem caixa → aporte → venda
+ * passam todos a valer no mesmo dia em que a rampa começa a mover.
  *
- * A aritmética força a leitura da D25 A: com a rampa começando a 3 anos, seria
- * preciso ir de 100% a 66% em zero mês — um degrau de 34 pontos no dia em que a
- * carteira cruza os 3 anos. O próprio doc 01 §7 proíbe isso em texto: "É
- * progressivo, não de uma vez — desligar o risco num único dia transforma a data
- * num sorteio."
- *
- * Implementado em 4 anos, que é o único valor aritmeticamente possível. Mas TRÊS
- * regras continuam ancoradas em 3 anos, e é isso que precisa de decisão:
- *   · o teto M_efetivo = min(M, 1) (doc 02, teto absoluto 3);
- *   · a trava 3 do Reforço de Fundo ("mais de 3 anos até a entrega");
- *   · a ordem caixa → aporte → venda, que a D27 abre "quando o Abrigo começa".
- *
- * `divergenciaDoInicioDaGlidepath()` reporta isso na proposta, toda vez.
+ * D43 C, o preço, dito em voz alta: o Reforço de Fundo passa a ser bloqueado um ano
+ * antes, e o teto do M passa a morder o quarto ano inteiro. É perda real de munição.
+ * Aceito — é a invariante 6, proteção vence convicção, aplicada onde ela custa alguma
+ * coisa, que é o único lugar onde invariante prova que vale.
  */
 export const INICIO_DA_RAMPA_ANOS = 4;
-export const ABRIGO_ATIVO_ANOS = 3;
-
-export const divergenciaDoInicioDaGlidepath = () => Object.freeze({
-  rampaComecaEm: INICIO_DA_RAMPA_ANOS,
-  abrigoAtivoEm: ABRIGO_ATIVO_ANOS,
-  janelaSemCobertura: 'de 4 a 3 anos: a rampa move 34 pontos — o maior trecho da glidepath inteira — ' +
-    'mas o Abrigo ainda não está "ativo", então o teto do M não vale, o Reforço de Fundo não está ' +
-    'bloqueado, e o caixa ainda não é o primeiro recurso da glidepath',
-  origem: 'D25 A (tabela de passos, 4→3 anos) contra doc 01 §7 e doc 02 (Abrigo ativo a 3 anos)',
-  porQueImplementeiAssim: 'começar a 3 anos exigiria um degrau de 34 pontos num único dia, que o doc 01 §7 proíbe',
-  precisaDeDecisao: true,
-});
+export const ABRIGO_ATIVO_ANOS = 4;
 
 const clamp = (x, min, max) => Math.min(Math.max(x, min), max);
 const arred = (x, casas = 4) => Number(x.toFixed(casas));
@@ -244,9 +225,9 @@ export function destinacaoDoAporte({
   // A demanda vem em pontos de exposição; vira dinheiro contra o tamanho da carteira.
   const demandaEmDinheiro = arred((demanda.mover / 100) * carteira, 2);
 
-  // Ordem de recursos. O caixa só é o primeiro recurso da glidepath depois que o
-  // Abrigo começa (D27) — e é exatamente aqui que a divergência do início da rampa
-  // aparece: entre 4 e 3 anos há demanda e o caixa ainda não a atende.
+  // Ordem de recursos. O caixa é o primeiro recurso da glidepath a partir do momento
+  // em que o Abrigo começa (D27). Depois da D43 esse momento é o MESMO em que a rampa
+  // começa a mover — não há mais janela com demanda e caixa fechado.
   const caixaDisponivel = emAbrigo ? caixa : 0;
   const doCaixa = Math.min(caixaDisponivel, demandaEmDinheiro);
   const restanteAposCaixa = arred(demandaEmDinheiro - doCaixa, 2);
@@ -288,7 +269,6 @@ export function destinacaoDoAporte({
     },
     // D27: com o Abrigo ativo o excedente vai para a parte protegida, não para o caixa.
     excedente: { valor: excedente, destino: emAbrigo ? 'parte protegida' : 'caixa' },
-    divergencia: divergenciaDoInicioDaGlidepath(),
   };
 }
 
@@ -423,7 +403,6 @@ export function propor({ leitura, carteira, registro, hoje }) {
     // A Torre não classifica estação e o Alocador não executa: as duas invariantes
     // ficam ditas na saída, não só no comentário.
     limite: 'PROPÕE — não executa. Nem o aporte, nem o reforço, nem a venda. Quem assina é o Gui.',
-    divergenciasAbertas: [divergenciaDoInicioDaGlidepath()],
   };
 }
 

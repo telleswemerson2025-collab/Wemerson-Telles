@@ -1,7 +1,7 @@
 # PEÇA 3 — ALOCADOR
-Conferência. Versão 1.0 · 29/08/2026 — decisão → código → teste que prova
+Conferência. Versão 1.1 · 29/08/2026 — a D43 fechou a divergência do início do Abrigo
 
-**30 testes.** Rodar da raiz do repo: `node --test carteira-semente/alocador/alocador.test.mjs`
+**32 testes.** Rodar da raiz do repo: `node --test carteira-semente/alocador/alocador.test.mjs`
 
 O que ele faz: recebe a leitura da Torre e o estado do Registro, e **propõe** para onde
 vai o aporte do mês. Não executa nada — nem o aporte, nem o reforço, nem a venda.
@@ -50,42 +50,37 @@ código existir. As **vinte células** batem, com o índice real de 29/08/2026:
 
 ---
 
-## 🔴 UMA DIVERGÊNCIA DE ESPECIFICAÇÃO — LEVANTADA, NÃO RESOLVIDA
-**Quando a glidepath começa: 4 anos ou 3?**
+## ✅ A DIVERGÊNCIA FOI FECHADA PELA D43
+A peça 3 levantou: *a glidepath começa a 4 anos ou a 3?* A **D43 A** alinhou o Abrigo à rampa —
+`ABRIGO_ATIVO_ANOS` passou de 3 para 4 e ficou **igual** a `INICIO_DA_RAMPA_ANOS`.
 
-| Fonte | Diz |
-|---|---|
-| **D25 A**, tabela de passos | trecho **"4 → 3 anos · 2,83 pts"** — a rampa começa a **4 anos** |
-| **doc 01 §7** | *"Começa a 3 anos da entrega"* · *"+3 anos: carteira cheia"* |
-| **doc 02** | Abrigo ativo = *"3 anos ou menos até a entrega"* |
+As três regras que estavam desalinhadas passam a valer no mesmo dia em que a rampa começa a mover:
 
-**Implementei em 4 anos, porque é o único valor aritmeticamente possível.** Começar a
-3 exigiria ir de 100% a 66% em **zero mês** — um degrau de **34 pontos** no dia em que
-a carteira cruza os 3 anos. O próprio doc 01 §7 proíbe isso em texto:
+| Regra | Antes | Depois |
+|---|---|---|
+| teto `M_efetivo = min(M,1)` | só a 3 anos | **a 4 anos** |
+| trava 3 do Reforço de Fundo | bloqueia a 3 anos | **bloqueia a 4** |
+| ordem caixa → aporte → venda | abre a 3 anos | **abre a 4** |
 
-> *"É progressivo, não de uma vez — desligar o risco num único dia transforma a data
-> num sorteio."*
+**Não há mais janela com demanda e caixa fechado.** `divergenciaDoInicioDaGlidepath()` deixou de
+existir, e há teste de que ela não viaja mais na proposta — sair da saída é o sinal de que a pergunta
+foi respondida.
 
-### O que isso deixa aberto
-O trecho de **4 a 3 anos move 34 pontos — o maior da glidepath inteira**, maior que os
-21 do trecho seguinte, os 20 do outro e os 10 do último. E ele acontece **inteiro**
-numa janela em que o Abrigo ainda não está "ativo". Nessa janela:
+### O preço, medido
+A decisão diz o custo em voz alta. Medi, porque custo dito sem número é custo não conferido — e a
+parte maior não é a que a decisão menciona:
 
-- o teto `M_efetivo = min(M,1)` **não vale** — o Índice pode elevar o aporte;
-- a **trava 3 do Reforço** não bloqueia — o caixa pode ser drenado para o mercado;
-- a ordem **caixa → aporte → venda** não está aberta — a D27 a abre *"quando o Abrigo
-  começa"*, então a glidepath vende em vez de consumir o caixa.
+| Momento | Estado | Índice | Antes | Depois | Perda |
+|---|---|---|---|---|---|
+| 3,5 anos | Capitulação profunda | 10 | 96,3% | **83,0%** | **−13,3 pts** |
+| 3,5 anos | Prejuízo do mercado | 10 | 86,7% | 74,7% | −12,0 |
+| 3 anos | Capitulação profunda | 10 | 76,6% | 66,0% | −10,6 |
 
-Os três últimos pontos são a mesma coisa vista de três lados: **o caixa é
-simultaneamente o amortecedor da glidepath e a munição do Reforço, e não há regra de
-precedência entre os dois** — porque a D27 foi escrita para a janela em que a trava 3
-já bloqueava o Reforço.
+No fundo mais fundo a carteira aporta **13 pontos a menos** no trecho que a D43 passou a proteger.
+*É a invariante 6 aplicada onde ela custa — o único lugar onde invariante prova que vale.*
 
-**Não escolhi.** `divergenciaDoInicioDaGlidepath()` viaja em **toda proposta**, e há
-teste de que ela viaja. Três saídas possíveis, e a escolha é do Gui:
-1. mover o início do Abrigo para 4 anos (alinha as três regras à D25 A);
-2. mover a rampa para 3→0 anos e reescrever os quatro passos;
-3. manter os 4 anos e escrever a regra de precedência do caixa na janela.
+**Os vinte números da matriz não mudaram**, porque hoje M = 0,99699 já é menor que 1 e o teto não
+morde. A decisão muda o comportamento com Índice abaixo de 50, não o número publicado hoje.
 
 ---
 

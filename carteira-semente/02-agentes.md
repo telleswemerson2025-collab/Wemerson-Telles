@@ -1,6 +1,6 @@
 # AGENTES DO SISTEMA CARTEIRA SEMENTE
 Especificação para implementação. Cada agente tem entrada, saída e limite definidos.
-Versão 1.24 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 31 aplicadas.
+Versão 1.25 · 29/08/2026 — Decisões 1, 2, 4, 5, 6, 7, 9, 12 a 31 e 43 aplicadas.
 
 ---
 
@@ -110,7 +110,7 @@ não entra nesta tabela: ele modula o resultado dela, depois, pela fórmula da D
 
 | Estado do mercado (Linha d'Água) | Base | × Abrigo (anos restantes) |
 |---|---|---|
-| Capitulação profunda | 100% | +3a: 1,00 · 3a: 0,66 · 2a: 0,45 · 1a: 0,25 · entrega: 0,15 |
+| Capitulação profunda | 100% | **4a: 1,00** · 3a: 0,66 · 2a: 0,45 · 1a: 0,25 · entrega: 0,15 |
 | Prejuízo do mercado | 90% | idem |
 | Estresse de curto prazo | 65% | idem |
 | Mercado saudável | 40% | idem |
@@ -154,7 +154,7 @@ fronteira de cada ponto. Hoje: índice 50,7536 → M = 0,99699 (com 51 arredonda
 ### TETO E PISO ABSOLUTOS (valem sempre, acima da fórmula)
 1. O resultado nunca passa de 100% do aporte nem fica abaixo de 0%.
 2. A modulação **nunca move a decisão para o patamar de um estado vizinho**.
-3. Se o Abrigo estiver ativo (3 anos ou menos até a entrega), ele é aplicado **antes** da
+3. Se o Abrigo estiver ativo (**4 anos ou menos** até a entrega — Decisão 43), ele é aplicado **antes** da
    modulação e **o teto dele prevalece**: a modulação pode reduzir o resultado, nunca elevá-lo
    acima de `base × fator_do_Abrigo`. Deixar o Índice empurrar exposição para cima do que o
    Abrigo já travou desmontaria a própria proteção. Na prática, com Abrigo ativo vale
@@ -177,12 +177,19 @@ ciclo, e ali a regra 2 e o teto de 100% se encontram no mesmo lugar. Registrado 
 em `08-decisoes-29-08-2026.md`.
 
 ### MATRIZ DO APORTE — leitura de 29/08/2026 (Índice 50,75 · M = 0,99699)
-| Estado | +3 anos | 3 anos | 2 anos | 1 ano | entrega |
+*A primeira coluna era "+3 anos" até a Decisão 43. **Os vinte números não mudaram**: hoje
+M = 0,99699 já é menor que 1, então o teto `min(M,1)` do Abrigo não morde. A decisão muda o
+comportamento quando o Índice está abaixo de 50, não o número publicado hoje.*
+
+| Estado | +4 anos | 3 anos | 2 anos | 1 ano | entrega |
 |---|---|---|---|---|---|
 | Capitulação profunda | 99,7% | 65,8% | 44,9% | 24,9% | 15,0% |
 | Prejuízo do mercado | 89,7% | 59,2% | 40,4% | 22,4% | 13,5% |
 | Estresse de curto prazo | 64,8% | 42,8% | 29,2% | 16,2% | 9,7% |
 | **Mercado saudável** (estado de hoje) | **39,9%** | 26,3% | 17,9% | 10,0% | 6,0% |
+
+*As colunas de 4 anos em diante (3, 2, 1, entrega) já trazem `M_efetivo = min(M, 1)` aplicado. A
+coluna "+4 anos" é a única sem Abrigo.*
 
 Com o índice quase exatamente em 50, a modulação de hoje é praticamente nula — é o que se espera
 de um ajuste fino num mercado em equilíbrio. As colunas com Abrigo ativo já trazem
@@ -204,7 +211,7 @@ guardado.
 **As sete travas (todas obrigatórias; qualquer uma que falhe BLOQUEIA):**
 1. Estado **Capitulação profunda** ou **Prejuízo do mercado** — só esses dois.
 2. **Índice Semente ≤ 30.**
-3. **Mais de 3 anos até a entrega.** Abrigo ativo bloqueia o reforço.
+3. **Mais de 4 anos até a entrega** (Decisão 43). Abrigo ativo bloqueia o reforço.
 4. Libera no máximo **25% do caixa acumulado** por acionamento.
 5. No máximo **3 acionamentos por ciclo**, espaçados em pelo menos **30 dias**.
    O que é um ciclo, aqui, está definido logo abaixo (Decisão 9).
