@@ -116,10 +116,20 @@ test('D44 A: os pesos renormalizados no briefing batem com os do código', () =>
 });
 
 test('D44 A: os fatores de velocidade da D25 B estão escritos como o código os usa', () => {
-  const t = doc('01-documento-mae.md');
+  // ⚠️ A versão anterior perguntava se o número existia em ALGUM lugar do documento, e
+  // "1,50" também aparece três linhas abaixo, em prosa. O teste passava por vazio, e a
+  // prova da D45 foi quem denunciou. Agora ele liga ESTADO a FATOR, na linha que define.
+  const linha = doc('01-documento-mae.md')
+    .match(/\*\*A velocidade é modulada pelo estado da Linha d'Água:\*\*([\s\S]*?)\n\n/)?.[1];
+  assert.ok(linha, 'a linha que define os fatores sumiu do documento 01');
   for (const [estado, fator] of Object.entries(VELOCIDADE_POR_ESTADO)) {
+    const nome = estado.replace('Mercado saudável', 'Mercado saudável')
+      .replace('Estresse de curto prazo', 'Estresse de\n  curto prazo')
+      .replace('Prejuízo do mercado', 'Prejuízo do mercado')
+      .replace('Capitulação profunda', 'Capitulação profunda');
     const escrito = fator.toFixed(2).replace('.', ',');
-    assert.ok(t.includes(escrito), `o fator ${escrito} de ${estado} não aparece no documento 01`);
+    const re = new RegExp(`${nome.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*\\*\\*${escrito.replace(',', ',')}\\*\\*`);
+    assert.match(linha, re, `o documento 01 não liga ${estado} ao fator ${escrito}`);
   }
 });
 

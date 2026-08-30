@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.25 — decisões 1 a 44 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.26 — decisões 1 a 45 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -67,6 +67,13 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
    com o sistema bloqueando a 4 engana exatamente quem está tentando conferir: é pior que não ter
    rótulo, porque transforma a tela de instrumento de auditoria em fonte de erro.* Decisão 44.
    É irmã da invariante 11: aquela proíbe digitar derivado, esta proíbe digitar constante.
+
+13. **TESTE DE CONFERÊNCIA NASCE PROVADO.** Todo teste novo de conferência — redação, âncora,
+   invariante — só entra no pacote **depois de ser visto reprovando**: quebra-se de propósito o que
+   ele deveria pegar, confirma-se que acusa **com a linha e o valor esperado**, e desfaz-se. O que
+   foi quebrado para provar cada um fica registrado, e o registro é **executável**
+   (`carteira-semente/provas.mjs`). *Teste que passa por vazio é pior que ausência de teste, porque
+   cria sensação de cobertura — e sensação de cobertura é o que faz ninguém mais olhar.* Decisão 45.
 
 ## ÂNCORAS ESTRUTURAIS (Decisão 27)
 **Parâmetro que existe para conter deriva lenta nasce marcado como âncora**, e não é protegido

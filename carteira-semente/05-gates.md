@@ -1,6 +1,6 @@
 # GATES DA CARTEIRA SEMENTE
 Nenhum agente aprova. Só o humano.
-Versão 1.15 · 29/08/2026 — Decisões 1 a 22 e 44 aplicadas.
+Versão 1.16 · 29/08/2026 — Decisões 1 a 22, 44 e 45 aplicadas.
 
 ## GATE 1 — DIREÇÃO (antes de produzir)
 Perguntas:
@@ -34,6 +34,10 @@ Checklist. Qualquer item falho VETA:
    sistema bloqueando a 4, e o charset ausente nas quatro telas. **Todo rótulo com número foi
    gerado da constante** (invariante 12), e **a tela declara `<meta charset="utf-8">`** antes do
    primeiro acento. Decisão 44.
+10. **Teste de conferência novo foi visto reprovando** — quebrou-se de propósito o que ele deveria
+   pegar, ele acusou com a linha e o valor esperado, e o que foi quebrado ficou registrado em
+   `provas.mjs`. Teste que entra sem essa passagem **veta**: passar por vazio é pior que não
+   existir. Decisão 45.
 9. **Camada 5 rotulada** — se está fora, a leitura diz que está fora, e nunca a apresenta valendo
    50. Se está dentro, vem com a etiqueta de julgamento completa: que carrega julgamento humano, a
    data do degrau mais antigo em vigor, e quantos ativos estão sem degrau. Faltando qualquer uma
