@@ -200,7 +200,9 @@ test('D44 A: o mesmo vale para os rótulos que o módulo manda para a tela', () 
     assert.match(t, /\$\{/, `a trava "${t}" tem número escrito à mão`);
   }
   // A trava 3 é a que já errou uma vez: fica com asserção nominal.
-  assert.match(bloco, /o: `mais de \$\{ABRIGO_ATIVO_ANOS\} anos até a entrega`/);
+  const trava3 = bloco.match(/\{ n: 3, o: (['`])(.*?)\1/)?.[2] ?? '';
+  assert.match(trava3, /\$\{ABRIGO_ATIVO_ANOS\}/, 'o rótulo da trava 3 interpola a constante');
+  assert.ok(!/\b[0-9]+ anos\b/.test(trava3), 'e não traz o número escrito à mão');
 });
 
 // ══ A TELA DO REGISTRO DE CICLO — item 2 da peça 4 ════════════════════════
@@ -335,5 +337,9 @@ test('D21 B: a suspensão da camada 5 nomeia o ativo e a data, sem palavra dupli
   // chegou a congelar — "por tese tese vencida".
   const torre = ler('torre/torre.mjs');
   assert.ok(!/por tese \$\{suspensao\.razao\}/.test(torre), 'o prefixo duplicado voltou');
-  assert.match(torre, /camada 5 suspensa: degrau de \$\{suspensao\.ativo\} \$\{suspensao\.razao\}/);
+  // D48: a intenção é que a frase interpole o ativo e a razão, e não repita palavra.
+  const frase = torre.match(/motivo: `(camada 5 suspensa[^`]*)`/)?.[1] ?? '';
+  assert.match(frase, /\$\{suspensao\.ativo\}/, 'nomeia o ativo');
+  assert.match(frase, /\$\{suspensao\.razao\}/, 'e traz a razão');
+  assert.ok(!/tese \$\{suspensao\.razao\}/.test(frase), 'sem prefixo que duplique a razão');
 });

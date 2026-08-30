@@ -315,7 +315,12 @@ test('duas exchanges acima de US$ 100 mi aprovam a alínea (a)', () => {
 test('volume concentrado numa exchange só reprova — é dependência, não liquidez', () => {
   const r = filtroDeHorizonte('XYZ', { ...APROVA, volumes30d: { binance: 900e6, kraken: 20e6 } });
   assert.equal(r.veredito, 'reprovado');
-  assert.match(r.motivo, /1 exchange\(s\) de primeira linha acima de US\$ 100 mi, exige 2/);
+  // D48: a frase é conferida pelo que ela PRECISA dizer — quantas qualificaram, quantas
+  // se exige, e o limiar — e cada número vem da constante, não do texto que saiu.
+  assert.match(r.motivo, /liquidez/);
+  assert.match(r.motivo, new RegExp(`\\b1 exchange`), 'diz quantas qualificaram');
+  assert.match(r.motivo, new RegExp(`exige ${EXCHANGES_MINIMAS}`), 'e quantas se exige');
+  assert.match(r.motivo, new RegExp(String(LIMIAR_LIQUIDEZ / 1e6)), 'e o limiar, em milhões');
 });
 
 test('somar não vale: 60 + 60 dá 120 mi somados e reprova mesmo assim', () => {
@@ -672,7 +677,11 @@ test('o comando aponta a data do EXTREMO, não a data da leitura', () => {
 test('sem a data do extremo, o comando recusa em vez de chutar o dia', () => {
   const semData = { 'X': { valor: 1, min: 0, max: 2, data: '2026-08-29' } };
   const r = comandoDeConferencia({ serie: 'X', campo: 'min' }, semData);
-  assert.match(r.erro, /sem a data do min/);
+  assert.ok(r.erro, 'recusa em vez de devolver comando');
+  assert.match(r.erro, /min/, 'a recusa nomeia o campo que faltou');
+  assert.match(r.erro, /X/, 'e a série');
+  assert.ok(!/estreitar a janela em torno da data 20/.test(String(r.erro)),
+    'e não chuta uma data no lugar');
 });
 
 // ══ D40 · VOCABULÁRIO DAS CAMADAS ═════════════════════════════════════════
