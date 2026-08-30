@@ -39,10 +39,32 @@ const PROVAS = [
     acusa: /documento diz 45/,
   },
   {
-    teste: 'os pesos renormalizados no briefing batem com os do código',
+    teste: 'cada peso do briefing está ligado à SUA camada',
     porque: 'o peso renormalizado escrito à mão descola do PESOS do código',
     quebra: ['00-BRIEFING-CODE.md', 'renormalizados por 88 (38,6', 'renormalizados por 88 (39,6'],
-    acusa: /peso renormalizado 38,6 da camada 1 sumiu/,
+    acusa: /na posição 1 o briefing diz 39,6/,
+  },
+  {
+    // ⚠️ A PROVA QUE SÓ A D46 TORNA POSSÍVEL. Trocar dois pesos de lugar não tira
+    // número nenhum do documento: a versão de PRESENÇA passava, porque os dois
+    // continuam lá. Só um teste de LIGAÇÃO pega.
+    teste: 'cada peso do briefing está ligado à SUA camada',
+    porque: 'dois pesos trocados de lugar — o erro que a asserção de presença deixava passar',
+    quebra: ['00-BRIEFING-CODE.md', '(38,6 · 29,5 ·', '(29,5 · 38,6 ·'],
+    acusa: /na posição 1 o briefing diz 29,5/,
+  },
+  {
+    teste: 'cada peso do briefing está ligado à SUA camada',
+    porque: 'o divisor da renormalização descola da soma das quatro camadas',
+    quebra: ['00-BRIEFING-CODE.md', 'renormalizados por 88 (', 'renormalizados por 90 ('],
+    acusa: /o divisor escrito é a soma das quatro camadas/,
+  },
+  {
+    // A outra ligação que a D46 pediu: nome importado não é nome usado.
+    teste: 'os números que já foram escritos à mão não voltam para a tela',
+    porque: 'uma constante fica só importada, sem gerar rótulo nenhum',
+    quebra: ['aporte-do-mes.html', 'nem fica abaixo de ${pct(PISO_APORTE, 0)}', 'nem fica abaixo do piso'],
+    acusa: /PISO_APORTE não gera texto nenhum na tela — está só importado/,
   },
   {
     teste: 'os fatores de velocidade da D25 B estão escritos como o código os usa',

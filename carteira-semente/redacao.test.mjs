@@ -103,16 +103,25 @@ test('D44 A: a matriz do aporte publicada continua sendo a que o código produz'
   });
 });
 
-test('D44 A: os pesos renormalizados no briefing batem com os do código', () => {
-  // O briefing publica os pesos JÁ renormalizados sobre 0,88, porque a camada 5 está
-  // fora (D5). São número derivado escrito à mão — exatamente o caso da D44 A.
-  const b = doc('00-BRIEFING-CODE.md');
+test('D44 A · D46: cada peso do briefing está ligado à SUA camada, não só presente', () => {
+  // O briefing publica os pesos já renormalizados sobre 0,88, porque a camada 5 está
+  // fora (D5). São número derivado escrito à mão — o caso da D44 A.
+  //
+  // ⚠️ A versão anterior perguntava se cada peso EXISTIA no briefing. Trocar dois de
+  // lugar teria passado: os dois números continuam lá. A ligação aqui é POSICIONAL —
+  // a ordem da lista é a ordem das camadas — e é isso que precisa ser provado (D46).
+  const m = doc('00-BRIEFING-CODE.md').match(/renormalizados por (\d+) \(([^)]+)\)/);
+  assert.ok(m, 'a linha dos pesos renormalizados sumiu do briefing');
   const soma = [1, 2, 3, 4].reduce((s, c) => s + PESOS[c], 0);
-  for (const c of [1, 2, 3, 4]) {
-    const escrito = (PESOS[c] / soma * 100).toFixed(1).replace('.', ',');
-    assert.ok(b.includes(escrito), `o peso renormalizado ${escrito} da camada ${c} sumiu do briefing`);
-  }
-  assert.equal(soma.toFixed(2), '0.88', 'a camada 5 fora deixa 0,88');
+  assert.equal(Number(m[1]), Math.round(soma * 100), 'o divisor escrito é a soma das quatro camadas');
+  const escritos = m[2].split('·').map((x) => x.trim());
+  assert.equal(escritos.length, 4, 'quatro pesos na lista');
+  escritos.forEach((escrito, i) => {
+    const camada = i + 1;
+    const esperado = (PESOS[camada] / soma * 100).toFixed(1).replace('.', ',');
+    assert.equal(escrito, esperado,
+      `na posição ${camada} o briefing diz ${escrito} e a camada ${camada} pesa ${esperado}`);
+  });
 });
 
 test('D44 A: os fatores de velocidade da D25 B estão escritos como o código os usa', () => {
@@ -167,11 +176,16 @@ test('D44 A: os números que já foram escritos à mão não voltam para a tela'
     .map(([re, nome]) => `${re} — devia sair de ${nome}`);
   assert.deepEqual(voltaram, [], `\n  ${voltaram.join('\n  ')}\n`);
 
-  // E o outro lado: os nomes têm de estar mesmo lá, senão o teste acima passa por vazio.
+  // E o outro lado, ligado e não só presente (D46): o nome tem de aparecer DENTRO de
+  // uma interpolação. Só estar na lista de import não gera rótulo nenhum.
+  const interpolados = new Set([...script.matchAll(/\$\{([^}]*)\}/g)]
+    .flatMap((m) => m[1].match(/[A-Z][A-Z0-9_]{2,}/g) ?? []));
   for (const nome of ['TETO_APORTE', 'PISO_APORTE', 'BANDA_MODULACAO', 'TETO_M_EM_ABRIGO',
-    'FATOR_NEUTRO', 'MESES_SEM_MODULACAO', 'ACIMA_DO_ALVO', 'ABRIGO_ATIVO_ANOS', 'DATA_DA_LEITURA']) {
-    assert.ok(script.includes(nome), `${nome} não é usado na tela`);
+    'FATOR_NEUTRO', 'MESES_SEM_MODULACAO', 'ACIMA_DO_ALVO', 'ABRIGO_ATIVO_ANOS']) {
+    assert.ok(interpolados.has(nome), `${nome} não gera texto nenhum na tela — está só importado`);
   }
+  // A data é usada como argumento, não interpolada em rótulo: ligação própria.
+  assert.match(script, /hoje: DATA_DA_LEITURA/, 'a data da leitura tem de vir do nome');
 });
 
 test('D44 A: o mesmo vale para os rótulos que o módulo manda para a tela', () => {
