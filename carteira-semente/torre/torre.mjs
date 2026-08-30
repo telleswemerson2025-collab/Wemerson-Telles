@@ -16,25 +16,25 @@ import { TIPOS } from '../registro/registro.mjs';
 // escala: 'log' para série multiplicativa, 'lin' para aditiva (D03).
 // inicioSerie alimenta o fator de confiança da D7.
 export const SERIES = Object.freeze([
-  { n: 'Preço do BTC',        camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7' },
-  { n: 'Realized Price',      camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7' },
-  { n: 'Realized Price STH',  camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7' },
-  { n: 'Realized Price LTH',  camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7' },
-  { n: 'MVRV Ratio',          camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'regua', calendario: '24/7' },
-  { n: 'SOPR',                camada: 2, escala: 'log', inicioSerie: '2011-01-01', calendario: '24/7' },
-  { n: 'Supply in Profit',    camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7' },
-  { n: 'Liveliness',          camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7' },
-  { n: 'DXY',                 camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão' },
-  { n: 'Fed Funds Rate',      camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão' },
-  { n: 'US M2',               camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal' },
-  { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'pregão' },
-  { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11', calendario: 'pregão' },
-  { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01', calendario: '24/7' },
+  { n: 'Preço do BTC',        camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7', unidade: 'US$' },
+  { n: 'Realized Price',      camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7', unidade: 'US$' },
+  { n: 'Realized Price STH',  camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7', unidade: 'US$' },
+  { n: 'Realized Price LTH',  camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7', unidade: 'US$' },
+  { n: 'MVRV Ratio',          camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'regua', calendario: '24/7', unidade: 'razão' },
+  { n: 'SOPR',                camada: 2, escala: 'log', inicioSerie: '2011-01-01', calendario: '24/7', unidade: 'razão' },
+  { n: 'Supply in Profit',    camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7', unidade: '%' },
+  { n: 'Liveliness',          camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7', unidade: 'razão' },
+  { n: 'DXY',                 camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão', unidade: 'pontos de índice' },
+  { n: 'Fed Funds Rate',      camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão', unidade: '% a.a.' },
+  { n: 'US M2',               camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal', unidade: 'US$ tri' },
+  { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'pregão', unidade: 'pontos percentuais' },
+  { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11', calendario: 'pregão', unidade: 'US$ mi' },
+  { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01', calendario: '24/7', unidade: null },
   // A escala é LINEAR e não pode ser outra: netflow é entrada menos saída, cruza o
   // zero, e log de zero ou de negativo não produz número errado — não produz número
   // nenhum. A D38 D chamou a série de logarítmica; a D39 corrigiu para linear.
   // Os extremos e o início da série são PROVISÓRIOS até a leitura no terminal.
-  { n: 'Exchange Netflow',    camada: 4, escala: 'lin', inicioSerie: '2011-01-01', extremosProvisorios: true, calendario: '24/7' },
+  { n: 'Exchange Netflow',    camada: 4, escala: 'lin', inicioSerie: '2011-01-01', extremosProvisorios: true, calendario: '24/7', unidade: null },
 ]);
 
 /**
@@ -46,6 +46,19 @@ export const SERIES = Object.freeze([
  * Série 24/7 não tem isso: sábado é dia de dado como qualquer outro (a máxima do
  * Liveliness é um sábado, e é legítima).
  */
+/**
+ * O terminal tem séries HOMÔNIMAS, e a conferência do Supply in Profit · min mostrou
+ * o risco: dois "Supply in Profit" no menu, um em BTC e um em percentual. Abrir o
+ * errado dá um número plausível de uma série que não é a nossa, e nada na tela avisa.
+ *
+ * Só entram aqui os homônimos que uma conferência REPORTOU. Não é lista adivinhada.
+ */
+export const HOMONIMOS_NO_TERMINAL = Object.freeze({
+  'Supply in Profit': 'há dois no menu: um em BTC (≈13,5M BTC) e um em percentual. O nosso é o PERCENTUAL',
+  'SOPR': 'há o SOPR simples e os SOPR LTH e STH. O nosso é o SIMPLES',
+  'Realized Price': 'há Realized Price, Realized Price STH e Realized Price LTH — as três estão na varredura, cada uma na sua linha',
+});
+
 export const CALENDARIOS = Object.freeze(['24/7', 'pregão', 'mensal']);
 const DIAS_SEM_PREGAO = Object.freeze([0, 6]); // domingo e sábado
 export const semPregao = (data) => DIAS_SEM_PREGAO.includes(new Date(`${data}T00:00:00Z`).getUTCDay());
@@ -297,9 +310,22 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
   if (!data) return { erro: `sem a data do ${campo} de ${serie} — não dá para dizer onde estreitar a janela` };
   const ehExtremo = campo !== 'valor';
   const especie = ehExtremo ? especieDoExtremo(serie, campo, varredura) : 'empírico';
+  const unidade = SERIES.find((x) => x.n === serie)?.unidade ?? null;
   return [
     `Conferir no terminal VantageNode, somente leitura: ${serie} · ${campo}.`,
     `Valor a bater: ${alvo} na data ${data}.`,
+    '',
+    ...(unidade || HOMONIMOS_NO_TERMINAL[serie] ? [
+      '',
+      'Antes de ler, conferir que a série é a certa:',
+      ...(HOMONIMOS_NO_TERMINAL[serie] ? [`  ⚠️ ${HOMONIMOS_NO_TERMINAL[serie]}.`] : []),
+      ...(unidade ? [`  a unidade tem de ser ${unidade}, e o valor de hoje tem de bater com ${v.valor}.`] : []),
+      '  Se o valor de hoje não bater, a série aberta é outra: parar e reportar, não ajustar a leitura.',
+    ] : [
+      '',
+      `⚠️ A unidade de ${serie} não está registrada em lugar nenhum, então este comando não tem como`,
+      'checar se a série aberta é a certa. Ler a unidade na tela e reportar junto: ela entra no registro.',
+    ]),
     '',
     'Passos: abrir a série · estreitar a janela em torno da data até o passo do cursor virar um dia ·',
     'ler a tooltip · anotar o valor dígito a dígito · voltar ao range ALL.',

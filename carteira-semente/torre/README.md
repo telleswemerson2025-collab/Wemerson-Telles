@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.14 · 29/08/2026 — DXY inteiro · o calendário entra como método
+Conferência. Versão 1.15 · 29/08/2026 — o comando passa a checar QUAL série está aberta
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -591,6 +591,67 @@ DXY · min depois de eu ter dito que ele saiu. Desfeito e reaplicado no lugar ce
 
 *É o mesmo padrão do bug da data do comando: teste de formato passa, contagem passa, e
 quem denuncia é olhar a saída que deveria ter mudado.*
+
+### ✅ A sétima conferência: **Supply in Profit · min = 35,6% em 24/08/2015**
+Vizinhos 38,8% e 40,0% — folga de mais de 3 pontos percentuais para cada lado. Sem
+empate, sem pixel, sem calendário: os dígitos separam sozinhos. Mergulho de um dia, a
+**Segunda-feira Negra** dos mercados globais.
+
+*Método de varredura novo: em vez de percorrer trecho a trecho, o Gui recortou a
+**banda de altura** abaixo de ~36% e varreu os quinze anos de uma vez — uma única
+marca aparece em toda a série. É a varredura mais forte feita até agora, porque não
+depende de escolher quais trechos olhar.*
+
+## ⚠️ O ACHADO É MAIOR QUE A CONFERÊNCIA: O TERMINAL TEM SÉRIES HOMÔNIMAS
+O Gui abriu o menu e havia **dois "Supply in Profit"** — um em BTC (≈13,5M BTC) e um
+em percentual. Escolheu o percentual e avisou antes de dar o resultado.
+
+**O comando não avisava.** Ele nomeia a série por um texto, e o terminal tem mais de
+uma série com aquele texto. Abrir a errada dá um número **plausível** de uma série que
+não é a nossa, e nada na tela avisa — é o default silencioso mais caro que já apareceu
+aqui, porque não deixa rastro nenhum.
+
+*Não é o primeiro caso: na conferência do SOPR o Gui já tinha escrito "o simples, não
+LTH/STH", também sem ninguém pedir. Duas vezes o acerto veio do cuidado dele, não do
+comando.*
+
+### A escolha se prova pelo dado, por três vias
+E nenhuma delas dependia de escolher certo:
+
+| Prova | Por quê |
+|---|---|
+| valor corrente **67,4** | percentual, não 13,5M |
+| máximo **100,0** | teto de percentual, **impossível** numa série em BTC |
+| mínimo lido **35,6%** | mesma ordem dos outros dois |
+
+*O 100 já estava em `TETOS_DA_METRICA` desde a conferência anterior, por outro motivo.
+As duas coisas se sustentam: o teto que provou ser definicional agora também prova
+qual série é a nossa.*
+
+### O comando passou a checar a identidade ANTES de mandar ler
+```
+Antes de ler, conferir que a série é a certa:
+  ⚠️ há dois no menu: um em BTC (≈13,5M BTC) e um em percentual. O nosso é o PERCENTUAL.
+  a unidade tem de ser %, e o valor de hoje tem de bater com 67.4.
+  Se o valor de hoje não bater, a série aberta é outra: parar e reportar, não ajustar a leitura.
+```
+Cada série ganhou `unidade`, e `HOMONIMOS_NO_TERMINAL` guarda **só os homônimos que
+uma conferência reportou** — Supply in Profit, SOPR e Realized Price. Não é lista
+adivinhada.
+
+**O valor de hoje vira senha:** se a série aberta for outra, o valor corrente não bate,
+e a pessoa descobre antes de ler qualquer extremo.
+
+### E uma série não tem como se autenticar
+O **Funding Rate** é a única cuja unidade não está registrada em lugar nenhum — o
+valor 1,84 com faixa [−139,23; 186,86] não diz sozinho se é percentual, base ou taxa
+anualizada. O comando dela **avisa que não consegue checar** e pede a unidade junto,
+em vez de ficar em silêncio.
+
+### A quarta resolução de tooltip
+Este indicador mostra **uma** casa decimal. Já apareceram **quatro** tamanhos, um por
+série: 4 (Liveliness, SOPR) · 3 (MVRV) · 2 (DXY) · 1 (Supply in Profit). Meia casa
+daqui move o Índice em **0,0039** — segue abaixo de 0,01, como todas.
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o

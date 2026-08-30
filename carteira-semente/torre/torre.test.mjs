@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -1037,4 +1037,71 @@ test('corrigir essas datas não move o índice — todas têm confiança saturad
   const doisDias = { ...V, 'ETF Net Inflow': { ...V['ETF Net Inflow'], data: '2026-08-29' } };
   assert.ok(Math.abs(varrer({ varredura: doisDias, hoje: HOJE }).indice - base) > 0,
     'nela, dois dias de data errada moveriam o índice — pouco, mas moveriam');
+});
+
+// ══ A CONFERÊNCIA DO SUPPLY IN PROFIT · MIN — IDENTIDADE DA SÉRIE ═════════
+test('o mínimo do Supply in Profit bate, sem empate e por folga larga', () => {
+  const c = V['Supply in Profit'].conferencias.find((x) => x.campo === 'min');
+  assert.equal(V['Supply in Profit'].confirmado.min, '2026-08-29');
+  assert.deepEqual(c.vizinhos, { '2015-08-23': 38.8, '2015-08-24': 35.6, '2015-08-25': 40.0 });
+  assert.ok(c.vizinhos['2015-08-23'] - c.vizinhos['2015-08-24'] > 3, 'mais de 3 p.p. de folga');
+  assert.ok(c.vizinhos['2015-08-25'] - c.vizinhos['2015-08-24'] > 3);
+  assert.equal(c.casasNaTooltip, 1, 'quarta resolução diferente: 4, 3, 2 e 1');
+});
+
+test('o terminal tem duas séries com este nome, e o dado prova qual é a nossa', () => {
+  const c = V['Supply in Profit'].conferencias.find((x) => x.campo === 'min');
+  assert.equal(c.serieEscolhida.escolhida, 'percentual');
+  assert.equal(c.serieEscolhida.entre.length, 2);
+  // As três provas são verificáveis no próprio dado, sem depender da escolha.
+  const sp = V['Supply in Profit'];
+  assert.equal(sp.max, 100, 'teto de percentual — impossível numa série em BTC');
+  assert.ok(sp.valor > 0 && sp.valor < 100, `${sp.valor} é percentual, não 13,5M BTC`);
+  assert.ok(sp.min > 0 && sp.min < 100);
+  // E é o mesmo 100 que já estava em TETOS_DA_METRICA: as duas coisas se sustentam.
+  assert.equal(TETOS_DA_METRICA['Supply in Profit'].max, sp.max);
+});
+
+test('os homônimos do terminal são os que uma conferência reportou, não adivinhados', () => {
+  assert.deepEqual(Object.keys(HOMONIMOS_NO_TERMINAL).sort(),
+    ['Realized Price', 'SOPR', 'Supply in Profit']);
+  assert.match(HOMONIMOS_NO_TERMINAL['Supply in Profit'], /PERCENTUAL/);
+  assert.match(HOMONIMOS_NO_TERMINAL['SOPR'], /SIMPLES/);
+});
+
+test('o comando checa a identidade da série antes de mandar ler', () => {
+  const cmd = comandoDeConferencia({ serie: 'Supply in Profit', campo: 'min' }, V);
+  assert.match(cmd, /Antes de ler, conferir que a série é a certa/);
+  assert.match(cmd, /um em BTC .* e um em percentual/);
+  assert.match(cmd, /a unidade tem de ser %, e o valor de hoje tem de bater com 67\.4/);
+  assert.match(cmd, /parar e reportar, não ajustar a leitura/);
+  // O passo de identidade vem ANTES dos passos de leitura: depois já é tarde.
+  assert.ok(cmd.indexOf('a série é a certa') < cmd.indexOf('Passos: abrir a série'));
+});
+
+test('série sem unidade registrada recebe aviso, em vez de silêncio', () => {
+  assert.equal(SERIES.find((s) => s.n === 'Funding Rate').unidade, null);
+  const cmd = comandoDeConferencia({ serie: 'Funding Rate', campo: 'max' }, V);
+  assert.match(cmd, /A unidade de Funding Rate não está registrada/);
+  assert.match(cmd, /Ler a unidade na tela e reportar junto/);
+  // As treze com unidade não recebem o aviso.
+  assert.ok(!comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V)
+    .includes('não está registrada em lugar nenhum'));
+});
+
+test('a resolução da tooltip já apareceu em quatro tamanhos, e nenhum é o elo fraco', () => {
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const meiaCasa = [
+    ['MVRV Ratio', 'min', 0.0005], ['Liveliness', 'max', 0.00005],
+    ['DXY', 'max', 0.005], ['DXY', 'min', 0.005],
+    ['SOPR', 'min', 0.00005], ['Supply in Profit', 'min', 0.05],
+  ];
+  for (const [serie, campo, d] of meiaCasa) {
+    const alt = { ...V, [serie]: { ...V[serie], [campo]: V[serie][campo] + d } };
+    const efeito = Math.abs(varrer({ varredura: alt, hoje: HOJE }).indice - base);
+    assert.ok(efeito < 0.01, `${serie} · ${campo}: ${efeito.toFixed(6)} ponto`);
+  }
+  const casas = new Set(Object.values(V).flatMap((v) =>
+    (v.conferencias ?? []).map((c) => c.casasNaTooltip).filter(Boolean)));
+  assert.deepEqual([...casas].sort(), [1, 2, 3, 4], 'quatro resoluções diferentes, uma por série');
 });

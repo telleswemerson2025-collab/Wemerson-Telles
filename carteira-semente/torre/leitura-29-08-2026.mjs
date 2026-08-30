@@ -43,6 +43,7 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       campo: 'min', em: '2026-08-29',
       metodo: 'tooltip do terminal, modo SMA, janela estreitada de 01/10/2011 a dez/2011 até o passo do cursor virar 1 dia',
       lido: '0.384 — zero, ponto, três, oito, quatro (o terminal usa ponto decimal, não vírgula)',
+      casasNaTooltip: 3, // dos próprios dígitos lidos: 0.384
       // Vizinhos e varredura do ALL: provam que é o FUNDO, não só que o número
       // daquele dia está certo. O comando pedia só a segunda coisa.
       vizinhos: { '2011-10-18': 0.418, '2011-10-19': 0.384, '2011-10-20': 0.411 },
@@ -53,6 +54,7 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       campo: 'max', em: '2026-08-29',
       metodo: 'tooltip do terminal, modo SMA, janela estreitada de 13/04/2011 a 07/2011 até ~12,6 px por dia',
       lido: '7.854 — sete, ponto, oito, cinco, quatro',
+      casasNaTooltip: 3, // 7.854
       vizinhos: { '2011-06-03': 6.510, '2011-06-04': 7.854, '2011-06-05': 6.718 },
       // Havia um segundo pico ao lado, conferido para não confundir os dois.
       segundoPico: { '2011-06-07': 7.404, '2011-06-08': 7.809, '2011-06-09': 6.772 },
@@ -76,6 +78,7 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       campo: 'min', em: '2026-08-29',
       metodo: 'Spent Output Profit Ratio (SOPR) · SOPR simples, não LTH/STH; tooltip, modo SMA, janela estreitada até o passo do cursor virar 1 dia',
       lido: '0.6068 — zero, ponto, seis, zero, seis, oito',
+      casasNaTooltip: 4, // 0.6068
       vizinhos: { '2011-11-08': 0.9609, '2011-11-09': 0.6068, '2011-11-10': 0.9743 },
       // TOPOLOGIA NOVA: nem vale (MVRV · min) nem platô (Liveliness · max). É uma
       // barra isolada cravada entre dois dias em ~0,96–0,97. É a forma que um erro
@@ -102,7 +105,42 @@ export const VARREDURA_29_08_2026 = Object.freeze({
                       'nada publicado, alterado ou apagado, nenhum print salvo',
     }],
   },
-  'Supply in Profit':   { valor: 67.4,     min: 35.6,    max: 100.0,     data: '2026-08-28' , dataMin: '2015-08-24', dataMax: '2011-02-04', confirmado: { valor: '2026-08-29', min: null, max: null } },
+  'Supply in Profit': {
+    valor: 67.4, min: 35.6, max: 100.0, data: '2026-08-28',
+    dataMin: '2015-08-24', dataMax: '2011-02-04',
+    confirmado: { valor: '2026-08-29', min: '2026-08-29', max: null },
+    conferencias: [{
+      campo: 'min', em: '2026-08-29',
+      metodo: 'tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia',
+      lido: '35.6% — três, cinco, ponto, seis, com sinal de porcento',
+      casasNaTooltip: 1, // quarta resolução diferente encontrada: 4, 3, 2 e agora 1
+      // O menu tem DOIS "Supply in Profit": um em BTC (13,5M BTC) e um percentual.
+      // O Gui escolheu o percentual e avisou. A escolha se PROVA pelo dado, e por
+      // três vias independentes — nenhuma delas dependia de escolher certo.
+      serieEscolhida: {
+        entre: ['Supply in Profit em BTC (≈13,5M BTC)', 'Supply in Profit em percentual'],
+        escolhida: 'percentual',
+        provasNoDado: [
+          'o valor corrente registrado é 67,4 — percentual, não 13,5M',
+          'o máximo registrado é 100,0, que é o teto de um percentual e impossível numa série em BTC',
+          'o mínimo lido, 35,6%, é da mesma ordem dos outros dois',
+        ],
+      },
+      vizinhos: { '2015-08-23': 38.8, '2015-08-24': 35.6, '2015-08-25': 40.0 },
+      topologia: 'mergulho de um dia — a Segunda-feira Negra dos mercados globais, 24/08/2015',
+      semEmpate: 'folga de mais de 3 pontos percentuais para cada lado; os dígitos separam sozinhos',
+      // Método novo de varredura: recortar a BANDA de altura e varrer os quinze anos
+      // de uma vez, em vez de percorrer trecho a trecho.
+      ehMinimoDaSerie: 'recortada a banda do gráfico abaixo de ~36% e varridos os quinze anos de uma vez: ' +
+                       'aparece uma única marca em toda a série, a de agosto de 2015. ' +
+                       'Concorrentes por trecho: dez/2014–out/2015 tem segundo mais baixo em ~39,7%; 2018–2019 para em 40–41%.',
+      metodoDeVarredura: 'banda de altura sobre a série inteira, e não trecho a trecho',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 219 em 24/08; US$ 228 em 23/08 e US$ 214 em 25/08',
+      incertezaDaExibicao: { faixa: [35.55, 35.65], efeitoNoIndice: 0.00387 },
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }],
+  },
   'Liveliness': {
     valor: 0.6345, min: 0.1785, max: 0.6410, data: '2026-08-28',
     dataMin: '2011-01-09', dataMax: '2025-12-20',
