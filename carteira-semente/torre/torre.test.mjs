@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -1104,4 +1104,55 @@ test('a resolução da tooltip já apareceu em quatro tamanhos, e nenhum é o el
   const casas = new Set(Object.values(V).flatMap((v) =>
     (v.conferencias ?? []).map((c) => c.casasNaTooltip).filter(Boolean)));
   assert.deepEqual([...casas].sort(), [1, 2, 3, 4], 'quatro resoluções diferentes, uma por série');
+});
+
+// ══ FED FUNDS · MAX — A TERCEIRA ESPÉCIE DE EMPATE ════════════════════════
+test('o máximo do Fed Funds é um patamar de 396 dias, não um ponto', () => {
+  const c = V['Fed Funds Rate'].conferencias.find((x) => x.campo === 'max');
+  assert.equal(V['Fed Funds Rate'].confirmado.max, '2026-08-29');
+  assert.equal(c.platoDeValor.diasNoPatamar, 396);
+  assert.equal(c.platoDeValor.inicio, '2023-08-01');
+  assert.equal(c.platoDeValor.fim, '2024-08-31');
+  // O degrau de entrada separa; a saída do patamar também. O meio não separa nada.
+  assert.equal(c.vizinhos['2023-07-31'], 5.12, 'o dia anterior é 21 pontos-base abaixo');
+  assert.equal(c.vizinhos['2023-08-02'], c.vizinhos['2023-08-01'], 'o dia seguinte é idêntico');
+  assert.equal(c.platoDeValor.primeiraLeituraDepois['2024-09-02'], 5.13);
+  assert.match(c.platoDeValor.oQueADataSignifica, /primeira ocorrência do patamar/);
+});
+
+test('as três espécies de empate são distintas, e nenhuma se resolve como a outra', () => {
+  const liv = V['Liveliness'].conferencias.find((x) => x.campo === 'max').empateNaExibicao;
+  const dxy = V['DXY'].conferencias.find((x) => x.campo === 'min').empateDeCalendario;
+  const ffr = V['Fed Funds Rate'].conferencias.find((x) => x.campo === 'max').platoDeValor;
+  assert.match(liv.naturezaDoMetodo, /pixel/);      // números diferentes, tela igual
+  assert.match(dxy.naturezaDoMetodo, /calendário/); // mesmo número, dia sem pregão
+  assert.match(ffr.naturezaDoMetodo, /patamar/);    // mesmo número, o dado não muda
+  assert.equal(new Set([liv.naturezaDoMetodo, dxy.naturezaDoMetodo, ffr.naturezaDoMetodo]).size, 3);
+  assert.match(ffr.porQueNemDigitoNemPixelDecidem, /não há o que separar/);
+});
+
+test('o comando avisa do patamar antes, e só nas séries que andam em patamar', () => {
+  assert.deepEqual(Object.keys(SERIES_EM_PATAMAR).sort(), ['Fed Funds Rate', 'US M2']);
+  const cmd = comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V);
+  assert.match(cmd, /anda em PATAMAR/);
+  assert.match(cmd, /a data é a PRIMEIRA ocorrência dele — o degrau/);
+  assert.match(cmd, /o último dia em que ele ainda vale/);
+  // Série 24/7 de razão não recebe o aviso.
+  assert.ok(!comandoDeConferencia({ serie: 'SOPR', campo: 'max' }, V).includes('anda em PATAMAR'));
+});
+
+// ══ O PORTÃO DE IDENTIDADE PRODUZIU UM FATO NOVO ══════════════════════════
+test('o portão de identidade entregou a data real do último ponto', () => {
+  const d = V['Fed Funds Rate'].divergenciaDeData;
+  assert.equal(d.registrado, '2026-08-29');
+  assert.equal(d.naTela, '2026-08-24');
+  assert.equal(d.diferencaEmDias, 5, 'cinco dias, não um — a leitura de sábado não explicava tudo');
+  assert.equal(semPregao('2026-08-24'), false, 'e 24/08/2026 é segunda-feira');
+  // O valor bateu, que é o que o portão checa: a série aberta era a certa.
+  assert.equal(V['Fed Funds Rate'].valor, 3.63);
+  // E o custo segue zero, pelo mesmo motivo das outras: confiança saturada.
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const corrigida = { ...V, 'Fed Funds Rate': { ...V['Fed Funds Rate'], data: '2026-08-24' } };
+  assert.equal(varrer({ varredura: corrigida, hoje: HOJE }).indice, base);
+  assert.equal(d.efeitoNoIndice, 0);
 });

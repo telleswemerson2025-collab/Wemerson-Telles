@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.15 · 29/08/2026 — o comando passa a checar QUAL série está aberta
+Conferência. Versão 1.16 · 29/08/2026 — a terceira espécie de empate: o patamar
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -652,6 +652,44 @@ em vez de ficar em silêncio.
 Este indicador mostra **uma** casa decimal. Já apareceram **quatro** tamanhos, um por
 série: 4 (Liveliness, SOPR) · 3 (MVRV) · 2 (DXY) · 1 (Supply in Profit). Meia casa
 daqui move o Índice em **0,0039** — segue abaixo de 0,01, como todas.
+
+### ✅ A oitava conferência: **Fed Funds Rate · max = 5,33 em 01/08/2023**
+O valor bate. E o empate é a informação, como o Gui escreveu.
+
+**Terceira espécie de empate.** Não é exibição (Liveliness) nem fim de semana (DXY):
+**o dado não muda mesmo.** 396 dias com o valor idêntico, de 01/08/2023 a 31/08/2024,
+linha horizontal sem um pixel de variação. Nem dígito nem pixel decidem, *porque não
+há o que separar*.
+
+| Empate | O que é | Resolve com |
+|---|---|---|
+| Liveliness · max | números **diferentes**, tela igual | pixel |
+| DXY · min | **mesmo** número, dia sem pregão | calendário |
+| **Fed Funds · max** | **mesmo** número, o dado é o mesmo | **as duas pontas do patamar** |
+
+Aqui o extremo é um **patamar**, e a data é o **degrau de entrada** — 31/07 lê 5,12, e
+5,33 aparece em 01/08. A saída também é degrau: 30/08/2024 ainda lê 5,33, e 02/09 já
+é 5,13. As duas pontas ficam registradas juntas, que foi exatamente o que o Gui pediu
+para o empate não reaparecer parecendo erro.
+
+`SERIES_EM_PATAMAR` marca as duas séries a que isso se aplica — **Fed Funds Rate**
+(taxa de política, parada entre reuniões do FOMC) e **US M2** (mensal, cada leitura
+vale até a publicação seguinte). O comando de ambas avisa antes e pede as duas pontas.
+
+## ✅ E O PORTÃO DE IDENTIDADE PRODUZIU UM FATO NA PRIMEIRA VEZ QUE RODOU
+Ele foi criado uma conferência atrás, para impedir que se lesse a série errada. Passou
+— *"unidade em % no próprio título"*, valor 3,63 batendo. E de quebra entregou algo
+que o dado não tinha:
+
+> **O último ponto da série é 24/08/2026, não 29/08.** Cinco dias, não um.
+
+A leitura de sábado explicava **um** dia de defasagem. Não explicava cinco. O portão
+pediu o valor corrente, o Gui reportou a data dele junto, e a divergência apareceu
+sozinha — sem ninguém procurar por ela.
+
+**Custo: zero**, pelo mesmo motivo das outras: confiança saturada, e pela D36 C a data
+não entra na conta. Está medido e em teste. Mas a pergunta 4 em aberto fica mais séria:
+o que se retificaria não é "sábado por sexta", é **uma data que ninguém sabe**.
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o

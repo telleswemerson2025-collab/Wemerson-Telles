@@ -245,7 +245,44 @@ export const VARREDURA_29_08_2026 = Object.freeze({
                       'nada publicado, alterado ou apagado, nenhum print salvo',
     }],
   },
-  'Fed Funds Rate':     { valor: 3.63,     min: 0.05,    max: 5.33,      data: '2026-08-29' , dataMin: '2020-04-01', dataMax: '2023-08-01', confirmado: { valor: '2026-08-29', min: null, max: null } },
+  'Fed Funds Rate': {
+    valor: 3.63, min: 0.05, max: 5.33, data: '2026-08-29',
+    dataMin: '2020-04-01', dataMax: '2023-08-01',
+    confirmado: { valor: '2026-08-29', min: null, max: '2026-08-29' },
+    // O portao de identidade (unidade + valor corrente) passou: titulo "Fed Funds
+    // Rate (%)" e ultimo ponto 3.63. E de quebra entregou um fato que o dado nao
+    // tinha: a data do ultimo ponto e 24/08/2026, nao 29/08. Cinco dias, nao um.
+    divergenciaDeData: {
+      registrado: '2026-08-29', naTela: '2026-08-24', diferencaEmDias: 5,
+      comoApareceu: 'o portão de identidade da D35 B pediu o valor corrente, e o Gui reportou a data dele junto',
+      efeitoNoIndice: 0, motivo: 'confiança da série saturada em 1 — pela D36 C a data não entra na conta',
+    },
+    conferencias: [{
+      campo: 'max', em: '2026-08-29',
+      metodo: 'Macro · Fed Funds Rate (%), tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia',
+      lido: '5.33 — cinco, ponto, três, três',
+      casasNaTooltip: 2,
+      portaoDeIdentidade: 'unidade em % no próprio título; último ponto 24/08/2026 = 3.63, que bate com o valor registrado',
+      vizinhos: { '2023-07-31': 5.12, '2023-08-01': 5.33, '2023-08-02': 5.33 },
+      // TERCEIRA ESPECIE DE EMPATE, depois da exibicao (Liveliness) e do fim de
+      // semana (DXY): o dado nao muda mesmo. 396 dias com o valor identico.
+      platoDeValor: {
+        inicio: '2023-08-01', fim: '2024-08-31', diasNoPatamar: 396,
+        degrauDeEntrada: { '2023-07-31': 5.12, '2023-08-01': 5.33 }, // 21 pontos-base
+        primeiraLeituraDepois: { '2024-08-30': 5.33, '2024-09-02': 5.13 },
+        porQueNemDigitoNemPixelDecidem: 'a linha é horizontal sem um pixel de variação — não há o que separar, o dado é o mesmo',
+        oQueADataSignifica: 'primeira ocorrência do patamar, o degrau — não um ponto único',
+        naturezaDoMetodo: 'patamar — a data é o degrau de entrada, e as duas pontas se registram juntas',
+      },
+      ehMaximoDaSerie: 'recortada a faixa do gráfico acima de 5,33 e varridos os quinze anos: nenhum traço entra nela. ' +
+                       'O ciclo de 2018–19 topou em ~2,4 e todo o período 2011–2015 ficou rente a zero.',
+      metodoDeVarredura: 'banda de altura sobre a série inteira',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 29.019 em 01/08; US$ 29.330 em 31/07 e US$ 29.397 em 02/08',
+      incertezaDaExibicao: { faixa: [5.325, 5.335], efeitoNoIndice: 0.00292 },
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }],
+  },
   'US M2':              { valor: 23.218,   min: 8.845,   max: 23.218,    data: '2026-08-29' , dataMin: '2011-01-01', dataMax: '2026-07-01', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'Curva 10Y-2Y':       { valor: 0.38,     min: -0.93,   max: 2.81,      data: '2026-08-29' , dataMin: '2023-07-01', dataMax: '2011-02-01', confirmado: { valor: '2026-08-29', min: null, max: null } },
   'ETF Net Inflow':     { valor: 242.3,    min: -1138.9, max: 1373.8,    data: '2026-08-27' , dataMin: '2025-02-25', dataMax: '2024-11-07', confirmado: { valor: '2026-08-29', min: null, max: null } },

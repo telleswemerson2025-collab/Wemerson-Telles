@@ -53,6 +53,19 @@ export const SERIES = Object.freeze([
  *
  * Só entram aqui os homônimos que uma conferência REPORTOU. Não é lista adivinhada.
  */
+/**
+ * Séries cujo valor fica PARADO por construção entre atualizações. A conferência do
+ * Fed Funds · max encontrou 396 dias seguidos com o mesmo 5.33 — não é arredondamento
+ * nem fim de semana: é uma taxa de política mantida no lugar. Nem dígito nem pixel
+ * decidem, porque o dado é literalmente o mesmo.
+ *
+ * Para elas o extremo é um PATAMAR, e a data é a primeira ocorrência — o degrau.
+ */
+export const SERIES_EM_PATAMAR = Object.freeze({
+  'Fed Funds Rate': 'taxa de política: fica parada entre reuniões do FOMC, por meses',
+  'US M2': 'série mensal: cada leitura vale até a publicação do mês seguinte',
+});
+
 export const HOMONIMOS_NO_TERMINAL = Object.freeze({
   'Supply in Profit': 'há dois no menu: um em BTC (≈13,5M BTC) e um em percentual. O nosso é o PERCENTUAL',
   'SOPR': 'há o SOPR simples e os SOPR LTH e STH. O nosso é o SIMPLES',
@@ -329,6 +342,16 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
     '',
     'Passos: abrir a série · estreitar a janela em torno da data até o passo do cursor virar um dia ·',
     'ler a tooltip · anotar o valor dígito a dígito · voltar ao range ALL.',
+    ...(ehExtremo && SERIES_EM_PATAMAR[serie] ? [
+      '',
+      `⚠️ ${serie} anda em PATAMAR — ${SERIES_EM_PATAMAR[serie]}. Espere ver o mesmo número por`,
+      'semanas ou meses seguidos. Não é arredondamento nem fim de semana: o dado é o mesmo, e',
+      'estreitar a janela não separa nada porque não há o que separar.',
+      'Aqui o extremo é o patamar, e a data é a PRIMEIRA ocorrência dele — o degrau. Anotar:',
+      '  · o dia em que o valor aparece pela primeira vez, e o valor do dia anterior (o degrau);',
+      '  · o último dia em que ele ainda vale, e o primeiro valor depois dele.',
+      'Sem as duas pontas, o patamar reaparece na próxima conferência e parece erro.',
+    ] : []),
     ...(dataSuspeitaDeCarregamento(serie, data) ? [
       '',
       `⚠️ ${serie} é série de PREGÃO e ${data} caiu num fim de semana: o terminal repete o fechamento`,
