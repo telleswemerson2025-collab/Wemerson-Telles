@@ -1,10 +1,10 @@
 # PEÇA 4 — TELAS
-Conferência. Versão 1.1 · 29/08/2026 — item 1 de 4 · D44 aplicada
+Conferência. Versão 1.2 · 29/08/2026 — itens 1 e 2 de 4
 
 | Item | Tela | Estado |
 |---|---|---|
 | **1** | **`aporte-do-mes.html`** — modulação e Reforço de Fundo | ✅ **feito** |
-| 2 | registro de ciclo (D9 · D32) | a fazer |
+| **2** | **`registro-de-ciclo.html`** — marco, acionamentos e o log inteiro | ✅ **feito** |
 | 3 | divergências do `indice-semente.html` | a fazer |
 | 4 | divergências do `simulador.html`, com o motor mensal | a fazer |
 
@@ -68,6 +68,55 @@ desta implementação começar.
 
 ---
 
+## ITEM 2 · `registro-de-ciclo.html`
+As sete coisas, na ordem que a decisão pediu — e o log cru por último e por inteiro.
+
+| | Seção | O que mostra |
+|---|---|---|
+| 1 | **O marco de virada** | dias na sequência, quantos faltam dos 30, o limiar, e se completou |
+| 2 | **Acionamentos no ciclo** | data, Índice e % do caixa de cada um; quantos restam dos três |
+| 3 | **Resets** | data, o marco que causou, a sequência que o sustentou — e **anulado** riscado, sem sumir |
+| 4 | **Retificações** | a data a que se refere ao lado da data de coleta, com motivo e aprovação |
+| 5 | **Anulações de marco** | apontando para os **dois**: o marco desfeito e a retificação que o desfez |
+| 6 | **Composição da CRM** | congelada ou fresca, e desde quando está desatualizada |
+| 7 | **O log inteiro** | cronológico, **sem filtro**, 51 eventos legíveis de cima a baixo |
+
+A tela **pergunta ao registro** — `diasConsecutivosNoMarco`, `cicloReforco`, `composicaoCRM`,
+`eventos` — e não recalcula nada. Há teste de que ela chama os quatro, e de que o log renderiza
+`eventos.map`, sem filtro no meio.
+
+### O histórico de exemplo, e por que ele existe
+`registro/historico-exemplo.mjs` constrói um caso que exercita as seis seções: o fundo com dois
+acionamentos, os 30 fechamentos que completam o marco, o reset que o registro grava sozinho, a CRM
+que fica ilegível, e uma retificação que **derruba um dia da sequência e anula o marco**.
+
+**Escrito contra o módulo, não contra a minha ideia dele.** A primeira versão da retificação foi
+**recusada**: eu tinha posto `valorAntigo: 69.2` e o registro respondeu que o vigente era `71.2`.
+Ele estava certo — a sequência sobe 0,3 por dia desde 65+2, e o 15º dia fechou em 71,2.
+
+E o efeito da anulação é a parte que vale ver: o marco cai, o ciclo **volta a ser o primeiro**, e os
+**dois acionamentos voltam para a contagem**. Um reforço que parecia gasto volta a estar disponível
+porque a leitura que fechava o ciclo estava errada.
+
+### ⚠️ Um limite do exemplo, dito na própria tela
+`gravadoEm` é carimbado na hora da **escrita**. Um histórico construído de uma vez tem **todo evento
+"retroativo"** por essa medida — as 44 leituras apareciam na seção 4, que virava ruído.
+
+Não é defeito da tela nem do registro: **é limite do exemplo**, e nenhum ajuste de filtro conserta,
+porque a distinção só existe em operação real. A seção passou a listar as **retificações**, que são
+retroativas por natureza, e a nota abaixo dela diz por que as leituras não entram. *A tela explica a
+própria limitação em vez de esconder atrás de um filtro.*
+
+## 🐛 DOIS DEFEITOS DE TEXTO QUE SÓ A PÁGINA MOSTROU
+1. **O subtítulo da seção 4 contradizia a tabela** — dizia que ela listava *"as retificações e as
+   leituras que passaram da janela"* depois de eu ter mudado a tabela para listar só retificações.
+   Texto dizendo uma coisa e mecanismo fazendo outra: exatamente a D44, agora na prosa.
+2. **"1 restantes"** — plural fixo. Pequeno, e do tipo que só existe porque ninguém abriu a página.
+
+*Item 9 do Gate 2 se pagou de novo: a suíte passava inteira nos dois casos.*
+
+---
+
 ## ✅ A D44 FECHOU O PADRÃO QUE ESTES ERROS FORMAVAM
 
 ### O checklist de toda tela nova
@@ -78,7 +127,7 @@ desta implementação começar.
 | 3 | a tela é **renderizada e olhada** antes de dada por pronta | Gate 2, item 9 |
 
 ### O teste de redação — `redacao.test.mjs`
-Sete testes que ligam **texto** a **constante**, e que quebram quando os dois divergem:
+Dez testes que ligam **texto** a **constante**, e que quebram quando os dois divergem:
 
 - **28 trechos de documento** conferidos contra a constante que o sistema usa — o início do
   Abrigo, os quatro pontos da glidepath, a banda, o teto de defasagem, as sete travas, os tetos
@@ -90,7 +139,7 @@ Sete testes que ligam **texto** a **constante**, e que quebram quando os dois di
 - **Onze números** que já estiveram escritos à mão na tela, e o nome que passou a gerá-los.
 - **Os rótulos das sete travas** que viajam do módulo para a tela.
 
-**Provei que ele morde**, quebrando dois de propósito: trocar *"Começa a 4 anos"* por *3* no
+**Provei que ele morde** — `provas.mjs`, **15 provas**, quebrando cada uma de propósito: trocar *"Começa a 4 anos"* por *3* no
 documento 01 e devolver `±20%` como literal na tela. Os dois acusaram, com a linha e a constante
 esperada. *Teste que não pode falhar não é teste.*
 

@@ -18,7 +18,8 @@ import {
   ESPACAMENTO_DIAS, INDICE_MAXIMO_REFORCO, TETO_POR_ATIVO, GATILHO_DE_VENDA,
   PISO_POR_POSICAO, PISO_BTC_ETH, BASES_DO_ESTADO, VELOCIDADE_POR_ESTADO,
 } from './alocador/alocador.mjs';
-import { VALIDADE_DIAS, MARCO_INDICE, MARCO_DIAS } from './registro/registro.mjs';
+import { VALIDADE_DIAS, MARCO_INDICE, MARCO_DIAS, RECUPERACAO_DIAS, TIPOS } from './registro/registro.mjs';
+import { historicoComAnulacao, CARTEIRA, ILUSTRATIVO } from './registro/historico-exemplo.mjs';
 import { LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, PESOS } from './torre/torre.mjs';
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
@@ -199,4 +200,64 @@ test('D44 A: o mesmo vale para os rótulos que o módulo manda para a tela', () 
   }
   // A trava 3 é a que já errou uma vez: fica com asserção nominal.
   assert.match(bloco, /o: `mais de \$\{ABRIGO_ATIVO_ANOS\} anos até a entrega`/);
+});
+
+// ══ A TELA DO REGISTRO DE CICLO — item 2 da peça 4 ════════════════════════
+test('D44 A · D46: os números da tela do ciclo saem da constante, e ligados', () => {
+  const s = doc('registro-de-ciclo.html');
+  const script = s.slice(s.indexOf('<script type="module">'))
+    .split('\n').filter((l) => !/^\s*\/\//.test(l)).join('\n');
+
+  // Os números que a tela cita são o limiar, a janela do marco, a de recuperação e o
+  // número de acionamentos. Nenhum pode estar escrito à mão.
+  const proibidos = [
+    [/em <b>65 ou mais<\/b>/, 'MARCO_INDICE'],
+    [/por <b>30 dias/, 'MARCO_DIAS'],
+    [/janela [^`]*é de <b>30 dias/, 'RECUPERACAO_DIAS'],
+    [/de 3 usados/, 'ACIONAMENTOS_POR_CICLO'],
+    [/abaixo de 65 recomeça/, 'MARCO_INDICE'],
+  ];
+  const voltaram = proibidos.filter(([re]) => re.test(script)).map(([re, n]) => `${re} — devia sair de ${n}`);
+  assert.deepEqual(voltaram, [], `\n  ${voltaram.join('\n  ')}\n`);
+
+  // D46: ligados, não só presentes — cada nome dentro de uma interpolação.
+  const interpolados = new Set([...script.matchAll(/\$\{([^}]*)\}/g)]
+    .flatMap((m) => m[1].match(/[A-Z][A-Z0-9_]{2,}/g) ?? []));
+  for (const nome of ['MARCO_INDICE', 'MARCO_DIAS', 'RECUPERACAO_DIAS', 'ACIONAMENTOS_POR_CICLO']) {
+    assert.ok(interpolados.has(nome), `${nome} não gera texto nenhum na tela do ciclo`);
+  }
+});
+
+test('a tela do ciclo lê o registro, e não recalcula nada por conta própria', () => {
+  const s = doc('registro-de-ciclo.html');
+  // Toda pergunta sobre o ciclo vai ao módulo da peça 1.
+  for (const metodo of ['diasConsecutivosNoMarco', 'cicloReforco', 'composicaoCRM', 'eventos']) {
+    assert.match(s, new RegExp(`r\\.${metodo}\\(`), `a tela não chama ${metodo}`);
+  }
+  // E o log sai sem filtro: a leitura crua é a primeira coisa, não uma opção.
+  assert.match(s, /\$\('log'\)\.tBodies\[0\]\.innerHTML = eventos\.map/,
+    'o log tem de renderizar a lista inteira, na ordem em que veio');
+});
+
+test('o histórico de exemplo exercita as seis seções, e é rotulado como ilustrativo', () => {
+  const r = historicoComAnulacao();
+  const ev = r.eventos({ carteira: CARTEIRA });
+  const tipos = new Set(ev.map((e) => e.tipo));
+  // Invariante 8: dado ilustrativo é rotulado como tal, e a tela diz isso no topo.
+  // O rótulo é GERADO da constante (D44), então a ligação é: a tela interpola
+  // ILUSTRATIVO, e ILUSTRATIVO diz que não é leitura real.
+  assert.match(doc('registro-de-ciclo.html'), /\$\{ILUSTRATIVO\}/, 'a tela não usa o rótulo do exemplo');
+  assert.match(ILUSTRATIVO, /não é leitura real/);
+  assert.match(doc('registro-de-ciclo.html'), /Nenhum\s*\n?\s*número aqui é leitura real/i);
+  for (const t of [TIPOS.LEITURA, TIPOS.REFORCO_ACIONADO, TIPOS.CONTADOR_RESET,
+    TIPOS.CRM_COMPOSICAO, TIPOS.RETIFICACAO, TIPOS.ANULACAO_MARCO]) {
+    assert.ok(tipos.has(t), `o exemplo não produz nenhum evento do tipo ${t}`);
+  }
+  // A anulação aponta para os dois: o marco e a retificação que o desfez.
+  const a = ev.find((e) => e.tipo === TIPOS.ANULACAO_MARCO);
+  assert.equal(ev.find((e) => e.seq === a.marcoSeq).tipo, TIPOS.CONTADOR_RESET);
+  assert.equal(ev.find((e) => e.seq === a.retificacaoSeq).tipo, TIPOS.RETIFICACAO);
+  // E o marco anulado tira o reset da contagem: o ciclo volta a ser o primeiro.
+  assert.equal(r.cicloReforco(CARTEIRA).desde, null);
+  assert.equal(r.cicloReforco(CARTEIRA).contador, 2, 'os dois acionamentos voltam para o ciclo');
 });

@@ -1,0 +1,242 @@
+<meta charset="utf-8">
+<title>Registro de ciclo — Carteira Semente</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --side:#0a0e15;--main:#0b0f17;--card:#0d1219;--bd:rgba(255,255,255,.06);
+  --ink:#e6eaf0;--mut:#8a95a5;--dim:#5a6472;--hover:rgba(255,255,255,.045);
+  --z1:#3d7dff;--z2:#3ddc84;--z3:#f5c518;--z4:#f97316;--z5:#ef4444;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--main);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5}
+:focus-visible{outline:1px solid var(--z1);outline-offset:2px}
+.main{max-width:1120px;margin:0 auto;padding:0 24px 60px}
+.top{display:flex;align-items:baseline;gap:18px;padding:26px 0 4px;flex-wrap:wrap}
+.mark{font-family:"Playfair Display",Georgia,serif;font-size:24px;font-weight:600}.mark i{font-style:italic}
+.crumb{color:var(--dim);font-size:13.5px}.crumb b{color:var(--ink);font-weight:500}
+.selo{margin-left:auto;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--z4);
+  border:1px solid rgba(249,115,22,.35);border-radius:999px;padding:5px 12px}
+h2{font-family:"Playfair Display",serif;font-size:17px;font-weight:600;margin:30px 0 3px}
+.sub{color:var(--dim);font-size:12.5px;margin-bottom:12px}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:1px;background:var(--bd);
+  border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-top:12px}
+.rc{background:var(--card);padding:15px 17px}
+.rc .l{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.rc .v{font-family:"Playfair Display",serif;font-size:25px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.rc .s{font-size:11.5px;color:var(--dim);margin-top:5px}
+.rc.on{background:#111a24}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:500}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+td.dt{font-variant-numeric:tabular-nums;color:var(--mut);white-space:nowrap}
+.vazio{color:var(--dim);font-size:12.5px;padding:14px 2px;font-style:italic}
+.tag{display:inline-block;font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+  border:1px solid currentColor;border-radius:999px;padding:1px 7px;margin-right:6px;opacity:.9}
+.t-leitura{color:var(--dim)}.t-reforco{color:var(--z4)}.t-reset{color:var(--z2)}
+.t-crm{color:var(--z1)}.t-retif{color:var(--z3)}.t-anul{color:var(--z5)}.t-outro{color:var(--mut)}
+.nota{border:1px solid rgba(245,197,24,.28);background:rgba(245,197,24,.05);border-radius:12px;
+  padding:13px 16px;font-size:12.5px;color:var(--mut);margin-top:14px}
+.nota b{color:var(--z3);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;display:block;margin-bottom:5px}
+.nota.calma{border-color:var(--bd);background:var(--card)}.nota.calma b{color:var(--dim)}
+.log{background:var(--card);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-top:12px}
+.log table{margin:0}
+.log tr:hover{background:var(--hover)}
+.seq{color:var(--dim);font-variant-numeric:tabular-nums}
+.det{color:var(--mut);font-size:12px}
+.det b{color:var(--ink);font-weight:500}
+.barra{height:6px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:10px}
+.barra i{display:block;height:100%;border-radius:4px;background:var(--z2)}
+@media(max-width:760px){table{font-size:11.5px}th,td{padding:7px 6px}}
+</style>
+
+<div class="main">
+  <div class="top">
+    <div class="mark">Carteira <i>Semente</i></div>
+    <div class="crumb">Registro de ciclo · <b>marco, acionamentos e log</b></div>
+    <div class="selo" id="selo"></div>
+  </div>
+  <div class="nota calma" id="ilustrativo"></div>
+
+  <h2>1 · O marco de virada</h2>
+  <div class="sub" id="subMarco"></div>
+  <div class="read" id="marco"></div>
+  <div class="barra"><i id="barraMarco"></i></div>
+  <div id="notaMarco"></div>
+
+  <h2>2 · Acionamentos do Reforço no ciclo corrente</h2>
+  <div class="sub" id="subCiclo"></div>
+  <table id="acionamentos"><thead><tr><th>Data</th><th class="n">Índice</th><th class="n">% do caixa</th><th>Coletado em</th></tr></thead><tbody></tbody></table>
+
+  <h2>3 · Resets do contador</h2>
+  <div class="sub">Cada reset nomeia o marco que o causou. Marco anulado sai da contagem e <b>continua no log</b>.</div>
+  <table id="resets"><thead><tr><th>Data</th><th>Marco</th><th>Sequência</th><th class="n">seq</th></tr></thead><tbody></tbody></table>
+
+  <h2>4 · Leituras retroativas e retificações</h2>
+  <div class="sub" id="subRetro"></div>
+  <table id="retro"><thead><tr><th>Refere-se a</th><th>Coletado em</th><th>O quê</th></tr></thead><tbody></tbody></table>
+
+  <h2>5 · Anulações de marco</h2>
+  <div class="sub">Uma retificação que derruba um dia da sequência desfaz o marco que ela sustentava. A anulação aponta para os dois.</div>
+  <table id="anulacoes"><thead><tr><th>Data</th><th>Marco anulado</th><th>Retificação que o desfez</th><th>Motivo</th></tr></thead><tbody></tbody></table>
+
+  <h2>6 · Composição da CRM</h2>
+  <div class="sub">Composição ilegível <b>congela</b> o universo no último estado conhecido, marcado desde quando. Nunca se presume que não mudou.</div>
+  <div class="read" id="crm"></div>
+
+  <h2>7 · O log inteiro, em ordem</h2>
+  <div class="sub">Sem filtro. O valor do append-only é poder ler a história como ela aconteceu — filtro ajuda depois, a leitura crua vem primeiro.</div>
+  <div class="log"><table id="log"><thead><tr><th class="n">seq</th><th>Data</th><th>Tipo</th><th>O que diz</th><th>Coletado em</th></tr></thead><tbody></tbody></table></div>
+</div>
+
+<script type="module">
+// A tela não recalcula nada: pergunta ao registro da peça 1 (invariante 11) e todo
+// rótulo com número sai da constante (invariante 12).
+import { TIPOS, MARCO_INDICE, MARCO_DIAS, RECUPERACAO_DIAS, VALIDADE_DIAS } from './registro/registro.mjs';
+import { ACIONAMENTOS_POR_CICLO, FATIA_DO_CAIXA } from './alocador/alocador.mjs';
+import { historicoComAnulacao, CARTEIRA, ILUSTRATIVO } from './registro/historico-exemplo.mjs';
+
+const HOJE = '2025-04-03';   // o dia a que este histórico de exemplo chega
+const $ = (id) => document.getElementById(id);
+const num = (x, c = 0) => x === null || x === undefined || Number.isNaN(x) ? '—'
+  : Number(x).toLocaleString('pt-BR', { minimumFractionDigits: c, maximumFractionDigits: c });
+const card = (l, v, s = '', on = false) =>
+  `<div class="rc${on ? ' on' : ''}"><div class="l">${l}</div><div class="v">${v}</div>${s ? `<div class="s">${s}</div>` : ''}</div>`;
+const vazio = (tbody, txt) => { tbody.innerHTML = `<tr><td colspan="9" class="vazio">${txt}</td></tr>`; };
+const dia = (d) => Math.floor(Date.parse(`${d}T00:00:00Z`) / 86400000);
+const coletaDe = (e) => (e.gravadoEm ?? '').slice(0, 10);
+const atrasoDe = (e) => (coletaDe(e) ? dia(coletaDe(e)) - dia(e.data) : null);
+
+const r = historicoComAnulacao();
+const eventos = r.eventos({ carteira: CARTEIRA });
+$('selo').textContent = 'ilustrativo';
+$('ilustrativo').innerHTML =
+  `<b>o que é este histórico</b>${ILUSTRATIVO}. Ele foi construído para exercitar as seis coisas
+   que esta tela mostra — o marco se completando, os acionamentos, o reset, uma leitura retroativa,
+   uma retificação que anula um marco, e a CRM congelada. <b style="display:inline;color:var(--ink)">Nenhum
+   número aqui é leitura real</b>, e a invariante 8 manda dizer isso onde o dado aparece.`;
+
+// ── 1 · O MARCO ──────────────────────────────────────────────────────────
+const m = r.diasConsecutivosNoMarco(CARTEIRA, HOJE);
+$('subMarco').innerHTML =
+  `Fechar em <b>${MARCO_INDICE} ou mais</b> por <b>${MARCO_DIAS} dias corridos consecutivos</b>.
+   Um único fechamento abaixo de ${MARCO_INDICE} recomeça a contagem do zero — e dia sem leitura
+   também interrompe, porque não se pode presumir o que o dia ausente fechou.`;
+const dias = m.disponivel ? m.dias : 0;
+const faltam = Math.max(MARCO_DIAS - dias, 0);
+$('marco').innerHTML = m.disponivel
+  ? card('Dias na sequência', num(dias), m.desde ? `desde ${m.desde}` : 'nenhuma sequência corrente', true) +
+    card('Faltam para o marco', num(faltam), `de ${MARCO_DIAS} dias`) +
+    card('Limiar', num(MARCO_INDICE), 'Índice de fechamento') +
+    card('Marco completo?', m.completo ? 'sim' : 'não', m.completo ? 'zera o contador no 30º dia' : '')
+  : card('Sequência', '—', 'indisponível');
+$('barraMarco').style.width = `${Math.min(dias / MARCO_DIAS * 100, 100)}%`;
+$('notaMarco').innerHTML = m.disponivel ? '' :
+  `<div class="nota"><b>sem sequência</b>${m.motivo}<br><br>A janela de recuperação por leitura
+   retroativa é de <b style="display:inline;color:var(--ink)">${RECUPERACAO_DIAS} dias</b>.</div>`;
+
+// ── 2 · ACIONAMENTOS ─────────────────────────────────────────────────────
+const ciclo = r.cicloReforco(CARTEIRA);
+const restam = Math.max(ACIONAMENTOS_POR_CICLO - ciclo.contador, 0);
+const usados = `<b>${ciclo.contador}</b> de ${ACIONAMENTOS_POR_CICLO} usados, ` +
+  `<b>${restam}</b> restante${restam === 1 ? '' : 's'}.`;
+$('subCiclo').innerHTML = ciclo.desde
+  ? `Ciclo aberto pelo reset de <b>${ciclo.desde}</b> (marco “${ciclo.marcoDoReset}”).
+     ${usados}`
+  : `<b>Primeiro ciclo</b> — nenhum marco de virada anterior a consultar, e nenhum é presumido.
+     ${usados}`;
+const tbA = $('acionamentos').tBodies[0];
+if (ciclo.acionamentos.length === 0) vazio(tbA, 'nenhum acionamento neste ciclo');
+else tbA.innerHTML = ciclo.acionamentos.map((a) => `<tr>
+  <td class="dt">${a.data}</td><td class="n">${num(a.indice, 1)}</td>
+  <td class="n">${num(a.pctCaixa)}%</td><td class="dt">${coletaDe(a)}</td></tr>`).join('');
+
+// ── 3 · RESETS ───────────────────────────────────────────────────────────
+const resets = r.eventos({ carteira: CARTEIRA, tipo: TIPOS.CONTADOR_RESET });
+const anulacoes = r.eventos({ carteira: CARTEIRA, tipo: TIPOS.ANULACAO_MARCO });
+const anulado = new Set(anulacoes.map((a) => a.marcoSeq));
+const tbR = $('resets').tBodies[0];
+if (resets.length === 0) vazio(tbR, 'nenhum reset registrado');
+else tbR.innerHTML = resets.map((e) => `<tr${anulado.has(e.seq) ? ' style="opacity:.5"' : ''}>
+  <td class="dt">${e.data}</td>
+  <td>${e.marco}${anulado.has(e.seq) ? ' <span class="tag t-anul">anulado</span>' : ''}</td>
+  <td class="dt">${e.desde ?? '—'} → ${e.ate ?? '—'}</td><td class="n seq">${e.seq}</td></tr>`).join('');
+
+// ── 4 · RETROATIVAS E RETIFICAÇÕES ───────────────────────────────────────
+$('subRetro').innerHTML =
+  `A data a que o evento se refere fica ao lado da data em que foi coletado. Leitura gravada depois
+   do dia é <b>retroativa</b>, e a janela para recompor um dia é de <b>${RECUPERACAO_DIAS} dias</b>.
+   A tabela lista as <b>retificações</b>, que são retroativas por natureza; a nota abaixo dela diz
+   por que as leituras deste exemplo não entram.`;
+const retificacoes = r.eventos({ carteira: CARTEIRA, tipo: TIPOS.RETIFICACAO });
+const atrasadas = eventos.filter((e) => e.tipo === TIPOS.LEITURA && atrasoDe(e) > RECUPERACAO_DIAS);
+const linhasRetro = retificacoes.map((e) => ({
+  refere: e.dataRetificada, coleta: coletaDe(e),
+  o: `<span class="tag t-retif">retificação</span> <b>${e.campo}</b>: ${e.valorAntigo} → ${e.valorNovo}
+      <br><span class="det">${e.motivo}</span>
+      <br><span class="det">aprovada em ${e.aprovadoEm}</span>` }));
+const tbRe = $('retro').tBodies[0];
+if (linhasRetro.length === 0) vazio(tbRe, 'nenhuma retificação registrada');
+else tbRe.innerHTML = linhasRetro.map((l) => `<tr>
+  <td class="dt">${l.refere}</td><td class="dt">${l.coleta}</td><td>${l.o}</td></tr>`).join('');
+
+// ⚠️ `gravadoEm` é carimbado na hora da ESCRITA, e este histórico foi escrito de uma vez.
+// Por essa medida TODA leitura dele é retroativa — 44 linhas de ruído se listadas. Não é
+// defeito da tela nem do registro: é limite do exemplo, e a tela diz isso.
+$('retro').insertAdjacentHTML('afterend',
+  `<div class="nota calma"><b>por que as leituras não estão nesta lista</b>
+   O carimbo de coleta é posto na hora da <b style="display:inline;color:var(--ink)">escrita</b>, e
+   este histórico de exemplo foi escrito de uma vez só — por essa medida as
+   <b style="display:inline;color:var(--ink)">${atrasadas.length}</b> leituras dele contam como
+   retroativas, o que reflete a construção do exemplo e não a operação. Na operação o ritual diário
+   grava a leitura do dia no próprio dia e o atraso é zero, então esta lista mostra o que sobra:
+   as <b style="display:inline;color:var(--ink)">retificações</b>, que são retroativas por natureza.
+   <br><br>A janela para recompor um dia continua sendo de
+   <b style="display:inline;color:var(--ink)">${RECUPERACAO_DIAS} dias</b>.</div>`);
+
+// ── 5 · ANULAÇÕES ────────────────────────────────────────────────────────
+const porSeq = new Map(eventos.map((e) => [e.seq, e]));
+const tbAn = $('anulacoes').tBodies[0];
+if (anulacoes.length === 0) vazio(tbAn, 'nenhum marco anulado');
+else tbAn.innerHTML = anulacoes.map((a) => {
+  const marco = porSeq.get(a.marcoSeq), ret = porSeq.get(a.retificacaoSeq);
+  return `<tr><td class="dt">${a.data}</td>
+    <td class="seq">#${a.marcoSeq}<br><span class="det">${marco ? `${marco.data} · ${marco.desde} → ${marco.ate}` : '—'}</span></td>
+    <td class="seq">#${a.retificacaoSeq}<br><span class="det">${ret ? `${ret.dataRetificada} · ${ret.campo} ${ret.valorAntigo} → ${ret.valorNovo}` : '—'}</span></td>
+    <td class="det">${a.motivo}</td></tr>`;
+}).join('');
+
+// ── 6 · CRM ──────────────────────────────────────────────────────────────
+const crm = r.composicaoCRM(CARTEIRA);
+$('crm').innerHTML = !crm.disponivel
+  ? card('Composição', '—', crm.motivo)
+  : card('Ativos no universo', num(crm.ativos.length), crm.ativos.join(' · ')) +
+    card('Lida em', crm.lidaEm, crm.congelada ? 'última leitura legível' : 'leitura corrente') +
+    card('Estado', crm.congelada ? 'congelada' : 'fresca',
+      crm.congelada ? `desatualizada desde ${crm.desatualizadaDesde}` : 'sem congelamento', crm.congelada);
+
+// ── 7 · O LOG ────────────────────────────────────────────────────────────
+const CLASSE = {
+  [TIPOS.LEITURA]: 't-leitura', [TIPOS.REFORCO_ACIONADO]: 't-reforco',
+  [TIPOS.CONTADOR_RESET]: 't-reset', [TIPOS.CRM_COMPOSICAO]: 't-crm',
+  [TIPOS.RETIFICACAO]: 't-retif', [TIPOS.ANULACAO_MARCO]: 't-anul',
+};
+const descrever = (e) => {
+  switch (e.tipo) {
+    case TIPOS.LEITURA: return `Índice <b>${num(e.indice, 1)}</b> · ${e.estado}`;
+    case TIPOS.REFORCO_ACIONADO: return `Índice <b>${num(e.indice, 1)}</b> · libera ${num(e.pctCaixa)}% do caixa`;
+    case TIPOS.CONTADOR_RESET: return `marco <b>${e.marco}</b> · sequência ${e.desde} → ${e.ate}`;
+    case TIPOS.CRM_COMPOSICAO: return e.legivel
+      ? `legível · ${e.ativos.join(' · ')}` : '<b>ilegível</b> — o universo congela';
+    case TIPOS.RETIFICACAO: return `sobre ${e.dataRetificada} · <b>${e.campo}</b> ${e.valorAntigo} → ${e.valorNovo}`;
+    case TIPOS.ANULACAO_MARCO: return `marco #${e.marcoSeq} desfeito pela retificação #${e.retificacaoSeq}`;
+    default: return Object.entries(e).filter(([k]) => !['carteira', 'tipo', 'seq', 'gravadoEm', 'data'].includes(k))
+      .map(([k, v]) => `${k} ${v}`).join(' · ');
+  }
+};
+$('log').tBodies[0].innerHTML = eventos.map((e) => `<tr>
+  <td class="n seq">${e.seq}</td><td class="dt">${e.data}</td>
+  <td><span class="tag ${CLASSE[e.tipo] ?? 't-outro'}">${e.tipo.replace(/_/g, ' ')}</span></td>
+  <td class="det">${descrever(e)}</td><td class="dt">${coletaDe(e)}</td></tr>`).join('');
+</script>

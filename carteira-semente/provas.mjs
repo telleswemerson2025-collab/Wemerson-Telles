@@ -109,6 +109,33 @@ const PROVAS = [
       "o: 'mais de 3 anos até a entrega'"],
     acusa: /tem número escrito à mão|mais de \$\{ABRIGO_ATIVO_ANOS\}/,
   },
+  // ── A TELA DO REGISTRO DE CICLO (item 2 da peça 4) ─────────────────────
+  {
+    teste: 'os números da tela do ciclo saem da constante, e ligados',
+    porque: 'o limiar do marco volta a ser escrito à mão no subtítulo',
+    quebra: ['registro-de-ciclo.html', 'em <b>${MARCO_INDICE} ou mais</b>', 'em <b>65 ou mais</b>'],
+    acusa: /devia sair de MARCO_INDICE/,
+  },
+  {
+    teste: 'os números da tela do ciclo saem da constante, e ligados',
+    porque: 'uma constante do registro fica só importada, sem gerar rótulo',
+    quebra: ['registro-de-ciclo.html', 'de ${ACIONAMENTOS_POR_CICLO} usados', 'de três usados'],
+    acusa: /ACIONAMENTOS_POR_CICLO não gera texto nenhum na tela do ciclo/,
+  },
+  {
+    teste: 'a tela do ciclo lê o registro, e não recalcula nada por conta própria',
+    porque: 'o log ganha um filtro por padrão e a leitura crua deixa de ser a primeira coisa',
+    quebra: ['registro-de-ciclo.html', "$('log').tBodies[0].innerHTML = eventos.map",
+      "$('log').tBodies[0].innerHTML = eventos.filter((e) => e.tipo !== TIPOS.LEITURA).map"],
+    acusa: /o log tem de renderizar a lista inteira/,
+  },
+  {
+    teste: 'o histórico de exemplo exercita as seis seções',
+    porque: 'o exemplo deixa de produzir a anulação de marco, e a seção 5 fica sem caso',
+    quebra: ['registro/historico-exemplo.mjs', 'valorAntigo: 71.2, valorNovo: 61.5',
+      'valorAntigo: 71.2, valorNovo: 71.9'],
+    acusa: /o exemplo não produz nenhum evento do tipo anulacao_marco/,
+  },
 ];
 
 const rodar = (nome) => {
