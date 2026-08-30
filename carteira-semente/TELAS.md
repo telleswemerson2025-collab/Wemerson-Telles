@@ -356,3 +356,25 @@ Nada ligava a **tabela publicada no documento-mãe** ao que o motor produz. Quin
 transcritas à mão a cada revisão, e uma decisão que mexesse na projeção e esquecesse o documento
 deixaria as duas versões convivendo. Agora há asserção célula a célula, mais a do número de capa —
 valor e multiplicador na mesma linha.
+
+---
+
+## D54 · A TRAVA DE SALTO NA TELA
+Seção nova, ao lado da de deriva e nunca no lugar dela. O bloco da capa mostra antes, agora, o salto
+e se o dono do piso mudou; a tabela mostra as quinze células contra a versão anterior.
+
+A nota diz a coisa que a tela existe para mostrar: **as duas travas não pegam as mesmas células.**
+Capitulação profunda está retida pela deriva nos três cenários e passa folgada no salto; Saudável ·
+Índice ≥ 65 é o inverso exato. Quem olha só uma das tabelas vê metade.
+
+E há um caso de "não calculável" desenhado: célula que a versão anterior não registrou aparece como
+**sem registro**, com a razão ao lado — nunca como 0,0%.
+
+### 🐛 O teste que passava por vazio
+A asserção de que célula sem registro não vira zero rodava contra a v1.10, **que registrou as quinze
+células**. O ramo conferido nunca executava. A prova acusou na primeira execução: *"o teste PASSOU
+com o arquivo quebrado"*. Passou a rodar também contra a v1.3, que é uma versão real sem células.
+
+### 🐛 E versão não é decimal
+`Number('1.10')` é 1,1, que é menor que `Number('1.9')`. A asserção de que a série não volta atrás
+dizia que a v1.10 vinha antes da v1.9. Comparação parte a parte.

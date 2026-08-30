@@ -81,3 +81,24 @@ partidas entregam a **15,0000%**.
   não devolve partida junto com a recusa, e não guarda última leitura conhecida.
 - Não decide aporte. A matriz do Índice de Plantio que a tela desenha vem do Alocador.
 - Não executa nada. Invariante 1.
+
+
+## AS DUAS TRAVAS, E POR QUE SÃO DUAS
+
+| | Mede | Base | Limite |
+|---|---|---|---|
+| **deriva** (D13) | afastamento acumulado | v1.3, congelada | 15% por célula |
+| **salto** (D54) | degrau de uma rodada | versão anterior | 5% na capa · 10% nas demais |
+
+Elas **não pegam as mesmas células**. Capitulação profunda está retida pela deriva nos três cenários
+(+17,7% a +48,5%) e passa folgada no salto (+1,8% a +9,1%); Saudável · Índice ≥ 65 é o inverso
+exato. Há asserção de que exista célula pega só por uma e célula pega só pela outra — se isso deixar
+de valer, a razão escrita na D54 A precisa ser refeita.
+
+E a de salto aciona por **queda**, que a de deriva não consegue: voltar à origem é o que zera o
+acumulado dela. A v1.5 marcou +0,0% de deriva com a capa caindo 16,7%.
+
+`historico-publicado.mjs` é **registro, não cálculo** — a versão anterior não sai do motor de hoje,
+porque o motor mudou. Append-only, com a mesma regra do Registro. De v1.3 a v1.9 só há a capa; as
+quinze células começam na v1.10, e salto por célula não é calculável para trás. **"Não calculável"
+nunca vira zero.**

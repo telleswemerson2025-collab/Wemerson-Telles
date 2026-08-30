@@ -13,6 +13,7 @@
 
 import { ESTADOS, faixaDoIndice } from '../torre/torre.mjs';
 import { MARCO_INDICE } from '../registro/registro.mjs';
+import { HISTORICO_PUBLICADO, ultimaPublicada } from './historico-publicado.mjs';
 import {
   EXPOSICAO_ALVO, INICIO_DA_RAMPA_ANOS, ABRIGO_ATIVO_ANOS, VELOCIDADE_POR_ESTADO,
   BANDA_PONTOS, TETO_DEFASAGEM, MESES_SEM_MODULACAO,
@@ -291,6 +292,63 @@ export function grade({ anos, aporte }) {
     celulas: CELULAS_DA_GRADE, estouradas: estouradas.length,
     // D13 regra 2: estourou qualquer célula, A REVISÃO INTEIRA vai para o Gui.
     retida: estouradas.length > 0,
+  };
+}
+
+// ── D54 · A TRAVA DE SALTO ENTRE VERSÕES ──────────────────────────────────
+// 🔒 ÂNCORAS — o décimo segundo membro, e ele entra colado à base v1.3 e ao limite de
+// 15%: as três formam o sistema de controle de deriva, e mexer numa sem as outras abre
+// a porta que as outras duas fecham (D54 E).
+//
+// A trava da D13 pega o afastamento LENTO da origem; esta pega o DEGRAU de uma rodada.
+// Uma não substitui a outra, e o caso que a criou prova: a capa subiu 11,2% de uma vez
+// com a célula dela em −14,0%, longe do gatilho acumulado.
+export const TETO_SALTO_DA_CAPA = 5;      // âncora (D54 A · E)
+export const TETO_SALTO_DA_CELULA = 10;   // âncora (D54 A · E)
+
+export { HISTORICO_PUBLICADO, ultimaPublicada };
+
+/**
+ * D54 A: o salto de uma versão para a seguinte, EM QUALQUER DIREÇÃO.
+ *
+ * D54 D: inclusive para baixo. Capa que cai de patamar também muda o que foi
+ * prometido, e quem viu o material antigo merece saber.
+ *
+ * D54 B: a capa tem limite menor porque é o único número que o cliente lê primeiro, e
+ * porque a D12 A fez dela o compromisso do material.
+ */
+export function saltoEntreVersoes({ anos, aporte, anterior = ultimaPublicada() }) {
+  const g = grade({ anos, aporte });
+  const capaAgora = numeroDeCapa({ anos, aporte });
+
+  const salto = (de, para) => arred((para / de - 1) * 100, 4);
+  const saltoDaCapa = salto(anterior.capa, capaAgora.valor);
+
+  const celulas = g.linhas.flatMap((l) => l.celulas.map((c) => {
+    const de = anterior.celulas?.[l.rotulo]?.[c.cenario] ?? null;
+    return {
+      partida: l.rotulo, cenario: c.cenario, de, para: c.atual,
+      // Sem registro da versão anterior não há salto — e "não calculável" nunca vira
+      // zero. Zero silencioso aqui seria a trava dizendo "passou" sobre o que não viu.
+      salto: de === null ? null : salto(de, c.atual),
+      semRegistro: de === null,
+      vaiAoGate: de === null ? false : Math.abs(salto(de, c.atual)) > TETO_SALTO_DA_CELULA,
+    };
+  }));
+
+  return {
+    versaoAnterior: anterior.versao, decisaoAnterior: anterior.decisao,
+    capa: {
+      de: anterior.capa, para: capaAgora.valor, salto: saltoDaCapa,
+      teto: TETO_SALTO_DA_CAPA, vaiAoGate: Math.abs(saltoDaCapa) > TETO_SALTO_DA_CAPA,
+      donoAntes: anterior.donoDoPiso, donoAgora: capaAgora.identidade,
+      // D13 regra 4 outra vez: dono novo é informação mesmo com o valor parado.
+      trocouDeDono: anterior.donoDoPiso !== capaAgora.identidade,
+    },
+    celulas,
+    celulasNoGate: celulas.filter((c) => c.vaiAoGate).length,
+    celulasSemRegistro: celulas.filter((c) => c.semRegistro).length,
+    vaiAoGate: Math.abs(saltoDaCapa) > TETO_SALTO_DA_CAPA || celulas.some((c) => c.vaiAoGate),
   };
 }
 

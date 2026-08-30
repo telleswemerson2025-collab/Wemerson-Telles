@@ -22,7 +22,8 @@ import { VALIDADE_DIAS, MARCO_INDICE, MARCO_DIAS, RECUPERACAO_DIAS, TIPOS } from
 import { historicoComAnulacao, CARTEIRA, ILUSTRATIVO } from './registro/historico-exemplo.mjs';
 import { LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, PESOS, varrer, TRAVA_AUSENCIA_NA_CAMADA } from './torre/torre.mjs';
 import { VARREDURA_29_08_2026 as VARREDURA } from './torre/leitura-29-08-2026.mjs';
-import { grade, numeroDeCapa, ENTREGA_AOS, APORTE_DE_REFERENCIA } from './simulador/motor.mjs';
+import { grade, numeroDeCapa, ENTREGA_AOS, APORTE_DE_REFERENCIA, saltoEntreVersoes,
+  HISTORICO_PUBLICADO } from './simulador/motor.mjs';
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const ler = (f) => readFileSync(join(AQUI, f), 'utf8');
@@ -492,4 +493,36 @@ test('D12 A: o número de capa do documento é o piso que o motor calcula', () =
   // E a identidade da partida do piso, que a D13 regra 4 manda rastrear junto.
   assert.ok(doc01.includes(capa.identidade.replace('Mercado saudável', 'Mercado saudável')),
     'o documento não nomeia a partida que ocupa o piso');
+});
+
+test('D54: a coluna de salto do documento é a que o histórico publicado produz', () => {
+  // A tabela por versão é transcrita à mão, como a de deriva era. A coluna nova de
+  // salto é derivada de dois números registrados — logo, conferível contra eles.
+  const doc01 = doc('01-documento-mae.md');
+  const bloco = doc01.slice(doc01.indexOf('#### Histórico do gatilho'));
+  const virgula = (v) => v.toFixed(1).replace('.', ',');
+
+  for (let i = 1; i < HISTORICO_PUBLICADO.length; i++) {
+    const de = HISTORICO_PUBLICADO[i - 1], para = HISTORICO_PUBLICADO[i];
+    const salto = (para.capa / de.capa - 1) * 100;
+    const linha = bloco.split('\n').find((t) => t.startsWith(`| ${para.versao} |`)
+      || t.startsWith(`| **${para.versao}** |`));
+    assert.ok(linha, `o documento não tem a linha da ${para.versao}`);
+    // Ligado, não presente (D46): o salto na LINHA daquela versão.
+    assert.ok(linha.includes(`${virgula(Math.abs(salto))}%`),
+      `${para.versao}: o salto calculado é ${virgula(salto)}% e a linha é "${linha.trim()}"`);
+    // E o sinal, que é o que a D54 D existe para não deixar sumir.
+    if (Math.abs(salto) > 0.05) {
+      assert.ok(linha.includes(salto < 0 ? '−' : '+'),
+        `${para.versao}: o sinal do salto não aparece na linha`);
+    }
+  }
+
+  // A versão corrente entra pela conta viva, não pela transcrição.
+  const r = saltoEntreVersoes({ anos: ENTREGA_AOS, aporte: APORTE_DE_REFERENCIA });
+  const atual = bloco.split('\n').find((t) => t.includes('**+' + virgula(r.capa.salto) + '%**'));
+  assert.ok(atual, `a linha da versão corrente não traz o salto de ${virgula(r.capa.salto)}%`);
+  // E ela é marcada como retida, porque está acima do teto da capa.
+  assert.equal(r.capa.vaiAoGate, true, 'o salto desta rodada deixou de acionar o Gate 2');
+  assert.ok(atual.includes('🔴'), 'a linha da versão corrente não está marcada como retida');
 });

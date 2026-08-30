@@ -407,6 +407,61 @@ const PROVAS = [
     quebra: ['01-documento-mae.md', '> ### R$ 75.335 · 2,3x o aportado', '> ### R$ 75.335 · 2,1x o aportado'],
     acusa: /a capa do documento não é o piso que o motor calcula/,
   },
+  // ══ D54 · A TRAVA DE SALTO ═════════════════════════════════════════════
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'o salto é medido contra a versão anterior',
+    porque: 'a capa perde o limite mais apertado e passa a ser tratada como célula qualquer',
+    quebra: ['simulador/motor.mjs', 'export const TETO_SALTO_DA_CAPA = 5;',
+      'export const TETO_SALTO_DA_CAPA = 10;'],
+    acusa: /a capa perdeu o limite mais apertado/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'célula sem registro na versão anterior não vira salto zero',
+    porque: 'ausência de registro vira zero, e a trava passa a dizer "passou" sobre o que não viu',
+    quebra: ['simulador/motor.mjs', 'salto: de === null ? null : salto(de, c.atual),',
+      'salto: de === null ? 0 : salto(de, c.atual),'],
+    acusa: /sem registro virou número/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'as duas travas não pegam as mesmas células',
+    porque: 'a trava de salto passa a repetir a de deriva, e uma das duas vira redundante',
+    quebra: ['simulador/motor.mjs',
+      'vaiAoGate: de === null ? false : Math.abs(salto(de, c.atual)) > TETO_SALTO_DA_CELULA,',
+      'vaiAoGate: c.estourou,'],
+    acusa: /nenhuma célula é pega só pela trava de salto/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'o histórico publicado é registro',
+    porque: 'uma célula do histórico é editada em silêncio, e o registro deixa de ser o que foi publicado',
+    quebra: ['simulador/historico-publicado.mjs', "'Prejuízo do mercado': Object.freeze({ Conservador: 85820,",
+      "'Prejuízo do mercado': Object.freeze({ Conservador: 85821,"],
+    acusa: /o registro diz 85821 e o motor da v1\.10 dá 85820/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'o histórico é append-only e a série não pula versão',
+    porque: 'a série sai da referência da trava de deriva e a base deixa de ser a v1.3',
+    quebra: ['simulador/historico-publicado.mjs', "{ versao: 'v1.3', decisao: '—', capa: 67725,",
+      "{ versao: 'v1.2', decisao: '—', capa: 67725,"],
+    acusa: /a série deixou de começar na referência da trava de deriva/,
+  },
+  {
+    teste: 'a coluna de salto do documento é a que o histórico publicado produz',
+    porque: 'o sinal do salto some da tabela, e uma queda de patamar passa a parecer uma alta',
+    quebra: ['01-documento-mae.md', '| R$ 67.725 | **−16,7%** 🔴 |', '| R$ 67.725 | **+16,7%** 🔴 |'],
+    acusa: /v1\.5: o sinal do salto não aparece na linha/,
+  },
+  {
+    teste: 'a coluna de salto do documento é a que o histórico publicado produz',
+    porque: 'a linha da versão corrente perde a marca de retida, e o Gate 2 some da tabela',
+    quebra: ['01-documento-mae.md', '| **+11,2%** 🔴 | Saudável · Índice ≥ 65 |',
+      '| **+11,2%** | Saudável · Índice ≥ 65 |'],
+    acusa: /a linha da versão corrente não está marcada como retida/,
+  },
 ];
 
 const rodar = (nome, onde) => {

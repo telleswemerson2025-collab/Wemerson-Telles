@@ -73,9 +73,15 @@ Checklist. Qualquer item falho VETA:
     Base sempre na v1.3; linha desdobrada herda a referência da original. *Desde a peça 4 as duas
     coisas têm tela: o `simulador.html` calcula o piso, a identidade dele e as quinze células, com a
     referência v1.3 **rodada pelo mesmo motor** — conferir contra a tela, não contra a memória.*
-17. **Sem default silencioso** — se faltou leitura de origem, o material diz que faltou. Nunca
+17. **Salto entre versões** — o movimento de uma versão para a seguinte foi medido, em qualquer
+    direção. **Capa acima de 5% ou célula acima de 10% vem ao Gate 2 antes de entrar em material de
+    venda**, com a razão escrita. Convive com o item 16 e não o substitui: aquele pega o afastamento
+    lento da v1.3, este pega o degrau de uma rodada — e eles **não pegam as mesmas células**. Salto
+    para baixo aciona igual: capa que cai de patamar também muda o que foi prometido. Célula que a
+    versão anterior não registrou sai como **não calculável**, nunca como zero. Decisão 54.
+18. **Sem default silencioso** — se faltou leitura de origem, o material diz que faltou. Nunca
     preencher lacuna com suposição. Universo elegível congelado sai rotulado com a data.
-18. **Tetos sobre a parte exposta** — os 60%, os 8%, o piso de 2% e o teto de 8 ativos foram
+19. **Tetos sobre a parte exposta** — os 60%, os 8%, o piso de 2% e o teto de 8 ativos foram
     medidos sobre a parte exposta e sobre a carteira. As duas vendas determinísticas do sistema — o
     degrau 3 e a consolidação abaixo do piso — chegam aqui como decisão própria, com data, ativo e
     percentual antes e depois. Venda executada sem passar por este Gate veta.

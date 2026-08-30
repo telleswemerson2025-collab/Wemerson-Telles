@@ -535,12 +535,13 @@ deriva estruturalmente impossível na capa.
 Piso nos outros dois cenários, mesma partida: **R$ 218.849 (6,8x)** no moderado e
 **R$ 690.653 (21,3x)** no forte.
 
-> ⚠️ **A capa subiu 11,2% na v1.11, e nenhuma regra pegou.** A Decisão 53 A aplicou a modulação à
-> projeção, e o piso saiu de R$ 67.725 para R$ 75.335. A trava da Decisão 13 mede contra a **v1.3**,
-> e a célula do piso está em −14,0% — muito abaixo do gatilho. *A trava protege contra deriva
-> acumulada desde a v1.3, não contra movimento de uma versão para a seguinte.* Registrado como
-> informação para o Gui: a capa mudou de patamar, e quem decide se isso vai para material de venda
-> é ele, não a regra.
+> ⚠️ **SALTO DE 11,2% NA v1.11 — RETIDO NO GATE 2** (Decisão 54 C). O piso saiu de R$ 67.725
+> (2,1x) para R$ 75.335 (2,3x). A trava da Decisão 13 mede contra a **v1.3** e não pegou — a célula
+> do piso está em −14,0%, longe do gatilho acumulado. Foi este caso que criou a **trava de salto**:
+> movimento de uma versão para a seguinte, com limite de **5% na capa**.
+>
+> **Razão escrita, como manda a Decisão 54 C:** veio da Decisão 53 A, correção que tirou o
+> superestimado da leitura de hoje. **Não veio de mudança de retorno nem de mapeamento.**
 
 ### Segunda linha: a leitura do dia (29/08/2026)
 Rotulada como leitura do dia, com a partida visível. Muda quando o estado muda; quem calcula é o
@@ -618,17 +619,27 @@ os dois lados se moveriam juntos e a deriva mediria **zero por construção**: a
 exatamente para a revisão que ela existe para pegar.
 
 #### Histórico do gatilho, por versão
-| Versão | Decisão | Células acima de +15% | Piso conservador | Dono do piso |
-|---|---|---|---|---|
-| v1.3 | — (referência) | 0 | R$ 67.725 | Prejuízo do mercado |
-| v1.4 | D8 | 3 (Prejuízo) | R$ 81.316 | **Capitulação + Prejuízo** (empate) ⚠️ dono novo |
-| v1.5 | D10 | 3 (Prejuízo) | R$ 67.725 | **Saudável · Índice ≥ 65** ⚠️ dono novo |
-| v1.6 | D11 | 6 (Prejuízo + Capitulação) | R$ 67.725 | Saudável · Índice ≥ 65 |
-| v1.7 | D12 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
-| v1.8 | D13 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
-| v1.9 | D51 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
-| v1.10 | D52 | 6 | R$ 67.725 | Saudável · Índice ≥ 65 |
-| **v1.11** | **D53** | 6 | **R$ 75.335** ⚠️ patamar novo | Saudável · Índice ≥ 65 |
+A coluna do salto é a trava da Decisão 54: movimento contra a versão **anterior**, não contra a
+v1.3. As duas colunas medem coisas diferentes, e o histórico mostra que elas acionam em rodadas
+diferentes.
+
+| Versão | Decisão | Células acima de +15% | Piso conservador | Salto na capa | Dono do piso |
+|---|---|---|---|---|---|
+| v1.3 | — (referência) | 0 | R$ 67.725 | — | Prejuízo do mercado |
+| v1.4 | D8 | 3 (Prejuízo) | R$ 81.316 | **+20,1%** 🔴 | **Capitulação + Prejuízo** (empate) ⚠️ dono novo |
+| v1.5 | D10 | 3 (Prejuízo) | R$ 67.725 | **−16,7%** 🔴 | **Saudável · Índice ≥ 65** ⚠️ dono novo |
+| v1.6 | D11 | 6 (Prejuízo + Capitulação) | R$ 67.725 | +0,0% | Saudável · Índice ≥ 65 |
+| v1.7 | D12 | 6 | R$ 67.725 | +0,0% | Saudável · Índice ≥ 65 |
+| v1.8 | D13 | 6 | R$ 67.725 | +0,0% | Saudável · Índice ≥ 65 |
+| v1.9 | D51 | 6 | R$ 67.725 | +0,0% | Saudável · Índice ≥ 65 |
+| v1.10 | D52 | 6 | R$ 67.725 | +0,0% | Saudável · Índice ≥ 65 |
+| **v1.11** | **D53** | 6 | **R$ 75.335** | **+11,2%** 🔴 | Saudável · Índice ≥ 65 |
+
+**Aplicação retroativa da trava de salto, e ela acha uma coisa que a de deriva não achou.** A v1.5
+**caiu 16,7%** na capa — a Decisão 10 devolveu a fase 3 e o piso voltou ao lugar. Na trava de
+deriva aquela versão marcou +0,0%, porque voltar à origem zera o acumulado. *Voltar ao lugar é
+movimento, e movimento na capa muda o que foi prometido a quem viu o material anterior.* É o
+sentido da Decisão 54 D: salto para baixo aciona igual.
 
 **Rastreamento da identidade do piso (regra 4):** entre a **v1.3 e a v1.5 o valor do piso é o
 mesmo — R$ 67.725 — mas o dono mudou**, de Prejuízo do mercado para Saudável · Índice ≥ 65. A
@@ -636,9 +647,15 @@ tabela da v1.7 marcava aquela linha como "+0,0%" sem dizer que o piso tinha troc
 estável com dono novo é informação, não silêncio.
 
 #### O que está publicável hoje
-- **O número de capa (R$ 75.335, piso conservador) está liberado pela trava.** A partida que o ocupa
-  está em −14,0%, longe do gatilho — mas ele **subiu 11,2%** sobre o que estava publicado, e isso é
-  movimento de versão, que a trava não mede. Ver o aviso ao lado do número de capa.
+- **O número de capa (R$ 75.335, piso conservador) está RETIDO no Gate 2 pela trava de salto.** A
+  trava de deriva o libera — a célula está em −14,0% —, mas ele subiu 11,2% de uma vez, acima do
+  limite de 5% da capa. Razão escrita e registrada na Decisão 54 C.
+- **Quatro células saltaram acima de 10%** e vêm ao Gate 2 junto: o forte de Prejuízo (+11,8%) e os
+  três cenários de Saudável · Índice ≥ 65 (+11,2% · +17,9% · +24,0%).
+- ⚠️ **As duas travas quase não se sobrepõem.** Capitulação profunda está retida nos três cenários
+  pela deriva (+17,7% a +48,5%) e **passa folgada** na de salto (+1,8% a +9,1%). Saudável · Índice
+  ≥ 65 é o inverso exato: liberada pela deriva, retida pelo salto nos três. *É a demonstração de que
+  as duas medem coisas diferentes, e há asserção de que continuem medindo.*
 - **Estresse de curto prazo e Saudável · Índice < 65** estão entre −3,2% e +7,4% e seguem publicáveis.
 - **Capitulação profunda e Prejuízo do mercado estão retidas** nos três cenários, aguardando o Gui —
   e agora mais fundo: o forte de Prejuízo passou de +56,0% para **+74,5%**.

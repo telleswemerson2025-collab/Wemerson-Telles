@@ -331,6 +331,18 @@ button.link{background:none;border:1px solid var(--bd);border-radius:999px;color
   </div>
   <p class="note" id="notaDeriva"></p>
 
+  <!-- D54 · A TRAVA DE SALTO ENTRE VERSÕES -->
+  <h2 style="margin-top:38px">Salto contra a versão anterior</h2>
+  <p class="cs" style="margin-bottom:14px" id="csSalto"></p>
+  <div class="bloco" id="saltoCapa" style="border-color:rgba(216,167,64,.35)"></div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Partida</th><th>Conservador</th><th>Moderado</th><th>Forte</th></tr></thead>
+      <tbody id="tbSalto"></tbody>
+    </table>
+  </div>
+  <p class="note" id="notaSalto"></p>
+
   <div class="bloco">
     <h3>Conferência do motor</h3>
     <div class="par" id="parAceite"></div>
@@ -357,7 +369,8 @@ import { BASES_DO_ESTADO, VELOCIDADE_POR_ESTADO, ABRIGO_ATIVO_ANOS,
 import {
   CENARIOS, FASES, PARTIDAS, TABELA_EXPO, LIMIAR_DA_FASE_3, ENTREGA_AOS, MESES_NA_FASE,
   ESTACAO_DO_ESTADO, ABRIGO, CENARIO_DA_CAPA, CELULAS_DA_GRADE, TETO_DERIVA, VERSAO_REFERENCIA,
-  BASE_DA_PUBLICACAO, APORTE_DE_REFERENCIA,
+  BASE_DA_PUBLICACAO, APORTE_DE_REFERENCIA, TETO_SALTO_DA_CAPA, TETO_SALTO_DA_CELULA,
+  saltoEntreVersoes,
   partidaDaLeitura, rotuloDaPartida, rotuloDoPar, mesesRestantesDaFase, estacoesPorAno,
   motorMensal, criterioDeAceiteD11, grade, numeroDeCapa, trajetoriaDaGlidepath,
   efeitoDaModulacao, exposicaoModulada, expoDoAno,
@@ -592,6 +605,42 @@ function render() {
       : `Nenhuma célula estourou. `) +
     `A tabela é permanente: nunca é apagada nem resumida, e a deriva não zera por compensação — mede-se sempre contra a ${VERSAO_REFERENCIA}. ` +
     `O piso está em ${capa.identidade}, e a identidade dele é rastreada junto com o valor: se a partida que ocupa o piso mudar, isso é reportado mesmo que o número não se mova.`;
+
+  // D54: a trava de salto, ao lado da de deriva. Uma pega o afastamento lento da
+  // origem, a outra o degrau de uma rodada — e elas não pegam as mesmas células.
+  const salto = saltoEntreVersoes({ anos, aporte });
+  $('csSalto').textContent =
+    `Movimento de uma versão para a seguinte · a capa vai ao Gate 2 acima de ${TETO_SALTO_DA_CAPA}%, ` +
+    `as demais células acima de ${TETO_SALTO_DA_CELULA}%, em qualquer direção`;
+  $('saltoCapa').innerHTML =
+    `<h3>O número de capa contra a ${salto.versaoAnterior}</h3><div class="par">` +
+    campo('Antes', brl(salto.capa.de), `${salto.versaoAnterior} · ${salto.decisaoAnterior}`) +
+    campo('Agora', brl(salto.capa.para), salto.capa.donoAgora) +
+    campo('Salto', pct(salto.capa.salto),
+      `teto de ${TETO_SALTO_DA_CAPA}% · ${salto.capa.vaiAoGate ? 'vai ao Gate 2' : 'dentro do limite'}`) +
+    campo('Dono do piso', salto.capa.trocouDeDono ? 'mudou' : 'o mesmo',
+      salto.capa.trocouDeDono ? `de ${salto.capa.donoAntes}` : salto.capa.donoAgora) +
+    '</div>';
+  const porPartida = new Map();
+  for (const c of salto.celulas) {
+    if (!porPartida.has(c.partida)) porPartida.set(c.partida, []);
+    porPartida.get(c.partida).push(c);
+  }
+  $('tbSalto').innerHTML = [...porPartida].map(([partida, cs]) =>
+    `<tr class="${cs.some((c) => c.vaiAoGate) ? 'retida' : ''}"><td>${partida}</td>` +
+    cs.map((c) => `<td class="${c.vaiAoGate ? 'ruim' : 'bom'}">` +
+      (c.semRegistro ? 'sem registro' : pct(c.salto)) +
+      `<br><span class="mini">${c.semRegistro ? 'a versão anterior não registrou esta célula' : `${brl(c.de)} → ${brl(c.para)}`}</span></td>`).join('') +
+    '</tr>').join('');
+  $('notaSalto').innerHTML =
+    `${salto.celulasNoGate} de ${CELULAS_DA_GRADE} células saltaram acima de ${TETO_SALTO_DA_CELULA}%` +
+    (salto.capa.vaiAoGate ? `, e a capa saltou ${pct(salto.capa.salto)}` : '') + '. ' +
+    `<b>As duas travas não pegam as mesmas células.</b> A de deriva mede o afastamento acumulado desde a ${VERSAO_REFERENCIA}; ` +
+    `esta mede o degrau de uma rodada. Uma linha pode estar retida por uma e liberada pela outra — ` +
+    `e o caso que criou esta trava foi exatamente esse: a capa subiu ${pct(salto.capa.salto)} de uma vez com a célula dela longe do gatilho acumulado.` +
+    (salto.celulasSemRegistro > 0
+      ? ` <span class="alerta">${salto.celulasSemRegistro} células sem registro na versão anterior</span> — salto não calculável, e não calculável nunca vira zero.`
+      : '');
 
   // A conferência do próprio motor, na tela e não só no teste.
   const aceite = criterioDeAceiteD11({ anos, aporte });

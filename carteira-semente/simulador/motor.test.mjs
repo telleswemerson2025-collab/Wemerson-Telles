@@ -12,6 +12,8 @@ import {
 import {
   CENARIOS, FASES, PARTIDAS, TABELA_EXPO, LIMIAR_DA_FASE_3, MESES_NA_FASE, ENTREGA_AOS,
   ESTACAO_DO_ESTADO, ABRIGO, TETO_DERIVA, CELULAS_DA_GRADE, CENARIO_DA_CAPA,
+  TETO_SALTO_DA_CAPA, TETO_SALTO_DA_CELULA, VERSAO_REFERENCIA,
+  saltoEntreVersoes, HISTORICO_PUBLICADO, ultimaPublicada,
   partidaDaLeitura, rotuloDaPartida, mesesRestantesDaFase, estadoDaFase, estacoesPorAno,
   motorMensal, motorAnual, motorDaV13, exposicaoModulada, criterioDeAceiteD11, grade, numeroDeCapa,
   trajetoriaDaGlidepath, expoDoAno,
@@ -382,4 +384,107 @@ test('D53 C: o último mês executa — os dois alvos batem no marco, e a cartei
     assert.equal(t.folgaContraOMarco, 0, `${quem}: sobrou folga contra o marco`);
     assert.equal(t.bandaDoUltimoMes, 0, `${quem}: sobrou tolerância no mês que aterrissa`);
   }
+});
+
+// ── D54 · A TRAVA DE SALTO ENTRE VERSÕES ─────────────────────────────────
+test('D54 A: o salto é medido contra a versão anterior, e nos dois sentidos', () => {
+  const r = saltoEntreVersoes(BASE);
+  const anterior = ultimaPublicada();
+  assert.equal(r.versaoAnterior, anterior.versao, 'o salto não está sendo medido contra a última publicada');
+  // A capa tem limite MENOR que as demais células (D54 B): é o número que o cliente lê
+  // primeiro, e a D12 A fez dele o compromisso do material.
+  assert.ok(TETO_SALTO_DA_CAPA < TETO_SALTO_DA_CELULA,
+    'a capa perdeu o limite mais apertado — ela é a promessa publicada');
+  // D54 D: qualquer direção. Um salto para baixo do mesmo tamanho tem de acionar igual.
+  const paraCima = (100 + TETO_SALTO_DA_CAPA + 1) / 100, paraBaixo = (100 - TETO_SALTO_DA_CAPA - 1) / 100;
+  for (const fator of [paraCima, paraBaixo]) {
+    const salto = (anterior.capa * fator / anterior.capa - 1) * 100;
+    assert.ok(Math.abs(salto) > TETO_SALTO_DA_CAPA,
+      'um salto simétrico deixou de acionar — a trava virou unidirecional');
+  }
+  // E a saída diz o que aciona o Gate, não só que algo aciona.
+  assert.equal(r.vaiAoGate, r.capa.vaiAoGate || r.celulas.some((c) => c.vaiAoGate));
+});
+
+test('D54 A: célula sem registro na versão anterior não vira salto zero', () => {
+  // ⚠️ Contra a v1.10 este caso NÃO EXISTE — ela registrou as quinze células, e um teste
+  // rodado contra ela passaria por vazio, sem nunca entrar no ramo que confere. A versão
+  // sem células é real e está no histórico: a v1.3, e todas até a v1.9, só têm a capa.
+  const semCelulas = HISTORICO_PUBLICADO[0];
+  assert.equal(semCelulas.celulas, undefined, 'a v1.3 passou a registrar células — troque o réu');
+  const r = saltoEntreVersoes({ ...BASE, anterior: semCelulas });
+  assert.equal(r.celulasSemRegistro, CELULAS_DA_GRADE,
+    'contra uma versão sem células registradas, TODAS as células têm de sair sem registro');
+  for (const c of r.celulas) {
+    assert.equal(c.salto, null, `${c.partida} · ${c.cenario}: sem registro virou número`);
+    assert.equal(c.vaiAoGate, false, 'sem registro não pode acionar nem liberar por conta própria');
+  }
+  // E a capa, que é registrada desde a v1.3, continua sendo comparável.
+  assert.ok(Number.isFinite(r.capa.salto), 'a capa deixou de ser comparável contra a v1.3');
+
+  // E contra a versão que registrou tudo, o outro ramo: salto numérico e gatilho ligado
+  // ao limite, célula a célula.
+  const cheio = saltoEntreVersoes(BASE);
+  assert.equal(cheio.celulasSemRegistro, 0, 'a versão anterior deixou de registrar as células');
+  for (const c of cheio.celulas) {
+    assert.ok(Number.isFinite(c.salto), `${c.partida} · ${c.cenario}: salto não numérico`);
+    assert.equal(c.vaiAoGate, Math.abs(c.salto) > TETO_SALTO_DA_CELULA,
+      `${c.partida} · ${c.cenario}: o gatilho não acompanha o limite`);
+  }
+});
+
+test('⚠️ D54: as duas travas não pegam as mesmas células — é por isso que são duas', () => {
+  // Se as duas pegassem sempre o mesmo conjunto, uma seria redundante. A medida que
+  // sustenta a D54 A é justamente esta: há célula retida por uma e liberada pela outra.
+  const g = grade(BASE), r = saltoEntreVersoes(BASE);
+  const chave = (partida, cenario) => `${partida} · ${cenario}`;
+  const porDeriva = new Set(g.linhas.flatMap((l) =>
+    l.celulas.filter((c) => c.estourou).map((c) => chave(l.rotulo, c.cenario))));
+  const porSalto = new Set(r.celulas.filter((c) => c.vaiAoGate).map((c) => chave(c.partida, c.cenario)));
+  assert.ok(porDeriva.size > 0 && porSalto.size > 0, 'uma das travas parou de acionar');
+  const soNoSalto = [...porSalto].filter((k) => !porDeriva.has(k));
+  const soNaDeriva = [...porDeriva].filter((k) => !porSalto.has(k));
+  assert.ok(soNoSalto.length > 0,
+    'nenhuma célula é pega só pela trava de salto — a razão escrita na D54 A, de que uma não ' +
+    'substitui a outra, precisa ser refeita');
+  assert.ok(soNaDeriva.length > 0,
+    'nenhuma célula é pega só pela trava de deriva — idem');
+});
+
+test('o histórico publicado é registro, e o que ele registrou da v1.10 confere', () => {
+  // O histórico é fato escrito: não sai do motor de hoje, porque o motor mudou. Mas o
+  // motor da v1.10 — alvo do ano, sem modulação — ainda está disponível como padrão do
+  // `motorMensal`, e enquanto estiver, o registro é conferível contra ele. Se esta
+  // asserção quebrar por troca do motor padrão, ela sai e o REGISTRO fica: é ele que
+  // vale, e a conferência cruzada era um bônus enquanto durou.
+  const v110 = HISTORICO_PUBLICADO.find((v) => v.versao === 'v1.10');
+  assert.ok(v110?.celulas, 'a v1.10 deixou de registrar as células');
+  for (const p of PARTIDAS) {
+    const registrado = v110.celulas[rotuloDaPartida(p)];
+    assert.ok(registrado, `a v1.10 não registrou a partida ${rotuloDaPartida(p)}`);
+    for (const [cenario, padrao] of Object.entries(CENARIOS)) {
+      const reproduzido = Math.round(
+        motorMensal({ ...BASE, fase: p.fase, mes: p.mes, padrao }).saldo);
+      assert.equal(registrado[cenario], reproduzido,
+        `${rotuloDaPartida(p)} · ${cenario}: o registro diz ${registrado[cenario]} e o motor da v1.10 dá ${reproduzido}`);
+    }
+  }
+  // E a capa registrada da v1.10 é o menor conservador registrado.
+  const conservadores = Object.values(v110.celulas).map((c) => c.Conservador);
+  assert.equal(v110.capa, Math.min(...conservadores), 'a capa registrada não é o piso registrado');
+});
+
+test('D54: o histórico é append-only e a série não pula versão', () => {
+  // ⚠️ Versão não é decimal: `Number('1.10')` dá 1.1, que é MENOR que `Number('1.9')`.
+  // Comparar como número diria que a v1.10 vem antes da v1.9. Compara-se parte a parte.
+  const partes = (v) => v.versao.slice(1).split('.').map(Number);
+  const maior = (a, b) => a[0] !== b[0] ? a[0] > b[0] : a[1] > b[1];
+  for (let i = 1; i < HISTORICO_PUBLICADO.length; i++) {
+    assert.ok(maior(partes(HISTORICO_PUBLICADO[i]), partes(HISTORICO_PUBLICADO[i - 1])),
+      `a série voltou atrás em ${HISTORICO_PUBLICADO[i].versao}`);
+  }
+  // A primeira linha é a base da trava de deriva, e ela não se move (D13 regra 2).
+  assert.equal(HISTORICO_PUBLICADO[0].versao, VERSAO_REFERENCIA,
+    'a série deixou de começar na referência da trava de deriva');
+  assert.equal(ultimaPublicada(), HISTORICO_PUBLICADO[HISTORICO_PUBLICADO.length - 1]);
 });

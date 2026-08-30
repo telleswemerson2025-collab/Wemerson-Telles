@@ -128,6 +128,18 @@ depois que alguém percebe.
 | 9 | A **trava 6** do Reforço de Fundo — caixa nunca abaixo de **10%** da carteira | D6 · D31 | a reserva sumindo acionamento a acionamento |
 | 10 | O **limiar de liquidez** — US$ 100 mi de volume diário de 30 dias, em ao menos **duas** exchanges medidas separadamente | D37 | a carteira ganhando ponta da qual não dá para sair |
 | 11 | A **lista de exchanges de primeira linha** — Binance · Coinbase · Kraken · OKX · Bybit · Bitget | D38 | a mesma promessa do membro 10 |
+| 12 | Os **limites de salto entre versões** — 5% na capa, 10% nas demais células | D54 | a promessa publicada mudando de patamar de uma rodada para a outra |
+
+> **Os membros 1, 12 e o limite de 15% da D13 formam o sistema de controle de deriva**, e mexer
+> num sem os outros abre a porta que os outros dois fecham. A base v1.3 diz *de onde* se mede, o
+> limite de 15% diz *quanto* de afastamento acumulado se aceita, e os limites de salto dizem
+> *quanto de degrau* uma única rodada pode dar. **A trava de deriva pega o afastamento lento; a de
+> salto pega o degrau.** O caso que criou o membro 12 prova que uma não substitui a outra: a capa
+> subiu 11,2% de uma vez com a célula dela em −14,0%, longe do gatilho acumulado.
+>
+> **Os quatro critérios do membro 12, respondidos:** afrouxar de 5 para 8 não muda nada no dia
+> (sim) · o dano se acumula, salto a salto (sim) · a justificativa é sempre razoável, *"foi só uma
+> correção"* (sim) · degrada promessa publicada, e a capa é a promessa (sim).
 
 > **Os membros 10 e 11 são âncora de par**, como o teto de 8% e o gatilho de 12%.
 > Afrouxar a lista sem tocar no número tem o mesmo efeito de baixar o número: um
