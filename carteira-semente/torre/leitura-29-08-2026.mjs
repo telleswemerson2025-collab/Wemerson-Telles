@@ -73,7 +73,7 @@ export const VARREDURA_29_08_2026 = Object.freeze({
   'SOPR': {
     valor: 1.0112, min: 0.6068, max: 2.8740, data: '2026-08-28',
     dataMin: '2011-11-09', dataMax: '2011-04-29',
-    confirmado: { valor: '2026-08-29', min: '2026-08-29', max: null },
+    confirmado: { valor: '2026-08-29', min: '2026-08-29', max: '2026-08-29' },
     conferencias: [{
       campo: 'min', em: '2026-08-29',
       metodo: 'Spent Output Profit Ratio (SOPR) · SOPR simples, não LTH/STH; tooltip, modo SMA, janela estreitada até o passo do cursor virar 1 dia',
@@ -101,6 +101,38 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       // derrubou a conferência do Preço do BTC · min. Nesta escala o cruzamento não
       // cruza nada, e isso é consistência, não achado novo.
       cruzamento: 'BTC PRICE na mesma tooltip: US$ 3 nos três dias — o terminal arredonda para dólar inteiro, então nesta escala o cruzamento não separa nada',
+      telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print salvo',
+    }, {
+      campo: 'max', em: '2026-08-29',
+      metodo: 'SOPR simples, tooltip do terminal, modo SMA, janela estreitada até o passo do cursor virar 1 dia',
+      lido: '2.8740 — dois, ponto, oito, sete, quatro, zero',
+      casasNaTooltip: 4,
+      // O portao passou, mas por 0,0001: o STH le 1.0111 contra 1.0112 do simples.
+      // Uma casa de exibicao. O valor corrente e senha FRACA onde ha homonimo.
+      portaoDeIdentidade: {
+        breadcrumb: 'Spent Output Profit Ratio (SOPR) / SOPR',
+        ultimoPonto: { data: '2026-08-28', valor: 1.0112, btc: 77839 },
+        homonimosNoMesmoDia: { LTH: 1.0134, STH: 1.0111 },
+        margemAteOMaisProximo: 0.0001,
+        licao: 'o valor corrente separou do STH por uma casa de exibição — quem separa de verdade é o breadcrumb',
+      },
+      vizinhos: { '2011-04-28': 1.4169, '2011-04-29': 2.8740, '2011-04-30': 1.8046 },
+      topologia: 'pico isolado de um dia — vale mais que o dobro do vizinho de trás',
+      semEmpate: 'os dígitos separam com folga enorme',
+      // ⚠️ A VARREDURA POR BANDA FALHOU AQUI, e o Gui trocou de método.
+      varreduraQueFalhou: {
+        metodo: 'banda de altura sobre a série inteira',
+        porQue: 'no ALL o gráfico comprime ~5.700 dias em ~1.100 px, então um dia ocupa ~0,19 px e ' +
+                'um pico de barra única some no recorte — daria falso negativo',
+      },
+      ehMaximoDaSerie: 'eixo auto-escalado, em dois blocos que se encostam sem buraco. ' +
+                       'jan/2011 → 11/01/2012: topo do eixo 3.1, e a barra mais alta da janela é a de 29/04/2011. ' +
+                       '11/01/2012 → hoje: topo do eixo 1.6 — em quatorze anos e meio as barras mais altas param em 1,2–1,5. ' +
+                       'O único trecho cujo eixo precisa subir até a casa dos 2,8 é o de abril/2011.',
+      metodoDeVarredura: 'eixo auto-escalado por blocos — não depende de a barra ser visível',
+      cruzamento: 'BTC PRICE na mesma tooltip: US$ 2 — de novo sem poder de separação nesta escala',
+      incertezaDaExibicao: { faixa: [2.87395, 2.87405], efeitoNoIndice: 0.00036 },
       telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
                       'nada publicado, alterado ou apagado, nenhum print salvo',
     }],

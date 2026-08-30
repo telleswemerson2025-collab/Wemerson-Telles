@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -547,13 +547,16 @@ test('D41 A: a fila desce por efeito medido, não por escala nem por peso de cam
     assert.ok(uteis[i - 1].efeito >= uteis[i].efeito,
       `${uteis[i - 1].serie}·${uteis[i - 1].campo} deveria pesar ao menos tanto quanto ${uteis[i].serie}·${uteis[i].campo}`);
   }
-  // E a ordem antiga não sobrevive: a cabeça de hoje é linear, e uma log vem depois.
-  assert.equal(fila[0].escala, 'lin', 'a cabeça da fila é o Liveliness, série linear');
-  assert.ok(fila.findIndex((f) => f.escala === 'log') > 0, 'log já não vem primeiro por ser log');
+  // E a ordem antiga não sobrevive. A demonstração corre sobre TODOS os extremos, que
+  // não encolhem — a fila encolhe a cada conferência e levaria o teste junto.
+  const efeitos = efeitoDosExtremos(V, HOJE);
+  const pos = (n, c) => efeitos.findIndex((e) => e.serie === n && e.campo === c);
+  const escalaDe = (n) => SERIES.find((s) => s.n === n).escala;
+  assert.equal(escalaDe(efeitos[0].serie), 'lin', 'o de maior efeito é linear, não logarítmico');
+  assert.ok(efeitos.findIndex((e) => escalaDe(e.serie) === 'log') > 0, 'log não vem primeiro por ser log');
   // e a heurística de camada também não: camada 3 (16%) antes de camada 2 (26%).
-  const m2 = fila.findIndex((f) => f.serie === 'US M2' && f.campo === 'max');
-  const sopr = fila.findIndex((f) => f.serie === 'SOPR' && f.campo === 'max');
-  assert.ok(m2 < sopr, 'US M2 é camada 3 e vem antes do SOPR, camada 2, porque mede mais');
+  assert.ok(pos('US M2', 'max') < pos('SOPR', 'max'),
+    'US M2 é camada 3 e mede mais que o SOPR, camada 2');
 });
 
 test('D41 A: a cabeça da fila é sempre o maior efeito ainda por conferir', () => {
@@ -1155,4 +1158,57 @@ test('o portão de identidade entregou a data real do último ponto', () => {
   const corrigida = { ...V, 'Fed Funds Rate': { ...V['Fed Funds Rate'], data: '2026-08-24' } };
   assert.equal(varrer({ varredura: corrigida, hoje: HOJE }).indice, base);
   assert.equal(d.efeitoNoIndice, 0);
+});
+
+// ══ SOPR · MAX — O PORTÃO PASSOU POR UMA CASA DECIMAL ═════════════════════
+test('o máximo do SOPR bate, e o SOPR sai inteiro da fila', () => {
+  const c = V['SOPR'].conferencias.find((x) => x.campo === 'max');
+  assert.equal(V['SOPR'].confirmado.max, '2026-08-29');
+  assert.ok(!filaDeConferencia(V, HOJE).some((f) => f.serie === 'SOPR'));
+  assert.deepEqual(c.vizinhos, { '2011-04-28': 1.4169, '2011-04-29': 2.8740, '2011-04-30': 1.8046 });
+  assert.ok(c.vizinhos['2011-04-29'] > c.vizinhos['2011-04-28'] * 2, 'vale mais que o dobro do vizinho');
+});
+
+test('o valor corrente é senha fraca onde há homônimo: 0,0001 de margem', () => {
+  const p = V['SOPR'].conferencias.find((x) => x.campo === 'max').portaoDeIdentidade;
+  assert.equal(p.ultimoPonto.valor, V['SOPR'].valor, 'o portão bateu com o registrado');
+  assert.equal(p.margemAteOMaisProximo, 0.0001);
+  // Uma casa de exibição, na resolução do próprio indicador.
+  assert.equal(V['SOPR'].conferencias.find((x) => x.campo === 'min').casasNaTooltip, 4);
+  assert.equal((p.ultimoPonto.valor - p.homonimosNoMesmoDia.STH).toFixed(4), '0.0001');
+  assert.match(p.licao, /quem separa de verdade é o breadcrumb/);
+});
+
+test('o comando passou a exigir o breadcrumb, e avisa quando não o tem', () => {
+  assert.equal(SERIES.find((s) => s.n === 'SOPR').caminhoNoMenu, 'Spent Output Profit Ratio (SOPR) / SOPR');
+  const comCaminho = comandoDeConferencia({ serie: 'SOPR', campo: 'max' }, V);
+  assert.match(comCaminho, /o breadcrumb tem de ler exatamente: Spent Output Profit Ratio \(SOPR\) \/ SOPR/);
+  // Homônimo SEM breadcrumb registrado recebe o aviso de que a senha é fraca.
+  assert.equal(SERIES.find((s) => s.n === 'Realized Price').caminhoNoMenu, undefined);
+  const semCaminho = comandoDeConferencia({ serie: 'Realized Price', campo: 'max' }, V);
+  assert.match(semCaminho, /o breadcrumb desta série não está registrado/);
+  assert.match(semCaminho, /pode\n {5}separar por uma casa decimal só/);
+});
+
+// ══ AS VARREDURAS DO ALL TÊM FORÇA DIFERENTE ══════════════════════════════
+test('a varredura por banda falhou no SOPR, e o método mais forte é o eixo', () => {
+  const c = V['SOPR'].conferencias.find((x) => x.campo === 'max');
+  assert.equal(c.varreduraQueFalhou.metodo, 'banda de altura sobre a série inteira');
+  assert.match(c.varreduraQueFalhou.porQue, /0,19 px/);
+  assert.match(c.metodoDeVarredura, /eixo auto-escalado/);
+  // A compressão é aritmética, não impressão: ~5.700 dias em ~1.100 px.
+  const dias = (Date.parse('2026-08-29') - Date.parse('2011-01-01')) / 86400000;
+  assert.ok(dias > 5700 && dias < 5730);
+  assert.ok(1100 / dias < 0.2, 'um dia ocupa menos de 0,2 px no ALL');
+});
+
+test('os métodos de varredura estão ordenados por força, com a fraqueza de cada um', () => {
+  assert.equal(METODOS_DE_VARREDURA.length, 3);
+  assert.deepEqual(METODOS_DE_VARREDURA.map((m) => m.forca), [1, 2, 3]);
+  assert.match(METODOS_DE_VARREDURA[0].m, /eixo auto-escalado/);
+  assert.match(METODOS_DE_VARREDURA[0].porQue, /não depende de a barra ser visível/);
+  assert.match(METODOS_DE_VARREDURA[1].fraqueza, /falso negativo/);
+  // O Supply in Profit usou o método 2 — o positivo dele vale, o negativo herda a ressalva.
+  const sp = V['Supply in Profit'].conferencias.find((x) => x.campo === 'min');
+  assert.equal(sp.metodoDeVarredura, METODOS_DE_VARREDURA[1].como.slice(0, 0) || 'banda de altura sobre a série inteira, e não trecho a trecho');
 });

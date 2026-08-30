@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.16 · 29/08/2026 — a terceira espécie de empate: o patamar
+Conferência. Versão 1.17 · 29/08/2026 — o breadcrumb entra no portão · varreduras têm força
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -690,6 +690,57 @@ sozinha — sem ninguém procurar por ela.
 **Custo: zero**, pelo mesmo motivo das outras: confiança saturada, e pela D36 C a data
 não entra na conta. Está medido e em teste. Mas a pergunta 4 em aberto fica mais séria:
 o que se retificaria não é "sábado por sexta", é **uma data que ninguém sabe**.
+
+### ✅ A nona conferência: **SOPR · max = 2,8740 em 29/04/2011** — o SOPR sai inteiro
+Vizinhos 1,4169 e 1,8046: o dia vale **mais que o dobro** do anterior. Pico de barra
+única, sem empate de espécie nenhuma.
+
+## ⚠️ O PORTÃO PASSOU — POR UMA CASA DECIMAL
+O Gui reportou os três SOPR do mesmo dia:
+
+| Série | Valor em 28/08/2026 |
+|---|---|
+| **SOPR (o nosso)** | **1,0112** |
+| SOPR LTH | 1,0134 |
+| SOPR STH | **1,0111** |
+
+**0,0001 de margem** até o STH — exatamente uma casa de exibição, na resolução de
+quatro casas deste indicador. O portão funcionou, mas por nada. Um dia diferente, ou
+um arredondamento para o outro lado, e ele teria aprovado a série errada.
+
+**O valor corrente é senha fraca onde há homônimo.** Quem separa de verdade é o
+**breadcrumb**, que o Gui reportou sem ninguém pedir: `Spent Output Profit Ratio
+(SOPR) / SOPR`. As séries com breadcrumb registrado passaram a tê-lo exigido no
+comando; as que têm homônimo **sem** breadcrumb recebem o aviso de que a senha é
+fraca ali, e o pedido de anotá-lo.
+
+*Quatro breadcrumbs estão registrados — SOPR, Liveliness, DXY e Fed Funds — todos
+vindos de conferências. Nenhum adivinhado.*
+
+## ⚠️ E A VARREDURA POR BANDA FALHOU, PELA ARITMÉTICA DO GRÁFICO
+O Gui tentou o método da conferência anterior e ele não serviu:
+
+> No ALL o gráfico comprime **~5.700 dias em ~1.100 px**. Um dia ocupa **0,19 px**, e
+> um pico de barra única some no recorte. Daria **falso negativo**.
+
+Trocou pelo **eixo auto-escalado**: partir a série em blocos que se encostam e ler o
+topo do eixo de cada um — o eixo se recalcula com o máximo da janela, e **não depende
+de a barra ser visível**. jan/2011 → jan/2012 pede eixo 3,1; jan/2012 → hoje pede 1,6.
+
+`METODOS_DE_VARREDURA` passou a ordenar os três por força, com a fraqueza de cada um:
+
+| Força | Método | Fraqueza |
+|---|---|---|
+| 1 | **eixo auto-escalado por blocos** | — o eixo sabe do ponto mesmo sem desenhá-lo |
+| 2 | banda de altura sobre a série inteira | evento de um dia some: **falso negativo** |
+| 3 | trecho a trecho | o que não foi olhado não foi descartado |
+
+**Uma ressalva que isso joga para trás:** o **Supply in Profit · min** foi varrido pelo
+método 2, e o achado dele *era* um mergulho de um dia. O resultado **positivo**
+continua valendo — a marca apareceu. O que herda a ressalva é o **negativo**, o "não
+há mais nada nesta faixa", que é justamente o que a varredura precisa provar. Não é
+motivo para desfazer a conferência; é motivo para o registro dizer com qual método
+cada uma foi feita, e agora diz.
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o

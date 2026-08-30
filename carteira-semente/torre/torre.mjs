@@ -21,11 +21,11 @@ export const SERIES = Object.freeze([
   { n: 'Realized Price STH',  camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7', unidade: 'US$' },
   { n: 'Realized Price LTH',  camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'linha-dagua', calendario: '24/7', unidade: 'US$' },
   { n: 'MVRV Ratio',          camada: 1, escala: 'log', inicioSerie: '2011-01-01', papel: 'regua', calendario: '24/7', unidade: 'razão' },
-  { n: 'SOPR',                camada: 2, escala: 'log', inicioSerie: '2011-01-01', calendario: '24/7', unidade: 'razão' },
+  { n: 'SOPR',                camada: 2, escala: 'log', inicioSerie: '2011-01-01', calendario: '24/7', unidade: 'razão', caminhoNoMenu: 'Spent Output Profit Ratio (SOPR) / SOPR' },
   { n: 'Supply in Profit',    camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7', unidade: '%' },
-  { n: 'Liveliness',          camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7', unidade: 'razão' },
-  { n: 'DXY',                 camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão', unidade: 'pontos de índice' },
-  { n: 'Fed Funds Rate',      camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão', unidade: '% a.a.' },
+  { n: 'Liveliness',          camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7', unidade: 'razão', caminhoNoMenu: 'Cointime Statistics / Liveliness' },
+  { n: 'DXY',                 camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão', unidade: 'pontos de índice', caminhoNoMenu: 'Macro / DXY — Dollar Index' },
+  { n: 'Fed Funds Rate',      camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão', unidade: '% a.a.', caminhoNoMenu: 'Macro / Fed Funds Rate (%)' },
   { n: 'US M2',               camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal', unidade: 'US$ tri' },
   { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'pregão', unidade: 'pontos percentuais' },
   { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11', calendario: 'pregão', unidade: 'US$ mi' },
@@ -61,6 +61,24 @@ export const SERIES = Object.freeze([
  *
  * Para elas o extremo é um PATAMAR, e a data é a primeira ocorrência — o degrau.
  */
+/**
+ * Como varrer o ALL para provar que nada passa do extremo, do mais forte ao mais fraco.
+ * A conferência do SOPR · max derrubou o segundo: no ALL o gráfico comprime ~5.700 dias
+ * em ~1.100 px, então UM dia ocupa 0,19 px e um pico de barra única some no recorte.
+ * O resultado POSITIVO da banda continua valendo — o que enfraquece é o negativo,
+ * "não há mais nada aqui", que é justamente o que a varredura precisa provar.
+ */
+export const METODOS_DE_VARREDURA = Object.freeze([
+  { m: 'eixo auto-escalado por blocos', forca: 1,
+    como: 'partir a série em blocos que se encostam e ler o topo do eixo de cada um; o eixo se recalcula com o máximo da janela',
+    porQue: 'não depende de a barra ser visível — o eixo sabe do ponto mesmo quando o desenho não o mostra' },
+  { m: 'banda de altura sobre a série inteira', forca: 2,
+    como: 'recortar a faixa do gráfico além do extremo e varrer os quinze anos de uma vez',
+    fraqueza: 'evento de UM dia ocupa ~0,19 px no ALL e pode sumir: risco de falso negativo' },
+  { m: 'trecho a trecho', forca: 3,
+    fraqueza: 'depende de escolher quais trechos olhar, e o que não foi olhado não foi descartado' },
+]);
+
 export const SERIES_EM_PATAMAR = Object.freeze({
   'Fed Funds Rate': 'taxa de política: fica parada entre reuniões do FOMC, por meses',
   'US M2': 'série mensal: cada leitura vale até a publicação do mês seguinte',
@@ -324,15 +342,23 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
   const ehExtremo = campo !== 'valor';
   const especie = ehExtremo ? especieDoExtremo(serie, campo, varredura) : 'empírico';
   const unidade = SERIES.find((x) => x.n === serie)?.unidade ?? null;
+  const caminho = SERIES.find((x) => x.n === serie)?.caminhoNoMenu ?? null;
   return [
     `Conferir no terminal VantageNode, somente leitura: ${serie} · ${campo}.`,
     `Valor a bater: ${alvo} na data ${data}.`,
     '',
-    ...(unidade || HOMONIMOS_NO_TERMINAL[serie] ? [
+    ...(unidade || caminho || HOMONIMOS_NO_TERMINAL[serie] ? [
       '',
       'Antes de ler, conferir que a série é a certa:',
       ...(HOMONIMOS_NO_TERMINAL[serie] ? [`  ⚠️ ${HOMONIMOS_NO_TERMINAL[serie]}.`] : []),
+      ...(caminho ? [`  o breadcrumb tem de ler exatamente: ${caminho}.`] : []),
       ...(unidade ? [`  a unidade tem de ser ${unidade}, e o valor de hoje tem de bater com ${v.valor}.`] : []),
+      // O valor corrente é senha FRACA onde há homônimo: no SOPR ele separou do STH por
+      // 0,0001, que é uma casa de exibição. O breadcrumb é quem separa de verdade.
+      ...(HOMONIMOS_NO_TERMINAL[serie] && !caminho ? [
+        '  ⚠️ o breadcrumb desta série não está registrado, e onde há homônimo o valor de hoje pode',
+        '     separar por uma casa decimal só. Anotar o breadcrumb e reportar junto: ele entra no registro.',
+      ] : []),
       '  Se o valor de hoje não bater, a série aberta é outra: parar e reportar, não ajustar a leitura.',
     ] : [
       '',
