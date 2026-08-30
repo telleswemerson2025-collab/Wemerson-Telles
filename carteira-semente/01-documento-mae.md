@@ -641,6 +641,15 @@ deriva aquela versão marcou +0,0%, porque voltar à origem zera o acumulado. *V
 movimento, e movimento na capa muda o que foi prometido a quem viu o material anterior.* É o
 sentido da Decisão 54 D: salto para baixo aciona igual.
 
+> 🔒 **Por que o histórico é registro e não cálculo (Decisão 55 C).** Cada linha desta tabela é
+> **fato histórico, não resultado recalculável**: o número que a v1.10 publicou não sai do motor de
+> hoje, porque o motor mudou. Por isso o histórico é **append-only** — linha publicada não se
+> corrige nem se apaga; se um número estiver errado, entra retificação com a razão.
+>
+> Enquanto o motor que produziu uma linha continuar existindo, ela é conferível contra ele, e há
+> asserção fazendo isso com a v1.10. **Quando esse motor mudar, a asserção sai e o registro fica** —
+> é ele que vale. *Sobrescrever o histórico é apagar exatamente a prova que a trava de salto lê.*
+
 **Rastreamento da identidade do piso (regra 4):** entre a **v1.3 e a v1.5 o valor do piso é o
 mesmo — R$ 67.725 — mas o dono mudou**, de Prejuízo do mercado para Saudável · Índice ≥ 65. A
 tabela da v1.7 marcava aquela linha como "+0,0%" sem dizer que o piso tinha trocado de mãos. Piso

@@ -462,6 +462,40 @@ const PROVAS = [
       '| **+11,2%** | Saudável · Índice ≥ 65 |'],
     acusa: /a linha da versão corrente não está marcada como retida/,
   },
+  // ══ D55 · VERSÃO É IDENTIFICADOR · NÃO CALCULÁVEL NÃO É ZERO ═══════════
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'versão se compara parte a parte',
+    porque: 'a ordem das versões inverte, e a série passa a "voltar atrás" sozinha',
+    quebra: ['simulador/historico-publicado.mjs', 'if (x !== y) return x < y ? -1 : 1;',
+      'if (x !== y) return x > y ? -1 : 1;'],
+    acusa: /a v1\.10 voltou a vir antes da v1\.9/,
+  },
+  {
+    onde: 'alocador/alocador.test.mjs',
+    teste: 'sem registro, a defasagem sai como não calculável',
+    porque: 'sai proposta assinável com a defasagem desconhecida — zero silencioso vestido de proposta',
+    quebra: ['alocador/alocador.mjs', "proposta: naoCalculavel.length ? null : 'aporte do mês',",
+      "proposta: 'aporte do mês',"],
+    acusa: /saiu proposta assinável com a defasagem desconhecida/,
+  },
+  {
+    onde: 'alocador/alocador.test.mjs',
+    teste: 'com registro, a defasagem entra como PONTOS',
+    porque: 'o objeto do Registro volta a ser passado inteiro, e a conta volta a virar NaN',
+    quebra: ['alocador/alocador.mjs', 'estado, indice, defasagem: defasagemRegistrada.pontos,',
+      'estado, indice, defasagem: defasagemRegistrada,'],
+    acusa: /com registro não sobra nada por calcular/,
+  },
+  {
+    onde: 'alocador/alocador.test.mjs',
+    teste: 'a demanda recusa defasagem que não é número',
+    porque: 'a guarda sai da função e a conta volta a ser envenenada em silêncio',
+    quebra: ['alocador/alocador.mjs',
+      "  if (typeof defasagem !== 'number' || !Number.isFinite(defasagem)) {",
+      '  if (false) {'],
+    acusa: /o objeto do Registro passou direto para a conta, sem recusa/,
+  },
 ];
 
 const rodar = (nome, onde) => {

@@ -38,3 +38,25 @@ export const HISTORICO_PUBLICADO = Object.freeze([
 
 /** A última versão publicada — é contra ela que o salto é medido. */
 export const ultimaPublicada = () => HISTORICO_PUBLICADO[HISTORICO_PUBLICADO.length - 1];
+
+/**
+ * D55 A: VERSÃO NUNCA É NÚMERO. É identificador de partes, comparado parte a parte.
+ *
+ * O caso que fixou a regra prova sozinho: `Number('1.10')` é 1,1, que é MENOR que
+ * `Number('1.9')` — a série passava a "voltar atrás" sem ninguém ter mexido nela.
+ *
+ * A regra é geral e vale para qualquer campo que pareça número e não seja: versão,
+ * data em texto, identificador com ponto. **Se não se soma nem se multiplica, não vira
+ * Number.** Comparar é ordenar, e ordenar não precisa de aritmética.
+ */
+export const partesDaVersao = (versao) => versao.replace(/^v/, '').split('.').map(Number);
+
+/** −1, 0 ou 1. Parte a parte, da mais significativa para a menos. */
+export function comparaVersao(a, b) {
+  const pa = partesDaVersao(a), pb = partesDaVersao(b);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const x = pa[i] ?? 0, y = pb[i] ?? 0;
+    if (x !== y) return x < y ? -1 : 1;
+  }
+  return 0;
+}

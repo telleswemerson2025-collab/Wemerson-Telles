@@ -28,7 +28,9 @@ Checklist. Qualquer item falho VETA:
    os dois fluxos veta; contar acionamentos de memória veta.
 8. **Confiança por janela** — séries curtas entraram amortecidas; a confiança aparece ao lado do
    valor.
-9. **Tela renderizada e olhada** — nenhuma tela é dada por pronta sem ser aberta e lida. *Rodar o
+9. **Tela renderizada e olhada** — nenhuma tela é dada por pronta sem ser aberta e lida. *Servida,
+   nunca por dois cliques: módulo não carrega em `file://` e a página abre com o desenho certo e os
+   números vazios, sem erro visível. O comando e os endereços estão em `COMO-ABRIR.md`.* *Rodar o
    teste não substitui abrir a página:* três erros deste pacote passaram por toda a suíte e só
    apareceram na tela — a data no comando de conferência, o rótulo da trava 3 dizendo 3 com o
    sistema bloqueando a 4, e o charset ausente nas quatro telas. **Todo rótulo com número foi

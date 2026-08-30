@@ -13,7 +13,7 @@
 
 import { ESTADOS, faixaDoIndice } from '../torre/torre.mjs';
 import { MARCO_INDICE } from '../registro/registro.mjs';
-import { HISTORICO_PUBLICADO, ultimaPublicada } from './historico-publicado.mjs';
+import { HISTORICO_PUBLICADO, ultimaPublicada, comparaVersao, partesDaVersao } from './historico-publicado.mjs';
 import {
   EXPOSICAO_ALVO, INICIO_DA_RAMPA_ANOS, ABRIGO_ATIVO_ANOS, VELOCIDADE_POR_ESTADO,
   BANDA_PONTOS, TETO_DEFASAGEM, MESES_SEM_MODULACAO,
@@ -306,7 +306,7 @@ export function grade({ anos, aporte }) {
 export const TETO_SALTO_DA_CAPA = 5;      // âncora (D54 A · E)
 export const TETO_SALTO_DA_CELULA = 10;   // âncora (D54 A · E)
 
-export { HISTORICO_PUBLICADO, ultimaPublicada };
+export { HISTORICO_PUBLICADO, ultimaPublicada, comparaVersao, partesDaVersao };
 
 /**
  * D54 A: o salto de uma versão para a seguinte, EM QUALQUER DIREÇÃO.

@@ -13,7 +13,7 @@ import {
   CENARIOS, FASES, PARTIDAS, TABELA_EXPO, LIMIAR_DA_FASE_3, MESES_NA_FASE, ENTREGA_AOS,
   ESTACAO_DO_ESTADO, ABRIGO, TETO_DERIVA, CELULAS_DA_GRADE, CENARIO_DA_CAPA,
   TETO_SALTO_DA_CAPA, TETO_SALTO_DA_CELULA, VERSAO_REFERENCIA,
-  saltoEntreVersoes, HISTORICO_PUBLICADO, ultimaPublicada,
+  saltoEntreVersoes, HISTORICO_PUBLICADO, ultimaPublicada, comparaVersao,
   partidaDaLeitura, rotuloDaPartida, mesesRestantesDaFase, estadoDaFase, estacoesPorAno,
   motorMensal, motorAnual, motorDaV13, exposicaoModulada, criterioDeAceiteD11, grade, numeroDeCapa,
   trajetoriaDaGlidepath, expoDoAno,
@@ -475,16 +475,35 @@ test('o histórico publicado é registro, e o que ele registrou da v1.10 confere
 });
 
 test('D54: o histórico é append-only e a série não pula versão', () => {
-  // ⚠️ Versão não é decimal: `Number('1.10')` dá 1.1, que é MENOR que `Number('1.9')`.
-  // Comparar como número diria que a v1.10 vem antes da v1.9. Compara-se parte a parte.
-  const partes = (v) => v.versao.slice(1).split('.').map(Number);
-  const maior = (a, b) => a[0] !== b[0] ? a[0] > b[0] : a[1] > b[1];
   for (let i = 1; i < HISTORICO_PUBLICADO.length; i++) {
-    assert.ok(maior(partes(HISTORICO_PUBLICADO[i]), partes(HISTORICO_PUBLICADO[i - 1])),
+    assert.equal(comparaVersao(HISTORICO_PUBLICADO[i].versao, HISTORICO_PUBLICADO[i - 1].versao), 1,
       `a série voltou atrás em ${HISTORICO_PUBLICADO[i].versao}`);
   }
   // A primeira linha é a base da trava de deriva, e ela não se move (D13 regra 2).
   assert.equal(HISTORICO_PUBLICADO[0].versao, VERSAO_REFERENCIA,
     'a série deixou de começar na referência da trava de deriva');
   assert.equal(ultimaPublicada(), HISTORICO_PUBLICADO[HISTORICO_PUBLICADO.length - 1]);
+});
+
+
+// ── D55 A · VERSÃO É IDENTIFICADOR, NUNCA NÚMERO ─────────────────────────
+test('D55 A: versão se compara parte a parte, e o caso que fixou a regra é o teste', () => {
+  // O caso exato: como decimal, 1.10 é 1,1 e fica ANTES de 1.9. Como identificador,
+  // 1.10 vem depois. Se esta asserção cair, a regra caiu com ela.
+  assert.equal(comparaVersao('v1.10', 'v1.9'), 1,
+    'a v1.10 voltou a vir antes da v1.9 — versão está sendo comparada como número');
+  assert.ok(Number('1.10') < Number('1.9'),
+    'o contraexemplo deixou de valer — reescreva a razão da D55 A, não a asserção');
+
+  // E o resto do contrato de ordem, para a comparação não passar por acaso.
+  assert.equal(comparaVersao('v1.3', 'v1.3'), 0);
+  assert.equal(comparaVersao('v1.9', 'v1.10'), -1);
+  assert.equal(comparaVersao('v2.0', 'v1.99'), 1, 'a parte mais significativa deixou de mandar');
+  assert.equal(comparaVersao('v1.1', 'v1.1.0'), 0, 'parte ausente deixou de valer zero');
+  assert.equal(comparaVersao('1.10', 'v1.10'), 0, 'o prefixo v mudou a ordem');
+
+  // A ordenação da série inteira bate com a ordem em que ela está escrita.
+  const ordenada = [...HISTORICO_PUBLICADO].sort((a, b) => comparaVersao(a.versao, b.versao));
+  assert.deepEqual(ordenada.map((v) => v.versao), HISTORICO_PUBLICADO.map((v) => v.versao),
+    'ordenar a série mudou a ordem dela');
 });

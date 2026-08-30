@@ -8,6 +8,7 @@ import {
   ordemDeVenda, propor, GATILHOS_DE_VENDA, TETO_POR_ATIVO, GATILHO_DE_VENDA, PISO_DO_CAIXA,
   FATIA_DO_CAIXA, ACIONAMENTOS_POR_CICLO, ESPACAMENTO_DIAS, INDICE_MAXIMO_REFORCO,
 } from './alocador.mjs';
+import { Registro, AdaptadorMemoria } from '../registro/registro.mjs';
 
 const HOJE = '2026-08-29';
 const INDICE = 50.7536;                       // a leitura real de 29/08/2026
@@ -460,4 +461,48 @@ test('a divergência saiu da proposta porque a D43 a resolveu', () => {
   const d = destinacaoDoAporte({ aporte: 150, carteira: 1e5, caixa: 1000, exposicaoAtual: 90,
     mesesAteEntrega: 42, estado: 'Mercado saudável', indice: INDICE });
   assert.equal(d.divergencia, undefined);
+});
+
+// ── D55 B · NÃO CALCULÁVEL NUNCA VIRA ZERO ───────────────────────────────
+test('D55 B: sem registro, a defasagem sai como não calculável — nunca como zero', () => {
+  const p = propor({ leitura: { disponivel: true, estado: 'Mercado saudável', indice: INDICE },
+    carteira: CARTEIRA, registro: null, hoje: HOJE });
+  // O que falta é NOMEADO, e enquanto faltar não há proposta a assinar.
+  assert.equal(p.proposta, null, 'saiu proposta assinável com a defasagem desconhecida');
+  assert.equal(p.naoCalculavel.length, 1);
+  assert.match(p.naoCalculavel[0], /defasagem acumulada — sem registro gravado/);
+  assert.equal(p.defasagem, null, 'a defasagem desconhecida virou número');
+  assert.match(p.aporteDoMes.naoCalculavel, /defasagem acumulada/);
+  // E o que NÃO depende dela continua saindo: esconder o que se sabe também perde.
+  assert.match(p.reforcoDeFundo.situacao, /sem registro gravado/);
+  assert.deepEqual(p.concentracao.excessos.map((e) => e.ativo), ['SOL']);
+});
+
+test('D55 B: com registro, a defasagem entra como PONTOS, e a conta fecha', () => {
+  // ⚠️ O defeito que a regra achou: `defasagemAcumulada()` devolve `{pontos, eventos}`,
+  // e o objeto inteiro estava sendo passado para a conta. `objeto + número` vira texto,
+  // e a defasagem saía NaN — em toda proposta feita com registro de verdade.
+  const registro = new Registro(new AdaptadorMemoria());
+  const p = propor({ leitura: { disponivel: true, estado: 'Prejuízo do mercado', indice: 30 },
+    carteira: { ...CARTEIRA, mesesAteEntrega: 30, exposicao: 80 }, registro, hoje: HOJE });
+  assert.deepEqual(p.naoCalculavel, [], 'com registro não sobra nada por calcular');
+  assert.equal(typeof p.defasagem.pontos, 'number');
+  const g = p.aporteDoMes.glidepath;
+  for (const campo of ['mover', 'defasagemDepois', 'naoMovido']) {
+    assert.ok(Number.isFinite(g[campo]), `${campo} saiu ${g[campo]} — a conta virou NaN de novo`);
+  }
+});
+
+test('D55 B: a demanda recusa defasagem que não é número, em vez de virar NaN', () => {
+  // A guarda fica na função, não só em quem chama: quem passar o objeto do Registro
+  // recebe recusa nomeada, não uma conta silenciosamente envenenada.
+  const r = demandaDaGlidepath({ exposicaoAtual: 80, mesesAteEntrega: 30,
+    estado: 'Capitulação profunda', defasagem: { pontos: 3, eventos: [] } });
+  assert.ok(r.erro, 'o objeto do Registro passou direto para a conta, sem recusa');
+  assert.match(r.erro, /defasagem não é número/);
+  assert.match(r.erro, /o que entra aqui são os pontos/);
+  for (const ruim of [NaN, Infinity, '3', null]) {
+    assert.ok(demandaDaGlidepath({ exposicaoAtual: 80, mesesAteEntrega: 30,
+      estado: 'Capitulação profunda', defasagem: ruim }).erro, `${ruim} passou`);
+  }
 });

@@ -191,6 +191,14 @@ export const bandaDoMes = (mesesAteEntrega) => mesesAteEntrega >= MESES_SEM_MODU
  * diferentes (D51 C).
  */
 export function demandaDaGlidepath({ exposicaoAtual, mesesAteEntrega, estado, defasagem = 0 }) {
+  // D55 B: defasagem que não é número não vira zero nem vira NaN em silêncio. O
+  // Registro devolve `{pontos, eventos}`, e quem passasse o objeto inteiro faria a
+  // conta virar `"[object Object]0.5"` e a defasagem sair como NaN — que foi
+  // exatamente o que acontecia entre a peça 1 e a peça 3. Aqui ela é RECUSADA.
+  if (typeof defasagem !== 'number' || !Number.isFinite(defasagem)) {
+    return { erro: `defasagem não é número: ${JSON.stringify(defasagem)} — ` +
+      'o Registro devolve {pontos, eventos}, e o que entra aqui são os pontos' };
+  }
   /**
    * D53 C: o mês mira onde a rampa precisa estar QUANDO ELE FECHAR, não onde ela está
    * quando ele abre. Estando a `mesesAteEntrega` meses da entrega, a carteira já devia
@@ -450,14 +458,37 @@ export function propor({ leitura, carteira, registro, hoje }) {
   }
   const { estado, indice } = leitura;
   const ciclo = registro?.cicloReforco?.(carteira.id) ?? null;
-  const defasagem = registro?.defasagemAcumulada?.(carteira.id) ?? 0;
 
-  const fluxo1 = destinacaoDoAporte({
-    aporte: carteira.aporte, carteira: carteira.total, caixa: carteira.caixa,
-    exposicaoAtual: carteira.exposicao, mesesAteEntrega: carteira.mesesAteEntrega,
-    estado, indice, defasagem,
-  });
+  /**
+   * D55 B: ausência de registro NÃO é defasagem zero.
+   *
+   * Antes daqui saía `?? 0`, e com isso uma carteira sem registro era tratada como
+   * carteira em dia — e defasagem zero é justamente a condição que deixa a banda
+   * dizer "não mexe em nada". O Reforço já distinguia as duas coisas ("bloqueado —
+   * sem registro gravado") e a glidepath não: mesma função, dois tratamentos.
+   *
+   * E `defasagemAcumulada()` devolve `{pontos, eventos}`, não um número. O que entra
+   * na conta são os PONTOS.
+   */
+  const temRegistro = typeof registro?.defasagemAcumulada === 'function';
+  const defasagemRegistrada = temRegistro ? registro.defasagemAcumulada(carteira.id) : null;
+
+  // A demanda da glidepath depende da defasagem. Sem ela, o aporte do mês NÃO É
+  // CALCULÁVEL — e isso é dito, não preenchido. O que não depende dela (o Reforço, a
+  // concentração) continua saindo, porque esconder o que se sabe também é perder
+  // informação.
+  const fluxo1 = temRegistro
+    ? destinacaoDoAporte({
+      aporte: carteira.aporte, carteira: carteira.total, caixa: carteira.caixa,
+      exposicaoAtual: carteira.exposicao, mesesAteEntrega: carteira.mesesAteEntrega,
+      estado, indice, defasagem: defasagemRegistrada.pontos,
+    })
+    : { naoCalculavel: 'defasagem acumulada — sem registro gravado' };
   if (fluxo1.erro) return { proposta: null, motivo: fluxo1.erro };
+
+  const naoCalculavel = [
+    ...(temRegistro ? [] : ['defasagem acumulada — sem registro gravado (D9 regra 5 · D55 B)']),
+  ];
 
   const fluxo2 = reforcoDeFundo({
     estado, indice, mesesAteEntrega: carteira.mesesAteEntrega,
@@ -470,6 +501,16 @@ export function propor({ leitura, carteira, registro, hoje }) {
 
   return {
     hoje, carteira: carteira.id, estado, indice,
+    // ⚠️ D55 B: enquanto houver coisa não calculável, NÃO HÁ PROPOSTA a assinar. O que
+    // se sabe continua na tela; o que falta fica nomeado. Zero silencioso aqui seria a
+    // proposta afirmando "está em dia" sobre o que ela não olhou.
+    proposta: naoCalculavel.length ? null : 'aporte do mês',
+    naoCalculavel,
+    // A defasagem lida vai junto, com os eventos que a formaram: número solto numa
+    // proposta não é conferível, e o Auditor precisa ver de onde ele veio.
+    defasagem: temRegistro
+      ? { pontos: defasagemRegistrada.pontos, eventos: defasagemRegistrada.eventos.length }
+      : null,
     // Os dois fluxos são separados e NÃO se misturam (doc 02).
     aporteDoMes: fluxo1,
     reforcoDeFundo: fluxo2,

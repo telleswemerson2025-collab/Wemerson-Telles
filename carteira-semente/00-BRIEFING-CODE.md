@@ -31,6 +31,11 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
    implementação.***
 2. **Nada sai para o cliente sem passar pelo Gui.** O sistema é ferramenta interna.
 3. **A fonte é o gráfico/tooltip, NUNCA a memória.** Todo número citado tem que bater com a fonte.
+   *E o que não tem fonte **não vira zero** (Decisão 55 B). Ausência de base de comparação se reporta
+   como **não calculável**, e a trava diz que não viu. **Zero silencioso é a trava afirmando "passou"
+   sobre o que ela não olhou** — é a mesma família do default silencioso, e é pior, porque um número
+   inventado tem cara de medida. Onde já mordeu: célula que a versão anterior não registrou, e a
+   defasagem de uma carteira sem registro gravado.*
 4. **Quem propõe não audita.** Alocador e Auditor são papéis separados.
 5. **Sem promessa de retorno. Sem previsão de preço.** Falhar aqui veta a saída, sempre.
 6. **Preservação vem antes de convicção.** E isso é **regra, não calibragem**: quando a proteção
@@ -110,6 +115,12 @@ verificação ainda podia passar por vazio.*
    2,8 pontos acima do alvo", e a D52 mudou essa medida. Sem asserção, a razão escrita na D51
    continuaria de pé descrevendo um sistema que não existe mais. É irmã da 15 — a 15 diz de onde a
    asserção vem, a 16 diz que **medida citada em decisão é coisa que se assere**. Decisão 52 D.
+
+17. **VERSÃO É IDENTIFICADOR, NUNCA NÚMERO.** Campo que parece número e não é — versão, data em
+   texto, identificador com ponto — compara-se **parte a parte**, e não se converte para `Number`.
+   *Se não se soma nem se multiplica, não vira número.* O caso prova sozinho: `1.10` como decimal é
+   **1,1**, menor que `1.9`, e a série de versões passava a "voltar atrás" sem ninguém ter mexido
+   nela. Comparar é ordenar, e ordenar não precisa de aritmética. Decisão 55 A.
 
 ## ÂNCORAS ESTRUTURAIS (Decisão 27)
 **Parâmetro que existe para conter deriva lenta nasce marcado como âncora**, e não é protegido
@@ -247,11 +258,31 @@ Não existem dois juízes. Os papéis são distintos e ordenados:
    ("estado saudável, mas intensidade em equilíbrio"), nunca uma disputa.
 
 ## ORDEM DE CONSTRUÇÃO
-1. Torre de Controle (só leitura — entrega valor no dia 1, não toca em ordem)
-2. Guardiões
-3. Alocador + Auditor
-4. Responsável pelos Posts
-5. Laboratório (o mais pesado — por último)
+1. Torre de Controle (só leitura — entrega valor no dia 1, não toca em ordem) — ✅ **de pé**
+2. Guardiões — não construído
+3. Alocador + Auditor — ✅ **Alocador de pé**; o Auditor é papel humano no Gate, não código
+4. Responsável pelos Posts — não construído
+5. Laboratório (o mais pesado — por último) — não construído
+
+### FASE DE IMPLEMENTAÇÃO ENCERRADA (Decisão 55 E)
+As quatro peças combinadas estão de pé e conferidas, uma a uma, na ordem em que foram abertas:
+
+| | Peça | Onde |
+|---|---|---|
+| 1 | **Registro do Alocador** — log append-only, com retificação e anulação | `registro/` |
+| 2 | **Torre de Controle** — só leitura | `torre/` |
+| 3 | **Alocador** — propõe, não executa | `alocador/` |
+| 4 | **As quatro telas** | os `.html` da raiz, mais `simulador/` |
+
+**Nenhuma pendência de decisão do lado da implementação.** O que resta é de outra natureza, e nada
+disso é código esperando ser escrito:
+
+- **As nove escolhas do Gui** — decisões de produto, não de construção.
+- **As três métricas internas da camada 5**, que dependem de existir carteira com histórico.
+- **A fila de conferência de extremos**, que roda em paralelo e não bloqueia nada.
+
+*Como abrir as telas: `COMO-ABRIR.md`.* O item 9 do Gate 2 pede que elas sejam olhadas — e olhadas
+por quem vai vender o produto, não só por quem as escreveu.
 
 ## PENDÊNCIAS DE CÓDIGO — FECHADAS NA PEÇA 4
 Os três HTMLs deste pacote foram construídos antes das decisões de 29/08 e divergiam da

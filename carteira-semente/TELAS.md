@@ -378,3 +378,20 @@ com o arquivo quebrado"*. Passou a rodar também contra a v1.3, que é uma vers�
 ### 🐛 E versão não é decimal
 `Number('1.10')` é 1,1, que é menor que `Number('1.9')`. A asserção de que a série não volta atrás
 dizia que a v1.10 vinha antes da v1.9. Comparação parte a parte.
+
+---
+
+## COMO ABRIR — E O ERRO QUE CUSTA MAIS CARO
+`COMO-ABRIR.md`, na raiz do pacote. Ele começa pelo que dá errado, não pelo comando, porque o modo
+errado **não parece errado**:
+
+> Abrir por dois cliques põe `file://` na barra, e o navegador **bloqueia módulo em `file://`**.
+> A página abre, o desenho aparece, e os números não — tudo em travessão, sem erro visível para
+> quem não abre o console.
+
+Uma linha resolve: `python3 -m http.server 8765`, e os cinco endereços em `localhost:8765`.
+
+As cinco telas foram abertas servidas antes de o arquivo ser escrito: **zero erro de página nas
+cinco**. O arquivo também diz **o que olhar em cada uma** — não "ver se abre", e sim conferir o que
+a tela afirma: o piso sendo o número grande, a leitura do dia rotulada em segunda linha, a recusa
+sem Linha d'Água fazendo a projeção desaparecer, a sétima trava nunca passando.

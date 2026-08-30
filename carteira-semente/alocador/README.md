@@ -172,3 +172,21 @@ A acumulação da defasagem é `(1 − fator) × programado`. Com `programado` l
 que é maior — e o teto de 12 pontos é alcançado em menos meses que os nove que a D25 C descreve.
 As duas fórmulas têm asserção própria, e o fixture da tabela publicada foi movido para o regime que
 ela de fato descreve.
+
+
+## 🐛 O DEFEITO DA COSTURA COM A PEÇA 1 (D55 B)
+
+`defasagemAcumulada()` devolve `{pontos, eventos}`, e `propor` passava **o objeto inteiro** para a
+conta. `objeto + número` vira texto, e a defasagem saía **NaN em toda proposta feita com registro de
+verdade** — com o teto de 12 pontos e a cláusula da banda nunca disparando.
+
+Nenhuma das duas suítes via: a do Registro testava o retorno, a do Alocador testava com números
+soltos, e **a costura entre as duas não tinha teste**. Cada lado certo, o encaixe errado.
+
+E na mesma linha, o outro: `?? 0` transformava *ausência de registro* em *carteira em dia* — quando
+defasagem zero é justamente o que deixa a banda dizer "não mexe em nada". A linha de cima já
+distinguia as duas coisas para o Reforço.
+
+A guarda ficou **na função**: `demandaDaGlidepath` recusa defasagem que não seja número finito, e a
+recusa diz onde estão os pontos. E `propor` relata em vez de inventar — `proposta: null` com
+`naoCalculavel` nomeado, e o que não depende da defasagem continua saindo.
