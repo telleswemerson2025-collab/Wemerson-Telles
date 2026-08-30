@@ -48,7 +48,7 @@ export function limitesDoPatamar(estado) {
   const abaixo = i < ORDEM_DOS_ESTADOS.length - 1 ? BASES_DO_ESTADO[ORDEM_DOS_ESTADOS[i + 1]] : 0;
   // Não pode alcançar o patamar do vizinho: fica na banda entre os dois, e a banda
   // de ±20% da fórmula ainda vale por cima disso.
-  return { base, piso: Math.max(abaixo, base * 0.80), teto: Math.min(acima, base * 1.20, 100) };
+  return { base, piso: Math.max(abaixo, base * (1 - BANDA_MODULACAO)), teto: Math.min(acima, base * 1.20, 100) };
 }
 
 // ── A GLIDEPATH DO ABRIGO ─────────────────────────────────────────────────
@@ -86,6 +86,15 @@ export const VELOCIDADE_POR_ESTADO = Object.freeze({
 export const INICIO_DA_RAMPA_ANOS = 4;
 export const ABRIGO_ATIVO_ANOS = 4;
 
+// D44 A: todo número que aparece em rótulo de tela sai daqui. Os que estavam inline
+// no clamp viravam texto escrito à mão do outro lado — e texto à mão foi o que criou o
+// rótulo da trava 3 dizendo 3 com o sistema bloqueando a 4.
+export const TETO_APORTE = 100;         // % do aporte — teto absoluto 1
+export const PISO_APORTE = 0;           // % do aporte — piso absoluto 1
+export const BANDA_MODULACAO = 0.20;    // ±20% relativos (D4)
+export const FATOR_NEUTRO = 1.00;       // velocidade sem modulação
+export const TETO_M_EM_ABRIGO = 1;      // teto absoluto 3: M_efetivo = min(M, 1)
+
 const clamp = (x, min, max) => Math.min(Math.max(x, min), max);
 const arred = (x, casas = 4) => Number(x.toFixed(casas));
 
@@ -97,13 +106,13 @@ const arred = (x, casas = 4) => Number(x.toFixed(casas));
  */
 export function modulador(indice) {
   if (typeof indice !== 'number' || !Number.isFinite(indice)) return null;
-  return clamp(1 + ((50 - indice) / 50) * 0.20, 0.80, 1.20);
+  return clamp(1 + ((50 - indice) / 50) * BANDA_MODULACAO, 1 - BANDA_MODULACAO, 1 + BANDA_MODULACAO);
 }
 
 /** Com o Abrigo ativo o teto dele prevalece: a modulação reduz, nunca eleva. */
 export const mEfetivo = (indice, abrigoAtivo) => {
   const m = modulador(indice);
-  return m === null ? null : (abrigoAtivo ? Math.min(m, 1) : m);
+  return m === null ? null : (abrigoAtivo ? Math.min(m, TETO_M_EM_ABRIGO) : m);
 };
 
 export const abrigoAtivo = (mesesAteEntrega) => mesesAteEntrega <= ABRIGO_ATIVO_ANOS * 12;
@@ -131,10 +140,10 @@ export function alvoDaGlidepath(mesesAteEntrega) {
  */
 export function fatorDeVelocidade({ estado, mesesAteEntrega, defasagem = 0 }) {
   if (mesesAteEntrega <= MESES_SEM_MODULACAO) {
-    return { fator: 1.00, motivo: 'últimos doze meses não modulam (D25 D)' };
+    return { fator: FATOR_NEUTRO, motivo: `últimos ${MESES_SEM_MODULACAO} meses não modulam (D25 D)` };
   }
   if (defasagem >= TETO_DEFASAGEM) {
-    return { fator: 1.00, motivo: `defasagem no teto de ${TETO_DEFASAGEM} pontos (D25 C)` };
+    return { fator: FATOR_NEUTRO, motivo: `defasagem no teto de ${TETO_DEFASAGEM} pontos (D25 C)` };
   }
   const fator = VELOCIDADE_POR_ESTADO[estado];
   if (fator === undefined) return { fator: null, motivo: `estado não reconhecido: ${estado}` };
@@ -246,7 +255,7 @@ export function destinacaoDoAporte({
   const lim = limitesDoPatamar(estado);
   const semAbrigo = m === null ? null : clamp(base * m, lim.piso, lim.teto);
   const percentual = semAbrigo === null ? null
-    : clamp(semAbrigo * fatorDoAbrigo(mesesAteEntrega), 0, 100);
+    : clamp(semAbrigo * fatorDoAbrigo(mesesAteEntrega), PISO_APORTE, TETO_APORTE);
   const paraOAtivo = percentual === null ? null : arred((percentual / 100) * sobra, 2);
   const excedente = paraOAtivo === null ? null : arred(sobra - paraOAtivo, 2);
 
@@ -261,7 +270,7 @@ export function destinacaoDoAporte({
     },
     plantio: {
       base, fatorDoAbrigo: arred(fatorDoAbrigo(mesesAteEntrega), 4), m: m === null ? null : arred(m, 5),
-      patamar: lim, mordeuARegra2: semAbrigo !== null && arred(semAbrigo, 4) !== arred(clamp(base * m, 0, 100), 4),
+      patamar: lim, mordeuARegra2: semAbrigo !== null && arred(semAbrigo, 4) !== arred(clamp(base * m, PISO_APORTE, TETO_APORTE), 4),
       percentual: percentual === null ? null : arred(percentual, 4),
       sobreOAporte: sobra, paraOAtivo,
       // A frase é da própria decisão, e é assim que a leitura tem de dizer.

@@ -106,7 +106,15 @@ import {
   ABRIGO_ATIVO_ANOS, modulador, mEfetivo, abrigoAtivo, fatorDoAbrigo, alvoDaGlidepath, passoDoMes,
   demandaDaGlidepath, destinacaoDoAporte, limitesDoPatamar, reforcoDeFundo,
   FATIA_DO_CAIXA, PISO_DO_CAIXA, INDICE_MAXIMO_REFORCO, ACIONAMENTOS_POR_CICLO,
+  TETO_APORTE, PISO_APORTE, BANDA_MODULACAO, FATOR_NEUTRO, TETO_M_EM_ABRIGO,
 } from './alocador/alocador.mjs';
+
+// D44 A: todo número visível sai da constante. O único número desta tela que NÃO vem
+// do sistema é este — é escolha de simulação, não regra, e por isso tem nome próprio
+// e aparece na legenda gerado a partir daqui.
+const ACIMA_DO_ALVO = 5;   // pontos, para o mecanismo da glidepath aparecer
+const NEUTRO_DO_INDICE = 50;   // o ponto em que M = 1 — vem da própria fórmula da D4
+const DATA_DA_LEITURA = '2026-08-29';
 
 const $ = (id) => document.getElementById(id);
 const num = (x, c = 2) => x === null || x === undefined ? '—'
@@ -140,22 +148,26 @@ function desenhar() {
   // ── 1 · MODULAÇÃO DO APORTE ──────────────────────────────────────────
   $('formula').innerHTML =
     `aporte = base_do_estado × fator_do_Abrigo × M<br>` +
-    `M = 1 + (50 − <em>${num(indice, 4)}</em>) / 50 × 0,20 = <em>${num(M, 5)}</em>` +
-    (emAbrigo ? `<br>Abrigo ativo ⇒ M_efetivo = min(M, 1) = <em>${num(Me, 5)}</em>` : '');
+    `M = 1 + (${NEUTRO_DO_INDICE} − <em>${num(indice, 4)}</em>) / ${NEUTRO_DO_INDICE} × ${num(BANDA_MODULACAO)} = <em>${num(M, 5)}</em>` +
+    (emAbrigo ? `<br>Abrigo ativo ⇒ M_efetivo = min(M, ${num(TETO_M_EM_ABRIGO, 0)}) = <em>${num(Me, 5)}</em>` : '');
 
   const r = destinacaoDoAporte({ aporte: 150, carteira: total, caixa, exposicaoAtual: alvoDaGlidepath(meses),
     mesesAteEntrega: meses, estado, indice });
   $('aporte').innerHTML =
     card('Base do estado', pct(base, 0), estado) +
     card('Fator do Abrigo', num(fAbrigo, 4), emAbrigo ? `ativo — ${ABRIGO_ATIVO_ANOS} anos ou menos` : 'carteira cheia') +
-    card('Modulador M', num(Me, 5), M !== Me ? `travado em 1 pelo Abrigo (era ${num(M, 5)})` : 'ajuste fino, ±20% no máximo') +
+    card('Modulador M', num(Me, 5), M !== Me
+      ? `travado em ${num(TETO_M_EM_ABRIGO, 0)} pelo Abrigo (era ${num(M, 5)})`
+      : `ajuste fino, ±${pct(BANDA_MODULACAO * 100, 0)} no máximo`) +
     card('Aporte do mês', pct(r.plantio.percentual), r.plantio.mordeuARegra2 ? 'a regra 2 segurou' : 'sem trava mordendo', true);
 
-  const passouDe100 = base * fAbrigo * Me > 100;
+  const passouDoTeto = base * fAbrigo * Me > TETO_APORTE;
   const linhas = [
-    ['1 · nunca passa de 100% nem fica abaixo de 0%', 'teto do próprio aporte', passouDe100],
+    [`1 · nunca passa de ${pct(TETO_APORTE, 0)} nem fica abaixo de ${pct(PISO_APORTE, 0)}`,
+      'teto do próprio aporte', passouDoTeto],
     ['2 · não alcança o patamar do estado vizinho', `banda efetiva ${pct(lim.piso, 0)} a ${pct(lim.teto, 0)}`, r.plantio.mordeuARegra2],
-    ['3 · o teto do Abrigo prevalece sobre a modulação', emAbrigo ? 'M_efetivo = min(M, 1)' : 'Abrigo inativo', emAbrigo && M > 1],
+    ['3 · o teto do Abrigo prevalece sobre a modulação',
+      emAbrigo ? `M_efetivo = min(M, ${num(TETO_M_EM_ABRIGO, 0)})` : 'Abrigo inativo', emAbrigo && M > TETO_M_EM_ABRIGO],
   ];
   $('tetos').tBodies[0].innerHTML = linhas.map(([t, d, m]) =>
     `<tr class="${m ? 'mordeu' : ''}"><td>${t}</td><td style="color:var(--dim)">${d}</td>` +
@@ -163,8 +175,8 @@ function desenhar() {
 
   // ── 2 · MODULAÇÃO DA GLIDEPATH ───────────────────────────────────────
   const alvo = alvoDaGlidepath(meses);
-  // Exposição 5 pontos acima do alvo: fora da banda, para o mecanismo aparecer.
-  const g = demandaDaGlidepath({ exposicaoAtual: alvo + 5, mesesAteEntrega: meses, estado });
+  // Exposição ACIMA_DO_ALVO pontos acima do alvo: fora da banda, para o mecanismo aparecer.
+  const g = demandaDaGlidepath({ exposicaoAtual: alvo + ACIMA_DO_ALVO, mesesAteEntrega: meses, estado });
   const vel = VELOCIDADE_POR_ESTADO[estado];
   $('glide').innerHTML =
     card('Exposição alvo', pct(alvo), meses > ABRIGO_ATIVO_ANOS * 12 ? 'antes da rampa' : 'na rampa') +
@@ -176,13 +188,13 @@ function desenhar() {
     card('Defasagem depois', num(g.defasagemDepois, 4) + ' pts', `teto ${TETO_DEFASAGEM} pts`);
 
   $('glideNota').innerHTML = g.ultimoAno
-    ? `<div class="nota"><b>últimos doze meses</b>O fator é 1,00 em qualquer estado, e a defasagem é
+    ? `<div class="nota"><b>últimos ${MESES_SEM_MODULACAO} meses</b>O fator é ${num(FATOR_NEUTRO)} em qualquer estado, e a defasagem é
        <b style="display:inline">liquidada</b>, não perdoada — trabalhada até zero dentro do período.
        Modular pressupõe tempo para esperar o mercado virar; no último ano não há esse tempo.</div>`
     : g.defasagemNoTeto
-    ? `<div class="nota"><b>defasagem no teto</b>O fator volta a 1,00 mesmo em Capitulação. Abaixo disso
+    ? `<div class="nota"><b>defasagem no teto</b>O fator volta a ${num(FATOR_NEUTRO)} mesmo em Capitulação. Abaixo disso
        a modulação deixaria de ser prudência e viraria aposta de que o fundo passa antes dos 18 anos.</div>`
-    : `<div class="nota calma"><b>como ler</b>A simulação põe a exposição 5 pontos acima do alvo, para o mecanismo
+    : `<div class="nota calma"><b>como ler</b>A simulação põe a exposição ${ACIMA_DO_ALVO} pontos acima do alvo, para o mecanismo
        aparecer. Dentro da banda de ${BANDA_PONTOS} pontos nada se move — e estar dentro dela
        <b style="display:inline;color:var(--ink)">não é estar atrasado</b>: a banda é tolerância de posição
        e não gera defasagem.</div>`;
@@ -190,7 +202,7 @@ function desenhar() {
   // ── 3 · REFORÇO DE FUNDO ─────────────────────────────────────────────
   const ciclo = acion === 'sem' ? null
     : { acionamentos: Number(acion), ultimoAcionamento: Number(acion) > 0 ? '2026-06-01' : null };
-  const rf = reforcoDeFundo({ estado, indice, mesesAteEntrega: meses, caixa, carteira: total, ciclo, hoje: '2026-08-29' });
+  const rf = reforcoDeFundo({ estado, indice, mesesAteEntrega: meses, caixa, carteira: total, ciclo, hoje: DATA_DA_LEITURA });
   $('travas').tBodies[0].innerHTML = rf.travas.map((t) => {
     const gate = t.n === 7;
     const cor = gate ? 'gateflag' : t.passa ? 'passa' : 'falha';

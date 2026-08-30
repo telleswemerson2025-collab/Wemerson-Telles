@@ -1,5 +1,5 @@
 # PEÇA 4 — TELAS
-Conferência. Versão 1.0 · 29/08/2026 — item 1 de 4
+Conferência. Versão 1.1 · 29/08/2026 — item 1 de 4 · D44 aplicada
 
 | Item | Tela | Estado |
 |---|---|---|
@@ -65,6 +65,38 @@ Foi assim que a tela nova apareceu na primeira renderização.
 
 Corrigido nas quatro. É uma linha em cada, não muda comportamento nenhum, e estava lá desde antes
 desta implementação começar.
+
+---
+
+## ✅ A D44 FECHOU O PADRÃO QUE ESTES ERROS FORMAVAM
+
+### O checklist de toda tela nova
+| | Item | Onde é conferido |
+|---|---|---|
+| 1 | `<meta charset="utf-8">` **antes do primeiro acento** | teste de redação |
+| 2 | todo rótulo com número **gerado da constante** | teste de redação |
+| 3 | a tela é **renderizada e olhada** antes de dada por pronta | Gate 2, item 9 |
+
+### O teste de redação — `redacao.test.mjs`
+Sete testes que ligam **texto** a **constante**, e que quebram quando os dois divergem:
+
+- **28 trechos de documento** conferidos contra a constante que o sistema usa — o início do
+  Abrigo, os quatro pontos da glidepath, a banda, o teto de defasagem, as sete travas, os tetos
+  de concentração, o marco de virada, a validade do degrau, o limiar de liquidez.
+- **A matriz do aporte** publicada, conferida contra `base × M`.
+- **Os pesos renormalizados** do briefing, contra `PESOS` — e a soma 0,88 da camada 5 fora.
+- **Os fatores de velocidade** da D25 B, escritos no documento 01.
+- **O charset** das quatro telas, e a posição dele antes do primeiro acento.
+- **Onze números** que já estiveram escritos à mão na tela, e o nome que passou a gerá-los.
+- **Os rótulos das sete travas** que viajam do módulo para a tela.
+
+**Provei que ele morde**, quebrando dois de propósito: trocar *"Começa a 4 anos"* por *3* no
+documento 01 e devolver `±20%` como literal na tela. Os dois acusaram, com a linha e a constante
+esperada. *Teste que não pode falhar não é teste.*
+
+### A invariante 12
+> **Texto visível que cita número sai da constante.** É irmã da invariante 11: aquela proíbe
+> digitar **derivado**, esta proíbe digitar **constante**.
 
 ---
 

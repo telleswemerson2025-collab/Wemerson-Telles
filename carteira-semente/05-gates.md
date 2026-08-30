@@ -1,6 +1,6 @@
 # GATES DA CARTEIRA SEMENTE
 Nenhum agente aprova. Só o humano.
-Versão 1.14 · 29/08/2026 — Decisões 1 a 22 aplicadas.
+Versão 1.15 · 29/08/2026 — Decisões 1 a 22 e 44 aplicadas.
 
 ## GATE 1 — DIREÇÃO (antes de produzir)
 Perguntas:
@@ -28,6 +28,12 @@ Checklist. Qualquer item falho VETA:
    os dois fluxos veta; contar acionamentos de memória veta.
 8. **Confiança por janela** — séries curtas entraram amortecidas; a confiança aparece ao lado do
    valor.
+9. **Tela renderizada e olhada** — nenhuma tela é dada por pronta sem ser aberta e lida. *Rodar o
+   teste não substitui abrir a página:* três erros deste pacote passaram por toda a suíte e só
+   apareceram na tela — a data no comando de conferência, o rótulo da trava 3 dizendo 3 com o
+   sistema bloqueando a 4, e o charset ausente nas quatro telas. **Todo rótulo com número foi
+   gerado da constante** (invariante 12), e **a tela declara `<meta charset="utf-8">`** antes do
+   primeiro acento. Decisão 44.
 9. **Camada 5 rotulada** — se está fora, a leitura diz que está fora, e nunca a apresenta valendo
    50. Se está dentro, vem com a etiqueta de julgamento completa: que carrega julgamento humano, a
    data do degrau mais antigo em vigor, e quantos ativos estão sem degrau. Faltando qualquer uma

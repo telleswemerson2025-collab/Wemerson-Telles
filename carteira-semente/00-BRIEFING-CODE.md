@@ -1,6 +1,6 @@
 # BRIEFING PARA O CODE — Sistema Carteira Semente
 Wemerson Telles · BlockCapital Research · 29/08/2026
-Versão 1.24 — decisões 1 a 41 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
+Versão 1.25 — decisões 1 a 44 de 29/08/2026 aplicadas (ver `08-decisoes-29-08-2026.md`)
 
 ## O QUE É ISTO
 O pacote completo de um produto novo (Carteira Semente) e do sistema de agentes que o opera.
@@ -59,6 +59,14 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
    derivado aparece em dois lugares, um dos dois está errado por definição. Quando documento e
    instrumento divergem, o instrumento (que calcula) está certo e o documento (que digitou) está
    errado: corrige-se o documento, nunca a fórmula.
+
+12. **TEXTO VISÍVEL QUE CITA NÚMERO SAI DA CONSTANTE.** Todo rótulo, legenda ou frase de tela que
+   cite um número, um prazo ou um limiar é **gerado** a partir da constante que o sistema usa —
+   nunca escrito à mão. Onde a frase não puder ser gerada (texto corrido de documento), ela leva
+   **teste de redação**, que quebra se o número escrito divergir da constante. *Rótulo dizendo 3
+   com o sistema bloqueando a 4 engana exatamente quem está tentando conferir: é pior que não ter
+   rótulo, porque transforma a tela de instrumento de auditoria em fonte de erro.* Decisão 44.
+   É irmã da invariante 11: aquela proíbe digitar derivado, esta proíbe digitar constante.
 
 ## ÂNCORAS ESTRUTURAIS (Decisão 27)
 **Parâmetro que existe para conter deriva lenta nasce marcado como âncora**, e não é protegido
