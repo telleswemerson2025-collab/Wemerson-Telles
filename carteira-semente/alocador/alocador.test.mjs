@@ -311,6 +311,13 @@ test('cada trava bloqueia sozinha', () => {
 test('o Abrigo bloqueia o reforço, e é intencional que o teto morda sem compensação', () => {
   const r = reforcoDeFundo({ ...FUNDO, mesesAteEntrega: 30 });
   assert.ok(r.bloqueiam.includes(3), 'a trava 3 existe justamente para a proteção vencer');
+  // E bloqueia desde os 4 anos, depois da D43 — não desde os 3.
+  assert.ok(reforcoDeFundo({ ...FUNDO, mesesAteEntrega: 47 }).bloqueiam.includes(3));
+  assert.ok(!reforcoDeFundo({ ...FUNDO, mesesAteEntrega: 49 }).bloqueiam.includes(3));
+  // O RÓTULO tem de acompanhar a regra: um texto dizendo "3" com o sistema bloqueando
+  // a 4 engana quem lê a tela, e nenhum teste de lógica pega isso.
+  assert.equal(r.travas.find((t) => t.n === 3).o, `mais de ${ABRIGO_ATIVO_ANOS} anos até a entrega`);
+  assert.match(r.travas.find((t) => t.n === 3).o, /mais de 4 anos/);
 });
 
 test('o que as travas 4 e 5 produzem juntas — derivado, não digitado', () => {

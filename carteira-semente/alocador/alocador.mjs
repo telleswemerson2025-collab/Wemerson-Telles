@@ -291,7 +291,7 @@ export function reforcoDeFundo({ estado, indice, mesesAteEntrega, caixa, carteir
       leitura: estado },
     { n: 2, o: `Índice ≤ ${INDICE_MAXIMO_REFORCO}`, passa: typeof indice === 'number' && indice <= INDICE_MAXIMO_REFORCO,
       leitura: indice },
-    { n: 3, o: 'mais de 3 anos até a entrega', passa: !abrigoAtivo(mesesAteEntrega),
+    { n: 3, o: `mais de ${ABRIGO_ATIVO_ANOS} anos até a entrega`, passa: !abrigoAtivo(mesesAteEntrega),
       leitura: `${mesesAteEntrega} meses` },
     { n: 4, o: `no máximo ${FATIA_DO_CAIXA * 100}% do caixa`, passa: true,
       leitura: `libera ${arred(caixa * FATIA_DO_CAIXA, 2)}` },
