@@ -343,3 +343,109 @@ test('D21 B: a suspensão da camada 5 nomeia o ativo e a data, sem palavra dupli
   assert.match(frase, /\$\{suspensao\.razao\}/, 'e traz a razão');
   assert.ok(!/tese \$\{suspensao\.razao\}/.test(frase), 'sem prefixo que duplique a razão');
 });
+
+// ══ A TELA DO SIMULADOR — item 4 da peça 4 ════════════════════════════════
+test('o simulador não tem motor próprio — o laço, as partidas e a deriva vêm do módulo', () => {
+  const s = doc('simulador.html');
+  const script = s.slice(s.indexOf('<script type="module">'))
+    .split('\n').filter((l) => !/^\s*\/\//.test(l)).join('\n');
+
+  // A versão anterior desta tela tinha o motor inteiro dentro do HTML: o padrão dos
+  // cenários, a tabela EXPO, o laço anual e um mapa de fase escrito à mão. Nada volta.
+  const proibidos = [
+    [/const CEN\s*=/, 'CENARIOS'],
+    [/const EXPO\s*=/, 'EXPOSICAO_ALVO'],
+    [/const NOME\s*=/, 'ESTACAO_DO_ESTADO'],
+    [/const FASE_ESTADO\s*=/, 'estadoDaFase'],
+    [/function serie\(/, 'motorMensal'],
+    [/for\s*\(let y\s*=\s*0;\s*y\s*<\s*anos/, 'motorMensal'],
+    [/Math\.pow\(1\s*\+/, 'motorMensal'],
+    [/\*\*\s*\(1\s*\/\s*12\)/, 'motorMensal'],
+    [/\bEXPO\[/, 'expoDoAno'],
+  ];
+  const voltaram = proibidos.filter(([re]) => re.test(script)).map(([re, n]) => `${re} — devia sair de ${n}`);
+  assert.deepEqual(voltaram, [], `\n  ${voltaram.join('\n  ')}\n`);
+
+  // E ela chama o módulo para as quatro coisas que a decisão manda mostrar.
+  for (const chamada of [/motorMensal\(\{/, /numeroDeCapa\(\{/, /grade\(\{/,
+    /trajetoriaDaGlidepath\(\{/, /criterioDeAceiteD11\(/, /partidaDaLeitura\(/]) {
+    assert.match(script, chamada, `a tela não chama ${chamada}`);
+  }
+});
+
+test('D44 A · D46: os números do simulador saem da constante, e ligados', () => {
+  const s = doc('simulador.html');
+  const script = s.slice(s.indexOf('<script type="module">'))
+    .split('\n').filter((l) => !/^\s*\/\//.test(l)).join('\n');
+
+  // Os números que esta tela cita em rótulo: o início do Abrigo, a banda, o teto da
+  // defasagem, os meses sem modulação, o limiar da fase 3, o teto de deriva, o número
+  // de células e a idade de entrega. Nenhum pode estar escrito à mão.
+  const proibidos = [
+    [/a partir de 4 anos/, 'ABRIGO_ATIVO_ANOS'],
+    [/últimos 12 meses/, 'MESES_SEM_MODULACAO'],
+    [/banda de 3 pontos/, 'BANDA_PONTOS'],
+    [/teto de 12 pontos/, 'TETO_DEFASAGEM'],
+    [/Índice 65/, 'LIMIAR_DA_FASE_3'],
+    [/15 células/, 'CELULAS_DA_GRADE'],
+    [/limite é 15%/, 'TETO_DERIVA'],
+    [/até os 18/, 'ENTREGA_AOS'],
+    [/as 5 partidas/, 'PARTIDAS'],
+  ];
+  const voltaram = proibidos.filter(([re]) => re.test(script)).map(([re, n]) => `${re} — devia sair de ${n}`);
+  assert.deepEqual(voltaram, [], `\n  ${voltaram.join('\n  ')}\n`);
+
+  // D46: ligados, não só presentes — cada nome dentro de uma interpolação.
+  const interpolados = new Set([...script.matchAll(/\$\{([^}]*)\}/g)]
+    .flatMap((m) => m[1].match(/[A-Z][A-Z0-9_]{2,}/g) ?? []));
+  for (const nome of ['ABRIGO_ATIVO_ANOS', 'MESES_SEM_MODULACAO', 'BANDA_PONTOS',
+    'TETO_DEFASAGEM', 'LIMIAR_DA_FASE_3', 'CELULAS_DA_GRADE', 'TETO_DERIVA',
+    'ENTREGA_AOS', 'VERSAO_REFERENCIA', 'CENARIO_DA_CAPA']) {
+    assert.ok(interpolados.has(nome), `${nome} não gera texto nenhum no simulador`);
+  }
+});
+
+test('D8: o simulador recusa sem Linha d\'Água, e a recusa não guarda partida de reserva', () => {
+  const s = doc('simulador.html');
+  const script = s.slice(s.indexOf('<script type="module">'));
+
+  // A recusa tem de existir como caminho, e tem de ser um retorno: se o código seguisse
+  // depois de mostrar o aviso, a projeção apareceria embaixo dele.
+  const bloco = script.slice(script.indexOf('if (!lida.disponivel)'), script.indexOf('$(\'recusa\').hidden = true'));
+  assert.ok(bloco.length > 0, 'a tela não tem caminho de recusa');
+  assert.match(bloco, /return;/, 'a recusa não interrompe o desenho da projeção');
+  assert.match(bloco, /hidden = true/, 'a recusa não esconde a projeção');
+  // E o texto tem de dizer as três coisas que a D8 proíbe, não só "indisponível".
+  assert.match(bloco, /não assume fase/);
+  assert.match(bloco, /não usa a última leitura conhecida/);
+  assert.match(bloco, /não cai em partida padrão/);
+  // Nenhuma fase de reserva escrita no arquivo — nem como número, nem como fallback.
+  assert.ok(!/fase\s*[:=]\s*\d+\s*[;,)]/.test(script), 'há uma fase fixa escrita na tela');
+  assert.ok(!/\?\?\s*PARTIDAS\[/.test(script), 'há uma partida de reserva atrás de um ??');
+});
+
+test('D11 regra 5: a tela mostra o par inteiro — estado, índice, fase e mês de entrada', () => {
+  const s = doc('simulador.html');
+  const script = s.slice(s.indexOf('<script type="module">'));
+  const bloco = script.slice(script.indexOf("$('parLeitura').innerHTML"), script.indexOf("$('notaPartida')"));
+  // Os quatro, cada um com o seu rótulo. É a regra 5 da D11 escrita como asserção.
+  for (const [rotulo, o_que] of [['Estado', /leitura\.estado/], ['Índice', /leitura\.exibido/],
+    ['Fase de partida', /partida\.fase/], ['Mês de entrada', /partida\.mes/]]) {
+    assert.ok(bloco.includes(rotulo), `a tela não rotula ${rotulo}`);
+    assert.match(bloco, o_que, `o rótulo ${rotulo} não está ligado ao valor`);
+  }
+});
+
+test('D12 A: a capa é o piso e a leitura do dia vai em segunda linha, rotulada', () => {
+  const s = doc('simulador.html');
+  const script = s.slice(s.indexOf('<script type="module">'));
+  // O número grande sai de numeroDeCapa, e não da partida em uso.
+  assert.match(script, /\$\('capaValor'\)\.textContent = brl\(capa\.valor\)/);
+  // A segunda linha existe, é rotulada como leitura do dia, e diz que não é a capa.
+  assert.match(s, /Leitura do dia — não é o número de capa/);
+  // E ela usa a partida LIDA, não a que o usuário escolheu à mão.
+  const segunda = script.slice(script.indexOf("$('capaHoje').innerHTML"), script.indexOf("$('notaCapa')"));
+  assert.match(segunda, /lida\.partida/, 'a segunda linha seguiu o seletor em vez da leitura');
+  assert.ok(!/(?<!lida\.)\bpartida\.(estado|fase|mes)\b/.test(segunda),
+    'a segunda linha usa a partida em uso — ela tem de ser a lida do dia');
+});

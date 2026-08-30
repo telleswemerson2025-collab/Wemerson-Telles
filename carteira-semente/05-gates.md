@@ -33,7 +33,9 @@ Checklist. Qualquer item falho VETA:
    apareceram na tela — a data no comando de conferência, o rótulo da trava 3 dizendo 3 com o
    sistema bloqueando a 4, e o charset ausente nas quatro telas. **Todo rótulo com número foi
    gerado da constante** (invariante 12), e **a tela declara `<meta charset="utf-8">`** antes do
-   primeiro acento. Decisão 44.
+   primeiro acento. Decisão 44. **E o que entrou no commit é conferido, não suposto** — `git show
+   --stat` depois de cada gravação, porque um `cd` errado já deixou arquivo de fora duas vezes, e as
+   duas custaram correção. *Olhar o que ficou vale para a tela e vale para o commit.*
 10. **Teste de conferência novo foi visto reprovando** — quebrou-se de propósito o que ele deveria
    pegar, ele acusou com a linha e o valor esperado, e o que foi quebrado ficou registrado em
    `provas.mjs`. Teste que entra sem essa passagem **veta**: passar por vazio é pior que não
@@ -61,7 +63,9 @@ Checklist. Qualquer item falho VETA:
 16. **Tabela de deriva** — presente, atualizada e completa desde a v1.3, com as quinze células e o
     dono do piso. Tabela ausente, apagada ou resumida veta. Deriva acima de +15% em qualquer célula
     para a revisão inteira e sobe para o Gui; célula retida não entra em material de venda.
-    Base sempre na v1.3; linha desdobrada herda a referência da original.
+    Base sempre na v1.3; linha desdobrada herda a referência da original. *Desde a peça 4 as duas
+    coisas têm tela: o `simulador.html` calcula o piso, a identidade dele e as quinze células, com a
+    referência v1.3 **rodada pelo mesmo motor** — conferir contra a tela, não contra a memória.*
 17. **Sem default silencioso** — se faltou leitura de origem, o material diz que faltou. Nunca
     preencher lacuna com suposição. Universo elegível congelado sai rotulado com a data.
 18. **Tetos sobre a parte exposta** — os 60%, os 8%, o piso de 2% e o teto de 8 ativos foram

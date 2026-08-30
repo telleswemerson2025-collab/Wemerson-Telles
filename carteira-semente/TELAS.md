@@ -1,12 +1,12 @@
 # PEÇA 4 — TELAS
-Conferência. Versão 1.3 · 29/08/2026 — itens 1, 2 e 3 de 4
+Conferência. Versão 1.4 · 29/08/2026 — os quatro itens
 
 | Item | Tela | Estado |
 |---|---|---|
 | **1** | **`aporte-do-mes.html`** — modulação e Reforço de Fundo | ✅ **feito** |
 | **2** | **`registro-de-ciclo.html`** — marco, acionamentos e o log inteiro | ✅ **feito** |
 | **3** | **`indice-semente.html`** — reescrita para perguntar à Torre | ✅ **feito** |
-| 4 | divergências do `simulador.html`, com o motor mensal | a fazer |
+| **4** | **`simulador.html`** — motor mensal, partida, capa, deriva | ✅ **feito** |
 
 ---
 
@@ -169,6 +169,7 @@ e só aparece abrindo.
 | 1 | `<meta charset="utf-8">` **antes do primeiro acento** | teste de redação |
 | 2 | todo rótulo com número **gerado da constante** | teste de redação |
 | 3 | a tela é **renderizada e olhada** antes de dada por pronta | Gate 2, item 9 |
+| 4 | **o que entrou no commit é conferido, não suposto** (`git show --stat`) | Gate 2, item 9 |
 
 ### O teste de redação — `redacao.test.mjs`
 Dezesseis testes que ligam **texto** a **constante**, e que quebram quando os dois divergem:
@@ -199,3 +200,80 @@ esperada. *Teste que não pode falhar não é teste.*
 - **Não lê o terminal.** Os controles são de simulação: servem para ver o mecanismo, não para
   publicar leitura. A leitura real vem da Torre.
 - **Não grava.** O registro de ciclo é o item 2.
+
+---
+
+## ITEM 4 · `simulador.html`
+A tela que existia desde antes das decisões de 29/08, e que acumulava **cinco divergências** — a
+última delas estrutural. O motor saiu do HTML e virou módulo (`simulador/motor.mjs`), como a Torre
+e o Alocador já eram.
+
+### As sete coisas pedidas, e onde cada uma ficou
+| | O que a decisão manda | Onde |
+|---|---|---|
+| 1 | motor **mensal**, Abrigo por ano e fase por mês (D11 · D25 A) | `motorMensal` · `faseDoMes` · `expoDoAno` |
+| 2 | par **estado-índice** definindo fase e mês, com os quatro na tela (D8 · D10 · D11) | `partidaDaLeitura` · bloco *A leitura que define a partida* |
+| 3 | Abrigo a **4 anos**, tabela EXPO completa (D43) | `TABELA_EXPO` · seção *O Abrigo* |
+| 4 | velocidade pelo estado, defasagem com teto, últimos doze sem modular (D25 B·C·D) | `trajetoriaDaGlidepath` · gráfico *Alvo × exposição real* |
+| 5 | capa vira o **piso**, leitura do dia em segunda linha rotulada, cinco partidas ao lado (D12 A) | `numeroDeCapa` · bloco *O número que abre* |
+| 6 | tabela de deriva **permanente, por linha**, contra a v1.3 (D12 B · D13) | `grade` · seção *Deriva por linha* |
+| 7 | sem Linha d'Água **não há projeção** (D8) | caminho de recusa, com `return` |
+
+### O critério de aceite, rodado DEPOIS da troca do laço
+> Com mês de entrada 0, o motor mensal reproduz o anual com **diferença zero** nas doze
+> combinações de fase e cenário.
+
+Rodado de novo com o laço já trocado: **12 combinações, maior diferença 0,000000.** O motor anual
+ficou no arquivo só para ser o réu dessa comparação — ele não alimenta tela nenhuma. E o resultado
+aparece **na própria tela**, no bloco *Conferência do motor*, não só no teste.
+
+As cinco partidas nos três cenários reproduzem as tabelas publicadas número a número, e a grade de
+deriva reproduz a da D13 célula a célula — **6 de 15 acima do limite**, as mesmas seis.
+
+### 🐛 O QUE SÓ APARECEU NA TELA
+**1. O rótulo do TETO colidia com o do alvo.** Na entrega o teto da defasagem (12) e o alvo (15,8)
+ficam a menos de quatro pontos um do outro, e num gráfico de 280 px isso é dez pixels. Os três
+rótulos da direita se escreviam por cima. O teto foi para dentro, à esquerda; os dois da direita
+passaram a ser separados por **altura mínima**, não pela posição crua.
+
+**2. As células da tabela quebravam o `R$` do número.** `R$ 297.492` virava duas linhas. `nowrap`
+nas células numéricas, `normal` só na primeira coluna.
+
+Nenhum dos dois quebra teste nenhum: são de tela, e só a tela mostra.
+
+### 🐛 E DOIS QUE A SUÍTE PEGOU, DOS QUAIS UM ERA MEU
+**A asserção da defasagem no teto estava um mês fora.** O teste dizia *"no teto o fator volta a
+1,00"* e lia a defasagem **depois** do mês. Mas quem decide o fator é a defasagem **com que o mês
+começou** — o mês que leva a defasagem ao teto ainda modula, e é o seguinte que trava. O módulo
+passou a guardar `defasagemAntes` e `defasagem` na mesma linha, e a asserção passou a perguntar
+pela certa. A regra não mudou; a leitura dela é que estava.
+
+**A prova do motor nasceu reprovando por mira ambígua.** A expressão da fase aparecia em dois
+lugares do módulo, e mutar um deixaria o outro de pé (D47 A). A resposta não foi `todas: true`, foi
+extrair `faseDoMes()` — ponto de uso único é melhor que mutação em duplicata.
+
+### ⚠️ DUAS COISAS MEDIDAS QUE PEDEM DECISÃO
+**a) A banda de 3 pontos sobrevive à entrega, e nada a liquida.** A defasagem chega a zero em todas
+as cinco partidas, como a D25 D manda. Mas a exposição chega **2,8 a 3,2 pontos acima do alvo** em
+todas elas — porque a banda é tolerância de posição e, por definição (D25 E), *não gera defasagem*.
+O que a D25 D liquida é a defasagem; a banda não é defasagem, e por isso nada a liquida. A carteira
+entrega a 18,7% com alvo em 15,8%. **Suspender a banda nos últimos doze meses, junto com a
+modulação, é decisão do Gui — não foi tomada aqui.**
+
+**b) O fator 1,50 não faz nada enquanto não há defasagem.** Ele move o passo do mês vezes
+`min(fator, 1)` e só recupera defasagem acima disso (D25 C). Numa trajetória sem defasagem
+acumulada, 1,50 anda exatamente o mesmo que 1,00. Está correto e é o que a decisão diz — mas
+contraria o que o rótulo sugere a quem lê, e por isso a tela escreve o que cada fator **faz com o
+passo do mês**, e não só o número.
+
+### O checklist da tela nova, item por item
+| | Item | Como ficou |
+|---|---|---|
+| 1 | charset antes do primeiro acento | já estava, conferido pelo teste |
+| 2 | todo rótulo com número gerado da constante | 10 constantes interpoladas, 9 literais proibidos |
+| 3 | renderizada e olhada | aberta servida, nos três caminhos: leitura, recusa e hipotética |
+| 4 | o que entrou no commit é conferido | `git show --stat` depois de gravar |
+
+E os três caminhos foram abertos de verdade: a leitura de hoje (Mercado saudável · 51 · fase 2 ·
+mês 0), a recusa (*"faltam 4 de 4 séries de origem"*, sem projeção embaixo) e a hipotética (o
+seletor mudado marca **simulação hipotética** e a segunda linha continua sendo a do dia).

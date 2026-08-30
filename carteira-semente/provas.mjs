@@ -178,11 +178,120 @@ const PROVAS = [
       'camada 5 suspensa por tese ${suspensao.razao} em ${suspensao.ativo}'],
     acusa: /o prefixo duplicado voltou/,
   },
+  // ══ PEÇA 4 · ITEM 4 — O SIMULADOR ══════════════════════════════════════
+  // Onde o réu não é o texto e sim o motor, a prova roda o teste do módulo.
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'com mês de entrada 0 o motor mensal É o anual',
+    porque: 'o laço mensal deixa a fase virar no meio do ano civil mesmo com mês de entrada 0',
+    quebra: ['simulador/motor.mjs',
+      'Math.floor((fase * MESES_NA_FASE + mes + t) / MESES_NA_FASE) % FASES.length;',
+      'Math.round((fase * MESES_NA_FASE + mes + t) / MESES_NA_FASE) % FASES.length;'],
+    acusa: /o laço mensal divergiu do anual com mês de entrada 0/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'cada estado devolve o par',
+    porque: 'os dois estados de queda voltam a produzir a mesma partida, que é o que a D11 desfez',
+    quebra: ['simulador/motor.mjs',
+      'estado: ESTADOS.CAPITULACAO, indice: null, fase: 0, mes: 9',
+      'estado: ESTADOS.CAPITULACAO, indice: null, fase: 0, mes: 3'],
+    acusa: /Capitulação e Prejuízo voltaram a produzir a mesma partida/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'a fronteira exata do limiar vai para a fase da correção',
+    porque: 'o índice exatamente no limiar cai do lado de baixo — o erro de borda que a D10 fixou',
+    quebra: ['simulador/motor.mjs', "const lado = indice >= LIMIAR_DA_FASE_3 ? 'acima' : 'abaixo';",
+      "const lado = indice > LIMIAR_DA_FASE_3 ? 'acima' : 'abaixo';"],
+    acusa: /o índice exatamente no limiar não foi para a fase de cima/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'sem leitura da Linha d',
+    porque: 'a tela cai numa partida padrão quando a leitura falta — o default silencioso da D8',
+    quebra: ['simulador/motor.mjs',
+      "    return { disponivel: false,\n      motivo: 'sem leitura da Linha d\\'Água não há projeção — estado indisponível (D8)',",
+      "    return { disponivel: true, partida: PARTIDAS[0],\n      motivo: 'sem leitura da Linha d\\'Água não há projeção — estado indisponível (D8)',"],
+    acusa: /a tela assumiu uma fase sem leitura/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'a tabela EXPO vai até quatro anos',
+    porque: 'o Abrigo volta a ligar depois do ano em que a D43 o ligou',
+    quebra: ['simulador/motor.mjs', 'abrigoAtivo: anos <= ABRIGO_ATIVO_ANOS,', 'abrigoAtivo: anos < ABRIGO_ATIVO_ANOS,'],
+    acusa: /o Abrigo não está ativo no ano em que a D43 o liga/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'nos últimos doze meses ninguém modula',
+    porque: 'a defasagem deixa de ser liquidada e a carteira chega na entrega acima do alvo',
+    quebra: ['alocador/alocador.mjs', 'const liquidacao = ultimoAno ?', 'const liquidacao = false ?'],
+    acusa: /chegou na entrega com [\d.]+ de defasagem/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'o número de capa é o piso entre as partidas',
+    porque: 'a capa passa a ser o melhor resultado, que é exatamente o que a D12 A proibiu',
+    quebra: ['simulador/motor.mjs', 'v < menor.valor ? { valor: v, linha: l } : menor',
+      'v > menor.valor ? { valor: v, linha: l } : menor'],
+    acusa: /a capa não é o menor resultado/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'a grade sai inteira, e a deriva é medida contra a v1.3',
+    porque: 'a referência passa a ser rodada com o mês de entrada de hoje, e a deriva zera sozinha',
+    quebra: ['simulador/motor.mjs', 'fase: partida.faseNaV13, mes: 0, padrao',
+      'fase: partida.faseNaV13, mes: partida.mes, padrao'],
+    acusa: /mudou de partida e não derivou/,
+  },
+  {
+    onde: 'simulador/motor.test.mjs',
+    teste: 'estourou uma célula, a revisão inteira fica retida',
+    porque: 'a grade deixa de reter com célula estourada — a D13 regra 2 vira letra morta',
+    quebra: ['simulador/motor.mjs', 'retida: estouradas.length > 0,', 'retida: false,'],
+    acusa: /a retenção não acompanha o estouro/,
+  },
+  {
+    teste: 'o simulador não tem motor próprio',
+    porque: 'a tabela EXPO volta a ser escrita à mão dentro do HTML, como estava antes',
+    quebra: ['simulador.html', "const HOJE = '2026-08-29';",
+      "const HOJE = '2026-08-29';\nconst EXPO = { 3: .66, 2: .45, 1: .25, 0: .15 };"],
+    acusa: /devia sair de EXPOSICAO_ALVO/,
+  },
+  {
+    teste: 'os números do simulador saem da constante',
+    porque: 'o início do Abrigo volta a ser digitado no rótulo, que é o erro da trava 3 de novo',
+    quebra: ['simulador.html', 'o Abrigo fica ativo a partir de ${ABRIGO_ATIVO_ANOS} anos da entrega',
+      'o Abrigo fica ativo a partir de 4 anos da entrega'],
+    acusa: /devia sair de ABRIGO_ATIVO_ANOS/,
+  },
+  {
+    teste: 'o simulador recusa sem Linha d',
+    porque: 'a recusa deixa de interromper, e a projeção volta a aparecer embaixo do aviso',
+    quebra: ['simulador.html', "    $('voltar').onclick = () => { semLeitura = false; render(); };\n    return;",
+      "    $('voltar').onclick = () => { semLeitura = false; render(); };"],
+    acusa: /a recusa não interrompe o desenho da projeção/,
+  },
+  {
+    teste: 'a tela mostra o par inteiro',
+    porque: 'o mês de entrada some do rótulo e vira zero fixo — o par da D11 deixa de estar na tela',
+    quebra: ['simulador.html', "campo('Mês de entrada na fase', String(partida.mes),",
+      "campo('Mês de entrada na fase', String(0),"],
+    acusa: /o rótulo Mês de entrada não está ligado ao valor/,
+  },
+  {
+    teste: 'a capa é o piso e a leitura do dia vai em segunda linha',
+    porque: 'a segunda linha passa a seguir o seletor, e a leitura do dia deixa de ser a do dia',
+    quebra: ['simulador.html', "campo('Estado e índice', `${lida.partida.estado}",
+      "campo('Estado e índice', `${partida.estado}"],
+    acusa: /a segunda linha usa a partida em uso/,
+  },
 ];
 
-const rodar = (nome) => {
+const rodar = (nome, onde) => {
   try {
-    execFileSync('node', ['--test', '--test-name-pattern', nome, arq('redacao.test.mjs')],
+    execFileSync('node', ['--test', '--test-name-pattern', nome, arq(onde)],
       { encoding: 'utf8', stdio: 'pipe' });
     return { falhou: false, saida: '' };
   } catch (e) {
@@ -217,7 +326,7 @@ for (const p of PROVAS) {
         'Ou se escolhe um ponto único, ou se declara todas: true e mutam-se todas de uma vez.' };
     } else {
       writeFileSync(caminho, p.todas ? original.replaceAll(de, para) : original.replace(de, para));
-      const r = rodar(p.teste);
+      const r = rodar(p.teste, p.onde ?? 'redacao.test.mjs');
       const msg = mensagemDaFalha(r.saida);
       veredito = !r.falhou
         ? { ok: false, nota: 'o teste PASSOU com o arquivo quebrado — ele não pega o que devia' }

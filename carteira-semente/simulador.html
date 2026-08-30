@@ -111,7 +111,8 @@ table{width:100%;border-collapse:collapse;font-size:14.5px}
 th,td{text-align:right;padding:14px 18px;border-bottom:1px solid var(--bd)}
 th:first-child,td:first-child{text-align:left}
 th{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:500}
-td{font-variant-numeric:tabular-nums;color:var(--ink)}
+td{font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+td:first-child{white-space:normal}
 td.g{color:var(--green)}
 tr:last-child td{border-bottom:none}
 
@@ -130,6 +131,33 @@ footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--bd);font-size
 .cta{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:var(--gold);
   color:#0a0e16;border:none;border-radius:999px;padding:9px 20px;cursor:pointer;font-weight:500}
 .x{background:none;border:none;color:var(--dim);font-size:17px;cursor:pointer;line-height:1;padding:4px}
+/* BLOCOS DA PEÇA 4 · ITEM 4 */
+.bloco{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:22px 24px;margin-bottom:14px}
+.bloco h3{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--dim);font-weight:500;margin:0 0 14px}
+.par{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px}
+.par .lab{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:5px}
+.par .v{font-size:16px;color:var(--ink);font-variant-numeric:tabular-nums}
+.par .v small{display:block;font-size:11.5px;color:var(--mut);margin-top:3px}
+.capa{display:grid;grid-template-columns:minmax(260px,1fr) minmax(300px,1.35fr);gap:26px;align-items:start;margin-bottom:14px}
+.capa .piso{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:clamp(34px,5.2vw,54px);line-height:1;
+  font-variant-numeric:tabular-nums}
+.capa .mult{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;color:var(--gold);margin-top:8px}
+.capa .ident{font-size:12.5px;color:var(--mut);margin-top:10px;max-width:36ch}
+.segunda{border-top:1px solid var(--bd);margin-top:18px;padding-top:14px}
+.rot{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.hip{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--c3);border:1px solid rgba(242,193,78,.5);border-radius:999px;padding:4px 11px;margin-left:8px}
+.recusa{border:1px solid rgba(255,107,122,.5);background:rgba(255,107,122,.05);border-radius:16px;padding:24px 26px;margin-bottom:20px}
+.recusa b{color:var(--red)}
+td.ruim{color:var(--red)}
+td.bom{color:var(--mut)}
+tr.retida td:first-child{border-left:2px solid var(--red);padding-left:16px}
+.mini{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--dim)}
+.ok{color:var(--green)} .alerta{color:var(--c3)}
+button.link{background:none;border:1px solid var(--bd);border-radius:999px;color:var(--mut);cursor:pointer;
+  font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;padding:6px 13px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -151,11 +179,48 @@ footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--bd);font-size
   <h1>O maior ativo do seu filho hoje não é dinheiro. É o tempo.</h1>
   <p class="lede">Escolha a idade da criança e quanto cabe no seu mês. O simulador mostra o que esse hábito pode construir até os 18 anos, atravessando quatro ou cinco ciclos de mercado.</p>
 
+  <!-- 7 · SEM LINHA D'ÁGUA NÃO HÁ PROJEÇÃO (D8) -->
+  <div id="recusa" class="recusa" hidden></div>
+
+  <div id="tudo">
+
+  <!-- 2 · O PAR ESTADO-ÍNDICE QUE DEFINE A PARTIDA (D8 · D10 · D11) -->
+  <div class="bloco">
+    <h3>A leitura que define a partida <span id="hip"></span></h3>
+    <div class="par" id="parLeitura"></div>
+    <p class="note" style="margin:16px 0 0" id="notaPartida"></p>
+    <p style="margin:14px 0 0"><button class="link" id="semLeitura">Ver a tela sem leitura da Linha d'Água</button></p>
+  </div>
+
+  <!-- 5 · O NÚMERO DE CAPA É O PISO (D12 A) -->
+  <h2 style="margin-top:38px">O número que abre</h2>
+  <p class="cs" style="margin-bottom:14px">Piso entre as partidas possíveis, no cenário conservador</p>
+  <div class="capa">
+    <div class="bloco" style="margin:0">
+      <h3 id="capaRot">Piso</h3>
+      <div class="piso" id="capaValor">—</div>
+      <div class="mult" id="capaMult">—</div>
+      <div class="ident" id="capaIdent">—</div>
+      <div class="ident" id="capaOutros" style="margin-top:8px"></div>
+      <div class="segunda">
+        <div class="rot">Leitura do dia — não é o número de capa</div>
+        <div class="par" id="capaHoje" style="margin-top:10px"></div>
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Partida</th><th>Fase · mês</th><th>Conservador</th><th>Moderado</th><th>Forte</th></tr></thead>
+        <tbody id="tbPartidas"></tbody>
+      </table>
+    </div>
+  </div>
+  <p class="note" id="notaCapa"></p>
+
   <div class="panel">
     <div class="field">
       <label for="idade">Idade da criança</label>
-      <div class="val"><span id="vIdade">5</span><small>anos</small></div>
-      <input type="range" id="idade" min="0" max="16" value="5" step="1">
+      <div class="val"><span id="vIdade">0</span><small>anos</small></div>
+      <input type="range" id="idade" min="0" max="16" value="0" step="1">
     </div>
     <div class="field">
       <label for="aporte">Aporte por mês</label>
@@ -163,21 +228,17 @@ footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--bd);font-size
       <input type="range" id="aporte" min="50" max="1000" value="150" step="10">
     </div>
     <div class="field">
-      <label for="fase">Momento do ciclo hoje</label>
-      <select id="fase">
-        <option value="0">Capitulação · época de plantar</option>
-        <option value="1" selected>Recuperação · crescimento</option>
-        <option value="2">Alta · colheita</option>
-        <option value="3">Correção</option>
-      </select>
+      <label for="partida" id="labPartida">Partida</label>
+      <select id="partida"></select>
     </div>
   </div>
+  <p class="note" id="notaBase" style="margin-top:-22px"></p>
 
   <div class="kpis">
-    <div class="k"><div class="lab">Anos até a entrega</div><div class="num" id="oAnos">13</div><div class="sub">quando ele fizer 18</div></div>
-    <div class="k"><div class="lab">Você terá aportado</div><div class="num" id="oAportado">R$ 23.400</div><div class="sub" id="oMeses">156 aportes</div></div>
+    <div class="k"><div class="lab">Anos até a entrega</div><div class="num" id="oAnos">18</div><div class="sub" id="oEntrega">—</div></div>
+    <div class="k"><div class="lab">Você terá aportado</div><div class="num" id="oAportado">—</div><div class="sub" id="oMeses">—</div></div>
     <div class="k"><div class="lab">Pode virar</div><div class="num g" id="oFaixa">—</div><div class="sub" id="oMult">—</div></div>
-    <div class="k"><div class="lab">Estação de hoje</div><div class="num" id="oEst">—</div><div class="sub">Índice de Plantio</div></div>
+    <div class="k"><div class="lab">Partida</div><div class="num" id="oEst" style="font-size:clamp(18px,2.2vw,24px)">—</div><div class="sub" id="oPar">—</div></div>
   </div>
 
   <div class="card">
@@ -200,6 +261,42 @@ footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--bd);font-size
   </div>
   <p class="note" style="margin-bottom:40px">Acima da linha d'água, a carteira está à frente do que saiu do seu bolso. Abaixo, está submersa — e é aí que o aporte do mês compra mais barato. O piso protegido sobe quando o Abrigo entra: é a parte que já não corre risco.</p>
 
+  <!-- 3 · A TABELA EXPO COMPLETA, COM O ABRIGO A 4 ANOS (D43) -->
+  <h2>O Abrigo</h2>
+  <p class="cs" style="margin-bottom:14px" id="csAbrigo"></p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Faltam</th><th>Exposição alvo</th><th>Passo por mês</th><th>Abrigo</th></tr></thead>
+      <tbody id="tbExpo"></tbody>
+    </table>
+  </div>
+  <p class="note" id="notaAbrigo"></p>
+
+  <!-- 4 · MODULAÇÃO DA VELOCIDADE, DEFASAGEM E TETO (D25 B · C · D) -->
+  <h2>A velocidade do Abrigo, modulada pelo estado</h2>
+  <p class="cs" style="margin-bottom:14px" id="csVel"></p>
+  <div class="tw" style="margin-bottom:14px">
+    <table>
+      <thead><tr><th>Estado da Linha d'Água</th><th>Fator de velocidade</th><th>O que ele faz com o passo do mês</th></tr></thead>
+      <tbody id="tbVel"></tbody>
+    </table>
+  </div>
+  <div class="bloco">
+    <h3>A trajetória desta partida</h3>
+    <div class="par" id="parTraj"></div>
+  </div>
+  <div class="card">
+    <p class="ct">Alvo × exposição real</p>
+    <p class="cs">A distância entre as duas linhas é a defasagem mais a banda</p>
+    <canvas id="gp" height="330"></canvas>
+    <div class="leg">
+      <span><i class="sw" style="background:var(--gold)"></i> Alvo da glidepath</span>
+      <span><i class="sw" style="background:var(--c4)"></i> Exposição real, com a velocidade modulada</span>
+      <span><i class="sw" style="background:var(--c2)"></i> Defasagem acumulada</span>
+    </div>
+  </div>
+  <p class="note" id="notaVel"></p>
+
   <h2>Índice de Plantio</h2>
   <p class="cs" style="margin-bottom:14px">Estado do mercado × tempo até a entrega · quanto do aporte vai para o ativo</p>
   <div class="mxwrap">
@@ -209,7 +306,7 @@ footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--bd);font-size
   <p class="note" style="margin-bottom:40px">O que sobra de cada percentual fica em caixa, esperando zona. Repare na coluna da direita: perto da entrega, o Abrigo derruba a exposição independentemente do que o mercado esteja fazendo — é ele que impede a criança de fazer 18 anos no fundo de um ciclo.</p>
 
   <h2>As estações de cada ano</h2>
-  <p class="cs" style="margin-bottom:14px">Índice de Plantio · o Abrigo assume nos anos finais</p>
+  <p class="cs" style="margin-bottom:14px" id="csEstacoes"></p>
   <div class="tl" id="tl"></div>
 
   <h2 style="margin-top:38px">Os três cenários</h2>
@@ -221,7 +318,24 @@ footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--bd);font-size
     </table>
   </div>
 
+  <!-- 6 · TABELA DE DERIVA PERMANENTE, POR LINHA, CONTRA A v1.3 (D12 B · D13) -->
+  <h2 style="margin-top:38px">Deriva por linha</h2>
+  <p class="cs" style="margin-bottom:14px" id="csDeriva"></p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Partida</th><th>Conservador</th><th>Moderado</th><th>Forte</th></tr></thead>
+      <tbody id="tbDeriva"></tbody>
+    </table>
+  </div>
+  <p class="note" id="notaDeriva"></p>
+
+  <div class="bloco">
+    <h3>Conferência do motor</h3>
+    <div class="par" id="parAceite"></div>
+  </div>
+
   <footer>Material de estudo da BlockCapital Research. Não é recomendação de investimento. A conta é operada por um adulto responsável, com o compromisso de entregar aos 18 anos. Nenhum valor futuro é prometido.</footer>
+  </div>
 </div>
 
 <div class="toast" id="toast">
@@ -231,202 +345,436 @@ footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--bd);font-size
   <button class="x" id="fechar" aria-label="Fechar">✕</button>
 </div>
 
-<script>
-const CEN={Conservador:[-0.55,0.35,1.20,0.10],Moderado:[-0.60,0.50,2.00,0.20],Forte:[-0.65,0.70,3.00,0.30]};
-const COR={Conservador:'--c4',Moderado:'--c5',Forte:'--c3'};
-const NOME=['Plantio','Crescimento','Colheita','Plantio'];
-const EXPO={3:.66,2:.45,1:.25,0:.15};
-const brl=n=>'R$ '+Math.round(n).toLocaleString('pt-BR');
-const curto=n=>n>=1e6?'R$ '+(n/1e6).toFixed(n>=1e7?0:1).replace('.',',')+' mi'
-  :n>=1000?'R$ '+Math.round(n/1000)+' mil':brl(n);
+<script type="module">
+// A tela não calcula: ela pergunta. Motor, partidas, deriva e glidepath vêm dos
+// módulos; aqui só se desenha. Todo rótulo com número é gerado da constante (D44).
+import { classificarLinhaDagua, faixaDoIndice, varrer } from './torre/torre.mjs';
+import { VARREDURA_29_08_2026 as V } from './torre/leitura-29-08-2026.mjs';
+import { BASES_DO_ESTADO, VELOCIDADE_POR_ESTADO, ABRIGO_ATIVO_ANOS,
+  BANDA_PONTOS, TETO_DEFASAGEM, MESES_SEM_MODULACAO } from './alocador/alocador.mjs';
+import {
+  CENARIOS, FASES, PARTIDAS, TABELA_EXPO, LIMIAR_DA_FASE_3, ENTREGA_AOS, MESES_NA_FASE,
+  ESTACAO_DO_ESTADO, ABRIGO, CENARIO_DA_CAPA, CELULAS_DA_GRADE, TETO_DERIVA, VERSAO_REFERENCIA,
+  partidaDaLeitura, rotuloDaPartida, rotuloDoPar, mesesRestantesDaFase, estacoesPorAno,
+  motorMensal, criterioDeAceiteD11, grade, numeroDeCapa, trajetoriaDaGlidepath,
+  custoDaModulacaoNaProjecao, expoDoAno,
+} from './simulador/motor.mjs';
 
-function serie(anos,ap,fase,pat){
-  const pts=[{s:0,a:0}];let s=0,a=0;
-  for(let y=0;y<anos;y++){
-    const rest=anos-y-1, exp=rest<=3?EXPO[rest]:1;
-    const m=Math.pow(1+pat[(fase+y)%4]*exp,1/12)-1;
-    for(let i=0;i<12;i++){s=(s+ap)*(1+m);a+=ap;}
-    pts.push({s,a});
+const HOJE = '2026-08-29';
+// A base sobre a qual as tabelas do documento-mãe foram publicadas.
+const BASE_PUBLICADA = Object.freeze({ idade: 0, aporte: 150 });
+// As quatro séries de origem da Linha d'Água. Sem as quatro não há estado (D8).
+const SERIES_DA_LINHA = Object.freeze(
+  ['Preço do BTC', 'Realized Price', 'Realized Price STH', 'Realized Price LTH']);
+
+const $ = (id) => document.getElementById(id);
+const brl = (n) => 'R$ ' + Math.round(n).toLocaleString('pt-BR');
+const curto = (n) => n >= 1e6 ? 'R$ ' + (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace('.', ',') + ' mi'
+  : n >= 1000 ? 'R$ ' + Math.round(n / 1000) + ' mil' : brl(n);
+const num = (v, casas = 2) => v.toFixed(casas).replace('.', ',');
+const pct = (v) => (v > 0 ? '+' : '') + num(v, 1) + '%';
+const mult = (v) => num(v, 1) + 'x';
+
+/** A leitura do dia. Falta qualquer série de origem e ela devolve indisponível. */
+function leituraDeHoje(varredura) {
+  const faltam = SERIES_DA_LINHA.filter((n) => typeof varredura?.[n]?.valor !== 'number');
+  if (faltam.length) {
+    return { disponivel: false, motivo: `faltam ${faltam.length} de ${SERIES_DA_LINHA.length} séries de origem: ${faltam.join(' · ')}` };
   }
-  return pts;
+  const estado = classificarLinhaDagua({
+    preco: varredura['Preço do BTC'].valor, realizedPrice: varredura['Realized Price'].valor,
+    sth: varredura['Realized Price STH'].valor, lth: varredura['Realized Price LTH'].valor,
+  });
+  const r = varrer({ varredura, hoje: HOJE });
+  return { disponivel: true, estado, indice: r.indice, exibido: Math.round(r.indice), faixa: faixaDoIndice(r.indice) };
 }
 
-const ESTADOS=[
-  {n:'Capitulação profunda',base:1.00,est:'Plantio'},
-  {n:'Prejuízo do mercado', base:0.90,est:'Plantio'},
-  {n:'Estresse de curto prazo',base:0.65,est:'Crescimento'},
-  {n:'Mercado saudável',    base:0.40,est:'Colheita'}
-];
-const COLS=[{n:'+3 anos',r:9,f:1},{n:'3 anos',r:3,f:EXPO[3]},{n:'2 anos',r:2,f:EXPO[2]},
-            {n:'1 ano',r:1,f:EXPO[1]},{n:'entrega',r:0,f:EXPO[0]}];
-const FASE_ESTADO=[0,2,3,1];
+let semLeitura = false;
+let escolhida = null;   // índice em PARTIDAS, quando o usuário mexe no seletor
 
-function matriz(anos,fase){
-  const mx=document.getElementById('mx');
-  mx.innerHTML='<div></div>'+COLS.map(c=>`<div class="hd">${c.n}</div>`).join('');
-  const rNow=anos-1, colNow=rNow>=3?0:COLS.findIndex(c=>c.r===rNow);
-  const rowNow=FASE_ESTADO[fase];
-  ESTADOS.forEach((e,ri)=>{
-    mx.insertAdjacentHTML('beforeend',`<div class="rw">${e.n}</div>`);
-    COLS.forEach((c,ci)=>{
-      const pct=Math.round(e.base*c.f*100);
-      const est = c.r<=2 ? 'Abrigo' : e.est;
-      const col = est==='Abrigo'?'--c4':(est==='Colheita'?'--c3':(est==='Plantio'?'--green':'--mut'));
-      const a=(pct/100*0.30+0.04).toFixed(3);
-      const here=(ri===rowNow&&ci===colNow)?' here':'';
+const selPartida = $('partida');
+PARTIDAS.forEach((p, i) => selPartida.insertAdjacentHTML('beforeend',
+  `<option value="${i}">${rotuloDaPartida(p)} — ${rotuloDoPar(p)}</option>`));
+
+$('semLeitura').onclick = () => { semLeitura = !semLeitura; escolhida = null; render(); };
+selPartida.addEventListener('change', () => { escolhida = +selPartida.value; render(); });
+['idade', 'aporte'].forEach((id) => $(id).addEventListener('input', render));
+addEventListener('resize', render);
+$('fechar').onclick = () => $('toast').remove();
+
+function campo(rotulo, valor, sub) {
+  return `<div><div class="lab">${rotulo}</div><div class="v">${valor}` +
+    (sub ? `<small>${sub}</small>` : '') + '</div></div>';
+}
+
+function render() {
+  const leitura = leituraDeHoje(semLeitura ? {} : V);
+  const lida = partidaDaLeitura(leitura);
+  $('semLeitura').textContent = semLeitura
+    ? 'Voltar à leitura da Linha d\'Água' : 'Ver a tela sem leitura da Linha d\'Água';
+
+  // 7 · SEM LINHA D'ÁGUA NÃO HÁ PROJEÇÃO. Estado indisponível, nunca default silencioso.
+  if (!lida.disponivel) {
+    $('tudo').hidden = true;
+    $('recusa').hidden = false;
+    $('recusa').innerHTML =
+      `<div class="rot">Estado indisponível</div>` +
+      `<p style="margin:10px 0 0"><b>Sem leitura da Linha d'Água não há projeção.</b> ` +
+      `A tela não assume fase, não usa a última leitura conhecida e não cai em partida padrão.</p>` +
+      `<p class="mini" style="margin:12px 0 0">Motivo: ${lida.motivo}` +
+      (lida.detalhe ? ` · ${lida.detalhe}` : '') + '</p>' +
+      `<p style="margin:16px 0 0"><button class="link" id="voltar">Voltar à leitura da Linha d'Água</button></p>`;
+    $('voltar').onclick = () => { semLeitura = false; render(); };
+    return;
+  }
+  $('recusa').hidden = true;
+  $('tudo').hidden = false;
+
+  const iLida = PARTIDAS.indexOf(lida.partida);
+  const iUsada = escolhida === null ? iLida : escolhida;
+  const partida = PARTIDAS[iUsada];
+  const hipotetica = iUsada !== iLida;
+  selPartida.value = String(iUsada);
+  $('labPartida').textContent = hipotetica
+    ? 'Partida — alterada à mão' : 'Partida — lida hoje na Linha d\'Água';
+  $('hip').innerHTML = hipotetica ? '<span class="hip">Simulação hipotética</span>' : '';
+
+  // 2 · O PAR COMPLETO NA TELA: estado, índice, fase e mês de entrada (D11 regra 5).
+  $('parLeitura').innerHTML =
+    campo('Estado · Linha d\'Água', leitura.estado, `leitura de ${HOJE}`) +
+    campo('Índice Semente', num(leitura.exibido, 0), `faixa ${leitura.faixa} · valor interno ${num(leitura.indice, 4)}`) +
+    campo('Fase de partida', `${partida.fase} · ${FASES[partida.fase]}`,
+      `corte da fase 3 em Índice ${LIMIAR_DA_FASE_3}`) +
+    campo('Mês de entrada na fase', String(partida.mes),
+      `restam ${mesesRestantesDaFase(partida)} meses desta fase`);
+  $('notaPartida').textContent = hipotetica
+    ? `A partida em uso não é a lida hoje: a leitura de ${HOJE} é ${rotuloDaPartida(lida.partida)}, ${rotuloDoPar(lida.partida)}. Tudo abaixo é hipotético.`
+    : `A partida é lida da Linha d'Água, não escolhida. O mês de entrada diz onde o padrão começa a ser lido: os ${partida.mes} meses já consumidos da fase não voltam no fim.`;
+
+  const idade = +$('idade').value, aporte = +$('aporte').value, anos = ENTREGA_AOS - idade;
+  $('vIdade').textContent = idade;
+  $('vAporte').textContent = aporte.toLocaleString('pt-BR');
+  const naBase = idade === BASE_PUBLICADA.idade && aporte === BASE_PUBLICADA.aporte;
+  $('notaBase').innerHTML = naBase
+    ? `<span class="ok">Na base de publicação</span> — idade ${BASE_PUBLICADA.idade}, aporte ${brl(BASE_PUBLICADA.aporte)}. Os números desta tela são os das tabelas publicadas.`
+    : `<span class="alerta">Fora da base de publicação</span> — as tabelas publicadas foram calculadas com idade ${BASE_PUBLICADA.idade} e aporte ${brl(BASE_PUBLICADA.aporte)}. O que está na tela é esta simulação, não o material de venda.`;
+
+  const S = {}; for (const [k, padrao] of Object.entries(CENARIOS)) {
+    S[k] = motorMensal({ anos, aporte, fase: partida.fase, mes: partida.mes, padrao });
+  }
+  const aportado = S[CENARIO_DA_CAPA].aportado;
+
+  // 5 · O NÚMERO DE CAPA É O PISO; a leitura do dia vai em segunda linha, rotulada.
+  const capa = numeroDeCapa({ anos, aporte });
+  $('capaRot').textContent = `Piso · cenário ${capa.cenario}`;
+  $('capaValor').textContent = brl(capa.valor);
+  $('capaMult').textContent = `${mult(capa.multiplicador)} o aportado`;
+  $('capaIdent').textContent = `Partida: ${capa.identidade} (${capa.par}). É o menor resultado entre as ${PARTIDAS.length} partidas possíveis — nunca a leitura do dia.`;
+  $('capaOutros').textContent = 'Mesma partida nos outros cenários: ' +
+    capa.outros.map((o) => `${o.cenario} ${brl(o.valor)} (${mult(o.multiplicador)})`).join(' · ') + '.';
+  const daLeitura = grade({ anos, aporte }).linhas[iLida];
+  const cLeitura = daLeitura.celulas.find((c) => c.cenario === CENARIO_DA_CAPA);
+  $('capaHoje').innerHTML =
+    campo('Estado e índice', `${lida.partida.estado} · ${num(leitura.exibido, 0)}`, rotuloDaPartida(lida.partida)) +
+    campo('Fase e mês', rotuloDoPar(lida.partida), `restam ${mesesRestantesDaFase(lida.partida)} meses da fase`) +
+    campo(`Resultado · ${CENARIO_DA_CAPA}`, brl(cLeitura.atual), `${mult(cLeitura.atual / daLeitura.aportado)} o aportado`);
+  $('notaCapa').textContent = `O piso é a única linha que uma revisão de mapeamento não empurra para cima sem que o próprio pior caso tenha melhorado. Por isso o material abre por ele, e a leitura do dia aparece em segunda linha, rotulada.`;
+
+  const g = grade({ anos, aporte });
+  $('tbPartidas').innerHTML = g.linhas.map((l, i) => {
+    const marca = i === iLida ? ' style="color:var(--gold)"' : '';
+    return `<tr><td${marca}>${l.rotulo}${i === iLida ? ' · hoje' : ''}</td><td class="mini">${l.par}</td>` +
+      l.celulas.map((c) => `<td>${brl(c.atual)}<br><span class="mini">${mult(c.atual / l.aportado)}</span></td>`).join('') + '</tr>';
+  }).join('');
+
+  $('oAnos').textContent = anos;
+  $('oEntrega').textContent = `entrega aos ${ENTREGA_AOS}`;
+  $('oAportado').textContent = brl(aportado);
+  $('oMeses').textContent = `${anos * MESES_NA_FASE} aportes`;
+  $('oFaixa').textContent = `${curto(S.Conservador.saldo)} – ${curto(S.Forte.saldo)}`;
+  $('oMult').textContent = `${mult(S.Conservador.saldo / aportado)} a ${mult(S.Forte.saldo / aportado)} o aportado`;
+  $('oEst').textContent = rotuloDaPartida(partida);
+  $('oPar').textContent = rotuloDoPar(partida);
+
+  $('tb').innerHTML = Object.entries(CENARIOS).map(([k, padrao]) => {
+    const ciclo = padrao.reduce((p, r) => p * (1 + r), 1) ** (1 / FASES.length) - 1;
+    return `<tr><td>${k}</td><td>${num(ciclo * 100, 0)}%</td><td class="g">${brl(S[k].saldo)}</td><td>${mult(S[k].saldo / S[k].aportado)}</td></tr>`;
+  }).join('');
+
+  // 3 · A TABELA EXPO COMPLETA, COM O ABRIGO COMEÇANDO A 4 ANOS (D43).
+  $('csAbrigo').textContent =
+    `Exposição alvo por anos restantes · o Abrigo fica ativo a partir de ${ABRIGO_ATIVO_ANOS} anos da entrega`;
+  $('tbExpo').innerHTML = TABELA_EXPO.map((e) =>
+    `<tr><td>${e.rotulo}</td><td>${e.exposicao}%</td>` +
+    `<td>${e.passoMensal === null ? '—' : num(e.passoMensal, 2) + ' pt'}</td>` +
+    `<td class="${e.abrigoAtivo ? '' : 'bom'}">${e.abrigoAtivo ? 'ativo' : 'fora'}</td></tr>`).join('');
+  // A linha do ano em que o Abrigo liga: achada pelo ano, não pela posição na tabela.
+  const ligaAqui = TABELA_EXPO.find((e) => e.anos === ABRIGO_ATIVO_ANOS);
+  $('notaAbrigo').textContent =
+    `A ${ligaAqui.rotulo} a exposição ainda é ${ligaAqui.exposicao}% e o Abrigo já está ativo: é ele que passa a mandar no teto do aporte e a bloquear o Reforço de Fundo, mesmo antes de a rampa tirar o primeiro ponto. Entre os marcos o alvo é interpolado mês a mês — a rampa desce todo mês, não uma vez por ano.`;
+
+  // 4 · MODULAÇÃO DA VELOCIDADE, DEFASAGEM COM TETO E OS ÚLTIMOS DOZE MESES.
+  $('csVel').textContent =
+    `Quem modula a velocidade é o estado da Linha d'Água, não o Índice · a modulação incide sobre o passo do mês, nunca sobre a distância acumulada`;
+  $('tbVel').innerHTML = Object.entries(VELOCIDADE_POR_ESTADO).map(([estado, fator]) =>
+    `<tr><td>${estado}</td><td>${num(fator, 2)}</td><td class="mini">` +
+    (fator > 1 ? `anda o passo inteiro e ainda recupera defasagem, até ${num(fator - 1, 2)} do passo`
+      : fator === 1 ? 'anda o passo inteiro; nada sobra para defasagem'
+      : `anda ${num(fator * 100, 0)}% do passo; os outros ${num((1 - fator) * 100, 0)}% viram defasagem`) +
+    '</td></tr>').join('');
+
+  const traj = trajetoriaDaGlidepath({ anos, fase: partida.fase, mes: partida.mes });
+  const custo = custoDaModulacaoNaProjecao({ anos, aporte, fase: partida.fase, mes: partida.mes });
+  $('parTraj').innerHTML =
+    campo('Maior defasagem', `${num(traj.maiorDefasagem, 2)} pt`, `teto de ${TETO_DEFASAGEM} pontos`) +
+    campo('Meses no teto', String(traj.mesesNoTeto), `no teto o fator volta a 1,00`) +
+    campo('Defasagem na entrega', `${num(traj.defasagemNaEntrega, 2)} pt`,
+      `liquidada nos últimos ${MESES_SEM_MODULACAO} meses, não perdoada`) +
+    campo('Exposição na entrega', `${num(traj.exposicaoNaEntrega, 2)}%`,
+      `alvo ${num(traj.alvoNaEntrega, 2)}% · banda de ${BANDA_PONTOS} pontos`);
+  $('notaVel').innerHTML =
+    `A defasagem é o que a modulação deixou de mover, e só ela: a banda de ${BANDA_PONTOS} pontos é tolerância de posição e não gera defasagem. ` +
+    `Nos últimos ${MESES_SEM_MODULACAO} meses ninguém modula — modular pressupõe tempo para esperar o mercado virar, e no último ano não há esse tempo — e a defasagem é liquidada até zero dentro do período.<br><br>` +
+    `<b>Medido, não aplicado:</b> se a projeção usasse a exposição real em vez do alvo do ano, esta partida daria ` +
+    custo.map((c) => `${c.cenario} ${pct(c.diferenca)}`).join(' · ') +
+    `. As ${CELULAS_DA_GRADE} células publicadas e a referência ${VERSAO_REFERENCIA} foram todas calculadas com o alvo do ano; trocar a base moveria as ${CELULAS_DA_GRADE} de uma vez. A troca é decisão do Gui, não do simulador.`;
+
+  // 6 · A TABELA DE DERIVA, POR LINHA, CONTRA A v1.3 — PERMANENTE.
+  $('csDeriva').textContent =
+    `As ${CELULAS_DA_GRADE} células contra a ${VERSAO_REFERENCIA} · o limite é ${TETO_DERIVA}% por célula, e estourar uma retém a revisão inteira`;
+  $('tbDeriva').innerHTML = g.linhas.map((l) =>
+    `<tr class="${l.celulas.some((c) => c.estourou) ? 'retida' : ''}"><td>${l.rotulo}<br><span class="mini">${l.par}</span></td>` +
+    l.celulas.map((c) => `<td class="${c.estourou ? 'ruim' : 'bom'}">${pct(c.deriva)}<br>` +
+      `<span class="mini">${brl(c.referencia)} → ${brl(c.atual)}</span></td>`).join('') + '</tr>').join('');
+  $('notaDeriva').innerHTML =
+    `${g.estouradas} de ${CELULAS_DA_GRADE} células acima de ${TETO_DERIVA}%. ` +
+    (g.retida
+      ? `<span class="alerta">A revisão inteira fica retida</span> — não se publica a parte que não estourou. `
+      : `Nenhuma célula estourou. `) +
+    `A tabela é permanente: nunca é apagada nem resumida, e a deriva não zera por compensação — mede-se sempre contra a ${VERSAO_REFERENCIA}. ` +
+    `O piso está em ${capa.identidade}, e a identidade dele é rastreada junto com o valor: se a partida que ocupa o piso mudar, isso é reportado mesmo que o número não se mova.`;
+
+  // A conferência do próprio motor, na tela e não só no teste.
+  const aceite = criterioDeAceiteD11({ anos, aporte });
+  $('parAceite').innerHTML =
+    campo('Motor', 'mensal', `fase indexada ao mês · Abrigo indexado ao ano`) +
+    campo('Critério de aceite', aceite.passa ? 'passa' : 'REPROVA',
+      `${aceite.combinacoes.length} combinações de fase e cenário, com mês de entrada 0`) +
+    campo('Maior diferença contra o motor anual', num(aceite.maiorDiferenca, 6),
+      aceite.passa ? 'identidade algébrica, não arredondamento' : 'o laço divergiu do motor anual');
+
+  const est = estacoesPorAno({ anos, fase: partida.fase, mes: partida.mes });
+  $('csEstacoes').textContent =
+    `A estação vem do estado do mercado; o Abrigo prevalece nos últimos ${ABRIGO_ATIVO_ANOS} anos`;
+  $('tl').innerHTML = est.map((e) => {
+    const cls = e.abrigo ? 'abrigo' : e.estacao === 'Colheita' ? 'colheita' : e.estacao === 'Plantio' ? 'plantio' : '';
+    return `<div class="yr ${cls}"><b>${idade + e.ano + 1}a</b><i>${e.estacao}</i></div>`;
+  }).join('');
+
+  $('estado').innerHTML =
+    `<span class="tag on">Hoje · <b>${lida.partida.estado}</b></span>` +
+    `<span class="tag">Índice · <b>${num(leitura.exibido, 0)}</b></span>` +
+    `<span class="tag">Fase · <b>${partida.fase} · ${FASES[partida.fase]}</b></span>` +
+    `<span class="tag">Mês de entrada · <b>${partida.mes}</b></span>` +
+    (hipotetica ? '<span class="tag" style="border-color:var(--c3);color:var(--c3)">Hipotética</span>' : '');
+
+  matriz(anos, partida);
+  jornada(S, anos, idade);
+  linhaDagua(S, anos, idade, partida);
+  glidepath(traj);
+}
+
+// ── DESENHO ───────────────────────────────────────────────────────────────
+const COR = { Conservador: '--c4', Moderado: '--c5', Forte: '--c3' };
+const COR_DA_ESTACAO = { Plantio: '--green', Crescimento: '--mut', Colheita: '--c3', [ABRIGO]: '--c4' };
+
+// As colunas da matriz saem da tabela EXPO, mais a coluna de carteira cheia.
+const COLUNAS = [{ rotulo: `mais de ${ABRIGO_ATIVO_ANOS} anos`, anos: null, fator: 1, abrigo: false },
+  ...TABELA_EXPO.map((e) => ({ rotulo: e.rotulo, anos: e.anos, fator: e.exposicao / 100, abrigo: e.abrigoAtivo }))];
+
+function matriz(anos, partida) {
+  const mx = $('mx');
+  mx.style.gridTemplateColumns = `150px repeat(${COLUNAS.length},1fr)`;
+  mx.innerHTML = '<div></div>' + COLUNAS.map((c) => `<div class="hd">${c.rotulo}</div>`).join('');
+  const restam = anos - 1;
+  const colAqui = restam > ABRIGO_ATIVO_ANOS ? 0 : COLUNAS.findIndex((c) => c.anos === restam);
+  const estadoAqui = partida.estado;
+  Object.entries(BASES_DO_ESTADO).forEach(([estado, base]) => {
+    mx.insertAdjacentHTML('beforeend', `<div class="rw">${estado}</div>`);
+    COLUNAS.forEach((c, ci) => {
+      const p = Math.round(base * c.fator);
+      const estacao = c.abrigo ? ABRIGO : ESTACAO_DO_ESTADO[estado];
+      const cor = COR_DA_ESTACAO[estacao];
+      const aqui = estado === estadoAqui && ci === colAqui ? ' here' : '';
       mx.insertAdjacentHTML('beforeend',
-        `<div class="cel${here}" style="background:color-mix(in srgb, var(${col}) ${Math.round(pct*0.30+4)}%, transparent)">
-           <div class="p" style="color:var(${col})">${pct}%</div><div class="e">${est}</div></div>`);
+        `<div class="cel${aqui}" style="background:color-mix(in srgb, var(${cor}) ${Math.round(p * 0.30 + 4)}%, transparent)">
+           <div class="p" style="color:var(${cor})">${p}%</div><div class="e">${estacao}</div></div>`);
     });
   });
 }
 
-function waterline(S,anos,idade,fase){
-  const cv=document.getElementById('wl'),ctx=cv.getContext('2d');
-  const dpr=devicePixelRatio||1,W=cv.clientWidth,H=330;
-  cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
-  const cs=getComputedStyle(document.body),c=n=>cs.getPropertyValue(n).trim();
-  const L=54,R=118,T=18,B=34,w=W-L-R,h=H-T-B;
-  const M=S.Moderado;
-  const piso=M.map((p,i)=>{
-    const rest=anos-i; const exp=rest<=3&&rest>=0?EXPO[Math.max(rest,0)]:1;
-    return p.a+(p.s-p.a)*(1-exp);
-  });
-  const max=Math.max(M[anos].s,1)*1.08;
-  const X=i=>L+i/anos*w,Y=v=>T+h-v/max*h;
-
-  // faixas por estação
-  for(let y=0;y<anos;y++){
-    const rest=anos-y-1,ph=(fase+y)%4;
-    const col = rest<=2?'rgba(76,201,240,.10)'
-      : ph===2?'rgba(242,193,78,.09)'
-      : (ph===0||ph===3)?'rgba(79,216,138,.09)':'rgba(255,255,255,.015)';
-    ctx.fillStyle=col;ctx.fillRect(X(y),T,X(y+1)-X(y),h);
-  }
-  ctx.strokeStyle='rgba(255,255,255,.06)';ctx.fillStyle=c('--dim');
-  ctx.font='10px "IBM Plex Mono",monospace';ctx.lineWidth=1;
-  for(let g=0;g<=4;g++){const v=max*g/4,y=Y(v);
-    ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(L+w,y);ctx.stroke();
-    ctx.fillText(curto(v).replace('R$ ',''),4,y+3);}
-  for(let y=0;y<=anos;y+=Math.max(1,Math.ceil(anos/9))) ctx.fillText(String(idade+y)+'a',X(y)-7,H-11);
-
-  // área entre valor e linha d'água
-  ctx.beginPath();
-  M.forEach((p,i)=>i?ctx.lineTo(X(i),Y(p.s)):ctx.moveTo(X(i),Y(p.s)));
-  for(let i=anos;i>=0;i--) ctx.lineTo(X(i),Y(M[i].a));
-  ctx.closePath();ctx.fillStyle='rgba(86,217,138,.13)';ctx.fill();
-
-  const linha=(vals,col,wd,dash,glow)=>{
-    ctx.beginPath();ctx.setLineDash(dash||[]);
-    vals.forEach((v,i)=>i?ctx.lineTo(X(i),Y(v)):ctx.moveTo(X(i),Y(v)));
-    ctx.strokeStyle=col;ctx.lineWidth=wd;ctx.lineJoin='round';
-    if(glow){ctx.shadowColor=col;ctx.shadowBlur=10;}
-    ctx.stroke();ctx.shadowBlur=0;ctx.setLineDash([]);
-  };
-  linha(piso,c('--gold'),1.6,[5,4]);
-  linha(M.map(p=>p.a),c('--c4'),1.9);
-  linha(M.map(p=>p.s),c('--c5'),2.4,null,true);
-
-  const rot=(v,col,txt)=>{ctx.fillStyle=col;ctx.font='11px "IBM Plex Mono",monospace';
-    ctx.beginPath();ctx.arc(X(anos),Y(v),3.4,0,7);ctx.fill();ctx.fillText(txt,X(anos)+10,Y(v)+4);};
-  rot(M[anos].s,c('--c5'),curto(M[anos].s).replace('R$ ',''));
-  rot(M[anos].a,c('--c4'),curto(M[anos].a).replace('R$ ',''));
-  rot(piso[anos],c('--gold'),'PISO '+curto(piso[anos]).replace('R$ ',''));
+function tela(id) {
+  const cv = $(id), ctx = cv.getContext('2d');
+  const dpr = devicePixelRatio || 1, W = cv.clientWidth, H = 330;
+  cv.width = W * dpr; cv.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+  const cs = getComputedStyle(document.body);
+  return { ctx, W, H, c: (n) => cs.getPropertyValue(n).trim() };
 }
 
-function render(){
-  const idade=+I.value, ap=+A.value, fase=+F.value, anos=18-idade;
-  vIdade.textContent=idade; vAporte.textContent=ap.toLocaleString('pt-BR');
-  oAnos.textContent=anos; oMeses.textContent=anos*12+' aportes';
-  oEst.textContent=anos<=3?'Abrigo':NOME[fase];
+function jornada(S, anos, idade) {
+  const { ctx, W, H, c } = tela('cv');
+  const L = 54, R = 132, T = 18, B = 32, w = W - L - R, h = H - T - B;
+  const max = Math.max(S.Forte.saldo, 1) * 1.08;
+  const X = (i) => L + i / anos * w, Y = (v) => T + h - v / max * h;
 
-  const S={}; for(const k in CEN) S[k]=serie(anos,ap,fase,CEN[k]);
-  const apd=S.Moderado[anos].a;
-  oAportado.textContent=brl(apd);
-  oFaixa.textContent=curto(S.Conservador[anos].s)+' – '+curto(S.Forte[anos].s);
-  oMult.textContent=(S.Conservador[anos].s/apd).toFixed(1).replace('.',',')+'x a '+
-                    (S.Forte[anos].s/apd).toFixed(1).replace('.',',')+'x o aportado';
-
-  tb.innerHTML='';
-  for(const k in CEN){
-    const f=S[k][anos].s, c=Math.pow(CEN[k].reduce((p,r)=>p*(1+r),1),1/4)-1;
-    tb.insertAdjacentHTML('beforeend',
-      `<tr><td>${k}</td><td>${(c*100).toFixed(0)}%</td><td class="g">${brl(f)}</td><td>${(f/apd).toFixed(1).replace('.',',')}x</td></tr>`);
+  if (anos > ABRIGO_ATIVO_ANOS) {
+    const x = X(anos - ABRIGO_ATIVO_ANOS);
+    ctx.fillStyle = 'rgba(76,201,240,.07)'; ctx.fillRect(x, T, X(anos) - x, h);
+    ctx.strokeStyle = 'rgba(76,201,240,.3)'; ctx.setLineDash([3, 4]);
+    ctx.beginPath(); ctx.moveTo(x, T); ctx.lineTo(x, T + h); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = c('--c4'); ctx.font = '10px "IBM Plex Mono",monospace';
+    ctx.fillText(ABRIGO.toUpperCase(), x + 7, T + 13);
   }
-
-  tl.innerHTML='';
-  for(let y=0;y<anos;y++){
-    const rest=anos-y-1, ph=(fase+y)%4;
-    const cls=rest<=2?'abrigo':(ph===2?'colheita':(ph===0||ph===3?'plantio':''));
-    tl.insertAdjacentHTML('beforeend',
-      `<div class="yr ${cls}"><b>${idade+y+1}a</b><i>${rest<=2?'Abrigo':NOME[ph]}</i></div>`);
-  }
-  const est=document.getElementById('estado');
-  const nomes=['Capitulação profunda','Estresse de curto prazo','Mercado saudável','Prejuízo do mercado'];
-  est.innerHTML=`<span class="tag on">Hoje · <b>${nomes[fase]}</b></span>`+
-    `<span class="tag">Estação · <b>${anos<=3?'Abrigo':NOME[fase]}</b></span>`+
-    `<span class="tag">Aporte para o ativo · <b>${Math.round([1,.65,.40,.90][fase]*(anos-1<=3?EXPO[Math.max(anos-1,0)]:1)*100)}%</b></span>`;
-  waterline(S,anos,idade,fase);
-  matriz(anos,fase);
-  draw(S,anos,idade);
-}
-
-function draw(S,anos,idade){
-  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
-  const dpr=devicePixelRatio||1,W=cv.clientWidth,H=330;
-  cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
-  const cs=getComputedStyle(document.body), c=n=>cs.getPropertyValue(n).trim();
-  const L=54,R=132,T=18,B=32,w=W-L-R,h=H-T-B;
-  const max=Math.max(S.Forte[anos].s,1)*1.08;
-  const X=i=>L+i/anos*w, Y=v=>T+h-v/max*h;
-
-  if(anos>3){
-    ctx.fillStyle='rgba(76,201,240,.07)';ctx.fillRect(X(anos-3),T,X(anos)-X(anos-3),h);
-    ctx.strokeStyle='rgba(76,201,240,.3)';ctx.setLineDash([3,4]);
-    ctx.beginPath();ctx.moveTo(X(anos-3),T);ctx.lineTo(X(anos-3),T+h);ctx.stroke();ctx.setLineDash([]);
-    ctx.fillStyle=c('--c4');ctx.font='10px "IBM Plex Mono",monospace';ctx.fillText('ABRIGO',X(anos-3)+7,T+13);
-  }
-  ctx.strokeStyle='rgba(255,255,255,.06)';ctx.fillStyle=c('--dim');
-  ctx.font='10px "IBM Plex Mono",monospace';ctx.lineWidth=1;
-  for(let g=0;g<=4;g++){
-    const v=max*g/4,y=Y(v);
-    ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(L+w,y);ctx.stroke();
-    ctx.fillText(curto(v).replace('R$ ',''),4,y+3);
-  }
-  for(let y=0;y<=anos;y+=Math.max(1,Math.ceil(anos/9))) ctx.fillText(String(idade+y),X(y)-6,H-10);
+  grade2(ctx, c, L, T, w, h, max, (v) => curto(v).replace('R$ ', ''), Y);
+  ctx.fillStyle = c('--dim');
+  for (let y = 0; y <= anos; y += Math.max(1, Math.ceil(anos / 9))) ctx.fillText(String(idade + y), X(y) - 6, H - 10);
 
   ctx.beginPath();
-  S.Forte.forEach((p,i)=>i?ctx.lineTo(X(i),Y(p.s)):ctx.moveTo(X(i),Y(p.s)));
-  for(let i=anos;i>=0;i--) ctx.lineTo(X(i),Y(S.Conservador[i].s));
-  ctx.closePath();ctx.fillStyle='rgba(86,217,138,.10)';ctx.fill();
+  S.Forte.pontos.forEach((p, i) => i ? ctx.lineTo(X(i), Y(p.saldo)) : ctx.moveTo(X(i), Y(p.saldo)));
+  for (let i = anos; i >= 0; i--) ctx.lineTo(X(i), Y(S.Conservador.pontos[i].saldo));
+  ctx.closePath(); ctx.fillStyle = 'rgba(86,217,138,.10)'; ctx.fill();
 
-  ctx.setLineDash([4,4]);ctx.beginPath();
-  S.Moderado.forEach((p,i)=>i?ctx.lineTo(X(i),Y(p.a)):ctx.moveTo(X(i),Y(p.a)));
-  ctx.strokeStyle=c('--dim');ctx.lineWidth=1.4;ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle=c('--mut');ctx.fillText('APORTADO '+curto(S.Moderado[anos].a).replace('R$ ',''),X(anos)+10,Y(S.Moderado[anos].a)+3);
+  ctx.setLineDash([4, 4]); ctx.beginPath();
+  S.Moderado.pontos.forEach((p, i) => i ? ctx.lineTo(X(i), Y(p.aportado)) : ctx.moveTo(X(i), Y(p.aportado)));
+  ctx.strokeStyle = c('--dim'); ctx.lineWidth = 1.4; ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle = c('--mut');
+  ctx.fillText('APORTADO ' + curto(S.Moderado.aportado).replace('R$ ', ''), X(anos) + 10, Y(S.Moderado.aportado) + 3);
 
-  const ord=['Forte','Moderado','Conservador'];
-  ord.forEach(k=>{
-    const col=c(COR[k]);
+  ['Forte', 'Moderado', 'Conservador'].forEach((k) => {
+    const col = c(COR[k]);
     ctx.beginPath();
-    S[k].forEach((p,i)=>i?ctx.lineTo(X(i),Y(p.s)):ctx.moveTo(X(i),Y(p.s)));
-    ctx.strokeStyle=col;ctx.lineWidth=2.1;ctx.lineJoin='round';
-    ctx.shadowColor=col;ctx.shadowBlur=9;ctx.stroke();ctx.shadowBlur=0;
-    const yv=Y(S[k][anos].s);
-    ctx.beginPath();ctx.arc(X(anos),yv,3.4,0,7);ctx.fillStyle=col;ctx.fill();
-    ctx.fillStyle=col;ctx.font='11px "IBM Plex Mono",monospace';
-    ctx.fillText(k.toUpperCase().slice(0,5)+' '+curto(S[k][anos].s).replace('R$ ',''),X(anos)+10,yv+4);
+    S[k].pontos.forEach((p, i) => i ? ctx.lineTo(X(i), Y(p.saldo)) : ctx.moveTo(X(i), Y(p.saldo)));
+    ctx.strokeStyle = col; ctx.lineWidth = 2.1; ctx.lineJoin = 'round';
+    ctx.shadowColor = col; ctx.shadowBlur = 9; ctx.stroke(); ctx.shadowBlur = 0;
+    const yv = Y(S[k].saldo);
+    ctx.beginPath(); ctx.arc(X(anos), yv, 3.4, 0, 7); ctx.fillStyle = col; ctx.fill();
+    ctx.font = '11px "IBM Plex Mono",monospace';
+    ctx.fillText(k.toUpperCase().slice(0, 5) + ' ' + curto(S[k].saldo).replace('R$ ', ''), X(anos) + 10, yv + 4);
   });
 }
 
-const I=document.getElementById('idade'),A=document.getElementById('aporte'),F=document.getElementById('fase');
-const tb=document.getElementById('tb'),tl=document.getElementById('tl');
-[I,A,F].forEach(e=>e.addEventListener('input',render));
-addEventListener('resize',render);
-document.getElementById('fechar').onclick=()=>document.getElementById('toast').remove();
-let t=2*86400;
-setInterval(()=>{t--;const d=Math.floor(t/86400),r=t%86400;
-  document.getElementById('cd').textContent=d+'D '+String(Math.floor(r/3600)).padStart(2,'0')+':'+
-  String(Math.floor(r%3600/60)).padStart(2,'0')+':'+String(r%60).padStart(2,'0');},1000);
+function grade2(ctx, c, L, T, w, h, max, fmt, Y) {
+  ctx.strokeStyle = 'rgba(255,255,255,.06)'; ctx.fillStyle = c('--dim');
+  ctx.font = '10px "IBM Plex Mono",monospace'; ctx.lineWidth = 1;
+  for (let g = 0; g <= 4; g++) {
+    const v = max * g / 4, y = Y(v);
+    ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(L + w, y); ctx.stroke();
+    ctx.fillText(fmt(v), 4, y + 3);
+  }
+}
+
+function linhaDagua(S, anos, idade, partida) {
+  const { ctx, W, H, c } = tela('wl');
+  const L = 54, R = 118, T = 18, B = 34, w = W - L - R, h = H - T - B;
+  const M = S.Moderado.pontos;
+  const piso = M.map((p, i) => {
+    const exp = expoDoAno(anos - i);
+    return p.aportado + (p.saldo - p.aportado) * (1 - exp);
+  });
+  const max = Math.max(S.Moderado.saldo, 1) * 1.08;
+  const X = (i) => L + i / anos * w, Y = (v) => T + h - v / max * h;
+
+  const est = estacoesPorAno({ anos, fase: partida.fase, mes: partida.mes });
+  const FUNDO = { Plantio: 'rgba(79,216,138,.09)', Crescimento: 'rgba(255,255,255,.015)',
+    Colheita: 'rgba(242,193,78,.09)', [ABRIGO]: 'rgba(76,201,240,.10)' };
+  est.forEach((e) => { ctx.fillStyle = FUNDO[e.estacao]; ctx.fillRect(X(e.ano), T, X(e.ano + 1) - X(e.ano), h); });
+
+  grade2(ctx, c, L, T, w, h, max, (v) => curto(v).replace('R$ ', ''), Y);
+  ctx.fillStyle = c('--dim');
+  for (let y = 0; y <= anos; y += Math.max(1, Math.ceil(anos / 9))) ctx.fillText(String(idade + y) + 'a', X(y) - 7, H - 11);
+
+  ctx.beginPath();
+  M.forEach((p, i) => i ? ctx.lineTo(X(i), Y(p.saldo)) : ctx.moveTo(X(i), Y(p.saldo)));
+  for (let i = anos; i >= 0; i--) ctx.lineTo(X(i), Y(M[i].aportado));
+  ctx.closePath(); ctx.fillStyle = 'rgba(86,217,138,.13)'; ctx.fill();
+
+  const linha = (vals, col, wd, dash, glow) => {
+    ctx.beginPath(); ctx.setLineDash(dash || []);
+    vals.forEach((v, i) => i ? ctx.lineTo(X(i), Y(v)) : ctx.moveTo(X(i), Y(v)));
+    ctx.strokeStyle = col; ctx.lineWidth = wd; ctx.lineJoin = 'round';
+    if (glow) { ctx.shadowColor = col; ctx.shadowBlur = 10; }
+    ctx.stroke(); ctx.shadowBlur = 0; ctx.setLineDash([]);
+  };
+  linha(piso, c('--gold'), 1.6, [5, 4]);
+  linha(M.map((p) => p.aportado), c('--c4'), 1.9);
+  linha(M.map((p) => p.saldo), c('--c5'), 2.4, null, true);
+
+  const rot = (v, col, txt) => {
+    ctx.fillStyle = col; ctx.font = '11px "IBM Plex Mono",monospace';
+    ctx.beginPath(); ctx.arc(X(anos), Y(v), 3.4, 0, 7); ctx.fill(); ctx.fillText(txt, X(anos) + 10, Y(v) + 4);
+  };
+  rot(S.Moderado.saldo, c('--c5'), curto(S.Moderado.saldo).replace('R$ ', ''));
+  rot(S.Moderado.aportado, c('--c4'), curto(S.Moderado.aportado).replace('R$ ', ''));
+  rot(piso[anos], c('--gold'), 'PISO ' + curto(piso[anos]).replace('R$ ', ''));
+}
+
+function glidepath(traj) {
+  const { ctx, W, H, c } = tela('gp');
+  const L = 44, R = 96, T = 18, B = 32, w = W - L - R, h = H - T - B;
+  const n = traj.linhas.length;
+  const X = (i) => L + i / (n - 1) * w, Y = (v) => T + h - v / 100 * h;
+
+  ctx.strokeStyle = 'rgba(255,255,255,.06)'; ctx.fillStyle = c('--dim');
+  ctx.font = '10px "IBM Plex Mono",monospace'; ctx.lineWidth = 1;
+  for (let g = 0; g <= 4; g++) {
+    const v = g * 25, y = Y(v);
+    ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(L + w, y); ctx.stroke();
+    ctx.fillText(v + '%', 4, y + 3);
+  }
+  // O último ano, onde ninguém modula e a defasagem é liquidada.
+  const iUlt = traj.linhas.findIndex((l) => l.ultimoAno);
+  if (iUlt >= 0) {
+    ctx.fillStyle = 'rgba(216,167,64,.07)'; ctx.fillRect(X(iUlt), T, X(n - 1) - X(iUlt), h);
+    ctx.fillStyle = c('--gold'); ctx.textAlign = 'right';
+    ctx.fillText(`ÚLTIMOS ${MESES_SEM_MODULACAO} MESES`, X(iUlt) - 6, T + 13);
+    ctx.textAlign = 'left';
+  }
+  ctx.fillStyle = c('--dim');
+  for (let i = 0; i < n; i += Math.max(1, Math.round(n / 8))) {
+    ctx.fillText(num(traj.linhas[i].anosRestantes, 0) + 'a', X(i) - 6, H - 10);
+  }
+  const linha = (get, col, wd, dash) => {
+    ctx.beginPath(); ctx.setLineDash(dash || []);
+    traj.linhas.forEach((l, i) => i ? ctx.lineTo(X(i), Y(get(l))) : ctx.moveTo(X(i), Y(get(l))));
+    ctx.strokeStyle = col; ctx.lineWidth = wd; ctx.lineJoin = 'round'; ctx.stroke(); ctx.setLineDash([]);
+  };
+  linha((l) => l.alvo, c('--gold'), 1.6, [5, 4]);
+  linha((l) => l.exposicao, c('--c4'), 2.2);
+  linha((l) => l.defasagem, c('--c2'), 1.6);
+
+  // O teto da defasagem, desenhado no lugar onde ele morde.
+  const yTeto = Y(TETO_DEFASAGEM);
+  ctx.strokeStyle = 'rgba(255,93,115,.35)'; ctx.setLineDash([2, 5]);
+  ctx.beginPath(); ctx.moveTo(L, yTeto); ctx.lineTo(L + w, yTeto); ctx.stroke(); ctx.setLineDash([]);
+  // O teto vai por dentro, à esquerda: à direita ele colide com o alvo e a exposição,
+  // que na entrega ficam a menos de quatro pontos dele.
+  ctx.fillStyle = c('--c2'); ctx.font = '10px "IBM Plex Mono",monospace';
+  ctx.fillText(`TETO ${TETO_DEFASAGEM} PT`, L + 8, yTeto - 5);
+  // E os dois da direita saem separados por altura mínima, não pela posição crua.
+  const yExp = Y(traj.exposicaoNaEntrega), yAlvo = Math.max(Y(traj.alvoNaEntrega) + 14, yExp + 15);
+  ctx.fillStyle = c('--c4');
+  ctx.fillText(`${num(traj.exposicaoNaEntrega, 1)}%`, L + w + 8, yExp + 3);
+  ctx.fillStyle = c('--gold');
+  ctx.fillText(`ALVO ${num(traj.alvoNaEntrega, 1)}%`, L + w + 8, yAlvo);
+}
+
+let t = 2 * 86400;
+setInterval(() => {
+  t--; const d = Math.floor(t / 86400), r = t % 86400;
+  $('cd').textContent = d + 'D ' + String(Math.floor(r / 3600)).padStart(2, '0') + ':' +
+    String(Math.floor(r % 3600 / 60)).padStart(2, '0') + ':' + String(r % 60).padStart(2, '0');
+}, 1000);
+
 render();
 </script>

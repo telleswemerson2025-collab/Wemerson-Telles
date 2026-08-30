@@ -96,7 +96,8 @@ Nada aqui está em produção. É proposta a ser levada ao Gui Telles para valid
    que o sistema produziu. *Teste derivado da saída não confere: **carimba**.* O caso que a nomeou:
    `"por tese tese vencida em BTC"` tinha um teste fixando o texto exato, e ele congelou a duplicação
    como se fosse o certo. Asserção já escrita que veio de uma saída é **suspeita até ser reescrita da
-   intenção**. Decisão 48.
+   intenção**. Decisão 48. A forma curta: **uma asserção nasce dizendo o que tem de ser; a outra
+   pergunta ao réu o que ele fez e anota como gabarito.**
 
 ## ÂNCORAS ESTRUTURAIS (Decisão 27)
 **Parâmetro que existe para conter deriva lenta nasce marcado como âncora**, e não é protegido
@@ -228,9 +229,14 @@ Não existem dois juízes. Os papéis são distintos e ordenados:
 4. Responsável pelos Posts
 5. Laboratório (o mais pesado — por último)
 
-## PENDÊNCIAS DE CÓDIGO (não executadas — decisão do Gui)
-Os três HTMLs deste pacote foram construídos antes das decisões de 29/08 e agora divergem da
-especificação. Nenhum foi alterado. O que precisa mudar:
+## PENDÊNCIAS DE CÓDIGO — FECHADAS NA PEÇA 4
+Os três HTMLs deste pacote foram construídos antes das decisões de 29/08 e divergiam da
+especificação. **A peça 4 fechou todas as divergências desta lista.** O texto original de cada uma
+fica aqui como registro do que era, com a marca de onde foi resolvida — a lista não é apagada, do
+mesmo jeito que a tabela de deriva não é (D12 B regra 2).
+
+✅ *itens do `indice-semente.html`* — fechados no item 3 da peça 4 · ✅ *modulação e Reforço* — item 1
+· ✅ *registro de ciclo* — item 2 · ✅ *`simulador.html`, as cinco alíneas* — item 4.
 
 - **`indice-semente.html`** — o MVRV está marcado como camada 2 (`{c:2,n:'MVRV Ratio'...}`) e ao
   mesmo tempo é usado como régua da camada 1. É a dupla contagem corrigida pela Decisão 1. A
