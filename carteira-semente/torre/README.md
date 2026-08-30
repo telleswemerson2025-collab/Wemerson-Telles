@@ -1,5 +1,5 @@
 # PEÇA 2 — TORRE DE CONTROLE
-Conferência. Versão 1.23 · 29/08/2026 — o risco do formato depende do dado
+Conferência. Versão 1.24 · 29/08/2026 — aplica a D42: o terceiro estado do extremo
 
 **Não é aprovação de código. É conferir se o que foi escrito é o que a decisão diz.**
 
@@ -1050,6 +1050,62 @@ menos de 0,01 ponto de Índice.
 *E os extremos pré-2013 pararam de crescer: dos quinze já conferidos, seis são anteriores
 a 2013, e **tudo que falta conferir é recente**. A pendência da régua velha ficou com o
 retrato completo.*
+
+## D42 · O TERCEIRO ESTADO DO EXTREMO
+O binário confirmado/provisório não cabia no que a conferência do ETF produziu. Os
+estados passam a ser **três**:
+
+| Estado | O que foi provado |
+|---|---|
+| **confirmado** | data, posto **e valor**, dígito a dígito |
+| **posto confirmado** | data e posto na tela; o **valor** não é legível por notação compacta |
+| **provisório** | nada conferido |
+
+### Por que o posto vale mais que o valor (D42 B), medido
+| Erro | Efeito no Índice |
+|---|---|
+| 3ª casa do MVRV · min | **0,0093** |
+| 2ª casa do Funding Rate · max | **0,0004** |
+| **trocar o dia do ETF · max** (07/11 por 12/03) | **> 0,1** |
+
+Errar o dia é errar a **ponta da régua**. Errar a casa move milésimos. O estado novo
+guarda exatamente o que a normalização mais precisa.
+
+### A fronteira é notação compacta, e três ordens de grandeza a sustentam
+| Série | O que a tela confirma do valor |
+|---|---|
+| Funding Rate (perde **casa**: 186,86 → 186,9) | ±**0,03%** → segue **confirmado** |
+| ETF Net Inflow (perde **magnitude**: 1.373,8 → "$1B") | ±**18,2%** → **posto confirmado** |
+
+Não é a mesma coisa em grau: é em espécie. A razão entre as duas bandas é de mais de
+500×, e há teste disso.
+
+### O registro completo (D42 C)
+```
+posto confirmado · 25/02/2025
+  valor de registro  -1.138,9 (USD mi)
+  rótulo exibido     $-1B
+  posto              único dia da série na faixa de bilhão negativo
+  segundo colocado   20/11/2025 = -903 · folga US$ 236 mi
+  método             tooltip — sem pixel, sem recorte de faixa
+  falta p/ confirmado  o valor exato, que não sai desta tela
+```
+*E o do máximo diz `altura de barra`, porque lá a tooltip não decidia entre quatro
+dias. **O mesmo estado, com métodos diferentes** — e o registro guarda qual foi qual.*
+
+### Sai da fila, e o teto fica dito (D42 D)
+`noTetoAlcancavel()` lista os dois. Eles **saem da fila de trabalho** — não há o que
+fazer neles nesta tela — e só sobem para `confirmado` se aparecer exportação, API ou
+tooltip em precisão cheia. **Fica dito, não fica pendente para sempre como se fosse
+desleixo.**
+
+### Risco e trabalho são contagens diferentes (D42 E)
+```
+29 conferidos para risco = 27 confirmados + 2 posto confirmado
+13 provisórios · 5 que importam
+```
+É a mesma separação que a **D41 D** fez entre régua e leitura, agora entre *"o quanto
+a régua está provada"* e *"o quanto ainda dá para trabalhar"*.
 
 ## AS TRÊS ESPÉCIES DE EXTREMO
 A conferência do Liveliness fez aparecer uma pergunta que o comando não fazia: **o

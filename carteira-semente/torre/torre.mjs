@@ -43,6 +43,40 @@ export const SERIES = Object.freeze([
  * mostrou para que serve: o valor anotado (186,86) tem duas casas e a tooltip mostra
  * uma (186,9). O número anotado não pode ter saído dali.
  */
+/**
+ * D42 A: o estado de um extremo tem TRÊS valores, não dois.
+ *
+ *   confirmado       — data, posto e valor lidos na tooltip, dígito a dígito
+ *   posto confirmado — data e posto confirmados na tela; o VALOR não é legível
+ *                      porque a notação compacta colapsa a magnitude
+ *   provisório       — nada conferido
+ *
+ * D42 B: "posto confirmado" garante o que a normalização mais precisa — QUAL é o
+ * extremo e em QUE DIA. Errar o dia é errar a régua inteira; errar a terceira casa do
+ * valor move o Índice em milésimos. Medido: a 3ª casa do MVRV · min vale 0,0093 ponto,
+ * a 2ª do Funding Rate · max vale 0,0004 — enquanto trocar o dia do extremo troca a
+ * ponta da régua.
+ *
+ * D42 D: para uma série de notação compacta este é o TETO ALCANÇÁVEL nesta tela. Só
+ * sobe para 'confirmado' se aparecer exportação, API ou tooltip em precisão cheia.
+ * Fica dito, não fica pendente para sempre como se fosse desleixo.
+ */
+export const ESTADOS_DO_EXTREMO = Object.freeze(['confirmado', 'posto confirmado', 'provisório']);
+
+export function estadoDoExtremo(serie, campo, varredura) {
+  const v = varredura?.[serie];
+  if (v?.confirmado?.[campo]) return 'confirmado';
+  if (v?.postoConfirmado?.[campo]) return 'posto confirmado';
+  return 'provisório';
+}
+
+/** D42 E: conta como conferido para risco. O que falta é o valor, e ele não sai da tela. */
+export const noTetoAlcancavel = (varredura) =>
+  SERIES.flatMap((s) => ['valor', 'min', 'max']
+    .filter((campo) => estadoDoExtremo(s.n, campo, varredura) === 'posto confirmado')
+    .map((campo) => ({ serie: s.n, campo, naTela: comoATelaMostra(s.n, campo, varredura)?.naTela ?? null,
+      registrado: varredura[s.n][campo], porQue: 'notação compacta — o valor exato não sai desta tela' })));
+
 export const CASAS_NA_TOOLTIP = Object.freeze({
   'Preço do BTC': 0, 'MVRV Ratio': 3, 'SOPR': 4, 'Supply in Profit': 1,
   'Liveliness': 4, 'DXY': 2, 'Fed Funds Rate': 2, 'Funding Rate': 1,
@@ -312,7 +346,7 @@ export function filaDeConferencia(varredura, hoje) {
   const efeitos = efeitoDosExtremos(varredura, hoje);
   const pendentes = [];
   for (const e of efeitos) {
-    if (varredura[e.serie]?.confirmado?.[e.campo]) continue;
+    if (estadoDoExtremo(e.serie, e.campo, varredura) !== 'provisório') continue;
     const s = SERIES.find((x) => x.n === e.serie);
     pendentes.push({
       serie: e.serie, campo: e.campo, efeito: e.efeito, inerte: e.inerte,
@@ -328,7 +362,7 @@ export function filaDeConferencia(varredura, hoje) {
 
 /** Os valores, que não têm efeito de régua e se conferem à parte dos extremos. */
 export function valoresPendentes(varredura) {
-  return SERIES.filter((s) => varredura?.[s.n] && !varredura[s.n].confirmado?.valor)
+  return SERIES.filter((s) => varredura?.[s.n] && estadoDoExtremo(s.n, 'valor', varredura) === 'provisório')
     .map((s) => ({ serie: s.n, campo: 'valor' }));
 }
 
@@ -378,18 +412,25 @@ export function efeitoDosExtremos(varredura, hoje, erro = 0.10) {
  */
 export function estadoDosExtremos(varredura) {
   const porSerie = new Map();
-  let confirmados = 0, total = 0, inertesPendentes = 0;
+  let confirmadosPorInteiro = 0, postoConfirmado = 0, total = 0, inertesPendentes = 0;
   for (const s of SERIES) {
     const v = varredura?.[s.n]; if (!v) continue;
     for (const campo of ['valor', 'min', 'max']) {
       total++;
-      if (v.confirmado?.[campo]) { confirmados++; continue; }
+      const estado = estadoDoExtremo(s.n, campo, varredura);
+      if (estado === 'confirmado') { confirmadosPorInteiro++; continue; }
+      if (estado === 'posto confirmado') { postoConfirmado++; continue; }
       porSerie.set(s.n, [...(porSerie.get(s.n) ?? []), campo]);
       if (inerte(s.n, campo)) inertesPendentes++;
     }
   }
+  // D42 E: risco e trabalho são coisas diferentes, como a D41 D já separou.
+  // Para RISCO, posto confirmado conta como conferido — o dia da régua está provado.
+  // Para TRABALHO, ele aparece à parte: não há o que fazer nele nesta tela.
+  const confirmados = confirmadosPorInteiro + postoConfirmado;
   return {
-    total, confirmados, provisorios: total - confirmados,
+    total, confirmados, confirmadosPorInteiro, postoConfirmado,
+    provisorios: total - confirmados,
     series: [...porSerie].map(([serie, campos]) => ({ serie, campos })),
     // Dos provisórios, quantos não mudam o índice nem se estiverem dez vezes errados.
     inertesPendentes,

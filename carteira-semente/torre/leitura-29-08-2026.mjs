@@ -402,7 +402,11 @@ export const VARREDURA_29_08_2026 = Object.freeze({
   'ETF Net Inflow': {
     valor: 242.3, min: -1138.9, max: 1373.8, data: '2026-08-27',
     dataMin: '2025-02-25', dataMax: '2024-11-07',
-    confirmado: { valor: '2026-08-29', min: '2026-08-29', max: '2026-08-29' },
+    // D42 A: o VALOR do dia foi lido ("$242M" bate com 242,3). Os dois extremos ficam
+    // em POSTO CONFIRMADO: data e posto provados na tela, valor não legível porque a
+    // notação compacta colapsa a magnitude. D42 D: é o teto alcançável nesta tela.
+    confirmado: { valor: '2026-08-29', min: null, max: null },
+    postoConfirmado: { valor: null, min: '2026-08-29', max: '2026-08-29' },
     // ⚠️ CORRECAO DE UNIDADE: eu tinha inferido "US$ mi". A tela diz USD, exibido em
     // milhoes/bilhoes por sufixo. Compativel na escala, errado como rotulo.
     unidadeLida: {
@@ -423,11 +427,18 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       // ⚠️ NOTACAO COMPACTA. Nao e "casas decimais": acima de mil milhoes a tooltip
       // colapsa para UM digito. 1.373,8 vira "$1B". Abaixo de 1B da o inteiro em
       // milhoes ($242M, $622M). O modelo de casas decimais nao representa isso.
-      notacaoCompacta: {
-        registrado: 1373.8, naTela: '$1B',
+      // D42 C, o registro completo de um posto confirmado.
+      postoConfirmado: {
+        estado: 'posto confirmado', em: '2026-08-29',
+        valorDeRegistro: 1373.8, unidadeDoRegistro: 'USD mi',
+        rotuloExibido: '$1B',
         regra: 'acima de mil milhões colapsa para um dígito; abaixo dá o inteiro em milhões',
         oQueEsconde: 'uma FAIXA, não uma casa: tudo de 1.000 a 1.499 exibe "$1B"',
         custoDaFaixaNoIndice: 0.44,
+        data: '2024-11-07', posto: 'o mais alto entre os quatro dias que exibem "$1B"',
+        segundoColocado: { data: '2024-11-11', valor: null, nota: 'exibe o mesmo rótulo; 36 px abaixo' },
+        metodoDeSeparacao: 'altura de barra — a tooltip não decide entre os quatro',
+        oQueFaltaParaConfirmado: 'o valor exato, que não sai desta tela (D42 D)',
       },
       vizinhos: { '2024-11-06': 622, '2024-11-07': '$1B', '2024-11-08': 293 },
       // Os vizinhos imediatos separam por digito. O problema esta longe deles.
@@ -452,10 +463,16 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       campo: 'min', em: '2026-08-29',
       metodo: 'Studio / ETF & Institutional / ETF Net Inflow, tooltip, blocos curtos com rivais um a um',
       lido: '$-1B — cifrão, sinal de menos, um, B',
-      notacaoCompacta: {
-        registrado: -1138.9, naTela: '$-1B',
-        // O terminal escreve o sinal DEPOIS do cifrao: "$-1B", nao "-$1B".
-        formaExata: 'cifrão, depois o sinal',
+      // D42 C, o registro completo de um posto confirmado.
+      postoConfirmado: {
+        estado: 'posto confirmado', em: '2026-08-29',
+        valorDeRegistro: -1138.9, unidadeDoRegistro: 'USD mi',
+        rotuloExibido: '$-1B', formaExata: 'cifrão, depois o sinal',
+        data: '2025-02-25', posto: 'único dia da série na faixa de bilhão negativo',
+        segundoColocado: { data: '2025-11-20', valor: -903 },
+        folga: 'US$ 236 milhões',
+        metodoDeSeparacao: 'tooltip — sem pixel, sem recorte de faixa',
+        oQueFaltaParaConfirmado: 'o valor exato, que não sai desta tela (D42 D)',
       },
       vizinhos: { '2025-02-24': -539, '2025-02-25': '$-1B', '2025-02-26': -755 },
       // ⚠️ O EMPATE PREVISTO NAO ACONTECEU, e a diferenca ensina algo sobre o formato.

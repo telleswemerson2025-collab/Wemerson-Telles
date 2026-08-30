@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, ESTADOS_DO_EXTREMO, estadoDoExtremo, noTetoAlcancavel, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -1448,9 +1448,9 @@ test('a segunda das quatro datas de sábado ficou sabida, e continua custando ze
 // ══ ETF NET INFLOW · MAX — A NOTAÇÃO COMPACTA ESCONDE UMA FAIXA ═══════════
 test('o máximo do ETF bate, e o registrado não aparece na tela de forma alguma', () => {
   const c = V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'max');
-  assert.equal(V['ETF Net Inflow'].confirmado.max, '2026-08-29');
-  assert.equal(c.notacaoCompacta.registrado, 1373.8);
-  assert.equal(c.notacaoCompacta.naTela, '$1B');
+  assert.equal(estadoDoExtremo('ETF Net Inflow', 'max', V), 'posto confirmado');
+  assert.equal(c.postoConfirmado.valorDeRegistro, 1373.8);
+  assert.equal(c.postoConfirmado.rotuloExibido, '$1B');
   assert.equal(formatoCompacto(1373.8), '$1B');
   assert.equal(formatoCompacto(242.3), '$242M', 'abaixo de 1B dá o inteiro em milhões');
   assert.equal(formatoCompacto(-1138.9), '$-1B');
@@ -1580,15 +1580,19 @@ test('a régua da Curva tem uma ponta de 2011 e outra de 2023', () => {
       if (d < '2013-01-01') velho++; else novo++;
     }
   }
-  assert.equal(velho + novo, 15, 'quinze extremos conferidos');
+  assert.equal(velho + novo, 13, 'treze extremos com valor conferido dígito a dígito');
   assert.equal(velho, 6, 'os pré-2013 pararam de crescer: o que falta conferir é recente');
-  assert.equal(novo, 9);
+  assert.equal(novo, 7);
+  // Os dois do ETF estão em POSTO CONFIRMADO: o dia está provado, o valor não.
+  for (const campo of ['min', 'max']) {
+    assert.equal(estadoDoExtremo('ETF Net Inflow', campo, V), 'posto confirmado');
+  }
 });
 
 test('as séries que saem inteiras não voltam para a fila', () => {
   const inteiras = SERIES.filter((x) => V[x.n] &&
-    ['valor', 'min', 'max'].every((c) => V[x.n].confirmado?.[c])).map((x) => x.n).sort();
-  assert.ok(inteiras.length >= 5, `${inteiras.length} séries inteiras`);
+    ['valor', 'min', 'max'].every((c) => estadoDoExtremo(x.n, c, V) !== 'provisório')).map((x) => x.n).sort();
+  assert.ok(inteiras.length >= 5, `${inteiras.length} séries fora da fila`);
   for (const n of ['Curva 10Y-2Y', 'DXY', 'Funding Rate', 'MVRV Ratio', 'SOPR']) {
     assert.ok(inteiras.includes(n), n);
   }
@@ -1596,11 +1600,11 @@ test('as séries que saem inteiras não voltam para a fila', () => {
 });
 
 // ══ ETF · MIN — O EMPATE PREVISTO NÃO ACONTECEU ═══════════════════════════
-test('o mínimo do ETF bate, e a série sai inteira', () => {
+test('o mínimo do ETF bate, e a série sai da fila de trabalho', () => {
   const c = V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'min');
-  assert.equal(V['ETF Net Inflow'].confirmado.min, '2026-08-29');
+  assert.equal(estadoDoExtremo('ETF Net Inflow', 'min', V), 'posto confirmado');
   assert.ok(!filaDeConferencia(V, HOJE).some((f) => f.serie === 'ETF Net Inflow'));
-  assert.equal(c.notacaoCompacta.naTela, '$-1B');
+  assert.equal(c.postoConfirmado.rotuloExibido, '$-1B');
   assert.equal(c.vizinhos['2025-02-24'], -539);
   assert.equal(c.vizinhos['2025-02-26'], -755);
 });
@@ -1611,7 +1615,7 @@ test('o terminal escreve o sinal depois do cifrão, e o formatador aprendeu isso
   assert.equal(formatoCompacto(1373.8), '$1B');
   assert.equal(formatoCompacto(242.3), '$242M');
   // O comando cita esse texto para quem vai conferir: a forma tem de bater com a tela.
-  assert.equal(V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'min').notacaoCompacta.naTela,
+  assert.equal(V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'min').postoConfirmado.rotuloExibido,
     formatoCompacto(V['ETF Net Inflow'].min));
 });
 
@@ -1629,15 +1633,89 @@ test('a ambiguidade do formato depende do dado, não só do formato', () => {
   assert.notEqual(formatoCompacto(-903), formatoCompacto(V['ETF Net Inflow'].min));
 });
 
-test('seis séries inteiras, e as duas travadas são as duas primeiras da fila', () => {
-  const inteiras = SERIES.filter((x) => V[x.n] &&
-    ['valor', 'min', 'max'].every((c) => V[x.n].confirmado?.[c])).map((x) => x.n).sort();
-  assert.deepEqual(inteiras, ['Curva 10Y-2Y', 'DXY', 'ETF Net Inflow', 'Funding Rate',
+test('seis séries fora da fila, e as duas travadas são as duas primeiras dela', () => {
+  // Depois da D42, "fora da fila" é: nenhum campo provisório. O ETF entra aqui com
+  // dois campos em posto confirmado, que é o teto alcançável nesta tela.
+  const fora = SERIES.filter((x) => V[x.n] &&
+    ['valor', 'min', 'max'].every((c) => estadoDoExtremo(x.n, c, V) !== 'provisório')).map((x) => x.n).sort();
+  assert.deepEqual(fora, ['Curva 10Y-2Y', 'DXY', 'ETF Net Inflow', 'Funding Rate',
     'MVRV Ratio', 'SOPR']);
+  // E só uma delas não está confirmada por inteiro.
+  const porInteiro = fora.filter((n) => ['valor', 'min', 'max'].every((c) => estadoDoExtremo(n, c, V) === 'confirmado'));
+  assert.deepEqual(porInteiro.sort(), ['Curva 10Y-2Y', 'DXY', 'Funding Rate', 'MVRV Ratio', 'SOPR']);
   const fila = filaDeConferencia(V, HOJE);
   assert.equal(fila[0].serie, 'Supply in Profit');
   assert.equal(especieDoExtremo(fila[0].serie, fila[0].campo, V), 'teto da métrica');
   assert.equal(fila[1].serie, 'US M2');
   assert.equal(especieDoExtremo(fila[1].serie, fila[1].campo, V), 'extremo móvel');
   assert.equal(estadoDosExtremos(V).provisoriosQueImportam, 5);
+});
+
+// ══ D42 · O TERCEIRO ESTADO DO EXTREMO ════════════════════════════════════
+test('D42 A: os estados são três, e o ETF é o caso do terceiro', () => {
+  assert.deepEqual(ESTADOS_DO_EXTREMO, ['confirmado', 'posto confirmado', 'provisório']);
+  assert.equal(estadoDoExtremo('ETF Net Inflow', 'max', V), 'posto confirmado');
+  assert.equal(estadoDoExtremo('ETF Net Inflow', 'min', V), 'posto confirmado');
+  assert.equal(estadoDoExtremo('ETF Net Inflow', 'valor', V), 'confirmado', '"$242M" bate com 242,3');
+  assert.equal(estadoDoExtremo('MVRV Ratio', 'min', V), 'confirmado');
+  assert.equal(estadoDoExtremo('Liveliness', 'min', V), 'provisório');
+});
+
+test('D42 A: a fronteira é notação compacta, e três ordens de grandeza a sustentam', () => {
+  // O Funding Rate perde CASA (186,86 → 186,9): a tela confirma o valor a ±0,03%.
+  // O ETF perde MAGNITUDE (1373,8 → "$1B"): a tela confirma a ±18%.
+  assert.equal(estadoDoExtremo('Funding Rate', 'max', V), 'confirmado');
+  const bandaFunding = 0.05 / Math.abs(V['Funding Rate'].max);
+  const bandaEtf = 250 / Math.abs(V['ETF Net Inflow'].max);
+  assert.ok(bandaFunding < 0.001, `${(bandaFunding * 100).toFixed(2)}%`);
+  assert.ok(bandaEtf > 0.15, `${(bandaEtf * 100).toFixed(2)}%`);
+  assert.ok(bandaEtf / bandaFunding > 500, 'não é a mesma coisa em grau, é em espécie');
+});
+
+test('D42 B: errar o dia troca a ponta da régua; errar a casa move milésimos', () => {
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const ef = (s, c, x) => Math.abs(varrer({ varredura: { ...V, [s]: { ...V[s], [c]: x } }, hoje: HOJE }).indice - base);
+  // A casa: milésimos, como a decisão diz.
+  assert.ok(ef('MVRV Ratio', 'min', 0.3845) < 0.01);
+  assert.ok(ef('Funding Rate', 'max', 186.9) < 0.001);
+  // O dia: trocar 07/11 por 12/03 no ETF trocaria o valor da ponta em ~300 milhões.
+  assert.ok(ef('ETF Net Inflow', 'max', 1373.8 - 300) > 0.1,
+    'errar o dia do extremo move o índice cem vezes mais que errar a casa');
+});
+
+test('D42 C: o registro guarda as duas coisas e o método de separação', () => {
+  for (const campo of ['min', 'max']) {
+    const p = V['ETF Net Inflow'].conferencias.find((x) => x.campo === campo).postoConfirmado;
+    assert.equal(p.estado, 'posto confirmado');
+    assert.ok(p.valorDeRegistro && p.rotuloExibido, 'valor do registro E rótulo da tela');
+    assert.ok(p.data && p.posto, 'a data e o posto');
+    assert.ok(p.metodoDeSeparacao, 'e como se separou do segundo colocado');
+    assert.match(p.oQueFaltaParaConfirmado, /o valor exato, que não sai desta tela/);
+  }
+  // Os métodos são diferentes nos dois lados, e o registro diz qual foi qual.
+  const min = V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'min').postoConfirmado;
+  const max = V['ETF Net Inflow'].conferencias.find((x) => x.campo === 'max').postoConfirmado;
+  assert.match(min.metodoDeSeparacao, /tooltip/);
+  assert.match(max.metodoDeSeparacao, /altura de barra/);
+});
+
+test('D42 D: posto confirmado sai da fila de trabalho, com o teto dito', () => {
+  assert.ok(!filaDeConferencia(V, HOJE).some((f) => f.serie === 'ETF Net Inflow'));
+  const teto = noTetoAlcancavel(V);
+  assert.equal(teto.length, 2);
+  assert.deepEqual(teto.map((t) => t.campo).sort(), ['max', 'min']);
+  assert.equal(teto.find((t) => t.campo === 'max').naTela, '$1B');
+  assert.equal(teto.find((t) => t.campo === 'min').naTela, '$-1B');
+  for (const t of teto) assert.match(t.porQue, /o valor exato não sai desta tela/);
+});
+
+test('D42 E: risco e trabalho são contagens diferentes', () => {
+  const e = estadoDosExtremos(V);
+  assert.equal(e.confirmados, e.confirmadosPorInteiro + e.postoConfirmado, 'para risco, somam');
+  assert.equal(e.postoConfirmado, 2, 'e aparecem separados para trabalho');
+  assert.equal(e.confirmadosPorInteiro, 27);
+  assert.equal(e.confirmados, 29);
+  assert.equal(e.confirmados + e.provisorios, e.total, 'a conta continua fechando');
+  // A separação é a mesma que a D41 D fez entre régua e leitura.
+  assert.equal(e.provisoriosQueImportam, e.provisorios - e.inertesPendentes);
 });
