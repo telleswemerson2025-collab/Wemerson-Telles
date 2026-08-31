@@ -554,9 +554,20 @@ const PROVAS = [
     onde: 'torre/torre.test.mjs',
     teste: 'o Liveliness saiu da fila, o Supply in Profit também',
     porque: 'campo definicional volta à fila e vira trabalho que ninguém pode fechar',
-    quebra: ['torre/torre.mjs', "  if (ehDefinicional(serie, campo, varredura)) return 'definicional';\n  const v = varredura?.[serie];",
-      '  const v = varredura?.[serie];'],
+    // D47 A: o trecho é gêmeo de verdade — `estadoDoExtremo` e `especieDoExtremo`
+    // perguntam coisas diferentes (estado e espécie) e concordam neste caso. Mutar um
+    // só deixaria o outro de pé, então mutam-se os dois.
+    todas: true,
+    quebra: ['torre/torre.mjs', "  if (ehDefinicional(serie, campo, varredura)) return 'definicional';",
+      ''],
     acusa: /campo definicional voltou à fila/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'o Liveliness saiu da fila, o Supply in Profit também',
+    porque: 'extremo móvel volta à fila, e a conferência dele nunca termina porque muda todo dia',
+    quebra: ['torre/torre.mjs', "  if (ehMovel(serie, campo, varredura)) return 'móvel';", ''],
+    acusa: /extremo móvel voltou à fila/,
   },
   {
     onde: 'torre/torre.test.mjs',
@@ -580,6 +591,22 @@ const PROVAS = [
     quebra: ['torre/torre.mjs', 'const bruto = normalizar(v.valor, v.min, v.max, s.escala, s.invertido);',
       'const bruto = normalizar(v.valor, LIMITES_DA_DEFINICAO[s.n]?.min ?? v.min, v.max, s.escala, s.invertido);'],
     acusa: /o efeito de usar a faixa da definição mudou/,
+  },
+  // ══ D59 · EXTREMO MÓVEL E TENDÊNCIA ESTRUTURAL ═════════════════════════
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'o comando RECUSA extremo móvel',
+    porque: 'o comando volta a mandar conferir e reconferir um extremo que muda no dia seguinte',
+    quebra: ['torre/torre.mjs', "  if (estadoDoExtremo(serie, campo, varredura) === 'móvel') {", '  if (false) {'],
+    acusa: /o comando voltou a mandar conferir o que muda amanhã/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'a conta fecha sempre, e agora em duas contas',
+    porque: 'o móvel some da partição e a conta do total deixa de fechar',
+    quebra: ['torre/torre.mjs', 'const conferiveis = total - definicionais - moveis;',
+      'const conferiveis = total - definicionais;'],
+    acusa: /a partição do total não fecha/,
   },
 ];
 

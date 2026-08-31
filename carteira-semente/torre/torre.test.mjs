@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, ESTADOS_DO_EXTREMO, estadoDoExtremo, noTetoAlcancavel, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, A_DATA_SO_APONTA_O_CURSOR, LIMITES_DA_DEFINICAO, ehDefinicional, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, ESTADOS_DO_EXTREMO, estadoDoExtremo, noTetoAlcancavel, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, A_DATA_SO_APONTA_O_CURSOR, LIMITES_DA_DEFINICAO, ehDefinicional, ehMovel, SERIES_COM_TENDENCIA_ESTRUTURAL, candidatasATendencia, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -524,7 +524,8 @@ test('a conta fecha sempre, e agora em duas contas (D58 A)', () => {
   assert.equal(e.total, 42, '14 séries × valor, min e max');
   // O total continua sendo tudo. Mas o denominador da CONFERÊNCIA é o que é
   // conferível: definicional não é conferido nem está por conferir.
-  assert.equal(e.definicionais + e.conferiveis, e.total, 'a partição do total não fecha');
+  assert.equal(e.definicionais + e.moveis + e.conferiveis, e.total, 'a partição do total não fecha');
+  assert.ok(e.moveis > 0, 'sem nenhum móvel este teste não prova a separação da D59 C');
   assert.equal(e.confirmados + e.provisorios, e.conferiveis, 'a conta da conferência não fecha');
   assert.ok(e.definicionais > 0, 'sem nenhum definicional este teste não prova a separação');
   assert.equal(e.series.reduce((n, s) => n + s.campos.length, 0), e.provisorios,
@@ -833,10 +834,15 @@ test('o Liveliness saiu da fila, o Supply in Profit também, e a cabeça andou d
   assert.ok(!fila.some((f) => f.serie === 'Supply in Profit' && f.campo === 'max'),
     'campo definicional voltou à fila — ele não se confere por tooltip');
   assert.equal(estadoDoExtremo('Supply in Profit', 'max', V), 'definicional');
-  // A cabeça é agora o extremo móvel, e ele está travado numa pergunta aberta.
-  assert.equal(fila[0].serie, 'US M2');
-  assert.equal(fila[0].campo, 'max');
-  assert.equal(especieDoExtremo(fila[0].serie, fila[0].campo, V), 'extremo móvel');
+  // E o US M2 · max saiu também (D59 C): extremo móvel não vai à fila. Definicional e
+  // móvel são inconferíveis por razões OPOSTAS — um não muda nunca, o outro muda todo dia.
+  assert.ok(!fila.some((f) => f.serie === 'US M2' && f.campo === 'max'),
+    'extremo móvel voltou à fila — ele muda no dia seguinte, conferir não resolve');
+  assert.equal(estadoDoExtremo('US M2', 'max', V), 'móvel');
+  // A cabeça volta a ser leitura empírica comum — e minúscula.
+  assert.equal(fila[0].serie, 'Liveliness');
+  assert.equal(fila[0].campo, 'min');
+  assert.equal(especieDoExtremo(fila[0].serie, fila[0].campo, V), 'empírico');
 });
 
 // ══ ESPÉCIES DE EXTREMO ═══════════════════════════════════════════════════
@@ -873,11 +879,17 @@ test('D58 A: o comando RECUSA campo definicional, em vez de mandar provar a defi
   assert.match(doMin, /somente leitura/, 'o campo empírico deixou de gerar comando');
 });
 
-test('o comando avisa que extremo móvel se reconfere a cada leitura', () => {
+test('D59 C: o comando RECUSA extremo móvel — conferir não resolve o que muda amanhã', () => {
   const cmd = comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V);
-  assert.match(cmd, /MÓVEL/);
-  assert.match(cmd, /Reconferir a cada leitura nova do indicador, não uma vez só/);
-  assert.ok(!cmd.includes('os dois dias vizinhos'), 'um dos lados é o fim da série');
+  // Antes ele mandava conferir e reconferir a cada leitura. A D59 C reconheceu que isso
+  // é trabalho sem fim: o extremo muda no dia seguinte.
+  assert.equal(cmd.recusado, true, 'o comando voltou a mandar conferir o que muda amanhã');
+  assert.equal(cmd.especie, 'extremo móvel');
+  assert.match(cmd.motivo, /o extremo muda no dia seguinte/);
+  assert.match(cmd.motivo, /sobe por construção/);
+  // E aponta para onde a decisão de fato está: na régua, não na leitura.
+  assert.match(cmd.oQueConferirNoLugar, /nada no terminal/);
+  assert.match(cmd.oQueConferirNoLugar, /a RÉGUA da série, não a leitura dela/);
 });
 
 test('o comando empírico aprendeu a avisar do empate de exibição', () => {
@@ -1150,7 +1162,9 @@ test('série sem unidade registrada recebe aviso, em vez de silêncio', () => {
   assert.match(cmd, /A unidade de Exchange Netflow não está registrada/);
   assert.match(cmd, /Ler a unidade na tela e reportar junto/);
   // As catorze com unidade não recebem o aviso.
-  assert.ok(!comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V)
+  // Contraexemplo numa série com unidade e com comando de verdade — o US M2 servia
+  // aqui até a D59 C passar a recusar o campo dele.
+  assert.ok(!comandoDeConferencia({ serie: 'DXY', campo: 'max' }, V)
     .includes('não está registrada em lugar nenhum'));
 });
 
@@ -1198,7 +1212,9 @@ test('as três espécies de empate são distintas, e nenhuma se resolve como a o
 
 test('o comando avisa do patamar antes, e só nas séries que andam em patamar', () => {
   assert.deepEqual(Object.keys(SERIES_EM_PATAMAR).sort(), ['Curva 10Y-2Y', 'Fed Funds Rate', 'US M2']);
-  const cmd = comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V);
+  // O réu era US M2 · max, que a D59 C passou a recusar. A Curva anda em patamar do
+  // mesmo jeito e ainda gera comando: o aviso é o mesmo, o exemplo é que mudou.
+  const cmd = comandoDeConferencia({ serie: 'Curva 10Y-2Y', campo: 'max' }, V);
   assert.match(cmd, /anda em PATAMAR/);
   assert.match(cmd, /a data é a PRIMEIRA ocorrência dele — o degrau/);
   assert.match(cmd, /o último dia em que ele ainda vale/);
@@ -1453,7 +1469,9 @@ test('o comando levanta a divergência quando o sinal e a marcação discordam',
   assert.equal(plato.fim, '2024-08-31', 'último dia de um mês');
   assert.match(SERIES_EM_PATAMAR['Fed Funds Rate'], /pode ser série mensal, e isso não foi conferido/);
   // Onde marcação e sinal concordam, o comando não levanta nada.
-  assert.ok(!comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V).includes('costuma indicar série MENSAL'));
+  // Onde marcação e sinal concordam, o comando não levanta nada. A Curva é mensal e
+  // está marcada como mensal — o US M2 servia aqui antes de a D59 C recusar o campo.
+  assert.ok(!comandoDeConferencia({ serie: 'Curva 10Y-2Y', campo: 'max' }, V).includes('costuma indicar série MENSAL'));
 });
 
 // ══ A PROCEDÊNCIA DAS UNIDADES ════════════════════════════════════════════
@@ -1463,7 +1481,9 @@ test('unidade lida na tela e unidade inferida por mim são coisas diferentes', (
     'Funding Rate', 'SOPR', 'Supply in Profit']);
   // Onde a unidade é inferência minha, o comando diz isso — senão o portão reprova
   // uma série certa com base num palpite meu.
-  const inferida = comandoDeConferencia({ serie: 'US M2', campo: 'max' }, V);
+  // O campo mudou de max para min: a D59 C passou a recusar o max do US M2, e o aviso
+  // de procedência da unidade é da SÉRIE, não do campo. Mesmo réu, campo que sobrou.
+  const inferida = comandoDeConferencia({ serie: 'US M2', campo: 'min' }, V);
   assert.match(inferida, /"US\$ tri" é inferência minha, não leitura de tela/);
   assert.match(inferida, /na seção "Sobre esta métrica" abaixo do gráfico/);
   // E onde foi lida, não há ressalva.
@@ -1691,22 +1711,26 @@ test('seis séries fora da fila, e as duas travadas são as duas primeiras dela'
   // SETE agora: o Supply in Profit entrou quando a D58 A tirou o max da fila.
   assert.deepEqual(fora, ['Curva 10Y-2Y', 'DXY', 'ETF Net Inflow', 'Funding Rate',
     'MVRV Ratio', 'SOPR', 'Supply in Profit']);
+  // O US M2 NÃO entra aqui: o max virou móvel, mas o min segue provisório.
+  assert.equal(estadoDoExtremo('US M2', 'min', V), 'provisório');
   // Duas não estão confirmadas por inteiro, e por motivos diferentes: o ETF por posto
   // confirmado, o Supply in Profit por ter um campo que é definição e não leitura.
   const porInteiro = fora.filter((n) => ['valor', 'min', 'max'].every((c) => estadoDoExtremo(n, c, V) === 'confirmado'));
   assert.deepEqual(porInteiro.sort(), ['Curva 10Y-2Y', 'DXY', 'Funding Rate', 'MVRV Ratio', 'SOPR']);
   const fila = filaDeConferencia(V, HOJE);
-  assert.equal(fila[0].serie, 'US M2', 'a cabeça da fila');
-  assert.equal(especieDoExtremo(fila[0].serie, fila[0].campo, V), 'extremo móvel');
-  assert.equal(estadoDosExtremos(V).provisoriosQueImportam, 4);
+  assert.equal(fila[0].serie, 'Liveliness', 'a cabeça da fila');
+  assert.equal(especieDoExtremo(fila[0].serie, fila[0].campo, V), 'empírico');
+  assert.equal(estadoDosExtremos(V).provisoriosQueImportam, 3);
 });
 
 // ══ D42 · O TERCEIRO ESTADO DO EXTREMO ════════════════════════════════════
 test('D42 A: os estados são três, e o ETF é o caso do terceiro', () => {
   // D58 A acrescentou o quarto, e ele vem PRIMEIRO: definicional é decidido antes de
   // qualquer coisa, porque um campo que é definição nunca chega a ter conferência.
+  // D59 C acrescentou o quinto. Definicional e móvel vêm antes dos três de conferência,
+  // porque nenhum dos dois chega a ter conferência — por razões opostas.
   assert.deepEqual(ESTADOS_DO_EXTREMO,
-    ['definicional', 'confirmado', 'posto confirmado', 'provisório']);
+    ['definicional', 'móvel', 'confirmado', 'posto confirmado', 'provisório']);
   assert.equal(estadoDoExtremo('ETF Net Inflow', 'max', V), 'posto confirmado');
   assert.equal(estadoDoExtremo('ETF Net Inflow', 'min', V), 'posto confirmado');
   assert.equal(estadoDoExtremo('ETF Net Inflow', 'valor', V), 'confirmado', '"$242M" bate com 242,3');
@@ -1771,7 +1795,7 @@ test('D42 E: risco e trabalho são contagens diferentes', () => {
   // D58 A: a conta da conferência fecha contra os CONFERÍVEIS, não contra o total —
   // o campo definicional está no total e não está na conferência.
   assert.equal(e.confirmados + e.provisorios, e.conferiveis, 'a conta continua fechando');
-  assert.equal(e.conferiveis + e.definicionais, e.total);
+  assert.equal(e.conferiveis + e.definicionais + e.moveis, e.total);
   // A separação é a mesma que a D41 D fez entre régua e leitura.
   assert.equal(e.provisoriosQueImportam, e.provisorios - e.inertesPendentes);
 });

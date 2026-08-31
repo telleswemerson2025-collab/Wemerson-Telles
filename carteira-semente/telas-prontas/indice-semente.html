@@ -562,10 +562,11 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
     { n: "Exchange Netflow", camada: 4, escala: "lin", inicioSerie: "2011-01-01", extremosProvisorios: true, calendario: "24/7", unidade: null }
   ]);
   var ESTADOS_DO_EXTREMO = Object.freeze(
-    ["definicional", "confirmado", "posto confirmado", "provisório"]
+    ["definicional", "móvel", "confirmado", "posto confirmado", "provisório"]
   );
   function estadoDoExtremo(serie, campo, varredura) {
     if (ehDefinicional(serie, campo, varredura)) return "definicional";
+    if (ehMovel(serie, campo, varredura)) return "móvel";
     const v = varredura?.[serie];
     if (v?.confirmado?.[campo]) return "confirmado";
     if (v?.postoConfirmado?.[campo]) return "posto confirmado";
@@ -736,7 +737,7 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
   function estadoDosExtremos(varredura) {
     const porSerie = /* @__PURE__ */ new Map();
     let confirmadosPorInteiro = 0, postoConfirmado = 0, total = 0, inertesPendentes = 0;
-    let definicionais = 0;
+    let definicionais = 0, moveis = 0;
     for (const s of SERIES) {
       const v = varredura?.[s.n];
       if (!v) continue;
@@ -745,6 +746,10 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
         const estado = estadoDoExtremo(s.n, campo, varredura);
         if (estado === "definicional") {
           definicionais++;
+          continue;
+        }
+        if (estado === "móvel") {
+          moveis++;
           continue;
         }
         if (estado === "confirmado") {
@@ -760,10 +765,11 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
       }
     }
     const confirmados = confirmadosPorInteiro + postoConfirmado;
-    const conferiveis = total - definicionais;
+    const conferiveis = total - definicionais - moveis;
     return {
       total,
       definicionais,
+      moveis,
       conferiveis,
       confirmados,
       confirmadosPorInteiro,
@@ -776,6 +782,10 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
     };
   }
   var METODOS_DE_CONFERENCIA = Object.freeze(["dígito", "pixel", "eixo", "calendário"]);
+  var SERIES_COM_TENDENCIA_ESTRUTURAL = Object.freeze({
+    "US M2": "agregado monetário: sobe por construção. O máximo é quase sempre o valor de hoje (D59 A)"
+  });
+  var ehMovel = (serie, campo, varredura) => Boolean(SERIES_COM_TENDENCIA_ESTRUTURAL[serie]) && campo !== "valor" && varredura?.[serie]?.valor === varredura?.[serie]?.[campo];
   var LIMITES_DA_DEFINICAO = Object.freeze({
     "Supply in Profit": Object.freeze({ min: 0, max: 100, unidade: "% do supply" })
   });
@@ -1664,14 +1674,16 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
   $("subExtremos").innerHTML = `Quatro estados: <span class="tag t-ok">confirmado</span> valor, data e posto lidos;
    <span class="tag t-posto">posto confirmado</span> data e posto provados, valor não legível por
    notação compacta; <span class="tag t-prov">provisório</span> nada conferido;
-   <b>definicional</b> o valor É o limite da definição da métrica — não é leitura de dia nenhum,
-   não vai à fila e não se confere por tooltip.
+   <b>definicional</b> o valor É o limite da definição da métrica;
+   <b>móvel</b> o valor corrente É a ponta, numa série que sobe por construção.
+   Os dois ficam fora da fila e não se conferem por tooltip — por razões opostas: um não muda
+   nunca, o outro muda todo dia.
    <b>Risco e trabalho são contagens diferentes</b>, e o denominador da conferência é o que é
    conferível.`;
   $("extremos").innerHTML = card("Conferidos para risco", num(e.confirmados), `de ${num(e.conferiveis)} campos conferíveis`, true) + card(
-    "Definicionais",
-    num(e.definicionais),
-    `fora da conferência · ${num(e.total)} campos no total`
+    "Fora da conferência",
+    num(e.definicionais + e.moveis),
+    `${num(e.definicionais)} definicional · ${num(e.moveis)} móvel · ${num(e.total)} no total`
   ) + card("Confirmados", num(e.confirmadosPorInteiro), "valor, data e posto") + card("Posto confirmado", num(e.postoConfirmado), noTetoAlcancavel(VARREDURA_29_08_2026).map((t) => `${t.serie} · ${t.campo}`).join(" · ") || "—") + card("Provisórios", num(e.provisorios), "nada conferido ainda") + card(
     "Que importam",
     num(e.provisoriosQueImportam),

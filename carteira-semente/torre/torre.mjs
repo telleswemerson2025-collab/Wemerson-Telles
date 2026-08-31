@@ -62,7 +62,7 @@ export const SERIES = Object.freeze([
  * Fica dito, não fica pendente para sempre como se fosse desleixo.
  */
 export const ESTADOS_DO_EXTREMO = Object.freeze(
-  ['definicional', 'confirmado', 'posto confirmado', 'provisório']);
+  ['definicional', 'móvel', 'confirmado', 'posto confirmado', 'provisório']);
 
 /**
  * D58 A: DEFINICIONAL vem antes de tudo. Valor que é o limite da própria definição não
@@ -72,6 +72,10 @@ export const ESTADOS_DO_EXTREMO = Object.freeze(
  */
 export function estadoDoExtremo(serie, campo, varredura) {
   if (ehDefinicional(serie, campo, varredura)) return 'definicional';
+  // D59 C: móvel também não vai à fila e não se confere por tooltip — mas por motivo
+  // diferente do definicional. O definicional não muda nunca; o móvel muda todo dia.
+  // Os dois são inconferíveis, e por razões opostas.
+  if (ehMovel(serie, campo, varredura)) return 'móvel';
   const v = varredura?.[serie];
   if (v?.confirmado?.[campo]) return 'confirmado';
   if (v?.postoConfirmado?.[campo]) return 'posto confirmado';
@@ -444,7 +448,7 @@ export function efeitoDosExtremos(varredura, hoje, erro = 0.10) {
 export function estadoDosExtremos(varredura) {
   const porSerie = new Map();
   let confirmadosPorInteiro = 0, postoConfirmado = 0, total = 0, inertesPendentes = 0;
-  let definicionais = 0;
+  let definicionais = 0, moveis = 0;
   for (const s of SERIES) {
     const v = varredura?.[s.n]; if (!v) continue;
     for (const campo of ['valor', 'min', 'max']) {
@@ -454,6 +458,9 @@ export function estadoDosExtremos(varredura) {
       // Contá-lo como confirmado inflaria a conferência; como provisório, inventaria
       // trabalho que não existe. Fica na própria coluna.
       if (estado === 'definicional') { definicionais++; continue; }
+      // D59 C: recalculado a cada varredura e gravado com a data da leitura. Não é
+      // trabalho pendente, e contá-lo como provisório inventaria fila que não existe.
+      if (estado === 'móvel') { moveis++; continue; }
       if (estado === 'confirmado') { confirmadosPorInteiro++; continue; }
       if (estado === 'posto confirmado') { postoConfirmado++; continue; }
       porSerie.set(s.n, [...(porSerie.get(s.n) ?? []), campo]);
@@ -467,9 +474,9 @@ export function estadoDosExtremos(varredura) {
   // D58 A: o denominador de conferência é o que É conferível. Definicional sai dele —
   // deixá-lo dentro faria a fila parecer eternamente incompleta por causa de um campo
   // que ninguém pode fechar.
-  const conferiveis = total - definicionais;
+  const conferiveis = total - definicionais - moveis;
   return {
-    total, definicionais, conferiveis,
+    total, definicionais, moveis, conferiveis,
     confirmados, confirmadosPorInteiro, postoConfirmado,
     provisorios: conferiveis - confirmados,
     series: [...porSerie].map(([serie, campos]) => ({ serie, campos })),
@@ -515,6 +522,41 @@ export const METODOS_DE_CONFERENCIA = Object.freeze(['dígito', 'pixel', 'eixo',
  * 0,00 em Supply in Profit teria ido à fila como leitura empírica, e ninguém teria como
  * conferir por tooltip uma propriedade da definição.
  */
+/**
+ * D59 C · SÉRIE COM TENDÊNCIA ESTRUTURAL.
+ *
+ * Série que sobe (ou desce) por construção, não por ciclo: o extremo é quase sempre o
+ * valor de hoje, e amanhã é outro. Conferir esse extremo por tooltip não resolve nada,
+ * porque ele muda no dia seguinte.
+ *
+ * ⚠️ A lista é FECHADA e entra por decisão registrada. Ela NÃO é o teste mecânico
+ * `valor === max`: uma série cíclica passando pela máxima passaria nesse teste e viraria
+ * "móvel" em silêncio, ganhando dispensa de conferência que ninguém decidiu dar.
+ * `candidatasATendencia()` existe para trazer a candidata à mesa, não para promovê-la.
+ */
+export const SERIES_COM_TENDENCIA_ESTRUTURAL = Object.freeze({
+  'US M2': 'agregado monetário: sobe por construção. O máximo é quase sempre o valor de hoje (D59 A)',
+});
+
+/** D59 C: extremo móvel é o valor corrente de uma série TENDENCIAL — as duas coisas. */
+export const ehMovel = (serie, campo, varredura) =>
+  Boolean(SERIES_COM_TENDENCIA_ESTRUTURAL[serie])
+  && campo !== 'valor'
+  && varredura?.[serie]?.valor === varredura?.[serie]?.[campo];
+
+/**
+ * D59 C, segunda metade: *"se aparecer outra candidata, ela vem para a mesa antes."*
+ * Isto encontra quem tem o valor corrente na ponta e AINDA NÃO está na lista. Não
+ * promove ninguém — reporta, para virar decisão.
+ */
+export const candidatasATendencia = (varredura) =>
+  SERIES.flatMap((s) => ['min', 'max']
+    .filter((campo) => varredura?.[s.n] && varredura[s.n].valor === varredura[s.n][campo]
+      && !SERIES_COM_TENDENCIA_ESTRUTURAL[s.n])
+    .map((campo) => ({ serie: s.n, campo, camada: s.camada,
+      porQue: 'o valor corrente é a ponta, e a série não está na lista de tendência estrutural',
+      oQueFazer: 'trazer à mesa antes de tratar como móvel — a lista é fechada e entra por decisão' })));
+
 export const LIMITES_DA_DEFINICAO = Object.freeze({
   'Supply in Profit': Object.freeze({ min: 0, max: 100, unidade: '% do supply' }),
 });
@@ -560,6 +602,14 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
   // que provasse no gráfico que um percentual não passa de 100 — pedir prova da
   // definição. Conferência que não pode falhar não é conferência: aqui ela é RECUSADA,
   // com o motivo, em vez de gastar uma ida ao terminal.
+  if (estadoDoExtremo(serie, campo, varredura) === 'móvel') {
+    return { recusado: true, serie, campo, especie: 'extremo móvel',
+      motivo: `o valor corrente de ${serie} É a ${campo === 'min' ? 'mínima' : 'máxima'} (${alvo}), e ` +
+        `${serie} ${SERIES_COM_TENDENCIA_ESTRUTURAL[serie]}. Conferir por tooltip não resolve: ` +
+        'o extremo muda no dia seguinte.',
+      oQueConferirNoLugar: 'nada no terminal. Ele é recalculado a cada varredura e gravado com a ' +
+        'data da leitura — o que precisa de decisão é a RÉGUA da série, não a leitura dela (D59 B).' };
+  }
   if (especie === 'definicional') {
     const l = LIMITES_DA_DEFINICAO[serie];
     return { recusado: true, serie, campo, especie,

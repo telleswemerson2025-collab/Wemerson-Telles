@@ -191,14 +191,16 @@ $('subExtremos').innerHTML =
   `Quatro estados: <span class="tag t-ok">confirmado</span> valor, data e posto lidos;
    <span class="tag t-posto">posto confirmado</span> data e posto provados, valor não legível por
    notação compacta; <span class="tag t-prov">provisório</span> nada conferido;
-   <b>definicional</b> o valor É o limite da definição da métrica — não é leitura de dia nenhum,
-   não vai à fila e não se confere por tooltip.
+   <b>definicional</b> o valor É o limite da definição da métrica;
+   <b>móvel</b> o valor corrente É a ponta, numa série que sobe por construção.
+   Os dois ficam fora da fila e não se conferem por tooltip — por razões opostas: um não muda
+   nunca, o outro muda todo dia.
    <b>Risco e trabalho são contagens diferentes</b>, e o denominador da conferência é o que é
    conferível.`;
 $('extremos').innerHTML =
   card('Conferidos para risco', num(e.confirmados), `de ${num(e.conferiveis)} campos conferíveis`, true) +
-  card('Definicionais', num(e.definicionais),
-    `fora da conferência · ${num(e.total)} campos no total`) +
+  card('Fora da conferência', num(e.definicionais + e.moveis),
+    `${num(e.definicionais)} definicional · ${num(e.moveis)} móvel · ${num(e.total)} no total`) +
   card('Confirmados', num(e.confirmadosPorInteiro), 'valor, data e posto') +
   card('Posto confirmado', num(e.postoConfirmado), noTetoAlcancavel(V).map((t) => `${t.serie} · ${t.campo}`).join(' · ') || '—') +
   card('Provisórios', num(e.provisorios), 'nada conferido ainda') +

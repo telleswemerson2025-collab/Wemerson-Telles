@@ -1236,3 +1236,25 @@ definição é espaço morto**: a série nunca esteve lá.
 ### ⚠️ E o topo está saturado
 A máxima observada É o limite. De 95 para 100 a régua anda 7,76 pontos e ali acaba. **Proximidade do
 teto não é folga**, e a leitura publicada tem de dizer isso.
+
+
+## D59 · EXTREMO MÓVEL
+
+`SERIES_COM_TENDENCIA_ESTRUTURAL` é uma **lista fechada**, e hoje tem uma entrada: US M2, que sobe
+por construção. Extremo móvel é o valor corrente **de uma série dessa lista** — as duas coisas.
+
+⚠️ **Não é o teste mecânico `valor === max`.** Uma série cíclica passando pela máxima passaria nele e
+viraria "móvel" em silêncio, ganhando dispensa de conferência que ninguém decidiu dar.
+`candidatasATendencia()` reporta quem tem o valor na ponta e não está na lista — **traz à mesa, não
+promove**. Hoje devolve vazio.
+
+**Definicional e móvel são inconferíveis por razões opostas:** um não muda nunca, o outro muda todo
+dia. Os dois ficam fora do denominador — 40 conferíveis de 42.
+
+### O que o M2 vale hoje
+Camada 3 tem quatro indicadores e peso 18,2%, então cada um vale **4,5455 pontos de Índice** de ponta
+a ponta — **0,045455 por ponto de régua**. O M2 está em **100, saturado**, e por isso qualquer régua
+nova só pode **baixar** o Índice.
+
+*E o mínimo do M2 é inerte só porque o máximo é móvel:* com o valor corrente na máxima, mexer no
+mínimo não move a régua. Trocar a régua da série (D59 B) devolve o mínimo à fila.
