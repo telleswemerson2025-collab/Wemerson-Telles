@@ -26,7 +26,27 @@ export const SERIES = Object.freeze([
   { n: 'Liveliness',          camada: 2, escala: 'lin', inicioSerie: '2011-01-01', calendario: '24/7', unidade: 'razão', caminhoNoMenu: 'Cointime Statistics / Liveliness' },
   { n: 'DXY',                 camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão', unidade: 'pontos de índice', caminhoNoMenu: 'Macro / DXY — Dollar Index' },
   { n: 'Fed Funds Rate',      camada: 3, escala: 'lin', inicioSerie: '2011-01-01', invertido: true, calendario: 'pregão', unidade: '% a.a.', caminhoNoMenu: 'Macro / Fed Funds Rate (%)', unidadeConferida: true },
-  { n: 'US M2',               camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal', unidade: 'US$ tri' },
+  /**
+   * ⚠️ SUSPENSO POR DECISÃO (D60 B), não removido.
+   *
+   * O US M2 é série com tendência estrutural: o valor corrente é a máxima, a régua
+   * satura em 100 e o indicador para de informar. *Um indicador travado em 100 com
+   * peso de 4,5455 pontos não é neutro — é uma opinião fixa, repetida todo dia, de
+   * que a liquidez está no extremo máximo. Carregar isso é pior que não ter.*
+   *
+   * A saída é TEMPORÁRIA e a condição de volta está escrita (D60 C). *Indicador
+   * removido sem condição de volta some da memória do sistema* — por isso ele fica
+   * na tabela, com a suspensão no dado, e não apagado dela.
+   */
+  { n: 'US M2',               camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal', unidade: 'US$ tri',
+    suspenso: Object.freeze({
+      desde: '2026-08-31', decisao: 'D60 B',
+      razao: 'série com tendência estrutural: a régua do nível satura em 100 e o indicador deixa de informar',
+      condicaoDeRetorno: 'o terminal publicar a variação em 12 meses do US M2, como já publica CPI YoY (US) e PCE YoY (US)',
+      voltaComo: 'normalizado pela VARIAÇÃO em 12 meses, com a régua saindo da própria transformação do terminal',
+      pedidoAoTerminal: 'D60 C — o VantageNode é da casa; é acrescentar a métrica no nosso próprio produto',
+      efeitoDaSaidaNoIndice: -2.9769,
+    }) },
   { n: 'Curva 10Y-2Y',        camada: 3, escala: 'lin', inicioSerie: '2011-01-01', calendario: 'mensal', unidade: 'pontos percentuais', unidadeConferida: true, caminhoNoMenu: 'Studio / Macro / Yield Curve 10Y-2Y' },
   { n: 'ETF Net Inflow',      camada: 4, escala: 'lin', inicioSerie: '2024-01-11', calendario: 'pregão', unidade: 'USD', unidadeConferida: true, formato: 'compacto', caminhoNoMenu: 'Studio / ETF & Institutional / ETF Net Inflow', calendarioNota: 'janela operacional NYSE — sem barras em fins de semana e feriados' },
   { n: 'Funding Rate',        camada: 4, escala: 'lin', inicioSerie: '2020-01-01', calendario: '24/7', unidade: 'APR (%)', caminhoNoMenu: 'Studio / Futuros / Funding Rate — APR (%)', unidadeConferida: true },
@@ -175,6 +195,11 @@ export const camposQueExcedemATooltip = (varredura) =>
  * (D57 A): quem repetir aquela conferência com o adblock ligado não vai achar o carimbo
  * e pode concluir que ele não existe. Liberar `vantagenode.io` no adblock.
  */
+/** D60 E: o aviso vai no topo de TODO comando, e junto de toda recusa. */
+export const AVISO_DO_ADBLOCK =
+  'liberar vantagenode.io no adblock — o painel de janela e os botões de range estão no DOM e ' +
+  'não renderizam com ele ligado; painel que não aparece é bloqueio, não ausência do dado';
+
 export const O_QUE_O_TERMINAL_NAO_ENTREGA = Object.freeze({
   transformacaoDeVariacao: Object.freeze({
     varridoEm: '2026-08-31', ondeSeProcurou: 'painel do indicador US M2 Money Supply ($T)',
@@ -490,8 +515,11 @@ export function efeitoDosExtremos(varredura, hoje, erro = 0.10) {
 export function estadoDosExtremos(varredura) {
   const porSerie = new Map();
   let confirmadosPorInteiro = 0, postoConfirmado = 0, total = 0, inertesPendentes = 0;
-  let definicionais = 0, moveis = 0;
+  let definicionais = 0, moveis = 0, suspensos = 0;
   for (const s of SERIES) {
+    // D60 B: extremo de série suspensa não é fila. Conferir o extremo de um indicador
+    // que não entra na conta é trabalho sem destino.
+    if (s.suspenso) { suspensos += 3; continue; }
     const v = varredura?.[s.n]; if (!v) continue;
     for (const campo of ['valor', 'min', 'max']) {
       total++;
@@ -518,7 +546,7 @@ export function estadoDosExtremos(varredura) {
   // que ninguém pode fechar.
   const conferiveis = total - definicionais - moveis;
   return {
-    total, definicionais, moveis, conferiveis,
+    total, definicionais, moveis, suspensos, conferiveis,
     confirmados, confirmadosPorInteiro, postoConfirmado,
     provisorios: conferiveis - confirmados,
     series: [...porSerie].map(([serie, campos]) => ({ serie, campos })),
@@ -646,6 +674,7 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
   // com o motivo, em vez de gastar uma ida ao terminal.
   if (estadoDoExtremo(serie, campo, varredura) === 'móvel') {
     return { recusado: true, serie, campo, especie: 'extremo móvel',
+      antesDeComecar: AVISO_DO_ADBLOCK,
       motivo: `o valor corrente de ${serie} É a ${campo === 'min' ? 'mínima' : 'máxima'} (${alvo}), e ` +
         `${serie} ${SERIES_COM_TENDENCIA_ESTRUTURAL[serie]}. Conferir por tooltip não resolve: ` +
         'o extremo muda no dia seguinte.',
@@ -655,6 +684,7 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
   if (especie === 'definicional') {
     const l = LIMITES_DA_DEFINICAO[serie];
     return { recusado: true, serie, campo, especie,
+      antesDeComecar: AVISO_DO_ADBLOCK,
       motivo: `${alvo} é o limite da definição de ${serie} (${l.min} a ${l.max} ${l.unidade}), ` +
         'não a leitura de um dia. Não vai à fila e não se confere por tooltip.',
       oQueConferirNoLugar: `que a série realmente ENCOSTA em ${alvo} alguma vez, e que a escala do ` +
@@ -664,6 +694,14 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
   const unidade = SERIES.find((x) => x.n === serie)?.unidade ?? null;
   const caminho = SERIES.find((x) => x.n === serie)?.caminhoNoMenu ?? null;
   return [
+    // D60 E: primeiro de tudo, antes de qualquer instrução de leitura. O adblock
+    // esconde o painel de janela (Current / Window High / Window Low) e os botões de
+    // range — está no DOM e não renderiza. Sem este aviso, quem não achar o painel
+    // conclui que o dado não existe, e ausência por bloqueio vira achado falso.
+    '⚠️ ANTES DE COMEÇAR: liberar vantagenode.io no adblock.',
+    'Se o painel de janela (Current · Window High · Window Low) ou os botões de range não',
+    'aparecerem, o problema é BLOQUEIO, não ausência do dado — eles estão no DOM e não renderizam.',
+    '',
     `Conferir no terminal VantageNode, somente leitura: ${serie} · ${campo}.`,
     `Valor a bater: ${alvo} na data ${data}.`,
     '',
@@ -786,7 +824,14 @@ export function varrer({ varredura, hoje, camada5 = null, anterior = null }) {
   const ausencias = [];
   const lidos = new Map();
 
+  // D60 B/C: suspensão é ausência POR DECISÃO, e se distingue de ausência por falha.
+  // Ela não é "o indicador não voltou" — é "o indicador não deve entrar", com data,
+  // razão e condição de retorno. Misturar as duas faria uma decisão parecer um defeito.
+  const suspensos = SERIES.filter((s) => s.suspenso)
+    .map((s) => ({ indicador: s.n, camada: s.camada, ...s.suspenso }));
+
   for (const s of SERIES) {
+    if (s.suspenso) continue;
     const v = varredura?.[s.n];
     if (!v || typeof v.valor !== 'number' || !Number.isFinite(v.valor)) {
       ausencias.push({ indicador: s.n, camada: s.camada, motivo: v === undefined ? 'não voltou da varredura' : 'voltou zerado ou com traço' });
@@ -826,10 +871,13 @@ export function varrer({ varredura, hoje, camada5 = null, anterior = null }) {
   // Camada incompleta SAI INTEIRA. Tirar a média só do que voltou substituiria o
   // que falta pela média do resto, que é o default silencioso da invariante 3.
   for (const camada of [2, 3, 4]) {
-    const daCamada = SERIES.filter((s) => s.camada === camada && s.papel === undefined);
+    // O suspenso sai do DENOMINADOR: ele não falta, ele não é para estar aqui. Se
+    // ficasse, a camada Macro contaria 1 de 4 ausente e a trava do terço mediria
+    // uma falha que não houve.
+    const daCamada = SERIES.filter((s) => s.camada === camada && s.papel === undefined && !s.suspenso);
     const presentes = daCamada.map((s) => lidos.get(s.n)).filter(Boolean);
     const faltando = daCamada.filter((s) => !lidos.has(s.n)).map((s) => s.n);
-    const pesoAusente = faltando.length / daCamada.length;
+    const pesoAusente = daCamada.length ? faltando.length / daCamada.length : 1;
     if (presentes.length > 0 && pesoAusente <= TRAVA_AUSENCIA_NA_CAMADA) {
       camadas.set(camada, {
         // D37 D: pesos internos iguais entre os indicadores da camada, até haver
@@ -837,6 +885,10 @@ export function varrer({ varredura, hoje, camada5 = null, anterior = null }) {
         posicao: media(presentes.map((x) => x.posicao)),  // renormaliza sobre o que voltou
         itens: presentes.map((x) => `${x.n} ${x.posicao.toFixed(1)}`),
         ausentes: faltando,
+        // Suspenso aparece à parte, com a condição de retorno junto — nunca somado
+        // aos que faltaram por falha.
+        suspensos: SERIES.filter((s) => s.camada === camada && s.suspenso)
+          .map((s) => ({ indicador: s.n, desde: s.suspenso.desde, volta: s.suspenso.condicaoDeRetorno })),
         pesoAusente,
       });
     }
@@ -858,16 +910,23 @@ export function varrer({ varredura, hoje, camada5 = null, anterior = null }) {
 
   return {
     disponivel: true, hoje, indice, faixa, estado,
+    // Vai na saída, sempre: indicador suspenso que não aparece na leitura é indicador
+    // esquecido, e esquecer a condição de retorno é o que a D60 C proíbe.
+    suspensos,
     camadas: ativas.map((c) => ({
       camada: c, nome: CAMADAS[c], posicao: camadas.get(c).posicao,
       pesoNominal: PESOS[c], pesoAplicado: PESOS[c] / somaPesos,
       itens: camadas.get(c).itens,
       ausentes: camadas.get(c).ausentes ?? [],
+      suspensos: camadas.get(c).suspensos ?? [],
+      // Sai na leitura porque é o número que a trava compara. Com a Macro em três
+      // indicadores, perder um dá exatamente o terço, e "exatamente" é informação.
+      pesoAusente: camadas.get(c).pesoAusente ?? 0,
     })),
     camadasForaDaConta: [1, 2, 3, 4, 5].filter((c) => !camadas.has(c))
       .map((c) => {
         if (c === 5) return { camada: 5, nome: CAMADAS[5], motivo: camada5?.motivo ?? 'sem carteira ativa' };
-        const daCamada = SERIES.filter((s) => s.camada === c && s.papel === undefined);
+        const daCamada = SERIES.filter((s) => s.camada === c && s.papel === undefined && !s.suspenso);
         const faltando = daCamada.filter((s) => !lidos.has(s.n)).map((s) => s.n);
         const frac = daCamada.length ? faltando.length / daCamada.length : 1;
         return {

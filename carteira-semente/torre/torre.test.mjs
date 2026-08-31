@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, ESTADOS_DO_EXTREMO, estadoDoExtremo, noTetoAlcancavel, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, A_DATA_SO_APONTA_O_CURSOR, LIMITES_DA_DEFINICAO, ehDefinicional, ehMovel, SERIES_COM_TENDENCIA_ESTRUTURAL, candidatasATendencia, O_QUE_O_TERMINAL_NAO_ENTREGA, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, ESTADOS_DO_EXTREMO, estadoDoExtremo, noTetoAlcancavel, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, A_DATA_SO_APONTA_O_CURSOR, TRAVA_AUSENCIA_NA_CAMADA, LIMITES_DA_DEFINICAO, ehDefinicional, ehMovel, SERIES_COM_TENDENCIA_ESTRUTURAL, candidatasATendencia, O_QUE_O_TERMINAL_NAO_ENTREGA, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -11,11 +11,13 @@ const perto = (a, b, tol = 0.005) => assert.ok(Math.abs(a - b) < tol, `${a} ≠ 
 test('as leituras reais devolvem 50,75 · Equilíbrio · Mercado saudável', () => {
   const r = varrer({ varredura: V, hoje: HOJE });
   assert.equal(r.disponivel, true);
-  perto(r.indice, 50.75);
+  // D60 B: 47,78 depois da suspensão do US M2. Era 50,75 enquanto ele entrava
+  // travado em 100 — a queda de 2,98 é o peso que ele carregava sem informar.
+  perto(r.indice, 47.78);
   // Fixado na quarta casa: é o valor exato que a derivação independente da rodada
   // da Decisão 7 produziu. As duas implementações concordam dígito a dígito.
-  assert.equal(r.indice.toFixed(4), '50.7536');
-  assert.equal(Math.round(r.indice), 51, 'exibido 51');
+  assert.equal(r.indice.toFixed(4), '47.7768');
+  assert.equal(Math.round(r.indice), 48, 'exibido 48');
   assert.equal(r.faixa, 'Equilíbrio');
   assert.equal(r.estado, ESTADOS.SAUDAVEL);
   // D37 C acrescentou o Exchange Netflow, que não foi coletado em 29/08/2026.
@@ -30,7 +32,9 @@ test('cada camada bate com o documento 03', () => {
   const pos = (c) => r.camadas.find((x) => x.camada === c).posicao;
   perto(pos(1), 44.41);   // preço ÷ Realized Price, régua do MVRV
   perto(pos(2), 60.27);   // SOPR · Supply in Profit · Liveliness — três itens
-  perto(pos(3), 50.88);
+  // D60 B: 34,51 com o US M2 suspenso. Era 50,88 com ele entrando em 100 — a camada
+  // Macro estava sendo puxada para cima por um indicador que não informava nada.
+  perto(pos(3), 34.51);
   perto(pos(4), 47.94);   // com o ETF amortecido
 });
 
@@ -101,11 +105,18 @@ test('dois ausentes de três passam do terço: a camada sai inteira', () => {
   perto(r.camadas.find((c) => c.camada === 1).pesoAplicado, 0.34 / 0.62);
 });
 
-test('um de quatro cabe; dois de quatro não', () => {
+test('⚠️ D60 B: a camada Macro ficou NA LINHA da trava — um de três é exatamente o terço', () => {
+  // Com quatro indicadores, perder um dava 25% e sobrava folga. Com três, perder um dá
+  // 33,33% — exatamente a trava. Passa só porque a comparação é `<=`.
   const um = { ...V }; delete um['DXY'];
-  assert.ok(varrer({ varredura: um, hoje: HOJE }).camadas.some((c) => c.camada === 3), '25% cabe');
-  const dois = { ...V }; delete dois['DXY']; delete dois['US M2'];
-  assert.ok(!varrer({ varredura: dois, hoje: HOJE }).camadas.some((c) => c.camada === 3), '50% não cabe');
+  const comUmFora = varrer({ varredura: um, hoje: HOJE }).camadas.find((c) => c.camada === 3);
+  assert.ok(comUmFora, 'um de três ainda cabe');
+  assert.equal(comUmFora.pesoAusente, TRAVA_AUSENCIA_NA_CAMADA,
+    'um de três deixou de bater exatamente na trava — a fragilidade medida na D60 B mudou');
+  // E dois de três derrubam a camada inteira.
+  const dois = { ...V }; delete dois['DXY']; delete dois['Fed Funds Rate'];
+  assert.ok(!varrer({ varredura: dois, hoje: HOJE }).camadas.some((c) => c.camada === 3),
+    'dois de três não cabem');
 });
 
 test('a camada 4 tem dois indicadores: qualquer ausência a derruba', () => {
@@ -123,7 +134,10 @@ test('indicador zerado ou com traço é ausência, não zero', () => {
 test('sem nenhuma camada inteira, não há índice — e o motivo vem junto', () => {
   const r = varrer({ varredura: {}, hoje: HOJE });
   assert.equal(r.disponivel, false);
-  assert.equal(r.ausencias.length, 15);
+  // 14, não 15: o suspenso não conta como ausente. Ausência por decisão e ausência
+  // por falha são coisas diferentes, e misturá-las faria a decisão parecer defeito.
+  assert.equal(r.ausencias.length, 14);
+  assert.equal(r.suspensos, undefined, 'sem índice não há saída de suspensos');
   assert.equal(r.estado, null, 'sem Linha dágua não há estado');
 });
 
@@ -138,7 +152,7 @@ test('os quatro estados, pela regra objetiva da D04', () => {
 
 test('as faixas são de intensidade e não disparam nada', () => {
   assert.equal(faixaDoIndice(10), 'Fundo');
-  assert.equal(faixaDoIndice(50.75), 'Equilíbrio');
+  assert.equal(faixaDoIndice(47.78), 'Equilíbrio');
   assert.equal(faixaDoIndice(90), 'Extremo');
   const r = varrer({ varredura: V, hoje: HOJE });
   assert.equal(r.semRecomendacao, true);
@@ -166,7 +180,7 @@ test('o evento de leitura entra no registro da peça 1 e é derivável de lá', 
   const r = varrer({ varredura: V, hoje: HOJE });
   reg.registrar(eventoDeLeitura('carteira-1', r, V));
   const gravado = reg.eventos({ carteira: 'carteira-1', tipo: TIPOS.LEITURA })[0];
-  perto(gravado.indice, 50.75);
+  perto(gravado.indice, 47.78);
   assert.equal(gravado.estado, ESTADOS.SAUDAVEL);
   assert.equal(Object.keys(gravado.indicadores).length, 14, 'os catorze vão junto, retificáveis pela D34');
 });
@@ -210,7 +224,7 @@ test('a suspensão entra no índice como camada fora, e os pesos renormalizam', 
   const reg = comRegistro();
   const c5 = camada5({ registro: reg, carteira: CT, hoje: '2026-08-29', posicoes: POS });
   const r = varrer({ varredura: V, hoje: HOJE, camada5: c5 });
-  perto(r.indice, 50.75, 0.01);
+  perto(r.indice, 47.78, 0.01);
   assert.equal(r.camadasForaDaConta.find((c) => c.camada === 5).motivo, c5.motivo);
 });
 
@@ -523,11 +537,18 @@ const ABERTURA = Object.freeze({ total: 42, confirmados: 14, provisorios: 28 });
 
 test('a conta fecha sempre, e agora em duas contas (D58 A)', () => {
   const e = estadoDosExtremos(V);
-  assert.equal(e.total, 42, '14 séries × valor, min e max');
-  // O total continua sendo tudo. Mas o denominador da CONFERÊNCIA é o que é
-  // conferível: definicional não é conferido nem está por conferir.
+  // 39, não 42: a D60 B suspendeu o US M2, e extremo de série suspensa não é fila —
+  // conferir o extremo de um indicador que não entra na conta é trabalho sem destino.
+  assert.equal(e.total, 39, '13 séries que entram × valor, min e max');
+  assert.equal(e.suspensos, 3, 'os três campos do US M2, contados à parte');
+  // O total continua sendo tudo o que entra. Mas o denominador da CONFERÊNCIA é o que
+  // é conferível: definicional não é conferido nem está por conferir.
   assert.equal(e.definicionais + e.moveis + e.conferiveis, e.total, 'a partição do total não fecha');
-  assert.ok(e.moveis > 0, 'sem nenhum móvel este teste não prova a separação da D59 C');
+  // ⚠️ A D60 B suspendeu o US M2, que era o ÚNICO móvel vivo. A separação continua
+  // valendo — mas a leitura do dia deixou de ter exemplo, e teste sem sujeito passa
+  // por vazio. O sujeito passou a ser construído (teste abaixo), e aqui fica só a
+  // constatação de que não há móvel vivo.
+  assert.equal(e.moveis, 0, 'voltou a haver móvel na leitura viva — reveja este teste');
   assert.equal(e.confirmados + e.provisorios, e.conferiveis, 'a conta da conferência não fecha');
   assert.ok(e.definicionais > 0, 'sem nenhum definicional este teste não prova a separação');
   assert.equal(e.series.reduce((n, s) => n + s.campos.length, 0), e.provisorios,
@@ -557,7 +578,8 @@ test('o mínimo do MVRV foi conferido por tooltip em 29/08/2026', () => {
 test('o netflow nasce provisório inteiro — valor e extremos', () => {
   const comNf = { ...V, 'Exchange Netflow': NETFLOW };
   const e = estadoDosExtremos(comNf);
-  assert.equal(e.total, 45);
+  // 42, não 45: os três campos do US M2 saíram do total com a suspensão.
+  assert.equal(e.total, 42);
   assert.equal(e.provisorios, estadoDosExtremos(V).provisorios + 3, 'os três do netflow entram provisórios');
 });
 
@@ -577,8 +599,10 @@ test('D41 A: a fila desce por efeito medido, não por escala nem por peso de cam
   assert.equal(escalaDe(efeitos[0].serie), 'lin', 'o de maior efeito é linear, não logarítmico');
   assert.ok(efeitos.findIndex((e) => escalaDe(e.serie) === 'log') > 0, 'log não vem primeiro por ser log');
   // e a heurística de camada também não: camada 3 (16%) antes de camada 2 (26%).
-  assert.ok(pos('US M2', 'max') < pos('SOPR', 'max'),
-    'US M2 é camada 3 e mede mais que o SOPR, camada 2');
+  // O exemplo era US M2 · max contra SOPR · max — o US M2 saiu na D60 B. O DXY serve
+  // igual: camada 3, e mede mais que o SOPR, que é camada 2 e pesa mais no papel.
+  assert.ok(pos('DXY', 'max') < pos('SOPR', 'max'),
+    'DXY é camada 3 e mede mais que o SOPR, camada 2');
 });
 
 test('D41 A: a cabeça da fila é sempre o maior efeito ainda por conferir', () => {
@@ -596,7 +620,13 @@ test('D41 A: na abertura da D41 a cabeça era o máximo do Liveliness, com 1,182
   assert.equal(efeitos[0].serie, 'Liveliness');
   assert.equal(efeitos[0].campo, 'max');
   assert.equal(efeitos[0].efeito.toFixed(4), '1.1820');
-  assert.ok(efeitos[0].efeito > efeitos[1].efeito * 1.5, 'quase o dobro do segundo');
+  // ⚠️ A folga para o segundo ENCOLHEU com a D60 B. Era quase o dobro; com o US M2
+  // suspenso a camada Macro passou a ter três indicadores, cada um mais pesado, e o
+  // DXY · max subiu para 0,8376. O primeiro segue sendo o mesmo — a distância é que
+  // mudou, e mudou por uma razão registrada.
+  assert.equal(efeitos[1].serie, 'DXY');
+  assert.equal(efeitos[1].efeito.toFixed(4), '0.8376');
+  assert.ok(efeitos[0].efeito > efeitos[1].efeito, 'o primeiro deixou de ser o primeiro');
 });
 
 test('D41 B: os oito inertes por construção ficam no fim, e não saem da fila', () => {
@@ -647,7 +677,7 @@ test('D41 E: a fila é recalculada a cada leitura, porque o efeito anda com o va
 test('a leitura publicada informa quantos são provisórios, sem bloquear', () => {
   const r = varrer({ varredura: V, hoje: HOJE });
   assert.equal(r.disponivel, true, 'não bloqueia');
-  assert.equal(r.indice.toFixed(4), '50.7536', 'e o índice não muda');
+  assert.equal(r.indice.toFixed(4), '47.7768', 'e o índice não muda');
   assert.equal(r.extremos.provisorios, estadoDosExtremos(V).provisorios);
   assert.ok(r.extremos.series.length > 0, 'e diz em quais séries');
 });
@@ -955,7 +985,13 @@ test('a anomalia de menu do DXY está registrada, e não move o índice', () => 
   const dezPorCento = { ...V, 'DXY': { ...V['DXY'], valor: V['DXY'].valor * 1.1 } };
   const alavanca = Math.abs(varrer({ varredura: dezPorCento, hoje: HOJE }).indice - base);
   assert.ok(alavanca > 1, `10% no valor do DXY move ${alavanca.toFixed(4)} ponto`);
+  // ⚠️ A alavanca CRESCEU com a D60 B: 1,0945 → 1,4594. Com o US M2 suspenso a camada
+  // Macro tem três indicadores em vez de quatro, e cada um dos que ficaram passou a
+  // pesar um terço a mais. Tirar um indicador não só muda o índice: muda o quanto
+  // cada sobrevivente pode mover sozinho.
   assert.equal(alavanca.toFixed(4), String(a.alavancaDoValor));
+  assert.equal(a.alavancaDoValor, 1.4594);
+  assert.equal(a.alavancaAntesDaD60B, 1.0945);
 });
 
 test('o DXY saiu inteiro da fila — valor, mínima e máxima', () => {
@@ -1734,7 +1770,8 @@ test('seis séries fora da fila, e as duas travadas são as duas primeiras dela'
   const fila = filaDeConferencia(V, HOJE);
   assert.equal(fila[0].serie, 'Liveliness', 'a cabeça da fila');
   assert.equal(especieDoExtremo(fila[0].serie, fila[0].campo, V), 'empírico');
-  assert.equal(estadoDosExtremos(V).provisoriosQueImportam, 3);
+  // 2, não 3: o US M2 · min saiu junto com a suspensão da série (D60 B).
+  assert.equal(estadoDosExtremos(V).provisoriosQueImportam, 2);
 });
 
 // ══ D42 · O TERCEIRO ESTADO DO EXTREMO ════════════════════════════════════
@@ -1804,8 +1841,9 @@ test('D42 E: risco e trabalho são contagens diferentes', () => {
   const e = estadoDosExtremos(V);
   assert.equal(e.confirmados, e.confirmadosPorInteiro + e.postoConfirmado, 'para risco, somam');
   assert.equal(e.postoConfirmado, 2, 'e aparecem separados para trabalho');
-  assert.equal(e.confirmadosPorInteiro, 27);
-  assert.equal(e.confirmados, 29);
+  // 26 e 28: o valor do US M2 era um dos confirmados, e saiu com a suspensão.
+  assert.equal(e.confirmadosPorInteiro, 26);
+  assert.equal(e.confirmados, 28);
   // D58 A: a conta da conferência fecha contra os CONFERÍVEIS, não contra o total —
   // o campo definicional está no total e não está na conferência.
   assert.equal(e.confirmados + e.provisorios, e.conferiveis, 'a conta continua fechando');
@@ -1964,4 +2002,25 @@ test('D59: a retificação do US M2 está registrada, com razão e custo', () =>
     'a retificação passou a custar alguma coisa — o registro diz que custa zero');
   // E a casa da tooltip passou a estar registrada, que é o que faltava para pegar isso.
   assert.equal(CASAS_NA_TOOLTIP['US M2'], 2);
+});
+
+
+test('⚠️ D59 C · D60 B: o estado móvel continua provado, agora contra sujeito construído', () => {
+  // A D60 B suspendeu o US M2 e levou junto o único exemplo VIVO de extremo móvel.
+  // O estado continua no código e continua certo; o que sumiu foi o sujeito. Estado
+  // sem sujeito é estado que envelhece calado — então o sujeito passa a ser montado.
+  const semSuspensao = SERIES.map((x) => (x.n === 'US M2' ? { ...x, suspenso: undefined } : x));
+  assert.equal(estadoDosExtremos(V).moveis, 0, 'a leitura viva não tem móvel — é por isso que este teste existe');
+
+  // O contrato do estado, exercitado direto: valor corrente na ponta + série na lista
+  // fechada de tendência estrutural.
+  assert.equal(ehMovel('US M2', 'max', V), true, 'o US M2 continua sendo o caso');
+  assert.equal(estadoDoExtremo('US M2', 'max', V), 'móvel');
+  assert.equal(ehMovel('US M2', 'min', V), false, 'o mínimo não é o valor corrente');
+  // E a lista fechada segue sendo o que decide — não o teste mecânico.
+  assert.ok(SERIES_COM_TENDENCIA_ESTRUTURAL['US M2']);
+  assert.equal(ehMovel('DXY', 'max', { DXY: { valor: 9, min: 1, max: 9 } }), false,
+    'série fora da lista virou móvel pelo teste mecânico — foi isso que a D59 C proibiu');
+  // A partição só é conferível onde há móvel, e a conta tem de fechar com ele dentro.
+  assert.ok(semSuspensao.some((x) => x.n === 'US M2' && !x.suspenso), 'o sujeito foi montado');
 });

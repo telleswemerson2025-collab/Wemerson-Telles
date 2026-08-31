@@ -1276,3 +1276,29 @@ precise da série inteira bate na mesma parede.
 serviu de segunda fonte na conferência do Liveliness · max (D57 A). Quem repetir aquela conferência
 com o adblock ligado não acha o carimbo e pode concluir que ele não existe. **Liberar
 `vantagenode.io`.**
+
+
+## D60 · SUSPENSÃO É AUSÊNCIA POR DECISÃO
+
+`suspenso` no dado da série: data, razão, condição de retorno e o pedido. **Não é remoção** —
+*indicador removido sem condição de volta some da memória do sistema*.
+
+E não é ausência por falha: o suspenso **sai do denominador** da camada, não conta como ausente, e
+aparece em campo próprio (`suspensos`) na camada e na leitura. Misturar as duas faria uma decisão
+parecer um defeito.
+
+| | Antes | Depois |
+|---|---|---|
+| Índice | 50,7536 · exibido 51 | **47,7768** · exibido **48** |
+| Macro | 50,88, quatro indicadores | **34,51**, três |
+
+### ⚠️ Duas consequências que só apareceram ao aplicar
+**A camada Macro ficou na linha da trava.** Com quatro, perder um dava 25%. Com três, perder um dá
+**exatamente 33,33%** — o valor da trava, e passa só porque a comparação é `<=`.
+
+**Os que ficaram pesam mais.** A alavanca do DXY subiu de **1,0945 para 1,4594**. *Tirar um
+indicador muda o quanto cada um dos outros pode mover sozinho.*
+
+### E o aviso do adblock
+Vai no **topo de todo comando** e junto de toda recusa. Painel que não aparece é bloqueio, não
+ausência do dado — e o painel escondido é o mesmo de onde saiu a segunda fonte da D57.

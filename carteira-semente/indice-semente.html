@@ -200,12 +200,22 @@ $('subExtremos').innerHTML =
 $('extremos').innerHTML =
   card('Conferidos para risco', num(e.confirmados), `de ${num(e.conferiveis)} campos conferíveis`, true) +
   card('Fora da conferência', num(e.definicionais + e.moveis),
-    `${num(e.definicionais)} definicional · ${num(e.moveis)} móvel · ${num(e.total)} no total`) +
+    `${num(e.definicionais)} definicional · ${num(e.moveis)} móvel · ${num(e.total)} campos em jogo`) +
   card('Confirmados', num(e.confirmadosPorInteiro), 'valor, data e posto') +
   card('Posto confirmado', num(e.postoConfirmado), noTetoAlcancavel(V).map((t) => `${t.serie} · ${t.campo}`).join(' · ') || '—') +
   card('Provisórios', num(e.provisorios), 'nada conferido ainda') +
   card('Que importam', num(e.provisoriosQueImportam),
     `${num(e.inertesPendentes)} são inertes por construção`, true);
+// D60 C: indicador suspenso que não aparece na leitura é indicador esquecido — e
+// esquecer a condição de retorno é justamente o que a decisão proíbe.
+if (r.suspensos?.length) {
+  $('extremos').insertAdjacentHTML('afterend',
+    `<div class="aviso" style="margin-top:14px">` +
+    r.suspensos.map((s) => `<b>${s.indicador} está suspenso desde ${s.desde}</b> (${s.decisao}) — ` +
+      `${s.razao}. <br>Volta quando: ${s.condicaoDeRetorno}. ` +
+      `Efeito da saída no Índice: ${num(s.efeitoDaSaidaNoIndice, 4)} ponto.`).join('<br><br>') +
+    `</div>`);
+}
 const tbP = $('provisorios').tBodies[0];
 if (e.series.length === 0) vazio(tbP, 'nenhum extremo provisório');
 else tbP.innerHTML = e.series.map((s) => {

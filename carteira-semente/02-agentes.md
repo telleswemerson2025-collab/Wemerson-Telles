@@ -149,7 +149,7 @@ Decisão 2 proíbe.
 
 **Modular com o índice cheio, não com o exibido.** O índice é calculado em ponto flutuante e
 arredondado só para exibição. Modular com o valor arredondado introduz degrau artificial na
-fronteira de cada ponto. Hoje: índice 50,7536 → M = 0,99699 (com 51 arredondado daria 0,99600).
+fronteira de cada ponto. Hoje: índice 47,7768 → M = 1,00889 (com 48 arredondado daria 1,00800).
 
 ### TETO E PISO ABSOLUTOS (valem sempre, acima da fórmula)
 1. O resultado nunca passa de 100% do aporte nem fica abaixo de 0%.
@@ -176,17 +176,24 @@ longo prazo, combinação que a correlação entre os dois torna quase impossív
 ciclo, e ali a regra 2 e o teto de 100% se encontram no mesmo lugar. Registrado como pendência
 em `08-decisoes-29-08-2026.md`.
 
-### MATRIZ DO APORTE — leitura de 29/08/2026 (Índice 50,75 · M = 0,99699)
+### MATRIZ DO APORTE — leitura de 29/08/2026 (Índice 47,78 · M = 1,00889)
 *A primeira coluna era "+3 anos" até a Decisão 43. **Os vinte números não mudaram**: hoje
-M = 0,99699 já é menor que 1, então o teto `min(M,1)` do Abrigo não morde. A decisão muda o
+⚠️ **M cruzou o 1 com a Decisão 60 B.** Era 0,99699 — abaixo de 1, e por isso o teto
+`min(M,1)` do Abrigo não mordia. Agora é **1,00889**, e o teto passa a morder sempre que o
+Abrigo estiver ativo: a modulação deixa de poder elevar o aporte nos últimos quatro anos.
+*Não é ajuste fino — é uma trava que estava dormindo e acordou.* A decisão muda o
 comportamento quando o Índice está abaixo de 50, não o número publicado hoje.*
 
 | Estado | +4 anos | 3 anos | 2 anos | 1 ano | entrega |
 |---|---|---|---|---|---|
-| Capitulação profunda | 99,7% | 65,8% | 44,9% | 24,9% | 15,0% |
-| Prejuízo do mercado | 89,7% | 59,2% | 40,4% | 22,4% | 13,5% |
-| Estresse de curto prazo | 64,8% | 42,8% | 29,2% | 16,2% | 9,7% |
-| **Mercado saudável** (estado de hoje) | **39,9%** | 26,3% | 17,9% | 10,0% | 6,0% |
+| Capitulação profunda | 100,0% | 66,0% | 45,0% | 25,0% | 15,0% |
+| Prejuízo do mercado | 90,0% | 59,4% | 40,5% | 22,5% | 13,5% |
+| Estresse de curto prazo | 65,0% | 42,9% | 29,3% | 16,3% | 9,8% |
+| **Mercado saudável** (estado de hoje) | **40,0%** | 26,4% | 18,0% | 10,0% | 6,0% |
+
+*As vinte células subiram entre 0,0 e 0,3 ponto com a Decisão 60 B: o Índice caiu de 50,75 para
+47,78, e abaixo de 50 a modulação passa a **elevar** o aporte em vez de reduzi-lo. A matriz anterior
+— 99,7% · 89,7% · 64,8% · 39,9% na coluna de +4 anos — fica como registro do que valia até 31/08.*
 
 *As colunas de 4 anos em diante (3, 2, 1, entrega) já trazem `M_efetivo = min(M, 1)` aplicado. A
 coluna "+4 anos" é a única sem Abrigo.*

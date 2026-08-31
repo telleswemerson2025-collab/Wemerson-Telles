@@ -552,7 +552,35 @@ td.dt{font-variant-numeric:tabular-nums;color:var(--mut);white-space:nowrap}
     { n: "Liveliness", camada: 2, escala: "lin", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "razão", caminhoNoMenu: "Cointime Statistics / Liveliness" },
     { n: "DXY", camada: 3, escala: "lin", inicioSerie: "2011-01-01", invertido: true, calendario: "pregão", unidade: "pontos de índice", caminhoNoMenu: "Macro / DXY — Dollar Index" },
     { n: "Fed Funds Rate", camada: 3, escala: "lin", inicioSerie: "2011-01-01", invertido: true, calendario: "pregão", unidade: "% a.a.", caminhoNoMenu: "Macro / Fed Funds Rate (%)", unidadeConferida: true },
-    { n: "US M2", camada: 3, escala: "lin", inicioSerie: "2011-01-01", calendario: "mensal", unidade: "US$ tri" },
+    /**
+     * ⚠️ SUSPENSO POR DECISÃO (D60 B), não removido.
+     *
+     * O US M2 é série com tendência estrutural: o valor corrente é a máxima, a régua
+     * satura em 100 e o indicador para de informar. *Um indicador travado em 100 com
+     * peso de 4,5455 pontos não é neutro — é uma opinião fixa, repetida todo dia, de
+     * que a liquidez está no extremo máximo. Carregar isso é pior que não ter.*
+     *
+     * A saída é TEMPORÁRIA e a condição de volta está escrita (D60 C). *Indicador
+     * removido sem condição de volta some da memória do sistema* — por isso ele fica
+     * na tabela, com a suspensão no dado, e não apagado dela.
+     */
+    {
+      n: "US M2",
+      camada: 3,
+      escala: "lin",
+      inicioSerie: "2011-01-01",
+      calendario: "mensal",
+      unidade: "US$ tri",
+      suspenso: Object.freeze({
+        desde: "2026-08-31",
+        decisao: "D60 B",
+        razao: "série com tendência estrutural: a régua do nível satura em 100 e o indicador deixa de informar",
+        condicaoDeRetorno: "o terminal publicar a variação em 12 meses do US M2, como já publica CPI YoY (US) e PCE YoY (US)",
+        voltaComo: "normalizado pela VARIAÇÃO em 12 meses, com a régua saindo da própria transformação do terminal",
+        pedidoAoTerminal: "D60 C — o VantageNode é da casa; é acrescentar a métrica no nosso próprio produto",
+        efeitoDaSaidaNoIndice: -2.9769
+      })
+    },
     { n: "Curva 10Y-2Y", camada: 3, escala: "lin", inicioSerie: "2011-01-01", calendario: "mensal", unidade: "pontos percentuais", unidadeConferida: true, caminhoNoMenu: "Studio / Macro / Yield Curve 10Y-2Y" },
     { n: "ETF Net Inflow", camada: 4, escala: "lin", inicioSerie: "2024-01-11", calendario: "pregão", unidade: "USD", unidadeConferida: true, formato: "compacto", caminhoNoMenu: "Studio / ETF & Institutional / ETF Net Inflow", calendarioNota: "janela operacional NYSE — sem barras em fins de semana e feriados" },
     { n: "Funding Rate", camada: 4, escala: "lin", inicioSerie: "2020-01-01", calendario: "24/7", unidade: "APR (%)", caminhoNoMenu: "Studio / Futuros / Funding Rate — APR (%)", unidadeConferida: true },

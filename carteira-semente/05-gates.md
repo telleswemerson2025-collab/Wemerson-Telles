@@ -97,10 +97,10 @@ Checklist. Qualquer item falho VETA:
 
 ## RODADA DE TESTE SUGERIDA
 Rodar os dois gates sobre a leitura de 29/08/2026
-(estado **Mercado saudável** pela Linha d'Água · Índice Semente **50,75**, faixa Equilíbrio):
+(estado **Mercado saudável** pela Linha d'Água · Índice Semente **47,78**, faixa Equilíbrio):
 - Gate 1: a tensão do LTH a 1,08% da máxima com preço 37,4% abaixo do topo tem substância?
-- Gate 2: se virar proposta de aporte (40% × 1,00 × 0,99699 = 39,9% para +3 anos), ela passa
+- Gate 2: se virar proposta de aporte (40% × 1,00 × 1,00889 = 40,0% para +4 anos), ela passa
   nos 14 itens? O Reforço de Fundo NÃO se aplica hoje — o estado é Mercado saudável e o Índice
-  está em 50,75, então as travas 1 e 2 bloqueiam. Item 7 do Gate 2 passa por ausência.
+  está em 47,78, então as travas 1 e 2 bloqueiam. Item 7 do Gate 2 passa por ausência.
   Atenção especial ao item 5 — a nota de divergência ("estado saudável, intensidade em
   equilíbrio") tem que aparecer como nota, não como se o Índice tivesse rebaixado o estado.

@@ -27,8 +27,8 @@ entrega** — o Índice de Plantio, em `02-agentes.md`.
 
 **Leitura de 28/08/2026:** preço US$ 77.839,19 · rede US$ 53.057,77 · STH US$ 69.977,18 ·
 LTH US$ 49.449,51 → preço acima dos três → **Mercado saudável**.
-Índice Semente do mesmo dia: 50,75 (Equilíbrio). Nota: estado saudável, intensidade em equilíbrio.
-Modulação resultante: M = 0,99699 — praticamente nula, como se espera em equilíbrio.
+Índice Semente do mesmo dia: 47,78 (Equilíbrio). Nota: estado saudável, intensidade em equilíbrio.
+Modulação resultante: M = 1,00889 — praticamente nula, como se espera em equilíbrio.
 Reforço de Fundo bloqueado: exige Capitulação ou Prejuízo, e o estado de hoje é Mercado saudável.
 
 ## A LINHA D'ÁGUA TAMBÉM ABRE O SIMULADOR (Decisão 8)

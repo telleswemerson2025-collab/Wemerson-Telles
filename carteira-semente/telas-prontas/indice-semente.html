@@ -551,7 +551,35 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
     { n: "Liveliness", camada: 2, escala: "lin", inicioSerie: "2011-01-01", calendario: "24/7", unidade: "razão", caminhoNoMenu: "Cointime Statistics / Liveliness" },
     { n: "DXY", camada: 3, escala: "lin", inicioSerie: "2011-01-01", invertido: true, calendario: "pregão", unidade: "pontos de índice", caminhoNoMenu: "Macro / DXY — Dollar Index" },
     { n: "Fed Funds Rate", camada: 3, escala: "lin", inicioSerie: "2011-01-01", invertido: true, calendario: "pregão", unidade: "% a.a.", caminhoNoMenu: "Macro / Fed Funds Rate (%)", unidadeConferida: true },
-    { n: "US M2", camada: 3, escala: "lin", inicioSerie: "2011-01-01", calendario: "mensal", unidade: "US$ tri" },
+    /**
+     * ⚠️ SUSPENSO POR DECISÃO (D60 B), não removido.
+     *
+     * O US M2 é série com tendência estrutural: o valor corrente é a máxima, a régua
+     * satura em 100 e o indicador para de informar. *Um indicador travado em 100 com
+     * peso de 4,5455 pontos não é neutro — é uma opinião fixa, repetida todo dia, de
+     * que a liquidez está no extremo máximo. Carregar isso é pior que não ter.*
+     *
+     * A saída é TEMPORÁRIA e a condição de volta está escrita (D60 C). *Indicador
+     * removido sem condição de volta some da memória do sistema* — por isso ele fica
+     * na tabela, com a suspensão no dado, e não apagado dela.
+     */
+    {
+      n: "US M2",
+      camada: 3,
+      escala: "lin",
+      inicioSerie: "2011-01-01",
+      calendario: "mensal",
+      unidade: "US$ tri",
+      suspenso: Object.freeze({
+        desde: "2026-08-31",
+        decisao: "D60 B",
+        razao: "série com tendência estrutural: a régua do nível satura em 100 e o indicador deixa de informar",
+        condicaoDeRetorno: "o terminal publicar a variação em 12 meses do US M2, como já publica CPI YoY (US) e PCE YoY (US)",
+        voltaComo: "normalizado pela VARIAÇÃO em 12 meses, com a régua saindo da própria transformação do terminal",
+        pedidoAoTerminal: "D60 C — o VantageNode é da casa; é acrescentar a métrica no nosso próprio produto",
+        efeitoDaSaidaNoIndice: -2.9769
+      })
+    },
     { n: "Curva 10Y-2Y", camada: 3, escala: "lin", inicioSerie: "2011-01-01", calendario: "mensal", unidade: "pontos percentuais", unidadeConferida: true, caminhoNoMenu: "Studio / Macro / Yield Curve 10Y-2Y" },
     { n: "ETF Net Inflow", camada: 4, escala: "lin", inicioSerie: "2024-01-11", calendario: "pregão", unidade: "USD", unidadeConferida: true, formato: "compacto", caminhoNoMenu: "Studio / ETF & Institutional / ETF Net Inflow", calendarioNota: "janela operacional NYSE — sem barras em fins de semana e feriados" },
     { n: "Funding Rate", camada: 4, escala: "lin", inicioSerie: "2020-01-01", calendario: "24/7", unidade: "APR (%)", caminhoNoMenu: "Studio / Futuros / Funding Rate — APR (%)", unidadeConferida: true },
@@ -773,8 +801,12 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
   function estadoDosExtremos(varredura) {
     const porSerie = /* @__PURE__ */ new Map();
     let confirmadosPorInteiro = 0, postoConfirmado = 0, total = 0, inertesPendentes = 0;
-    let definicionais = 0, moveis = 0;
+    let definicionais = 0, moveis = 0, suspensos = 0;
     for (const s of SERIES) {
+      if (s.suspenso) {
+        suspensos += 3;
+        continue;
+      }
       const v = varredura?.[s.n];
       if (!v) continue;
       for (const campo of ["valor", "min", "max"]) {
@@ -806,6 +838,7 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
       total,
       definicionais,
       moveis,
+      suspensos,
       conferiveis,
       confirmados,
       confirmadosPorInteiro,
@@ -835,7 +868,9 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
   function varrer({ varredura, hoje, camada5: camada52 = null, anterior = null }) {
     const ausencias = [];
     const lidos = /* @__PURE__ */ new Map();
+    const suspensos = SERIES.filter((s) => s.suspenso).map((s) => ({ indicador: s.n, camada: s.camada, ...s.suspenso }));
     for (const s of SERIES) {
+      if (s.suspenso) continue;
       const v = varredura?.[s.n];
       if (!v || typeof v.valor !== "number" || !Number.isFinite(v.valor)) {
         ausencias.push({ indicador: s.n, camada: s.camada, motivo: v === void 0 ? "não voltou da varredura" : "voltou zerado ou com traço" });
@@ -863,10 +898,10 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
       camadas.set(1, { posicao: bruto, itens: [`preço ÷ Realized Price = ${razao.toFixed(5)}`] });
     }
     for (const camada of [2, 3, 4]) {
-      const daCamada = SERIES.filter((s) => s.camada === camada && s.papel === void 0);
+      const daCamada = SERIES.filter((s) => s.camada === camada && s.papel === void 0 && !s.suspenso);
       const presentes = daCamada.map((s) => lidos.get(s.n)).filter(Boolean);
       const faltando = daCamada.filter((s) => !lidos.has(s.n)).map((s) => s.n);
-      const pesoAusente = faltando.length / daCamada.length;
+      const pesoAusente = daCamada.length ? faltando.length / daCamada.length : 1;
       if (presentes.length > 0 && pesoAusente <= TRAVA_AUSENCIA_NA_CAMADA) {
         camadas.set(camada, {
           // D37 D: pesos internos iguais entre os indicadores da camada, até haver
@@ -875,6 +910,9 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
           // renormaliza sobre o que voltou
           itens: presentes.map((x) => `${x.n} ${x.posicao.toFixed(1)}`),
           ausentes: faltando,
+          // Suspenso aparece à parte, com a condição de retorno junto — nunca somado
+          // aos que faltaram por falha.
+          suspensos: SERIES.filter((s) => s.camada === camada && s.suspenso).map((s) => ({ indicador: s.n, desde: s.suspenso.desde, volta: s.suspenso.condicaoDeRetorno })),
           pesoAusente
         });
       }
@@ -894,6 +932,9 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
       indice,
       faixa,
       estado,
+      // Vai na saída, sempre: indicador suspenso que não aparece na leitura é indicador
+      // esquecido, e esquecer a condição de retorno é o que a D60 C proíbe.
+      suspensos,
       camadas: ativas.map((c) => ({
         camada: c,
         nome: CAMADAS[c],
@@ -901,11 +942,15 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
         pesoNominal: PESOS[c],
         pesoAplicado: PESOS[c] / somaPesos,
         itens: camadas.get(c).itens,
-        ausentes: camadas.get(c).ausentes ?? []
+        ausentes: camadas.get(c).ausentes ?? [],
+        suspensos: camadas.get(c).suspensos ?? [],
+        // Sai na leitura porque é o número que a trava compara. Com a Macro em três
+        // indicadores, perder um dá exatamente o terço, e "exatamente" é informação.
+        pesoAusente: camadas.get(c).pesoAusente ?? 0
       })),
       camadasForaDaConta: [1, 2, 3, 4, 5].filter((c) => !camadas.has(c)).map((c) => {
         if (c === 5) return { camada: 5, nome: CAMADAS[5], motivo: camada52?.motivo ?? "sem carteira ativa" };
-        const daCamada = SERIES.filter((s) => s.camada === c && s.papel === void 0);
+        const daCamada = SERIES.filter((s) => s.camada === c && s.papel === void 0 && !s.suspenso);
         const faltando = daCamada.filter((s) => !lidos.has(s.n)).map((s) => s.n);
         const frac = daCamada.length ? faltando.length / daCamada.length : 1;
         return {
@@ -1202,6 +1247,11 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
         // leitura do operador, e o Window High, que é cálculo do terminal.
         segundaFonte: {
           onde: "carimbo Window High do terminal, range ALL",
+          // D60 E: fica registrado que ESTA conferência foi feita com o painel VISÍVEL.
+          // O achado do adblock veio depois, e não a invalida — mas sem esta linha alguém
+          // que repetisse a leitura com o adblock ligado poderia concluir que o carimbo
+          // nunca existiu, e derrubar por engano a única conferência com duas fontes.
+          painelVisivelNaLeitura: true,
           diz: "Window High 0.6410 · DEC 20, 2025",
           porQueVale: "não é a mesma leitura duas vezes: a tooltip é o operador lendo um dia, o Window High é o terminal declarando o topo da janela inteira"
         },
@@ -1246,7 +1296,12 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
         explicadaEm: "2026-08-29, na conferência do DXY · min",
         efeitoNoIndice: 0,
         motivoDoEfeitoZero: "confiança do DXY já saturada em 1 (D7)",
-        alavancaDoValor: 1.0945
+        // ⚠️ CRESCEU com a D60 B: era 1,0945 com quatro indicadores na camada Macro.
+        // Suspenso o US M2, sobraram três, e cada um passou a pesar um terço a mais.
+        // Tirar um indicador não muda só o índice — muda o quanto cada sobrevivente
+        // pode mover sozinho.
+        alavancaAntesDaD60B: 1.0945,
+        alavancaDoValor: 1.4594
         // pontos de índice por 10% de erro no valor
       },
       conferencias: [{
@@ -1354,24 +1409,30 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
       // corrente É a máxima, então a régua satura em 100 e nem o mínimo nem a terceira
       // casa mudam nada (D41 C). Fora da saturação a terceira casa valeria no máximo
       // 0,0006 ponto: é questão de procedência, não de risco numérico.
-      // ⚠️ E a leitura FECHOU UMA DAS QUATRO DATAS DE SÁBADO. O registro dizia
-      // 29/08/2026 — um sábado — para uma série MENSAL. O último ponto desenhado é
-      // 01/07/2026; "AUG 31, 2026" é o carimbo de atualização do painel, não a data do
-      // ponto. Mesmo padrão da Curva 10Y-2Y, e mesmo custo: zero.
+      // ⚠️ E a leitura FECHOU A TERCEIRA DAS QUATRO DATAS DE SÁBADO. O registro dizia
+      // 29/08/2026, um sábado. O último ponto DESENHADO é 31/08/2026 — segunda —, lido na
+      // tooltip. A série é mensal desenhada como escada diária (o mesmo da Curva 10Y-2Y),
+      // então o valor de julho é carregado para a frente e o último ponto traz a data de
+      // hoje com o valor do mês. `dataMax` continua 01/07/2026 porque é ali que o painel
+      // crava o Window High: o primeiro dia do patamar, que é a convenção do degrau.
       valor: 23.22,
       min: 8.84,
       max: 23.22,
-      data: "2026-07-01",
+      data: "2026-08-31",
       dataMin: "2011-01-01",
       dataMax: "2026-07-01",
       confirmado: { valor: "2026-08-31", min: null, max: null },
       divergenciaDeData: {
         registrado: "2026-08-29",
-        naTela: "2026-07-01",
-        diferencaEmDias: 59,
+        naTela: "2026-08-31",
+        diferencaEmDias: 2,
         comoApareceu: "o caminho B pediu a série e o Gui reportou o último ponto junto",
-        carimboDeAtualizacao: "UPDATED AUG 31, 2026 — o painel, não o ponto",
-        porQueDemorou: "série mensal datada com o dia da leitura; o sábado denunciou, e a leitura confirmou",
+        // ⚠️ CORREÇÃO DE UMA LEITURA MINHA, 31/08. Eu tinha registrado 01/07 aqui,
+        // tratando "UPDATED AUG 31" como carimbo de painel e concluindo que não havia
+        // ponto desenhado em agosto. O relato dizia, com todas as letras, "último ponto
+        // AUG 31, 2026 = 23.22" — leitura de tooltip. Inferi contra o que estava escrito.
+        corrigidoDe: "2026-07-01",
+        porQueEuErrei: "confundi o carimbo de atualização com a ausência de ponto desenhado; em série mensal desenhada como escada diária existem as duas coisas ao mesmo tempo",
         efeitoNoIndice: 0
       },
       retificacao: {
@@ -1388,7 +1449,18 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
         // estado de hoje, e amanhã é outro. Fica como leitura datada, não como conferência.
         naturezaDoRegistro: "leitura datada de extremo móvel, não conferência de extremo",
         metodo: "painel de estatísticas cruzado com a tooltip, range ALL",
-        lido: "mínimo 8.84 em JAN 1, 2011 · máximo 23.22 em JUL 1, 2026 · atual 23.22, UPDATED AUG 31, 2026",
+        lido: "mínimo 8.84 em JAN 1, 2011 · máximo 23.22 em JUL 1, 2026 · último ponto 23.22 em AUG 31, 2026",
+        carimboDoPainel: "UPDATED AUG 31, 2026",
+        // ⚠️ PROCEDÊNCIA DA DATA DO MÍNIMO: o ponto mais à esquerda LEGÍVEL na tooltip é
+        // 06/01/2011, não 01/01. O 01/01/2011 é o início da série, vindo do painel — o
+        // VALOR 8,84 foi lido na tooltip, a data não. Fica separado, e não atrapalha:
+        // pela D57 C a data não entra na régua, e este campo ainda é provisório e inerte.
+        dataDoMinimo: {
+          registrada: "2011-01-01",
+          origem: "início da série, painel — não tooltip",
+          pontoMaisAEsquerdaLegivelNaTooltip: "2011-01-06",
+          valorAli: 8.84
+        },
         unidadeLida: {
           em: "2026-08-31",
           unidade: "US$ tri",
@@ -1804,13 +1876,19 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
   $("extremos").innerHTML = card("Conferidos para risco", num(e.confirmados), `de ${num(e.conferiveis)} campos conferíveis`, true) + card(
     "Fora da conferência",
     num(e.definicionais + e.moveis),
-    `${num(e.definicionais)} definicional · ${num(e.moveis)} móvel · ${num(e.total)} no total`
+    `${num(e.definicionais)} definicional · ${num(e.moveis)} móvel · ${num(e.total)} campos em jogo`
   ) + card("Confirmados", num(e.confirmadosPorInteiro), "valor, data e posto") + card("Posto confirmado", num(e.postoConfirmado), noTetoAlcancavel(VARREDURA_29_08_2026).map((t) => `${t.serie} · ${t.campo}`).join(" · ") || "—") + card("Provisórios", num(e.provisorios), "nada conferido ainda") + card(
     "Que importam",
     num(e.provisoriosQueImportam),
     `${num(e.inertesPendentes)} são inertes por construção`,
     true
   );
+  if (r.suspensos?.length) {
+    $("extremos").insertAdjacentHTML(
+      "afterend",
+      `<div class="aviso" style="margin-top:14px">` + r.suspensos.map((s) => `<b>${s.indicador} está suspenso desde ${s.desde}</b> (${s.decisao}) — ${s.razao}. <br>Volta quando: ${s.condicaoDeRetorno}. Efeito da saída no Índice: ${num(s.efeitoDaSaidaNoIndice, 4)} ponto.`).join("<br><br>") + `</div>`
+    );
+  }
   var tbP = $("provisorios").tBodies[0];
   if (e.series.length === 0) vazio(tbP, "nenhum extremo provisório");
   else tbP.innerHTML = e.series.map((s) => {

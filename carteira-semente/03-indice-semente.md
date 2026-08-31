@@ -89,7 +89,10 @@ conta é a fórmula.
 
 ## LEITURA DE 29/08/2026 (dado real, confirmado por tooltip)
 **Estado (Linha d'Água): Mercado saudável** — preço acima dos três custos de referência.
-**Índice Semente = 50,75 (exibido 51) · faixa Equilíbrio.**
+**Índice Semente = 47,78 (exibido 48) · faixa Equilíbrio.**
+
+> ⚠️ **Era 50,75 (exibido 51) até 31/08/2026.** A Decisão 60 B suspendeu o US M2, que entrava
+> travado em 100 sem informar nada. A queda de **2,98 pontos** é o peso que ele carregava.
 **Nota de divergência:** estado saudável, mas intensidade apenas em equilíbrio. O estado manda;
 a intensidade qualifica. Não há disputa a resolver.
 
@@ -97,11 +100,11 @@ a intensidade qualifica. Não há disputa a resolver.
 |---|---|---|---|
 | 1 · Estado do preço | 44,41 | 38,6% | preço ÷ Realized Price = 1,46706 |
 | 2 · Comportamento | 60,27 | 29,5% | SOPR 32,8 · Supply in Profit 49,4 · Liveliness 98,6 |
-| 3 · Macro | 50,88 | 18,2% | DXY 36,3 · Fed Funds 32,2 · M2 100,0 · Curva 35,0 |
+| 3 · Macro | **34,51** | 18,2% | DXY 36,3 · Fed Funds 32,2 · Curva 35,0 — *US M2 suspenso (D60 B)* |
 | 4 · Fluxo | 47,94 | 13,6% | ETF 52,6 (amortecido de 55,0) · Funding 43,3 |
 | 5 · Carteira | — | fora | sem carteira ativa |
 
-Conta: `(0,34×44,41 + 0,26×60,27 + 0,16×50,88 + 0,12×47,94) ÷ 0,88 = 50,75`
+Conta: `(0,34×44,41 + 0,26×60,27 + 0,16×34,51 + 0,12×47,94) ÷ 0,88 = 47,78`
 
 Histórico do mesmo dia, para rastreabilidade:
 `50` (v1.0, dupla contagem do MVRV) → `50,80` (v1.1, Decisão 1) → `50,91` (v1.2, Decisão 5) →
@@ -112,7 +115,7 @@ exibido é 51 desde a v1.2.
 A camada Comportamento subiu de 56 para 60 porque, sem o MVRV puxando para baixo, **a Liveliness
 em 98,6 da faixa histórica passou a pesar mais** — de 1/4 para 1/3 da camada.
 
-Quanto ela responde, medido: a Liveliness contribui com **9,7 dos 50,75 pontos** do índice (19%).
+Quanto ela responde, medido: a Liveliness contribui com **9,7 dos 47,78 pontos** do índice (20%).
 Se ela estivesse em 50 em vez de 98,6, o índice de hoje seria **45,9** — ou seja, ela sozinha
 **levanta a leitura em 4,8 pontos**. É o número que está segurando o índice no Equilíbrio.
 

@@ -550,7 +550,7 @@ simulador, não este documento.
 | | |
 |---|---|
 | Estado (Linha d'Água) | Mercado saudável |
-| Índice Semente | 50,75 |
+| Índice Semente | **47,78** *(era 50,75 até a D60 B)* |
 | Fase · mês de entrada | 2 · 0 |
 | Conservador | R$ 85 mil (2,6x) |
 | Moderado | R$ 259 mil (8,0x) |

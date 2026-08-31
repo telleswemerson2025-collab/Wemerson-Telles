@@ -17,6 +17,7 @@ import {
   BANDA_MODULACAO, TETO_APORTE, FATIA_DO_CAIXA, PISO_DO_CAIXA, ACIONAMENTOS_POR_CICLO,
   ESPACAMENTO_DIAS, INDICE_MAXIMO_REFORCO, TETO_POR_ATIVO, GATILHO_DE_VENDA,
   PISO_POR_POSICAO, PISO_BTC_ETH, BASES_DO_ESTADO, VELOCIDADE_POR_ESTADO,
+  destinacaoDoAporte, alvoDaGlidepath,
 } from './alocador/alocador.mjs';
 import { VALIDADE_DIAS, MARCO_INDICE, MARCO_DIAS, RECUPERACAO_DIAS, TIPOS } from './registro/registro.mjs';
 import { historicoComAnulacao, CARTEIRA, ILUSTRATIVO } from './registro/historico-exemplo.mjs';
@@ -98,12 +99,20 @@ test('D44 A: a matriz do aporte publicada continua sendo a que o código produz'
   const bloco = doc('02-agentes.md').split('### MATRIZ DO APORTE')[1].split('###')[0];
   const linhas = bloco.match(/^\|(?! Estado)(?!---)[^|]+\|(?:[^\n|]*\|){5}$/gm) ?? [];
   assert.equal(linhas.length, 4, `as quatro linhas da matriz, achei ${linhas.length}`);
-  const bases = Object.values(BASES_DO_ESTADO);
+  // ⚠️ O M vinha escrito aqui como 0,99699 — número DERIVADO fixado como literal, que é
+  // o antipadrão da D48. Ele envelheceu na D60 B, quando o índice caiu e o M cruzou o 1.
+  // Agora ele sai da leitura viva, e a expectativa sai da própria função que produz a
+  // matriz — não de `base × M`, que ignora o teto da regra 2.
+  const indice = varrer({ varredura: VARREDURA, hoje: '2026-08-29' }).indice;
+  const estados = Object.keys(BASES_DO_ESTADO);
   linhas.forEach((linha, i) => {
     const primeira = Number(linha.split('|')[2].replace(/[\s*%]/g, '').replace(',', '.'));
-    // A coluna "+4 anos" é base × M, sem Abrigo. M de hoje é 0,99699.
-    assert.ok(Math.abs(primeira - bases[i] * 0.99699) < 0.06,
-      `linha ${i}: documento diz ${primeira}, base ${bases[i]} × M daria ${(bases[i] * 0.99699).toFixed(1)}`);
+    const esperado = destinacaoDoAporte({
+      aporte: 150, carteira: 53074, caixa: 0, exposicaoAtual: alvoDaGlidepath(47),
+      mesesAteEntrega: 48, estado: estados[i], indice,
+    }).plantio.percentual;
+    assert.ok(Math.abs(primeira - esperado) < 0.06,
+      `linha ${i} (${estados[i]}): documento diz ${primeira}, o código produz ${esperado.toFixed(1)}`);
   });
 });
 
@@ -268,12 +277,14 @@ test('o histórico de exemplo exercita as seis seções, e é rotulado como ilus
 });
 
 // ══ A TELA DO ÍNDICE — item 3 da peça 4 ═══════════════════════════════════
-test('critério de aceite: a tela exibe 51, com o valor interno que a Torre produz', () => {
-  // O briefing fixou o número que as quatro correções tinham de produzir. Ele é
-  // derivado FORA desta tela — é a checagem que não é o código conferindo a si mesmo.
+test('critério de aceite: a tela exibe 48, com o valor interno que a Torre produz', () => {
+  // O briefing fixou 51 como o número que as quatro correções tinham de produzir, e
+  // 51 foi o que elas produziram. A D60 B suspendeu o US M2 depois disso, e o número
+  // passou a 48 — a queda de 2,98 é o peso que ele carregava travado em 100.
+  // O critério de aceite original não foi violado; ele foi superado por decisão.
   const r = varrer({ varredura: VARREDURA, hoje: '2026-08-29' });
-  assert.equal(Math.round(r.indice), 51, 'exibido');
-  assert.equal(r.indice.toFixed(4), '50.7536', 'interno');
+  assert.equal(Math.round(r.indice), 48, 'exibido');
+  assert.equal(r.indice.toFixed(4), '47.7768', 'interno');
   assert.equal(r.faixa, 'Equilíbrio');
   // E a tela exibe o arredondado e o interno, os dois gerados do mesmo objeto.
   const s = doc('indice-semente.html');

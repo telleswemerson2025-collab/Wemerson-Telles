@@ -308,7 +308,9 @@ mesmo jeito que a tabela de deriva não é (D12 B regra 2).
 - **`indice-semente.html`** — não aplica o fator de confiança por janela (Decisão 7). O ETF Net
   Inflow entra bruto em 55,0 quando deveria entrar amortecido em 52,6, e a confiança de cada série
   não aparece na tela. Com as quatro correções juntas, o índice exibido é 51 e o valor interno
-  50,75.
+  50,75. *(Esse era o critério de aceite, e ele foi cumprido. A Decisão 60 B suspendeu o US M2
+  depois disso, e o número publicado passou a **48 · 47,7768** — o critério não foi violado, foi
+  superado por decisão.)*
 - **Nenhuma tela mostra a modulação da Decisão 4 nem o Reforço de Fundo da Decisão 6.** O
   modulador M, a matriz de aporte final e as sete travas do reforço não existem em lugar nenhum
   do pacote visual.

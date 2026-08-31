@@ -41,9 +41,10 @@ const PROVAS = [
   },
   {
     teste: 'a matriz do aporte publicada continua sendo a que o código produz',
-    porque: 'a matriz publicada deixa de ser o que base × M produz',
-    quebra: ['02-agentes.md', '| **Mercado saudável** (estado de hoje) | **39,9%**', '| **Mercado saudável** (estado de hoje) | **45,0%**'],
-    acusa: /documento diz 45/,
+    porque: 'a matriz publicada deixa de ser a que o código produz',
+    quebra: ['02-agentes.md', '| **Mercado saudável** (estado de hoje) | **40,0%**',
+      '| **Mercado saudável** (estado de hoje) | **45,0%**'],
+    acusa: /documento diz 45, o código produz 40\.0/,
   },
   {
     teste: 'cada peso do briefing está ligado à SUA camada',
@@ -138,7 +139,7 @@ const PROVAS = [
   },
   // ── A TELA DO ÍNDICE (item 3 da peça 4) ────────────────────────────────
   {
-    teste: 'critério de aceite: a tela exibe 51',
+    teste: 'critério de aceite: a tela exibe 48',
     porque: 'o exibido deixa de sair do índice da Torre e vira número solto',
     quebra: ['indice-semente.html', '$('+"'exibido'"+').innerHTML = `${num(r.indice)}`',
       '$('+"'exibido'"+').innerHTML = `51`'],
@@ -602,11 +603,18 @@ const PROVAS = [
   },
   {
     onde: 'torre/torre.test.mjs',
+    teste: 'o estado móvel continua provado',
+    porque: 'a lista fechada deixa de decidir e o teste mecânico promove série cíclica a móvel',
+    quebra: ['torre/torre.mjs', "  Boolean(SERIES_COM_TENDENCIA_ESTRUTURAL[serie])\n  && campo !== 'valor'",
+      "  campo !== 'valor'"],
+    acusa: /virou móvel pelo teste mecânico/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
     teste: 'a conta fecha sempre, e agora em duas contas',
-    porque: 'o móvel some da partição e a conta do total deixa de fechar',
-    quebra: ['torre/torre.mjs', 'const conferiveis = total - definicionais - moveis;',
-      'const conferiveis = total - definicionais;'],
-    acusa: /a partição do total não fecha/,
+    porque: 'o suspenso volta ao total e a partição da conferência deixa de fechar',
+    quebra: ['torre/torre.mjs', '    if (s.suspenso) { suspensos += 3; continue; }', ''],
+    acusa: /13 séries que entram|a partição do total não fecha/,
   },
   // ══ D59 CAMINHO B · A AUSÊNCIA CONFERIDA ═══════════════════════════════
   {

@@ -216,6 +216,11 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       // leitura do operador, e o Window High, que é cálculo do terminal.
       segundaFonte: {
         onde: 'carimbo Window High do terminal, range ALL',
+        // D60 E: fica registrado que ESTA conferência foi feita com o painel VISÍVEL.
+        // O achado do adblock veio depois, e não a invalida — mas sem esta linha alguém
+        // que repetisse a leitura com o adblock ligado poderia concluir que o carimbo
+        // nunca existiu, e derrubar por engano a única conferência com duas fontes.
+        painelVisivelNaLeitura: true,
         diz: 'Window High 0.6410 · DEC 20, 2025',
         porQueVale: 'não é a mesma leitura duas vezes: a tooltip é o operador lendo um dia, ' +
                     'o Window High é o terminal declarando o topo da janela inteira',
@@ -254,7 +259,12 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       explicacao: '29/08/2026 é sábado e o DXY é série de pregão — não há cotação do dia para o menu exibir',
       explicadaEm: '2026-08-29, na conferência do DXY · min',
       efeitoNoIndice: 0, motivoDoEfeitoZero: 'confiança do DXY já saturada em 1 (D7)',
-      alavancaDoValor: 1.0945, // pontos de índice por 10% de erro no valor
+      // ⚠️ CRESCEU com a D60 B: era 1,0945 com quatro indicadores na camada Macro.
+    // Suspenso o US M2, sobraram três, e cada um passou a pesar um terço a mais.
+    // Tirar um indicador não muda só o índice — muda o quanto cada sobrevivente
+    // pode mover sozinho.
+    alavancaAntesDaD60B: 1.0945,
+    alavancaDoValor: 1.4594, // pontos de índice por 10% de erro no valor
     },
     conferencias: [{
       campo: 'max', em: '2026-08-29',
