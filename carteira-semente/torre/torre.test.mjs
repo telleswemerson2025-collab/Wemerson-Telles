@@ -1095,7 +1095,8 @@ test('a leitura foi feita num sábado, e quatro séries de pregão levaram a dat
   const comDataDeSabado = SERIES.filter((s) => V[s.n] && s.calendario !== '24/7' && semPregao(V[s.n].data));
   assert.deepEqual(comDataDeSabado.map((s) => s.n).sort(),
     ['Curva 10Y-2Y', 'DXY', 'Fed Funds Rate']);
-  assert.equal(V['US M2'].data, '2026-07-01', 'a data do US M2 voltou a ser a da leitura');
+  assert.equal(V['US M2'].data, '2026-08-31', 'a data do US M2 voltou a ser a da leitura');
+  assert.equal(semPregao('2026-08-31'), false, '31/08/2026 é segunda — o último ponto desenhado');
   // É a mesma causa do "—" no menu do DXY, e agora ela está escrita no dado.
   assert.match(V['DXY'].anomaliaDeMenu.explicacao, /sábado e o DXY é série de pregão/);
 });
@@ -1519,8 +1520,13 @@ test('a segunda das quatro datas de sábado ficou sabida, e continua custando ze
     && semPregao(V[x.n].data) && !V[x.n].divergenciaDeData);
   assert.deepEqual(suspeitas.map((x) => x.n).sort(), ['DXY'], 'uma ainda sem leitura');
   // E a do US M2 é a terceira das quatro a ficar sabida, e a terceira a custar zero.
-  assert.equal(V['US M2'].divergenciaDeData.naTela, '2026-07-01');
+  assert.equal(V['US M2'].divergenciaDeData.naTela, '2026-08-31');
   assert.equal(V['US M2'].divergenciaDeData.efeitoNoIndice, 0);
+  // ⚠️ Esta entrada guarda uma correção MINHA, e ela fica registrada como as outras:
+  // eu tinha datado o ponto em 01/07, tratando o carimbo do painel como se não
+  // houvesse ponto desenhado em agosto. O relato dizia o contrário, com todas as letras.
+  assert.equal(V['US M2'].divergenciaDeData.corrigidoDe, '2026-07-01');
+  assert.match(V['US M2'].divergenciaDeData.porQueEuErrei, /carimbo de atualização/);
 });
 
 // ══ ETF NET INFLOW · MAX — A NOTAÇÃO COMPACTA ESCONDE UMA FAIXA ═══════════
