@@ -343,7 +343,68 @@ export const VARREDURA_29_08_2026 = Object.freeze({
                       'nada publicado, alterado ou apagado, nenhum print salvo',
     }],
   },
-  'US M2':              { valor: 23.218,   min: 8.845,   max: 23.218,    data: '2026-08-29' , dataMin: '2011-01-01', dataMax: '2026-07-01', confirmado: { valor: '2026-08-29', min: null, max: null } },
+  'US M2': {
+    // ⚠️ RETIFICAÇÃO REGISTRADA, 31/08/2026. Os valores anteriores tinham TRÊS casas
+    // (23,218 · 8,845) e o terminal escreve DUAS: "US M2 Money Supply ($T)", 23.22 e
+    // 8.84. A terceira casa não é legível nesta tela, e não há de onde ela ter vindo —
+    // é da mesma família do "186.86 contra 186.9" do Funding Rate.
+    //
+    // Custo da retificação: ZERO ponto no Índice, e o zero tem explicação — o valor
+    // corrente É a máxima, então a régua satura em 100 e nem o mínimo nem a terceira
+    // casa mudam nada (D41 C). Fora da saturação a terceira casa valeria no máximo
+    // 0,0006 ponto: é questão de procedência, não de risco numérico.
+    // ⚠️ E a leitura FECHOU UMA DAS QUATRO DATAS DE SÁBADO. O registro dizia
+    // 29/08/2026 — um sábado — para uma série MENSAL. O último ponto desenhado é
+    // 01/07/2026; "AUG 31, 2026" é o carimbo de atualização do painel, não a data do
+    // ponto. Mesmo padrão da Curva 10Y-2Y, e mesmo custo: zero.
+    valor: 23.22, min: 8.84, max: 23.22, data: '2026-07-01',
+    dataMin: '2011-01-01', dataMax: '2026-07-01',
+    confirmado: { valor: '2026-08-31', min: null, max: null },
+    divergenciaDeData: {
+      registrado: '2026-08-29', naTela: '2026-07-01', diferencaEmDias: 59,
+      comoApareceu: 'o caminho B pediu a série e o Gui reportou o último ponto junto',
+      carimboDeAtualizacao: 'UPDATED AUG 31, 2026 — o painel, não o ponto',
+      porQueDemorou: 'série mensal datada com o dia da leitura; o sábado denunciou, e a leitura confirmou',
+      efeitoNoIndice: 0,
+    },
+    retificacao: {
+      em: '2026-08-31', de: { valor: 23.218, min: 8.845, max: 23.218 },
+      para: { valor: 23.22, min: 8.84, max: 23.22 },
+      razao: 'o terminal escreve duas casas decimais; a terceira não é legível e não tinha fonte',
+      efeitoNoIndice: 0,
+    },
+    conferencias: [{
+      campo: 'max', em: '2026-08-31',
+      // D59 C: este campo é MÓVEL. A leitura abaixo não o "confirma" — ela registra o
+      // estado de hoje, e amanhã é outro. Fica como leitura datada, não como conferência.
+      naturezaDoRegistro: 'leitura datada de extremo móvel, não conferência de extremo',
+      metodo: 'painel de estatísticas cruzado com a tooltip, range ALL',
+      lido: 'mínimo 8.84 em JAN 1, 2011 · máximo 23.22 em JUL 1, 2026 · atual 23.22, UPDATED AUG 31, 2026',
+      unidadeLida: { em: '2026-08-31', unidade: 'US$ tri',
+        comoOTerminalEscreve: 'US M2 Money Supply ($T)',
+        // A unidade era INFERÊNCIA minha até aqui; passou a ser leitura de tela.
+        eraInferencia: true },
+      // ⚠️ O CAMINHO B: a transformação não existe. Varrido o painel inteiro.
+      transformacaoDeVariacao: {
+        existe: false,
+        controlesDoPainel: ['range: 30D · 90D · 180D · 1Y · 5Y · ALL',
+          'suavização: SMA · 7D · 14D · 30D (média móvel, não é transformação)',
+          'comparação: BTC · S&P 500 · Ouro', 'escala: Y LIN / BTC LOG', 'desenho'],
+        procuradoENaoAchado: ['YoY', 'Year over Year', '12-month', '12M', 'variação',
+          'variação anual', 'annual', 'change', 'delta', '%'],
+        // O terminal SABE entregar YoY — só onde ele já foi publicado como métrica
+        // própria. É ausência de item no catálogo, não limitação de ferramenta.
+        oTerminalEntregaYoY: 'sim, mas só como métrica própria: CPI YoY (US) e PCE YoY (US)',
+        noGrupoMacro: '13 métricas, e um único item de M2 — o de nível',
+      },
+      // ⚠️ NÃO HÁ SAÍDA DE DADOS. Nenhum botão de exportar, baixar, CSV, copiar ou
+      // JSON no painel. A tooltip é a única saída, ponto a ponto. Isso não é detalhe
+      // deste indicador: é o teto de tudo que dependa de SÉRIE e não de ponta.
+      exportacao: { existe: false, unicaSaida: 'tooltip, ponto a ponto' },
+      telaRestaurada: 'range em ALL (nunca saiu), sem tooltip, rolagem no topo, sidebar reaberta; ' +
+                      'nada publicado, alterado ou apagado, nenhum print com a sidebar',
+    }],
+  },
   'Curva 10Y-2Y': {
     valor: 0.38, min: -0.93, max: 2.81, data: '2026-08-29',
     dataMin: '2023-07-01', dataMax: '2011-02-01',

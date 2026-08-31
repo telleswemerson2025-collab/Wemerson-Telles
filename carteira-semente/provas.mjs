@@ -608,6 +608,31 @@ const PROVAS = [
       'const conferiveis = total - definicionais;'],
     acusa: /a partição do total não fecha/,
   },
+  // ══ D59 CAMINHO B · A AUSÊNCIA CONFERIDA ═══════════════════════════════
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'o adblock esconde o painel que serviu de segunda fonte na D57',
+    porque: 'a ligação com a D57 some, e quem repetir aquela conferência não acha o carimbo',
+    quebra: ['torre/torre.mjs', "porQueImporta: 'o Window High foi a segunda fonte da conferência do Liveliness · max (D57 A)',",
+      "porQueImporta: 'o painel some da tela',"],
+    acusa: /Expected values to be strictly equal|does not match the regular expression|D57/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'a retificação do US M2 está registrada, com razão e custo',
+    porque: 'a retificação passa a custar alguma coisa e o registro segue dizendo que custa zero',
+    quebra: ['torre/leitura-29-08-2026.mjs', 'valor: 23.22, min: 8.84, max: 23.22, data: ',
+      'valor: 20.00, min: 8.84, max: 23.22, data: '],
+    acusa: /o valor É a máxima, e por isso a régua satura|a retificação passou a custar alguma coisa/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'a transformação de variação não existe',
+    porque: 'a lista do que foi procurado encolhe, e a próxima pessoa refaz a busca sem saber',
+    quebra: ['torre/torre.mjs', "termos: Object.freeze(['YoY', 'Year over Year', '12-month', '12M', 'variação',\n      'variação anual', 'annual', 'change', 'delta', '%']),",
+      "termos: Object.freeze(['YoY']),"],
+    acusa: /a lista do que se procurou encolheu/,
+  },
 ];
 
 const rodar = (nome, onde) => {

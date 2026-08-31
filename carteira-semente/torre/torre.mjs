@@ -92,6 +92,9 @@ export const noTetoAlcancavel = (varredura) =>
 export const CASAS_NA_TOOLTIP = Object.freeze({
   'Preço do BTC': 0, 'MVRV Ratio': 3, 'SOPR': 4, 'Supply in Profit': 1,
   'Liveliness': 4, 'DXY': 2, 'Fed Funds Rate': 2, 'Funding Rate': 1,
+  // Lido em 31/08/2026: o terminal escreve "US M2 Money Supply ($T)" com duas casas.
+  // Faltava, e a falta deixou passar três casas registradas sem fonte legível.
+  'US M2': 2,
 });
 
 const casasDe = (x) => { const t = String(x); const i = t.indexOf('.'); return i < 0 ? 0 : t.length - i - 1; };
@@ -155,6 +158,45 @@ export const camposQueExcedemATooltip = (varredura) =>
  * porque o número parece plausível. Toda leitura de eixo ou de pixel feita no ALL
  * inteiro subestima extremo. Só vale depois de estreitar.
  */
+/**
+ * D59 · CAMINHO B: O QUE O TERMINAL NÃO ENTREGA.
+ *
+ * Registrado porque ausência conferida é achado, não silêncio — e porque a próxima
+ * pessoa que precisar de série vai bater na mesma parede.
+ *
+ * ⚠️ **Não há saída de dados.** Nenhum botão de exportar, baixar, CSV, copiar ou JSON.
+ * A tooltip é a única saída, ponto a ponto. Isso é o teto de TUDO que dependa de série
+ * e não de ponta: qualquer transformação que precise do histórico inteiro está fora do
+ * alcance deste terminal, não só a do M2.
+ *
+ * ⚠️ **O painel de estatísticas (Current / Window High / Window Low) é escondido pelo
+ * adblock** — está no DOM, some da tela, mesmo sintoma dos botões de range. Importa
+ * porque foi o Window High que serviu de SEGUNDA FONTE na conferência do Liveliness
+ * (D57 A): quem repetir aquela conferência com o adblock ligado não vai achar o carimbo
+ * e pode concluir que ele não existe. Liberar `vantagenode.io` no adblock.
+ */
+export const O_QUE_O_TERMINAL_NAO_ENTREGA = Object.freeze({
+  transformacaoDeVariacao: Object.freeze({
+    varridoEm: '2026-08-31', ondeSeProcurou: 'painel do indicador US M2 Money Supply ($T)',
+    termos: Object.freeze(['YoY', 'Year over Year', '12-month', '12M', 'variação',
+      'variação anual', 'annual', 'change', 'delta', '%']),
+    // O terminal SABE entregar YoY — só onde já foi publicado como métrica própria.
+    // É ausência de item no catálogo, não limitação de ferramenta.
+    existeComoMetricaPropria: Object.freeze(['CPI YoY (US)', 'PCE YoY (US)']),
+    noGrupoMacro: '13 métricas, e um único item de M2 — o de nível',
+  }),
+  exportacaoDeSerie: Object.freeze({
+    existe: false, unicaSaida: 'tooltip, ponto a ponto',
+    consequencia: 'transformação que precise do histórico inteiro não sai deste terminal',
+  }),
+  painelDeEstatisticasEscondidoPeloAdblock: Object.freeze({
+    campos: Object.freeze(['Current', 'Window High', 'Window Low']),
+    sintoma: 'está no DOM e não renderiza; o mesmo acontece com os botões de range',
+    porQueImporta: 'o Window High foi a segunda fonte da conferência do Liveliness · max (D57 A)',
+    remedio: 'liberar vantagenode.io no adblock',
+  }),
+});
+
 export const SUAVIZACAO_NO_ALL = Object.freeze({
   modo: 'SMA', oQueFaz: 'agrega vários dias por pixel e suaviza dentro do balde',
   medidoEm: 'Funding Rate · min, 13/03/2020',

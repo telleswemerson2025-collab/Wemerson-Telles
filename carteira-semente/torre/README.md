@@ -1258,3 +1258,21 @@ nova só pode **baixar** o Índice.
 
 *E o mínimo do M2 é inerte só porque o máximo é móvel:* com o valor corrente na máxima, mexer no
 mínimo não move a régua. Trocar a régua da série (D59 B) devolve o mínimo à fila.
+
+
+## ⛔ O QUE O TERMINAL NÃO ENTREGA (D59, caminho B)
+
+`O_QUE_O_TERMINAL_NAO_ENTREGA` registra ausências **conferidas**, com a lista do que foi procurado —
+sem isso a próxima pessoa refaz a busca sem saber que ela já foi feita.
+
+**Transformação de variação: não existe** no painel do M2. O terminal entrega YoY só como métrica
+própria (CPI YoY, PCE YoY) — *item faltando no catálogo, não ferramenta faltando*.
+
+**Exportação de série: não existe.** Nem CSV, nem JSON, nem copiar. A tooltip é a única saída, ponto
+a ponto. **Este é o teto de todo trabalho que dependa de histórico** — qualquer régua futura que
+precise da série inteira bate na mesma parede.
+
+⚠️ **O painel de estatísticas é escondido pelo adblock**, e ele importa: foi o **Window High** que
+serviu de segunda fonte na conferência do Liveliness · max (D57 A). Quem repetir aquela conferência
+com o adblock ligado não acha o carimbo e pode concluir que ele não existe. **Liberar
+`vantagenode.io`.**

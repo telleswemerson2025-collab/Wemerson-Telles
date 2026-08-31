@@ -163,9 +163,45 @@ tr.mordeu td{color:var(--z3)}
     "Liveliness": 4,
     "DXY": 2,
     "Fed Funds Rate": 2,
-    "Funding Rate": 1
+    "Funding Rate": 1,
+    // Lido em 31/08/2026: o terminal escreve "US M2 Money Supply ($T)" com duas casas.
+    // Faltava, e a falta deixou passar três casas registradas sem fonte legível.
+    "US M2": 2
   });
   var FAIXA_DO_COMPACTO = Object.freeze({ piso: 1e3, teto: 1499, custoNoIndice: 0.44 });
+  var O_QUE_O_TERMINAL_NAO_ENTREGA = Object.freeze({
+    transformacaoDeVariacao: Object.freeze({
+      varridoEm: "2026-08-31",
+      ondeSeProcurou: "painel do indicador US M2 Money Supply ($T)",
+      termos: Object.freeze([
+        "YoY",
+        "Year over Year",
+        "12-month",
+        "12M",
+        "variação",
+        "variação anual",
+        "annual",
+        "change",
+        "delta",
+        "%"
+      ]),
+      // O terminal SABE entregar YoY — só onde já foi publicado como métrica própria.
+      // É ausência de item no catálogo, não limitação de ferramenta.
+      existeComoMetricaPropria: Object.freeze(["CPI YoY (US)", "PCE YoY (US)"]),
+      noGrupoMacro: "13 métricas, e um único item de M2 — o de nível"
+    }),
+    exportacaoDeSerie: Object.freeze({
+      existe: false,
+      unicaSaida: "tooltip, ponto a ponto",
+      consequencia: "transformação que precise do histórico inteiro não sai deste terminal"
+    }),
+    painelDeEstatisticasEscondidoPeloAdblock: Object.freeze({
+      campos: Object.freeze(["Current", "Window High", "Window Low"]),
+      sintoma: "está no DOM e não renderiza; o mesmo acontece com os botões de range",
+      porQueImporta: "o Window High foi a segunda fonte da conferência do Liveliness · max (D57 A)",
+      remedio: "liberar vantagenode.io no adblock"
+    })
+  });
   var SUAVIZACAO_NO_ALL = Object.freeze({
     modo: "SMA",
     oQueFaz: "agrega vários dias por pixel e suaviza dentro do balde",

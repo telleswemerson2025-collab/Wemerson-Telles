@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, ESTADOS_DO_EXTREMO, estadoDoExtremo, noTetoAlcancavel, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, A_DATA_SO_APONTA_O_CURSOR, LIMITES_DA_DEFINICAO, ehDefinicional, ehMovel, SERIES_COM_TENDENCIA_ESTRUTURAL, candidatasATendencia, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, ESTADOS_DO_EXTREMO, estadoDoExtremo, noTetoAlcancavel, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, A_DATA_SO_APONTA_O_CURSOR, LIMITES_DA_DEFINICAO, ehDefinicional, ehMovel, SERIES_COM_TENDENCIA_ESTRUTURAL, candidatasATendencia, O_QUE_O_TERMINAL_NAO_ENTREGA, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -432,7 +432,9 @@ test('as catorze entradas batem, dígito a dígito, com o documento 07', () => {
     'Liveliness':         [0.6345, 0.1785, 0.6410],
     'DXY':                [99.16, 72.93, 114.11],
     'Fed Funds Rate':     [3.63, 0.05, 5.33],
-    'US M2':              [23.218, 8.845, 23.218],
+    // Retificado em 31/08/2026: o terminal escreve duas casas, e a terceira não tinha
+    // fonte legível. Custo zero — o valor está na máxima e a régua satura.
+    'US M2':              [23.22, 8.84, 23.22],
     'Curva 10Y-2Y':       [0.38, -0.93, 2.81],
     'ETF Net Inflow':     [242.3, -1138.9, 1373.8],
     'Funding Rate':       [1.84, -139.23, 186.86],
@@ -1088,9 +1090,12 @@ test('o comando avisa do carregamento ANTES, em vez de a pessoa descobrir na tel
 // ══ A DATA DE SÁBADO NAS SÉRIES DE PREGÃO ═════════════════════════════════
 test('a leitura foi feita num sábado, e quatro séries de pregão levaram a data do dia', () => {
   assert.equal(semPregao(HOJE), true, '29/08/2026 é sábado');
+  // Eram quatro; o US M2 saiu quando a leitura do caminho B mostrou que o último
+  // ponto é 01/07/2026 e que "AUG 31" é carimbo de atualização, não data de ponto.
   const comDataDeSabado = SERIES.filter((s) => V[s.n] && s.calendario !== '24/7' && semPregao(V[s.n].data));
   assert.deepEqual(comDataDeSabado.map((s) => s.n).sort(),
-    ['Curva 10Y-2Y', 'DXY', 'Fed Funds Rate', 'US M2']);
+    ['Curva 10Y-2Y', 'DXY', 'Fed Funds Rate']);
+  assert.equal(V['US M2'].data, '2026-07-01', 'a data do US M2 voltou a ser a da leitura');
   // É a mesma causa do "—" no menu do DXY, e agora ela está escrita no dado.
   assert.match(V['DXY'].anomaliaDeMenu.explicacao, /sábado e o DXY é série de pregão/);
 });
@@ -1099,7 +1104,6 @@ test('corrigir essas datas não move o índice — todas têm confiança saturad
   const base = varrer({ varredura: V, hoje: HOJE }).indice;
   const corrigida = { ...V };
   for (const n of ['DXY', 'Fed Funds Rate', 'Curva 10Y-2Y']) corrigida[n] = { ...V[n], data: '2026-08-28' };
-  corrigida['US M2'] = { ...V['US M2'], data: '2026-07-01' };
   assert.equal(varrer({ varredura: corrigida, hoje: HOJE }).indice, base);
   for (const n of ['DXY', 'Fed Funds Rate', 'Curva 10Y-2Y', 'US M2']) {
     assert.equal(confianca(SERIES.find((s) => s.n === n).inicioSerie, V[n].data), 1);
@@ -1510,9 +1514,13 @@ test('a segunda das quatro datas de sábado ficou sabida, e continua custando ze
   // 24/7, e o Gui leu o último ponto em 29/08 mesmo. Só as não-24/7 são suspeitas.
   assert.equal(SERIES.find((x) => x.n === 'Funding Rate').calendario, '24/7');
   assert.equal(semPregao(V['Funding Rate'].data), true);
+  // Eram duas sem leitura; o US M2 fechou no caminho B. Sobra o DXY.
   const suspeitas = SERIES.filter((x) => V[x.n] && x.calendario !== '24/7'
     && semPregao(V[x.n].data) && !V[x.n].divergenciaDeData);
-  assert.deepEqual(suspeitas.map((x) => x.n).sort(), ['DXY', 'US M2'], 'duas ainda sem leitura');
+  assert.deepEqual(suspeitas.map((x) => x.n).sort(), ['DXY'], 'uma ainda sem leitura');
+  // E a do US M2 é a terceira das quatro a ficar sabida, e a terceira a custar zero.
+  assert.equal(V['US M2'].divergenciaDeData.naTela, '2026-07-01');
+  assert.equal(V['US M2'].divergenciaDeData.efeitoNoIndice, 0);
 });
 
 // ══ ETF NET INFLOW · MAX — A NOTAÇÃO COMPACTA ESCONDE UMA FAIXA ═══════════
@@ -1897,4 +1905,57 @@ test('⚠️ D58 D: o topo está saturado, e a leitura tem de dizer isso', () =>
   const de95a100 = normalizar(100, sp.min, sp.max, 'linear') - normalizar(95, sp.min, sp.max, 'linear');
   assert.equal(Number(de95a100.toFixed(2)), 7.76,
     'a resolução no topo mudou — a ressalva da D58 D precisa ser refeita');
+});
+
+// ── D59 · CAMINHO B: A AUSÊNCIA CONFERIDA ────────────────────────────────
+test('D59 caminho B: a transformação de variação não existe, e a ausência está registrada', () => {
+  const t = O_QUE_O_TERMINAL_NAO_ENTREGA.transformacaoDeVariacao;
+  // Ausência conferida é achado, e achado se registra com o que foi procurado — senão
+  // a próxima pessoa refaz a busca sem saber que ela já foi feita.
+  assert.ok(t.termos.length >= 10, 'a lista do que se procurou encolheu');
+  for (const termo of ['YoY', '12-month', 'variação', 'change']) {
+    assert.ok(t.termos.includes(termo), `${termo} saiu da lista do que foi procurado`);
+  }
+  // A distinção que muda o encaminhamento: o terminal SABE fazer YoY, e não o fez para
+  // o M2. É item faltando no catálogo, não ferramenta faltando.
+  assert.deepEqual(t.existeComoMetricaPropria, ['CPI YoY (US)', 'PCE YoY (US)']);
+});
+
+test('⚠️ D59: sem exportação, qualquer régua que precise de SÉRIE está fora de alcance', () => {
+  const e = O_QUE_O_TERMINAL_NAO_ENTREGA.exportacaoDeSerie;
+  assert.equal(e.existe, false);
+  assert.match(e.unicaSaida, /tooltip, ponto a ponto/);
+  // Não é limite deste indicador — é o teto de todo trabalho que dependa de histórico.
+  assert.match(e.consequencia, /não sai deste terminal/);
+});
+
+test('⚠️ D59: o adblock esconde o painel que serviu de segunda fonte na D57', () => {
+  const a = O_QUE_O_TERMINAL_NAO_ENTREGA.painelDeEstatisticasEscondidoPeloAdblock;
+  assert.ok(a.campos.includes('Window High'),
+    'o Window High saiu da lista — era ele a segunda fonte da conferência do Liveliness');
+  // A ligação com a D57 fica escrita: quem repetir aquela conferência com o adblock
+  // ligado não acha o carimbo e pode concluir que ele não existe.
+  assert.match(a.porQueImporta, /D57/);
+  assert.match(a.remedio, /vantagenode\.io/);
+  // E a conferência da D57 de fato usou o carimbo — a ligação não é suposta.
+  const c = V.Liveliness.conferencias.find((x) => x.em === '2026-08-31');
+  assert.match(c.segundaFonte.onde, /Window High/);
+});
+
+test('D59: a retificação do US M2 está registrada, com razão e custo', () => {
+  const r = V['US M2'].retificacao;
+  // Fonte primária não se altera sem retificação registrada. Esta tem as três coisas:
+  // de onde veio, para onde foi, e por quê.
+  assert.deepEqual(r.de, { valor: 23.218, min: 8.845, max: 23.218 });
+  assert.deepEqual(r.para, { valor: 23.22, min: 8.84, max: 23.22 });
+  assert.match(r.razao, /duas casas decimais/);
+  // O custo é zero, e o zero tem explicação — não é sorte, é a saturação da régua.
+  assert.equal(r.efeitoNoIndice, 0);
+  assert.equal(V['US M2'].valor, V['US M2'].max, 'o valor É a máxima, e por isso a régua satura');
+  const base = varrer({ varredura: V, hoje: HOJE }).indice;
+  const comOAntigo = { ...V, 'US M2': { ...V['US M2'], ...r.de } };
+  assert.equal(varrer({ varredura: comOAntigo, hoje: HOJE }).indice, base,
+    'a retificação passou a custar alguma coisa — o registro diz que custa zero');
+  // E a casa da tooltip passou a estar registrada, que é o que faltava para pegar isso.
+  assert.equal(CASAS_NA_TOOLTIP['US M2'], 2);
 });
