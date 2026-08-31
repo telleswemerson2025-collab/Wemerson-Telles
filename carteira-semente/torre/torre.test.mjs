@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, ESTADOS_DO_EXTREMO, estadoDoExtremo, noTetoAlcancavel, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, ESTADOS_DO_EXTREMO, estadoDoExtremo, noTetoAlcancavel, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, A_DATA_SO_APONTA_O_CURSOR, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -1737,4 +1737,54 @@ test('D42 E: risco e trabalho são contagens diferentes', () => {
   assert.equal(e.confirmados + e.provisorios, e.total, 'a conta continua fechando');
   // A separação é a mesma que a D41 D fez entre régua e leitura.
   assert.equal(e.provisoriosQueImportam, e.provisorios - e.inertesPendentes);
+});
+
+// ── D57 · A DATA DO EXTREMO NÃO ENTRA NA RÉGUA ───────────────────────────
+test('D57 B: qual dia do platô leva o crédito não muda a régua — nem um centésimo', () => {
+  // A afirmação da decisão é forte: "seis dias no mesmo valor produzem a mesma régua
+  // que um dia só". Ela é verificável, e é verificada — não descrita.
+  const base = varrer({ varredura: V, hoje: HOJE });
+  const plato = ['2025-12-12', '2025-12-18', '2025-12-19', '2025-12-20', '2025-12-21', '2025-12-22'];
+  for (const dia of plato) {
+    const alt = structuredClone(V);
+    alt.Liveliness = { ...alt.Liveliness, dataMax: dia };
+    assert.equal(varrer({ varredura: alt, hoje: HOJE }).indice, base.indice,
+      `atribuir a máxima a ${dia} mudou o Índice — a data entrou na conta`);
+  }
+  // E o contraste, que é o que dá escala: o VALOR importa, e importa pouco mas importa.
+  const outroValor = structuredClone(V);
+  outroValor.Liveliness = { ...outroValor.Liveliness, max: 0.6409 };
+  const comOutroValor = varrer({ varredura: outroValor, hoje: HOJE }).indice;
+  assert.notEqual(comOutroValor, base.indice, 'mudar o valor do extremo não mexeu na régua');
+  assert.equal(Number(Math.abs(comOutroValor - base.indice).toFixed(4)), 0.0021,
+    'o efeito de um dígito na última casa mudou — a medida citada na D57 B precisa ser refeita');
+});
+
+test('D57 C: a data não entra na régua, e a régua não recebe data', () => {
+  // A regra dita como contrato, não como comentário.
+  assert.equal(A_DATA_SO_APONTA_O_CURSOR.entraNaRegua, false);
+  assert.equal(A_DATA_SO_APONTA_O_CURSOR.empateRetem, false);
+  assert.match(A_DATA_SO_APONTA_O_CURSOR.oQueRetem, /o valor não bater/);
+  // E a prova de comportamento, que vale mais que contar parâmetros: a régua é função
+  // SÓ de (valor, min, max, escala, invertido). Empurrar uma data por cima não muda
+  // nada, porque não há onde ela entrar.
+  const semData = normalizar(0.6345, 0.1785, 0.6410, 'linear', false);
+  for (const data of ['2025-12-12', '2025-12-20', '2025-12-22']) {
+    assert.equal(normalizar(0.6345, 0.1785, 0.6410, 'linear', false, data), semData,
+      'a régua passou a reagir a uma data — ela deixou de ser função só do valor');
+  }
+  // A régua responde ao VALOR e às pontas, e a nada mais.
+  assert.notEqual(normalizar(0.6409, 0.1785, 0.6410, 'linear', false), semData);
+  assert.notEqual(normalizar(0.6345, 0.1785, 0.6409, 'linear', false), semData);
+});
+
+test('D57 C: o comando diz ao operador que empate não retém', () => {
+  const c = comandoDeConferencia({ serie: 'Liveliness', campo: 'max' }, V);
+  const texto = Array.isArray(c) ? c.join('\n') : (c.linhas?.join('\n') ?? JSON.stringify(c));
+  assert.match(texto, /não entra em cálculo nenhum/i,
+    'o comando não avisa que a data não entra na conta');
+  assert.match(texto, /não retém/i, 'o comando não diz que empate não retém a conferência');
+  // E não pode mandar o operador desempatar: era isso que fazia platô virar trabalho.
+  assert.ok(!/desempat(e|ar) para (fechar|confirmar)/i.test(texto),
+    'o comando voltou a pedir desempate como condição de fechar');
 });

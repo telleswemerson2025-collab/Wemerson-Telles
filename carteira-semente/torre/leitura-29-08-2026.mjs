@@ -204,6 +204,34 @@ export const VARREDURA_29_08_2026 = Object.freeze({
       incertezaDaExibicao: { faixa: [0.64095, 0.64105], efeitoNoIndice: 0.00105 },
       telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; ' +
                       'nada publicado, alterado ou apagado, nenhum print salvo',
+    }, {
+      // D57: SEGUNDA conferência do mesmo campo, 31/08/2026. A primeira fica onde
+      // está — registro não se sobrescreve. Esta acrescenta duas coisas que a
+      // primeira não tinha: uma segunda fonte na mesma tela, e o tamanho real do platô.
+      campo: 'max', em: '2026-08-31',
+      metodo: 'tooltip em zoom estreito, com passo do cursor em 1 dia, mais varredura por faixa de 22/11/2025 a 06/02/2026',
+      lido: '0.6410 — dígito a dígito',
+      // ⚠️ REFORÇO INDEPENDENTE, e é o que fecha o campo: o próprio terminal carimba
+      // o topo da janela. Duas fontes na MESMA tela concordando — a tooltip, que é
+      // leitura do operador, e o Window High, que é cálculo do terminal.
+      segundaFonte: {
+        onde: 'carimbo Window High do terminal, range ALL',
+        diz: 'Window High 0.6410 · DEC 20, 2025',
+        porQueVale: 'não é a mesma leitura duas vezes: a tooltip é o operador lendo um dia, ' +
+                    'o Window High é o terminal declarando o topo da janela inteira',
+      },
+      // ⚠️ O PLATÔ É MAIOR DO QUE A PRIMEIRA CONFERÊNCIA VIU: são SEIS dias no mesmo
+      // dígito exibido, não dois. E o segundo colocado está em 0,6409 — um dígito de
+      // folga na última casa.
+      plato: {
+        dias: 6, valorExibido: 0.6410, segundoColocado: 0.6409,
+        leitura: 'dezembro de 2025 inteiro colado em 0,641',
+      },
+      // D57 B, medido e não estimado: qual dos seis dias leva o crédito NÃO muda a
+      // régua. Trocando dataMax por cada um dos seis, o Índice sai idêntico nos seis.
+      // O contraste dá a medida do que importa: trocar o VALOR de 0,6410 para 0,6409
+      // move o Índice em 0,0021 ponto. A data vale zero; o último dígito vale 0,0021.
+      efeitoDaDataNaRegua: { indiceIdenticoNosSeisDias: true, efeitoDeUmDigitoNoValor: 0.0021 },
     }],
   },
   'DXY': {

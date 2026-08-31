@@ -496,6 +496,44 @@ const PROVAS = [
       '  if (false) {'],
     acusa: /o objeto do Registro passou direto para a conta, sem recusa/,
   },
+  // ══ D57 · A DATA SÓ APONTA O CURSOR ════════════════════════════════════
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'qual dia do platô leva o crédito não muda a régua',
+    porque: 'a data do extremo entra na régua, e o platô passa a mover o Índice',
+    // ⚠️ A mutação tem de ser no CHAMADOR, não em `normalizar`. Mutar a régua sozinha
+    // não faz nada: ela não recebe data, e por isso nenhuma mudança dentro dela pode
+    // fazer o platô importar. O caminho pelo qual a data poderia entrar é `varrer`
+    // passando algo derivado dela — e é ali que a prova mira.
+    quebra: ['torre/torre.mjs', 'const bruto = normalizar(v.valor, v.min, v.max, s.escala, s.invertido);',
+      "const bruto = normalizar(v.valor, v.min, v.max + (v.dataMax ? Number(v.dataMax.slice(8)) / 1e6 : 0), s.escala, s.invertido);"],
+    acusa: /mudou o Índice — a data entrou na conta/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'a data não entra na régua, e a régua não recebe data',
+    porque: 'a régua passa a reagir a uma data empurrada por cima',
+    quebra: ['torre/torre.mjs', 'export function normalizar(valor, min, max, escala, invertido = false) {',
+      'export function normalizar(valor, min, max, escala, invertido = false, data = null) {\n  if (data) valor *= 1.0001;'],
+    acusa: /a régua passou a reagir a uma data/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'o comando diz ao operador que empate não retém',
+    porque: 'o aviso some do comando e o operador volta a tratar platô como pendência',
+    quebra: ['torre/torre.mjs',
+      "      'A DATA SÓ SERVE PARA APONTAR O CURSOR (D57 C). Ela não entra em cálculo nenhum: a régua usa',",
+      "      'A DATA APONTA O CURSOR.',"],
+    acusa: /o comando não avisa que a data não entra na conta/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'qual dia do platô leva o crédito não muda a régua',
+    porque: 'o efeito de um dígito na última casa muda, e a medida citada na D57 B envelhece calada',
+    quebra: ['torre/leitura-29-08-2026.mjs', "valor: 0.6345, min: 0.1785, max: 0.6410, data: '2026-08-28',",
+      "valor: 0.6345, min: 0.1500, max: 0.6410, data: '2026-08-28',"],
+    acusa: /o efeito de um dígito na última casa mudou/,
+  },
 ];
 
 const rodar = (nome, onde) => {

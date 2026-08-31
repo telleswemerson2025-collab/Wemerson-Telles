@@ -1180,3 +1180,30 @@ C funcionando na prática.
 Os demais números vêm das decisões: pesos 34·26·16·12·12 (D03), faixas de 20 em 20
 (D03 · D02), confiança sobre 5 anos (D7), trava de 30% (D17 C), terço da camada
 (D36 B), validade de 180 dias (D18), 65 como limiar (D9 · D10).
+
+
+## D57 · A DATA SÓ APONTA O CURSOR
+
+A data de um extremo serve para **uma coisa**: dizer ao operador onde apontar o cursor. Ela não entra
+em cálculo nenhum — `normalizar()` recebe valor, mínimo, máximo e escala, e nada mais.
+
+**Empate no topo ou no fundo não é divergência e não retém o extremo. O que retém é o valor não
+bater.** Onde houver platô, confere-se o valor e segue.
+
+Medido na Liveliness · max, que tem **seis dias** no mesmo dígito exibido:
+
+| O que se troca | Efeito no Índice |
+|---|---|
+| a data, entre os seis dias do platô | **0,000000** |
+| o valor, de 0,6410 para 0,6409 | **0,0021** |
+
+*A data vale zero; o último dígito vale 0,0021.*
+
+**Isto simplificou a fila.** A conferência de 29/08 gastou uma separação por pixel para decidir entre
+dois dias empatados — e a de 31/08 mostrou que eram seis. O esforço não teria terminado, e pela regra
+nova ele não precisava começar.
+
+⚠️ **A prova desta regra mira o chamador, não a régua.** Mutar `normalizar` não faz nada: ela não
+recebe data, então nenhuma mudança dentro dela pode fazer a data pesar. Quem poderia deixar a data
+entrar é `varrer`, e é ali que a mutação vai. A tentativa falhada é informação — o isolamento é
+estrutural, não convenção.

@@ -81,9 +81,14 @@ Checklist. Qualquer item falho VETA:
     lento da v1.3, este pega o degrau de uma rodada — e eles **não pegam as mesmas células**. Salto
     para baixo aciona igual: capa que cai de patamar também muda o que foi prometido. Célula que a
     versão anterior não registrou sai como **não calculável**, nunca como zero. Decisão 54.
-18. **Sem default silencioso** — se faltou leitura de origem, o material diz que faltou. Nunca
+18. **Extremo em platô não vira "pico"** — onde o dígito exibido empata em vários dias, o material
+    diz **platô**, nunca *"único dia no topo"* nem *"pico isolado"*. Na Liveliness são **seis dias**
+    em 0,6410, e o desempate está na quinta casa, que a tela não mostra. *Platô é história melhor
+    que pico: descreve sustentação, não um susto de um dia.* Vale para a Semente e para a
+    VantageNode. Decisão 57 D.
+19. **Sem default silencioso** — se faltou leitura de origem, o material diz que faltou. Nunca
     preencher lacuna com suposição. Universo elegível congelado sai rotulado com a data.
-19. **Tetos sobre a parte exposta** — os 60%, os 8%, o piso de 2% e o teto de 8 ativos foram
+20. **Tetos sobre a parte exposta** — os 60%, os 8%, o piso de 2% e o teto de 8 ativos foram
     medidos sobre a parte exposta e sobre a carteira. As duas vendas determinísticas do sistema — o
     degrau 3 e a consolidação abaixo do piso — chegam aqui como decisão própria, com data, ativo e
     percentual antes e depois. Venda executada sem passar por este Gate veta.

@@ -193,6 +193,29 @@ export function comoATelaMostra(serie, campo, varredura) {
  *
  * Para elas o extremo é um PATAMAR, e a data é a primeira ocorrência — o degrau.
  */
+/**
+ * D57 C · A DATA DO EXTREMO NÃO ENTRA EM CÁLCULO NENHUM.
+ *
+ * Ela existe para UMA coisa: dizer ao operador onde apontar o cursor. A régua da
+ * normalização usa o VALOR do extremo, e só ele — `normalizar(valor, min, max, …)` não
+ * recebe data nenhuma.
+ *
+ * **Consequência prática, e ela simplifica a fila inteira:** empate no topo ou no fundo
+ * NÃO é divergência e NÃO retém o extremo. O que retém é o valor não bater. Onde houver
+ * platô, confere-se o valor e segue.
+ *
+ * Medido na Liveliness · max, que tem seis dias no mesmo dígito exibido: atribuindo a
+ * máxima a cada um dos seis, o Índice sai IDÊNTICO nos seis. E o contraste dá a escala
+ * do que de fato importa — trocar o valor de 0,6410 para 0,6409, um dígito na última
+ * casa, move o Índice em 0,0021 ponto. *A data vale zero; o último dígito vale 0,0021.*
+ */
+export const A_DATA_SO_APONTA_O_CURSOR = Object.freeze({
+  entraNaRegua: false,
+  serve: 'dizer ao operador onde apontar o cursor na conferência',
+  empateRetem: false,
+  oQueRetem: 'o valor não bater',
+});
+
 export const SERIES_EM_PATAMAR = Object.freeze({
   'Fed Funds Rate': 'fica parada por meses. ⚠️ o patamar lido (01/08/2023 → 31/08/2024) é alinhado ao MÊS, não a datas de FOMC — pode ser série mensal, e isso não foi conferido',
   'US M2': 'série mensal: cada leitura vale até a publicação do mês seguinte',
@@ -566,6 +589,13 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
       '  · o dia em que o valor aparece pela primeira vez, e o valor do dia anterior (o degrau);',
       '  · o último dia em que ele ainda vale, e o primeiro valor depois dele.',
       'Sem as duas pontas, o patamar reaparece na próxima conferência e parece erro.',
+      'E NÃO ESPERE DESEMPATAR: a data não entra em cálculo nenhum (D57 C). Confira o VALOR e siga.',
+    ] : []),
+    ...(ehExtremo ? [
+      '',
+      'A DATA SÓ SERVE PARA APONTAR O CURSOR (D57 C). Ela não entra em cálculo nenhum: a régua usa',
+      'o VALOR do extremo. Empate no topo ou no fundo não é divergência e não retém a conferência —',
+      'o que retém é o valor não bater. Se houver empate, registre quantos dias empatam e siga.',
     ] : []),
     ...(dataSuspeitaDeCarregamento(serie, data) ? [
       '',
