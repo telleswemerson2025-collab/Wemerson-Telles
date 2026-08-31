@@ -1207,3 +1207,32 @@ nova ele não precisava começar.
 recebe data, então nenhuma mudança dentro dela pode fazer a data pesar. Quem poderia deixar a data
 entrar é `varrer`, e é ali que a mutação vai. A tentativa falhada é informação — o isolamento é
 estrutural, não convenção.
+
+
+## D58 · MÉTRICA LIMITADA POR DEFINIÇÃO
+
+`LIMITES_DA_DEFINICAO` guarda os **dois** limites de cada métrica limitada, junto dos extremos
+observados. Sem os dois não dá para responder a pergunta que decide tudo: **este valor é definição
+ou é leitura?**
+
+| Valor registrado | Estado | O que se faz |
+|---|---|---|
+| é o limite (100,00 ou 0,00) | **definicional** | fora da fila, sem tooltip, não conta como provisório |
+| qualquer outro | empírico | leitura de um dia, confere-se normalmente |
+
+O comando **recusa** campo definicional e diz o que conferir no lugar. Antes ele pedia ao operador
+que provasse no gráfico que um percentual não passa de 100 — *conferência que não pode falhar não é
+conferência.*
+
+**O denominador da conferência é o que é conferível**, não o total: 41 e não 42. Deixar o
+definicional dentro faria a fila parecer eternamente incompleta por causa de um campo que ninguém
+pode fechar.
+
+### A régua não muda, e o custo de mudá-la está medido
+Continua sendo a faixa **observada**. Usar a da definição moveria a camada em **18,02 pontos** e o
+Índice em **1,7748** — o maior efeito de causa única medido neste pacote. E **35,6% da faixa da
+definição é espaço morto**: a série nunca esteve lá.
+
+### ⚠️ E o topo está saturado
+A máxima observada É o limite. De 95 para 100 a régua anda 7,76 pontos e ali acaba. **Proximidade do
+teto não é folga**, e a leitura publicada tem de dizer isso.

@@ -534,6 +534,53 @@ const PROVAS = [
       "valor: 0.6345, min: 0.1500, max: 0.6410, data: '2026-08-28',"],
     acusa: /o efeito de um dígito na última casa mudou/,
   },
+  // ══ D58 · TETO DE MÉTRICA LIMITADA ═════════════════════════════════════
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'o mesmo valor é definicional num campo e leitura em outro',
+    porque: 'o piso da definição some do registro, e um 0,00 voltaria à fila como leitura de um dia',
+    quebra: ['torre/torre.mjs', "Object.freeze({ min: 0, max: 100, unidade: '% do supply' })",
+      "Object.freeze({ max: 100, unidade: '% do supply' })"],
+    acusa: /0 é o piso da definição e teria ido à fila como leitura empírica/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'o comando RECUSA campo definicional',
+    porque: 'o comando volta a pedir que o operador prove no gráfico o que é a definição',
+    quebra: ['torre/torre.mjs', "  if (especie === 'definicional') {", '  if (false) {'],
+    acusa: /o comando voltou a mandar conferir o que é definição/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'o Liveliness saiu da fila, o Supply in Profit também',
+    porque: 'campo definicional volta à fila e vira trabalho que ninguém pode fechar',
+    quebra: ['torre/torre.mjs', "  if (ehDefinicional(serie, campo, varredura)) return 'definicional';\n  const v = varredura?.[serie];",
+      '  const v = varredura?.[serie];'],
+    acusa: /campo definicional voltou à fila/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'a conta fecha sempre, e agora em duas contas',
+    porque: 'o provisório volta a ser contado contra o total, e o definicional vira trabalho a fazer',
+    quebra: ['torre/torre.mjs', 'provisorios: conferiveis - confirmados,', 'provisorios: total - confirmados,'],
+    acusa: /a conta da conferência não fecha/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'a conta fecha sempre, e agora em duas contas',
+    porque: 'não sobra nenhum campo definicional, e o teste da separação passaria por vazio',
+    quebra: ['torre/torre.mjs', "      if (estado === 'definicional') { definicionais++; continue; }",
+      "      if (estado === 'definicional') { }"],
+    acusa: /sem nenhum definicional este teste não prova a separação/,
+  },
+  {
+    onde: 'torre/torre.test.mjs',
+    teste: 'a régua continua sendo a faixa OBSERVADA',
+    porque: 'a régua passa a usar a faixa da definição, e a leitura achata',
+    quebra: ['torre/torre.mjs', 'const bruto = normalizar(v.valor, v.min, v.max, s.escala, s.invertido);',
+      'const bruto = normalizar(v.valor, LIMITES_DA_DEFINICAO[s.n]?.min ?? v.min, v.max, s.escala, s.invertido);'],
+    acusa: /o efeito de usar a faixa da definição mudou/,
+  },
 ];
 
 const rodar = (nome, onde) => {

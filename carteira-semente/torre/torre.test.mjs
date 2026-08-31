@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, ESTADOS_DO_EXTREMO, estadoDoExtremo, noTetoAlcancavel, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, A_DATA_SO_APONTA_O_CURSOR, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
+import { varrer, normalizar, confianca, amortecer, classificarLinhaDagua, faixaDoIndice, eventoDeLeitura, camada5, varreduraDaCRM, filtroDeHorizonte, filaDeJulgamento, LIMIAR_LIQUIDEZ, EXCHANGES_MINIMAS, JANELA_LIQUIDEZ_DIAS, EXCHANGES_PRIMEIRA_LINHA, seriesComExtremosProvisorios, estadoDosExtremos, filaDeConferencia, valoresPendentes, especieDoExtremo, TETOS_DA_METRICA, METODOS_DE_CONFERENCIA, CALENDARIOS, semPregao, dataSuspeitaDeCarregamento, HOMONIMOS_NO_TERMINAL, SERIES_EM_PATAMAR, METODOS_DE_VARREDURA, CASAS_NA_TOOLTIP, excedeATooltip, camposQueExcedemATooltip, comoATelaMostra, SUAVIZACAO_NO_ALL, pareceMensal, formatoCompacto, FAIXA_DO_COMPACTO, ESTADOS_DO_EXTREMO, estadoDoExtremo, noTetoAlcancavel, comandoDeConferencia, efeitoDosExtremos, EXTREMOS_INERTES, A_DATA_SO_APONTA_O_CURSOR, LIMITES_DA_DEFINICAO, ehDefinicional, CAMADAS, PESOS, ESTADOS, SERIES } from './torre.mjs';
 import { VARREDURA_29_08_2026 as V } from './leitura-29-08-2026.mjs';
 import { Registro, AdaptadorMemoria, TIPOS } from '../registro/registro.mjs';
 
@@ -519,10 +519,14 @@ test('a escala do netflow é linear, e não pode ser outra', () => {
 // senão cada conferência quebraria a suíte e a fila viraria inimiga do trabalho.
 const ABERTURA = Object.freeze({ total: 42, confirmados: 14, provisorios: 28 });
 
-test('a conta fecha sempre: confirmados mais provisórios dão o total', () => {
+test('a conta fecha sempre, e agora em duas contas (D58 A)', () => {
   const e = estadoDosExtremos(V);
   assert.equal(e.total, 42, '14 séries × valor, min e max');
-  assert.equal(e.confirmados + e.provisorios, e.total);
+  // O total continua sendo tudo. Mas o denominador da CONFERÊNCIA é o que é
+  // conferível: definicional não é conferido nem está por conferir.
+  assert.equal(e.definicionais + e.conferiveis, e.total, 'a partição do total não fecha');
+  assert.equal(e.confirmados + e.provisorios, e.conferiveis, 'a conta da conferência não fecha');
+  assert.ok(e.definicionais > 0, 'sem nenhum definicional este teste não prova a separação');
   assert.equal(e.series.reduce((n, s) => n + s.campos.length, 0), e.provisorios,
     'a lista por série tem exatamente os provisórios');
 });
@@ -626,12 +630,14 @@ test('D41 D: valor não entra na fila de extremos — não tem efeito de régua'
 });
 
 test('D41 E: a fila é recalculada a cada leitura, porque o efeito anda com o valor', () => {
-  const dobrado = (x) => ({ ...V, 'Supply in Profit': { ...V['Supply in Profit'], valor: x } });
+  // O réu era Supply in Profit · max, que a D58 A tirou da fila — campo definicional
+  // não tem efeito a medir porque não tem conferência a fazer. A regra não mudou; o
+  // exemplo precisou mudar de série, e passou a ser um campo que está na fila.
+  const com = (x) => ({ ...V, Liveliness: { ...V.Liveliness, valor: x } });
   const efeito = (varredura) => filaDeConferencia(varredura, HOJE)
-    .find((f) => f.serie === 'Supply in Profit' && f.campo === 'max').efeito;
-  assert.notEqual(efeito(V), efeito(dobrado(40)), 'mudou o valor corrente, mudou o efeito do extremo');
-  // E a ordem da fila é consequência: mexer no valor pode trocar a cabeça.
-  const fila = filaDeConferencia(dobrado(99.9), HOJE);
+    .find((f) => f.serie === 'Liveliness' && f.campo === 'min').efeito;
+  assert.notEqual(efeito(V), efeito(com(0.40)), 'mudou o valor corrente, mudou o efeito do extremo');
+  const fila = filaDeConferencia(com(0.40), HOJE);
   assert.ok(fila.length > 0);
 });
 
@@ -818,28 +824,53 @@ test('o empate de exibição custa 0,001 ponto no índice, e isso está medido',
   assert.ok(Math.abs(varrer({ varredura: seFosse1212, hoje: HOJE }).indice - base) < 0.001);
 });
 
-test('o Liveliness saiu da fila e a conta andou', () => {
+test('o Liveliness saiu da fila, o Supply in Profit também, e a cabeça andou duas vezes', () => {
   const fila = filaDeConferencia(V, HOJE);
-  assert.ok(!fila.some((f) => f.serie === 'Liveliness' && f.campo === 'max'));
-  assert.equal(fila[0].serie, 'Supply in Profit', 'a nova cabeça');
+  // Saiu por conferência (D57): o valor foi lido e bate.
+  assert.ok(!fila.some((f) => f.serie === 'Liveliness' && f.campo === 'max'),
+    'o Liveliness · max voltou à fila');
+  // E saiu por natureza (D58 A): não é leitura de dia nenhum, então não há o que ler.
+  assert.ok(!fila.some((f) => f.serie === 'Supply in Profit' && f.campo === 'max'),
+    'campo definicional voltou à fila — ele não se confere por tooltip');
+  assert.equal(estadoDoExtremo('Supply in Profit', 'max', V), 'definicional');
+  // A cabeça é agora o extremo móvel, e ele está travado numa pergunta aberta.
+  assert.equal(fila[0].serie, 'US M2');
   assert.equal(fila[0].campo, 'max');
+  assert.equal(especieDoExtremo(fila[0].serie, fila[0].campo, V), 'extremo móvel');
 });
 
 // ══ ESPÉCIES DE EXTREMO ═══════════════════════════════════════════════════
 test('nem todo extremo é leitura empírica de um dia', () => {
-  assert.equal(especieDoExtremo('Supply in Profit', 'max', V), 'teto da métrica');
-  assert.equal(TETOS_DA_METRICA['Supply in Profit'].max, 100);
+  assert.equal(especieDoExtremo('Supply in Profit', 'max', V), 'definicional');
+  assert.equal(LIMITES_DA_DEFINICAO['Supply in Profit'].max, 100);
+  // D58 B: os DOIS limites ficam registrados, não só o teto. Sem o piso, um registro
+  // trazendo 0,00 iria à fila como leitura empírica.
+  assert.equal(LIMITES_DA_DEFINICAO['Supply in Profit'].min, 0);
+  assert.equal(TETOS_DA_METRICA['Supply in Profit'].max, 100, 'o nome antigo segue consultável');
+  // E o outro campo da MESMA série é leitura de um dia, e se confere normalmente.
+  assert.equal(especieDoExtremo('Supply in Profit', 'min', V), 'empírico',
+    '35,6 não é limite de definição nenhum — é leitura de 24/08/2015');
   assert.equal(especieDoExtremo('US M2', 'max', V), 'extremo móvel');
   assert.equal(V['US M2'].valor, V['US M2'].max, 'o valor corrente É a máxima');
   assert.equal(especieDoExtremo('DXY', 'max', V), 'empírico');
   assert.equal(especieDoExtremo('MVRV Ratio', 'min', V), 'empírico');
 });
 
-test('o comando não manda provar a data de um teto de métrica', () => {
+test('D58 A: o comando RECUSA campo definicional, em vez de mandar provar a definição', () => {
   const cmd = comandoDeConferencia({ serie: 'Supply in Profit', campo: 'max' }, V);
-  assert.match(cmd, /TETO DA MÉTRICA/);
-  assert.match(cmd, /Não peça para provar que esta é a data/);
-  assert.ok(!cmd.includes('os dois dias vizinhos'), 'pedir vizinhos aqui seria pedir o impossível');
+  // Antes daqui saía um comando pedindo ao operador que provasse no gráfico que um
+  // percentual não passa de 100. Conferência que não pode falhar não é conferência.
+  assert.equal(cmd.recusado, true, 'o comando voltou a mandar conferir o que é definição');
+  assert.equal(cmd.especie, 'definicional');
+  assert.match(cmd.motivo, /limite da definição/);
+  assert.match(cmd.motivo, /não vai à fila e não se confere por tooltip/i);
+  // A recusa não é um beco: ela diz o que conferir no lugar, uma vez.
+  assert.match(cmd.oQueConferirNoLugar, /ENCOSTA/);
+  assert.match(cmd.oQueConferirNoLugar, /a régua está errada: reportar/);
+  // E o campo empírico da MESMA série continua gerando comando normal.
+  const doMin = comandoDeConferencia({ serie: 'Supply in Profit', campo: 'min' }, V);
+  assert.ok(!doMin.recusado, 'a recusa vazou para o campo que é leitura de um dia');
+  assert.match(doMin, /somente leitura/, 'o campo empírico deixou de gerar comando');
 });
 
 test('o comando avisa que extremo móvel se reconfere a cada leitura', () => {
@@ -1657,22 +1688,25 @@ test('seis séries fora da fila, e as duas travadas são as duas primeiras dela'
   // dois campos em posto confirmado, que é o teto alcançável nesta tela.
   const fora = SERIES.filter((x) => V[x.n] &&
     ['valor', 'min', 'max'].every((c) => estadoDoExtremo(x.n, c, V) !== 'provisório')).map((x) => x.n).sort();
+  // SETE agora: o Supply in Profit entrou quando a D58 A tirou o max da fila.
   assert.deepEqual(fora, ['Curva 10Y-2Y', 'DXY', 'ETF Net Inflow', 'Funding Rate',
-    'MVRV Ratio', 'SOPR']);
-  // E só uma delas não está confirmada por inteiro.
+    'MVRV Ratio', 'SOPR', 'Supply in Profit']);
+  // Duas não estão confirmadas por inteiro, e por motivos diferentes: o ETF por posto
+  // confirmado, o Supply in Profit por ter um campo que é definição e não leitura.
   const porInteiro = fora.filter((n) => ['valor', 'min', 'max'].every((c) => estadoDoExtremo(n, c, V) === 'confirmado'));
   assert.deepEqual(porInteiro.sort(), ['Curva 10Y-2Y', 'DXY', 'Funding Rate', 'MVRV Ratio', 'SOPR']);
   const fila = filaDeConferencia(V, HOJE);
-  assert.equal(fila[0].serie, 'Supply in Profit');
-  assert.equal(especieDoExtremo(fila[0].serie, fila[0].campo, V), 'teto da métrica');
-  assert.equal(fila[1].serie, 'US M2');
-  assert.equal(especieDoExtremo(fila[1].serie, fila[1].campo, V), 'extremo móvel');
-  assert.equal(estadoDosExtremos(V).provisoriosQueImportam, 5);
+  assert.equal(fila[0].serie, 'US M2', 'a cabeça da fila');
+  assert.equal(especieDoExtremo(fila[0].serie, fila[0].campo, V), 'extremo móvel');
+  assert.equal(estadoDosExtremos(V).provisoriosQueImportam, 4);
 });
 
 // ══ D42 · O TERCEIRO ESTADO DO EXTREMO ════════════════════════════════════
 test('D42 A: os estados são três, e o ETF é o caso do terceiro', () => {
-  assert.deepEqual(ESTADOS_DO_EXTREMO, ['confirmado', 'posto confirmado', 'provisório']);
+  // D58 A acrescentou o quarto, e ele vem PRIMEIRO: definicional é decidido antes de
+  // qualquer coisa, porque um campo que é definição nunca chega a ter conferência.
+  assert.deepEqual(ESTADOS_DO_EXTREMO,
+    ['definicional', 'confirmado', 'posto confirmado', 'provisório']);
   assert.equal(estadoDoExtremo('ETF Net Inflow', 'max', V), 'posto confirmado');
   assert.equal(estadoDoExtremo('ETF Net Inflow', 'min', V), 'posto confirmado');
   assert.equal(estadoDoExtremo('ETF Net Inflow', 'valor', V), 'confirmado', '"$242M" bate com 242,3');
@@ -1734,7 +1768,10 @@ test('D42 E: risco e trabalho são contagens diferentes', () => {
   assert.equal(e.postoConfirmado, 2, 'e aparecem separados para trabalho');
   assert.equal(e.confirmadosPorInteiro, 27);
   assert.equal(e.confirmados, 29);
-  assert.equal(e.confirmados + e.provisorios, e.total, 'a conta continua fechando');
+  // D58 A: a conta da conferência fecha contra os CONFERÍVEIS, não contra o total —
+  // o campo definicional está no total e não está na conferência.
+  assert.equal(e.confirmados + e.provisorios, e.conferiveis, 'a conta continua fechando');
+  assert.equal(e.conferiveis + e.definicionais, e.total);
   // A separação é a mesma que a D41 D fez entre régua e leitura.
   assert.equal(e.provisoriosQueImportam, e.provisorios - e.inertesPendentes);
 });
@@ -1787,4 +1824,53 @@ test('D57 C: o comando diz ao operador que empate não retém', () => {
   // E não pode mandar o operador desempatar: era isso que fazia platô virar trabalho.
   assert.ok(!/desempat(e|ar) para (fechar|confirmar)/i.test(texto),
     'o comando voltou a pedir desempate como condição de fechar');
+});
+
+// ── D58 · TETO DE MÉTRICA LIMITADA ───────────────────────────────────────
+test('D58 A: o mesmo valor é definicional num campo e leitura em outro', () => {
+  // O que separa não é a série, é o VALOR bater no limite da definição.
+  assert.equal(ehDefinicional('Supply in Profit', 'max', V), true, '100 é o teto da definição');
+  assert.equal(ehDefinicional('Supply in Profit', 'min', V), false, '35,6 não é limite de nada');
+  // Um registro que trouxesse o piso da definição seria definicional do mesmo jeito —
+  // é isso que a D58 B torna possível saber, e sem o piso registrado não daria.
+  const noPiso = { ...V, 'Supply in Profit': { ...V['Supply in Profit'], min: 0 } };
+  assert.equal(ehDefinicional('Supply in Profit', 'min', noPiso), true,
+    '0 é o piso da definição e teria ido à fila como leitura empírica');
+  // E série sem limites declarados nunca é definicional, dê no que der o valor.
+  assert.equal(LIMITES_DA_DEFINICAO.DXY, undefined);
+  assert.equal(ehDefinicional('DXY', 'max', V), false);
+});
+
+test('D58 C: a régua continua sendo a faixa OBSERVADA, e trocá-la custa caro', () => {
+  const sp = V['Supply in Profit'];
+  const observada = normalizar(sp.valor, sp.min, sp.max, 'linear');
+  const daDefinicao = normalizar(sp.valor, LIMITES_DA_DEFINICAO['Supply in Profit'].min,
+    LIMITES_DA_DEFINICAO['Supply in Profit'].max, 'linear');
+  // A razão escrita na decisão: 0 a 100 achataria a leitura, porque a métrica nunca
+  // desceu abaixo de 35,6 e a distância até lá é espaço morto.
+  assert.notEqual(Number(observada.toFixed(2)), Number(daDefinicao.toFixed(2)));
+  assert.equal(Number((daDefinicao - observada).toFixed(2)), 18.02,
+    'o custo de trocar a régua mudou — a razão escrita na D58 C precisa ser refeita');
+  // E o efeito no Índice, que é a medida que importa.
+  const comDefinicao = { ...V, 'Supply in Profit': { ...sp, min: LIMITES_DA_DEFINICAO['Supply in Profit'].min } };
+  const delta = varrer({ varredura: comDefinicao, hoje: HOJE }).indice - varrer({ varredura: V, hoje: HOJE }).indice;
+  assert.equal(Number(delta.toFixed(4)), 1.7748,
+    'o efeito de usar a faixa da definição mudou — a D58 C precisa ser refeita');
+});
+
+test('⚠️ D58 D: o topo está saturado, e a leitura tem de dizer isso', () => {
+  const sp = V['Supply in Profit'];
+  // A máxima observada É o limite da definição: o indicador não tem para onde subir.
+  assert.equal(sp.max, LIMITES_DA_DEFINICAO['Supply in Profit'].max,
+    'a máxima observada descolou do limite — a ressalva da D58 D deixou de valer aqui');
+  assert.equal(normalizar(sp.max, sp.min, sp.max, 'linear'), 100, 'o topo da régua é alcançável');
+  // E não há valor legal acima dele: 100 é o fim, não uma marca alta.
+  assert.equal(normalizar(sp.max, sp.min, sp.max, 'linear'),
+    normalizar(sp.max + 10, sp.min, sp.max, 'linear'),
+    'passar do limite deixou de saturar — se isso mudou, a métrica não é mais limitada');
+  // Proximidade do teto NÃO é folga: de 95 para 100 a régua anda pouco mais de sete
+  // pontos, e acima disso nada.
+  const de95a100 = normalizar(100, sp.min, sp.max, 'linear') - normalizar(95, sp.min, sp.max, 'linear');
+  assert.equal(Number(de95a100.toFixed(2)), 7.76,
+    'a resolução no topo mudou — a ressalva da D58 D precisa ser refeita');
 });

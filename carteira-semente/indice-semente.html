@@ -188,12 +188,17 @@ else tbC.innerHTML = r.confiancas.map((c) => `<tr>
 // ── EXTREMOS ─────────────────────────────────────────────────────────────
 const e = r.extremos;
 $('subExtremos').innerHTML =
-  `Três estados: <span class="tag t-ok">confirmado</span> valor, data e posto lidos;
+  `Quatro estados: <span class="tag t-ok">confirmado</span> valor, data e posto lidos;
    <span class="tag t-posto">posto confirmado</span> data e posto provados, valor não legível por
-   notação compacta; <span class="tag t-prov">provisório</span> nada conferido.
-   <b>Risco e trabalho são contagens diferentes.</b>`;
+   notação compacta; <span class="tag t-prov">provisório</span> nada conferido;
+   <b>definicional</b> o valor É o limite da definição da métrica — não é leitura de dia nenhum,
+   não vai à fila e não se confere por tooltip.
+   <b>Risco e trabalho são contagens diferentes</b>, e o denominador da conferência é o que é
+   conferível.`;
 $('extremos').innerHTML =
-  card('Conferidos para risco', num(e.confirmados), `de ${num(e.total)} campos`, true) +
+  card('Conferidos para risco', num(e.confirmados), `de ${num(e.conferiveis)} campos conferíveis`, true) +
+  card('Definicionais', num(e.definicionais),
+    `fora da conferência · ${num(e.total)} campos no total`) +
   card('Confirmados', num(e.confirmadosPorInteiro), 'valor, data e posto') +
   card('Posto confirmado', num(e.postoConfirmado), noTetoAlcancavel(V).map((t) => `${t.serie} · ${t.campo}`).join(' · ') || '—') +
   card('Provisórios', num(e.provisorios), 'nada conferido ainda') +

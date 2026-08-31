@@ -561,8 +561,11 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
     // Os extremos e o início da série são PROVISÓRIOS até a leitura no terminal.
     { n: "Exchange Netflow", camada: 4, escala: "lin", inicioSerie: "2011-01-01", extremosProvisorios: true, calendario: "24/7", unidade: null }
   ]);
-  var ESTADOS_DO_EXTREMO = Object.freeze(["confirmado", "posto confirmado", "provisório"]);
+  var ESTADOS_DO_EXTREMO = Object.freeze(
+    ["definicional", "confirmado", "posto confirmado", "provisório"]
+  );
   function estadoDoExtremo(serie, campo, varredura) {
+    if (ehDefinicional(serie, campo, varredura)) return "definicional";
     const v = varredura?.[serie];
     if (v?.confirmado?.[campo]) return "confirmado";
     if (v?.postoConfirmado?.[campo]) return "posto confirmado";
@@ -660,6 +663,12 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
     if (casas === void 0) return null;
     return { registrado: v, naTela: Number(v.toFixed(casas)), casas, excede: excedeATooltip(serie, campo, varredura) };
   }
+  var A_DATA_SO_APONTA_O_CURSOR = Object.freeze({
+    entraNaRegua: false,
+    serve: "dizer ao operador onde apontar o cursor na conferência",
+    empateRetem: false,
+    oQueRetem: "o valor não bater"
+  });
   var SERIES_EM_PATAMAR = Object.freeze({
     "Fed Funds Rate": "fica parada por meses. ⚠️ o patamar lido (01/08/2023 → 31/08/2024) é alinhado ao MÊS, não a datas de FOMC — pode ser série mensal, e isso não foi conferido",
     "US M2": "série mensal: cada leitura vale até a publicação do mês seguinte",
@@ -727,12 +736,17 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
   function estadoDosExtremos(varredura) {
     const porSerie = /* @__PURE__ */ new Map();
     let confirmadosPorInteiro = 0, postoConfirmado = 0, total = 0, inertesPendentes = 0;
+    let definicionais = 0;
     for (const s of SERIES) {
       const v = varredura?.[s.n];
       if (!v) continue;
       for (const campo of ["valor", "min", "max"]) {
         total++;
         const estado = estadoDoExtremo(s.n, campo, varredura);
+        if (estado === "definicional") {
+          definicionais++;
+          continue;
+        }
         if (estado === "confirmado") {
           confirmadosPorInteiro++;
           continue;
@@ -746,20 +760,32 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
       }
     }
     const confirmados = confirmadosPorInteiro + postoConfirmado;
+    const conferiveis = total - definicionais;
     return {
       total,
+      definicionais,
+      conferiveis,
       confirmados,
       confirmadosPorInteiro,
       postoConfirmado,
-      provisorios: total - confirmados,
+      provisorios: conferiveis - confirmados,
       series: [...porSerie].map(([serie, campos]) => ({ serie, campos })),
       // Dos provisórios, quantos não mudam o índice nem se estiverem dez vezes errados.
       inertesPendentes,
-      provisoriosQueImportam: total - confirmados - inertesPendentes
+      provisoriosQueImportam: conferiveis - confirmados - inertesPendentes
     };
   }
   var METODOS_DE_CONFERENCIA = Object.freeze(["dígito", "pixel", "eixo", "calendário"]);
-  var TETOS_DA_METRICA = Object.freeze({ "Supply in Profit": { max: 100 } });
+  var LIMITES_DA_DEFINICAO = Object.freeze({
+    "Supply in Profit": Object.freeze({ min: 0, max: 100, unidade: "% do supply" })
+  });
+  var TETOS_DA_METRICA = Object.freeze(
+    Object.fromEntries(Object.entries(LIMITES_DA_DEFINICAO).map(([serie, l]) => [serie, Object.freeze({ max: l.max })]))
+  );
+  var ehDefinicional = (serie, campo, varredura) => {
+    const limite = LIMITES_DA_DEFINICAO[serie]?.[campo];
+    return limite !== void 0 && varredura?.[serie]?.[campo] === limite;
+  };
   function varrer({ varredura, hoje, camada5: camada52 = null, anterior = null }) {
     const ausencias = [];
     const lidos = /* @__PURE__ */ new Map();
@@ -1117,6 +1143,36 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
         // até ±0,00005, e essa incerteza move o Índice em ±0,00105 ponto.
         incertezaDaExibicao: { faixa: [0.64095, 0.64105], efeitoNoIndice: 105e-5 },
         telaRestaurada: 'range ALL, MVRV Ratio de volta como indicador aberto, busca com "MVRV Ratio", página no topo, sidebar reaberta; nada publicado, alterado ou apagado, nenhum print salvo'
+      }, {
+        // D57: SEGUNDA conferência do mesmo campo, 31/08/2026. A primeira fica onde
+        // está — registro não se sobrescreve. Esta acrescenta duas coisas que a
+        // primeira não tinha: uma segunda fonte na mesma tela, e o tamanho real do platô.
+        campo: "max",
+        em: "2026-08-31",
+        metodo: "tooltip em zoom estreito, com passo do cursor em 1 dia, mais varredura por faixa de 22/11/2025 a 06/02/2026",
+        lido: "0.6410 — dígito a dígito",
+        // ⚠️ REFORÇO INDEPENDENTE, e é o que fecha o campo: o próprio terminal carimba
+        // o topo da janela. Duas fontes na MESMA tela concordando — a tooltip, que é
+        // leitura do operador, e o Window High, que é cálculo do terminal.
+        segundaFonte: {
+          onde: "carimbo Window High do terminal, range ALL",
+          diz: "Window High 0.6410 · DEC 20, 2025",
+          porQueVale: "não é a mesma leitura duas vezes: a tooltip é o operador lendo um dia, o Window High é o terminal declarando o topo da janela inteira"
+        },
+        // ⚠️ O PLATÔ É MAIOR DO QUE A PRIMEIRA CONFERÊNCIA VIU: são SEIS dias no mesmo
+        // dígito exibido, não dois. E o segundo colocado está em 0,6409 — um dígito de
+        // folga na última casa.
+        plato: {
+          dias: 6,
+          valorExibido: 0.641,
+          segundoColocado: 0.6409,
+          leitura: "dezembro de 2025 inteiro colado em 0,641"
+        },
+        // D57 B, medido e não estimado: qual dos seis dias leva o crédito NÃO muda a
+        // régua. Trocando dataMax por cada um dos seis, o Índice sai idêntico nos seis.
+        // O contraste dá a medida do que importa: trocar o VALOR de 0,6410 para 0,6409
+        // move o Índice em 0,0021 ponto. A data vale zero; o último dígito vale 0,0021.
+        efeitoDaDataNaRegua: { indiceIdenticoNosSeisDias: true, efeitoDeUmDigitoNoValor: 21e-4 }
       }]
     },
     "DXY": {
@@ -1605,11 +1661,18 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
   <td>${c.indicador}</td><td class="n">${num(c.confianca, 4)}</td>
   <td class="n">${num(c.bruto, 2)}</td><td class="n"><b>${num(c.ajustado, 2)}</b></td></tr>`).join("");
   var e = r.extremos;
-  $("subExtremos").innerHTML = `Três estados: <span class="tag t-ok">confirmado</span> valor, data e posto lidos;
+  $("subExtremos").innerHTML = `Quatro estados: <span class="tag t-ok">confirmado</span> valor, data e posto lidos;
    <span class="tag t-posto">posto confirmado</span> data e posto provados, valor não legível por
-   notação compacta; <span class="tag t-prov">provisório</span> nada conferido.
-   <b>Risco e trabalho são contagens diferentes.</b>`;
-  $("extremos").innerHTML = card("Conferidos para risco", num(e.confirmados), `de ${num(e.total)} campos`, true) + card("Confirmados", num(e.confirmadosPorInteiro), "valor, data e posto") + card("Posto confirmado", num(e.postoConfirmado), noTetoAlcancavel(VARREDURA_29_08_2026).map((t) => `${t.serie} · ${t.campo}`).join(" · ") || "—") + card("Provisórios", num(e.provisorios), "nada conferido ainda") + card(
+   notação compacta; <span class="tag t-prov">provisório</span> nada conferido;
+   <b>definicional</b> o valor É o limite da definição da métrica — não é leitura de dia nenhum,
+   não vai à fila e não se confere por tooltip.
+   <b>Risco e trabalho são contagens diferentes</b>, e o denominador da conferência é o que é
+   conferível.`;
+  $("extremos").innerHTML = card("Conferidos para risco", num(e.confirmados), `de ${num(e.conferiveis)} campos conferíveis`, true) + card(
+    "Definicionais",
+    num(e.definicionais),
+    `fora da conferência · ${num(e.total)} campos no total`
+  ) + card("Confirmados", num(e.confirmadosPorInteiro), "valor, data e posto") + card("Posto confirmado", num(e.postoConfirmado), noTetoAlcancavel(VARREDURA_29_08_2026).map((t) => `${t.serie} · ${t.campo}`).join(" · ") || "—") + card("Provisórios", num(e.provisorios), "nada conferido ainda") + card(
     "Que importam",
     num(e.provisoriosQueImportam),
     `${num(e.inertesPendentes)} são inertes por construção`,

@@ -61,9 +61,17 @@ export const SERIES = Object.freeze([
  * sobe para 'confirmado' se aparecer exportação, API ou tooltip em precisão cheia.
  * Fica dito, não fica pendente para sempre como se fosse desleixo.
  */
-export const ESTADOS_DO_EXTREMO = Object.freeze(['confirmado', 'posto confirmado', 'provisório']);
+export const ESTADOS_DO_EXTREMO = Object.freeze(
+  ['definicional', 'confirmado', 'posto confirmado', 'provisório']);
 
+/**
+ * D58 A: DEFINICIONAL vem antes de tudo. Valor que é o limite da própria definição não
+ * vai à fila, não se confere por tooltip, e **não conta como provisório** — não há o que
+ * ler. Pedir a alguém que prove no gráfico que um percentual não passa de 100 é pedir
+ * que prove a definição, e conferência que não pode falhar não é conferência.
+ */
 export function estadoDoExtremo(serie, campo, varredura) {
+  if (ehDefinicional(serie, campo, varredura)) return 'definicional';
   const v = varredura?.[serie];
   if (v?.confirmado?.[campo]) return 'confirmado';
   if (v?.postoConfirmado?.[campo]) return 'posto confirmado';
@@ -436,11 +444,16 @@ export function efeitoDosExtremos(varredura, hoje, erro = 0.10) {
 export function estadoDosExtremos(varredura) {
   const porSerie = new Map();
   let confirmadosPorInteiro = 0, postoConfirmado = 0, total = 0, inertesPendentes = 0;
+  let definicionais = 0;
   for (const s of SERIES) {
     const v = varredura?.[s.n]; if (!v) continue;
     for (const campo of ['valor', 'min', 'max']) {
       total++;
       const estado = estadoDoExtremo(s.n, campo, varredura);
+      // D58 A: definicional não é conferido nem por conferir — é de outra natureza.
+      // Contá-lo como confirmado inflaria a conferência; como provisório, inventaria
+      // trabalho que não existe. Fica na própria coluna.
+      if (estado === 'definicional') { definicionais++; continue; }
       if (estado === 'confirmado') { confirmadosPorInteiro++; continue; }
       if (estado === 'posto confirmado') { postoConfirmado++; continue; }
       porSerie.set(s.n, [...(porSerie.get(s.n) ?? []), campo]);
@@ -451,13 +464,18 @@ export function estadoDosExtremos(varredura) {
   // Para RISCO, posto confirmado conta como conferido — o dia da régua está provado.
   // Para TRABALHO, ele aparece à parte: não há o que fazer nele nesta tela.
   const confirmados = confirmadosPorInteiro + postoConfirmado;
+  // D58 A: o denominador de conferência é o que É conferível. Definicional sai dele —
+  // deixá-lo dentro faria a fila parecer eternamente incompleta por causa de um campo
+  // que ninguém pode fechar.
+  const conferiveis = total - definicionais;
   return {
-    total, confirmados, confirmadosPorInteiro, postoConfirmado,
-    provisorios: total - confirmados,
+    total, definicionais, conferiveis,
+    confirmados, confirmadosPorInteiro, postoConfirmado,
+    provisorios: conferiveis - confirmados,
     series: [...porSerie].map(([serie, campos]) => ({ serie, campos })),
     // Dos provisórios, quantos não mudam o índice nem se estiverem dez vezes errados.
     inertesPendentes,
-    provisoriosQueImportam: (total - confirmados) - inertesPendentes,
+    provisoriosQueImportam: (conferiveis - confirmados) - inertesPendentes,
   };
 }
 
@@ -488,10 +506,35 @@ export function estadoDosExtremos(varredura) {
  */
 export const METODOS_DE_CONFERENCIA = Object.freeze(['dígito', 'pixel', 'eixo', 'calendário']);
 
-export const TETOS_DA_METRICA = Object.freeze({ 'Supply in Profit': { max: 100 } });
+/**
+ * D58 B: métrica limitada por definição carrega os DOIS limites, junto dos extremos
+ * observados. Sem os dois não dá para saber se um valor registrado é definicional ou
+ * lido — e essa é exatamente a pergunta que a D58 A manda responder antes de enfileirar.
+ *
+ * Antes daqui só existia o teto. O piso faltava, e faltava calado: um registro trazendo
+ * 0,00 em Supply in Profit teria ido à fila como leitura empírica, e ninguém teria como
+ * conferir por tooltip uma propriedade da definição.
+ */
+export const LIMITES_DA_DEFINICAO = Object.freeze({
+  'Supply in Profit': Object.freeze({ min: 0, max: 100, unidade: '% do supply' }),
+});
+
+/** Compatibilidade de leitura: o teto continua consultável pelo nome antigo. */
+export const TETOS_DA_METRICA = Object.freeze(
+  Object.fromEntries(Object.entries(LIMITES_DA_DEFINICAO)
+    .map(([serie, l]) => [serie, Object.freeze({ max: l.max })])));
+
+/**
+ * D58 A: valor registrado que É o limite da definição não é leitura de dia nenhum —
+ * é propriedade da métrica. Qualquer outro valor é leitura de um dia como as outras.
+ */
+export const ehDefinicional = (serie, campo, varredura) => {
+  const limite = LIMITES_DA_DEFINICAO[serie]?.[campo];
+  return limite !== undefined && varredura?.[serie]?.[campo] === limite;
+};
 
 export function especieDoExtremo(serie, campo, varredura) {
-  if (TETOS_DA_METRICA[serie]?.[campo] === varredura?.[serie]?.[campo]) return 'teto da métrica';
+  if (ehDefinicional(serie, campo, varredura)) return 'definicional';
   // O valor corrente É o extremo: a régua não tem ponta fixa, ela anda com a série.
   // É o mesmo fato que zera o efeito do outro extremo (D41 C).
   if (varredura?.[serie] && varredura[serie].valor === varredura[serie][campo]) return 'extremo móvel';
@@ -513,6 +556,19 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
   if (!data) return { erro: `sem a data do ${campo} de ${serie} — não dá para dizer onde estreitar a janela` };
   const ehExtremo = campo !== 'valor';
   const especie = ehExtremo ? especieDoExtremo(serie, campo, varredura) : 'empírico';
+  // D58 A: definicional NÃO se confere. Antes daqui saía um comando pedindo ao operador
+  // que provasse no gráfico que um percentual não passa de 100 — pedir prova da
+  // definição. Conferência que não pode falhar não é conferência: aqui ela é RECUSADA,
+  // com o motivo, em vez de gastar uma ida ao terminal.
+  if (especie === 'definicional') {
+    const l = LIMITES_DA_DEFINICAO[serie];
+    return { recusado: true, serie, campo, especie,
+      motivo: `${alvo} é o limite da definição de ${serie} (${l.min} a ${l.max} ${l.unidade}), ` +
+        'não a leitura de um dia. Não vai à fila e não se confere por tooltip.',
+      oQueConferirNoLugar: `que a série realmente ENCOSTA em ${alvo} alguma vez, e que a escala do ` +
+        'gráfico no ALL não passa disso em ponto nenhum. Se ela nunca encostar, o extremo é ' +
+        'empírico e a régua está errada: reportar.' };
+  }
   const unidade = SERIES.find((x) => x.n === serie)?.unidade ?? null;
   const caminho = SERIES.find((x) => x.n === serie)?.caminhoNoMenu ?? null;
   return [
@@ -597,23 +653,7 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
       'o VALOR do extremo. Empate no topo ou no fundo não é divergência e não retém a conferência —',
       'o que retém é o valor não bater. Se houver empate, registre quantos dias empatam e siga.',
     ] : []),
-    ...(dataSuspeitaDeCarregamento(serie, data) ? [
-      '',
-      `⚠️ ${serie} é série de PREGÃO e ${data} caiu num fim de semana: o terminal repete o fechamento`,
-      'da sexta no sábado e no domingo. Espere ver o mesmo número em três dias seguidos — não é empate',
-      'de arredondamento e nenhum zoom os separa. O dia do extremo é o último pregão, e quem decide',
-      'isso é o calendário, não a tela. Registrar os dias repetidos assim mesmo: sem isso o empate',
-      'reaparece na próxima conferência e parece erro.',
-    ] : []),
-    ...(especie === 'teto da métrica' ? [
-      '',
-      `⚠️ ${alvo} é o TETO DA MÉTRICA, não uma leitura de um dia — ${serie} é percentual, e 100 é o`,
-      'limite da definição. Não peça para provar que esta é a data: a série encosta no teto em muitos',
-      'dias, e nenhum deles é "o" extremo. Duas coisas, e a data não é uma delas:',
-      `  1. que a série realmente ENCOSTA em ${alvo} — a tooltip de ${data} lendo ${alvo} basta;`,
-      `  2. que a escala do gráfico no ALL não passa de ${alvo} em ponto nenhum.`,
-      'Se a série nunca encostar no teto, o extremo é empírico e a régua está errada: reportar.',
-    ] : especie === 'extremo móvel' ? [
+    ...(especie === 'extremo móvel' ? [
       '',
       `⚠️ Este extremo é MÓVEL: o valor corrente de ${serie} É a ${campo === 'min' ? 'mínima' : 'máxima'}`,
       `(${alvo}), então a régua anda junto com a série e esta conferência vale só para a leitura de hoje.`,
@@ -623,7 +663,7 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
       'Reconferir a cada leitura nova do indicador, não uma vez só.',
     ] : ehExtremo ? [
       '',
-      // A conferência de 19/10/2011 mostrou que o comando pedia pouco: ler a tooltip',
+      // A conferência de 19/10/2011 mostrou que o comando pedia pouco: ler a tooltip
       // prova que o NÚMERO daquele dia está certo, não que aquele dia é o extremo.
       'Três coisas, não uma:',
       `  1. o valor de ${data}, dígito a dígito;`,
@@ -636,6 +676,14 @@ export function comandoDeConferencia({ serie, campo }, varredura) {
       'casas e os dois caem no mesmo arredondamento. Estreitar até os dois se separarem na tela, e',
       'registrar que a separação foi por pixel, não por dígito — é outro método, e fica nomeado.',
       'Se houver outro indicador na mesma tooltip, anotar também: serve de cruzamento.',
+    ] : []),
+    ...(dataSuspeitaDeCarregamento(serie, data) ? [
+      '',
+      `⚠️ ${serie} é série de PREGÃO e ${data} caiu num fim de semana: o terminal repete o fechamento`,
+      'da sexta no sábado e no domingo. Espere ver o mesmo número em três dias seguidos — não é empate',
+      'de arredondamento e nenhum zoom os separa. O dia do extremo é o último pregão, e quem decide',
+      'isso é o calendário, não a tela. Registrar os dias repetidos assim mesmo: sem isso o empate',
+      'reaparece na próxima conferência e parece erro.',
     ] : []),
     '',
     'Nunca publica, nunca altera, nunca apaga. Restaura o estado da tela. A sidebar nunca aparece.',

@@ -152,7 +152,9 @@ tr.mordeu td{color:var(--z3)}
     // Os extremos e o início da série são PROVISÓRIOS até a leitura no terminal.
     { n: "Exchange Netflow", camada: 4, escala: "lin", inicioSerie: "2011-01-01", extremosProvisorios: true, calendario: "24/7", unidade: null }
   ]);
-  var ESTADOS_DO_EXTREMO = Object.freeze(["confirmado", "posto confirmado", "provisório"]);
+  var ESTADOS_DO_EXTREMO = Object.freeze(
+    ["definicional", "confirmado", "posto confirmado", "provisório"]
+  );
   var CASAS_NA_TOOLTIP = Object.freeze({
     "Preço do BTC": 0,
     "MVRV Ratio": 3,
@@ -205,6 +207,12 @@ tr.mordeu td{color:var(--z3)}
       fraqueza: "o modo SMA suaviza dentro do pixel: extremo de um dia lê mais raso do que é. Não é ruído — é viés de um lado só, e o número que sai parece plausível"
     }
   ]);
+  var A_DATA_SO_APONTA_O_CURSOR = Object.freeze({
+    entraNaRegua: false,
+    serve: "dizer ao operador onde apontar o cursor na conferência",
+    empateRetem: false,
+    oQueRetem: "o valor não bater"
+  });
   var SERIES_EM_PATAMAR = Object.freeze({
     "Fed Funds Rate": "fica parada por meses. ⚠️ o patamar lido (01/08/2023 → 31/08/2024) é alinhado ao MÊS, não a datas de FOMC — pode ser série mensal, e isso não foi conferido",
     "US M2": "série mensal: cada leitura vale até a publicação do mês seguinte",
@@ -251,7 +259,12 @@ tr.mordeu td{color:var(--z3)}
     ["Preço do BTC", "Realized Price", "Realized Price STH", "Realized Price LTH"]
   );
   var METODOS_DE_CONFERENCIA = Object.freeze(["dígito", "pixel", "eixo", "calendário"]);
-  var TETOS_DA_METRICA = Object.freeze({ "Supply in Profit": { max: 100 } });
+  var LIMITES_DA_DEFINICAO = Object.freeze({
+    "Supply in Profit": Object.freeze({ min: 0, max: 100, unidade: "% do supply" })
+  });
+  var TETOS_DA_METRICA = Object.freeze(
+    Object.fromEntries(Object.entries(LIMITES_DA_DEFINICAO).map(([serie, l]) => [serie, Object.freeze({ max: l.max })]))
+  );
 
   // alocador/alocador.mjs
   var BASES_DO_ESTADO = Object.freeze({
