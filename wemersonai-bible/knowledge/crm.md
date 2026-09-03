@@ -22,35 +22,46 @@ girava em torno de US$4.200 investidos. A gestão é sempre manual (não há apo
 automático) e a consistência importa mais que o tamanho do aporte.
 
 ### Ativos operados na CRM
-O núcleo é **BTC** (ativo de risco) + **USDT** (caixa), com **PAXG (ouro)** como posição
-defensiva **recorrente** (está em 40% agora e já foi usado antes). Pontualmente já teve
-**posições táticas menores em SOL (abr/26)** e **ETH (mai/26)** — mas **não mantém uma cesta
-fixa de altcoins**. O Gui nunca faz operações vendidas ("short nem na praia"). No PAXG, os
-stops são sempre por ordem limite, nunca a mercado, pela baixa liquidez do book.
+CONFIRMADO na plataforma (03/09/2026, página Carteira): a CRM opera **BTC + PAXG (ouro) +
+caixa (USDT)** e, atualmente, também **altcoins**: **DOT, AERO, MORPHO e VIRTUAL**. Composição
+vigente: **PAXG 41% · BTC 20% · DOT 15% · AERO 5% · MORPHO 2% · VIRTUAL 2% · Caixa 15%**. (Antes
+já teve SOL/ETH em posições táticas; hoje a cesta inclui esses quatro altcoins.) O Gui nunca faz
+operações vendidas ("short nem na praia"). No PAXG, os stops são sempre por ordem limite, nunca
+a mercado, pela baixa liquidez do book.
 
 ### Composição atual da carteira
-Última decisão oficial confirmada (05/08/2026, canal Decisões): **BTC 20% · PAXG 40% ·
-USDT 40%**. A composição muda conforme o gerenciamento — se já passou tempo desde 05/08,
-confirme na CRM se houve decisão nova. Não crave número velho.
+CONFIRMADO na plataforma (leitura de 03/09/2026, página Carteira — "% a partir do preço de entrada"):
+- **PAXG (ouro) 41%** — entrada US$4.190,00 · atual US$4.477,67 (**+6,87%**)
+- **BTC 20%** — entrada US$77.616,00 · atual US$81.573,00 (**+5,10%**)
+- **DOT 15%** — entrada US$0,83 · atual US$0,90 (**+8,58%**)
+- **AERO 5%** — entrada US$0,47 · atual US$0,51 (**+8,24%**)
+- **MORPHO 2%** — entrada US$2,35 · atual US$2,54 (**+8,09%**)
+- **VIRTUAL 2%** — entrada US$0,76 · atual US$0,71 (**−6,79%**)
+- **Caixa (USDT) 15%**
+
+Os preços "atual" são a leitura do dia (03/09) e mudam a cada minuto; a composição e os preços de
+entrada são a posição vigente. Para o valor do momento, confirme na plataforma. Não crave número velho.
 
 ### Última compra/entrada (oficial)
-As duas decisões oficiais mais recentes, ambas de **05/08/2026**: entrada em **BTC 20% a
-US$64.055** (sem stop programado, 11:53) e, ~1h depois, entrada em **PAXG 40% a US$4.190**
-(por ordem limite, 13:05). Antes disso, em 28/07 a posição de BTC foi encerrada a US$63.132.
-A posição vigente é sempre a última publicada na CRM. Compilado completo em
-`historico-decisoes.md`.
+Entradas vigentes CONFIRMADAS na plataforma (03/09/2026): **BTC a US$77.616** (20%), **PAXG a
+US$4.190** (41%), **DOT a US$0,83** (15%), **AERO a US$0,47** (5%), **MORPHO a US$2,35** (2%),
+**VIRTUAL a US$0,76** (2%), caixa 15%. ⚠️ A entrada de BTC **subiu de ~US$64.055 (05/08) para
+US$77.616** — houve nova entrada em preço mais alto. A posição vigente é sempre a última publicada
+na CRM; datas e ordem de cada entrada no `historico-decisoes.md`.
 
 ### A carteira tem SOL ou outras altcoins?
-O núcleo é BTC + USDT, com PAXG (ouro) como defensivo. **Hoje não há posição em SOL.** Mas,
-pra ser preciso: pontualmente já houve posições táticas em **SOL (abr/26)** e **ETH (mai/26)** —
-a carteira não mantém uma cesta fixa de altcoins, foram operações pontuais. A posição vigente é
-sempre a última publicada na CRM (hoje: BTC 20% · PAXG 40% · USDT 40%).
+**Sim — hoje a CRM tem altcoins na composição:** **DOT 15%, AERO 5%, MORPHO 2% e VIRTUAL 2%**
+(além de BTC 20%, PAXG 41% e caixa 15%), confirmado na plataforma em 03/09/2026. **SOL**
+especificamente **não está** na composição atual (já houve posição tática em SOL em abr/26). A
+posição vigente é sempre a última publicada na CRM — confirme lá pra pegar a cesta do momento.
 
 ### Tem stop ou take profit no BTC agora?
-Os stops são definidos operação a operação, conforme o gerenciamento de risco do momento
-(ex.: numa entrada recente foi programado um stop "zero a zero" em torno de US$61.220). Não
-existe stop ou alvo fixo permanente: o vigente é sempre o último comunicado oficialmente na
-CRM (vídeo das 18h). Confirmar sempre por lá.
+**BTC: sem stop** — é gerenciado por **risco**, não por preço. Stops por ativo (conforme
+atualização de 03/09/2026): **PAXG (ouro): stop em US$4.000**; **DOT, AERO, VIRTUAL: só
+invalidações/suportes (não são stops)**; **MORPHO: sem stop**. O Gui faz o gerenciamento manual
+e avisa a comunidade no feed quando há mudança. A definição vigente é sempre a última publicada
+na CRM (vídeo das 18h) — confirmar por lá. (Os stops acima vieram da atualização diária; ainda
+não conferidos na tela de gerenciamento da plataforma.)
 
 ### Vão abrir um novo trade (long) no BTC?
 A estratégia é construir posição de forma gradual quando a relação risco/retorno é
@@ -189,7 +200,9 @@ Preservar capital também é performance.
 
 ### Resumo oficial recente (fonte: canal Decisões — CONFIRMADO)
 - **05/08:** entrada BTC 20% @ US$64.055 (sem stop) + entrada PAXG 40% @ US$4.190 (ordem
-  limite) → **composição vigente BTC 20% / PAXG 40% / USDT 40%**.
+  limite) → composição **naquele momento** BTC 20% / PAXG 40% / USDT 40%. ⚠️ **Superada:** a
+  composição vigente confirmada na plataforma em **03/09** (com DOT/AERO/MORPHO/VIRTUAL e BTC
+  reentrado a US$77.616) está no verbete "Composição atual da carteira".
 - **04/08:** post de leitura "A capitulação é um evento, não um preço" (sem decisão de
   carteira) — cita ~2,04 mi BTC movidos na faixa dos US$63k, comparação com o fundo de 2022,
   e aponta o hack da Coldcard como gatilho.
