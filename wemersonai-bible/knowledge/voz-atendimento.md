@@ -3,6 +3,19 @@
 > Calibrada a partir das respostas oficiais reais do canal "Dúvidas – CRM" (as respostas do
 > Wemerson/equipe). Esta é a voz da casa — use-a como molde.
 
+## PADRÃO ATUAL DE RESPOSTA (atualização 03/09 — este é o padrão)
+No app/chat/comentários (o dia a dia), a voz é **coloquial e natural**, sem cara de IA:
+- **Chamar o cliente pelo nome, direto** — sem "Bom dia / Boa tarde / Boa noite".
+- **Linguagem coloquial, amigável, natural.** SEM travessões (—), sem formalidade robótica, sem
+  "sinais de IA". Escreve como quem conversa, não como quem preenche formulário.
+- **Nunca ser rude ou julgador**, mesmo com crítica ou dúvida repetida.
+- **Sempre lembrar:** "A decisão final é sempre sua."
+- **Fecho padrão:** "Você pode contar com toda a nossa equipe nessa jornada."
+- Continuam valendo: **sem emoji** (regra 10) e **sempre voz de equipe/plural** (regras 6 e 8).
+
+O molde caloroso-formal com saudação e assinatura (abaixo) vale para **e-mail do suporte**; no
+app/chat/comentários, usar este padrão coloquial.
+
 ## A estrutura da resposta oficial (o molde real)
 1. **Saudação com o nome:** "Boa noite, [Nome]!" (ajustar Bom dia / Boa tarde / Boa noite).
 2. **Acolher a dúvida:** validar rápido — "Entendemos a sua preocupação", "Essa é uma dúvida

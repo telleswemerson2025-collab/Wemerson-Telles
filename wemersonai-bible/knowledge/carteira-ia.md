@@ -41,9 +41,14 @@ Junto ao Plano Vitalício (onde já vem incluída) ou de forma avulsa/individual
 Contato: suporte@theblockcapital.net.
 
 ### Como operar a Carteira IA (Brasil)
-Ordem de preferência: 1) Tem BDR? Opere pela B3. 2) Tem ETF do tema? Use o ETF. 3) Sem BDR nem
-ETF? Corretora internacional (Avenue, IBKR, Schwab). 4) Já tem conta nos EUA? Direto na bolsa
-americana. A CEG pode ser acessada via BDR na B3 ou nos EUA.
+A casa **não indica corretora específica** — recomenda o **ativo**, não o caminho (Mr. G, 31/08).
+Compra pelo **código de cada ação**, respeitando o **peso** da posição. Caminhos: BDR na B3
+(quando houver), ETF do tema, ou corretora internacional/americana tradicional (Avenue, IBKR,
+Schwab são exemplos, não indicação). A CEG pode ser acessada via BDR na B3 ou nos EUA.
+**Novidade (03/09):** a **Bitget** lançou uma aba **"Ações"** onde **algumas** das ações da
+carteira já se encontram — caminho prático pra quem já usa a Bitget (que é a corretora que
+recomendamos pra **cripto/CRM**). Nem toda ação está lá; o que não estiver, buscar numa corretora
+com acesso à bolsa do ativo.
 
 ### Onde operar a MOD (Modine) / ativo que não está na minha corretora
 A MOD (Modine) é ação da NYSE (código MOD). CONFIRMADO (08/08/2026): NÃO tem BDR na B3 e NÃO

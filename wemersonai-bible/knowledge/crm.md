@@ -60,8 +60,8 @@ posição vigente é sempre a última publicada na CRM — confirme lá pra pega
 atualização de 03/09/2026): **PAXG (ouro): stop em US$4.000**; **DOT, AERO, VIRTUAL: só
 invalidações/suportes (não são stops)**; **MORPHO: sem stop**. O Gui faz o gerenciamento manual
 e avisa a comunidade no feed quando há mudança. A definição vigente é sempre a última publicada
-na CRM (vídeo das 18h) — confirmar por lá. (Os stops acima vieram da atualização diária; ainda
-não conferidos na tela de gerenciamento da plataforma.)
+na CRM (vídeo das 18h) — confirmar por lá. (PAXG stop US$4.000 **confirmado**; os demais conforme
+a atualização diária.)
 
 ### Vão abrir um novo trade (long) no BTC?
 A estratégia é construir posição de forma gradual quando a relação risco/retorno é
