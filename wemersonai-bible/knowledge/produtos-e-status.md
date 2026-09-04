@@ -36,3 +36,12 @@ unidas às da CRM. Os clientes ativos da CO serão avisados quando esse sinal oc
   não achar, o suporte reenvia (ou usa outro e-mail).
 - **Cliente deslogado do app** (aconteceu com vários de uma vez): a TheMembers recomenda
   **desinstalar e reinstalar** o aplicativo.
+
+### Som da notificação de decisão — como ativar (confirmado 04/09)
+O som da notificação **existe**, mas quem controla é o **próprio celular**, do mesmo jeito que se
+libera notificação e som de qualquer outro app. Até o momento **não há um seletor de som próprio
+dentro da plataforma**. Orientação: nas configurações do aparelho, achar o app da plataforma na
+lista de notificações e permitir notificações **com som** (às vezes vem no silencioso); dependendo
+do celular, dá pra escolher um som mais alto ou marcar como prioridade, pra não perder a hora das
+compras. Se não tocar mesmo liberado, reinstalar o app costuma resolver; e cadastrar o e-mail
+garante receber a decisão por um segundo caminho.
