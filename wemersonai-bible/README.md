@@ -15,7 +15,7 @@ Base estruturada com as respostas oficiais para atender clientes/alunos da Block
 ## Como usar
 Cole a dúvida do cliente e responda a partir da base, na linguagem acessível.
 NUNCA inventar: se não estiver na base, confirmar / encaminhar pro suporte
-(suporte@theblockcapital.net).
+(suporte@theblockcapital.com).
 
 ## Como crescer a base
 Dúvida nova + resposta oficial → adicionar no arquivo de `knowledge/` da área certa,

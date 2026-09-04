@@ -1,7 +1,7 @@
 # BlockCapital — Comercial e acesso (respostas oficiais)
 
 > Planos, pagamento, reembolso, renovação, acesso. Tudo que for conta/pagamento/acesso
-> travado → escalar pro suporte: **suporte@theblockcapital.net**
+> travado → escalar pro suporte: **suporte@theblockcapital.com**
 
 ### Planos e valores
 **CRM (Rumo ao Milhão) — página oficial (carteirarumoaomilhao.com):** plano Anual por
@@ -48,7 +48,7 @@ acesso o mais rápido possível.
 Pode ser solicitado em até 7 dias corridos a partir da liberação do acesso, conforme o
 Código de Defesa do Consumidor. A renovação é automática ao fim do período contratado, e o
 reembolso vale apenas para a transação inicial dentro desses 7 dias. Dúvidas sobre o
-processo: suporte@theblockcapital.net
+processo: suporte@theblockcapital.com
 
 ### Reembolso de RENOVAÇÃO AUTOMÁTICA — NÃO há
 **Renovação automática não tem reembolso.** Conforme os termos da Hotmart, o cliente deve
@@ -80,21 +80,21 @@ que fazer ou como fazer? Não faz."*
 
 ### Pagamento em cripto aceita USDC?
 Sim — atualmente aceita **os dois: USDT e USDC** (rede BSC/BEP-20). Envie o comprovante/TXID
-pro suporte (suporte@theblockcapital.net) pra liberação manual. (Resolvido em ago/2026; a
+pro suporte (suporte@theblockcapital.com) pra liberação manual. (Resolvido em ago/2026; a
 orientação antiga de "converter USDC pra USDT antes" não vale mais.)
 
 ### Renovação automática e como cancelar
 O plano Anual tem renovação automática ao fim do período. Se não quiser renovar, avise o
-suporte (suporte@theblockcapital.net) antes da data de renovação para interromper a
+suporte (suporte@theblockcapital.com) antes da data de renovação para interromper a
 cobrança. O reembolso vale apenas para a transação inicial, dentro dos 7 dias da liberação.
 
 ### Como acessar os conteúdos e vídeos
 Depois que o acesso é liberado, você entra pela área de membros. A CRM fica em
 www.guitelles.academy e o painel em dashboard.themembers.com.br. Dificuldade pra entrar:
-suporte@theblockcapital.net
+suporte@theblockcapital.com
 
 ### Suporte e contato
-E-mail de suporte: suporte@theblockcapital.net. Retornamos o mais rápido possível.
+E-mail de suporte: suporte@theblockcapital.com. Retornamos o mais rápido possível.
 
 ### O que está incluído na CRM (da página de vendas)
 Todas as decisões de compra e venda prontas pra copiar; o app exclusivo com a carteira

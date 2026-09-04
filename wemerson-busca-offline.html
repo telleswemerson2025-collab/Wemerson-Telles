@@ -61,13 +61,13 @@
   /* Cada item: agent, title (assunto), answer (texto pronto p/ copiar), keys (palavras-chave/sinônimos) */
   var KB = [
     { agent:"BlockCapital AI", title:"Reembolso", keys:"reembolso estorno devolucao devolver cancelar cancelamento arrependimento dinheiro de volta garantia 7 dias",
-      answer:"O reembolso pode ser solicitado em até 7 dias corridos a partir da liberação do acesso, conforme o Código de Defesa do Consumidor. A renovação é automática ao fim do período contratado, e o reembolso vale apenas para a transação inicial dentro desses 7 dias. Qualquer dúvida sobre o processo, é só falar com o suporte: suporte@theblockcapital.net" },
+      answer:"O reembolso pode ser solicitado em até 7 dias corridos a partir da liberação do acesso, conforme o Código de Defesa do Consumidor. A renovação é automática ao fim do período contratado, e o reembolso vale apenas para a transação inicial dentro desses 7 dias. Qualquer dúvida sobre o processo, é só falar com o suporte: suporte@theblockcapital.com" },
     { agent:"BlockCapital AI", title:"Planos e valores", keys:"plano planos preco valor quanto custa custo anual vitalicio assinatura mensalidade investimento inicial",
       answer:"Temos o plano Anual (valor de referência ~R$1.997,00) e o plano Vitalício (valor de referência ~R$6.997,00), com descontos promocionais eventuais. Os valores são de referência e podem variar conforme a campanha. Se quiser, te passo o link de checkout atualizado." },
     { agent:"BlockCapital AI", title:"Formas de pagamento", keys:"pagar pagamento hotmart pix boleto cartao cripto usdt btc bitcoin comprovante txid como pago",
       answer:"O pagamento pode ser feito pela Hotmart (cartão, boleto ou Pix) ou em cripto: USDT na rede BSC/BEP-20 (0x2538e340d59345cfd316e516f93df7965de11868) ou BTC na rede nativa (1PgtkygvP75gMkwrz6KVEZmjr64FKGnTo7). No caso de cripto, envie o comprovante/TXID para a liberação manual do acesso." },
     { agent:"BlockCapital AI", title:"Suporte e contato", keys:"suporte contato email ajuda atendimento falar com problema acesso login",
-      answer:"Pode falar com a gente pelo e-mail de suporte: suporte@theblockcapital.net. Retornamos o mais rápido possível para resolver o seu caso." },
+      answer:"Pode falar com a gente pelo e-mail de suporte: suporte@theblockcapital.com. Retornamos o mais rápido possível para resolver o seu caso." },
     { agent:"BlockCapital AI", title:"O que é a CRM (Carteira Rumo ao Milhão)", keys:"crm carteira rumo ao milhao o que e como funciona programa metodo",
       answer:"A CRM (Carteira Rumo ao Milhão) é a carteira principal, com gestão 100% manual do Gui Telles. Ele acompanha o mercado diariamente e publica cada decisão em vídeos de gerenciamento (geralmente às 18h), explicando os movimentos. A filosofia é preservar capital e construir posição quando a relação risco-retorno é favorável." },
     { agent:"BlockCapital AI", title:"Quando a CRM começou", keys:"inicio comecou quando data marco 2023 historia primeiro aporte fundacao",
@@ -101,11 +101,11 @@
     { agent:"BlockCapital AI", title:"Risco da Strategy/MSTR", keys:"mstr strategy saylor risco quebrar tesouraria bitcoin venda forcada sistemico",
       answer:"O Gui monitora a alavancagem da Strategy/MSTR em torno das ~845 mil BTC em tesouraria. Ele não acredita que a MSTR vá quebrar, mas acompanha o risco de uma eventual venda forçada de BTC. O relatório oficial está em theblockcapital.com/publico/strategy-bitcoin" },
     { agent:"BlockCapital AI", title:"Como acessar os conteúdos e vídeos", keys:"acessar acesso onde assistir ver videos decisoes plataforma guitelles academy themembers dashboard entrar login area de membros conteudo aulas",
-      answer:"Depois que o acesso é liberado, você entra pela área de membros. A CRM fica em www.guitelles.academy e o painel em dashboard.themembers.com.br. Se tiver qualquer dificuldade para entrar, é só chamar o suporte: suporte@theblockcapital.net" },
+      answer:"Depois que o acesso é liberado, você entra pela área de membros. A CRM fica em www.guitelles.academy e o painel em dashboard.themembers.com.br. Se tiver qualquer dificuldade para entrar, é só chamar o suporte: suporte@theblockcapital.com" },
     { agent:"BlockCapital AI", title:"Diferença entre plano Anual e Vitalício", keys:"diferenca plano anual vitalicio qual escolher comparar incluso carteira ia beneficios melhor plano",
       answer:"O plano Anual dá acesso por 12 meses (valor de referência ~R$1.997,00). O plano Vitalício dá acesso contínuo (valor de referência ~R$6.997,00) e já inclui a Carteira IA. Os valores são de referência e podem variar conforme a campanha. Se quiser, te ajudo a escolher conforme o seu objetivo." },
     { agent:"BlockCapital AI", title:"Renovação automática e como cancelar", keys:"renovacao renovar automatica cancelar assinatura nao renovar desativar cobranca recorrente parar pagamento",
-      answer:"O plano Anual tem renovação automática ao fim do período contratado. Se você não quiser renovar, é só avisar o suporte (suporte@theblockcapital.net) antes da data de renovação para interromper a cobrança. Lembrando que o reembolso vale apenas para a transação inicial, dentro dos 7 dias da liberação do acesso." },
+      answer:"O plano Anual tem renovação automática ao fim do período contratado. Se você não quiser renovar, é só avisar o suporte (suporte@theblockcapital.com) antes da data de renovação para interromper a cobrança. Lembrando que o reembolso vale apenas para a transação inicial, dentro dos 7 dias da liberação do acesso." },
     { agent:"BlockCapital AI", title:"Prazo de liberação do acesso", keys:"prazo liberacao quando libera acesso demora ativar pagamento aprovado comprovante liberar",
       answer:"No pagamento pela Hotmart (cartão, boleto ou Pix), a liberação segue a confirmação do pagamento. No pagamento em cripto (USDT ou BTC), a liberação é manual: envie o comprovante/TXID para o suporte e liberamos o acesso o mais rápido possível." },
     { agent:"BlockCapital AI", title:"Horário das decisões e vídeos", keys:"horario que horas video decisao publicada sai quando posta gerenciamento 18h tarde",
@@ -163,7 +163,7 @@
   var SEED_CREDENTIALS = [
     { label:"TheMembers Dashboard", login:"blockcapitaltime@gmail.com", senha:"Omelhortrabalhodomundo01@", nota:"dashboard.themembers.com.br" },
     { label:"CRM guitelles.academy", login:"blockcapitaltime@gmail.com", senha:"Omelhortrabalhodomundo01@", nota:"www.guitelles.academy" },
-    { label:"E-mail suporte", login:"suporte@theblockcapital.net", senha:"Omelhortrabalhodomundo01@", nota:"" },
+    { label:"E-mail suporte", login:"suporte@theblockcapital.com", senha:"Omelhortrabalhodomundo01@", nota:"" },
     { label:"E-mail tutoria", login:"blockcapitaltutoria@gmail.com", senha:"Omelhortrabalhodomundo01@", nota:"acessos via accounts.google.com" },
     { label:"TheMembers (alt.)", login:"blockcapitaltime@gmail.com", senha:"Blockcapital01@", nota:"registrado em 16/09/2025" },
     { label:"Plataforma teste Netlify", login:"guitelles", senha:"blockcapital2026", nota:"scintillating-moonbeam-78ab21.netlify.app" }

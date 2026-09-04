@@ -38,7 +38,7 @@ Armazenamento (~22%); REITs de Datacenter (~14%); caixa tático (~8%). Chips fic
 
 ### Como adquirir a Carteira IA
 Junto ao Plano Vitalício (onde já vem incluída) ou de forma avulsa/individual, sem o vitalício.
-Contato: suporte@theblockcapital.net.
+Contato: suporte@theblockcapital.com.
 
 ### Como operar a Carteira IA (Brasil)
 A casa **não indica corretora específica** — recomenda o **ativo**, não o caminho (Mr. G, 31/08).
@@ -67,7 +67,7 @@ tranquilamente por esses caminhos, **sem depender da Binance nem de ação token
 ativos têm versão tokenizada em algumas exchanges (a disponibilidade varia por exchange e por ativo; confirmar caso a caso antes de indicar), mas é caso a caso.
 Sobre a **legalidade de ações tokenizadas no Brasil**: é um tema jurídico/regulatório em
 evolução — não damos orientação legal definitiva por aqui; para essa parte específica ou para a
-adesão, encaminhar pro suporte (suporte@theblockcapital.net). Ponto tranquilizador: os caminhos
+adesão, encaminhar pro suporte (suporte@theblockcapital.com). Ponto tranquilizador: os caminhos
 recomendados (BDR na B3, corretoras internacionais reguladas) **não dependem de tokenização**.
 
 ### Uma ação indicada está acima do preço de entrada — entro agora?

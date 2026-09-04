@@ -25,7 +25,7 @@ caso é comunicado e resolvido no mesmo ciclo).
 
 ### Contato do VantageNode
 Para questões da VantageNode, o contato oficial é **contato@vantagenode.io** (diferente do
-suporte da BlockCapital, que é suporte@theblockcapital.net).
+suporte da BlockCapital, que é suporte@theblockcapital.com).
 
 > Regra: não prometer funcionalidades que ainda não existem. Se o cliente perguntar de um
 > recurso que você não tem certeza que existe, confirme antes (ou encaminhe), em vez de
