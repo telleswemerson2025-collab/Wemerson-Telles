@@ -30,17 +30,19 @@ operações vendidas ("short nem na praia"). No PAXG, os stops são sempre por o
 a mercado, pela baixa liquidez do book.
 
 ### Composição atual da carteira
-CONFIRMADO na plataforma (leitura de 03/09/2026, página Carteira — "% a partir do preço de entrada"):
-- **PAXG (ouro) 41%** — entrada US$4.190,00 · atual US$4.477,67 (**+6,87%**)
-- **BTC 20%** — entrada US$77.616,00 · atual US$81.573,00 (**+5,10%**)
-- **DOT 15%** — entrada US$0,83 · atual US$0,90 (**+8,58%**)
-- **AERO 5%** — entrada US$0,47 · atual US$0,51 (**+8,24%**)
-- **MORPHO 2%** — entrada US$2,35 · atual US$2,54 (**+8,09%**)
-- **VIRTUAL 2%** — entrada US$0,76 · atual US$0,71 (**−6,79%**)
+Pesos e preços de entrada (estáveis) + variação desde a entrada na última leitura da plataforma
+(**04/09/2026**, página Carteira — "% a partir do preço de entrada"):
+- **PAXG (ouro) 41%** — entrada US$4.190,00 · **+5,86%**
+- **BTC 20%** — entrada US$77.616,00 · **+1,68%**
+- **DOT 15%** — entrada US$0,83 · **+5,74%**
+- **AERO 5%** — entrada US$0,47 · **+6,50%**
+- **MORPHO 2%** — entrada US$2,35 · **+7,23%**
+- **VIRTUAL 2%** — entrada US$0,76 · **−11,98%** (único abaixo do preço de entrada)
 - **Caixa (USDT) 15%**
 
-Os preços "atual" são a leitura do dia (03/09) e mudam a cada minuto; a composição e os preços de
-entrada são a posição vigente. Para o valor do momento, confirme na plataforma. Não crave número velho.
+A **variação muda todo dia**; os **pesos e preços de entrada** são a posição vigente. Para o número
+do momento, confirme na plataforma. Não crave número velho. (Referência anterior — 03/09 — tinha
+BTC +5,10%, DOT +8,58%, AERO +8,24%, MORPHO +8,09%, PAXG +6,87%, VIRTUAL −6,79%.)
 
 ### Última compra/entrada (oficial)
 Entradas vigentes CONFIRMADAS na plataforma (03/09/2026): **BTC a US$77.616** (20%), **PAXG a
