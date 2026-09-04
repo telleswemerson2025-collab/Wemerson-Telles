@@ -22,38 +22,38 @@ girava em torno de US$4.200 investidos. A gestão é sempre manual (não há apo
 automático) e a consistência importa mais que o tamanho do aporte.
 
 ### Ativos operados na CRM
-CONFIRMADO na plataforma (03/09/2026, página Carteira): a CRM opera **BTC + PAXG (ouro) +
+CONFIRMADO na plataforma (04/09/2026, página Carteira): a CRM opera **BTC + PAXG (ouro) +
 caixa (USDT)** e, atualmente, também **altcoins**: **DOT, AERO, MORPHO e VIRTUAL**. Composição
-vigente: **PAXG 41% · BTC 20% · DOT 15% · AERO 5% · MORPHO 2% · VIRTUAL 2% · Caixa 15%**. (Antes
+vigente: **PAXG 41% · BTC 24% · DOT 15% · AERO 5% · MORPHO 2% · VIRTUAL 2% · Caixa 11%**. (Antes
 já teve SOL/ETH em posições táticas; hoje a cesta inclui esses quatro altcoins.) O Gui nunca faz
 operações vendidas ("short nem na praia"). No PAXG, os stops são sempre por ordem limite, nunca
 a mercado, pela baixa liquidez do book.
 
 ### Composição atual da carteira
-Pesos e preços de entrada (estáveis) + variação desde a entrada na última leitura da plataforma
-(**04/09/2026**, página Carteira — "% a partir do preço de entrada"):
-- **PAXG (ouro) 41%** — entrada US$4.190,00 · **+5,86%**
-- **BTC 20%** — entrada US$77.616,00 · **+1,68%**
-- **DOT 15%** — entrada US$0,83 · **+5,74%**
-- **AERO 5%** — entrada US$0,47 · **+6,50%**
-- **MORPHO 2%** — entrada US$2,35 · **+7,23%**
-- **VIRTUAL 2%** — entrada US$0,76 · **−11,98%** (único abaixo do preço de entrada)
-- **Caixa (USDT) 15%**
+CONFIRMADO na plataforma (**04/09/2026, 16:57** — página Carteira):
+- **PAXG (ouro) 41%** — entrada US$4.190,00 · atual US$4.435,57 (**+5,86%**)
+- **BTC 24%** — entrada US$78.356,00 · atual US$79.669,00 (**+1,68%**)
+- **DOT 15%** — entrada US$0,83 · atual US$0,87 (**+5,74%**)
+- **AERO 5%** — entrada US$0,47 · atual US$0,50 (**+6,50%**)
+- **MORPHO 2%** — entrada US$2,35 · atual US$2,52 (**+7,23%**)
+- **VIRTUAL 2%** — entrada US$0,76 · atual US$0,67 (**−12,03%**, único abaixo da entrada)
+- **Caixa (USDT) 11%**
 
-A **variação muda todo dia**; os **pesos e preços de entrada** são a posição vigente. Para o número
-do momento, confirme na plataforma. Não crave número velho. (Referência anterior — 03/09 — tinha
-BTC +5,10%, DOT +8,58%, AERO +8,24%, MORPHO +8,09%, PAXG +6,87%, VIRTUAL −6,79%.)
+⚠️ **BTC foi reforçado:** subiu de **20% (entrada ~US$77.616) para 24% (entrada média US$78.356)**;
+o caixa caiu de 15% para 11%. A **variação/preço atual mudam todo dia**; os **pesos e preços de
+entrada** são a posição vigente. Para o número do momento, confirme na plataforma. Não crave número velho.
 
 ### Última compra/entrada (oficial)
-Entradas vigentes CONFIRMADAS na plataforma (03/09/2026): **BTC a US$77.616** (20%), **PAXG a
-US$4.190** (41%), **DOT a US$0,83** (15%), **AERO a US$0,47** (5%), **MORPHO a US$2,35** (2%),
-**VIRTUAL a US$0,76** (2%), caixa 15%. ⚠️ A entrada de BTC **subiu de ~US$64.055 (05/08) para
-US$77.616** — houve nova entrada em preço mais alto. A posição vigente é sempre a última publicada
-na CRM; datas e ordem de cada entrada no `historico-decisoes.md`.
+Entradas vigentes CONFIRMADAS na plataforma (04/09/2026, 16:57): **BTC a US$78.356** (24%), **PAXG
+a US$4.190** (41%), **DOT a US$0,83** (15%), **AERO a US$0,47** (5%), **MORPHO a US$2,35** (2%),
+**VIRTUAL a US$0,76** (2%), caixa 11%. ⚠️ **Reforço recente no BTC:** a posição subiu de 20% para
+**24%** e a entrada média foi de ~US$77.616 para **US$78.356** (antes, em 05/08, a entrada era
+~US$64.055). A posição vigente é sempre a última publicada na CRM; datas e ordem de cada entrada
+no `historico-decisoes.md`.
 
 ### A carteira tem SOL ou outras altcoins?
 **Sim — hoje a CRM tem altcoins na composição:** **DOT 15%, AERO 5%, MORPHO 2% e VIRTUAL 2%**
-(além de BTC 20%, PAXG 41% e caixa 15%), confirmado na plataforma em 03/09/2026. **SOL**
+(além de BTC 24%, PAXG 41% e caixa 11%), confirmado na plataforma em 04/09/2026. **SOL**
 especificamente **não está** na composição atual (já houve posição tática em SOL em abr/26). A
 posição vigente é sempre a última publicada na CRM — confirme lá pra pegar a cesta do momento.
 
