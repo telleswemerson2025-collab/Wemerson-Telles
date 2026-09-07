@@ -203,6 +203,25 @@ de entrada, o preço atual, a variação e a contribuição, além dos números 
 retorno, investido, em caixa, posições). **É essa a tela pra confirmar a composição do momento** — não
 a de "Gerenciamento e Aportes" (essa é a dos vídeos).
 
+**Campo "Caixa"/valor no app não aceita a vírgula — como resolver (CONFIRMADO no app logado, 07/09/2026)**
+O campo de valor (Caixa · "Quanto você tem disponível", e demais campos de valor do Portfólio) usa
+**vírgula** como separador decimal (parser pt-BR, placeholder `0,00`). O certo é digitar com **vírgula**:
+`390,06`.
+- ⚠️ **NÃO usar ponto.** O input é `type="text" inputmode="decimal"`, sem máscara/validação: se o cliente
+  digita `390.06`, o app **engole o ponto como separador de milhar** e salva **US$ 39.006,00** (erro
+  silencioso de 100x, sem aviso). Um valor inflado assim contamina resultado/aderência e pode até
+  disparar "conquista" falsa (ex.: "maior patrimônio +2840%").
+- ⚠️ Aquele `390.06` que aparece **acima do teclado do celular NÃO é sugestão do app** — é a
+  **autocorreção do próprio aparelho**. Se o cliente tocar ali, salva o valor errado. **Orientar a
+  ignorar essa barra.**
+- **Por que a vírgula não aparece pra alguns:** `inputmode="decimal"` faz o celular mostrar o separador
+  **do idioma do teclado**. Se o teclado está em inglês (US), só aparece o ponto e o cliente fica sem a
+  vírgula.
+- **Workaround oficial:** digitar com **vírgula**. Se o teclado não tiver vírgula: (1) trocar o idioma
+  do teclado do celular para **Português (Brasil)** nas configurações, ou (2) fazer o ajuste pelo
+  **computador/navegador**. Se o cliente já salvou um valor inflado, corrigir o campo de volta pro valor
+  certo. (Bug já sinalizado ao time de produto.)
+
 **Qual corretora usar? (Binance, Bitget no Canadá, MiCA na Europa)**
 A recomendada é a Bitget; a Binance também serve. Onde a Bitget não opera (ex.: Canadá) ou
 sob regras locais (MiCA/Europa), a escolha passa a ser pessoal do cliente — não há uma
