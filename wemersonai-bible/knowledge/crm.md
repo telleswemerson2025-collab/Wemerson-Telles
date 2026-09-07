@@ -31,18 +31,27 @@ operações vendidas ("short nem na praia"). No PAXG, os stops são sempre por o
 a mercado, pela baixa liquidez do book.
 
 ### Composição atual da carteira
-CONFIRMADO na plataforma (**07/09/2026, 09:09** — página Carteira, "6 ativos, atualizado ao vivo"):
-- **PAXG (ouro) 40%** — entrada US$4.190,00 · atual US$4.388,93 (**+4,75%**)
-- **BTC 33%** — entrada US$78.889,00 · atual US$79.456,00 (**+0,72%**)
-- **DOT 17%** — entrada US$0,83 · atual US$0,98 (**+18,84%**)
-- **AERO 6%** — entrada US$0,47 · atual US$0,54 (**+14,90%**)
-- **MORPHO 2%** — entrada US$2,35 · atual US$2,55 (**+8,51%**)
-- **VIRTUAL 2%** — entrada US$0,76 · atual US$0,72 (**−4,61%**, único abaixo da entrada)
-- **Caixa (USDT) 0%** (carteira totalmente alocada)
+> **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
+> onde a gente lê a composição e a performance ao vivo daqui pra frente.
+
+CONFIRMADO no app novo (**07/09/2026, 18:25** — aba Carteira, "6 posições, atualizado ao vivo"):
+- **Performance total:** **+167,35%** · **Retorno:** **+8,72%** · **Investido:** 100% · **Em caixa:** 0% · **Posições:** 6
+
+Performance de cada ativo a partir do preço de entrada (leitura 18:25):
+- **AERO** — **+32,68%** (entrada US$0,47)
+- **DOT** — **+29,68%** (entrada US$0,83)
+- **PAXG (ouro)** — **+5,33%** (entrada US$4.190,00)
+- **MORPHO** — **+4,68%** (entrada US$2,35)
+- **BTC** — **+0,44%** (entrada US$78.889,00)
+- **VIRTUAL** — **−3,63%** (entrada US$0,76, único abaixo da entrada)
+
+Pesos vigentes (última leitura com percentual, 07/09 09:09): **PAXG 40% · BTC 33% · DOT 17% · AERO 6%
+· MORPHO 2% · VIRTUAL 2% · Caixa 0%** (carteira 100% alocada). O app novo mostra a performance por
+ativo ao vivo; o peso exato de cada posição, confirmar na tela Gerenciamento e Aportes.
 
 ⚠️ **BTC segue sendo reforçado:** foi de 20% → 24% → **33%** (entrada média agora **US$78.889**), e o
 **caixa foi a 0%** (100% alocada). A **variação/preço atual mudam todo dia**; os **pesos e preços de
-entrada** são a posição vigente. Para o número do momento, confirme na plataforma. Não crave número velho.
+entrada** são a posição vigente. Para o número do momento, confirme no app novo. Não crave número velho.
 
 ### Última compra/entrada (oficial)
 Entradas vigentes CONFIRMADAS na plataforma (07/09/2026, 09:09): **BTC a US$78.889** (33%), **PAXG
