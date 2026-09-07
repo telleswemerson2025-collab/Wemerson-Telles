@@ -196,6 +196,13 @@ Confirme a orientação vigente por lá.
 **Onde ficam os vídeos de gerenciamento?**
 Na tela principal da CRM, na seção "Gerenciamento e Aportes".
 
+**Onde vejo a composição e os pesos da carteira ao vivo?**
+Na **aba Carteira** do app novo (BlockCapital Research, "acompanhamento ao vivo"), no bloco
+**"Performance desde a compra"**. Ali aparecem, atualizados ao vivo, o peso de cada ativo, o preço
+de entrada, o preço atual, a variação e a contribuição, além dos números do topo (performance total,
+retorno, investido, em caixa, posições). **É essa a tela pra confirmar a composição do momento** — não
+a de "Gerenciamento e Aportes" (essa é a dos vídeos).
+
 **Qual corretora usar? (Binance, Bitget no Canadá, MiCA na Europa)**
 A recomendada é a Bitget; a Binance também serve. Onde a Bitget não opera (ex.: Canadá) ou
 sob regras locais (MiCA/Europa), a escolha passa a ser pessoal do cliente — não há uma
