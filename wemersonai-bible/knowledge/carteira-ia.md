@@ -12,19 +12,32 @@ já correu** — o valor está na infraestrutura que sustenta a IA. Tem a aba "T
 e a aba "Decisões" (execução real). Horizonte de 18 a 36 meses, rebalanceamento semestral.
 
 ### Composição atual da carteira (última leitura oficial)
-Leitura de **06/08/2026** (site, aba Carteira): **Caixa 49% · VRT 11% · BE 10% · SPCX 10% ·
-WDC 8% · LITE 6% · SNDK 6%**. A alocação muda conforme as decisões — a vigente é sempre a
-última publicada no site/app. Confirme lá pra pegar a atual.
+CONFIRMADO no site (**08/09/2026, 15:39** — aba Carteira): **9 posições, Caixa 4%, 96% investido,
+performance total +16,44%**. Composição (ativo · peso · entrada):
+- **SPCX (SpaceX) 19%** — entrada US$122,39
+- **BE (Bloom Energy) 19%** — entrada US$193,11
+- **VRT (Vertiv) 14%** — entrada US$286,16
+- **SNDK (SanDisk) 13%** — entrada US$1.421,52
+- **WDC (Western Digital) 11%** — entrada US$512,19
+- **LITE (Lumentum) 6%** — entrada US$794,62
+- **MOD (Modine) 5%** — entrada US$194,75 *(entrou)*
+- **VST (Vistra) 5%** — entrada US$141,00 *(entrou)*
+- **CGNX (Cognex) 4%** — entrada US$61,80 *(entrou)*
+- **Caixa 4%**
+
+⚠️ Grande mudança vs. a leitura antiga de 06/08 (que tinha Caixa 49%): a carteira foi **fortemente
+alocada** ao longo de ago/set (caixa 49% → 4%), reforçou VRT/BE/SPCX/SNDK/WDC e **passou a ter MOD,
+VST e CGNX**. A alocação muda conforme as decisões — a vigente é sempre a última publicada no site/app.
 
 ### ⚠️ Relatório proposto x carteira executada (importante pra responder certo)
 O relatório-mãe (Ed. 07) propõe uma carteira-modelo de 13 nomes (MU 12%, VRT 11%, BE 10%,
 EQIX 9%, CEG 8%, VST 8%, ETN 7%, SNDK 6%, MOD 6%, DLR 5%, WDC 4%, APH 3%, LITE 3%; caixa 8%).
-Mas **a carteira REAL executada difere da proposta**: alguns nomes do relatório (MU, VST, ETN,
-EQIX, MOD, APH) nunca entraram; CEG e DLR entraram e já saíram; SPCX entrou fora do plano
-original; e o caixa está bem mais alto (49% vs 8% sugeridos). Então, se um cliente perguntar
-"por que a ação X do relatório não está na carteira?", a resposta é: o relatório é a **tese/
-proposta**; a execução real se adapta ao mercado, e a posição vigente é sempre a publicada nas
-Decisões. Não trate os percentuais do relatório como a carteira atual.
+A carteira REAL executada continua diferindo da proposta, mas **atualizado (08/09/2026): MOD e VST
+JÁ ENTRARAM** na carteira executada (antes não tinham entrado), e **CGNX/SPCX entraram fora do plano
+original**. Ainda ficam de fora nomes do relatório como MU, EQIX, ETN, APH; CEG e DLR entraram e já
+saíram. Então, se um cliente perguntar "por que a ação X do relatório não está na carteira?", a
+resposta é: o relatório é a **tese/proposta**; a execução real se adapta ao mercado, e a posição
+vigente é sempre a publicada nas Decisões. Não trate os percentuais do relatório como a carteira atual.
 
 ### Por que a carteira NÃO tem chips (NVDA, AMD, etc.)
 Quatro motivos declarados: (1) o preço já capturou a tese (as ações de chip já subiram muito);
