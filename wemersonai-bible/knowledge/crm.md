@@ -34,10 +34,15 @@ a mercado, pela baixa liquidez do book.
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-CONFIRMADO no app novo (**07/09/2026, 18:27:14** — aba Carteira, "6 ativos, atualizado ao vivo"):
+**Leitura mais recente (08/09/2026 — gráfico "Performance desde a compra", % de cada ativo a partir da entrada):**
+- **AERO +35,88%** · **DOT +30,17%** · **PAXG +5,10%** · **MORPHO +3,40%** · **BTC −0,77%** · **VIRTUAL −5,91%**
+- ⚠️ **BTC virou levemente negativo** (−0,77%) e o **VIRTUAL** segue o mais fraco (−5,91%); **AERO e DOT**
+  continuam sendo os grandes puxadores. (Só a performance por ativo; pesos/preços na tabela 07/09 abaixo.)
+
+Tabela completa CONFIRMADA no app novo (**07/09/2026, 18:27:14** — aba Carteira, "6 ativos, atualizado ao vivo"):
 - **Performance total:** **+167,35%** · **Retorno:** **+8,72%** · **Investido:** 100% · **Em caixa:** 0% · **Posições:** 6
 
-Tabela completa (ativo · peso · entrada · preço atual · variação · contribuição):
+Tabela (ativo · peso · entrada · preço atual · variação · contribuição):
 - **PAX Gold (PAXG)** — 39% · entrada US$4.190,00 · atual US$4.413,50 · **+5,33%** · contrib. +2,13%
 - **Bitcoin (BTC)** — 32% · entrada US$78.889,00 · atual US$79.237,00 · **+0,44%** · contrib. +0,15%
 - **Polkadot (DOT)** — 18% · entrada US$0,83 · atual US$1,07 · **+29,44%** · contrib. +4,42%
