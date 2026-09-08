@@ -43,6 +43,15 @@ aqui ou escreve pro nosso suporte em suporte@theblockcapital.com, que a gente te
 passo a passo, quantas vezes precisar.
 Bons investimentos, e você pode contar com toda a nossa equipe nessa jornada.
 
+## Instruções de acesso (rodapé padrão das boas-vindas)
+Texto padrão pra enviar junto com o link mágico ao cliente novo:
+- **Acesse do seu celular usando sua rede particular (4G, 5G) ou no PC de sua casa.** Se der alerta de
+  **antivírus no nosso domínio, pode desabilitar/liberar** — não tem nenhum risco.
+- **Não deixe de conferir o Manual de Boas-Vindas · BlockCapital Research** depois do primeiro acesso.
+- **Instale no celular** em "Instalar no celular · BlockCapital Research" (o novo app). **Depois de
+  instalar, é necessário voltar nessa mesma página pra ativar as notificações e fazer o teste.**
+- **Todas as decisões do Gui também são encaminhadas para o e-mail** do cliente (segundo caminho, além do app).
+
 ## Notas internas de uso
 - **Link do manual:** theblockcapital.com/manual (passo a passo com imagens; baixar/instalar iOS e Android).
 - **Entrada:** link mágico por e-mail → define senha. Link mágico é **pessoal e de uso único** — nunca
