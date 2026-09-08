@@ -25,6 +25,17 @@ Valores mudam conforme a campanha — confirme o checkout oficial.
 A renovação anual da CRM é **R$1.697,00**. O **parcelado tem juros**. (Renovação é diferente da
 primeira adesão; confirme o valor vigente no checkout.)
 
+### Cupom de desconto no plano anual da CRM (CONFIRMADO 07/09/2026)
+**Existe cupom de desconto** no plano anual da CRM — a equipe pode enviar. Caso confirmado: **cupom de
+10%** sobre o plano anual de **R$1.697,00 à vista**, deixando em **R$1.527,30 à vista** (via link de
+checkout da Hotmart gerado pela equipe). ⚠️ Correção de guidance anterior: **NÃO** dizer ao cliente que
+"não precisa de cupom / o preço já é o promocional" — quando faz sentido, a equipe **gera e envia um
+cupom** (ex.: cliente novo, cliente da Europa que não conseguia ver o valor com desconto). O percentual
+e o valor final variam por campanha/caso; confirmar o cupom vigente antes de prometer um número. O link
+de checkout/cupom é de campanha (pode expirar) — **não registrar o link na base**, gerar/enviar na hora.
+(Obs.: R$1.697,00 é o valor do anual **à vista**; o parcelado em 12x de R$175,51 sai mais caro por causa
+dos juros.)
+
 ### Curso / treinamento + duração de acesso (regra geral)
 **Regra geral:** os produtos da Block Capital têm acesso por **12 meses (anual)**. O **Vitalício**
 dá acesso **permanente às carteiras** (CRM + Carteira IA). O **treinamento em análise** (o curso,
