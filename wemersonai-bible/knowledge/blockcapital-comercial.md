@@ -30,11 +30,15 @@ Valores mudam conforme a campanha — confirme o checkout oficial.
 >   só na CRM). Bem acima do desconto padrão de migração (15%).
 > - **É a "Black Friday" — antecipada.** Não prometer que haverá outra em dezembro; esta condição pode
 >   não se repetir, então orientar a aproveitar enquanto está no ar.
-> - **NÃO abate as parcelas da assinatura anual (CONFIRMADO):** comprando o Vitalício nesta promoção, o
->   cliente **continua pagando a assinatura anual normalmente até ela terminar** — o Vitalício é um
->   pagamento à parte. Como o Vitalício **já está com 30% de desconto**, **não** se abate também o valor
->   restante da anual (ficaria desproporcional). Ou seja: nesta promo é **o 30% e ponto**, sem abatimento
->   nem proporcional das mensalidades que faltam.
+> - **NESTA PROMO É "30% E PONTO" — NÃO acumula com nada (CONFIRMADO 09/09, aplicado a Fabricio, Eduardo
+>   e Leo):**
+>   - **Não abate as parcelas da anual:** comprando o Vitalício, o cliente **continua pagando a anual
+>     normalmente até ela terminar** (o Vitalício é pagamento à parte; a CRM que ele já tem não se perde).
+>   - **Não reembolsa/aproveita compra nem renovação recente:** mesmo quem comprou ou **renovou a CRM há
+>     pouco pagando valor cheio** NÃO tem reembolso/crédito além dos 30%. ⚠️ Isso **suspende, durante esta
+>     promo**, a regra normal do "renovação recém-feita → reembolsa" (caso Marcelo) — enquanto a promo dos
+>     30% estiver no ar, vale o 30% e ponto. (Fora de promo, volta a valer o caso Marcelo — ver adiante.)
+>   - Motivo: o Vitalício **já entra com 30%**, que é o máximo; somar abatimento ficaria desproporcional.
 > - (Quando a promoção sair do ar, remover/atualizar esta nota.)
 
 ### Renovação anual da CRM (valor)
