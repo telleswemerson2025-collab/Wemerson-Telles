@@ -83,6 +83,21 @@ evolução — não damos orientação legal definitiva por aqui; para essa part
 adesão, encaminhar pro suporte (suporte@theblockcapital.com). Ponto tranquilizador: os caminhos
 recomendados (BDR na B3, corretoras internacionais reguladas) **não dependem de tokenização**.
 
+### A aba "Ações" da Bitget são ações de verdade? (CONFIRMADO 09/09/2026)
+**Sim — são ações REAIS dos EUA, tokenizadas**, e não simuladores nem derivativos fictícios. A Bitget
+vincula essas ações tokenizadas à **liquidez real do mercado americano**. Os produtos que ela oferece:
+- **rToken** — operar ações reais dos EUA usando **USDT**; são ações tokenizadas atreladas à liquidez real do mercado dos EUA.
+- **Stocks 2.0** — sistema recente que vincula as ações tokenizadas à liquidez real do mercado americano; deixa o investidor cripto-nativo comprar ações reais (Apple, Google, etc.) direto na plataforma usando cripto.
+- **Stock+** — versão que leva ações reais dos EUA pro investidor da comunidade cripto.
+
+Ou seja: o preço e a exposição seguem a ação real. Ressalvas ao responder o cliente: (1) o **formato**
+ainda é **tokenizado** (não é a ação tradicional com custódia numa corretora de bolsa) — quem quer o
+modelo clássico usa **BDR na B3** ou **corretora com acesso à bolsa americana**; (2) a **regulação de
+ativos tokenizados no Brasil** ainda está em evolução, então não damos orientação jurídica definitiva.
+Pra quem já usa a Bitget (a exchange que recomendamos pra cripto), é um caminho prático e com lastro
+real pra montar a Carteira IA. Fontes: bitget.com/campaigns/bitget-rtoken; matérias de lançamento do
+Stocks 2.0 e do Stock+.
+
 ### Uma ação indicada está acima do preço de entrada — entro agora?
 Pode entrar com **metade** do que foi recomendado agora e **aguardar um pullback** pra entrar
 com a outra metade — e focar nas próximas entradas que vierem. A carteira é projeto de longo
