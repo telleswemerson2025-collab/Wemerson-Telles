@@ -22,7 +22,17 @@
 - **Impacto:** não afeta a decisão em si (conteúdo/momento valem igual pra todos), só a exibição.
 - **Reportado por:** Alexandre (09/09/2026).
 
-## 3. Migração de domínio — efeitos colaterais no acesso (ACOMPANHAR durante a troca)
+## 3. Notificação do app não dispara (RECORRENTE — SEVERIDADE MÉDIA/ALTA)
+- **Bug:** clientes relatam **não receber a notificação de decisão** no app (um relatou "3ª vez"), só
+  recebendo pelo e-mail. Impacto direto: cliente não sai/entra no momento da decisão e associa a
+  "perda de dinheiro" (ex.: encerramento do DOT).
+- **Contexto:** hoje o som/notificação é controlado pelo celular e não há seletor na plataforma; pode
+  ter piorado com a migração. O e-mail funciona como 2º canal, mas o cliente espera o push confiável.
+- **Fix sugerido:** garantir entrega confiável do push (revisar serviço de notificação/permissões),
+  e deixar claro no app como ativar. Enquanto isso, reforçar que a decisão fica sempre no feed/Decisões.
+- **Reportado por:** Bernardo (09/09, não chegou notificação) e VISADAL JR (09/09, "3ª vez", insatisfeito).
+
+## 4. Migração de domínio — efeitos colaterais no acesso (ACOMPANHAR durante a troca)
 Itens ligados à troca de domínio em curso, que devem sumir quando a migração terminar:
 - **Site "reconectando pra sempre" / não abre:** endereço antigo preso em loop de reconexão.
   Workaround ao cliente: aba anônima, outro navegador, dados móveis, ou entrar pelo link mágico direto.
