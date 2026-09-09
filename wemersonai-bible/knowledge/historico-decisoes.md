@@ -5,6 +5,11 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
+- **09/09 10:15** — **Entrada XRP 5% @ US$1,43** (0→5; caixa 20→15). **Rotação de capital** (usou o caixa
+  do DOT): "vender o que já correu pra comprar o que ainda não correu". Leitura: bandeira (alta ago
+  US$1,00→1,70, consolidação no retângulo US$1,34–1,55, média longa ~US$1,30), testando o teto, momentum
+  4h >50. Posição pequena de propósito, comprada antes da confirmação. Composição pós: PAXG ~38% · BTC
+  ~31% · AERO ~7% · XRP 5% · MORPHO ~2% · VIRTUAL ~2% · Caixa 15%.
 - **09/09** — **Encerramento total DOT (Polkadot) @ US$1,25** (20% → 0%; caixa 0% → 20%). **+51% de
   lucro**; custo médio US$0,8274 (entrada 20/08, reforço 26/08). Motivo declarado: **formar caixa, não
   fim de tese** — carteira 100% comprada não responde à próxima oportunidade; realizou "vendendo força"

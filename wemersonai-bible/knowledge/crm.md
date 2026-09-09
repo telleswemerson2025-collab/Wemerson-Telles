@@ -34,13 +34,19 @@ a mercado, pela baixa liquidez do book.
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🔴 **DECISÃO NOVA — 09/09/2026: ENCERRAMENTO TOTAL DO DOT (Polkadot).** Peso **20% → 0%**, saída a
-**US$1,25**, **+51% de lucro** (custo médio US$0,8274; entrada 20/08, reforço 26/08). O **caixa vai de
-0% → 20%**. Motivo declarado: **não é fim de tese**, é formar caixa — carteira 100% comprada não
-consegue responder à próxima oportunidade; realizou "vendendo força" (DOT +17% no dia, momentum 4h
-acima de 80). O Gui segue gostando do DOT e pode **reabrir** se ele devolver parte do movimento e voltar
-a trabalhar acima da média longa. **Composição pós-decisão:** PAXG ~38% · BTC ~31% · AERO ~7% · MORPHO
-~2% · VIRTUAL ~2% · **Caixa 20%** — agora **5 ativos + caixa**.
+🟢 **DECISÃO NOVA — 09/09/2026 10:15: ENTRADA EM XRP.** Peso **0% → 5%**, preço **US$1,43**, **caixa
+20% → 15%**. É **rotação de capital** (usou o caixa do encerramento do DOT), não aumento de risco:
+"vender o que já correu pra comprar o que ainda não correu". Leitura: XRP fez bandeira (alta forte de
+ago US$1,00 → US$1,70 no volume, depois consolidação lateral no retângulo US$1,34–1,55, média longa
+subindo ~US$1,30), testando o teto com momentum 4h reagindo acima de 50. **Posição pequena de
+propósito** (comprada antes da confirmação, guardando munição). **Composição pós-XRP:** PAXG ~38% ·
+BTC ~31% · AERO ~7% · XRP 5% · MORPHO ~2% · VIRTUAL ~2% · **Caixa 15%** — **6 ativos + caixa**.
+
+🔴 **DECISÃO — 09/09/2026 (antes do XRP): ENCERRAMENTO TOTAL DO DOT (Polkadot).** Peso **20% → 0%**,
+saída a **US$1,25**, **+51% de lucro** (custo médio US$0,8274; entrada 20/08, reforço 26/08). O **caixa
+foi de 0% → 20%**. Motivo: **não é fim de tese**, é formar caixa — carteira 100% comprada não responde
+à próxima oportunidade; realizou "vendendo força" (DOT +17% no dia, momentum 4h acima de 80). O Gui
+segue gostando do DOT e pode **reabrir** se ele voltar a trabalhar acima da média longa.
 
 CONFIRMADO no app novo (**08/09/2026, 15:39:04** — leitura ANTES do encerramento do DOT):
 - **Performance total:** **+172,62%** · **Retorno:** **+10,87%** · **Investido:** 100% · **Em caixa:** 0% · **Posições:** 6
@@ -69,8 +75,9 @@ foi a 0% (carteira 100% alocada). A posição vigente é sempre a última public
 de cada entrada no `historico-decisoes.md`.
 
 ### A carteira tem SOL ou outras altcoins?
-**Sim — hoje a CRM tem altcoins na composição:** **DOT 20%, AERO 7%, MORPHO 2% e VIRTUAL 2%**
-(além de BTC 31%, PAXG 38% e caixa 0%), confirmado no app novo em 08/09/2026. **SOL**
+**Sim — hoje a CRM tem altcoins na composição:** **AERO ~7%, XRP 5%, MORPHO ~2% e VIRTUAL ~2%**
+(além de BTC ~31%, PAXG ~38% e caixa ~15%), confirmado no app novo em 09/09/2026. O **DOT foi encerrado
+em 09/09** com +51% de lucro (pode reabrir mais pra frente). **SOL** não está na composição atual. **SOL**
 especificamente **não está** na composição atual (já houve posição tática em SOL em abr/26). A
 posição vigente é sempre a última publicada na CRM — confirme lá pra pegar a cesta do momento.
 
