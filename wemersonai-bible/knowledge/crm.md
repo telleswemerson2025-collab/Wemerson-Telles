@@ -34,23 +34,27 @@ a mercado, pela baixa liquidez do book.
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-CONFIRMADO no app novo (**08/09/2026, 15:39:04** — aba Carteira, "6 ativos, atualizado ao vivo"):
+🔴 **DECISÃO NOVA — 09/09/2026: ENCERRAMENTO TOTAL DO DOT (Polkadot).** Peso **20% → 0%**, saída a
+**US$1,25**, **+51% de lucro** (custo médio US$0,8274; entrada 20/08, reforço 26/08). O **caixa vai de
+0% → 20%**. Motivo declarado: **não é fim de tese**, é formar caixa — carteira 100% comprada não
+consegue responder à próxima oportunidade; realizou "vendendo força" (DOT +17% no dia, momentum 4h
+acima de 80). O Gui segue gostando do DOT e pode **reabrir** se ele devolver parte do movimento e voltar
+a trabalhar acima da média longa. **Composição pós-decisão:** PAXG ~38% · BTC ~31% · AERO ~7% · MORPHO
+~2% · VIRTUAL ~2% · **Caixa 20%** — agora **5 ativos + caixa**.
+
+CONFIRMADO no app novo (**08/09/2026, 15:39:04** — leitura ANTES do encerramento do DOT):
 - **Performance total:** **+172,62%** · **Retorno:** **+10,87%** · **Investido:** 100% · **Em caixa:** 0% · **Posições:** 6
 
-Tabela (ativo · peso · entrada · preço atual · variação):
+Tabela (ativo · peso · entrada · preço atual · variação) — *estado de 08/09, DOT ainda na carteira:*
 - **PAX Gold (PAXG)** — 38% · entrada US$4.190,00 · atual US$4.384,83 · **+4,65%**
 - **Bitcoin (BTC)** — 31% · entrada US$78.889,00 · atual US$78.649,00 · **−0,30%**
-- **Polkadot (DOT)** — 20% · entrada US$0,83 · atual US$1,23 · **+48,66%**
+- **Polkadot (DOT)** — 20% · entrada US$0,83 · atual US$1,23 · **+48,66%** *(ENCERRADO em 09/09 a US$1,25)*
 - **Aerodrome (AERO)** — 7% · entrada US$0,47 · atual US$0,62 · **+30,93%**
 - **Morpho (MORPHO)** — 2% · entrada US$2,35 · atual US$2,41 · **+2,55%**
 - **Virtuals Protocol (VIRTUAL)** — 2% · entrada US$0,76 · atual US$0,72 · **−4,61%**
 
-Pesos vigentes: **PAXG 38% · BTC 31% · DOT 20% · AERO 7% · MORPHO 2% · VIRTUAL 2% · Caixa 0%**
-(carteira 100% alocada). ⚠️ **Os pesos mudaram só por marcação a mercado, NÃO por operação nova:** o
-DOT disparou (+48,66% desde a entrada) e ganhou fatia, diluindo PAXG e BTC. Nenhum preço de entrada
-mudou, nenhum ativo entrou/saiu, caixa segue 0%. O próprio rodapé da tela confirma: "o peso mostra a
-fatia atual de cada posição, que muda com o desempenho do ativo". Último item do feed: **07/09/2026
-15:00, vídeo de gerenciamento** (sem compra/decisão nova).
+Pesos vigentes (09/09, pós-encerramento DOT): **PAXG ~38% · BTC ~31% · AERO ~7% · MORPHO ~2% ·
+VIRTUAL ~2% · Caixa 20%**. Confirme os pesos exatos no app novo (marcação a mercado muda todo dia).
 
 ⚠️ **BTC segue sendo reforçado:** foi de 20% → 24% → **33%** (entrada média agora **US$78.889**), e o
 **caixa foi a 0%** (100% alocada). A **variação/preço atual mudam todo dia**; os **pesos e preços de

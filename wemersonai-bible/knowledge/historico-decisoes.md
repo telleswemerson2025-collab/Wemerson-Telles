@@ -4,6 +4,18 @@
 > real de cada post. Este é o "compilado de operações" que resolve boa parte das dúvidas
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
+## SETEMBRO/2026
+- **09/09** — **Encerramento total DOT (Polkadot) @ US$1,25** (20% → 0%; caixa 0% → 20%). **+51% de
+  lucro**; custo médio US$0,8274 (entrada 20/08, reforço 26/08). Motivo declarado: **formar caixa, não
+  fim de tese** — carteira 100% comprada não responde à próxima oportunidade; realizou "vendendo força"
+  (DOT +17% no dia, momentum 4h acima de 80). Pode **reabrir** se o DOT devolver parte do movimento e
+  voltar a trabalhar acima da média longa. **Composição pós:** PAXG ~38% · BTC ~31% · AERO ~7% ·
+  MORPHO ~2% · VIRTUAL ~2% · **Caixa 20%** (5 ativos + caixa).
+- **~20/08 (entrada) e 26/08 (reforço)** — DOT, custo médio final **US$0,8274**. (Datas exatas a
+  confirmar no feed.)
+- ⚠️ **Varredura pendente (ago–set):** entradas de AERO/MORPHO/VIRTUAL e os reforços do BTC (até 33%,
+  entrada média US$78.889) ainda precisam ser datados no canal Decisões.
+
 ## AGOSTO/2026
 - **05/08 13:05** — Entrada PAXG **40% @ US$4.190** (0→40; USDT 80→40), por ordem limite.
 - **05/08 11:53** — Entrada BTC **20% @ US$64.055** (0→20; USDT 100→80), sem stop programado.
