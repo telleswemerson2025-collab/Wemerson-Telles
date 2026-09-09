@@ -21,6 +21,12 @@ Os valores mudam conforme a campanha — pra cravar, confirme o checkout oficial
   O desconto **abate a assinatura vigente**.
 Valores mudam conforme a campanha — confirme o checkout oficial.
 
+> ⚡ **PROMOÇÃO RELÂMPAGO ATIVA (09/09/2026): 30% de desconto no Vitalício (as 2 carteiras).** É o
+> **máximo** dessa promoção — **NÃO há desconto adicional acumulado além dos 30%**, inclusive pra quem
+> está só na CRM. É bem acima do desconto padrão de migração (15%). Por ser relâmpago, é **temporária**:
+> ao responder o cliente, incentivar a aproveitar enquanto está no ar e confirmar o link/checkout vigente.
+> (Quando a promoção sair do ar, remover/atualizar esta nota.)
+
 ### Renovação anual da CRM (valor)
 A renovação anual da CRM é **R$1.697,00**. O **parcelado tem juros**. (Renovação é diferente da
 primeira adesão; confirme o valor vigente no checkout.)
