@@ -31,6 +31,8 @@
 - **Fix sugerido:** garantir entrega confiável do push (revisar serviço de notificação/permissões),
   e deixar claro no app como ativar. Enquanto isso, reforçar que a decisão fica sempre no feed/Decisões.
 - **Reportado por:** Bernardo (09/09, não chegou notificação) e VISADAL JR (09/09, "3ª vez", insatisfeito).
+- **Workaround oficial (orientação do Gui pro time, 09/09):** pedir pro cliente **desinstalar e reinstalar
+  o app**, seguindo o **manual de ativação das notificações**. (Enquanto o fix definitivo não sai.)
 
 ## 4. Migração de domínio — efeitos colaterais no acesso (ACOMPANHAR durante a troca)
 Itens ligados à troca de domínio em curso, que devem sumir quando a migração terminar:

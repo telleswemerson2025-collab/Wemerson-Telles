@@ -45,3 +45,9 @@ lista de notificações e permitir notificações **com som** (às vezes vem no 
 do celular, dá pra escolher um som mais alto ou marcar como prioridade, pra não perder a hora das
 compras. Se não tocar mesmo liberado, reinstalar o app costuma resolver; e cadastrar o e-mail
 garante receber a decisão por um segundo caminho.
+
+**PROCEDIMENTO OFICIAL — cliente NÃO recebe notificação (orientação do Gui pro time, 09/09/2026):**
+pedir pro cliente **desinstalar e instalar o app novamente**, seguindo o **manual de ativação das
+notificações**. Esse é o passo padrão a orientar sempre que o cliente relatar que a notificação não
+chega. Reforçar também que as decisões chegam por e-mail como segundo caminho, e que a decisão fica
+sempre publicada no feed/Decisões (não depende só do push).
