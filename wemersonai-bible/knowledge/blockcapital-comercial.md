@@ -30,9 +30,11 @@ Valores mudam conforme a campanha — confirme o checkout oficial.
 >   só na CRM). Bem acima do desconto padrão de migração (15%).
 > - **É a "Black Friday" — antecipada.** Não prometer que haverá outra em dezembro; esta condição pode
 >   não se repetir, então orientar a aproveitar enquanto está no ar.
-> - **Abater mensalidades restantes / aproveitar valor já pago = caso a caso** (decisão comercial do
->   Wemerson): ao migrar, o cliente para de pagar as parcelas que faltam da assinatura antiga (cancela a
->   renovação); qualquer aproveitamento do já pago, confirmar caso a caso antes de prometer.
+> - **NÃO abate as parcelas da assinatura anual (CONFIRMADO):** comprando o Vitalício nesta promoção, o
+>   cliente **continua pagando a assinatura anual normalmente até ela terminar** — o Vitalício é um
+>   pagamento à parte. Como o Vitalício **já está com 30% de desconto**, **não** se abate também o valor
+>   restante da anual (ficaria desproporcional). Ou seja: nesta promo é **o 30% e ponto**, sem abatimento
+>   nem proporcional das mensalidades que faltam.
 > - (Quando a promoção sair do ar, remover/atualizar esta nota.)
 
 ### Renovação anual da CRM (valor)
