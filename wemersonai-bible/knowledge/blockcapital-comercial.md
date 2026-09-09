@@ -21,11 +21,19 @@ Os valores mudam conforme a campanha — pra cravar, confirme o checkout oficial
   O desconto **abate a assinatura vigente**.
 Valores mudam conforme a campanha — confirme o checkout oficial.
 
-> ⚡ **PROMOÇÃO RELÂMPAGO ATIVA (09/09/2026): 30% de desconto no Vitalício (as 2 carteiras).** É o
-> **máximo** dessa promoção — **NÃO há desconto adicional acumulado além dos 30%**, inclusive pra quem
-> está só na CRM. É bem acima do desconto padrão de migração (15%). Por ser relâmpago, é **temporária**:
-> ao responder o cliente, incentivar a aproveitar enquanto está no ar e confirmar o link/checkout vigente.
-> (Quando a promoção sair do ar, remover/atualizar esta nota.)
+> ⚡ **PROMOÇÃO RELÂMPAGO ATIVA (09/09/2026): "Black Friday antecipada — 30% no Vitalício" (as 2
+> carteiras).** Valor confirmado na tela da promo: **Vitalício por R$5.597,90, uma vez só** (pagamento
+> único), com **contador regressivo** (~24h, é relâmpago). Comparativo usado na peça: as duas carteiras
+> juntas custam **R$5.691/ano, todo ano** — então o Vitalício com 30% sai **mais barato que um único ano**
+> das assinaturas separadas, e depois "você nunca mais paga".
+> - É o **máximo** da promoção: **NÃO há desconto adicional acumulado além dos 30%** (nem pra quem está
+>   só na CRM). Bem acima do desconto padrão de migração (15%).
+> - **É a "Black Friday" — antecipada.** Não prometer que haverá outra em dezembro; esta condição pode
+>   não se repetir, então orientar a aproveitar enquanto está no ar.
+> - **Abater mensalidades restantes / aproveitar valor já pago = caso a caso** (decisão comercial do
+>   Wemerson): ao migrar, o cliente para de pagar as parcelas que faltam da assinatura antiga (cancela a
+>   renovação); qualquer aproveitamento do já pago, confirmar caso a caso antes de prometer.
+> - (Quando a promoção sair do ar, remover/atualizar esta nota.)
 
 ### Renovação anual da CRM (valor)
 A renovação anual da CRM é **R$1.697,00**. O **parcelado tem juros**. (Renovação é diferente da
