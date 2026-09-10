@@ -47,6 +47,10 @@
 - **Fix sugerido:** garantir entrega confiável do push (revisar serviço de notificação/permissões),
   e deixar claro no app como ativar. Enquanto isso, reforçar que a decisão fica sempre no feed/Decisões.
 - **Reportado por:** Bernardo (09/09, não chegou notificação) e VISADAL JR (09/09, "3ª vez", insatisfeito).
+- **Latência (novo, 10/09 — Atamai):** quando o push chega, chega **muito atrasado** — caso medido: e-mail
+  às 9:05 e o aviso do app só às **9:40** (~35 min). Pra carteira que depende de tempo, inviabiliza. Cliente
+  pede **reativar o app antigo** pras notificações (dizia ser mais eficiente). Push do app novo (via Chrome/
+  PWA) está lento; priorizar a entrega em tempo real. Enquanto isso, o e-mail tem chegado ANTES do push.
 - **Workaround oficial (orientação do Gui pro time, 09/09):** pedir pro cliente **desinstalar e reinstalar
   o app**, seguindo o **manual de ativação das notificações**. (Enquanto o fix definitivo não sai.)
 
