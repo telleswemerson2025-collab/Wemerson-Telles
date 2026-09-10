@@ -22,6 +22,22 @@
 - **Impacto:** não afeta a decisão em si (conteúdo/momento valem igual pra todos), só a exibição.
 - **Reportado por:** Alexandre (09/09/2026).
 
+## 2b. Ferramenta de Portfólio — sem histórico de registros / auditoria (SEVERIDADE ALTA)
+- **Bug/lacuna:** o cliente **não consegue ver o histórico dos registros** de compra/venda que fez no
+  portfólio, então não tem como conferir nem corrigir com segurança. O "Corrigir a Posição na Mão" não
+  basta, porque não mostra o que foi registrado antes.
+- **Sintomas relatados:** caixa no portfólio menor que o real; venda de DOT possivelmente registrada em
+  **duplicidade ou errada**; fluxo confuso de **Registrar → Salvar** (apareceu mensagem de que não tinha
+  clicado em Registrar, sem clareza se salvou 1x ou 2x).
+- **Impacto:** sem histórico auditável, a ferramenta perde a confiança do cliente (reportado por cliente
+  Vitalício). Some-se ao item 1 (campo de valor grava 100x) — os dois minam a mesma ferramenta.
+- **Fix sugerido:** exibir um **histórico/extrato dos registros** (data, ativo, operação, valor) editável;
+  clarear o fluxo Registrar/Salvar e evitar duplicidade; permitir reconciliação com as Decisões publicadas.
+- **Orientação de atendimento enquanto não sai o fix:** o portfólio é só espelho (o dinheiro real está na
+  corretora do cliente); orientar a corrigir na mão pra bater com a corretora, usando as Decisões como
+  referência da posição correta.
+- **Reportado por:** Mateus Izoton (#28/#46, 2 cobranças) e cliente Vitalício "Correção de registro" (10/09).
+
 ## 3. Notificação do app não dispara (RECORRENTE — SEVERIDADE MÉDIA/ALTA)
 - **Bug:** clientes relatam **não receber a notificação de decisão** no app (um relatou "3ª vez"), só
   recebendo pelo e-mail. Impacto direto: cliente não sai/entra no momento da decisão e associa a
