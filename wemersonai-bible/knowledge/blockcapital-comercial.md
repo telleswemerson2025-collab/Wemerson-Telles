@@ -13,8 +13,8 @@ Os valores mudam conforme a campanha — pra cravar, confirme o checkout oficial
 
 ### Diferença entre planos + preço da Carteira IA + desconto
 - **CRM (Rumo ao Milhão):** ver "Planos e valores" acima (anual R$175,51/mês).
-- **Carteira IA avulsa:** **R$2.997,00 por ano** (preço informado pelo Gui em 17/06). **Sem
-  desconto** na avulsa.
+- **Carteira IA avulsa:** **R$2.997,00 por ano à vista**, ou **12x de R$309,96 no cartão** (checkout
+  Hotmart "Carteira BlockCapital IA", confirmado 10/09/2026). **Sem desconto** na avulsa.
 - **Vitalício:** acesso contínuo e **inclui as duas carteiras (CRM + Carteira IA)** + relatórios
   + projetos futuros. Quem já é cliente CRM tem desconto para migrar pro vitalício — **varia de
   10% a 15% conforme a campanha/disponibilidade** (confirmar antes de prometer um número fixo).
