@@ -47,6 +47,12 @@ Itens ligados à troca de domínio em curso, que devem sumir quando a migração
   por Fernando (08/09).
 - **Fix/ação:** confirmar que, ao concluir a migração, players de vídeo, aulas e links estão liberados
   no domínio novo; e alinhar a comunicação de qual é o app/caminho oficial de acesso.
+- **Domínio sinalizado como phishing (CAUSA RAIZ — prioridade):** vários fornecedores de segurança
+  (VIPRE, alphaMountain, BrightCloud, FortiGuard) sinalizaram o domínio. Ação correta: **reportar o
+  falso-positivo/pedir reclassificação a cada fornecedor** (já há tickets abertos com eles na caixa) e
+  garantir SPF/DKIM/DMARC do domínio novo. ⚠️ E **parar de escrever e-mails com cara de phishing** —
+  nunca pedir pro cliente "sair da rede" ou "liberar/desligar o antivírus" (isso reforça o flag e treina
+  o cliente pro golpe). Ver onboarding-boas-vindas.md (frases removidas em 10/09).
 
 ## Notas
 - O "print não anexado" na varredura do Chrome é limitação da extensão de captura, não da plataforma.

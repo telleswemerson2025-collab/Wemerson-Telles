@@ -45,12 +45,20 @@ Bons investimentos, e você pode contar com toda a nossa equipe nessa jornada.
 
 ## Instruções de acesso (rodapé padrão das boas-vindas)
 Texto padrão pra enviar junto com o link mágico ao cliente novo:
-- **Acesse do seu celular usando sua rede particular (4G, 5G) ou no PC de sua casa.** Se der alerta de
-  **antivírus no nosso domínio, pode desabilitar/liberar** — não tem nenhum risco.
-- **Não deixe de conferir o Manual de Boas-Vindas · BlockCapital Research** depois do primeiro acesso.
-- **Instale no celular** em "Instalar no celular · BlockCapital Research" (o novo app). **Depois de
-  instalar, é necessário voltar nessa mesma página pra ativar as notificações e fazer o teste.**
+- **Conferir o Manual de Boas-Vindas · BlockCapital Research** depois do primeiro acesso.
+- **Instalar no celular** em "Instalar no celular · BlockCapital Research" (o novo app). **Depois de
+  instalar, voltar nessa mesma página pra ativar as notificações e fazer o teste.**
 - **Todas as decisões do Gui também são encaminhadas para o e-mail** do cliente (segundo caminho, além do app).
+- **Se o link não abrir:** pedir pro cliente responder o e-mail que a equipe ajuda / reenvia. Tratar caso a caso.
+
+> 🚫 **NUNCA escrever (removido em 10/09/2026 — decisão de segurança):** "acesse pela sua rede particular
+> (4G/5G) ou pelo PC de casa" e "se aparecer alerta de antivírus no nosso domínio, pode liberar/desabilitar,
+> não tem risco". **Motivo:** combinado com um link de token que define senha, esse texto é **indistinguível
+> de phishing** — para filtros e para o cliente atento — e treina justamente o comportamento que golpista
+> explora (sair da proteção, ignorar aviso). Também ajuda o domínio a continuar sinalizado. **Nunca pedir
+> pro cliente desligar antivírus nem trocar de rede.** Se o cliente esbarrar em bloqueio de rede/antivírus,
+> tratar na resposta dele, caso a caso; e a causa se resolve **reportando o falso-positivo aos fornecedores
+> de antivírus** (ver tickets-produto.md → migração), não pedindo pro cliente baixar a guarda.
 
 ## Notas internas de uso
 - **Link do manual:** theblockcapital.com/manual (passo a passo com imagens; baixar/instalar iOS e Android).
