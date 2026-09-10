@@ -4,11 +4,11 @@
 > travado → escalar pro suporte: **suporte@theblockcapital.com**
 
 ### Planos e valores
-**CRM (Rumo ao Milhão) — página oficial (carteirarumoaomilhao.com):** plano Anual por
-**R$175,51/mês, parcelado em 12x no cartão** (Pix também aceito), acesso liberado na hora,
-validade de 12 meses, **garantia de 7 dias**. A página avisa que o valor vai aumentar em breve.
-(Referências mais antigas falavam em ~R$1.997 anual / ~R$6.997 vitalício — hoje vale o número
-da página oficial acima; o Vitalício não aparece nessa página, confirmar no suporte.)
+**CRM (Rumo ao Milhão) — VALOR REAJUSTADO (checkout, 10/09/2026):** plano Anual **12x de R$196,19 no
+cartão** ou **R$1.897,00 à vista/ano** (Pix também aceito), acesso anual (12 meses), garantia de 7 dias.
+⚠️ O preço subiu: antes era ~R$175,51/mês (~R$1.697 à vista); **hoje o checkout mostra R$1.897 à vista /
+12x R$196,19**. Sempre confirmar no checkout, que o valor muda por campanha.
+(Referências antigas: ~R$1.997 anual / ~R$6.997 vitalício. O Vitalício não aparece nessa página.)
 Os valores mudam conforme a campanha — pra cravar, confirme o checkout oficial.
 
 ### Diferença entre planos + preço da Carteira IA + desconto
@@ -45,10 +45,13 @@ Valores mudam conforme a campanha — confirme o checkout oficial.
 A renovação anual da CRM é **R$1.697,00**. O **parcelado tem juros**. (Renovação é diferente da
 primeira adesão; confirme o valor vigente no checkout.)
 
-### Cupom de desconto no plano anual da CRM (CONFIRMADO 07/09/2026)
-**Existe cupom de desconto** no plano anual da CRM — a equipe pode enviar. Caso confirmado: **cupom de
-10%** sobre o plano anual de **R$1.697,00 à vista**, deixando em **R$1.527,30 à vista** (via link de
-checkout da Hotmart gerado pela equipe). ⚠️ Correção de guidance anterior: **NÃO** dizer ao cliente que
+### Cupom de desconto no plano anual da CRM
+**Existe cupom de desconto** no plano anual da CRM — a equipe pode enviar. Caso de 07/09: cupom de 10%
+sobre R$1.697 à vista → R$1.527,30. ⚠️ **DESATUALIZADO (10/09/2026):** o preço foi **reajustado pra
+R$1.897 à vista (12x R$196,19)** e o link de cupom antigo (checkoutMode=10) **NÃO está mais aplicando os
+10%** — mostra R$1.897 cheio. **Não prometer R$1.527,30 nem os 10% sem um link de cupom que realmente
+aplique o desconto no checkout atual.** Antes de oferecer 10%, confirmar/gerar um cupom vigente e testar
+no checkout. ⚠️ Correção de guidance anterior: **NÃO** dizer ao cliente que
 "não precisa de cupom / o preço já é o promocional" — quando faz sentido, a equipe **gera e envia um
 cupom** (ex.: cliente novo, cliente da Europa que não conseguia ver o valor com desconto). O percentual
 e o valor final variam por campanha/caso; confirmar o cupom vigente antes de prometer um número. O link
