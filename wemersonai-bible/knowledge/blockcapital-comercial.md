@@ -45,13 +45,19 @@ Valores mudam conforme a campanha — confirme o checkout oficial.
 A renovação anual da CRM é **R$1.697,00**. O **parcelado tem juros**. (Renovação é diferente da
 primeira adesão; confirme o valor vigente no checkout.)
 
-### Cupom de desconto no plano anual da CRM
-**Existe cupom de desconto** no plano anual da CRM — a equipe pode enviar. Caso de 07/09: cupom de 10%
-sobre R$1.697 à vista → R$1.527,30. ⚠️ **DESATUALIZADO (10/09/2026):** o preço foi **reajustado pra
-R$1.897 à vista (12x R$196,19)** e o link de cupom antigo (checkoutMode=10) **NÃO está mais aplicando os
-10%** — mostra R$1.897 cheio. **Não prometer R$1.527,30 nem os 10% sem um link de cupom que realmente
-aplique o desconto no checkout atual.** Antes de oferecer 10%, confirmar/gerar um cupom vigente e testar
-no checkout. ⚠️ Correção de guidance anterior: **NÃO** dizer ao cliente que
+### Cupom de desconto no plano anual da CRM (CONFIRMADO/VALIDADO 11/09/2026)
+**Existe cupom de 10% no plano anual, ATIVO e aplicando no preço novo.** Valores confirmados no checkout:
+- **À vista:** R$1.897,00 → **R$1.707,30** (com 10%).
+- **Parcelado:** 12x R$196,19 → **12x R$176,57**.
+- É um **link com oferta embutida** (não é código digitável, não há campo de cupom). Renova por R$1.897/ano
+  após 1 ano. ⚠️ **Limitado aos 10 primeiros** — checar se ainda há vaga antes de usar em volume.
+- **Onde fica (Zaia):** Builder → Recursos → Conhecimento → base "Cerebro" → doc "Políticas de preço e
+  cupons CRM". (O link em si é de campanha — **gerar/pegar na hora, não guardar aqui**.)
+
+⚠️ **POLÍTICA (regra da Zaia): NUNCA oferecer desconto/cupom por iniciativa própria — só enviar se o
+cliente PEDIR.** Ao enviar, o padrão é avisar que "este cupom de 10% OFF é válido apenas para as 10
+primeiras pessoas". (Obs.: o texto salvo na Zaia tem um erro de digitação — "cupom conte 10% OFF" — que o
+agente pode estar repetindo; corrigir quando puder.) ⚠️ Correção de guidance anterior: **NÃO** dizer ao cliente que
 "não precisa de cupom / o preço já é o promocional" — quando faz sentido, a equipe **gera e envia um
 cupom** (ex.: cliente novo, cliente da Europa que não conseguia ver o valor com desconto). O percentual
 e o valor final variam por campanha/caso; confirmar o cupom vigente antes de prometer um número. O link
