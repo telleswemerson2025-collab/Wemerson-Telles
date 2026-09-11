@@ -33,6 +33,8 @@
   Vitalício). Some-se ao item 1 (campo de valor grava 100x) — os dois minam a mesma ferramenta.
 - **Fix sugerido:** exibir um **histórico/extrato dos registros** (data, ativo, operação, valor) editável;
   clarear o fluxo Registrar/Salvar e evitar duplicidade; permitir reconciliação com as Decisões publicadas.
+- **Sugestão de cliente (Robinson, 10/09):** incluir no portfólio o campo de **data de entrada e de saída**
+  por ativo (parte do mesmo histórico/extrato pedido acima).
 - **Orientação de atendimento enquanto não sai o fix:** o portfólio é só espelho (o dinheiro real está na
   corretora do cliente); orientar a corrigir na mão pra bater com a corretora, usando as Decisões como
   referência da posição correta.
