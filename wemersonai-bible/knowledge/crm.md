@@ -48,10 +48,13 @@ foi de 0% → 20%**. Motivo: **não é fim de tese**, é formar caixa — cartei
 à próxima oportunidade; realizou "vendendo força" (DOT +17% no dia, momentum 4h acima de 80). O Gui
 segue gostando do DOT e pode **reabrir** se ele voltar a trabalhar acima da média longa.
 
-**Leitura 09/09/2026 (gráfico "Performance desde a compra", % de cada ativo a partir da entrada):**
-**AERO +18,39% · PAXG +4,96% · MORPHO −0,43% · BTC −0,61% · XRP −1,40% · VIRTUAL −9,71%.** Nota pro
-atendimento: **BTC e XRP estão levemente abaixo da entrada** — bom ponto pra quem está montando (sem
-perseguir preço); PAXG ~+5% (posição defensiva/core); VIRTUAL é o mais fraco.
+**Leitura 11/09/2026 (gráfico "Performance desde a compra", % de cada ativo a partir da entrada):**
+**AERO +15,31% · PAXG +3,49% · BTC −2,58% · MORPHO −3,40% · XRP −6,29% · VIRTUAL −17,03%.** Confirma a
+composição pós-decisões: **6 ativos, DOT já saiu, XRP presente**. Só AERO e PAXG positivos; **VIRTUAL
+despencou (−17,03%)**, o mais fraco; BTC/MORPHO/XRP levemente no vermelho (bons pontos pra quem monta,
+sem perseguir).
+
+**Leitura 09/09/2026:** AERO +18,39% · PAXG +4,96% · MORPHO −0,43% · BTC −0,61% · XRP −1,40% · VIRTUAL −9,71%.
 
 CONFIRMADO no app novo (**08/09/2026, 15:39:04** — leitura ANTES do encerramento do DOT):
 - **Performance total:** **+172,62%** · **Retorno:** **+10,87%** · **Investido:** 100% · **Em caixa:** 0% · **Posições:** 6
