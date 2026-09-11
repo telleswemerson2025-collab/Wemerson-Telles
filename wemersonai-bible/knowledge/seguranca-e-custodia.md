@@ -4,6 +4,20 @@
 > seguro; é decisão pessoal do investidor**; a equipe não opina sobre rumores. Corretora
 > recomendada: Bitget. Carteira usada pela equipe: Ledger Nano S Plus.
 
+### "Isso é golpe? Estão me vendendo/oferecendo pelo e-mail X" — como confirmar o que é oficial
+Cliente com receio de golpe (comum, ainda mais com o domínio sinalizado durante a migração). Tranquilizar
++ ensinar os marcadores do que é oficial:
+- **Canais oficiais:** e-mail **suporte@theblockcapital.com**, o **app**, e o site **theblockcapital.com**.
+  Confirmar que esse e-mail de suporte é nosso mesmo (não é golpe).
+- **Pagamento oficial:** sempre pelo **checkout da Hotmart (pay.hotmart.com)** ou, em cripto, pelo
+  **endereço oficial** que a equipe passa. Nunca em conta pessoal / Pix pra CPF aleatório / link fora do
+  Hotmart e do site.
+- **Sinais de golpe (orientar o cliente a desconfiar):** pedido de pagamento em conta/Pix pessoal, links
+  estranhos fora do Hotmart/site, promessa de retorno garantido, pressa artificial fora das nossas
+  campanhas oficiais, grupos de WhatsApp/Telegram se passando pela equipe ou pelo Gui.
+- **Regra de ouro pro cliente:** na dúvida, perguntar pra gente ANTES de pagar. Melhor confirmar do que
+  cair em golpe.
+
 ### Vocês validam/recomendam uma carteira específica? (ex.: Exodus)
 A CRM não valida nem recomenda uma carteira específica — a escolha entre hot wallet, cold
 wallet ou corretora depende do perfil de cada investidor. A carteira usada pela equipe é a
