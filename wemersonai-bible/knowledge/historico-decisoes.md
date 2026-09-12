@@ -5,15 +5,19 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
-- **até 11/09 — Encerramento AERO + Reforço XRP (confirmado pela tabela do app 11/09 22:19; datas exatas
-  a confirmar no feed):** **AERO ENCERRADO** (saiu da carteira, era ~7%) e **XRP reforçado de 5% → 10%**
-  (custo médio agora US$1,41). Caixa ficou em **17%**. Composição atual: PAXG 38% · BTC 31% · XRP 10% ·
-  MORPHO 2% · VIRTUAL 2% · Caixa 17% (5 ativos + caixa).
-- **RESOLVIDO — Ouro (PAXG) 09/09 era RELATÓRIO, não entrada nova.** A posição de PAXG segue **38% @
-  US$4.190 (inalterada)** na tabela de 11/09, então **não houve reforço/entrada nova em ouro** na carteira.
-  O "Ouro: consolidação ou início de reversão?" foi **leitura/análise**. (O card do Ettore mostrava a
-  recomendação do app pra quem ainda NÃO tem PAXG montar até o alvo de 38% — não é uma entrada nova da
-  carteira.) Cliente Alexandre estava certo. ⚠️ Há dúvida: o card
+- **11/09 15:40 — Encerramento AERO (Aerodrome) @ US$0,60** (7% → 0%; caixa 10% → 17%). **+28% de lucro**
+  (entrada 20/08 @ US$0,47). Motivo: preço voltou à região dos US$0,60 (topos de julho), onde o mercado já
+  recusou preço mais alto; tese segue válida, mas preferiu transformar lucro em caixa a apostar no 2º teste.
+  Caixa fica disponível pra próxima oportunidade (a compra virá em post próprio).
+- **11/09 11:10 — Reforço XRP @ US$1,40** (5% → 10%; caixa 15% → 10%). Somou no teste da base (média longa
+  ~US$1,35 segurou); **custo médio caiu de US$1,43 → US$1,41**. Racional: somar no teste da base (não no
+  rompimento do topo) faz o custo médio cair.
+- **11/09 — Relatório de tese "Ouro: consolidação ou início de reversão?" (NÃO é decisão/entrada).** PAXG
+  mantido **38% @ US$4.190** (+4,47% na data), **sem redução, sem reforço, SEM stop programado**. Zona
+  observada: **US$4.300** (base da consolidação), decisão manual por convergência (fechamento abaixo +
+  recuperação que falha + juros reais subindo + dólar forte + saída de fundos). Leitura-base: consolidação
+  (digestão da alta de ago), com critérios escritos de invalidação. **Confirma: o de ouro foi relatório,
+  não entrada nova — Alexandre estava certo.** ⚠️ Há dúvida: o card
   do Ettore ("Nova entrada em Ouro") mostrava no portfólio a **recomendação de entrar em PAXG até o alvo
   ao preço atual ~US$4.399,57**, mas um cliente (Alexandre) diz que **saiu só um relatório de análise**
   ("Ouro: consolidação ou início de reversão?") **sem nova entrada**. NÃO cravar que houve entrada nova

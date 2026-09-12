@@ -96,13 +96,19 @@ PAXG 38% e caixa 17%), confirmado no app novo em 11/09/2026. **DOT** (encerrado 
 especificamente **não está** na composição atual (já houve posição tática em SOL em abr/26). A
 posição vigente é sempre a última publicada na CRM — confirme lá pra pegar a cesta do momento.
 
-### Tem stop ou take profit no BTC agora?
-**BTC: sem stop** — é gerenciado por **risco**, não por preço. Stops por ativo (conforme
-atualização de 03/09/2026): **PAXG (ouro): stop em US$4.000**; **DOT, AERO, VIRTUAL: só
-invalidações/suportes (não são stops)**; **MORPHO: sem stop**. O Gui faz o gerenciamento manual
-e avisa a comunidade no feed quando há mudança. A definição vigente é sempre a última publicada
-na CRM (vídeo das 18h) — confirmar por lá. (PAXG stop US$4.000 **confirmado**; os demais conforme
-a atualização diária.)
+### Tem stop ou take profit? (ATUALIZADO 11/09/2026 — relatório de tese do Ouro)
+**BTC: sem stop** — gerenciado por **risco**, não por preço.
+⚠️ **PAXG (ouro): NÃO há stop programado.** CORREÇÃO: o relatório de tese oficial do Ouro (11/09/2026)
+diz **explicitamente que não existe stop programado** — nem em US$4.300 nem em US$4.000. A referência de
+antes ("stop US$4.000") **não vale mais**. A zona observada agora é **US$4.300** (base da consolidação,
+~1,8% abaixo do preço; mesmo lá a posição ainda estaria positiva, entrada US$4.190). A decisão é **manual**,
+por **convergência** (fechamento abaixo da zona + tentativa de volta que falha + juros reais subindo +
+dólar forte + saída de fundos) — **não** por toque num número. Qualquer mudança vem publicada no feed.
+- **DOT/AERO: encerrados** (não estão mais na carteira). **XRP/MORPHO/VIRTUAL: sem stop programado**, só
+  invalidações/suportes. O gerenciamento é manual; a definição vigente é sempre a última publicada na CRM.
+⚠️ **Erro anterior a corrigir:** respostas de 10/09 ao Adilson, Murilo e Luciane confirmaram "PAXG stop
+US$4.000" — isso está **incorreto** pelo relatório oficial. Se eles perguntarem de novo, usar a versão certa
+(sem stop programado; zona US$4.300 observada manualmente).
 
 ### Vão abrir um novo trade (long) no BTC?
 A estratégia é construir posição de forma gradual quando a relação risco/retorno é
