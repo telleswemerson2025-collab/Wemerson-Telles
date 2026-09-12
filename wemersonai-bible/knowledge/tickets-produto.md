@@ -21,6 +21,10 @@
 - **Fix sugerido:** exibir sempre em America/Sao_Paulo (horário de Brasília), ou deixar o fuso explícito.
 - **Impacto:** não afeta a decisão em si (conteúdo/momento valem igual pra todos), só a exibição.
 - **Reportado por:** Alexandre (09/09/2026).
+- **Detalhe (11/09 — DC):** o horário aparece **ADIANTADO/no futuro** — post do encerramento do AERO marcava
+  operação às 15h40 quando ainda eram 15h35 (mesmo no reforço do XRP da manhã). Ou seja, o carimbo está à
+  frente do horário real de Brasília, dando impressão de "operação no futuro". Confirma que é fuso deslocado
+  pra frente. O conteúdo/preço da decisão está correto; só a marcação de hora está errada.
 
 ## 2b. Ferramenta de Portfólio — sem histórico de registros / auditoria (SEVERIDADE ALTA)
 - **Bug/lacuna:** o cliente **não consegue ver o histórico dos registros** de compra/venda que fez no
