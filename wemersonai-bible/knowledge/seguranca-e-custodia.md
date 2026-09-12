@@ -4,6 +4,21 @@
 > seguro; é decisão pessoal do investidor**; a equipe não opina sobre rumores. Corretora
 > recomendada: Bitget. Carteira usada pela equipe: Ledger Nano S Plus.
 
+### Link oficial pra abrir conta na Bitget (com desconto de taxa pro cliente)
+A corretora recomendada pra cripto é a **Bitget** (tem ~99% das moedas que a carteira usa). Os nossos
+clientes têm **desconto nas taxas** abrindo pelo **link oficial de afiliado**:
+`https://www.bitget.com/pt/expressly?channelCode=dsv9&vipCode=9yxl&languageType=12`
+- Parâmetros: `channelCode=dsv9`, `vipCode=9yxl` (é o que dá o **desconto de taxa** ao cliente),
+  `languageType=12` (português). Usar sempre o link **com** esses parâmetros (o site normal da Bitget não
+  dá o desconto).
+- **Onde fica na Zaia:** Builder → Recursos → Conhecimento → base "Cerebro" → doc "FAQ Carteira Rumo ao
+  Milhão". É o **único** link de Bitget da base (varredura 12/09/2026).
+- **2º caminho:** há também um link da Bitget **dentro da plataforma** da Rumo ao Milhão; nas conversas, o
+  Matheus costuma mandar o cliente pegar o link por lá. (Não há tutorial de abertura de conta na base — vale
+  criar um depois.)
+- (Este link é ativo/oficial e de marketing, pode ser compartilhado — diferente de link mágico/token, que é
+  pessoal e nunca se guarda.)
+
 ### "Isso é golpe? Estão me vendendo/oferecendo pelo e-mail X" — como confirmar o que é oficial
 Cliente com receio de golpe (comum, ainda mais com o domínio sinalizado durante a migração). Tranquilizar
 + ensinar os marcadores do que é oficial:
