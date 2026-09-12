@@ -5,10 +5,14 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
-- **09/09 (noite) — Nova entrada em Ouro (PAXG):** decisão publicada de **reforçar o PAXG até o alvo**,
-  ao **preço atual (~US$4.399,57)**. Referência de entrada passa a ser esse patamar (não os US$4.190 da
-  entrada anterior); orientar a seguir a decisão nova, sem esperar voltar ao preço antigo. ⚠️ Pesos/caixa
-  exatos e o valor do alvo a confirmar no feed/varredura.
+- **09/09 (noite) — Ouro (PAXG): ENTRADA NOVA x RELATÓRIO — A CONFIRMAR NA FONTE.** ⚠️ Há dúvida: o card
+  do Ettore ("Nova entrada em Ouro") mostrava no portfólio a **recomendação de entrar em PAXG até o alvo
+  ao preço atual ~US$4.399,57**, mas um cliente (Alexandre) diz que **saiu só um relatório de análise**
+  ("Ouro: consolidação ou início de reversão?") **sem nova entrada**. NÃO cravar que houve entrada nova
+  enquanto não confirmar nas Decisões se existe um card de decisão com ativo/preço/peso (=entrada) ou se é
+  só leitura (=relatório). Regra geral vale sempre: o que orienta a montar posição é a decisão publicada
+  com números, não o texto de análise. (Correção: respostas anteriores ao Ettore/Alexandre afirmaram
+  "entrada nova" — revalidar.)
 - **09/09 10:15** — **Entrada XRP 5% @ US$1,43** (0→5; caixa 20→15). **Rotação de capital** (usou o caixa
   do DOT): "vender o que já correu pra comprar o que ainda não correu". Leitura: bandeira (alta ago
   US$1,00→1,70, consolidação no retângulo US$1,34–1,55, média longa ~US$1,30), testando o teto, momentum
