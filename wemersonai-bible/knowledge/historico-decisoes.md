@@ -5,6 +5,17 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
+- **12/09 14:27 — PRESERVAÇÃO PATRIMONIAL: encerra BTC, XRP, MORPHO e VIRTUAL** (4 ativos, peso 45% → 0%;
+  **caixa 17% → 62%**). Preços de saída: **BTC US$77.224 · XRP US$1,36 · MORPHO US$2,27 · VIRTUAL US$0,63**.
+  As 4 juntas: **−1,4%** no consolidado. Motivo: o **indicador de risco de queda saiu do zero** (subiu após
+  a realização no BTC) — **regra: risco subindo = caixa** (regra, não previsão). Ficou **só ouro (PAXG 38%)**.
+  Execução: sábado, liquidez baixa → **ordem limite**. Quando o risco esfriar, é do ouro e do caixa que sai
+  o dinheiro pra voltar ao mercado. **Composição pós: PAXG 38% + Caixa 62% (1 ativo + caixa).**
+- **12/09 14:51 — Balanço das 6 posições fechadas:** DOT +51,1% (+US$4.296) · AERO +27,7% (+US$930) · BTC
+  −2,1% (−US$414) · XRP −3,9% (−US$243) · MORPHO −3,4% (−US$38) · VIRTUAL −17,1% (−US$192). **Total +10,9%
+  (+US$4.339)** sobre o capital envolvido. Sair evitou perda (DOT −17% e AERO −5,5% após as vendas →
+  preservou ~US$2.353). Patrimônio: 7d +3,8% · 30d +7,7% · setembro +6,7% (US$3.847) · acumulado +169% ·
+  topo histórico marcado na terça (−1,3% da máxima).
 - **11/09 15:40 — Encerramento AERO (Aerodrome) @ US$0,60** (7% → 0%; caixa 10% → 17%). **+28% de lucro**
   (entrada 20/08 @ US$0,47). Motivo: preço voltou à região dos US$0,60 (topos de julho), onde o mercado já
   recusou preço mais alto; tese segue válida, mas preferiu transformar lucro em caixa a apostar no 2º teste.

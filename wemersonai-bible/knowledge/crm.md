@@ -22,45 +22,40 @@ girava em torno de US$4.200 investidos. A gestão é sempre manual (não há apo
 automático) e a consistência importa mais que o tamanho do aporte.
 
 ### Ativos operados na CRM
-CONFIRMADO no app (11/09/2026, aba Carteira): a CRM opera **BTC + PAXG (ouro) + caixa** e, atualmente,
-também **altcoins**: **XRP, MORPHO e VIRTUAL**. Composição vigente: **PAXG 38% · BTC 31% · XRP 10% ·
-MORPHO 2% · VIRTUAL 2% · Caixa 17%**. (Já teve DOT e AERO recentemente — encerrados até 11/09 — e SOL/ETH
-em posições táticas antes; a cesta muda conforme as decisões.) O Gui nunca faz operações vendidas ("short
-nem na praia"). No PAXG, os stops são sempre por ordem limite, nunca a mercado, pela baixa liquidez do book.
+CONFIRMADO no app (**12/09/2026**, aba Carteira): após a decisão de **Preservação Patrimonial**, a CRM
+está **DEFENSIVA — só PAXG (ouro) 38% + Caixa 62%** (1 ativo + caixa). Todas as altcoins e o BTC foram
+encerrados. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
+AERO, XRP, MORPHO, VIRTUAL — todos já encerrados; e SOL/ETH antes) — a cesta muda conforme as decisões e o
+indicador de risco. O Gui nunca faz operações vendidas ("short nem na praia"). No PAXG, execução por ordem
+limite, nunca a mercado, pela baixa liquidez do book.
 
 ### Composição atual da carteira
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **DECISÃO NOVA — 09/09/2026 10:15: ENTRADA EM XRP.** Peso **0% → 5%**, preço **US$1,43**, **caixa
-20% → 15%**. É **rotação de capital** (usou o caixa do encerramento do DOT), não aumento de risco:
-"vender o que já correu pra comprar o que ainda não correu". Leitura: XRP fez bandeira (alta forte de
-ago US$1,00 → US$1,70 no volume, depois consolidação lateral no retângulo US$1,34–1,55, média longa
-subindo ~US$1,30), testando o teto com momentum 4h reagindo acima de 50. **Posição pequena de
-propósito** (comprada antes da confirmação, guardando munição). **Composição pós-XRP:** PAXG ~38% ·
-BTC ~31% · AERO ~7% · XRP 5% · MORPHO ~2% · VIRTUAL ~2% · **Caixa 15%** — **6 ativos + caixa**.
+🛡️ **DECISÃO GRANDE — 12/09/2026: PRESERVAÇÃO PATRIMONIAL. Carteira zerou tudo menos o ouro.** O Gui
+**encerrou BTC, XRP, MORPHO e VIRTUAL** (peso 45% → 0%), e o **caixa foi de 17% → 62%**. Motivo: o
+**indicador de risco de queda saiu do zero** (subiu depois da realização no BTC) — e a **regra é: risco
+subindo = caixa** (não é previsão, é regra de risco). Preços de saída: **BTC US$77.224 · XRP US$1,36 ·
+MORPHO US$2,27 · VIRTUAL US$0,63**. As 4 juntas deram **−1,4%** no consolidado. Ficou **só ouro (PAXG 38%)**,
+que cumpre o papel oposto (defensivo). Execução: era sábado, liquidez baixa → **ordem limite, nunca a
+mercado**. Quando o risco esfriar (indicador voltar ao piso), é do ouro e do caixa que sai o dinheiro pra
+voltar ao mercado.
 
-🔴 **DECISÃO — 09/09/2026 (antes do XRP): ENCERRAMENTO TOTAL DO DOT (Polkadot).** Peso **20% → 0%**,
-saída a **US$1,25**, **+51% de lucro** (custo médio US$0,8274; entrada 20/08, reforço 26/08). O **caixa
-foi de 0% → 20%**. Motivo: **não é fim de tese**, é formar caixa — carteira 100% comprada não responde
-à próxima oportunidade; realizou "vendendo força" (DOT +17% no dia, momentum 4h acima de 80). O Gui
-segue gostando do DOT e pode **reabrir** se ele voltar a trabalhar acima da média longa.
+**COMPOSIÇÃO ATUAL CONFIRMADA no app (12/09/2026, 20:30:30) — 1 ativo + caixa:**
+- **PAX Gold (PAXG)** — **38%** · entrada US$4.190,00 · atual US$4.354,52 · **+3,93%** · contrib. +1,57%
+- **Caixa (USD)** — **62%**
+- **Performance total:** **+168,79%** · **Retorno:** **+1,57%** · Investido 38% · Posições: 1.
+⚠️ **Hoje a CRM está DEFENSIVA:** só ouro + caixa. Com 62% em caixa, o patrimônio quase não oscila (só o
+ouro ainda anda com o mercado). Nenhuma altcoin na carteira agora (DOT, AERO, BTC, XRP, MORPHO, VIRTUAL
+todos encerrados).
 
-🔴🟢 **DUAS DECISÕES CONFIRMADAS até 11/09 (pela tabela do app, datas exatas a confirmar no feed):**
-**AERO foi ENCERRADO** (saiu da carteira; era ~7%) e o **XRP foi REFORÇADO de 5% → 10%**. O caixa ficou
-em **17%**. **PAXG segue igual (38%, entrada US$4.190)** — ou seja, **NÃO houve nova entrada em ouro que
-mudasse a posição** (isso confirma o cliente Alexandre: o de ouro foi relatório/leitura, não entrada nova).
+**Balanço das 6 posições fechadas (post 12/09 14:51):** DOT +51,1% (+US$4.296) · AERO +27,7% (+US$930) ·
+BTC −2,1% (−US$414) · XRP −3,9% (−US$243) · MORPHO −3,4% (−US$38) · VIRTUAL −17,1% (−US$192). **Total:
++10,9% (+US$4.339)** sobre o capital que estava nelas. Sair também evitou perda (DOT caiu 17% e AERO 5,5%
+depois das vendas → preservou ~US$2.353). Patrimônio: 7d +3,8% · 30d +7,7% · setembro +6,7% · acumulado +169%.
 
-**COMPOSIÇÃO ATUAL CONFIRMADA no app (11/09/2026, 22:19:09) — 5 ativos + caixa:**
-Tabela (ativo · peso · entrada · preço atual · variação · contribuição):
-- **PAX Gold (PAXG)** — 38% · entrada US$4.190,00 · atual US$4.356,33 · **+3,97%** · contrib. +1,59%
-- **Bitcoin (BTC)** — 31% · entrada US$78.889,00 · atual US$77.355,00 · **−1,94%** · contrib. −0,68%
-- **XRP** — 10% · entrada US$1,41 · atual US$1,36 · **−3,87%** · contrib. −0,43%
-- **Morpho (MORPHO)** — 2% · entrada US$2,35 · atual US$2,31 · **−1,70%** · contrib. −0,03%
-- **Virtuals Protocol (VIRTUAL)** — 2% · entrada US$0,76 · atual US$0,64 · **−16,02%** · contrib. −0,32%
-- **Caixa (USDT/USD)** — 17%
-⚠️ **AERO não está mais na composição** (encerrado). Só PAXG no positivo; VIRTUAL é o mais fraco (−16%).
-Obs.: a entrada do XRP aparece agora como US$1,41 (custo médio após o reforço 5%→10%; era US$1,43 na 1ª entrada).
+**Leitura 09/09/2026:** AERO +18,39% · PAXG +4,96% · MORPHO −0,43% · BTC −0,61% · XRP −1,40% · VIRTUAL −9,71%.
 
 **Leitura 09/09/2026:** AERO +18,39% · PAXG +4,96% · MORPHO −0,43% · BTC −0,61% · XRP −1,40% · VIRTUAL −9,71%.
 
@@ -75,26 +70,23 @@ Tabela (ativo · peso · entrada · preço atual · variação) — *estado de 0
 - **Morpho (MORPHO)** — 2% · entrada US$2,35 · atual US$2,41 · **+2,55%**
 - **Virtuals Protocol (VIRTUAL)** — 2% · entrada US$0,76 · atual US$0,72 · **−4,61%**
 
-Pesos vigentes (09/09, pós-encerramento DOT): **PAXG ~38% · BTC ~31% · AERO ~7% · MORPHO ~2% ·
-VIRTUAL ~2% · Caixa 20%**. Confirme os pesos exatos no app novo (marcação a mercado muda todo dia).
-
-⚠️ **BTC segue sendo reforçado:** foi de 20% → 24% → **33%** (entrada média agora **US$78.889**), e o
-**caixa foi a 0%** (100% alocada). A **variação/preço atual mudam todo dia**; os **pesos e preços de
-entrada** são a posição vigente. Para o número do momento, confirme no app novo. Não crave número velho.
+⚠️ **(Tabela acima é de 08/09, histórica.) Posição ATUAL — 12/09: só PAXG 38% + Caixa 62%** (todo o
+resto encerrado na Preservação Patrimonial). Ver o bloco "Composição atual" no topo. A **variação/preço
+mudam todo dia**; confirme no app. Não crave número velho.
 
 ### Última compra/entrada (oficial)
-Entradas vigentes CONFIRMADAS no app novo (**11/09/2026, 22:19**): **PAXG a US$4.190** (38%), **BTC a
-US$78.889** (31%), **XRP a US$1,41** (10%, custo médio após reforço 5%→10%), **MORPHO a US$2,35** (2%),
-**VIRTUAL a US$0,76** (2%), **caixa 17%**. **DOT** (encerrado 09/09 @US$1,25, +51%) e **AERO** (encerrado
-até 11/09) saíram. A posição vigente é sempre a última publicada na CRM; datas e ordem de cada entrada no
+CONFIRMADO no app (**12/09/2026**): a **última decisão foi de VENDA (Preservação Patrimonial)**, não de
+compra — encerrou BTC/XRP/MORPHO/VIRTUAL. A **única posição vigente é PAXG (ouro) a US$4.190 (38%)**, o
+resto é **caixa (62%)**. Não há posição nova pra "entrar" agora além do ouro; o caixa aguarda o risco
+esfriar. A posição vigente é sempre a última publicada na CRM; datas e ordem de cada operação no
 `historico-decisoes.md`.
 
 ### A carteira tem SOL ou outras altcoins?
-**Sim — hoje a CRM tem altcoins na composição:** **XRP 10%, MORPHO 2% e VIRTUAL 2%** (além de BTC 31%,
-PAXG 38% e caixa 17%), confirmado no app novo em 11/09/2026. **DOT** (encerrado 09/09, +51%) e **AERO**
-(encerrado até 11/09) **não estão mais** na composição. **SOL** também não está. **SOL**
-especificamente **não está** na composição atual (já houve posição tática em SOL em abr/26). A
-posição vigente é sempre a última publicada na CRM — confirme lá pra pegar a cesta do momento.
+**Hoje (12/09/2026) NÃO — a CRM está só com ouro e caixa.** Após a Preservação Patrimonial, todas as
+altcoins foram encerradas (XRP, MORPHO, VIRTUAL em 12/09; DOT e AERO antes), junto com o BTC. A
+composição atual é **PAXG (ouro) 38% + Caixa 62%**. A CRM **teve** altcoins recentemente e pode ter de
+novo quando o risco esfriar, mas agora não tem nenhuma. **SOL** também não está (já houve posição tática
+em abr/26). A posição vigente é sempre a última publicada na CRM — confirme lá pra pegar a cesta do momento.
 
 ### Tem stop ou take profit?
 **BTC: sem stop** — gerenciado por **risco**, não por preço.
