@@ -42,6 +42,12 @@
 - **Mais casos (11/09) — cálculo do preço médio errado:** Jonny (digita XRP US$1,44 → preço médio vira
   US$1.444,00; ponto e vírgula dão o mesmo erro) e Franciedson (preço médio não valida 1,41 nem 1.41). Ou
   seja, o campo de preço no registro de compra está multiplicando/parseando errado (mesma raiz do item 1).
+- 🔥 **VIROU MASSIVO no post "Reforço em XRP" (11/09):** além dos acima, Ricardo de Andrade Arruda ("preço
+  médio multiplicado por 10"), Sandro Rodrigues Costa ("não considera as casas decimais do XRP") e Samuel
+  ("não consigo separar por . nem por ,"). É o mesmo bug do separador decimal / cálculo do preço médio,
+  atingindo muitos clientes ao registrar o reforço do XRP (preço com 2 casas). **Prioridade ALTA** — está
+  minando a confiança na ferramenta em escala. Provável causa: parser trata o separador como milhar (x100/
+  x1000) e/ou não aceita o decimal, dependendo do idioma do teclado.
 
 ## 3. Notificação do app não dispara (RECORRENTE — SEVERIDADE MÉDIA/ALTA)
 - **Bug:** clientes relatam **não receber a notificação de decisão** no app (um relatou "3ª vez"), só
