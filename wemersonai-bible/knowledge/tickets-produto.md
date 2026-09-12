@@ -39,6 +39,9 @@
   corretora do cliente); orientar a corrigir na mão pra bater com a corretora, usando as Decisões como
   referência da posição correta.
 - **Reportado por:** Mateus Izoton (#28/#46, 2 cobranças) e cliente Vitalício "Correção de registro" (10/09).
+- **Mais casos (11/09) — cálculo do preço médio errado:** Jonny (digita XRP US$1,44 → preço médio vira
+  US$1.444,00; ponto e vírgula dão o mesmo erro) e Franciedson (preço médio não valida 1,41 nem 1.41). Ou
+  seja, o campo de preço no registro de compra está multiplicando/parseando errado (mesma raiz do item 1).
 
 ## 3. Notificação do app não dispara (RECORRENTE — SEVERIDADE MÉDIA/ALTA)
 - **Bug:** clientes relatam **não receber a notificação de decisão** no app (um relatou "3ª vez"), só
