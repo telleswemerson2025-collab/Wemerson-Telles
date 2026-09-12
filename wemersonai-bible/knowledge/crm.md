@@ -96,19 +96,19 @@ PAXG 38% e caixa 17%), confirmado no app novo em 11/09/2026. **DOT** (encerrado 
 especificamente **não está** na composição atual (já houve posição tática em SOL em abr/26). A
 posição vigente é sempre a última publicada na CRM — confirme lá pra pegar a cesta do momento.
 
-### Tem stop ou take profit? (ATUALIZADO 11/09/2026 — relatório de tese do Ouro)
+### Tem stop ou take profit?
 **BTC: sem stop** — gerenciado por **risco**, não por preço.
-⚠️ **PAXG (ouro): NÃO há stop programado.** CORREÇÃO: o relatório de tese oficial do Ouro (11/09/2026)
-diz **explicitamente que não existe stop programado** — nem em US$4.300 nem em US$4.000. A referência de
-antes ("stop US$4.000") **não vale mais**. A zona observada agora é **US$4.300** (base da consolidação,
-~1,8% abaixo do preço; mesmo lá a posição ainda estaria positiva, entrada US$4.190). A decisão é **manual**,
-por **convergência** (fechamento abaixo da zona + tentativa de volta que falha + juros reais subindo +
-dólar forte + saída de fundos) — **não** por toque num número. Qualquer mudança vem publicada no feed.
-- **DOT/AERO: encerrados** (não estão mais na carteira). **XRP/MORPHO/VIRTUAL: sem stop programado**, só
-  invalidações/suportes. O gerenciamento é manual; a definição vigente é sempre a última publicada na CRM.
-⚠️ **Erro anterior a corrigir:** respostas de 10/09 ao Adilson, Murilo e Luciane confirmaram "PAXG stop
-US$4.000" — isso está **incorreto** pelo relatório oficial. Se eles perguntarem de novo, usar a versão certa
-(sem stop programado; zona US$4.300 observada manualmente).
+O gerenciamento é **manual**, feito pelo Gui; **nem toda posição tem stop programado**. No **ouro (PAXG)**,
+o relatório de tese oficial (11/09/2026) reforça que o Gui **não trabalha com stop programado** (não deixa
+ordem parada num número): ele **observa a zona-chave e decide na mão**, por convergência de sinais (preço +
+macro + fluxo), não por toque num valor.
+⚠️ **NÃO cravar um valor de stop** (ex.: não afirmar "stop em US$X") — os números específicos serão
+confirmados na fonte depois. Ao cliente: dizer que o gerenciamento é manual e que **qualquer stop/ajuste é
+comunicado oficialmente no feed**; confirmar a orientação vigente por lá.
+- **DOT/AERO: encerrados** (não estão mais na carteira). Demais posições: sem stop programado, só
+  invalidações/suportes acompanhados manualmente.
+(Obs. interna: respostas de 10/09 ao Adilson/Murilo/Luciane citaram "stop US$4.000" — não repetir esse
+número; o relatório atual não confirma stop programado. Revalidar antes de dar qualquer valor.)
 
 ### Vão abrir um novo trade (long) no BTC?
 A estratégia é construir posição de forma gradual quando a relação risco/retorno é
