@@ -6,6 +6,19 @@
 > MOD 5% · VST 5% · CGNX 4% · Caixa 4%.
 
 ## Linha do tempo (mais recente → mais antiga)
+- **14/09 — CARTEIRA IA FICA DEFENSIVA (levantar caixa vendendo os ganhadores):** duas decisões seguidas.
+  **10:57 — Encerra SPCX + BE** (as 2 maiores/mais lucrativas): BE @US$255,87 (+32,5%), SPCX @US$148 (+21%);
+  peso 40%→0%, caixa 4%→44%. **11:34 — Encerra SNDK + LITE + VST** (as 3 que ainda estavam no lucro): SNDK
+  @US$1.561,90 (+9,9%), LITE @US$857 (+7,9%), VST @US$142,31 (+0,9%); peso 24%→0%, caixa 44%→**67%**. Motivo:
+  precisavam de caixa e escolheram **vender o lucro, não o prejuízo**; podem ver oportunidades em breve.
+  Ficaram só **VRT, WDC, MOD, CGNX** (todas abaixo da entrada — vender agora viraria perda definitiva).
+  "Decisão detalhada em breve." **Balanço das 5 saídas: +US$10.344 (+18,5%)** — BE +US$4.875, SPCX +US$3.767,
+  SNDK +US$1.185, LITE +US$471, VST +US$46. Patrimônio US$104.712 (+4,7% sobre US$100k).
+- **11/09 17:00 — Tese Ed.25 "Oracle: a demanda confirmou":** resultado da Oracle confirmou a demanda por
+  infra de IA (5 de 6 sinais a favor); o sinal contrário foi financiamento. Carteira fica como está (caixa
+  ~4% na época → confirmação sustenta posições, não abre compra). Próximos checkpoints: Micron e os 4 grandes
+  provedores de nuvem.
+- **~09/09 — Tese Ed.23 "Oracle: por que entramos com viés otimista"** (leitura pré-resultado; sem mudança de carteira).
 - **08/09 — Reforço WDC:** 6% → 11% @ US$486,00. Caixa 8%→3%. Custo médio cai US$528,56 → **US$512,19**;
   prejuízo da posição encolhe de 8,2% → 5,3%. Tese: era a única posição no vermelho, reconquistou a
   média longa (~US$470) com momentum acima de 50, dentro do range US$430–490 desde julho.

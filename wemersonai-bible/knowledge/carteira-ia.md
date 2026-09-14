@@ -12,22 +12,21 @@ já correu** — o valor está na infraestrutura que sustenta a IA. Tem a aba "T
 e a aba "Decisões" (execução real). Horizonte de 18 a 36 meses, rebalanceamento semestral.
 
 ### Composição atual da carteira (última leitura oficial)
-CONFIRMADO no site (**08/09/2026, 15:39** — aba Carteira): **9 posições, Caixa 4%, 96% investido,
-performance total +16,44%**. Composição (ativo · peso · entrada):
-- **SPCX (SpaceX) 19%** — entrada US$122,39
-- **BE (Bloom Energy) 19%** — entrada US$193,11
-- **VRT (Vertiv) 14%** — entrada US$286,16
-- **SNDK (SanDisk) 13%** — entrada US$1.421,52
-- **WDC (Western Digital) 11%** — entrada US$512,19
-- **LITE (Lumentum) 6%** — entrada US$794,62
-- **MOD (Modine) 5%** — entrada US$194,75 *(entrou)*
-- **VST (Vistra) 5%** — entrada US$141,00 *(entrou)*
-- **CGNX (Cognex) 4%** — entrada US$61,80 *(entrou)*
-- **Caixa 4%**
+🛡️ **CONFIRMADO no site (14/09/2026, 12:06) — carteira FICOU DEFENSIVA, 4 ativos + caixa:** após vender
+todos os ativos no lucro, sobraram só os que estão abaixo da entrada. **Caixa 67%, investido 33%,
+performance total +4,58%, retorno das posições abertas −5,77%.**
+- **VRT (Vertiv)** — 13% · entrada US$286,16 · atual US$235,19 · **−17,81%**
+- **WDC (Western Digital)** — 10% · entrada US$512,19 · atual US$423,73 · **−17,27%**
+- **MOD (Modine)** — 5% · entrada US$194,75 · atual US$176,60 · **−9,32%**
+- **CGNX (Cognex)** — 5% · entrada US$61,80 · atual US$60,40 · **−2,27%**
+- **Caixa (USD)** — 67%
 
-⚠️ Grande mudança vs. a leitura antiga de 06/08 (que tinha Caixa 49%): a carteira foi **fortemente
-alocada** ao longo de ago/set (caixa 49% → 4%), reforçou VRT/BE/SPCX/SNDK/WDC e **passou a ter MOD,
-VST e CGNX**. A alocação muda conforme as decisões — a vigente é sempre a última publicada no site/app.
+⚠️ **Movimento de 14/09 (levantar caixa vendendo os ganhadores):** o Gui **encerrou SPCX, BE, SNDK, LITE
+e VST** (as que estavam no lucro), realizando **+US$10.344 (+18,5%)**. Manteve só **VRT, WDC, MOD, CGNX**
+(as que estão no prejuízo), porque vender no vermelho transformaria a queda em perda definitiva. Tese de
+infra de IA segue firme; o caixa alto deixa a carteira pronta pra oportunidades ("decisão detalhada em
+breve"). Patrimônio: **US$104.712 (+4,7% sobre os US$100.000 iniciais)**. A alocação muda conforme as
+decisões — a vigente é sempre a última publicada.
 
 ### ⚠️ Relatório proposto x carteira executada (importante pra responder certo)
 O relatório-mãe (Ed. 07) propõe uma carteira-modelo de 13 nomes (MU 12%, VRT 11%, BE 10%,
