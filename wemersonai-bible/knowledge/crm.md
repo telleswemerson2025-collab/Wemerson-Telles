@@ -90,17 +90,19 @@ em abr/26). A posição vigente é sempre a última publicada na CRM — confirm
 
 ### Tem stop ou take profit?
 **BTC: sem stop** — gerenciado por **risco**, não por preço.
-O gerenciamento é **manual**, feito pelo Gui; **nem toda posição tem stop programado**. No **ouro (PAXG)**,
-o relatório de tese oficial (11/09/2026) reforça que o Gui **não trabalha com stop programado** (não deixa
-ordem parada num número): ele **observa a zona-chave e decide na mão**, por convergência de sinais (preço +
-macro + fluxo), não por toque num valor.
-⚠️ **NÃO cravar um valor de stop** (ex.: não afirmar "stop em US$X") — os números específicos serão
-confirmados na fonte depois. Ao cliente: dizer que o gerenciamento é manual e que **qualquer stop/ajuste é
-comunicado oficialmente no feed**; confirmar a orientação vigente por lá.
-- **DOT/AERO: encerrados** (não estão mais na carteira). Demais posições: sem stop programado, só
-  invalidações/suportes acompanhados manualmente.
-(Obs. interna: respostas de 10/09 ao Adilson/Murilo/Luciane citaram "stop US$4.000" — não repetir esse
-número; o relatório atual não confirma stop programado. Revalidar antes de dar qualquer valor.)
+✅ **PAXG (ouro): TEM stop em US$4.000 — CONFIRMADO PELO GUI (direto, 14/09/2026).** Palavras do Gui:
+*"Deixamos um stop nos 4k quando abrimos a posição. Desde então não mexemos. Devemos fazer isso nos
+próximos dias."* Ou seja: existe um stop em **US$4.000**, colocado na abertura da posição, mantido desde
+então, e o Gui pode **ajustá-lo nos próximos dias**.
+- Como isso combina com o relatório de tese (10–11/09): o relatório dizia que **não colocariam um stop NOVO
+  na zona dos US$4.300** (essa zona é acompanhada manualmente). Não é contradição — o **stop de US$4.000 da
+  abertura continua valendo**, e o que eles não fazem é pôr uma ordem nova em US$4.300.
+- O gerenciamento é manual; qualquer ajuste no stop é comunicado no feed. Como o Gui disse que pode mexer
+  nos próximos dias, confirmar a orientação vigente antes de cravar mudança.
+- **DOT/AERO/BTC/XRP/MORPHO/VIRTUAL: encerrados** (não estão mais na carteira). A CRM hoje é só PAXG + caixa.
+⚠️ **Correção do histórico:** o "sem stop programado" que passei ao Adilson/Murilo/Luciane/Alexandre entre
+10–13/09 estava errado — **o Gui confirmou que HÁ stop em US$4.000**. Se eles perguntarem, usar a versão
+correta agora.
 
 ### Vão abrir um novo trade (long) no BTC?
 A estratégia é construir posição de forma gradual quando a relação risco/retorno é
