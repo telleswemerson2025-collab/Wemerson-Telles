@@ -6,6 +6,14 @@
 > MOD 5% · VST 5% · CGNX 4% · Caixa 4%.
 
 ## Linha do tempo (mais recente → mais antiga)
+- **15/09 13:12 — ENCERRA MOD (Modine) e CGNX (Cognex)** (peso 10% → 0%; caixa 67% → 77%). Saídas: **MOD
+  US$177,72 · CGNX US$58,74**; juntas custaram **0,74% do patrimônio**. Motivo: no relatório da manhã o Gui
+  disse que a carteira não mudaria, mas **reavaliou ao longo do dia** — depois das **falas dos principais
+  líderes de IA**, o **curto prazo ficou turbulento demais pra carregar posições no prejuízo**; preservar o
+  patrimônio veio antes de esperar recuperação. ⚠️ **Inflexão vs. 14/09:** naquela decisão a casa manteve os
+  perdedores pra não cristalizar perda; agora **cortou MOD e CGNX no vermelho** por causa da turbulência de
+  curto prazo. **Sobraram só VRT (13%) e WDC (10%); caixa 77%** (2 ativos + caixa). Tese de infra de IA pra
+  **2027 segue de pé**; "decisão detalhada em breve".
 - **14/09 — CARTEIRA IA FICA DEFENSIVA (levantar caixa vendendo os ganhadores):** duas decisões seguidas.
   **10:57 — Encerra SPCX + BE** (as 2 maiores/mais lucrativas): BE @US$255,87 (+32,5%), SPCX @US$148 (+21%);
   peso 40%→0%, caixa 4%→44%. **11:34 — Encerra SNDK + LITE + VST** (as 3 que ainda estavam no lucro): SNDK
