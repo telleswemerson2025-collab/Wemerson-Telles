@@ -5,6 +5,16 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
+- **15/09 10:05 — ENTRADA em BTC (trade de curto prazo) @ US$76.990** (peso 0% → 50%; caixa 62% → 12%; ouro
+  segue 38%). **Stop US$76.037** (1,24% abaixo; ~−0,6% do patrimônio se executar). Racional: BTC trabalha há
+  ~4 semanas num retângulo US$76k–80k e voltou ao **piso** da faixa, média longa subindo por baixo (~US$75,3k);
+  o **indicador de risco estava caindo** — se chegasse a zero, seguravam pro médio/longo. É o trade avisado no
+  vídeo de gerenciamento do dia 14 ("se o risco voltar a cair, abrimos"), 0,3% abaixo da venda de sábado (12/09).
+- **15/09 11:41 — STOP ACIONADO: encerra BTC @ US$76.037** (peso 50% → 0%; caixa 12% → 62%; ouro segue 38%).
+  Perda **−0,6% do patrimônio** = o custo planejado antes de entrar (não é erro, é o risco definido). A leitura
+  de risco **não mudou**: **se o indicador seguir caindo no dia, reabrem** — cliente deve ficar atento ao feed.
+  **Composição pós: voltou a PAXG 38% + Caixa 62%** (mesma foto defensiva do 12/09, com o trade de BTC de −0,6%
+  no meio). Estado instável — pode reabrir BTC a qualquer momento.
 - **12/09 14:27 — PRESERVAÇÃO PATRIMONIAL: encerra BTC, XRP, MORPHO e VIRTUAL** (4 ativos, peso 45% → 0%;
   **caixa 17% → 62%**). Preços de saída: **BTC US$77.224 · XRP US$1,36 · MORPHO US$2,27 · VIRTUAL US$0,63**.
   As 4 juntas: **−1,4%** no consolidado. Motivo: o **indicador de risco de queda saiu do zero** (subiu após

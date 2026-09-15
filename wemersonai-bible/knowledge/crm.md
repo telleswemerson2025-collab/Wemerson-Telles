@@ -33,6 +33,20 @@ limite, nunca a mercado, pela baixa liquidez do book.
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
+⚡ **15/09/2026 — TRADE DE BTC (ida e volta no mesmo dia, stop acionado). Composição voltou a ficar só ouro + caixa.**
+- **10:05 — ENTRADA em BTC:** peso **0% → 50%**, preço **US$76.990**, **stop US$76.037** (1,24% abaixo).
+  Caixa **62% → 12%**, ouro segue **38%**. Era trade de **curto prazo**: BTC trabalha há ~4 semanas num
+  retângulo US$76k–80k e voltou ao **piso** da faixa, com a média longa subindo por baixo (~US$75,3k). Tese:
+  o **indicador de risco de queda estava caindo** — se chegasse a zero, seguravam pro médio/longo prazo.
+- **11:41 — STOP ACIONADO, encerraram BTC:** peso **50% → 0%**, saída **US$76.037**. Caixa **12% → 62%**,
+  ouro segue **38%**. Perda **−0,6% do patrimônio** — exatamente o custo definido antes de entrar (risco
+  pequeno e planejado, não erro). A leitura de risco **não mudou** com o stop: **se o indicador continuar
+  caindo ao longo do dia, reabrem a posição** — orientar o cliente a **ficar atento ao feed hoje**, uma nova
+  entrada pode sair a qualquer momento (aviso chega pelo app/e-mail).
+- **RESULTADO LÍQUIDO:** carteira **voltou pra PAXG (ouro) 38% + Caixa 62%** (mesma foto defensiva do 12/09,
+  só que agora com um trade de BTC de −0,6% no meio). ⚠️ Estado **instável hoje** — pode reabrir BTC a
+  qualquer hora se o risco ceder; confirmar sempre a última decisão no feed antes de cravar a posição.
+
 🛡️ **DECISÃO GRANDE — 12/09/2026: PRESERVAÇÃO PATRIMONIAL. Carteira zerou tudo menos o ouro.** O Gui
 **encerrou BTC, XRP, MORPHO e VIRTUAL** (peso 45% → 0%), e o **caixa foi de 17% → 62%**. Motivo: o
 **indicador de risco de queda saiu do zero** (subiu depois da realização no BTC) — e a **regra é: risco
