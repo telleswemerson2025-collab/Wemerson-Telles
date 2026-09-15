@@ -8,7 +8,8 @@
 cartão** ou **R$1.897,00 à vista/ano** (Pix também aceito), acesso anual (12 meses), garantia de 7 dias.
 ⚠️ O preço subiu: antes era ~R$175,51/mês (~R$1.697 à vista); **hoje o checkout mostra R$1.897 à vista /
 12x R$196,19**. Sempre confirmar no checkout, que o valor muda por campanha.
-(Referências antigas: ~R$1.997 anual / ~R$6.997 vitalício. O Vitalício não aparece nessa página.)
+(Referência antiga: ~R$1.997 anual. O Vitalício não aparece nessa página — valor cheio confirmado à parte:
+**R$7.997 à vista / 12x R$827,07**, ver seção do Vitalício abaixo.)
 Os valores mudam conforme a campanha — pra cravar, confirme o checkout oficial.
 
 ### Diferença entre planos + preço da Carteira IA + desconto
@@ -19,11 +20,17 @@ Os valores mudam conforme a campanha — pra cravar, confirme o checkout oficial
   + projetos futuros. Quem já é cliente CRM tem desconto para migrar pro vitalício — **varia de
   10% a 15% conforme a campanha/disponibilidade** (confirmar antes de prometer um número fixo).
   O desconto **abate a assinatura vigente**.
+- ✅ **VALOR CHEIO DO VITALÍCIO — CONFIRMADO NO CHECKOUT (14/09/2026):** **R$7.997,00 à vista** ou
+  **12x de R$827,07 no cartão** (link nu do produto: pay.hotmart.com/S97030469S — "Upgrade Plano
+  vitalício · BlockCapital LLC · Acesso por toda vida às decisões do Gui Telles"). É o valor de
+  referência pra lead novo (sem desconto). ⚠️ A base subiu: **não é mais R$6.997** — as contas de
+  desconto usam **R$7.997** como preço cheio agora.
 Valores mudam conforme a campanha — confirme o checkout oficial.
 
 > ⚡ **PROMOÇÃO RELÂMPAGO ATIVA (09/09/2026): "Black Friday antecipada — 30% no Vitalício" (as 2
 > carteiras).** Valor confirmado na tela da promo: **Vitalício por R$5.597,90, uma vez só** (pagamento
-> único), com **contador regressivo** (~24h, é relâmpago). Comparativo usado na peça: as duas carteiras
+> único), com **contador regressivo** (~24h, é relâmpago). ✅ **A conta fecha com o preço cheio novo:**
+> R$7.997,00 × 0,70 = **R$5.597,90** (30% em cima dos R$7.997 confirmados no checkout). Comparativo usado na peça: as duas carteiras
 > juntas custam **R$5.691/ano, todo ano** — então o Vitalício com 30% sai **mais barato que um único ano**
 > das assinaturas separadas, e depois "você nunca mais paga".
 > - É o **máximo** da promoção: **NÃO há desconto adicional acumulado além dos 30%** (nem pra quem está
@@ -201,8 +208,10 @@ Regra prática (confirmada 08/08/2026):
   valor — o cliente **compra o Vitalício e a equipe faz o reembolso da renovação** recente. (caso Marcelo)
 - **Assinatura antiga** (feita meses atrás, ex.: cliente assinou no meio do ano): **NÃO há
   abatimento nem reembolso** do que já foi pago. O benefício é o **desconto de 15%** no Vitalício. (caso Nicollas)
-- **Desconto padrão de migração pra cliente CRM:** 15% sobre o Vitalício (R$6.997,00 → R$5.947,45).
-  É um desconto forte (~equivale à assinatura anual). Oferecer o desconto; abatimento/reembolso do
+- **Desconto padrão de migração pra cliente CRM:** 15% sobre o Vitalício. ⚠️ **Recalcular com o preço
+  cheio novo (R$7.997):** 15% → **R$6.797,45** (o antigo "R$6.997 → R$5.947,45" está DESATUALIZADO, a
+  base subiu). Fora de promo, confirmar sempre o valor vigente no checkout antes de cravar. É um desconto
+  forte (~equivale à assinatura anual). Oferecer o desconto; abatimento/reembolso do
   já pago é só no caso de renovação recente.
 Ao responder: se o cliente renovou agora, ofereça o caminho compra-Vitalício-e-reembolsa-a-renovação;
 se a assinatura é antiga, ofereça o desconto de 15% sem prometer abatimento.
