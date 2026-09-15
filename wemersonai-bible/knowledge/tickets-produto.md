@@ -66,6 +66,10 @@
   às 9:05 e o aviso do app só às **9:40** (~35 min). Pra carteira que depende de tempo, inviabiliza. Cliente
   pede **reativar o app antigo** pras notificações (dizia ser mais eficiente). Push do app novo (via Chrome/
   PWA) está lento; priorizar a entrega em tempo real. Enquanto isso, o e-mail tem chegado ANTES do push.
+- **iOS 27 (novo, 15/09 — Thiago Mata):** após atualizar pro **iOS 27**, o push **parou de chegar**. Provável
+  causa: a atualização grande do sistema **reseta as permissões de notificação** do app (comum em PWA no iOS).
+  Workaround ao cliente: reinstalar o app + reativar notificações com som nos Ajustes do iOS + fazer o teste
+  (mesmo procedimento oficial). Acompanhar se vira padrão em clientes de iPhone que atualizarem pro iOS 27.
 - **Workaround oficial (orientação do Gui pro time, 09/09):** pedir pro cliente **desinstalar e reinstalar
   o app**, seguindo o **manual de ativação das notificações**. (Enquanto o fix definitivo não sai.)
 
