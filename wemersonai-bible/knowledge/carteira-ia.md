@@ -12,13 +12,13 @@ já correu** — o valor está na infraestrutura que sustenta a IA. Tem a aba "T
 e a aba "Decisões" (execução real). Horizonte de 18 a 36 meses, rebalanceamento semestral.
 
 ### Composição atual da carteira (última leitura oficial)
-🛡️ **CONFIRMADO no site (14/09/2026, 12:06) — carteira FICOU DEFENSIVA, 4 ativos + caixa:** após vender
+🛡️ **CONFIRMADO no site (14/09/2026, 21:29) — carteira FICOU DEFENSIVA, 4 ativos + caixa:** após vender
 todos os ativos no lucro, sobraram só os que estão abaixo da entrada. **Caixa 67%, investido 33%,
-performance total +4,58%, retorno das posições abertas −5,77%.**
-- **VRT (Vertiv)** — 13% · entrada US$286,16 · atual US$235,19 · **−17,81%**
-- **WDC (Western Digital)** — 10% · entrada US$512,19 · atual US$423,73 · **−17,27%**
-- **MOD (Modine)** — 5% · entrada US$194,75 · atual US$176,60 · **−9,32%**
-- **CGNX (Cognex)** — 5% · entrada US$61,80 · atual US$60,40 · **−2,27%**
+performance total +4,91%, retorno das posições abertas −5,43%.**
+- **VRT (Vertiv)** — 13% · entrada US$286,16 · atual US$237,40 · **−17,04%**
+- **WDC (Western Digital)** — 10% · entrada US$512,19 · atual US$426,94 · **−16,64%**
+- **MOD (Modine)** — 5% · entrada US$194,75 · atual US$182,09 · **−6,50%**
+- **CGNX (Cognex)** — 5% · entrada US$61,80 · atual US$59,89 · **−3,09%**
 - **Caixa (USD)** — 67%
 
 ⚠️ **Movimento de 14/09 (levantar caixa vendendo os ganhadores):** o Gui **encerrou SPCX, BE, SNDK, LITE
