@@ -81,6 +81,11 @@ Itens ligados à troca de domínio em curso, que devem sumir quando a migração
   restrição de domínio (player liberado só no endereço antigo). Reportado por Paulo (08/09).
 - **Aulas/Academy sumiram do app antigo:** conteúdo sendo migrado pro ambiente novo; deve voltar.
   Reportado por Eric (08/09).
+- ✅ **CAUSA CONFIRMADA PELO GUI (15/09, 12:40):** o **servidor dos vídeos do APP ANTIGO está com problema** —
+  por isso o curso/aulas não abrem por lá. **Por ora SEM prazo de retorno.** Como responder o cliente: informar
+  que os vídeos do app antigo estão temporariamente indisponíveis por um problema de servidor, sem prazo ainda,
+  e orientar a usar a **plataforma/app novo** (theblockcapital.com/manual → botão Instalar) como caminho oficial.
+  Não prometer data. Acompanhar até o servidor voltar / a migração concluir.
 - **Busca na loja acha só o "app antigo" (GuiTelles):** cliente não encontra o app certo. Orientação
   atual: usar a plataforma nova pelo navegador + botão "Instalar" (PWA), não o app da loja. Reportado
   por Fernando (08/09).
