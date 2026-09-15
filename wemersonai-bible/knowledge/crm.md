@@ -279,6 +279,14 @@ Responder na linha da filosofia, com calma e sem defensividade: estamos em bear 
 método é de disciplina e longo prazo, e a CRM segue mesmo depois de atingir o milhão.
 Preservar capital também é performance.
 
+### A CRM é encerrada ao atingir o primeiro milhão? — NÃO (CONFIRMADO 15/09/2026, fonte Wemerson)
+**Não.** A carteira **não termina** quando alcança o objetivo do milhão. O milhão é um **marco, não a
+linha de chegada**: atingida a meta, o trabalho segue **rumo a novos patamares/valores** e também pra
+**novas carteiras**, com a mesma filosofia de gestão. O próprio **Plano Vitalício** reforça isso — ele
+existe porque o projeto é de **longo prazo, pensado pra estar no mercado pelas próximas décadas**. Ao
+responder: tranquilizar que não há "prazo de validade" da carteira; é projeto feito pra durar. (Nunca
+prometer retorno — a decisão final é sempre do cliente.)
+
 ### Resumo oficial recente (fonte: canal Decisões — CONFIRMADO)
 - **05/08:** entrada BTC 20% @ US$64.055 (sem stop) + entrada PAXG 40% @ US$4.190 (ordem
   limite) → composição **naquele momento** BTC 20% / PAXG 40% / USDT 40%. ⚠️ **Superada:** a
