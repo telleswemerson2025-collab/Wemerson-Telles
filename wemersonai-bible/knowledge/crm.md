@@ -22,29 +22,45 @@ girava em torno de US$4.200 investidos. A gestão é sempre manual (não há apo
 automático) e a consistência importa mais que o tamanho do aporte.
 
 ### Ativos operados na CRM
-CONFIRMADO no app (**12/09/2026**, aba Carteira): após a decisão de **Preservação Patrimonial**, a CRM
-está **DEFENSIVA — só PAXG (ouro) 38% + Caixa 62%** (1 ativo + caixa). Todas as altcoins e o BTC foram
-encerrados. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
-AERO, XRP, MORPHO, VIRTUAL — todos já encerrados; e SOL/ETH antes) — a cesta muda conforme as decisões e o
-indicador de risco. O Gui nunca faz operações vendidas ("short nem na praia"). No PAXG, execução por ordem
-limite, nunca a mercado, pela baixa liquidez do book.
+ESTADO ATUAL (**fim do 16/09/2026**): a carteira está posicionada em **BTC 50% + DOT 15% + Caixa 35%** — o
+**ouro (PAXG) foi stopado no lucro às 16:36** (US$4.251,60, +1,47%) e saiu. Ver a "Composição atual" no topo
+para o detalhe. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
+AERO, XRP, MORPHO, VIRTUAL — a cesta muda conforme as decisões e o indicador de risco). O Gui nunca faz
+operações vendidas ("short nem na praia"). No PAXG, execução por ordem limite, nunca a mercado, pela baixa
+liquidez do book. (Histórico: em 12/09 a carteira ficou defensiva só com ouro + caixa na Preservação
+Patrimonial; desde 15–16/09 voltou pro mercado.)
 
 ### Composição atual da carteira
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🔵 **COMPOSIÇÃO ATUAL AO VIVO — 16/09/2026 13:24:34 (aba Carteira, 3 ativos + caixa). CARTEIRA VOLTOU PRO MERCADO, ~98% investida.** O indicador de risco seguiu caindo (como o Gui avisou no dia 15) e a carteira reabriu posições:
-- **Bitcoin (BTC)** — **50%** · entrada US$76.177,00 · atual US$75.775,00 · **−0,53%** · contrib. −0,29% *(BTC REABERTO — nova entrada, diferente do trade stopado de 15/09)*
-- **PAX Gold (PAXG)** — **38%** · entrada US$4.190,00 · atual US$4.349,44 · **+3,81%** · contrib. +1,52%
-- **Polkadot (DOT)** — **10%** · entrada US$0,96 · atual US$0,98 · **+1,84%** · contrib. +0,20% *(DOT DE VOLTA — reentrada a US$0,96; tinha sido encerrado em 09/09 a US$1,25)*
-- **Caixa (USD)** — **2%**
-⚠️ Virada de postura vs. 15/09 (que era só ouro + caixa): agora a carteira está **quase toda alocada** (BTC 50% + PAXG 38% + DOT 10% + caixa 2%). Peso do ouro segue **38%** (não 41%). A alocação vigente é sempre a última publicada/lida no app.
+🔵 **COMPOSIÇÃO ATUAL (fim do dia 16/09/2026, após todas as decisões abaixo) — 2 ativos + caixa. O OURO SAIU (stopado no lucro).**
+- **Bitcoin (BTC)** — **50%** · reentrada US$76.177,00 · **sem stop** (gerenciado manualmente)
+- **Polkadot (DOT)** — **15%** · preço médio US$0,967 · **stop US$0,932**
+- **Caixa (USD)** — **35%**
+⚠️ Mudou muito ao longo do dia. A foto do meio-dia (BTC 50% + PAXG 38% + DOT 10% + caixa 2%, lida 13:24) foi **superada**: às 16:36 o **ouro foi stopado** (saiu da carteira) e às 16:45 o **DOT foi reforçado** pra 15%. Sempre confirmar a última decisão no feed.
 
-🛑 **16/09 — DECISÃO "Stop do Bitcoin suspenso":** o Gui **suspendeu (retirou) o stop do BTC**. Leitura: casa
-com a lógica da entrada de 15/09 ("se o indicador de risco chegar a zero, seguramos a posição pro médio e o
-longo prazo"). Ou seja, o BTC deixou de ser trade curto com stop apertado e passou a ser **posição carregada
-pro médio/longo prazo**, porque o indicador de risco cedeu. Ao responder: o BTC agora é mantido sem aquele
-stop de curto prazo; se houver novo ajuste, vem publicado. (O stop do OURO/PAXG é assunto à parte — ver verbete.)
+📅 **LINHA DO TEMPO COMPLETA DO 16/09 (cronológica):**
+- **08:52 — REENTRADA em BTC** @ US$76.177 (peso 0→50%; caixa 62→12%; ouro seguia 38%). **Sem stop programado.**
+  Depois do stop de ontem, o preço encostou na média longa (~US$75,3k) e reagiu. Recompra 0,2% acima da saída
+  no stop e 1,1% abaixo da entrada de ontem. Continua sendo **operação curta** — só vira médio/longo se o
+  indicador de risco chegar a zero.
+- **08:59 — ENTRADA em DOT** @ US$0,96 (peso 0→10%; caixa 12→2%). Recompra **23% abaixo** da venda de 08/09
+  (US$1,25, +51% de lucro); o preço corrigiu até a média longa (~US$0,94) e reagiu. Ciclo: "vender perto do
+  topo, recomprar mais barato". Carteira ficou praticamente toda posicionada (BTC, ouro, DOT).
+- **09:29 — BALANÇO "Os pontos de stop da carteira":** definiu os stops das 3 posições — **BTC US$74.932**
+  (−1,63% na posição / −0,82% na carteira), **PAXG US$4.251,60** (+1,47% / +0,54%), **DOT US$0,932** (−2,92% /
+  −0,29%). Se os 3 fossem acionados: −0,57% do patrimônio (ouro no lucro, BTC e DOT no prejuízo). ⚠️ **Aqui mudou
+  o ouro:** o relatório de 10/09 dizia saída manual sem stop; **a partir de 16/09 o ouro passou a ter stop em
+  US$4.251,60** (acima da entrada US$4.190). O de BTC (US$74.932) fechou o stop que a reentrada tinha deixado em aberto.
+- **14:53 — "Stop do Bitcoin suspenso":** retiraram **temporariamente** o stop do BTC (que estava em US$74.932),
+  **por causa da volatilidade da decisão do Fed**. Quem programou a ordem deve **cancelá-la**. O BTC **passa a ser
+  gerenciado manualmente** (segue trade curto, NÃO virou médio/longo — isso só valeria se o indicador chegasse a
+  zero). Stops do ouro (US$4.251,60) e do DOT (US$0,932) **continuam valendo**.
+- **16:36 — STOP ACIONADO NO OURO (PAXG)** @ US$4.251,60 (peso 38→0%). **Lucro +1,47%.** Caixa 2→40%. O ouro
+  **saiu da carteira** (stop no lucro). BTC segue sem stop; DOT mantém stop US$0,932.
+- **16:45 — REFORÇO em DOT** @ US$0,98 (peso 10→15%; caixa 40→35%). Preço médio sobe pra **US$0,967**. **Stop de
+  toda a posição em US$0,932** (ordem limite; se acionado, perda de 0,54% do patrimônio). Preço reage sobre a média longa.
 
 ⚡ **15/09/2026 — TRADE DE BTC (ida e volta no mesmo dia, stop acionado). Composição voltou a ficar só ouro + caixa.**
 - **10:05 — ENTRADA em BTC:** peso **0% → 50%**, preço **US$76.990**, **stop US$76.037** (1,24% abaixo).
@@ -115,21 +131,24 @@ composição atual é **PAXG (ouro) 38% + Caixa 62%**. A CRM **teve** altcoins r
 novo quando o risco esfriar, mas agora não tem nenhuma. **SOL** também não está (já houve posição tática
 em abr/26). A posição vigente é sempre a última publicada na CRM — confirme lá pra pegar a cesta do momento.
 
-### Tem stop ou take profit?
-**BTC: sem stop** — gerenciado por **risco**, não por preço.
-✅ **PAXG (ouro): TEM stop em US$4.000 — CONFIRMADO PELO GUI (direto, 14/09/2026).** Palavras do Gui:
-*"Deixamos um stop nos 4k quando abrimos a posição. Desde então não mexemos. Devemos fazer isso nos
-próximos dias."* Ou seja: existe um stop em **US$4.000**, colocado na abertura da posição, mantido desde
-então, e o Gui pode **ajustá-lo nos próximos dias**.
-- Como isso combina com o relatório de tese (10–11/09): o relatório dizia que **não colocariam um stop NOVO
-  na zona dos US$4.300** (essa zona é acompanhada manualmente). Não é contradição — o **stop de US$4.000 da
-  abertura continua valendo**, e o que eles não fazem é pôr uma ordem nova em US$4.300.
-- O gerenciamento é manual; qualquer ajuste no stop é comunicado no feed. Como o Gui disse que pode mexer
-  nos próximos dias, confirmar a orientação vigente antes de cravar mudança.
-- **DOT/AERO/BTC/XRP/MORPHO/VIRTUAL: encerrados** (não estão mais na carteira). A CRM hoje é só PAXG + caixa.
-⚠️ **Correção do histórico:** o "sem stop programado" que passei ao Adilson/Murilo/Luciane/Alexandre entre
-10–13/09 estava errado — **o Gui confirmou que HÁ stop em US$4.000**. Se eles perguntarem, usar a versão
-correta agora.
+### Tem stop ou take profit? (ATUALIZADO 16/09/2026)
+Stops vigentes ao fim do 16/09 (posições atuais BTC + DOT):
+- **BTC: SEM stop** — o stop que estava em US$74.932 foi **suspenso em 16/09 (14:53)** por causa da
+  **volatilidade da decisão do Fed**; a posição passou a ser **gerenciada manualmente** (segue trade curto).
+  Quem tinha a ordem programada deve cancelar. Se voltar a ter stop, vem publicado.
+- **DOT: TEM stop em US$0,932** (toda a posição, após o reforço pra 15% em 16/09). Programar com ordem limite;
+  se acionado, perda de ~0,54% do patrimônio.
+- **PAXG (ouro): posição ENCERRADA.** O ouro foi **stopado em 16/09 às 16:36 a US$4.251,60, com lucro +1,47%**,
+  e saiu da carteira. Não há posição de ouro agora.
+
+📌 **Histórico do stop do ouro (pra responder quem pergunta):** o stop do ouro começou em **US$4.000** (aberto
+junto com a posição, confirmado pelo Gui em 14/09: *"deixamos um stop nos 4k quando abrimos... devemos fazer
+isso nos próximos dias"*). Esse "ajuste nos próximos dias" aconteceu em **16/09 09:29** (balanço "Os pontos de
+stop da carteira"), quando o stop do ouro foi **movido pra US$4.251,60** (acima da entrada US$4.190, travando
+lucro). No mesmo dia, às 16:36, esse stop foi **acionado** e a posição fechou no lucro. Ou seja: o antigo
+"US$4.000" foi substituído pelo "US$4.251,60", que executou.
+⚠️ **Nota de histórico:** o "sem stop programado" passado a alguns clientes entre 10–13/09 estava errado
+(havia stop, primeiro em US$4.000, depois US$4.251,60). Hoje o ponto é: o ouro **saiu stopado no lucro**.
 
 ### Vão abrir um novo trade (long) no BTC?
 A estratégia é construir posição de forma gradual quando a relação risco/retorno é
