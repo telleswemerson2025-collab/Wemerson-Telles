@@ -40,6 +40,12 @@ limite, nunca a mercado, pela baixa liquidez do book.
 - **Caixa (USD)** — **2%**
 ⚠️ Virada de postura vs. 15/09 (que era só ouro + caixa): agora a carteira está **quase toda alocada** (BTC 50% + PAXG 38% + DOT 10% + caixa 2%). Peso do ouro segue **38%** (não 41%). A alocação vigente é sempre a última publicada/lida no app.
 
+🛑 **16/09 — DECISÃO "Stop do Bitcoin suspenso":** o Gui **suspendeu (retirou) o stop do BTC**. Leitura: casa
+com a lógica da entrada de 15/09 ("se o indicador de risco chegar a zero, seguramos a posição pro médio e o
+longo prazo"). Ou seja, o BTC deixou de ser trade curto com stop apertado e passou a ser **posição carregada
+pro médio/longo prazo**, porque o indicador de risco cedeu. Ao responder: o BTC agora é mantido sem aquele
+stop de curto prazo; se houver novo ajuste, vem publicado. (O stop do OURO/PAXG é assunto à parte — ver verbete.)
+
 ⚡ **15/09/2026 — TRADE DE BTC (ida e volta no mesmo dia, stop acionado). Composição voltou a ficar só ouro + caixa.**
 - **10:05 — ENTRADA em BTC:** peso **0% → 50%**, preço **US$76.990**, **stop US$76.037** (1,24% abaixo).
   Caixa **62% → 12%**, ouro segue **38%**. Era trade de **curto prazo**: BTC trabalha há ~4 semanas num
