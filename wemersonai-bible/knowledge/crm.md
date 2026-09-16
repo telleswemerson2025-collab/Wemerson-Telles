@@ -33,6 +33,13 @@ limite, nunca a mercado, pela baixa liquidez do book.
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
+🔵 **COMPOSIÇÃO ATUAL AO VIVO — 16/09/2026 13:24:34 (aba Carteira, 3 ativos + caixa). CARTEIRA VOLTOU PRO MERCADO, ~98% investida.** O indicador de risco seguiu caindo (como o Gui avisou no dia 15) e a carteira reabriu posições:
+- **Bitcoin (BTC)** — **50%** · entrada US$76.177,00 · atual US$75.775,00 · **−0,53%** · contrib. −0,29% *(BTC REABERTO — nova entrada, diferente do trade stopado de 15/09)*
+- **PAX Gold (PAXG)** — **38%** · entrada US$4.190,00 · atual US$4.349,44 · **+3,81%** · contrib. +1,52%
+- **Polkadot (DOT)** — **10%** · entrada US$0,96 · atual US$0,98 · **+1,84%** · contrib. +0,20% *(DOT DE VOLTA — reentrada a US$0,96; tinha sido encerrado em 09/09 a US$1,25)*
+- **Caixa (USD)** — **2%**
+⚠️ Virada de postura vs. 15/09 (que era só ouro + caixa): agora a carteira está **quase toda alocada** (BTC 50% + PAXG 38% + DOT 10% + caixa 2%). Peso do ouro segue **38%** (não 41%). A alocação vigente é sempre a última publicada/lida no app.
+
 ⚡ **15/09/2026 — TRADE DE BTC (ida e volta no mesmo dia, stop acionado). Composição voltou a ficar só ouro + caixa.**
 - **10:05 — ENTRADA em BTC:** peso **0% → 50%**, preço **US$76.990**, **stop US$76.037** (1,24% abaixo).
   Caixa **62% → 12%**, ouro segue **38%**. Era trade de **curto prazo**: BTC trabalha há ~4 semanas num

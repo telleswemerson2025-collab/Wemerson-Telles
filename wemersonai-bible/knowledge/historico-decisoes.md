@@ -5,6 +5,10 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
+- **16/09 (até 13:24) — CARTEIRA REABRE E FICA ~98% INVESTIDA.** Depois do stop de 15/09, o indicador de risco
+  seguiu caindo e a carteira voltou pro mercado. Composição ao vivo (aba Carteira, 16/09 13:24:34): **BTC 50%**
+  (reaberto, entrada US$76.177), **PAXG 38%** (US$4.190), **DOT 10%** (reentrada em US$0,96 — tinha saído em
+  09/09 a US$1,25), **Caixa 2%**. Virada de postura vs. 15/09 (que era só ouro + caixa). Peso do ouro segue 38%.
 - **15/09 10:05 — ENTRADA em BTC (trade de curto prazo) @ US$76.990** (peso 0% → 50%; caixa 62% → 12%; ouro
   segue 38%). **Stop US$76.037** (1,24% abaixo; ~−0,6% do patrimônio se executar). Racional: BTC trabalha há
   ~4 semanas num retângulo US$76k–80k e voltou ao **piso** da faixa, média longa subindo por baixo (~US$75,3k);
