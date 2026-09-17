@@ -82,10 +82,14 @@ Itens ligados à troca de domínio em curso, que devem sumir quando a migração
 - **Aulas/Academy sumiram do app antigo:** conteúdo sendo migrado pro ambiente novo; deve voltar.
   Reportado por Eric (08/09).
 - ✅ **CAUSA CONFIRMADA PELO GUI (15/09, 12:40):** o **servidor dos vídeos do APP ANTIGO está com problema** —
-  por isso o curso/aulas não abrem por lá. **Por ora SEM prazo de retorno.** Como responder o cliente: informar
-  que os vídeos do app antigo estão temporariamente indisponíveis por um problema de servidor, sem prazo ainda,
-  e orientar a usar a **plataforma/app novo** (theblockcapital.com/manual → botão Instalar) como caminho oficial.
-  Não prometer data. Acompanhar até o servidor voltar / a migração concluir.
+  por isso o curso/aulas não abrem por lá. **Por ora SEM prazo de retorno.**
+- 🚩 **RECOMENDAÇÃO DO GUI (reforçada 17/09) — LER ANTES DE RESPONDER SOBRE VÍDEOS/AULAS/TREINAMENTO:** **NÃO há
+  definição de data pra os vídeos, as aulas e o treinamento irem pro APP NOVO.** Ou seja, esse conteúdo **não está
+  disponível no app novo ainda** (e o do app antigo está fora pelo problema de servidor). ⚠️ **NÃO mandar o cliente
+  procurar as aulas/vídeos/treinamento no app novo** (erro que a gente cometeu) — eles não estão lá. Como responder:
+  ser honesto que o conteúdo de vídeo/aulas/treinamento está em transição, **sem prazo definido dos dois lados**, e
+  que a gente avisa assim que estiver disponível. Nunca prometer data. O que segue funcionando é o **feed/Decisões**
+  (as decisões da carteira). Acompanhar até haver definição oficial.
 - **Busca na loja acha só o "app antigo" (GuiTelles):** cliente não encontra o app certo. Orientação
   atual: usar a plataforma nova pelo navegador + botão "Instalar" (PWA), não o app da loja. Reportado
   por Fernando (08/09).
