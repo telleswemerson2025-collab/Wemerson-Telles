@@ -22,8 +22,9 @@ girava em torno de US$4.200 investidos. A gestão é sempre manual (não há apo
 automático) e a consistência importa mais que o tamanho do aporte.
 
 ### Ativos operados na CRM
-ESTADO ATUAL (**fim do 16/09/2026**): a carteira está posicionada em **BTC 50% + DOT 15% + Caixa 35%** — o
-**ouro (PAXG) foi stopado no lucro às 16:36** (US$4.251,60, +1,47%) e saiu. Ver a "Composição atual" no topo
+ESTADO ATUAL (**fim do 16/09/2026, 21:46**): a carteira está posicionada em **BTC 50% + DOT 16% + AERO 5% +
+Caixa 29%** — o **ouro (PAXG) foi stopado no lucro às 16:36** (US$4.251,60, +1,47%) e saiu; à noite entrou o
+AERO (5%). Ver a "Composição atual" no topo
 para o detalhe. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
 AERO, XRP, MORPHO, VIRTUAL — a cesta muda conforme as decisões e o indicador de risco). O Gui nunca faz
 operações vendidas ("short nem na praia"). No PAXG, execução por ordem limite, nunca a mercado, pela baixa
@@ -34,11 +35,12 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🔵 **COMPOSIÇÃO ATUAL (fim do dia 16/09/2026, após todas as decisões abaixo) — 2 ativos + caixa. O OURO SAIU (stopado no lucro).**
-- **Bitcoin (BTC)** — **50%** · reentrada US$76.177,00 · **sem stop** (gerenciado manualmente)
-- **Polkadot (DOT)** — **15%** · preço médio US$0,967 · **stop US$0,932**
-- **Caixa (USD)** — **35%**
-⚠️ Mudou muito ao longo do dia. A foto do meio-dia (BTC 50% + PAXG 38% + DOT 10% + caixa 2%, lida 13:24) foi **superada**: às 16:36 o **ouro foi stopado** (saiu da carteira) e às 16:45 o **DOT foi reforçado** pra 15%. Sempre confirmar a última decisão no feed.
+🔵 **COMPOSIÇÃO ATUAL AO VIVO — 16/09/2026 21:46:03 (aba Carteira). 3 ativos + caixa. O OURO SAIU (stopado no lucro).**
+- **Bitcoin (BTC)** — **50%** · entrada US$76.177,00 · atual US$76.404,00 · **+0,30%** · contrib. +0,16% · **SEM stop** (gerenciado manualmente)
+- **Polkadot (DOT)** — **16%** · entrada (preço médio) US$0,97 · atual US$1,03 · **+6,67%** · contrib. +1,08% · **stop US$0,932**
+- **Aerodrome (AERO)** — **5%** · entrada US$0,54 · atual US$0,55 · **+2,18%** · contrib. +0,12% · **SEM stop** (gerenciado manualmente)
+- **Caixa (USD)** — **29%**
+⚠️ Mudou muito ao longo do 16/09. O ouro foi stopado no lucro (16:36) e saiu; depois entraram DOT reforçado (16:45) e AERO (20:24). Hoje só o **DOT tem stop (US$0,932)**; BTC e AERO ficam **sem stop**, gerenciados de perto, porque há caixa na mão (29%). Sempre confirmar a última decisão no feed.
 
 📅 **LINHA DO TEMPO COMPLETA DO 16/09 (cronológica):**
 - **08:52 — REENTRADA em BTC** @ US$76.177 (peso 0→50%; caixa 62→12%; ouro seguia 38%). **Sem stop programado.**
@@ -61,6 +63,13 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
   **saiu da carteira** (stop no lucro). BTC segue sem stop; DOT mantém stop US$0,932.
 - **16:45 — REFORÇO em DOT** @ US$0,98 (peso 10→15%; caixa 40→35%). Preço médio sobe pra **US$0,967**. **Stop de
   toda a posição em US$0,932** (ordem limite; se acionado, perda de 0,54% do patrimônio). Preço reage sobre a média longa.
+- **20:24 — ENTRADA em AERO (Aerodrome)** @ US$0,54 (peso 0→5%; caixa 34→29%). Recompra **10% abaixo** da venda de
+  11/09 (US$0,60, +28%); preço apoiado na média longa (~US$0,52). **SEM stop programado** (ver plano das 20:55).
+- **20:55 — PLANO "O Fed balançou o mercado, e o Bitcoin ficou de pé":** dia de Fed; S&P 500 e ouro caíram forte,
+  mas o **BTC não acompanhou a queda** (sinal de força), segurando o suporte dos US$75k (colado em ~US$76k); NEAR
+  +11,41%. **Indicador de risco vem caindo mas ainda NÃO chegou a zero** → seguem com **visão de curto prazo**. O
+  stop do ouro no lucro liberou caixa (29% disponível). **BTC e AERO ficam SEM stop por enquanto** (com caixa na
+  mão, preferem gerenciar de perto); **DOT mantém o stop US$0,932** (já andou de US$0,96 pra US$1,02).
 
 ⚡ **15/09/2026 — TRADE DE BTC (ida e volta no mesmo dia, stop acionado). Composição voltou a ficar só ouro + caixa.**
 - **10:05 — ENTRADA em BTC:** peso **0% → 50%**, preço **US$76.990**, **stop US$76.037** (1,24% abaixo).
@@ -132,11 +141,13 @@ novo quando o risco esfriar, mas agora não tem nenhuma. **SOL** também não es
 em abr/26). A posição vigente é sempre a última publicada na CRM — confirme lá pra pegar a cesta do momento.
 
 ### Tem stop ou take profit? (ATUALIZADO 16/09/2026)
-Stops vigentes ao fim do 16/09 (posições atuais BTC + DOT):
+Stops vigentes ao fim do 16/09 (posições atuais BTC + DOT + AERO):
 - **BTC: SEM stop** — o stop que estava em US$74.932 foi **suspenso em 16/09 (14:53)** por causa da
   **volatilidade da decisão do Fed**; a posição passou a ser **gerenciada manualmente** (segue trade curto).
   Quem tinha a ordem programada deve cancelar. Se voltar a ter stop, vem publicado.
-- **DOT: TEM stop em US$0,932** (toda a posição, após o reforço pra 15% em 16/09). Programar com ordem limite;
+- **AERO: SEM stop** — a entrada de 16/09 (20:24) saiu sem stop programado; como há caixa na mão (29%), o Gui
+  prefere gerenciar de perto. Se for definido um stop, vem publicado.
+- **DOT: TEM stop em US$0,932** (toda a posição, após o reforço pra 15/16% em 16/09). Programar com ordem limite;
   se acionado, perda de ~0,54% do patrimônio.
 - **PAXG (ouro): posição ENCERRADA.** O ouro foi **stopado em 16/09 às 16:36 a US$4.251,60, com lucro +1,47%**,
   e saiu da carteira. Não há posição de ouro agora.

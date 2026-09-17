@@ -15,6 +15,12 @@
     gerenciamento manual (cancelar a ordem). Stops de ouro e DOT seguem valendo.
   - **16:36 — STOP DO OURO ACIONADO** @ US$4.251,60, **lucro +1,47%** (38→0%; caixa 2→40%). Ouro saiu da carteira.
   - **16:45 — Reforço DOT** @ US$0,98 (10→15%; caixa 40→35%). Preço médio US$0,967; stop de toda a posição US$0,932.
+  - **20:24 — Entrada AERO** @ US$0,54 (0→5%; caixa 34→29%). Recompra 10% abaixo da venda de 11/09 (US$0,60, +28%);
+    preço apoiado na média longa (~US$0,52). Sem stop programado.
+  - **20:55 — Plano "O Fed balançou o mercado, e o Bitcoin ficou de pé":** Fed derrubou S&P 500 e ouro, mas o BTC
+    NÃO caiu (sinal de força), segurando os US$75k (~US$76k); NEAR +11,41%. Indicador de risco caindo mas ainda não
+    a zero → visão de curto prazo. Caixa 29% disponível. **BTC e AERO ficam SEM stop** (gerenciados de perto); DOT
+    mantém stop US$0,932. Estado final do dia: **BTC 50% + DOT 16% + AERO 5% + Caixa 29%**.
 - **15/09 10:05 — ENTRADA em BTC (trade de curto prazo) @ US$76.990** (peso 0% → 50%; caixa 62% → 12%; ouro
   segue 38%). **Stop US$76.037** (1,24% abaixo; ~−0,6% do patrimônio se executar). Racional: BTC trabalha há
   ~4 semanas num retângulo US$76k–80k e voltou ao **piso** da faixa, média longa subindo por baixo (~US$75,3k);
