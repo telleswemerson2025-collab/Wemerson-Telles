@@ -22,9 +22,9 @@ girava em torno de US$4.200 investidos. A gestão é sempre manual (não há apo
 automático) e a consistência importa mais que o tamanho do aporte.
 
 ### Ativos operados na CRM
-ESTADO ATUAL (**fim do 16/09/2026, 21:46**): a carteira está posicionada em **BTC 50% + DOT 16% + AERO 5% +
-Caixa 29%** — o **ouro (PAXG) foi stopado no lucro às 16:36** (US$4.251,60, +1,47%) e saiu; à noite entrou o
-AERO (5%). Ver a "Composição atual" no topo
+ESTADO ATUAL (**17/09/2026 11:36**): a carteira está posicionada em **BTC 50% + DOT 20% + AERO 10% + Caixa 20%**
+— o **ouro (PAXG) foi stopado no lucro** em 16/09 (US$4.251,60, +1,47%) e saiu; desde então o Gui vem reforçando
+DOT e AERO conforme o risco cede. Ver a "Composição atual" no topo
 para o detalhe. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
 AERO, XRP, MORPHO, VIRTUAL — a cesta muda conforme as decisões e o indicador de risco). O Gui nunca faz
 operações vendidas ("short nem na praia"). No PAXG, execução por ordem limite, nunca a mercado, pela baixa
@@ -35,12 +35,12 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🔵 **COMPOSIÇÃO ATUAL AO VIVO — 16/09/2026 21:46:03 (aba Carteira). 3 ativos + caixa. O OURO SAIU (stopado no lucro).**
-- **Bitcoin (BTC)** — **50%** · entrada US$76.177,00 · atual US$76.404,00 · **+0,30%** · contrib. +0,16% · **SEM stop** (gerenciado manualmente)
-- **Polkadot (DOT)** — **16%** · entrada (preço médio) US$0,97 · atual US$1,03 · **+6,67%** · contrib. +1,08% · **stop US$0,932**
-- **Aerodrome (AERO)** — **5%** · entrada US$0,54 · atual US$0,55 · **+2,18%** · contrib. +0,12% · **SEM stop** (gerenciado manualmente)
-- **Caixa (USD)** — **29%**
-⚠️ Mudou muito ao longo do 16/09. O ouro foi stopado no lucro (16:36) e saiu; depois entraram DOT reforçado (16:45) e AERO (20:24). Hoje só o **DOT tem stop (US$0,932)**; BTC e AERO ficam **sem stop**, gerenciados de perto, porque há caixa na mão (29%). Sempre confirmar a última decisão no feed.
+🔵 **COMPOSIÇÃO ATUAL — 17/09/2026 11:36 (após os reforços do dia). 3 ativos + caixa.**
+- **Bitcoin (BTC)** — **50%** · reentrada US$76.177,00 · **SEM stop** (gerenciado manualmente)
+- **Polkadot (DOT)** — **20%** · preço médio US$0,979 · **stop US$0,932** (se acionado, −0,91% do patrimônio)
+- **Aerodrome (AERO)** — **10%** · preço médio US$0,547 · **SEM stop** (gerenciado manualmente)
+- **Caixa (USD)** — **20%**
+⚠️ A carteira segue sendo reforçada nas altcoins conforme o risco cede: em 17/09 o AERO foi de 5→10% (09:02) e o DOT de 16→20% (11:36). Só o **DOT tem stop (US$0,932)**; BTC e AERO ficam **sem stop**, gerenciados de perto. Ouro (PAXG) saiu stopado no lucro em 16/09. Sempre confirmar a última decisão no feed.
 
 📅 **LINHA DO TEMPO COMPLETA DO 16/09 (cronológica):**
 - **08:52 — REENTRADA em BTC** @ US$76.177 (peso 0→50%; caixa 62→12%; ouro seguia 38%). **Sem stop programado.**
@@ -145,10 +145,10 @@ Stops vigentes ao fim do 16/09 (posições atuais BTC + DOT + AERO):
 - **BTC: SEM stop** — o stop que estava em US$74.932 foi **suspenso em 16/09 (14:53)** por causa da
   **volatilidade da decisão do Fed**; a posição passou a ser **gerenciada manualmente** (segue trade curto).
   Quem tinha a ordem programada deve cancelar. Se voltar a ter stop, vem publicado.
-- **AERO: SEM stop** — a entrada de 16/09 (20:24) saiu sem stop programado; como há caixa na mão (29%), o Gui
-  prefere gerenciar de perto. Se for definido um stop, vem publicado.
-- **DOT: TEM stop em US$0,932** (toda a posição, após o reforço pra 15/16% em 16/09). Programar com ordem limite;
-  se acionado, perda de ~0,54% do patrimônio.
+- **AERO: SEM stop** — segue sem stop programado mesmo após o reforço pra 10% (17/09 09:02); o Gui prefere
+  gerenciar de perto. Se for definido um stop, vem publicado.
+- **DOT: TEM stop em US$0,932** (toda a posição, após reforço pra 20% em 17/09 11:36). Programar com ordem limite;
+  se acionado, perda de ~0,91% do patrimônio (subiu conforme a posição cresceu).
 - **PAXG (ouro): posição ENCERRADA.** O ouro foi **stopado em 16/09 às 16:36 a US$4.251,60, com lucro +1,47%**,
   e saiu da carteira. Não há posição de ouro agora.
 

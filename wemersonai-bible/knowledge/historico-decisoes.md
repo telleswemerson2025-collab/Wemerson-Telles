@@ -5,7 +5,13 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
-- **16/09 — DIA CHEIO (reabertura + stops + ouro stopado). Estado final: BTC 50% + DOT 15% + Caixa 35% (ouro saiu).**
+- **17/09 — reforços nas altcoins. Estado: BTC 50% + DOT 20% + AERO 10% + Caixa 20%.**
+  - **09:02 — Reforço AERO** @ US$0,555 (5→10%; caixa 29→24%). Preço médio US$0,547. Segue **sem stop**. Preço
+    acima da média longa (~US$0,48), fundos cada vez mais altos desde junho.
+  - **11:36 — Novo reforço DOT** @ US$1,03 (16→20%; caixa 24→20%). Preço médio US$0,979. **Stop segue US$0,932**
+    (se acionado, −0,91% do patrimônio). DOT rompeu a faixa US$0,74–0,92, corrigiu e voltou a subir; próxima
+    resistência é a média longa (~US$1,19).
+- **16/09 — DIA CHEIO (reabertura + stops + ouro stopado). Estado final do dia: BTC 50% + DOT 16% + AERO 5% + Caixa 29%.**
   - **08:52 — Reentrada BTC** @ US$76.177 (0→50%; caixa 62→12%). Sem stop. Preço encostou na média longa (~US$75,3k)
     e reagiu; trade curto, só vira médio/longo se o indicador chegar a zero.
   - **08:59 — Entrada DOT** @ US$0,96 (0→10%; caixa 12→2%). Recompra 23% abaixo da venda de 08/09 (US$1,25, +51%).
