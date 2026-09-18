@@ -35,7 +35,18 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🔵 **COMPOSIÇÃO ATUAL — 17/09/2026 11:36 (após os reforços do dia). 3 ativos + caixa.**
+📈 **BALANÇO 18/09/2026 16:36 — "As três posições da carteira estão no lucro."** Resultados (preço médio → atual):
+- **AERO** — US$0,547 → US$0,683 · **+24,8%** (melhor posição)
+- **DOT** — US$0,979 → US$1,14 · **+16,4%**
+- **BTC** — US$76.177 → US$81.181 · **+6,6%**
+- **Caixa** — **19%**
+💬 **Mensagem do Gui (importante pra atender no bull):** *"O bull chegou, e ele vem com abundância. Aproveite,
+mas controle a ganância, porque esse vai ser o seu maior desafio daqui pra frente. Foi ela que tirou de muita
+gente tudo o que o ciclo anterior tinha dado. Copie e cole as decisões da carteira, no tamanho que elas têm, e
+não invente."* → Ao atender: reforçar disciplina, replicar no peso indicado, não aumentar posição por conta
+própria, não se empolgar. (Sem prometer retorno; a decisão final é sempre do cliente.)
+
+🔵 **COMPOSIÇÃO — 17/09/2026 11:36 (após os reforços do dia). 3 ativos + caixa.**
 - **Bitcoin (BTC)** — **50%** · reentrada US$76.177,00 · **SEM stop** (gerenciado manualmente)
 - **Polkadot (DOT)** — **20%** · preço médio US$0,979 · **stop US$0,932** (se acionado, −0,91% do patrimônio)
 - **Aerodrome (AERO)** — **10%** · preço médio US$0,547 · **SEM stop** (gerenciado manualmente)

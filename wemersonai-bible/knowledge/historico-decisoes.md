@@ -5,6 +5,10 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
+- **18/09 16:36 — BALANÇO "As três posições estão no lucro":** AERO +24,8% (US$0,547→0,683), DOT +16,4%
+  (US$0,979→1,14), BTC +6,6% (US$76.177→81.181); caixa 19%. Sem trade novo. Mensagem do Gui: o bull chegou;
+  **aproveitar mas controlar a ganância** (foi ela que tirou de muita gente o ganho do ciclo anterior); **copiar
+  e colar as decisões no tamanho que têm, sem inventar**. É guidance de disciplina pra fase de alta.
 - **17/09 — reforços nas altcoins. Estado: BTC 50% + DOT 20% + AERO 10% + Caixa 20%.**
   - **09:02 — Reforço AERO** @ US$0,555 (5→10%; caixa 29→24%). Preço médio US$0,547. Segue **sem stop**. Preço
     acima da média longa (~US$0,48), fundos cada vez mais altos desde junho.
