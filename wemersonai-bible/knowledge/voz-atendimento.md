@@ -16,6 +16,21 @@ No app/chat/comentários (o dia a dia), a voz é **coloquial e natural**, sem ca
 O molde caloroso-formal com saudação e assinatura (abaixo) vale para **e-mail do suporte**; no
 app/chat/comentários, usar este padrão coloquial.
 
+## 🚩 REGRA DE MODERAÇÃO — DIRETRIZ DIRETA DO GUI (19/09/2026)
+**NÃO aprovar / não engajar comentários que discutam COMO as operações devem ser feitas ou COMO foram feitas no
+passado** (debate de execução, "eu faria assim", análise/crítica de trades passados, comparações tipo "não deixem
+acontecer igual à saída X que fez pavio de 40%"). Palavras do Gui: *"Não aprovo esse tipo de comentário sobre como
+as operações devem ser feitas e como foram feitas no passado. Isso gera muito barbudinho! Ainda mais se erramos na
+decisão."*
+- **Barbudinho** = gente querendo dar pitaco/questionar, o que abre discussão e expõe a casa, principalmente se
+  uma decisão der errado.
+- **Na prática:** esse tipo de comentário deve ser **RECUSADO** (não publicar), mesmo que seja bem-intencionado ou
+  tecnicamente correto (foi o caso do comentário do Leleco, que o Gui apontou). Não amplificar debate de execução
+  nem retrospectiva de operações no feed público.
+- **Nas respostas:** não entrar nesse mérito. Orientar o cliente de forma prática e individual (ex.: usar ordem
+  limite, seguir o peso) sem transformar em análise pública de "como se opera" ou "o que foi feito antes".
+- Comentários de dúvida prática individual, elogio, ou dúvida de acesso seguem normais.
+
 ## A estrutura da resposta oficial (o molde real)
 1. **Saudação com o nome:** "Boa noite, [Nome]!" (ajustar Bom dia / Boa tarde / Boa noite).
 2. **Acolher a dúvida:** validar rápido — "Entendemos a sua preocupação", "Essa é uma dúvida
