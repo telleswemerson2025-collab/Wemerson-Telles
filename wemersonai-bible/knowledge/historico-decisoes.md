@@ -5,6 +5,13 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
+- **18/09 20:43 — BALANÇO "O piso da carteira está em US$63.282":** programaram **stop gain** nas duas posições
+  restantes — **BTC US$77.914** (+2,28%, vira US$31.134 em caixa) e **DOT US$1,05** (+7,21%, vira US$12.413). Ordem
+  stop LIMITE, nunca a mercado. Se as duas baterem, a carteira vira caixa em **US$63.282 (o piso)**; patrimônio não
+  desce daí. Patrimônio agora US$65.404; topo anterior (08/09) US$62.124; caixa 30%. Stop gain = trava lucro já
+  existente (não é previsão de queda). ⚠️ Muda o quadro anterior: BTC ganhou stop (estava sem) e DOT subiu de 0,932→1,05.
+- **18/09 19:39 — ENCERRAMENTO AERO** @ US$0,673 (peso 11→0%; caixa 19→30%). **+23% em 2 dias.** Motivo: sinais de
+  exaustão no movimento das últimas horas; preferiu proteger o capital. "Buscaremos novas oportunidades em seguida."
 - **18/09 16:36 — BALANÇO "As três posições estão no lucro":** AERO +24,8% (US$0,547→0,683), DOT +16,4%
   (US$0,979→1,14), BTC +6,6% (US$76.177→81.181); caixa 19%. Sem trade novo. Mensagem do Gui: o bull chegou;
   **aproveitar mas controlar a ganância** (foi ela que tirou de muita gente o ganho do ciclo anterior); **copiar

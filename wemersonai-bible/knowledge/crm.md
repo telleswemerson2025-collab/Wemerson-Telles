@@ -22,9 +22,9 @@ girava em torno de US$4.200 investidos. A gestão é sempre manual (não há apo
 automático) e a consistência importa mais que o tamanho do aporte.
 
 ### Ativos operados na CRM
-ESTADO ATUAL (**17/09/2026 11:36**): a carteira está posicionada em **BTC 50% + DOT 20% + AERO 10% + Caixa 20%**
-— o **ouro (PAXG) foi stopado no lucro** em 16/09 (US$4.251,60, +1,47%) e saiu; desde então o Gui vem reforçando
-DOT e AERO conforme o risco cede. Ver a "Composição atual" no topo
+ESTADO ATUAL (**18/09/2026 20:43**): a carteira está em **BTC + DOT + Caixa 30%** — o **AERO foi encerrado** (18/09
+@ US$0,673, +23%) e o **ouro (PAXG) saiu stopado no lucro** em 16/09. BTC e DOT agora têm **stop gain** (BTC US$77.914,
+DOT US$1,05), com **piso da carteira em US$63.282**. Ver a "Composição atual" no topo
 para o detalhe. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
 AERO, XRP, MORPHO, VIRTUAL — a cesta muda conforme as decisões e o indicador de risco). O Gui nunca faz
 operações vendidas ("short nem na praia"). No PAXG, execução por ordem limite, nunca a mercado, pela baixa
@@ -34,6 +34,19 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 ### Composição atual da carteira
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
+
+🟢 **ESTADO ATUAL — 18/09/2026 20:43 (mais recente). 2 ativos + caixa; AERO encerrado; BTC e DOT com STOP GAIN.**
+- **Bitcoin (BTC)** — reentrada US$76.177 · **STOP GAIN em US$77.914** (+2,28%; se acionado, vira US$31.134 em caixa)
+- **Polkadot (DOT)** — preço médio US$0,979 · **STOP GAIN em US$1,05** (+7,21%; se acionado, vira US$12.413 em caixa)
+- **Caixa (USD)** — **30%**
+- **AERO — ENCERRADO** 18/09 19:39 @ US$0,673 (+23% em 2 dias); caixa foi 19→30%.
+🛡️ **PISO DA CARTEIRA = US$63.282:** se os dois stop gain forem acionados, a carteira vira caixa em US$63.282 —
+o patrimônio **não desce daí**. Patrimônio agora US$65.404; topo anterior (08/09) US$62.124.
+⚠️ **STOPS ATUALIZADOS (muda o que estava antes):** o BTC, que estava SEM stop, **agora tem stop gain em US$77.914**;
+o DOT teve o stop **subido de US$0,932 → US$1,05** (stop gain, travando lucro). São **stop gain** (garantem lucro já
+existente, não são previsão de queda). Programar como **ordem stop LIMITE, nunca a mercado**. Se o preço seguir
+subindo, seguem as posições; se virar, saem no lucro e com caixa pra a próxima. "Stop de 100% da posição" = fecha a
+posição inteira daquele ativo no preço do stop (NÃO é perder 100% do dinheiro).
 
 📈 **BALANÇO 18/09/2026 16:36 — "As três posições da carteira estão no lucro."** Resultados (preço médio → atual):
 - **AERO** — US$0,547 → US$0,683 · **+24,8%** (melhor posição)
@@ -151,15 +164,22 @@ composição atual é **PAXG (ouro) 38% + Caixa 62%**. A CRM **teve** altcoins r
 novo quando o risco esfriar, mas agora não tem nenhuma. **SOL** também não está (já houve posição tática
 em abr/26). A posição vigente é sempre a última publicada na CRM — confirme lá pra pegar a cesta do momento.
 
-### Tem stop ou take profit? (ATUALIZADO 16/09/2026)
-Stops vigentes ao fim do 16/09 (posições atuais BTC + DOT + AERO):
-- **BTC: SEM stop** — o stop que estava em US$74.932 foi **suspenso em 16/09 (14:53)** por causa da
-  **volatilidade da decisão do Fed**; a posição passou a ser **gerenciada manualmente** (segue trade curto).
-  Quem tinha a ordem programada deve cancelar. Se voltar a ter stop, vem publicado.
-- **AERO: SEM stop** — segue sem stop programado mesmo após o reforço pra 10% (17/09 09:02); o Gui prefere
-  gerenciar de perto. Se for definido um stop, vem publicado.
-- **DOT: TEM stop em US$0,932** (toda a posição, após reforço pra 20% em 17/09 11:36). Programar com ordem limite;
-  se acionado, perda de ~0,91% do patrimônio (subiu conforme a posição cresceu).
+### Tem stop ou take profit? (ATUALIZADO 18/09/2026 20:43)
+Stops vigentes (posições atuais BTC + DOT; AERO encerrado):
+- **BTC: TEM STOP GAIN em US$77.914** (novo — antes estava sem stop). Trava lucro de +2,28%; se acionado, a
+  posição vira US$31.134 em caixa. Programar como ordem stop LIMITE, nunca a mercado.
+- **DOT: TEM STOP GAIN em US$1,05** (subiu de US$0,932 pra US$1,05 em 18/09, acompanhando a alta). Trava +7,21%;
+  se acionado, vira US$12.413 em caixa. Ordem stop LIMITE.
+- **AERO: ENCERRADO** (saiu 18/09 19:39 @ US$0,673, +23%).
+📌 **Conceito de STOP GAIN (pra explicar ao cliente):** não é previsão de queda, é a garantia de que um lucro que
+já existe não volta pro mercado. Se o preço seguir subindo, mantém-se a posição; se virar, sai no lucro e com caixa
+pra a próxima. Por isso é ordem LIMITE (executa no preço combinado ou acima), nunca a mercado (que entregaria a
+venda ao primeiro preço, podendo sair bem abaixo numa queda rápida). "Stop de 100% da posição" = encerra a posição
+inteira do ativo no preço do stop, e NÃO significa perder 100% do dinheiro.
+🛡️ **Piso da carteira (18/09): US$63.282** — se os dois stops baterem, é onde o patrimônio para; não desce daí.
+
+📌 **Histórico do stop do OURO (encerrado):** o ouro (PAXG) teve stop US$4.000 na abertura, subido pra US$4.251,60
+em 16/09 e acionado no mesmo dia (+1,47%); posição encerrada.
 - **PAXG (ouro): posição ENCERRADA.** O ouro foi **stopado em 16/09 às 16:36 a US$4.251,60, com lucro +1,47%**,
   e saiu da carteira. Não há posição de ouro agora.
 
