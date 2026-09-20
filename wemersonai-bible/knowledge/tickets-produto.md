@@ -103,6 +103,16 @@ Itens ligados à troca de domínio em curso, que devem sumir quando a migração
   nunca pedir pro cliente "sair da rede" ou "liberar/desligar o antivírus" (isso reforça o flag e treina
   o cliente pro golpe). Ver onboarding-boas-vindas.md (frases removidas em 10/09).
 
+## 6. App/site QUEBRA ao navegar; só volta reiniciando o celular (SEVERIDADE ALTA — ACOMPANHAR)
+- **Relato (David Ramiris, 19–20/09):** consegue acessar, mas ao **navegar pelo app ou pelo site a tela quebra**
+  e trava; só volta a funcionar **reiniciando o celular** e entrando de novo. Recorrente pra ele.
+- **Provável causa:** instabilidade da migração/PWA (relacionado ao item 4 — loop de reconexão/domínio). Pode ser
+  cache antigo, sessão presa, ou o app novo (PWA) travando em navegação.
+- **Workaround ao cliente:** reinstalar o app do zero (limpar dados do site/cache antes), testar em aba anônima ou
+  outro navegador, e entrar pelo link mágico direto. Se persistir, escalar pro time técnico com modelo do aparelho,
+  navegador/versão e print da tela de erro.
+- **Ação:** coletar device + navegador + print e passar pro time. Acompanhar se vira padrão em mais clientes.
+
 ## 5. Instalar o app novo (PWA) é pouco intuitivo pro usuário novo (SEVERIDADE MÉDIA — UX)
 - **Relato (Chagas Franci, 19/09):** o cliente procurou o botão "Instalar" DENTRO do app e não achou; na verdade
   a instalação usa o **botão de compartilhar do próprio celular/navegador** (fluxo PWA), o que não é óbvio. Ele
