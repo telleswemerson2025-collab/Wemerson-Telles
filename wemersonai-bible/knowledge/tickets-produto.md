@@ -83,13 +83,14 @@ Itens ligados à troca de domínio em curso, que devem sumir quando a migração
   Reportado por Eric (08/09).
 - ✅ **CAUSA CONFIRMADA PELO GUI (15/09, 12:40):** o **servidor dos vídeos do APP ANTIGO está com problema** —
   por isso o curso/aulas não abrem por lá. **Por ora SEM prazo de retorno.**
-- 🚩 **RECOMENDAÇÃO DO GUI (reforçada 17/09) — LER ANTES DE RESPONDER SOBRE VÍDEOS/AULAS/TREINAMENTO:** **NÃO há
-  definição de data pra os vídeos, as aulas e o treinamento irem pro APP NOVO.** Ou seja, esse conteúdo **não está
-  disponível no app novo ainda** (e o do app antigo está fora pelo problema de servidor). ⚠️ **NÃO mandar o cliente
-  procurar as aulas/vídeos/treinamento no app novo** (erro que a gente cometeu) — eles não estão lá. Como responder:
-  ser honesto que o conteúdo de vídeo/aulas/treinamento está em transição, **sem prazo definido dos dois lados**, e
-  que a gente avisa assim que estiver disponível. Nunca prometer data. O que segue funcionando é o **feed/Decisões**
-  (as decisões da carteira). Acompanhar até haver definição oficial.
+- ⚠️ **DISTINÇÃO IMPORTANTE (esclarecido pelo Wemerson, 20/09) — NÃO confundir dois conteúdos diferentes:**
+  - **VÍDEOS DE GERENCIAMENTO = DISPONÍVEIS.** Saem **no feed, toda segunda-feira**, junto com o acompanhamento da
+    carteira. Estão no ar normalmente. Pode orientar o cliente a ver no feed, às segundas. **NÃO** entram na regra
+    do "sem previsão".
+  - **CURSOS / AULAS / TREINAMENTO = EM TRANSIÇÃO, SEM PREVISÃO.** É SÓ este conteúdo (o curso, "treinamento em
+    análise", Academy) que **não tem data pra ir pro app novo** (recomendação do Gui). O do app antigo está fora
+    pelo problema de servidor. **NÃO mandar o cliente procurar as AULAS/CURSO no app novo** — não estão lá. Ser
+    honesto: sem prazo definido, a gente avisa quando voltar. Nunca prometer data.
 - **Busca na loja acha só o "app antigo" (GuiTelles):** cliente não encontra o app certo. Orientação
   atual: usar a plataforma nova pelo navegador + botão "Instalar" (PWA), não o app da loja. Reportado
   por Fernando (08/09).
