@@ -102,6 +102,16 @@ Itens ligados à troca de domínio em curso, que devem sumir quando a migração
   nunca pedir pro cliente "sair da rede" ou "liberar/desligar o antivírus" (isso reforça o flag e treina
   o cliente pro golpe). Ver onboarding-boas-vindas.md (frases removidas em 10/09).
 
+## 5. Instalar o app novo (PWA) é pouco intuitivo pro usuário novo (SEVERIDADE MÉDIA — UX)
+- **Relato (Chagas Franci, 19/09):** o cliente procurou o botão "Instalar" DENTRO do app e não achou; na verdade
+  a instalação usa o **botão de compartilhar do próprio celular/navegador** (fluxo PWA), o que não é óbvio. Ele
+  só conseguiu depois de entender isso. Pedido dele: **deixar mais claro/intuitivo pra novos usuários** como
+  baixar e adicionar o app à tela de início.
+- **Fix sugerido:** na página do manual/instalação, instrução visual explícita por sistema (iOS: botão
+  Compartilhar → "Adicionar à Tela de Início"; Android: menu → "Instalar app"), já que não é um botão dentro do app.
+- **Ação de atendimento:** ao orientar instalação, explicar que o "Instalar" é pelo navegador/compartilhar, não
+  dentro do app, pra evitar essa confusão.
+
 ## Notas
 - O "print não anexado" na varredura do Chrome é limitação da extensão de captura, não da plataforma.
 - Sensível (link mágico, token, senha) NÃO entra aqui nem em nenhum arquivo da base.
