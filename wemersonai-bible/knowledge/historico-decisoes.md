@@ -5,6 +5,11 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
+- **20/09 — MORPHO volta + reforço DOT. Estado: BTC + DOT 26% + MORPHO 5% + Caixa 20%.**
+  - **13:40 — Entrada MORPHO** @ US$2,56 (0→5%; caixa 30→25%). **Sem stop.** Tese: abriu espaço da média de 200
+    (4h), possível pivô de alta pro rompimento dos US$2,90 (novo topo histórico). MORPHO tinha saído em 12/09 a US$2,27.
+  - **13:45 — Mais um reforço DOT** @ US$1,14 (21→26%; caixa 25→20%). Preço médio US$1,011; stop segue US$1,05
+    (ordem limite, acima do preço médio → fecha no lucro se acionar).
 - **18/09 20:43 — BALANÇO "O piso da carteira está em US$63.282":** programaram **stop gain** nas duas posições
   restantes — **BTC US$77.914** (+2,28%, vira US$31.134 em caixa) e **DOT US$1,05** (+7,21%, vira US$12.413). Ordem
   stop LIMITE, nunca a mercado. Se as duas baterem, a carteira vira caixa em **US$63.282 (o piso)**; patrimônio não

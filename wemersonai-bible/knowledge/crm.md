@@ -22,9 +22,9 @@ girava em torno de US$4.200 investidos. A gestão é sempre manual (não há apo
 automático) e a consistência importa mais que o tamanho do aporte.
 
 ### Ativos operados na CRM
-ESTADO ATUAL (**18/09/2026 20:43**): a carteira está em **BTC + DOT + Caixa 30%** — o **AERO foi encerrado** (18/09
-@ US$0,673, +23%) e o **ouro (PAXG) saiu stopado no lucro** em 16/09. BTC e DOT agora têm **stop gain** (BTC US$77.914,
-DOT US$1,05), com **piso da carteira em US$63.282**. Ver a "Composição atual" no topo
+ESTADO ATUAL (**20/09/2026 13:45**): a carteira está em **BTC + DOT 26% + MORPHO 5% + Caixa 20%** — MORPHO voltou
+(entrada 20/09 @ US$2,56, sem stop) e o DOT foi reforçado pra 26% (preço médio US$1,011, stop US$1,05). BTC segue
+com stop gain US$77.914. AERO encerrado (18/09) e ouro stopado no lucro (16/09). Ver a "Composição atual" no topo
 para o detalhe. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
 AERO, XRP, MORPHO, VIRTUAL — a cesta muda conforme as decisões e o indicador de risco). O Gui nunca faz
 operações vendidas ("short nem na praia"). No PAXG, execução por ordem limite, nunca a mercado, pela baixa
@@ -35,7 +35,19 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 18/09/2026 20:43 (mais recente). 2 ativos + caixa; AERO encerrado; BTC e DOT com STOP GAIN.**
+🟢 **ESTADO ATUAL — 20/09/2026 13:45 (mais recente). 3 ativos + caixa. MORPHO voltou; DOT reforçado pra 26%.**
+- **Bitcoin (BTC)** — reentrada US$76.177 · **STOP GAIN em US$77.914** (trava lucro)
+- **Polkadot (DOT)** — **26%** · preço médio **US$1,011** · **STOP GAIN em US$1,05** (ordem limite; acima do preço médio, então fecha no lucro se acionar)
+- **Morpho (MORPHO)** — **5%** · entrada US$2,56 · **SEM stop** (nova entrada 20/09)
+- **Caixa (USD)** — **20%**
+📅 **Movimentos de 20/09:**
+- **13:40 — ENTRADA em MORPHO** @ US$2,56 (0→5%; caixa 30→25%). **Sem stop.** Tese: abriu espaço da média de 200
+  no 4h, pode dar pivô de alta pro rompimento dos **US$2,90** (novo topo histórico do ativo). (MORPHO tinha saído
+  em 12/09 a US$2,27 na Preservação Patrimonial; agora recomprado.)
+- **13:45 — MAIS UM REFORÇO em DOT** @ US$1,14 (21→26%; caixa 25→20%). Preço médio sobe pra **US$1,011**. Stop
+  segue **US$1,05** (ordem limite), acima do preço médio → operação fecha no lucro se for acionada.
+
+🟢 **ESTADO 18/09/2026 20:43. AERO encerrado; BTC e DOT com STOP GAIN.**
 - **Bitcoin (BTC)** — reentrada US$76.177 · **STOP GAIN em US$77.914** (+2,28%; se acionado, vira US$31.134 em caixa)
 - **Polkadot (DOT)** — preço médio US$0,979 · **STOP GAIN em US$1,05** (+7,21%; se acionado, vira US$12.413 em caixa)
 - **Caixa (USD)** — **30%**
@@ -164,12 +176,12 @@ composição atual é **PAXG (ouro) 38% + Caixa 62%**. A CRM **teve** altcoins r
 novo quando o risco esfriar, mas agora não tem nenhuma. **SOL** também não está (já houve posição tática
 em abr/26). A posição vigente é sempre a última publicada na CRM — confirme lá pra pegar a cesta do momento.
 
-### Tem stop ou take profit? (ATUALIZADO 18/09/2026 20:43)
-Stops vigentes (posições atuais BTC + DOT; AERO encerrado):
-- **BTC: TEM STOP GAIN em US$77.914** (novo — antes estava sem stop). Trava lucro de +2,28%; se acionado, a
-  posição vira US$31.134 em caixa. Programar como ordem stop LIMITE, nunca a mercado.
-- **DOT: TEM STOP GAIN em US$1,05** (subiu de US$0,932 pra US$1,05 em 18/09, acompanhando a alta). Trava +7,21%;
-  se acionado, vira US$12.413 em caixa. Ordem stop LIMITE.
+### Tem stop ou take profit? (ATUALIZADO 20/09/2026 13:45)
+Stops vigentes (posições atuais BTC + DOT + MORPHO; AERO encerrado):
+- **BTC: TEM STOP GAIN em US$77.914.** Trava lucro; ordem stop LIMITE, nunca a mercado.
+- **DOT: TEM STOP GAIN em US$1,05** (preço médio subiu pra US$1,011 após o reforço de 20/09; o stop em 1,05 fica
+  acima do preço médio, então fecha no lucro se acionar). Ordem stop LIMITE.
+- **MORPHO: SEM stop** (entrada de 20/09 saiu sem stop programado).
 - **AERO: ENCERRADO** (saiu 18/09 19:39 @ US$0,673, +23%).
 📌 **Conceito de STOP GAIN (pra explicar ao cliente):** não é previsão de queda, é a garantia de que um lucro que
 já existe não volta pro mercado. Se o preço seguir subindo, mantém-se a posição; se virar, sai no lucro e com caixa
