@@ -35,10 +35,10 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 20/09/2026 13:45 (mais recente). 3 ativos + caixa. MORPHO voltou; DOT reforçado pra 26%.**
-- **Bitcoin (BTC)** — reentrada US$76.177 · **STOP GAIN em US$77.914** (trava lucro)
-- **Polkadot (DOT)** — **26%** · preço médio **US$1,011** · **STOP GAIN em US$1,05** (ordem limite; acima do preço médio, então fecha no lucro se acionar)
-- **Morpho (MORPHO)** — **5%** · entrada US$2,56 · **SEM stop** (nova entrada 20/09)
+🟢 **ESTADO ATUAL — 20/09/2026 (composição confirmada ao vivo às 18:52). 3 ativos + caixa. MORPHO voltou; DOT reforçado pra 26%.**
+- **Bitcoin (BTC)** — **49%** · entrada US$76.177 · atual US$80.899 · **+6,20%** · contrib. +3,37% · **STOP GAIN em US$77.914**
+- **Polkadot (DOT)** — **26%** · preço médio US$1,01 · atual US$1,15 · **+13,76%** · contrib. +3,65% · **STOP GAIN em US$1,05** (acima do PM → fecha no lucro)
+- **Morpho (MORPHO)** — **5%** · entrada US$2,56 · atual US$2,74 · **+7,03%** · contrib. +0,41% · **SEM stop**
 - **Caixa (USD)** — **20%**
 📅 **Movimentos de 20/09:**
 - **13:40 — ENTRADA em MORPHO** @ US$2,56 (0→5%; caixa 30→25%). **Sem stop.** Tese: abriu espaço da média de 200
