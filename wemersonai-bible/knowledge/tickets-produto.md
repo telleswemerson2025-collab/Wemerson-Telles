@@ -112,6 +112,11 @@ Itens ligados à troca de domínio em curso, que devem sumir quando a migração
   outro navegador, e entrar pelo link mágico direto. Se persistir, escalar pro time técnico com modelo do aparelho,
   navegador/versão e print da tela de erro.
 - **Ação:** coletar device + navegador + print e passar pro time. Acompanhar se vira padrão em mais clientes.
+- **CONFIRMADO (20/09, print do David):** a tela que aparece é o **loop "Reconectando"** ("Estamos restabelecendo a
+  conexão... a página volta sozinha", botão "Tentar agora") — é o **mesmo loop de reconexão do item 4**, disparando
+  na **navegação entre abas** no Xiaomi. No Samsung do mesmo cliente NÃO acontece. Ou seja: item 6 = manifestação
+  do loop de reconexão (item 4) em aparelho/navegador específico. Workaround que resolve: usar outro aparelho
+  (Samsung funcionou), limpar cache/atualizar Chrome/reinstalar no aparelho afetado.
 
 ## 5. Instalar o app novo (PWA) é pouco intuitivo pro usuário novo (SEVERIDADE MÉDIA — UX)
 - **Relato (Chagas Franci, 19/09):** o cliente procurou o botão "Instalar" DENTRO do app e não achou; na verdade
