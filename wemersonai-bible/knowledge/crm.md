@@ -353,6 +353,11 @@ Responder na linha da filosofia, com calma e sem defensividade: estamos em bear 
 método é de disciplina e longo prazo, e a CRM segue mesmo depois de atingir o milhão.
 Preservar capital também é performance.
 
+### O "milhão" do Rumo ao Milhão é em reais ou dólar? — R$1 MILHÃO (reais) (CONFIRMADO 20/09/2026, fonte Wemerson)
+O objetivo do "Rumo ao Milhão" é chegar a **R$1 milhão (em REAIS)**. ⚠️ A carteira **opera e é medida em dólar**
+(aportes, preços e patrimônio em US$, porque o mercado cripto é cotado em dólar), **mas a meta que dá nome ao
+projeto é o milhão em reais**. Não confundir: moeda de operação = dólar; objetivo/meta = R$1 milhão.
+
 ### A CRM é encerrada ao atingir o primeiro milhão? — NÃO (CONFIRMADO 15/09/2026, fonte Wemerson)
 **Não.** A carteira **não termina** quando alcança o objetivo do milhão. O milhão é um **marco, não a
 linha de chegada**: atingida a meta, o trabalho segue **rumo a novos patamares/valores** e também pra
