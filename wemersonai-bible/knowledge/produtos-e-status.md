@@ -3,6 +3,13 @@
 > Status de produtos e ferramentas — o que está ativo, descontinuado ou em manutenção, e como
 > responder o cliente. Fonte: grupo interno de trabalho (respostas do Gui), jun–ago/2026.
 
+### Carteira de Biotecnologia — NOVA, EM LANÇAMENTO (confirmado Wemerson, 21/09/2026)
+O Gui vai lançar uma **nova carteira de Biotecnologia**, previsão de **algumas semanas**. É mais uma carteira além
+da CRM (cripto) e da Carteira IA (ações de infra de IA). Ao responder o cliente: confirmar que **está por vir**,
+mas **não cravar data exata** (falar "nas próximas semanas / em breve", pois é previsão). Como parte das
+**carteiras futuras**, ela entra pra quem tem o **Plano Vitalício** (o Vitalício inclui as carteiras futuras).
+Quando houver data/detalhes oficiais, comunicar no feed.
+
 ### Trader de Sucesso — DESCONTINUADO
 Foi descontinuado. A sequência de treinamento atual (rebranding para **"treinamento em
 análise"**) substituiu o Trader de Sucesso. Resposta padrão: informar o rebranding; se o cliente
