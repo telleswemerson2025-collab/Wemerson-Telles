@@ -12,11 +12,11 @@ já correu** — o valor está na infraestrutura que sustenta a IA. Tem a aba "T
 e a aba "Decisões" (execução real). Horizonte de 18 a 36 meses, rebalanceamento semestral.
 
 ### Composição atual da carteira (última leitura oficial)
-🛡️ **ATUALIZADA — 15/09/2026 13:12: encerrou MOD e CGNX, carteira agora com 2 ativos + caixa.** Sobraram só
-VRT e WDC; caixa subiu de **67% → 77%**.
-- **VRT (Vertiv)** — ~13% · entrada US$286,16 · atual US$237,40 · **−17,04%**
-- **WDC (Western Digital)** — ~10% · entrada US$512,19 · atual US$426,94 · **−16,64%**
-- **Caixa (USD)** — **77%**
+🛡️ **CONFIRMADA AO VIVO — 21/09/2026: 2 ativos + caixa (~76%).** A carteira segue defensiva desde o encerramento
+de MOD e CGNX (15/09). Ambas as posições ainda abaixo da entrada.
+- **VRT (Vertiv)** — **13%** · entrada US$286,16 · atual US$252,66 · **−11,71%** · contrib. −1,87%
+- **WDC (Western Digital)** — **11%** · entrada US$512,19 · atual US$444,29 · **−13,26%** · contrib. −1,72%
+- **Caixa (USD)** — **~76%** (13% + 11% investido = 24%)
 
 ⚡ **DECISÃO 15/09 13:12 — encerramento de MOD (Modine) e CGNX (Cognex)** (peso 10% → 0%; caixa 67% → 77%).
 Saídas: **MOD US$177,72 · CGNX US$58,74**. Juntas custaram **0,74% do patrimônio**. Motivo: no relatório da
