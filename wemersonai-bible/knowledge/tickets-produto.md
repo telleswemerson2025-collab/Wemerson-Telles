@@ -128,6 +128,13 @@ Itens ligados à troca de domínio em curso, que devem sumir quando a migração
 - **Ação de atendimento:** ao orientar instalação, explicar que o "Instalar" é pelo navegador/compartilhar, não
   dentro do app, pra evitar essa confusão.
 
+## 7. Sugestão: mostrar o STOP de cada ativo na aba Carteira/posição (MELHORIA — UX)
+- **Sugestão (Tiago Figueira da Cruz, 20/09):** na visão de posição/gráfico da aba Carteira, exibir se o ativo
+  **tem stop programado e qual o valor**. O cliente acha a informação útil pra acompanhar direto ali.
+- **Valor:** hoje o stop só aparece no post da decisão no feed; ter no card da posição centraliza a info e evita
+  o cliente ter que caçar no histórico. Boa pra reduzir dúvidas recorrentes de "qual o stop do ativo X".
+- **Encaminhar pro time de produto.**
+
 ## Notas
 - O "print não anexado" na varredura do Chrome é limitação da extensão de captura, não da plataforma.
 - Sensível (link mágico, token, senha) NÃO entra aqui nem em nenhum arquivo da base.
