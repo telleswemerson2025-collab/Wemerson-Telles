@@ -119,6 +119,23 @@ O cliente cancela a renovação **na própria Hotmart** (passar as instruções)
 produto novo (não renovação) o próprio cliente cancela. Se um cancelamento não foi processado,
 o suporte abre o pedido de reembolso direto com a Hotmart.
 
+### Nota fiscal do produto — quem emite? (CONFIRMADO PELA HOTMART, 21/09/2026)
+⚠️ **A nota fiscal ao comprador é obrigação do PRODUTOR (BlockCapital) emitir** — NÃO é a Hotmart que emite a NF
+pro cliente. Regra oficial da Hotmart:
+- **O Produtor deve, obrigatoriamente, emitir a Nota Fiscal para seus compradores sobre o valor total da venda.**
+- Afiliados/coprodutores emitem recibo/NF pro Produtor.
+- A **Hotmart** emite ao Produtor apenas as NF **das comissões/taxas dela** (intermediação, saques, streaming da
+  área de membros).
+- Na Hotmart dá pra consultar/emitir **recibos** em **Vendas > Recibos**, e os dados fiscais em **Relatórios >
+  Fatura Hotmart** e **Relatórios > Minhas análises > Demonstrativos Financeiros > Self-Billing** (por mês/moeda).
+- Toda questão fiscal deve ser feita com **contador** (varia por situação de cada pessoa/empresa).
+
+**⚠️ CORREÇÃO de guidance:** antes a gente mandava o cliente "pegar a nota direto na Hotmart" — isso está ERRADO.
+A Hotmart não emite a NF do produto pro comprador. Quando um cliente pede a nota fiscal do produto, é a
+**BlockCapital (produtor)** que precisa emitir (via contador/emissor da empresa). Ao responder o cliente: informar
+que a nota fiscal será providenciada pela BlockCapital e encaminhar internamente pra emissão; não mandar ele
+"resolver na Hotmart", porque lá ele não consegue (a Hotmart só tem o recibo da venda).
+
 ### Fiscal / tributação — NÃO é a BlockCapital que orienta
 Não damos recomendação fiscal nem tributária — cada caso é um caso, e o cliente deve falar com
 o **contador dele**. A BlockCapital dá a visão estratégica de mercado; fiscal, escolha de
