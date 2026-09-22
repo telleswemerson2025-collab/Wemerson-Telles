@@ -119,6 +119,20 @@ O cliente cancela a renovação **na própria Hotmart** (passar as instruções)
 produto novo (não renovação) o próprio cliente cancela. Se um cancelamento não foi processado,
 o suporte abre o pedido de reembolso direto com a Hotmart.
 
+### Como distribuir o capital ENTRE as carteiras (CRM x IA x Biotech)? — PERGUNTA RECORRENTE (set/2026)
+Vários clientes perguntam (Rodrigo Cantarim, Frederico Duarte, Luciano Zanetti, Alex...). **Não há percentual
+fixo recomendado** pra dividir o capital entre as carteiras — é **decisão pessoal**, depende do perfil, do capital
+e dos objetivos de cada um. Como responder:
+- As carteiras são **independentes**, com perfis de risco diferentes (CRM = cripto, mais volátil; IA e Biotech =
+  ações). Cada uma é gerida na sua própria estratégia.
+- **A casa NÃO recomenda rotacionar capital de uma carteira pra outra** caçando o "momento" de cada tema (embora
+  seja fato que haja momentos mais propícios a uma ou outra). Cada uma segue o seu plano.
+- Orientação prática: dimensionar cada carteira conforme o **conforto com aquele tema/risco e o capital total**,
+  sempre mantendo reserva e investindo só o que cabe; montar as demais com **capital novo, aos poucos**, sem tirar
+  da CRM na marra.
+- **NUNCA cravar um número/%** (não damos call individual de alocação). É feedback recorrente — clientes gostariam
+  de uma orientação mais clara; encaminhar ao Gui pra avaliar comentar isso num vídeo de gerenciamento.
+
 ### Nota fiscal do produto — quem emite? (CONFIRMADO PELA HOTMART, 21/09/2026)
 ⚠️ **A nota fiscal ao comprador é obrigação do PRODUTOR (BlockCapital) emitir** — NÃO é a Hotmart que emite a NF
 pro cliente. Regra oficial da Hotmart:
