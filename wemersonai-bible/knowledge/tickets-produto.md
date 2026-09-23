@@ -143,7 +143,9 @@ existe sem o outro, então não é "ruído" a ser removido.
   **tem stop programado e qual o valor**. O cliente acha a informação útil pra acompanhar direto ali.
 - **Valor:** hoje o stop só aparece no post da decisão no feed; ter no card da posição centraliza a info e evita
   o cliente ter que caçar no histórico. Boa pra reduzir dúvidas recorrentes de "qual o stop do ativo X".
-- **Encaminhar pro time de produto.**
+- **Encaminhar pro time de produto.** ⚠️ **Pedido reforçado (Flavio Machado, 23/09):** mesma solicitação, uma
+  **coluna com os pontos de stop na tabela da página "Carteira"**, porque às vezes é difícil achar no feed a
+  publicação com os stops. Já são 2+ clientes pedindo, aumenta a prioridade.
 
 ## Notas
 - O "print não anexado" na varredura do Chrome é limitação da extensão de captura, não da plataforma.
