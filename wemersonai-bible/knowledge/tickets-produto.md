@@ -128,14 +128,15 @@ Itens ligados à troca de domínio em curso, que devem sumir quando a migração
 - **Ação de atendimento:** ao orientar instalação, explicar que o "Instalar" é pelo navegador/compartilhar, não
   dentro do app, pra evitar essa confusão.
 
-## 8. Sugestão: mostrar a VALORIZAÇÃO isolada dos aportes (rentabilidade real) (MELHORIA — métrica)
-- **Sugestão (Leonardo da Silva Fortunato, 22–23/09):** disponibilizar a **valorização sem os aportes**, pra o
-  cliente ver a **rentabilidade real** da carteira. Hoje, como o Histórico de Patrimônio soma aportes +
-  valorização, fica difícil enxergar quanto a estratégia de fato rendeu (o aporte "infla" o número).
-- **Valor:** separar o efeito do aporte do efeito da valorização é uma métrica que muita gente quer; o correto
-  tecnicamente é a **TIR/XIRR** (considera o tempo de cada aporte). Já teve cliente calculando isso na mão (Yuri).
-- **Enquanto não sai:** orientar o cliente a olhar o campo de **"Retorno"** (que reflete a valorização das
-  posições, não o aporte). Encaminhar a sugestão pro time de produto.
+## 8. "Mostrar a valorização SEM os aportes" — COMO RESPONDER (orientação do Wemerson, 23/09)
+Alguns clientes pedem pra ver a performance isolada dos aportes (Leonardo Fortunato). **Resposta oficial:** não
+faz sentido separar, porque **os aportes são o que construiu a carteira**. Ela começou praticamente do zero, com
+US$200; sem os aportes não haveria patrimônio nenhum (seria zero). Aporte e valorização andam juntos, um não
+existe sem o outro, então não é "ruído" a ser removido.
+- **Pra o cliente ver quanto de fato rendeu (o lucro):** conta simples → **valor atual da carteira − total
+  aportado**. O total aportado do modelo, até aqui, é de **cerca de US$23 mil**. A diferença é o lucro/valorização.
+- Não prometer um gráfico/recurso de "valorização isolada" — a orientação é ensinar essa conta. (O campo "Retorno"
+  também reflete a valorização das posições abertas, mas a conta acima é o jeito direto de ver o ganho real.)
 
 ## 7. Sugestão: mostrar o STOP de cada ativo na aba Carteira/posição (MELHORIA — UX)
 - **Sugestão (Tiago Figueira da Cruz, 20/09):** na visão de posição/gráfico da aba Carteira, exibir se o ativo
