@@ -128,6 +128,15 @@ Itens ligados à troca de domínio em curso, que devem sumir quando a migração
 - **Ação de atendimento:** ao orientar instalação, explicar que o "Instalar" é pelo navegador/compartilhar, não
   dentro do app, pra evitar essa confusão.
 
+## 8. Sugestão: mostrar a VALORIZAÇÃO isolada dos aportes (rentabilidade real) (MELHORIA — métrica)
+- **Sugestão (Leonardo da Silva Fortunato, 22–23/09):** disponibilizar a **valorização sem os aportes**, pra o
+  cliente ver a **rentabilidade real** da carteira. Hoje, como o Histórico de Patrimônio soma aportes +
+  valorização, fica difícil enxergar quanto a estratégia de fato rendeu (o aporte "infla" o número).
+- **Valor:** separar o efeito do aporte do efeito da valorização é uma métrica que muita gente quer; o correto
+  tecnicamente é a **TIR/XIRR** (considera o tempo de cada aporte). Já teve cliente calculando isso na mão (Yuri).
+- **Enquanto não sai:** orientar o cliente a olhar o campo de **"Retorno"** (que reflete a valorização das
+  posições, não o aporte). Encaminhar a sugestão pro time de produto.
+
 ## 7. Sugestão: mostrar o STOP de cada ativo na aba Carteira/posição (MELHORIA — UX)
 - **Sugestão (Tiago Figueira da Cruz, 20/09):** na visão de posição/gráfico da aba Carteira, exibir se o ativo
   **tem stop programado e qual o valor**. O cliente acha a informação útil pra acompanhar direto ali.
