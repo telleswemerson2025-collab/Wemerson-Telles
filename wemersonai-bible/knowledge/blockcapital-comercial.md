@@ -159,6 +159,27 @@ A Hotmart não emite a NF do produto pro comprador. Quando um cliente pede a not
 que a nota fiscal será providenciada pela BlockCapital e encaminhar internamente pra emissão; não mandar ele
 "resolver na Hotmart", porque lá ele não consegue (a Hotmart só tem o recibo da venda).
 
+**⚠️⚠️ REFINAMENTO IMPORTANTE (24/09/2026) — LLC AMERICANA NÃO EMITE NF-e BRASILEIRA (a CONFIRMAR com o contador):**
+O produtor é a **BlockCapital LLC**, empresa constituída nos **EUA**, **sem CNPJ no Brasil**. Sem CNPJ e sem
+inscrição no Brasil, **não há como emitir NF-e brasileira** (a NF-e sai do sistema da prefeitura/Receita, que exige
+registro no Brasil). O documento oficial de venda que uma empresa americana emite é uma **invoice / fatura comercial**.
+- **O que enviar ao cliente:** uma **invoice da BlockCapital LLC no nome do cliente**, com **valor em R$**, **forma de
+  pagamento** (Pix, cartão, etc.), **data da compra**, **código da transação Hotmart** e **descrição do produto**.
+  No rodapé, a observação de que a BlockCapital LLC é empresa dos EUA e por isso não emite NF fiscal brasileira, sendo
+  a invoice o documento comercial oficial da compra.
+- **Erro que já cometemos (a evitar):** mandar a **fatura da Hotmart** (documento da Hotmart pra BlockCapital, **em
+  dólar e sem o nome do cliente**) achando que era a nota do cliente. Não é. Também: mandar arquivo **sem a extensão
+  `.pdf`** (o cliente não consegue abrir).
+- **Se o cliente exige NF brasileira mesmo assim** (ex.: empresa que quer lançar a despesa): é **caso pro contador** —
+  ele avalia se existe uma empresa **brasileira do grupo** que possa faturar, ou como o cliente declara a compra de
+  **serviço do exterior**. Não prometer NF-e sem passar pelo contador.
+- 🚩 **Antes de comunicar isso como política oficial ao cliente, confirmar com o contador da BlockCapital** — é
+  afirmação fiscal/jurídica. A invoice é o documento padrão nesse cenário, mas a validação final é do contador.
+- **Onde ficam os dados da empresa pra invoice** (endereço da LLC, cidade/estado/ZIP, EIN): são dados de emissão que
+  ficam **fora da base** (não versionar no git) — o time preenche no modelo de invoice na hora de gerar. Casos já
+  gerados: Vagner Vizioli (HP3911957124, R$5.947,45, Pix, 13/08/2026) e Thiago Lobo Alves (HP1777090356, R$1.897,00,
+  cartão Visa, 18/09/2026).
+
 ### Fiscal / tributação — NÃO é a BlockCapital que orienta
 Não damos recomendação fiscal nem tributária — cada caso é um caso, e o cliente deve falar com
 o **contador dele**. A BlockCapital dá a visão estratégica de mercado; fiscal, escolha de
