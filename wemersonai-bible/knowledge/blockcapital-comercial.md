@@ -97,6 +97,15 @@ Código de Defesa do Consumidor. A renovação é automática ao fim do período
 reembolso vale apenas para a transação inicial dentro desses 7 dias. Dúvidas sobre o
 processo: suporte@theblockcapital.com
 
+⚠️ **QUEM FAZ O REEMBOLSO É A HOTMART, não a BlockCapital (corrigido 24/09/2026).** Quando o cliente
+pede reembolso dentro do prazo de garantia, a orientação é encaminhá-lo pra solicitar **direto na
+Hotmart**, que é a plataforma de pagamento e quem processa o estorno. Caminho pro cliente: (1) pelo
+**e-mail de confirmação da compra** que a Hotmart enviou (tem a opção de solicitar reembolso); ou
+(2) entrando na **conta da Hotmart → "Minhas Compras"**, localizar a compra e pedir o reembolso por
+lá. Não prometer/afirmar que "nós processamos o reembolso" — nós orientamos o caminho; a Hotmart
+executa. (O suporte só abre o pedido direto com a Hotmart em casos específicos, ex.: cancelamento
+que não foi processado — ver "Cancelar renovação / upgrade na Hotmart".)
+
 ### Reembolso de RENOVAÇÃO AUTOMÁTICA — NÃO há
 **Renovação automática não tem reembolso.** Conforme os termos da Hotmart, o cliente deve
 **cancelar a renovação ANTES** da data em que ela ocorre. Depois que renovou, não há reembolso
