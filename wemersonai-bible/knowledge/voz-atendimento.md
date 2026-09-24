@@ -31,6 +31,15 @@ decisão."*
   limite, seguir o peso) sem transformar em análise pública de "como se opera" ou "o que foi feito antes".
 - Comentários de dúvida prática individual, elogio, ou dúvida de acesso seguem normais.
 
+**➕ EXTENSÃO DA REGRA (24/09/2026) — SUGESTÃO / PEDIDO DE ANÁLISE DE ATIVO → RECUSAR no feed, responder no PARTICULAR.**
+Comentário pedindo pra "avaliar/trazer o ativo X pra carteira" ou "analisa essa moeda e me dá um retorno" (caso
+Eduardo, 24/09 — sugeriu o Plasma/XPL) também é **RECUSADO** no público. Motivo (palavras do Wemerson): esse tipo de
+comentário atrapalha porque **abre uma fila** — se um publica "analisa o XPL", o próximo manda "analisa o PCX", "analisa
+não sei o quê", e o feed vira pedido de call de moeda. **Responder sempre no particular (privado/e-mail).** Na resposta:
+agradecer a sugestão, dizer que encaminha pro Gui avaliar dentro do processo dele, deixar claro que **não fazemos
+análise individual de ativo nem garantimos entrada**, que cada inclusão passa pelo critério/timing do Gui e sai nas
+Decisões publicadas. Nunca analisar o ativo nem prometer entrada. Fecho com "a decisão final é sempre sua".
+
 ## A estrutura da resposta oficial (o molde real)
 1. **Saudação com o nome:** "Boa noite, [Nome]!" (ajustar Bom dia / Boa tarde / Boa noite).
 2. **Acolher a dúvida:** validar rápido — "Entendemos a sua preocupação", "Essa é uma dúvida
