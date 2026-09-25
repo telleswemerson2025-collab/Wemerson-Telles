@@ -65,8 +65,12 @@ Contato: suporte@theblockcapital.com.
 ### Como operar a Carteira IA (Brasil)
 A casa **não indica corretora específica** — recomenda o **ativo**, não o caminho (Mr. G, 31/08).
 Compra pelo **código de cada ação**, respeitando o **peso** da posição. Caminhos: BDR na B3
-(quando houver), ETF do tema, ou corretora internacional/americana tradicional (Avenue, IBKR,
-Schwab são exemplos, não indicação). A CEG pode ser acessada via BDR na B3 ou nos EUA.
+(quando houver), ETF do tema, ou uma corretora com acesso à bolsa americana — **a escolha da
+corretora fica a critério do cliente**. A CEG pode ser acessada via BDR na B3 ou nos EUA.
+⚠️ **NÃO citar nomes de corretora internacional como "exemplo" (regra 24/09/2026, Wemerson):** mesmo
+dizendo "é só exemplo, não indicação", o cliente lê como indicação. Falar sempre de forma genérica
+("uma corretora com acesso à bolsa americana"), sem nomear casas — a única corretora que a gente
+recomenda por nome é a **Bitget, e só pra cripto/CRM**.
 **Novidade (03/09):** a **Bitget** lançou uma aba **"Ações"** onde **algumas** das ações da
 carteira já se encontram — caminho prático pra quem já usa a Bitget (que é a corretora que
 recomendamos pra **cripto/CRM**). Nem toda ação está lá; o que não estiver, buscar numa corretora
@@ -83,8 +87,8 @@ de tokenização.
 
 ### Dá pra investir na Carteira IA pela Binance? E ações tokenizadas / lei brasileira?
 A Carteira IA é composta por **ações** (não cripto), então o caminho recomendado **não é a
-Binance**. As formas de operar (em ordem): BDR na B3, ETF do tema, corretora internacional
-(Avenue, IBKR, Schwab), ou direto na bolsa americana. Sendo brasileiro, você consegue investir
+Binance**. As formas de operar (em ordem): BDR na B3, ETF do tema, ou uma corretora com acesso à
+bolsa americana (sem nomear casas — ver regra acima). Sendo brasileiro, você consegue investir
 tranquilamente por esses caminhos, **sem depender da Binance nem de ação tokenizada**. Alguns
 ativos têm versão tokenizada em algumas exchanges (a disponibilidade varia por exchange e por ativo; confirmar caso a caso antes de indicar), mas é caso a caso.
 Sobre a **legalidade de ações tokenizadas no Brasil**: é um tema jurídico/regulatório em
