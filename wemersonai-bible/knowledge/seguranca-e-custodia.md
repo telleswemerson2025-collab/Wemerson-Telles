@@ -4,6 +4,40 @@
 > seguro; é decisão pessoal do investidor**; a equipe não opina sobre rumores. Corretora
 > recomendada: Bitget. Carteira usada pela equipe: Ledger Nano S Plus.
 
+### 🚨 INCIDENTE DE SEGURANÇA NA BITGET (24/09/2026) — COMUNICADO OFICIAL DO GUI / BlockCapital Research
+Em **24/09/2026** a **Bitget confirmou um incidente de segurança**: transferências não autorizadas em parte das
+carteiras **quentes e mornas** da plataforma. Detectado às **15h31 (Brasília)**. Estimativa inicial da própria Bitget:
+**US$351,6 milhões** em ativos afetados. Este é o **evento oficial** que originou os boatos ("hack", "algo com monero").
+
+**Fatos confirmados pela Bitget (segundo o comunicado):**
+- **Carteiras frias seguem seguras**; os **saldos exibidos nas contas estão corretos**; **depósitos e negociações
+  continuam funcionando**.
+- **Saques suspensos temporariamente** durante a revisão de segurança.
+- A empresa afirma que a perda está coberta por um **fundo de proteção > US$464 milhões** — cobertura que **ainda
+  precisa ser confirmada na prática** (só se confirma quando os saques reabrirem e forem processados).
+- **Não se sabe ainda:** como ocorreu, quanto será recuperado, quando os saques voltam. **Não há evidência pública
+  de vazamento de senhas nem de invasão direta das contas dos clientes.** ⚠️ **Não preencher lacunas com especulação.**
+- A **BlockCapital também tem fundos na Bitget** (o Gui foi transparente sobre isso).
+
+**ORIENTAÇÃO OFICIAL AO CLIENTE (linha do Gui — usar esta, não improvisar):**
+1. **Não fazer novos depósitos na Bitget** enquanto os saques estiverem suspensos.
+2. **Continuar operando a carteira normalmente** — as negociações seguem funcionando, o incidente não impede operar.
+3. A **suspensão de saques é medida comum** nesse tipo de incidente (isola carteiras afetadas, revisa controles).
+   **Bloqueio de saque não significa, por si só, insolvência.** E "recursos protegidos" só se confirma quando os
+   saques forem reabertos e processados.
+4. **Segurança:** usar **apenas o app ou o site oficial**; **ignorar contatos privados**; **nunca compartilhar senha
+   nem códigos de autenticação (2FA)**; **registrar o saldo atual** da conta.
+5. Quando os saques reabrirem, quem não quiser manter recursos pra negociação pode **transferir pra onde se sentir
+   mais seguro** — fazer primeiro uma **transferência pequena de teste** e confirmar o recebimento antes de mover o resto.
+6. **Não decidir nada no susto.** (Fala do Gui: a experiência dele em casos assim foi de que paciência resolveu; isso
+   **não é promessa** sobre este caso.)
+7. O Gui acompanha o **relatório técnico prometido pra as próximas 24h** e **atualiza o comunicado** se houver mudança.
+
+**Como moderar comentários sobre o incidente:** boato/pergunta sobre o hack no **feed público** → não amplificar antes
+da linha oficial; com o comunicado publicado, responder pela orientação acima (ou apontar o comunicado oficial). Nunca
+confirmar detalhes não confirmados, nunca prometer que "está tudo seguro / vai voltar tudo", nunca dizer pra concentrar
+100% numa corretora. Custódia é sempre decisão pessoal.
+
 ### Link oficial pra abrir conta na Bitget (com desconto de taxa pro cliente)
 A corretora recomendada pra cripto é a **Bitget** (tem ~99% das moedas que a carteira usa). Os nossos
 clientes têm **desconto nas taxas** abrindo pelo **link oficial de afiliado**:
