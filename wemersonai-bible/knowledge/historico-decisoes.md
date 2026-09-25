@@ -5,6 +5,14 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
+- **24/09 16:27 — BALANÇO "Os três stops, e onde eles colocam o piso":** stops atualizados nas três posições, todos
+  como **stop LIMITE** (nunca a mercado). **BTC US$82.752,68** (+8,63%, vira US$33.067 em caixa) · **DOT US$1,07**
+  (+5,85%, vira US$15.740) · **MORPHO US$2,466** (−3,67%, vira US$3.165). Se os três baterem, a carteira vira caixa em
+  **US$65.124 (o piso de hoje)**; patrimônio não desce daí. Patrimônio agora **US$67.792**; caixa 20%. **BTC e DOT já
+  com stop acima do preço médio** (fecham no lucro se acionados); **MORPHO ainda não** (o stop custa 0,2% do patrimônio,
+  o preço de seguir na operação enquanto a tese vale). Subir stop não é previsão de queda: é travar ganho de tela sem
+  abrir mão do que vier. **Composição ao vivo 25/09 19:57:** BTC 49% (atual US$84.074, +10,37%), DOT 27% (atual US$1,22,
+  +20,68%), MORPHO 5% (atual US$2,74, +7,03%), Caixa 19%.
 - **20/09 — MORPHO volta + reforço DOT. Estado: BTC + DOT 26% + MORPHO 5% + Caixa 20%.**
   - **13:40 — Entrada MORPHO** @ US$2,56 (0→5%; caixa 30→25%). **Sem stop.** Tese: abriu espaço da média de 200
     (4h), possível pivô de alta pro rompimento dos US$2,90 (novo topo histórico). MORPHO tinha saído em 12/09 a US$2,27.

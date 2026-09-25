@@ -22,9 +22,9 @@ girava em torno de US$4.200 investidos. A gestão é sempre manual (não há apo
 automático) e a consistência importa mais que o tamanho do aporte.
 
 ### Ativos operados na CRM
-ESTADO ATUAL (**20/09/2026 13:45**): a carteira está em **BTC + DOT 26% + MORPHO 5% + Caixa 20%** — MORPHO voltou
-(entrada 20/09 @ US$2,56, sem stop) e o DOT foi reforçado pra 26% (preço médio US$1,011, stop US$1,05). BTC segue
-com stop gain US$77.914. AERO encerrado (18/09) e ouro stopado no lucro (16/09). Ver a "Composição atual" no topo
+ESTADO ATUAL (**25/09/2026 19:57**): a carteira está em **BTC 49% + DOT 27% + MORPHO 5% + Caixa 19%**. No balanço de
+**24/09** os três stops foram atualizados (BTC US$82.752,68 · DOT US$1,07 · MORPHO US$2,466), todos como **stop
+LIMITE**, com piso de patrimônio em **US$65.124**. AERO encerrado (18/09) e ouro stopado no lucro (16/09). Ver a "Composição atual" no topo
 para o detalhe. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
 AERO, XRP, MORPHO, VIRTUAL — a cesta muda conforme as decisões e o indicador de risco). O Gui nunca faz
 operações vendidas ("short nem na praia"). No PAXG, execução por ordem limite, nunca a mercado, pela baixa
@@ -35,11 +35,20 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 20/09/2026 (composição confirmada ao vivo às 18:52). 3 ativos + caixa. MORPHO voltou; DOT reforçado pra 26%.**
-- **Bitcoin (BTC)** — **49%** · entrada US$76.177 · atual US$80.899 · **+6,20%** · contrib. +3,37% · **STOP GAIN em US$77.914**
-- **Polkadot (DOT)** — **26%** · preço médio US$1,01 · atual US$1,15 · **+13,76%** · contrib. +3,65% · **STOP GAIN em US$1,05** (acima do PM → fecha no lucro)
-- **Morpho (MORPHO)** — **5%** · entrada US$2,56 · atual US$2,74 · **+7,03%** · contrib. +0,41% · **SEM stop**
-- **Caixa (USD)** — **20%**
+🟢 **ESTADO ATUAL — 25/09/2026 (composição confirmada ao vivo às 19:57). 3 ativos + caixa. Stops atualizados no balanço de 24/09.**
+- **Bitcoin (BTC)** — **49%** · entrada US$76.177,00 · atual US$84.074,00 · **+10,37%** · contrib. +5,63% · **STOP LIMITE em US$82.752,68** (acima do PM → fecha no lucro, +8,63%)
+- **Polkadot (DOT)** — **27%** · preço médio US$1,01 · atual US$1,22 · **+20,68%** · contrib. +5,49% · **STOP LIMITE em US$1,07** (acima do PM → fecha no lucro, +5,85%)
+- **Morpho (MORPHO)** — **5%** · entrada US$2,56 · atual US$2,74 · **+7,03%** · contrib. +0,41% · **STOP LIMITE em US$2,466** (ainda abaixo da entrada; o stop custa 0,2% do patrimônio)
+- **Caixa (USD)** — **19%** (o balanço de 24/09 registrou 20%; a diferença é marcação a mercado)
+
+**Piso e patrimônio (balanço 24/09/2026 16:27 — "Os três stops, e onde eles colocam o piso"):**
+- **Patrimônio agora:** US$67.792 · **Piso protegido pelos 3 stops:** US$65.124.
+- Se os três stops forem acionados, a carteira vira caixa: **BTC → US$33.067**, **DOT → US$15.740**, **MORPHO → US$3.165** (somado ao caixa = US$65.124). O patrimônio não desce daí enquanto as ordens estiverem na mesa.
+- **BTC e DOT já com stop acima do preço médio** (se acionados, fecham no lucro). **MORPHO ainda não**: o stop dela custa 0,2% do patrimônio, o preço de seguir na operação enquanto a tese vale.
+- **Programar como ordem de stop LIMITE, nunca a mercado** (a mercado executa no primeiro preço numa queda rápida, bem abaixo do definido).
+- **Subir stop não é previsão de queda:** é transformar ganho de tela em ganho garantido, sem abrir mão do que vier. Se o preço seguir subindo, seguem as posições e os stops sobem de novo.
+
+🟡 **ESTADO ANTERIOR — 20/09/2026 (SUPERADO pelo balanço de 24/09):** BTC 49% (stop gain US$77.914), DOT 26% (PM US$1,01, stop gain US$1,05), MORPHO 5% (entrada US$2,56, SEM stop), Caixa 20%.
 📅 **Movimentos de 20/09:**
 - **13:40 — ENTRADA em MORPHO** @ US$2,56 (0→5%; caixa 30→25%). **Sem stop.** Tese: abriu espaço da média de 200
   no 4h, pode dar pivô de alta pro rompimento dos **US$2,90** (novo topo histórico do ativo). (MORPHO tinha saído
