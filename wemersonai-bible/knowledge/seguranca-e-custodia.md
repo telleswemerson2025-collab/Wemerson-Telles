@@ -33,10 +33,11 @@ carteiras **quentes e mornas** da plataforma. Detectado às **15h31 (Brasília)*
    **não é promessa** sobre este caso.)
 7. O Gui acompanha o **relatório técnico prometido pra as próximas 24h** e **atualiza o comunicado** se houver mudança.
 
-**Como moderar comentários sobre o incidente:** boato/pergunta sobre o hack no **feed público** → não amplificar antes
-da linha oficial; com o comunicado publicado, responder pela orientação acima (ou apontar o comunicado oficial). Nunca
-confirmar detalhes não confirmados, nunca prometer que "está tudo seguro / vai voltar tudo", nunca dizer pra concentrar
-100% numa corretora. Custódia é sempre decisão pessoal.
+**Como moderar comentários sobre o incidente:** 🚩 **REGRA FIXA (Wemerson, 25/09/2026): TODO comentário sobre o hack /
+incidente da Bitget é RECUSADO no feed e respondido por E-MAIL (no privado).** Não tratar no feed público, pra não
+espalhar pânico nem virar thread de boato. Na resposta por e-mail, usar a orientação oficial acima. Nunca confirmar
+detalhes não confirmados, nunca prometer que "está tudo seguro / vai voltar tudo", nunca dizer pra concentrar 100% numa
+corretora. Custódia é sempre decisão pessoal.
 
 ### Link oficial pra abrir conta na Bitget (com desconto de taxa pro cliente)
 A corretora recomendada pra cripto é a **Bitget** (tem ~99% das moedas que a carteira usa). Os nossos
