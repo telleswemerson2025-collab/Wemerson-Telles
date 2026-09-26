@@ -3,6 +3,12 @@
 > Atenção: aqui é o **produto** VantageNode (terminal/indicadores que o cliente contrata).
 > A operação de conteúdo do VantageNode no X é outra coisa (skill "vantagenode").
 
+### ✍️ Assinatura dos e-mails do VantageNode (regra Wemerson, 26/09/2026)
+Em atendimento do **VantageNode**, a gente **NÃO assina o nome do Wemerson**. Fechar sempre com:
+**"Atenciosamente, VantageNode"** (o e-mail de contato do produto é contato@vantagenode.io). Isso é
+diferente da BlockCapital, onde a assinatura é "Atenciosamente, Wemerson Telles". Também não usar aqui o
+fecho da BlockCapital ("Você pode contar com toda a nossa equipe nessa jornada") — manter neutro.
+
 ### O que é o VantageNode
 O VantageNode é focado em Onchain, Bitcoin, Order Flow, Derivativos e Macroeconomia, com
 Terminal e Indicadores. Há os planos Pro e Team. A Engine Room é exclusiva da equipe de
