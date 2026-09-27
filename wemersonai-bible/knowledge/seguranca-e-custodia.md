@@ -33,11 +33,20 @@ carteiras **quentes e mornas** da plataforma. Detectado às **15h31 (Brasília)*
    **não é promessa** sobre este caso.)
 7. O Gui acompanha o **relatório técnico prometido pra as próximas 24h** e **atualiza o comunicado** se houver mudança.
 
+**POSIÇÃO OFICIAL DO GUI — "vamos continuar com a Bitget?" (26/09/2026, palavras do Gui):**
+- **Sim, seguimos com a parceria com a Bitget.** Se eles liberarem o saque, continuaremos.
+- **Toda corretora cripto já foi hackeada; as que não foram, serão.** O que determina a qualidade é o **pós-hack**.
+- **Por hora a Bitget vem sendo transparente com a BlockCapital e apresentando a solução.** Se eles cumprirem, seguimos com ela.
+- Ou seja: **não orientar saída/saque no susto.** Não é "vamos sair da Bitget". Custódia é decisão pessoal; quando os
+  saques reabrirem, quem quiser diversificar faz transferência de teste primeiro. Não decidir no susto.
+- 🚩 **O Gui mandou responder ESSE tipo de pergunta ("se continuaremos com a Bitget") por E-MAIL**, quem perguntar.
+
 **Como moderar comentários sobre o incidente:** 🚩 **REGRA FIXA (Wemerson, 25/09/2026): TODO comentário sobre o hack /
-incidente da Bitget é RECUSADO no feed e respondido por E-MAIL (no privado).** Não tratar no feed público, pra não
-espalhar pânico nem virar thread de boato. Na resposta por e-mail, usar a orientação oficial acima. Nunca confirmar
-detalhes não confirmados, nunca prometer que "está tudo seguro / vai voltar tudo", nunca dizer pra concentrar 100% numa
-corretora. Custódia é sempre decisão pessoal.
+incidente da Bitget é RECUSADO no feed e respondido por E-MAIL (no privado).** Isso inclui as perguntas "vamos continuar
+com a Bitget / vamos sair da Bitget" (orientação direta do Gui, 26/09). Não tratar no feed público, pra não espalhar
+pânico nem virar thread de boato. Na resposta por e-mail, usar a orientação oficial acima + a posição do Gui sobre a
+parceria. Nunca confirmar detalhes não confirmados, nunca prometer que "está tudo seguro / vai voltar tudo", nunca dizer
+pra concentrar 100% numa corretora. Custódia é sempre decisão pessoal.
 
 ### Link oficial pra abrir conta na Bitget (com desconto de taxa pro cliente)
 A corretora recomendada pra cripto é a **Bitget** (tem ~99% das moedas que a carteira usa). Os nossos
