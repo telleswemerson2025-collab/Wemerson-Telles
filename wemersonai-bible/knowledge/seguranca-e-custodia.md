@@ -33,6 +33,20 @@ carteiras **quentes e mornas** da plataforma. Detectado às **15h31 (Brasília)*
    **não é promessa** sobre este caso.)
 7. O Gui acompanha o **relatório técnico prometido pra as próximas 24h** e **atualiza o comunicado** se houver mudança.
 
+**🔄 ATUALIZAÇÃO OFICIAL — SAQUES REABRINDO (comunicado do Gui, 28/09/2026 11:53):**
+- **Saques de BTC REABERTOS às 05h00 (Brasília).** Redes **Bitcoin e BEP20 habilitadas**; **Lightning ainda indisponível**.
+- Dados divulgados pela Bitget: **7.683 solicitações processadas nos primeiros 50 min (~3.609 BTC)**, sendo **6.946 já
+  confirmadas na blockchain**, sem fila acumulada no momento. Números agregados são da própria Bitget e **ainda sem
+  auditoria independente**, mas as confirmações on-chain são a **primeira evidência prática** de que a retomada começou.
+- **Cronograma das próximas fases:** **29/09 05h00 → ETH** (Ethereum, BSC, Arbitrum, Base, Optimism); **30/09 05h00 →
+  USDT** (Ethereum, BSC, Solana, Tron); **02/10 05h00 → demais ativos, fiduciária e P2P**.
+- **Orientação (muda só pra quem tem BTC):** fazer **primeiro um saque pequeno pela rede Bitcoin**, conferir o **TXID**,
+  aguardar a confirmação na carteira de destino e, se tudo ok, **aumentar o valor aos poucos**.
+- **Ainda NÃO recomendamos novos depósitos.** A reabertura do BTC **não valida** os saques de ETH, USDT ou dos demais;
+  **cada fase precisa ser confirmada separadamente**.
+- Ainda **não publicados:** prova de reservas pós-incidente, uso efetivo do fundo de proteção e relatório forense completo.
+- O Gui **continua acompanhando** e atualiza.
+
 **POSIÇÃO OFICIAL DO GUI — "vamos continuar com a Bitget?" (26/09/2026, palavras do Gui):**
 - **Sim, seguimos com a parceria com a Bitget.** Se eles liberarem o saque, continuaremos.
 - **Toda corretora cripto já foi hackeada; as que não foram, serão.** O que determina a qualidade é o **pós-hack**.
