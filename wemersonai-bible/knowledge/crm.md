@@ -22,9 +22,9 @@ girava em torno de US$4.200 investidos. A gestão é sempre manual (não há apo
 automático) e a consistência importa mais que o tamanho do aporte.
 
 ### Ativos operados na CRM
-ESTADO ATUAL (**25/09/2026 19:57**): a carteira está em **BTC 49% + DOT 27% + MORPHO 5% + Caixa 19%**. No balanço de
-**24/09** os três stops foram atualizados (BTC US$82.752,68 · DOT US$1,07 · MORPHO US$2,466), todos como **stop
-LIMITE**, com piso de patrimônio em **US$65.124**. AERO encerrado (18/09) e ouro stopado no lucro (16/09). Ver a "Composição atual" no topo
+ESTADO ATUAL (**28/09/2026 08:44**): o **stop do BTC foi acionado em US$82.752,68** (+8,63%, +US$2.628), então a
+carteira ficou em **DOT 26% + MORPHO 5% + Caixa ~69%**, patrimônio **US$67.188**. DOT com stop US$1,07 (a subir em
+breve), MORPHO com stop US$2,466. AERO encerrado (18/09) e ouro stopado no lucro (16/09). Ver a "Composição atual" no topo
 para o detalhe. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
 AERO, XRP, MORPHO, VIRTUAL — a cesta muda conforme as decisões e o indicador de risco). O Gui nunca faz
 operações vendidas ("short nem na praia"). No PAXG, execução por ordem limite, nunca a mercado, pela baixa
@@ -35,18 +35,14 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 25/09/2026 (composição confirmada ao vivo às 19:57). 3 ativos + caixa. Stops atualizados no balanço de 24/09.**
-- **Bitcoin (BTC)** — **49%** · entrada US$76.177,00 · atual US$84.074,00 · **+10,37%** · contrib. +5,63% · **STOP LIMITE em US$82.752,68** (acima do PM → fecha no lucro, +8,63%)
-- **Polkadot (DOT)** — **27%** · preço médio US$1,01 · atual US$1,22 · **+20,68%** · contrib. +5,49% · **STOP LIMITE em US$1,07** (acima do PM → fecha no lucro, +5,85%)
-- **Morpho (MORPHO)** — **5%** · entrada US$2,56 · atual US$2,74 · **+7,03%** · contrib. +0,41% · **STOP LIMITE em US$2,466** (ainda abaixo da entrada; o stop custa 0,2% do patrimônio)
-- **Caixa (USD)** — **19%** (o balanço de 24/09 registrou 20%; a diferença é marcação a mercado)
+🟢 **ESTADO ATUAL — 28/09/2026 08:44 (BTC stopado no lucro; carteira com 2 ativos + caixa ~69%).**
+- **Bitcoin (BTC)** — **ENCERRADA no stop em US$82.752,68** (28/09). Saída **+8,63%** sobre o PM US$76.177, somando **+US$2.628** ao patrimônio. Ordem era LIMITE, saiu no preço combinado, sem escorregar. **Não é recuo defensivo: o ganho foi pro caixa, não pro prejuízo.**
+- **Polkadot (DOT)** — **26%** · preço médio US$1,0109 · **+18,7%** · **STOP LIMITE em US$1,07** (o Gui avisou que **deve subir esse stop em breve** pra travar parte do avanço; ele avisa quando mexer).
+- **Morpho (MORPHO)** — **5%** · **+0,4%** · **STOP LIMITE mantido em US$2,466** (tese não mudou e o preço ainda não andou o suficiente pra mexer na proteção).
+- **Caixa (USD)** — **~69%** (subiu de 20% pra 69% com a venda do BTC). **Patrimônio: US$67.188.**
+- Leitura do Gui: com quase 70% em caixa, "chegamos na próxima janela com espaço pra agir e sem pressa de agir".
 
-**Piso e patrimônio (balanço 24/09/2026 16:27 — "Os três stops, e onde eles colocam o piso"):**
-- **Patrimônio agora:** US$67.792 · **Piso protegido pelos 3 stops:** US$65.124.
-- Se os três stops forem acionados, a carteira vira caixa: **BTC → US$33.067**, **DOT → US$15.740**, **MORPHO → US$3.165** (somado ao caixa = US$65.124). O patrimônio não desce daí enquanto as ordens estiverem na mesa.
-- **BTC e DOT já com stop acima do preço médio** (se acionados, fecham no lucro). **MORPHO ainda não**: o stop dela custa 0,2% do patrimônio, o preço de seguir na operação enquanto a tese vale.
-- **Programar como ordem de stop LIMITE, nunca a mercado** (a mercado executa no primeiro preço numa queda rápida, bem abaixo do definido).
-- **Subir stop não é previsão de queda:** é transformar ganho de tela em ganho garantido, sem abrir mão do que vier. Se o preço seguir subindo, seguem as posições e os stops sobem de novo.
+🟡 **ESTADO ANTERIOR — 25/09/2026 19:57 (SUPERADO pelo stop do BTC em 28/09):** BTC 49% (atual US$84.074, +10,37%, stop US$82.752,68), DOT 27% (atual US$1,22, +20,68%, stop US$1,07), MORPHO 5% (atual US$2,74, +7,03%, stop US$2,466), Caixa 19%. Balanço 24/09: piso US$65.124, patrimônio US$67.792; stops LIMITE, nunca a mercado; subir stop = travar ganho de tela, não previsão de queda.
 
 🟡 **ESTADO ANTERIOR — 20/09/2026 (SUPERADO pelo balanço de 24/09):** BTC 49% (stop gain US$77.914), DOT 26% (PM US$1,01, stop gain US$1,05), MORPHO 5% (entrada US$2,56, SEM stop), Caixa 20%.
 📅 **Movimentos de 20/09:**

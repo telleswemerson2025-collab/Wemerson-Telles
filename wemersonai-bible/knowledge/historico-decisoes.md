@@ -5,6 +5,12 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
+- **28/09 08:44 — ENCERRAMENTO BTC: stop acionado em US$82.752,68.** Ordem LIMITE, saiu no preço combinado (sem
+  slippage). PM US$76.177, saída **+8,63% (+US$2.628 ao patrimônio)**. Caixa sobe de **20% → 69%**; patrimônio fica
+  em **US$67.188**. Não é recuo defensivo: o ganho foi pro caixa, não pro prejuízo (a proteção fez o trabalho dela).
+  Carteira agora: **DOT 26%** (PM US$1,0109, +18,7%, stop US$1,07 — a subir em breve) + **MORPHO 5%** (+0,4%, stop
+  US$2,466 mantido) + **Caixa 69%**. "Com quase 70% em caixa, chegamos na próxima janela com espaço pra agir e sem
+  pressa de agir. Aviso assim que mexermos no stop de Polkadot."
 - **24/09 16:27 — BALANÇO "Os três stops, e onde eles colocam o piso":** stops atualizados nas três posições, todos
   como **stop LIMITE** (nunca a mercado). **BTC US$82.752,68** (+8,63%, vira US$33.067 em caixa) · **DOT US$1,07**
   (+5,85%, vira US$15.740) · **MORPHO US$2,466** (−3,67%, vira US$3.165). Se os três baterem, a carteira vira caixa em
