@@ -5,6 +5,14 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
+- **28/09 09:45 — ENCERRAMENTO DOT por DECISÃO (não stop): saída a US$1,21.** PM US$1,0109, **+19,7% (+US$2.929)**.
+  Em vez de só subir o stop (como sinalizado de manhã), o Gui **realizou o ganho inteiro**: o preço chegou perto de
+  US$1,30 no dia 26 e devolveu boa parte do avanço; "não é papel nosso descobrir, com dinheiro na mesa, se o movimento
+  continua". Ordem limite. **Após os 2 encerramentos do dia: ganho realizado US$5.557, caixa 95%, MORPHO única aberta
+  (5%, stop US$2,466), patrimônio US$67.374.** Foram 2 operações em DOT em ~1 mês, as duas no lucro (1ª 20/08→08/09 =
+  **51%**; 2ª 16/09→28/09 = **19,7%**). ⚠️ O Gui frisou: dois acertos assim num intervalo curto **NÃO é o normal, é
+  fora do comum, não é o que se deve esperar todo mês** (não prometer que repete). "Caixa alto não é ausência de ideia,
+  é ter com o que responder quando a oportunidade aparecer."
 - **28/09 08:44 — ENCERRAMENTO BTC: stop acionado em US$82.752,68.** Ordem LIMITE, saiu no preço combinado (sem
   slippage). PM US$76.177, saída **+8,63% (+US$2.628 ao patrimônio)**. Caixa sobe de **20% → 69%**; patrimônio fica
   em **US$67.188**. Não é recuo defensivo: o ganho foi pro caixa, não pro prejuízo (a proteção fez o trabalho dela).
