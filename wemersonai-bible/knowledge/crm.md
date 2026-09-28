@@ -342,6 +342,18 @@ de entrada, o preço atual, a variação e a contribuição, além dos números 
 retorno, investido, em caixa, posições). **É essa a tela pra confirmar a composição do momento** — não
 a de "Gerenciamento e Aportes" (essa é a dos vídeos).
 
+### Aba PORTFÓLIO ("Meu portfólio") — a ferramenta pra o cliente acompanhar a carteira DELE x a nossa (CONFIRMADO no app, 28/09/2026)
+theblockcapital.com/portfolio. Lema: **"A carteira que publicamos continua sendo a nossa. Aqui o resultado é o seu."**
+É a resposta certa pra quem pergunta "como comparo a minha carteira com a CRM", "qual a minha rentabilidade real",
+"como sei se estou alinhado". O cliente registra as posições dele e a aba mostra:
+- **Investido** (nas posições abertas) · **Valor hoje** (a preço de mercado) · **Resultado** (o resultado dele).
+- **Aderência ao plano** = os **pesos dele comparados com os nossos** (a comparação com a CRM que os clientes pedem).
+- **"A carteira mudou"**: avisa o que saiu e o que o cliente ainda tem fora do plano, ex.: "Encerramos Bitcoin, e você
+  ainda tem. O alvo agora é zero." (ajuda a se realinhar após um encerramento).
+- Botão **"Trazer os ativos da carteira"** (importa os ativos do modelo) e **"Gerar figurinha"** (do destaque atual).
+Ao responder dúvidas de comparação/performance individual, **apontar essa aba** em vez de prometer relatório novo.
+(Cuidado com o campo de valor: usa vírgula como decimal — ver logo abaixo.)
+
 **Campo "Caixa"/valor no app não aceita a vírgula — como resolver (CONFIRMADO no app logado, 07/09/2026)**
 O campo de valor (Caixa · "Quanto você tem disponível", e demais campos de valor do Portfólio) usa
 **vírgula** como separador decimal (parser pt-BR, placeholder `0,00`). O certo é digitar com **vírgula**:
