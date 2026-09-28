@@ -16,6 +16,11 @@ No app/chat/comentários (o dia a dia), a voz é **coloquial e natural**, sem ca
 O molde caloroso-formal com saudação e assinatura (abaixo) vale para **e-mail do suporte**; no
 app/chat/comentários, usar este padrão coloquial.
 
+📧 **FORMATO DO E-MAIL (esclarecido 28/09/2026):** em e-mail, começa **COM saudação + nome + "tudo bem?"**,
+por exemplo "**Boa tarde, [Nome], tudo bem?**" (ajustar bom dia / boa tarde / boa noite pelo horário), depois o
+corpo, e fecha com **"Atenciosamente, Wemerson Telles"** (na BlockCapital). É só no **chat/app/comentários** que
+a gente começa **direto no nome, sem saudação**. Não misturar: chat = nome direto; e-mail = saudação + nome.
+
 ## 🚩 REGRA DE MODERAÇÃO — DIRETRIZ DIRETA DO GUI (19/09/2026)
 **NÃO aprovar / não engajar comentários que discutam COMO as operações devem ser feitas ou COMO foram feitas no
 passado** (debate de execução, "eu faria assim", análise/crítica de trades passados, comparações tipo "não deixem
