@@ -22,10 +22,10 @@ girava em torno de US$4.200 investidos. A gestão é sempre manual (não há apo
 automático) e a consistência importa mais que o tamanho do aporte.
 
 ### Ativos operados na CRM
-ESTADO ATUAL (**28/09/2026 09:45**): dois encerramentos hoje, os dois no lucro. **BTC stopado** em US$82.752,68
-(+8,63%) e **DOT encerrado por decisão** a US$1,21 (+19,7%). A carteira ficou com **MORPHO 5% (stop US$2,466) + Caixa
-95%**, patrimônio **US$67.374** (ganho realizado no dia: US$5.557). AERO encerrado (18/09) e ouro stopado no lucro
-(16/09). Ver a "Composição atual" no topo
+ESTADO ATUAL (**29/09/2026 08:44 — CICLO ENCERRADO, 100% CAIXA**): a **MORPHO foi stopada** em US$2,466 (−3,67%,
+custo US$121 = 0,18% do patrimônio), fechando o ciclo. A carteira está **100% em caixa, patrimônio US$67.189**, sem
+posição aberta. Os 3 fechamentos do ciclo somaram **+US$5.436** (BTC +8,63%, DOT +19,7%, MORPHO −3,67%). Setembro
+fechou **+18,3% no mês e +38,4% no ano**. AERO encerrado (18/09) e ouro stopado no lucro (16/09). Ver a "Composição atual" no topo
 para o detalhe. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
 AERO, XRP, MORPHO, VIRTUAL — a cesta muda conforme as decisões e o indicador de risco). O Gui nunca faz
 operações vendidas ("short nem na praia"). No PAXG, execução por ordem limite, nunca a mercado, pela baixa
@@ -36,10 +36,18 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 28/09/2026 09:45 (dois encerramentos hoje, os dois no lucro; carteira com 1 ativo + caixa 95%).**
-- **Morpho (MORPHO)** — **5%** · **STOP LIMITE em US$2,466** · **ÚNICA posição aberta.** Tese intacta; o Gui segue observando pontos de entrada e avisa quando houver movimento.
-- **Caixa (USD)** — **95%.** **Patrimônio: US$67.374.**
-- **Ganho realizado hoje: US$5.557** (somando os dois encerramentos).
+🟢 **ESTADO ATUAL — CICLO ENCERRADO, CARTEIRA 100% EM CAIXA (post "Ciclo encerrado: US$67.189 e a carteira inteira em caixa", 29/09/2026 08:44).**
+- **Caixa (USD) — 100%. Patrimônio: US$67.189.** Nenhuma posição aberta.
+- **MORPHO encerrada no stop em US$2,466 (29/09), −3,67%.** Custou **0,18% do patrimônio (US$121)** — exatamente o custo
+  anunciado no dia 24, quando publicaram onde cada stop estava. "A proteção fez o que tinha que fazer, pelo preço combinado."
+- **Ciclo inteiro (3 fechamentos): +US$5.436.** BTC no stop +8,63% (28/09) · DOT por decisão +19,7% (28/09) · MORPHO no stop
+  −3,67% (29/09). DOT rendeu 2x em ~1 mês (51% de 20/08 a 08/09; 19,7% de 16 a 28/09).
+- **Fechamento de setembro: US$67.189, +18,3% no mês e +38,4% no ano.** Tudo em caixa.
+- Leitura do Gui: "Caixa de 100% não é pessimismo, é a posição mais confortável pra escolher a próxima entrada, sem nada
+  pra desfazer, sem pressa. É isso que um stop definido junto com a entrada compra: a possibilidade de errar barato."
+  Ele segue acompanhando os ativos do radar e avisa na próxima decisão.
+
+🟡 **ESTADO ANTERIOR — 28/09/2026 09:45 (SUPERADO pelo encerramento do ciclo):** MORPHO 5% (única aberta, stop US$2,466) + Caixa 95%; patrimônio US$67.374; ganho realizado no dia US$5.557 (BTC stopado +8,63% e DOT encerrado por decisão +19,7%).
 - ⚫ **BTC — ENCERRADA 08:44 no stop US$82.752,68** (+8,63%, +US$2.628). Ordem LIMITE, sem slippage.
 - ⚫ **DOT — ENCERRADA 09:45 a US$1,21, por DECISÃO** (não por stop). PM US$1,0109, **+19,7% (+US$2.929)**. Em vez de só subir o stop, o Gui **realizou o ganho inteiro**: o preço chegou perto de US$1,30 no dia 26 e devolveu boa parte do avanço, e "não é papel nosso descobrir, com dinheiro na mesa, se o movimento continua". Use ordem limite.
 - 🧭 Leitura do Gui: "Caixa alto não é ausência de ideia, é ter com o que responder quando a oportunidade aparecer." As duas saídas de hoje foram no lucro, uma pelo stop (proteção quando o preço vira contra) e outra por decisão (quando o preço já entregou o que tinha).

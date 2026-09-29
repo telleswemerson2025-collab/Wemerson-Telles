@@ -5,6 +5,13 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## SETEMBRO/2026
+- **29/09 08:44 — ENCERRAMENTO MORPHO no stop US$2,466 (−3,67%): CICLO ENCERRADO, carteira 100% em caixa.** Era a última
+  posição aberta. Custo da saída: **0,18% do patrimônio (US$121)** — exatamente o custo anunciado no balanço de 24/09.
+  "A proteção fez o que tinha que fazer, pelo preço combinado." **Ciclo inteiro (3 fechamentos): +US$5.436** (BTC +8,63%
+  no stop, DOT +19,7% por decisão, MORPHO −3,67% no stop). **Setembro fechou em US$67.189: +18,3% no mês, +38,4% no ano**,
+  tudo em caixa. Filosofia do Gui: "Caixa de 100% não é pessimismo, é a posição mais confortável pra escolher a próxima
+  entrada; é isso que um stop definido junto com a entrada compra, a possibilidade de errar barato." Radar ativo, avisa
+  na próxima decisão.
 - **28/09 09:45 — ENCERRAMENTO DOT por DECISÃO (não stop): saída a US$1,21.** PM US$1,0109, **+19,7% (+US$2.929)**.
   Em vez de só subir o stop (como sinalizado de manhã), o Gui **realizou o ganho inteiro**: o preço chegou perto de
   US$1,30 no dia 26 e devolveu boa parte do avanço; "não é papel nosso descobrir, com dinheiro na mesa, se o movimento
