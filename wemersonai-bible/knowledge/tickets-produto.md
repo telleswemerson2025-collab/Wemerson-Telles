@@ -15,7 +15,7 @@
   formatado em tempo real no campo antes de salvar; validar/alertar salto de ordem de grandeza.
 - **Reportado por:** Daniel (07/09/2026). Confirmado no app logado.
 
-## 2. Horário da publicação em fuso diferente de Brasília (SEVERIDADE BAIXA/MÉDIA)
+## 2. Horário da publicação em fuso diferente de Brasília (SEVERIDADE MÉDIA — está gerando reclamação de "delay")
 - **Onde:** carimbo de horário das publicações/decisões no feed.
 - **Bug:** o horário exibido parece estar em fuso diferente do horário de Brasília.
 - **Fix sugerido:** exibir sempre em America/Sao_Paulo (horário de Brasília), ou deixar o fuso explícito.
@@ -25,6 +25,14 @@
   operação às 15h40 quando ainda eram 15h35 (mesmo no reforço do XRP da manhã). Ou seja, o carimbo está à
   frente do horário real de Brasília, dando impressão de "operação no futuro". Confirma que é fuso deslocado
   pra frente. O conteúdo/preço da decisão está correto; só a marcação de hora está errada.
+- **Confirmação nova (30/09 — Wemerson):** comentário do Gustavo carimbado **15:25** enquanto o relógio do
+  computador marcava **14:15** (post ~1h+ adiantado do horário local). Prova visual do fuso deslocado.
+- **⚠️ Impacto REAL (subiu a severidade):** isso está fazendo cliente achar que a NOTIFICAÇÃO atrasou horas.
+  Caso Paulo (pauloggf, 29–30/09): reclamou de "delay enorme" (stop 23h x viu 8h48) e culpou o servidor, mas
+  boa parte do "atraso" é a diferença de fuso na exibição do horário do post, não a entrega em si. **Ao responder
+  reclamação de atraso de notificação, checar primeiro se não é o fuso:** pedir pro cliente comparar o horário em
+  que o E-MAIL da decisão chegou (esse vem no fuso dele) com o horário exibido no post. Se a diferença for o fuso,
+  o "delay" é exibição. Corrigir o fuso pra America/Sao_Paulo resolve boa parte dessas reclamações.
 
 ## 2b. Ferramenta de Portfólio — sem histórico de registros / auditoria (SEVERIDADE ALTA)
 - **Bug/lacuna:** o cliente **não consegue ver o histórico dos registros** de compra/venda que fez no
