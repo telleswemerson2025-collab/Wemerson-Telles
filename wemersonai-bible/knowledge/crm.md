@@ -21,9 +21,10 @@ em foco conforme a fase da estratégia — retomados em 02/03/2026. A gestão é
 automático) e a consistência importa mais que o tamanho do aporte.
 ⚠️ **DOIS números diferentes — não confundir (esclarecido 01/10/2026):**
 - **Total aportado na carteira-modelo ao longo de TODA a jornada (desde o início, mar/2023): em torno de US$23 mil.**
-  É esse o número pra responder "quanto já foi aportado na CRM?". Começou praticamente do zero (~US$200) e foi
-  construído com os aportes ao longo do tempo. Com o patrimônio em ~US$67 mil, o lucro é patrimônio menos total
-  aportado (ex.: 67 − 23 ≈ 44 mil). (Fonte: Wemerson, usado nos casos Leonardo Fortunato e Jonatas.)
+  É esse o número pra responder "quanto já foi aportado na CRM?". ⚠️ **Não foi aporte contínuo/direto:** começou
+  praticamente do zero (~US$200), os aportes foram até **~US$18–19 mil**, aí **pausaram por um período**, depois foram
+  **retomados até somar ~US$23 mil**. Ao responder, deixar claro que houve essa pausa (não foi direto). Com o patrimônio
+  em ~US$67 mil, o lucro é patrimônio menos total aportado (ex.: 67 − 23 ≈ 44 mil). (Fonte: Wemerson.)
 - **"~US$4.200"** era só o acumulado aportado **desde a retomada de 02/03/2026**, não o total histórico. Não usar esse
   número pra responder "total aportado".
 - Pro cliente ver o aporte DELE, apontar a aba **Portfólio**.
