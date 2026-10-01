@@ -17,9 +17,16 @@ bull market, para proteger o patrimônio.
 
 ### Aportes da CRM
 Os aportes são semanais, de US$200, às segundas-feiras, direcionados a USDT ou ao ativo
-em foco conforme a fase da estratégia — retomados em 02/03/2026. O acumulado mais recente
-girava em torno de US$4.200 investidos. A gestão é sempre manual (não há aporte
+em foco conforme a fase da estratégia — retomados em 02/03/2026. A gestão é sempre manual (não há aporte
 automático) e a consistência importa mais que o tamanho do aporte.
+⚠️ **DOIS números diferentes — não confundir (esclarecido 01/10/2026):**
+- **Total aportado na carteira-modelo ao longo de TODA a jornada (desde o início, mar/2023): em torno de US$23 mil.**
+  É esse o número pra responder "quanto já foi aportado na CRM?". Começou praticamente do zero (~US$200) e foi
+  construído com os aportes ao longo do tempo. Com o patrimônio em ~US$67 mil, o lucro é patrimônio menos total
+  aportado (ex.: 67 − 23 ≈ 44 mil). (Fonte: Wemerson, usado nos casos Leonardo Fortunato e Jonatas.)
+- **"~US$4.200"** era só o acumulado aportado **desde a retomada de 02/03/2026**, não o total histórico. Não usar esse
+  número pra responder "total aportado".
+- Pro cliente ver o aporte DELE, apontar a aba **Portfólio**.
 
 ### Ativos operados na CRM
 ESTADO ATUAL (**29/09/2026 08:44 — CICLO ENCERRADO, 100% CAIXA**): a **MORPHO foi stopada** em US$2,466 (−3,67%,
