@@ -54,6 +54,13 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 - Leitura do Gui: "Caixa de 100% não é pessimismo, é a posição mais confortável pra escolher a próxima entrada, sem nada
   pra desfazer, sem pressa. É isso que um stop definido junto com a entrada compra: a possibilidade de errar barato."
   Ele segue acompanhando os ativos do radar e avisa na próxima decisão.
+- 🔎 **REFORÇO — Balanço 02/10/2026 20:40 ("O lucro está no bolso. Agora esperamos a retração"):** segue **100% caixa,
+  US$67.189**, e o Gui está com **visão de VENDA**. No dia 02/10 o BTC subiu até US$87.249, **falhou 2x no mesmo topo e
+  devolveu o avanço inteiro** (máx US$87.249, mín US$83.850, do topo ao fundo −3,9%, no dia −0,4%), fechando abaixo da
+  abertura — pra ele, sinal de **topo sendo testado, não de alta começando**. **Só volta a comprar na RETRAÇÃO, com o stop
+  definido junto com a entrada.** Até lá o patrimônio fica parado (aba Evolução), nada exposto. Frase-chave pra usar com
+  cliente ansioso por reentrada: "depois de um mês de +18,3%, o risco maior não é perder a próxima alta, é devolver o que
+  já ganhamos emendando uma operação na outra."
 
 🟡 **ESTADO ANTERIOR — 28/09/2026 09:45 (SUPERADO pelo encerramento do ciclo):** MORPHO 5% (única aberta, stop US$2,466) + Caixa 95%; patrimônio US$67.374; ganho realizado no dia US$5.557 (BTC stopado +8,63% e DOT encerrado por decisão +19,7%).
 - ⚫ **BTC — ENCERRADA 08:44 no stop US$82.752,68** (+8,63%, +US$2.628). Ordem LIMITE, sem slippage.

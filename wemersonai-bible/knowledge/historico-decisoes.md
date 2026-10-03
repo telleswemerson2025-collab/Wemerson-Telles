@@ -4,6 +4,13 @@
 > real de cada post. Este é o "compilado de operações" que resolve boa parte das dúvidas
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
+## OUTUBRO/2026
+- **02/10 20:40 — BALANÇO "O lucro está no bolso. Agora esperamos a retração":** segue **100% caixa, US$67.189**, com
+  **visão de VENDA**. BTC subiu até US$87.249, falhou 2x no mesmo topo e devolveu tudo (do topo ao fundo −3,9%, no dia
+  −0,4%), fechando abaixo da abertura = topo sendo testado, não alta começando. **Só volta a comprar na retração, com stop
+  definido junto com a entrada.** "Depois de um mês de +18,3%, o risco maior não é perder a próxima alta, é devolver o que
+  já ganhamos emendando uma operação na outra." Nada exposto.
+
 ## SETEMBRO/2026
 - **29/09 08:44 — ENCERRAMENTO MORPHO no stop US$2,466 (−3,67%): CICLO ENCERRADO, carteira 100% em caixa.** Era a última
   posição aberta. Custo da saída: **0,18% do patrimônio (US$121)** — exatamente o custo anunciado no balanço de 24/09.
