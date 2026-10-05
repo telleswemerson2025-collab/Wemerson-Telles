@@ -30,7 +30,12 @@
   holding (médio/longo). (Confirmado direto: "ainda estamos em fase de trading e não holding".)
 - **Cliente não deve seguir o indicador, e sim as decisões:** "esse não é o foco da CRM, siga as decisões dela e
   não o indicador. Nós na Block cuidamos disso."
-- **O indicador de risco usa DADOS CRIPTO, não olha macro** (mas o Gui diz acompanhar o macro à parte).
+- **O indicador de risco usa DADOS CRIPTO, não olha macro** — MAS o Gui acompanha o **macro à parte**, e isso é
+  importante na resposta. ⚠️ **O Gui acompanha e mostra o gráfico do juros de 10 anos (treasury 10 anos)** faz tempo
+  (confirmado Wemerson, 05/10/2026): ele **vem subindo e está num patamar alto, e precisa recuar, senão pressiona /
+  "azeda" o mercado cripto**. Então, se um cliente perguntar se a análise considera o juros de 10 anos, a resposta certa
+  é **SIM, o Gui acompanha** (não confundir: o indicador de risco proprietário é cripto; o juros de 10 anos entra na
+  leitura macro que ele faz à parte). Não dizer que "não olha juros de 10 anos".
 - **Indicador em tempo real: só o Gui tem acesso**, ninguém mais na empresa; não será disponibilizado. A CRM sempre
   usa os dados dele pra decidir.
 
