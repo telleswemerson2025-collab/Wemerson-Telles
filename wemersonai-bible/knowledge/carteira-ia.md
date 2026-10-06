@@ -70,6 +70,12 @@ Armazenamento (~22%); REITs de Datacenter (~14%); caixa tático (~8%). Chips fic
 Junto ao Plano Vitalício (onde já vem incluída) ou de forma avulsa/individual, sem o vitalício.
 Contato: suporte@theblockcapital.com.
 
+### Como colocar o stop por acionamento na Bitget = opção TP/SL (CONFIRMADO Wemerson, 06/10/2026)
+Quando o cliente diz que na Bitget, naquele ativo, só aparece "limite" ou "a mercado" e não acha o stop por
+acionamento (gatilho): o caminho é a opção **TP/SL** (take profit / stop loss). É por ali que se coloca o stop com
+gatilho. Orientar: abrir o **TP/SL**, definir o **preço de acionamento** = valor do stop publicado, e o **preço limite**
+um pouquinho abaixo do gatilho (pra garantir a execução). Vale tanto pra ações tokenizadas quanto pra cripto na Bitget.
+
 ### Como operar a Carteira IA (Brasil)
 A casa **não indica corretora específica** — recomenda o **ativo**, não o caminho (Mr. G, 31/08).
 Compra pelo **código de cada ação**, respeitando o **peso** da posição. Caminhos: BDR na B3
