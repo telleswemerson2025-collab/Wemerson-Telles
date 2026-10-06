@@ -12,11 +12,19 @@ já correu** — o valor está na infraestrutura que sustenta a IA. Tem a aba "T
 e a aba "Decisões" (execução real). Horizonte de 18 a 36 meses, rebalanceamento semestral.
 
 ### Composição atual da carteira (última leitura oficial)
-🛡️ **CONFIRMADA AO VIVO — 21/09/2026: 2 ativos + caixa (~76%).** A carteira segue defensiva desde o encerramento
-de MOD e CGNX (15/09). Ambas as posições ainda abaixo da entrada.
-- **VRT (Vertiv)** — **13%** · entrada US$286,16 · atual US$252,66 · **−11,71%** · contrib. −1,87%
-- **WDC (Western Digital)** — **11%** · entrada US$512,19 · atual US$444,29 · **−13,26%** · contrib. −1,72%
-- **Caixa (USD)** — **~76%** (13% + 11% investido = 24%)
+🛡️ **ESTADO ATUAL — 06/10/2026: 2 ativos + caixa 72%, após REFORÇO na WDC.** A carteira segue defensiva desde o
+encerramento de MOD e CGNX (15/09).
+- **VRT (Vertiv)** — **13%** · entrada US$286,16 (segue na carteira; abaixo da entrada)
+- **WDC (Western Digital)** — **15%** (reforçada de 10%→15% em 06/10) · **PM US$478,98** (caiu de US$512,19 com o reforço)
+  · prejuízo **−13,9%** (era −19,6%) · **STOP em US$388** (se perder a faixa, sai; custa ~1% do patrimônio)
+- **Caixa (USD)** — **72%**
+
+⚡ **DECISÃO 06/10/2026 11:27 — REFORÇO na WDC (Western Digital):** peso **10% → 15%**, compra a **US$412,59**, caixa
+**77% → 72%**. A ação caiu 6,58% no dia e voltou à região onde parou de cair outras vezes (entre US$430 e US$390);
+ontem foi até a base dessa faixa com o maior volume desde o topo (US$780) e reagiu, apareceu comprador. Com o reforço,
+o PM caiu de US$512,19 → **US$478,98** e o prejuízo encolheu de −19,6% → **−13,9%**. **Stop em US$388** (se perder a
+faixa, a posição sai, custo ~1% do patrimônio). "A WDC é a posição mais atrasada e a tese dela não mudou; comprar mais
+barato é o melhor uso do caixa." Decisão detalhada em breve. A alocação vigente é sempre a última publicada.
 
 ⚡ **DECISÃO 15/09 13:12 — encerramento de MOD (Modine) e CGNX (Cognex)** (peso 10% → 0%; caixa 67% → 77%).
 Saídas: **MOD US$177,72 · CGNX US$58,74**. Juntas custaram **0,74% do patrimônio**. Motivo: no relatório da

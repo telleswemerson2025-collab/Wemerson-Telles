@@ -6,6 +6,11 @@
 > MOD 5% · VST 5% · CGNX 4% · Caixa 4%.
 
 ## Linha do tempo (mais recente → mais antiga)
+- **06/10 11:27 — REFORÇO WDC (Western Digital):** peso **10% → 15%**, compra a **US$412,59**, caixa **77% → 72%**. A ação
+  caiu 6,58% no dia e voltou à faixa US$430–390 onde trava desde o topo de US$780; ontem foi à base com o maior volume
+  desde o topo e reagiu. Com o reforço: **PM de US$512,19 → US$478,98**, prejuízo de −19,6% → **−13,9%**. **Stop em
+  US$388** (~1% do patrimônio se perder a faixa). "WDC é a posição mais atrasada, tese intacta; comprar mais barato é o
+  melhor uso do caixa." Carteira após: VRT 13% + WDC 15% + Caixa 72%.
 - **15/09 13:12 — ENCERRA MOD (Modine) e CGNX (Cognex)** (peso 10% → 0%; caixa 67% → 77%). Saídas: **MOD
   US$177,72 · CGNX US$58,74**; juntas custaram **0,74% do patrimônio**. Motivo: no relatório da manhã o Gui
   disse que a carteira não mudaria, mas **reavaliou ao longo do dia** — depois das **falas dos principais
