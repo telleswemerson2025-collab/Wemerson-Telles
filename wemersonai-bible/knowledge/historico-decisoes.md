@@ -5,6 +5,10 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## OUTUBRO/2026
+- **07/10 11:05 — BALANÇO "Antes fora de uma alta do que dentro de uma queda":** queda forte (BTC −2,6%, DOT −7,8%).
+  Patrimônio segue parado em **US$67.189** (100% caixa, a queda não alcança). **DOT vendido a US$1,21 já em US$1,10
+  (−9%)** — vendeu no lucro e o preço veio atrás. "É essa queda que cria a próxima entrada; quanto mais recuar, melhor a
+  conta de voltar a comprar. Aviso quando houver o ponto." Nada muda ("caixa não rende, mas também não devolve").
 - **02/10 20:40 — BALANÇO "O lucro está no bolso. Agora esperamos a retração":** segue **100% caixa, US$67.189**, com
   **visão de VENDA**. BTC subiu até US$87.249, falhou 2x no mesmo topo e devolveu tudo (do topo ao fundo −3,9%, no dia
   −0,4%), fechando abaixo da abertura = topo sendo testado, não alta começando. **Só volta a comprar na retração, com stop

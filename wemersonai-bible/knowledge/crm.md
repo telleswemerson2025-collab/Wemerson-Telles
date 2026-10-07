@@ -54,6 +54,12 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 - Leitura do Gui: "Caixa de 100% não é pessimismo, é a posição mais confortável pra escolher a próxima entrada, sem nada
   pra desfazer, sem pressa. É isso que um stop definido junto com a entrada compra: a possibilidade de errar barato."
   Ele segue acompanhando os ativos do radar e avisa na próxima decisão.
+- 🔎 **REFORÇO — Balanço 07/10/2026 11:05 ("Antes fora de uma alta do que dentro de uma queda"):** dia de queda forte
+  nas criptos (BTC −2,6%, DOT −7,8%). **Patrimônio segue parado em US$67.189** — "é isso que significa estar 100% em
+  caixa: a queda não nos alcança". O **DOT que foi vendido a US$1,21 já está em US$1,10 (9% abaixo)** — vendeu no lucro
+  e o preço veio atrás, validando o plano. "É essa queda que cria a próxima entrada: quanto mais o preço recuar, melhor
+  fica a conta de voltar a comprar. Aviso quando houver o ponto." Nada muda na carteira por enquanto ("caixa não rende,
+  mas também não devolve"). Usar com cliente ansioso: a queda confirma a decisão de ter saído e cria a próxima oportunidade.
 - 🔎 **REFORÇO — Balanço 02/10/2026 20:40 ("O lucro está no bolso. Agora esperamos a retração"):** segue **100% caixa,
   US$67.189**, e o Gui está com **visão de VENDA**. No dia 02/10 o BTC subiu até US$87.249, **falhou 2x no mesmo topo e
   devolveu o avanço inteiro** (máx US$87.249, mín US$83.850, do topo ao fundo −3,9%, no dia −0,4%), fechando abaixo da
