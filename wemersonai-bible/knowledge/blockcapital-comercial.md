@@ -52,6 +52,18 @@ Valores mudam conforme a campanha — confirme o checkout oficial.
 A renovação anual da CRM é **R$1.697,00**. O **parcelado tem juros**. (Renovação é diferente da
 primeira adesão; confirme o valor vigente no checkout.)
 
+### "Comprei o anual mas caiu como assinatura mensal, e o valor veio menor" — POR QUÊ (CONFIRMADO Gui, 08/10/2026)
+Cenário recorrente (caso Leandro): cliente achou que ia parcelar o anual em 12x, mas a compra apareceu como
+**"Assinatura · R$X/mês"** com valor **menor** do que o 12x que ele esperava (ex.: R$158/mês em vez de R$196/mês).
+**O que acontece (automático):**
+- O **cartão de crédito do cliente não tinha limite disponível** pra parcelar o valor todo em 12x de uma vez.
+- O **sistema identifica isso sozinho** e, em vez de travar o limite, **programa a cobrança mês a mês**.
+- **O plano continua sendo o ANUAL** — só que cobrado mensalmente, sem usar/travar o limite do cartão.
+- **A diferença de valor (menor) é porque NÃO foi cobrado juros** — o parcelado normal no cartão tem juros; nesse
+  formato mês a mês sem limite, não tem. Por isso ficou mais barato por mês.
+- **Não pode ser cancelado depois dos 7 dias**, igual ao plano anual normal (é um anual).
+- **Tudo é automático**, não é erro. Ao responder: tranquilizar, explicar que é o anual cobrado mês a mês, sem juros.
+
 ### Cupom de desconto no plano anual da CRM (CONFIRMADO/VALIDADO 11/09/2026)
 **Existe cupom de 10% no plano anual, ATIVO e aplicando no preço novo.** Valores confirmados no checkout:
 - **À vista:** R$1.897,00 → **R$1.707,30** (com 10%).
