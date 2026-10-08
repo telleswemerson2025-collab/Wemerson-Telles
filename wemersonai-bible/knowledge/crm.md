@@ -30,10 +30,9 @@ automático) e a consistência importa mais que o tamanho do aporte.
 - Pro cliente ver o aporte DELE, apontar a aba **Portfólio**.
 
 ### Ativos operados na CRM
-ESTADO ATUAL (**29/09/2026 08:44 — CICLO ENCERRADO, 100% CAIXA**): a **MORPHO foi stopada** em US$2,466 (−3,67%,
-custo US$121 = 0,18% do patrimônio), fechando o ciclo. A carteira está **100% em caixa, patrimônio US$67.189**, sem
-posição aberta. Os 3 fechamentos do ciclo somaram **+US$5.436** (BTC +8,63%, DOT +19,7%, MORPHO −3,67%). Setembro
-fechou **+18,3% no mês e +38,4% no ano**. AERO encerrado (18/09) e ouro stopado no lucro (16/09). Ver a "Composição atual" no topo
+ESTADO ATUAL (**08/10/2026 — VOLTOU A COMPRAR**): depois de +1 semana 100% em caixa, a carteira voltou ao mercado:
+**BTC 50% (entrada US$81.809,93) + DOT 10% (entrada US$1,05) + Caixa 40%** (60% alocado). DOT ainda em construção (devem
+fazer mais compras). BTC é a posição principal de volta. AERO encerrado (18/09) e ouro stopado no lucro (16/09). Ver a "Composição atual" no topo
 para o detalhe. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
 AERO, XRP, MORPHO, VIRTUAL — a cesta muda conforme as decisões e o indicador de risco). O Gui nunca faz
 operações vendidas ("short nem na praia"). No PAXG, execução por ordem limite, nunca a mercado, pela baixa
@@ -44,31 +43,23 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — CICLO ENCERRADO, CARTEIRA 100% EM CAIXA (post "Ciclo encerrado: US$67.189 e a carteira inteira em caixa", 29/09/2026 08:44).**
-- **Caixa (USD) — 100%. Patrimônio: US$67.189.** Nenhuma posição aberta.
-- **MORPHO encerrada no stop em US$2,466 (29/09), −3,67%.** Custou **0,18% do patrimônio (US$121)** — exatamente o custo
-  anunciado no dia 24, quando publicaram onde cada stop estava. "A proteção fez o que tinha que fazer, pelo preço combinado."
-- **Ciclo inteiro (3 fechamentos): +US$5.436.** BTC no stop +8,63% (28/09) · DOT por decisão +19,7% (28/09) · MORPHO no stop
-  −3,67% (29/09). DOT rendeu 2x em ~1 mês (51% de 20/08 a 08/09; 19,7% de 16 a 28/09).
-- **Fechamento de setembro: US$67.189, +18,3% no mês e +38,4% no ano.** Tudo em caixa.
-- Leitura do Gui: "Caixa de 100% não é pessimismo, é a posição mais confortável pra escolher a próxima entrada, sem nada
-  pra desfazer, sem pressa. É isso que um stop definido junto com a entrada compra: a possibilidade de errar barato."
-  Ele segue acompanhando os ativos do radar e avisa na próxima decisão.
-- 🔎 **REFORÇO — Balanço 07/10/2026 11:05 ("Antes fora de uma alta do que dentro de uma queda"):** dia de queda forte
-  nas criptos (BTC −2,6%, DOT −7,8%). **Patrimônio segue parado em US$67.189** — "é isso que significa estar 100% em
-  caixa: a queda não nos alcança". O **DOT que foi vendido a US$1,21 já está em US$1,10 (9% abaixo)** — vendeu no lucro
-  e o preço veio atrás, validando o plano. "É essa queda que cria a próxima entrada: quanto mais o preço recuar, melhor
-  fica a conta de voltar a comprar. Aviso quando houver o ponto." Nada muda na carteira por enquanto ("caixa não rende,
-  mas também não devolve"). Usar com cliente ansioso: a queda confirma a decisão de ter saído e cria a próxima oportunidade.
-- 🔎 **REFORÇO — Balanço 02/10/2026 20:40 ("O lucro está no bolso. Agora esperamos a retração"):** segue **100% caixa,
-  US$67.189**, e o Gui está com **visão de VENDA**. No dia 02/10 o BTC subiu até US$87.249, **falhou 2x no mesmo topo e
-  devolveu o avanço inteiro** (máx US$87.249, mín US$83.850, do topo ao fundo −3,9%, no dia −0,4%), fechando abaixo da
-  abertura — pra ele, sinal de **topo sendo testado, não de alta começando**. **Só volta a comprar na RETRAÇÃO, com o stop
-  definido junto com a entrada.** Até lá o patrimônio fica parado (aba Evolução), nada exposto. Frase-chave pra usar com
-  cliente ansioso por reentrada: "depois de um mês de +18,3%, o risco maior não é perder a próxima alta, é devolver o que
-  já ganhamos emendando uma operação na outra."
+🟢 **ESTADO ATUAL — 08/10/2026: A CARTEIRA VOLTOU A COMPRAR. BTC 50% + DOT 10% + Caixa 40% (60% alocado).**
+- **Bitcoin (BTC)** — **50%** · ENTRADA 08/10 17:03 a **US$81.809,93** (0%→50%, caiu 1,82% no dia). "Posição principal de
+  volta." O preço saiu de US$87.000 e voltou pra média que sustenta a subida desde setembro (~US$81.800). "Compramos no
+  susto, não na euforia."
+- **Polkadot (DOT)** — **10%** · ENTRADA 08/10 16:58 a **US$1,05** (0%→10%, caiu 6,40%, chegou a US$1,0464). **É o 3º trade
+  no DOT** (os 2 anteriores: +51% e +19,7%). **Começaram com 10% e devem fazer MAIS compras nas próximas horas** — a ideia
+  é montar a posição enquanto o preço está descontado, não acertar o fundo numa tacada.
+- **Caixa (USD)** — **40%** (era 100%). Os 40% seguem disponíveis: "se o preço cair mais, reforçamos; se subir, já estamos
+  dentro com a posição que importa."
+- Leitura do Gui: "Foi pra isso que a carteira ficou 100% em caixa. Sem posição aberta, uma queda forte não é problema, é
+  lista de compras." ⚠️ **DOT ainda em construção** — pode vir mais compra; a composição vigente é sempre a última publicada.
 
-🟡 **ESTADO ANTERIOR — 28/09/2026 09:45 (SUPERADO pelo encerramento do ciclo):** MORPHO 5% (única aberta, stop US$2,466) + Caixa 95%; patrimônio US$67.374; ganho realizado no dia US$5.557 (BTC stopado +8,63% e DOT encerrado por decisão +19,7%).
+🟡 **ESTADO ANTERIOR — CICLO ENCERRADO, 100% CAIXA (29/09 a 07/10, SUPERADO pelas compras de 08/10):** carteira ficou 100%
+em caixa (US$67.189) após encerrar BTC (+8,63%), DOT (+19,7%) e MORPHO (−3,67%); ciclo +US$5.436; setembro +18,3% no mês,
++38,4% no ano. Visão de venda, aguardando retração. Balanço 07/10: BTC/DOT caíram forte, o caixa protegeu, "a queda cria a
+próxima entrada" — que veio em 08/10. Filosofia: "caixa de 100% não é pessimismo, é a posição mais confortável pra escolher
+a próxima entrada." (Balanços 02/10 e 07/10, da fase em caixa, ficam no histórico-decisoes.md.)
 - ⚫ **BTC — ENCERRADA 08:44 no stop US$82.752,68** (+8,63%, +US$2.628). Ordem LIMITE, sem slippage.
 - ⚫ **DOT — ENCERRADA 09:45 a US$1,21, por DECISÃO** (não por stop). PM US$1,0109, **+19,7% (+US$2.929)**. Em vez de só subir o stop, o Gui **realizou o ganho inteiro**: o preço chegou perto de US$1,30 no dia 26 e devolveu boa parte do avanço, e "não é papel nosso descobrir, com dinheiro na mesa, se o movimento continua". Use ordem limite.
 - 🧭 Leitura do Gui: "Caixa alto não é ausência de ideia, é ter com o que responder quando a oportunidade aparecer." As duas saídas de hoje foram no lucro, uma pelo stop (proteção quando o preço vira contra) e outra por decisão (quando o preço já entregou o que tinha).

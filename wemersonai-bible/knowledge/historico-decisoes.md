@@ -5,6 +5,15 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## OUTUBRO/2026
+- **08/10 17:03 — ENTRADA BTC: volta a comprar, 0%→50% a US$81.809,93.** Caixa 90%→40%. "Posição principal de volta."
+  O preço saiu de US$87.000 e voltou pra média que sustenta a subida desde setembro (~US$81.800); caiu 1,82% no dia.
+  "Compramos no susto, não na euforia. A carteira ficou em caixa justamente pra ter o que fazer num dia como este." Os
+  40% de caixa seguem: se cair mais, reforça; se subir, já está dentro.
+- **08/10 16:58 — ENTRADA DOT: volta a comprar, 0%→10% a US$1,05** (chegou a US$1,0464, caiu 6,40%). Caixa 100%→90%.
+  **3º trade no DOT** (anteriores +51% e +19,7%). "Ontem eu disse que a queda ia criar a próxima entrada. É esta."
+  Começa com 10% e **deve fazer mais compras nas próximas horas** — montar a posição enquanto descontado, não acertar o
+  fundo numa tacada. "Foi pra isso que a carteira ficou 100% em caixa: sem posição aberta, uma queda forte é lista de compras."
+  → Estado após as duas entradas: **BTC 50% + DOT 10% + Caixa 40%**.
 - **07/10 11:05 — BALANÇO "Antes fora de uma alta do que dentro de uma queda":** queda forte (BTC −2,6%, DOT −7,8%).
   Patrimônio segue parado em **US$67.189** (100% caixa, a queda não alcança). **DOT vendido a US$1,21 já em US$1,10
   (−9%)** — vendeu no lucro e o preço veio atrás. "É essa queda que cria a próxima entrada; quanto mais recuar, melhor a
