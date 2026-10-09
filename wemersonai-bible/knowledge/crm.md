@@ -30,8 +30,8 @@ automático) e a consistência importa mais que o tamanho do aporte.
 - Pro cliente ver o aporte DELE, apontar a aba **Portfólio**.
 
 ### Ativos operados na CRM
-ESTADO ATUAL (**08/10/2026 21:00 — VOLTOU A COMPRAR**): depois de +1 semana 100% em caixa, a carteira voltou ao mercado:
-**BTC 50% (entrada US$81.809,93) + DOT 20% (PM US$1,0672, montado em 2 parcelas) + Caixa 30%** (70% alocado). Posições
+ESTADO ATUAL (**09/10/2026 12:47 — REFORÇO DOT, 3ª parcela**): a carteira voltou ao mercado em 08/10 e segue montando DOT:
+**BTC 50% (entrada US$81.809,93) + DOT 27% (PM US$1,0867, montado em parcelas) + Caixa 24%** (76% alocado). Posições
 ainda sem stop publicado (posição em montagem; gerenciamento manual do Gui). AERO encerrado (18/09) e ouro stopado no lucro (16/09). Ver a "Composição atual" no topo
 para o detalhe. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
 AERO, XRP, MORPHO, VIRTUAL — a cesta muda conforme as decisões e o indicador de risco). O Gui nunca faz
@@ -43,15 +43,16 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 08/10/2026 21:00: BTC 50% + DOT 20% + Caixa 30% (70% alocado). Carteira voltou a comprar.**
+🟢 **ESTADO ATUAL — 09/10/2026 12:47: BTC 50% + DOT 27% + Caixa 24% (76% alocado). Carteira segue montando DOT.**
 - **Bitcoin (BTC)** — **50%** · ENTRADA 08/10 17:03 a **US$81.809,93** (0%→50%, caiu 1,82% no dia). "Posição principal de
   volta." O preço saiu de US$87.000 e voltou pra média que sustenta a subida desde setembro (~US$81.800). "Compramos no
   susto, não na euforia."
-- **Polkadot (DOT)** — **20%** · **PM US$1,0672** · 3º trade no DOT (anteriores +51% e +19,7%). Montado em 2 parcelas:
-  16:58 entrada 0%→10% a US$1,0464; **21:00 REFORÇO 10%→20% a US$1,0888** (comprou mais caro de propósito, com a tese
-  confirmada — a 1ª já estava +4,2%). PM subiu de US$1,0464 → US$1,0672.
-- **Caixa (USD)** — **30%** (era 100% até 08/10). "Montar a posição em partes é o que permite comprar na queda sem depender
-  de acertar o fundo."
+- **Polkadot (DOT)** — **27%** · **PM US$1,0867** · 3º trade no DOT (anteriores +51% e +19,7%). Montado em parcelas:
+  08/10 16:58 entrada 0%→10% a US$1,0464; 08/10 21:00 reforço 10%→20% a US$1,0888; **09/10 12:47 REFORÇO (3ª parcela)
+  22%→27% a US$1,1703** (a mais cara das três, de propósito, com o movimento confirmado — posição já +9,6% desde a 1ª
+  compra). PM subiu pra US$1,0867 e a posição segue +7,7%.
+- **Caixa (USD)** — **24%** (era 100% até 08/10). "Montar a posição em partes é o que permite comprar na queda sem depender
+  de acertar o fundo. Cada parcela só entra quando a anterior mostra que estava certa."
 - ⚠️ **Posições SEM stop publicado ainda** (08/10) — o gerenciamento é manual do Gui; quando ele definir stop/ajuste,
   avisa no feed. Pode vir mais compra; a composição vigente é sempre a última publicada.
 

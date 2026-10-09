@@ -5,6 +5,12 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## OUTUBRO/2026
+- **09/10 12:47 — REFORÇO DOT (3ª parcela): 22%→27% a US$1,1703** (caixa 29%→24%). "A parcela mais cara das três, e de
+  propósito": compraram na queda, reforçaram na reação e agora pagam mais caro porque o movimento se confirmou. DOT sobe
+  7,39% no dia; a posição já acumula **+9,6% desde a 1ª compra**. **PM sobe de US$1,0672 → US$1,0867**, e mesmo assim a
+  posição segue **+7,7%**. No gráfico de 4h o preço afundou até US$1,01, virou e voltou pra casa de US$1,17 em pouco mais
+  de um dia. "Comprar em partes resolve o problema de não saber onde é o fundo: cada parcela só entra quando a anterior
+  mostra que estava certa." Sobram **24% em caixa**. Estado: **BTC 50% + DOT 27% + Caixa 24%**.
 - **08/10 21:00 — REFORÇO DOT: 10%→20% a US$1,0888** (caixa 40%→30%). "Comprando mais caro de propósito": a 1ª compra
   (US$1,0464) já estava +4,2%, o preço reagiu onde esperavam, então o reforço vem com a tese confirmada, não na torcida.
   **PM do DOT sobe de US$1,0464 → US$1,0672.** "Montar a posição em partes é o que permite comprar na queda sem depender
