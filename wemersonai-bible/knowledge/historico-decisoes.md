@@ -5,6 +5,10 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## OUTUBRO/2026
+- **08/10 21:00 — REFORÇO DOT: 10%→20% a US$1,0888** (caixa 40%→30%). "Comprando mais caro de propósito": a 1ª compra
+  (US$1,0464) já estava +4,2%, o preço reagiu onde esperavam, então o reforço vem com a tese confirmada, não na torcida.
+  **PM do DOT sobe de US$1,0464 → US$1,0672.** "Montar a posição em partes é o que permite comprar na queda sem depender
+  de acertar o fundo." Estado: **BTC 50% + DOT 20% + Caixa 30%**.
 - **08/10 17:03 — ENTRADA BTC: volta a comprar, 0%→50% a US$81.809,93.** Caixa 90%→40%. "Posição principal de volta."
   O preço saiu de US$87.000 e voltou pra média que sustenta a subida desde setembro (~US$81.800); caiu 1,82% no dia.
   "Compramos no susto, não na euforia. A carteira ficou em caixa justamente pra ter o que fazer num dia como este." Os

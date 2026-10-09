@@ -30,9 +30,9 @@ automático) e a consistência importa mais que o tamanho do aporte.
 - Pro cliente ver o aporte DELE, apontar a aba **Portfólio**.
 
 ### Ativos operados na CRM
-ESTADO ATUAL (**08/10/2026 — VOLTOU A COMPRAR**): depois de +1 semana 100% em caixa, a carteira voltou ao mercado:
-**BTC 50% (entrada US$81.809,93) + DOT 10% (entrada US$1,05) + Caixa 40%** (60% alocado). DOT ainda em construção (devem
-fazer mais compras). BTC é a posição principal de volta. AERO encerrado (18/09) e ouro stopado no lucro (16/09). Ver a "Composição atual" no topo
+ESTADO ATUAL (**08/10/2026 21:00 — VOLTOU A COMPRAR**): depois de +1 semana 100% em caixa, a carteira voltou ao mercado:
+**BTC 50% (entrada US$81.809,93) + DOT 20% (PM US$1,0672, montado em 2 parcelas) + Caixa 30%** (70% alocado). Posições
+ainda sem stop publicado (posição em montagem; gerenciamento manual do Gui). AERO encerrado (18/09) e ouro stopado no lucro (16/09). Ver a "Composição atual" no topo
 para o detalhe. A CRM **opera** BTC + PAXG + caixa como base, e altcoins em fases táticas (recentemente DOT,
 AERO, XRP, MORPHO, VIRTUAL — a cesta muda conforme as decisões e o indicador de risco). O Gui nunca faz
 operações vendidas ("short nem na praia"). No PAXG, execução por ordem limite, nunca a mercado, pela baixa
@@ -43,17 +43,17 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 08/10/2026: A CARTEIRA VOLTOU A COMPRAR. BTC 50% + DOT 10% + Caixa 40% (60% alocado).**
+🟢 **ESTADO ATUAL — 08/10/2026 21:00: BTC 50% + DOT 20% + Caixa 30% (70% alocado). Carteira voltou a comprar.**
 - **Bitcoin (BTC)** — **50%** · ENTRADA 08/10 17:03 a **US$81.809,93** (0%→50%, caiu 1,82% no dia). "Posição principal de
   volta." O preço saiu de US$87.000 e voltou pra média que sustenta a subida desde setembro (~US$81.800). "Compramos no
   susto, não na euforia."
-- **Polkadot (DOT)** — **10%** · ENTRADA 08/10 16:58 a **US$1,05** (0%→10%, caiu 6,40%, chegou a US$1,0464). **É o 3º trade
-  no DOT** (os 2 anteriores: +51% e +19,7%). **Começaram com 10% e devem fazer MAIS compras nas próximas horas** — a ideia
-  é montar a posição enquanto o preço está descontado, não acertar o fundo numa tacada.
-- **Caixa (USD)** — **40%** (era 100%). Os 40% seguem disponíveis: "se o preço cair mais, reforçamos; se subir, já estamos
-  dentro com a posição que importa."
-- Leitura do Gui: "Foi pra isso que a carteira ficou 100% em caixa. Sem posição aberta, uma queda forte não é problema, é
-  lista de compras." ⚠️ **DOT ainda em construção** — pode vir mais compra; a composição vigente é sempre a última publicada.
+- **Polkadot (DOT)** — **20%** · **PM US$1,0672** · 3º trade no DOT (anteriores +51% e +19,7%). Montado em 2 parcelas:
+  16:58 entrada 0%→10% a US$1,0464; **21:00 REFORÇO 10%→20% a US$1,0888** (comprou mais caro de propósito, com a tese
+  confirmada — a 1ª já estava +4,2%). PM subiu de US$1,0464 → US$1,0672.
+- **Caixa (USD)** — **30%** (era 100% até 08/10). "Montar a posição em partes é o que permite comprar na queda sem depender
+  de acertar o fundo."
+- ⚠️ **Posições SEM stop publicado ainda** (08/10) — o gerenciamento é manual do Gui; quando ele definir stop/ajuste,
+  avisa no feed. Pode vir mais compra; a composição vigente é sempre a última publicada.
 
 🟡 **ESTADO ANTERIOR — CICLO ENCERRADO, 100% CAIXA (29/09 a 07/10, SUPERADO pelas compras de 08/10):** carteira ficou 100%
 em caixa (US$67.189) após encerrar BTC (+8,63%), DOT (+19,7%) e MORPHO (−3,67%); ciclo +US$5.436; setembro +18,3% no mês,
