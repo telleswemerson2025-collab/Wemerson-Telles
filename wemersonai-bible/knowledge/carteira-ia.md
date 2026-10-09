@@ -12,12 +12,21 @@ já correu** — o valor está na infraestrutura que sustenta a IA. Tem a aba "T
 e a aba "Decisões" (execução real). Horizonte de 18 a 36 meses, rebalanceamento semestral.
 
 ### Composição atual da carteira (última leitura oficial)
-🛡️ **ESTADO ATUAL — 06/10/2026: 2 ativos + caixa 72%, após REFORÇO na WDC.** A carteira segue defensiva desde o
-encerramento de MOD e CGNX (15/09).
-- **VRT (Vertiv)** — **13%** · entrada US$286,16 (segue na carteira; abaixo da entrada)
-- **WDC (Western Digital)** — **15%** (reforçada de 10%→15% em 06/10) · **PM US$478,98** (caiu de US$512,19 com o reforço)
-  · prejuízo **−13,9%** (era −19,6%) · **STOP em US$388** (se perder a faixa, sai; custa ~1% do patrimônio)
+🛡️ **ESTADO ATUAL — 09/10/2026: 2 ativos + caixa 72%, após STOP + REENTRADA na WDC.** A carteira segue defensiva desde o
+encerramento de MOD e CGNX (15/09). Performance total **+3,83%**, retorno −2,23%, 28% investido.
+- **VRT (Vertiv)** — **13%** · entrada US$286,16 · atual ~US$245,46 · **−14,22%** (segue abaixo da entrada)
+- **WDC (Western Digital)** — **15%** · **REENTRADA 09/10 a US$393,87** (novo custo, no lugar do PM anterior de US$478,93)
+  · atual ~US$395,02 · **+0,29%** · posição recomeçada depois que o stop de US$388 foi acionado
 - **Caixa (USD)** — **72%**
+
+⚡ **DECISÃO 09/10/2026 13:29 — STOP acionado na WDC (US$388) + REENTRADA a US$393,87 (peso 15%, caixa 73%→72%):** o stop
+da Western Digital foi acionado em **US$388**; a ordem era **limite, não a mercado**, então a saída saiu no preço combinado.
+A posição fechou com **−19%, o que custou 3,3% do patrimônio** da carteira (exatamente o custo que estava escrito quando o
+stop foi anunciado junto com o reforço de 06/10). Na sequência, **voltaram a comprar 15% da carteira a US$393,87** — o preço
+devolveu a queda rápido e voltou a trabalhar na base. O que muda é o ponto de partida: a posição **recomeça com custo de
+US$393,87 no lugar dos US$478,93 de antes**; a tese é a mesma, o preço é outro. "Stop não é opinião, é regra: foi acionado e
+cumprido, sem esperar pra ver. Reentrar logo depois não é desfazer a decisão, é reconhecer que o preço que nos tirou é melhor
+do que o que tínhamos." Decisão detalhada em breve. A alocação vigente é sempre a última publicada.
 
 ⚡ **DECISÃO 06/10/2026 11:27 — REFORÇO na WDC (Western Digital):** peso **10% → 15%**, compra a **US$412,59**, caixa
 **77% → 72%**. A ação caiu 6,58% no dia e voltou à região onde parou de cair outras vezes (entre US$430 e US$390);

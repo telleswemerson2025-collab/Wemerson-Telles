@@ -6,6 +6,13 @@
 > MOD 5% · VST 5% · CGNX 4% · Caixa 4%.
 
 ## Linha do tempo (mais recente → mais antiga)
+- **09/10 13:29 — STOP WDC acionado (US$388) + REENTRADA a US$393,87:** o stop da Western Digital foi acionado em **US$388**;
+  a ordem era **limite, não a mercado**, então a saída saiu no preço combinado. A posição fechou com **−19%, custando 3,3% do
+  patrimônio** da carteira (exatamente o custo anunciado quando o stop saiu junto com o reforço de 06/10). Na sequência,
+  **voltaram a comprar 15% a US$393,87** (caixa 73%→72%); o preço devolveu a queda rápido e voltou a trabalhar na base. Muda o
+  ponto de partida: **custo recomeça em US$393,87 no lugar dos US$478,93 de antes**; tese igual, preço outro. "Stop não é
+  opinião, é regra; reentrar não é desfazer a decisão, é reconhecer que o preço que nos tirou é melhor do que o que tínhamos."
+  Carteira após: **VRT 13% (entrada US$286,16, ~−14,2%) + WDC 15% (entrada US$393,87, ~+0,3%) + Caixa 72%**. Perf. total +3,83%.
 - **06/10 11:27 — REFORÇO WDC (Western Digital):** peso **10% → 15%**, compra a **US$412,59**, caixa **77% → 72%**. A ação
   caiu 6,58% no dia e voltou à faixa US$430–390 onde trava desde o topo de US$780; ontem foi à base com o maior volume
   desde o topo e reagiu. Com o reforço: **PM de US$512,19 → US$478,98**, prejuízo de −19,6% → **−13,9%**. **Stop em
