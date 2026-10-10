@@ -1,0 +1,172 @@
+# Carteira IA — Infraestrutura de IA (respostas oficiais)
+
+> Carteira de AÇÕES (separada da CRM, que é cripto), com tese e gerenciamento próprios.
+> Tese "Do Elétron ao Agente" / "O Stack de IA". Relatório público:
+> theblockcapital.com/publico/stack-de-ia · Compilado de decisões em `historico-carteira-ia.md`.
+
+### O que é a Carteira IA
+Segue a tese "O Stack de IA" (Do Elétron ao Agente), com foco na **base física** da
+infraestrutura de IA: energia, memória/armazenamento, cooling e data centers. A ideia central:
+os hyperscalers vão gastar ~US$700 bi em 2026 (orçamento já aprovado), e a camada de **chips
+já correu** — o valor está na infraestrutura que sustenta a IA. Tem a aba "Tese" (o relatório)
+e a aba "Decisões" (execução real). Horizonte de 18 a 36 meses, rebalanceamento semestral.
+
+### Composição atual da carteira (última leitura oficial)
+🛡️ **ESTADO ATUAL — 09/10/2026: 2 ativos + caixa 72%, após STOP + REENTRADA na WDC.** A carteira segue defensiva desde o
+encerramento de MOD e CGNX (15/09). Performance total **+3,83%**, retorno −2,23%, 28% investido.
+- **VRT (Vertiv)** — **13%** · entrada US$286,16 · atual ~US$245,46 · **−14,22%** (segue abaixo da entrada)
+- **WDC (Western Digital)** — **15%** · **REENTRADA 09/10 a US$393,87** (novo custo, no lugar do PM anterior de US$478,93)
+  · atual ~US$395,02 · **+0,29%** · posição recomeçada depois que o stop de US$388 foi acionado
+- **Caixa (USD)** — **72%**
+
+⚡ **DECISÃO 09/10/2026 13:29 — STOP acionado na WDC (US$388) + REENTRADA a US$393,87 (peso 15%, caixa 73%→72%):** o stop
+da Western Digital foi acionado em **US$388**; a ordem era **limite, não a mercado**, então a saída saiu no preço combinado.
+A posição fechou com **−19%, o que custou 3,3% do patrimônio** da carteira (exatamente o custo que estava escrito quando o
+stop foi anunciado junto com o reforço de 06/10). Na sequência, **voltaram a comprar 15% da carteira a US$393,87** — o preço
+devolveu a queda rápido e voltou a trabalhar na base. O que muda é o ponto de partida: a posição **recomeça com custo de
+US$393,87 no lugar dos US$478,93 de antes**; a tese é a mesma, o preço é outro. "Stop não é opinião, é regra: foi acionado e
+cumprido, sem esperar pra ver. Reentrar logo depois não é desfazer a decisão, é reconhecer que o preço que nos tirou é melhor
+do que o que tínhamos." Decisão detalhada em breve. A alocação vigente é sempre a última publicada.
+
+⚡ **DECISÃO 06/10/2026 11:27 — REFORÇO na WDC (Western Digital):** peso **10% → 15%**, compra a **US$412,59**, caixa
+**77% → 72%**. A ação caiu 6,58% no dia e voltou à região onde parou de cair outras vezes (entre US$430 e US$390);
+ontem foi até a base dessa faixa com o maior volume desde o topo (US$780) e reagiu, apareceu comprador. Com o reforço,
+o PM caiu de US$512,19 → **US$478,98** e o prejuízo encolheu de −19,6% → **−13,9%**. **Stop em US$388** (se perder a
+faixa, a posição sai, custo ~1% do patrimônio). "A WDC é a posição mais atrasada e a tese dela não mudou; comprar mais
+barato é o melhor uso do caixa." Decisão detalhada em breve. A alocação vigente é sempre a última publicada.
+
+⚡ **DECISÃO 15/09 13:12 — encerramento de MOD (Modine) e CGNX (Cognex)** (peso 10% → 0%; caixa 67% → 77%).
+Saídas: **MOD US$177,72 · CGNX US$58,74**. Juntas custaram **0,74% do patrimônio**. Motivo: no relatório da
+manhã o Gui disse que a carteira não mudaria, mas **reavaliou ao longo do dia** — depois das falas dos
+**principais líderes de IA**, o **curto prazo ficou turbulento demais pra carregar posições que já estão no
+prejuízo**. Aqui **preservar o patrimônio vem antes de esperar a recuperação**. ⚠️ Note a inflexão: nos
+movimentos anteriores a casa **mantinha os perdedores** pra não cristalizar a perda; nesta decisão **cortou
+MOD e CGNX no vermelho** por causa da turbulência de curto prazo (VRT e WDC, mais no prejuízo, seguiram).
+A **tese de infra de IA pra 2027 continua de pé** — só que o caminho até lá não precisa passar por essas duas
+posições. "Decisão detalhada em breve". A alocação vigente é sempre a última publicada.
+
+**Estado anterior (14/09/2026, 21:29 — SUPERADO pelo encerramento acima):** carteira ficou defensiva com 4
+ativos + caixa (VRT 13%, WDC 10%, MOD 5%, CGNX 5%, Caixa 67%), performance total +4,91%, retorno −5,43%.
+
+⚠️ **Movimento de 14/09 (levantar caixa vendendo os ganhadores):** o Gui **encerrou SPCX, BE, SNDK, LITE
+e VST** (as que estavam no lucro), realizando **+US$10.344 (+18,5%)**. Manteve só **VRT, WDC, MOD, CGNX**
+(as que estão no prejuízo), porque vender no vermelho transformaria a queda em perda definitiva. Tese de
+infra de IA segue firme; o caixa alto deixa a carteira pronta pra oportunidades ("decisão detalhada em
+breve"). Patrimônio: **US$104.712 (+4,7% sobre os US$100.000 iniciais)**. A alocação muda conforme as
+decisões — a vigente é sempre a última publicada.
+
+### ⚠️ Relatório proposto x carteira executada (importante pra responder certo)
+O relatório-mãe (Ed. 07) propõe uma carteira-modelo de 13 nomes (MU 12%, VRT 11%, BE 10%,
+EQIX 9%, CEG 8%, VST 8%, ETN 7%, SNDK 6%, MOD 6%, DLR 5%, WDC 4%, APH 3%, LITE 3%; caixa 8%).
+A carteira REAL executada continua diferindo da proposta, mas **atualizado (08/09/2026): MOD e VST
+JÁ ENTRARAM** na carteira executada (antes não tinham entrado), e **CGNX/SPCX entraram fora do plano
+original**. Ainda ficam de fora nomes do relatório como MU, EQIX, ETN, APH; CEG e DLR entraram e já
+saíram. Então, se um cliente perguntar "por que a ação X do relatório não está na carteira?", a
+resposta é: o relatório é a **tese/proposta**; a execução real se adapta ao mercado, e a posição
+vigente é sempre a publicada nas Decisões. Não trate os percentuais do relatório como a carteira atual.
+
+### Por que a carteira NÃO tem chips (NVDA, AMD, etc.)
+Quatro motivos declarados: (1) o preço já capturou a tese (as ações de chip já subiram muito);
+(2) risco de cauda em Taiwan sem hedge barato (todos dependem da TSMC); (3) o gargalo migrou do
+silício pra energia/subestação; (4) custo de oportunidade assumido. Há gatilhos que os fariam
+reconsiderar (ex.: correção forte na NVDA sem quebra de fundamento) — mas hoje chips ficam fora.
+
+### Ativos e camadas (do relatório)
+Camadas da tese: Energia e Geração (~33%); Cooling e Infra Física (~23%); Memória e
+Armazenamento (~22%); REITs de Datacenter (~14%); caixa tático (~8%). Chips ficam de fora.
+
+### Como adquirir a Carteira IA
+Junto ao Plano Vitalício (onde já vem incluída) ou de forma avulsa/individual, sem o vitalício.
+Contato: suporte@theblockcapital.com.
+
+### Como colocar o stop por acionamento na Bitget = opção TP/SL (CONFIRMADO Wemerson, 06/10/2026)
+Quando o cliente diz que na Bitget, naquele ativo, só aparece "limite" ou "a mercado" e não acha o stop por
+acionamento (gatilho): o caminho é a opção **TP/SL** (take profit / stop loss). É por ali que se coloca o stop com
+gatilho. Orientar: abrir o **TP/SL**, definir o **preço de acionamento** = valor do stop publicado, e o **preço limite**
+um pouquinho abaixo do gatilho (pra garantir a execução). Vale tanto pra ações tokenizadas quanto pra cripto na Bitget.
+
+### Como operar a Carteira IA (Brasil)
+A casa **não indica corretora específica** — recomenda o **ativo**, não o caminho (Mr. G, 31/08).
+Compra pelo **código de cada ação**, respeitando o **peso** da posição. Caminhos: BDR na B3
+(quando houver), ETF do tema, ou uma corretora com acesso à bolsa americana — **a escolha da
+corretora fica a critério do cliente**. A CEG pode ser acessada via BDR na B3 ou nos EUA.
+⚠️ **NÃO citar nomes de corretora internacional como "exemplo" (regra 24/09/2026, Wemerson):** mesmo
+dizendo "é só exemplo, não indicação", o cliente lê como indicação. Falar sempre de forma genérica
+("uma corretora com acesso à bolsa americana"), sem nomear casas — a única corretora que a gente
+recomenda por nome é a **Bitget, e só pra cripto/CRM**.
+**Novidade (03/09):** a **Bitget** lançou uma aba **"Ações"** onde **algumas** das ações da
+carteira já se encontram — caminho prático pra quem já usa a Bitget (que é a corretora que
+recomendamos pra **cripto/CRM**). Nem toda ação está lá; o que não estiver, buscar numa corretora
+com acesso à bolsa do ativo.
+
+### Onde operar a MOD (Modine) / ativo que não está na minha corretora
+A MOD (Modine) é ação da NYSE (código MOD). CONFIRMADO (08/08/2026): NÃO tem BDR na B3 e NÃO
+está tokenizada na Bitget (o "MOD" que aparece lá é outro token, não relacionado). Caminho
+recomendado: comprar a ação por uma corretora tradicional americana com acesso à NYSE, onde é
+negociada normalmente. Regra geral: quando um ativo da carteira não aparece na corretora do
+cliente, não é problema de conta — o ativo pode não estar listado ali; orientar o caminho
+tradicional (BDR se houver, senão corretora internacional/bolsa americana), sem indicar exchange
+de tokenização.
+
+### Dá pra investir na Carteira IA pela Binance? E ações tokenizadas / lei brasileira?
+A Carteira IA é composta por **ações** (não cripto), então o caminho recomendado **não é a
+Binance**. As formas de operar (em ordem): BDR na B3, ETF do tema, ou uma corretora com acesso à
+bolsa americana (sem nomear casas — ver regra acima). Sendo brasileiro, você consegue investir
+tranquilamente por esses caminhos, **sem depender da Binance nem de ação tokenizada**. Alguns
+ativos têm versão tokenizada em algumas exchanges (a disponibilidade varia por exchange e por ativo; confirmar caso a caso antes de indicar), mas é caso a caso.
+Sobre a **legalidade de ações tokenizadas no Brasil**: é um tema jurídico/regulatório em
+evolução — não damos orientação legal definitiva por aqui; para essa parte específica ou para a
+adesão, encaminhar pro suporte (suporte@theblockcapital.com). Ponto tranquilizador: os caminhos
+recomendados (BDR na B3, corretoras internacionais reguladas) **não dependem de tokenização**.
+
+### A aba "Ações" da Bitget são ações de verdade? (CORRIGIDO 10/10/2026: NÃO, são TOKENIZADAS)
+**Não são ações de verdade. São ações TOKENIZADAS** (correção 10/10/2026, informação do Gui; a versão anterior desta
+seção, de 09/09, estava errada). O produto é o **Bitget Stocks 2.0**, lançado em junho de 2026, com **36 ações e ETFs**.
+Quem emite os tokens é a empresa **Reality**, e cada token acompanha o preço da ação lá fora numa relação de **um pra um**.
+O investidor fica com a **exposição ao preço, mas NÃO é dono da ação**: não aparece no registro de acionistas da empresa
+e **não tem direito a voto**. Dividendo em dinheiro é repassado pela Bitget, convertido em USDT, direto no saldo. Split e
+reestruturação são ajustados pela Bitget no saldo. A disponibilidade muda de país pra país e depende da verificação da conta.
+
+Ressalvas ao responder o cliente: (1) o cliente precisa saber que é **token que segue o preço**, não ação com titularidade;
+(2) a disponibilidade varia por país e pela verificação da conta; (3) não dar orientação jurídica sobre tokenização.
+Histórico da versão antiga (superada): quem quer o
+modelo clássico usa **BDR na B3** ou **corretora com acesso à bolsa americana**; (2) a **regulação de
+ativos tokenizados no Brasil** ainda está em evolução, então não damos orientação jurídica definitiva.
+Fontes da versão antiga: bitget.com/campaigns/bitget-rtoken; matérias de lançamento do Stocks 2.0 e do Stock+.
+Fonte da correção: Gui Telles (10/10/2026).
+
+### Uma ação indicada está acima do preço de entrada — entro agora?
+Pode entrar com **metade** do que foi recomendado agora e **aguardar um pullback** pra entrar
+com a outra metade — e focar nas próximas entradas que vierem. A carteira é projeto de longo
+prazo; leva um tempo até ser totalmente montada.
+
+### Preço da Carteira IA
+Avulsa: **R$2.997,00/ano** (sem desconto). No **Vitalício** já vem incluída (junto com a CRM).
+Detalhes de planos/desconto em `blockcapital-comercial.md`.
+
+### Perfis da Carteira IA
+Há perfis: **Conservador, Moderado, Agressivo e Especulativo**. A carteira "completa" de
+referência é a do perfil **Moderado**.
+
+### Aportes da Carteira IA são separados da CRM?
+Sim, totalmente independentes. Cada carteira tem estratégia, tese e gerenciamento próprios; os
+valores e percentuais de aporte são separados. O capital da Carteira IA deve vir de fora da CRM.
+
+### Gráfico de pizza da alocação
+A Carteira IA já mostra as recomendações de percentual por ativo. A sugestão de exibir também
+em gráfico de pizza foi encaminhada à equipe.
+
+### Indicador CVDD
+Sugestão agradecida e encaminhada ao Gui. Até o momento não há definição técnica oficial sobre ele.
+
+### E a ASML? (aparece em Decisões mas não na carteira)
+A ASML é a Edição 01 das Decisões (monopólio de litografia EUV), com convicção alta mas
+**timing pendente** — uma empresa que a equipe declara querer ter quando o mercado der a janela.
+Por isso não virou posição ainda.
+
+### Link antigo de uma posição não abre mais / "não consigo mais ler aquele ativo"
+CONFIRMADO (mineração do suporte, 08/08/2026): quando uma **posição é encerrada (zerada)**, a
+**página pública** daquele ativo (ex.: theblockcapital.com/publico/...) geralmente **sai do ar** —
+por isso um link que o cliente lia antes deixa de abrir. **Não é problema de acesso.** Todo o
+conteúdo e o histórico (inclusive de posições já encerradas) continuam disponíveis na **área
+logada**, em **Publicações/Decisões**. Orientar o cliente a entrar logado e procurar por lá.
