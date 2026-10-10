@@ -119,20 +119,21 @@ evolução — não damos orientação legal definitiva por aqui; para essa part
 adesão, encaminhar pro suporte (suporte@theblockcapital.com). Ponto tranquilizador: os caminhos
 recomendados (BDR na B3, corretoras internacionais reguladas) **não dependem de tokenização**.
 
-### A aba "Ações" da Bitget são ações de verdade? (CONFIRMADO 09/09/2026)
-**Sim — são ações REAIS dos EUA, tokenizadas**, e não simuladores nem derivativos fictícios. A Bitget
-vincula essas ações tokenizadas à **liquidez real do mercado americano**. Os produtos que ela oferece:
-- **rToken** — operar ações reais dos EUA usando **USDT**; são ações tokenizadas atreladas à liquidez real do mercado dos EUA.
-- **Stocks 2.0** — sistema recente que vincula as ações tokenizadas à liquidez real do mercado americano; deixa o investidor cripto-nativo comprar ações reais (Apple, Google, etc.) direto na plataforma usando cripto.
-- **Stock+** — versão que leva ações reais dos EUA pro investidor da comunidade cripto.
+### A aba "Ações" da Bitget são ações de verdade? (CORRIGIDO 10/10/2026: NÃO, são TOKENIZADAS)
+**Não são ações de verdade. São ações TOKENIZADAS** (correção 10/10/2026, informação do Gui; a versão anterior desta
+seção, de 09/09, estava errada). O produto é o **Bitget Stocks 2.0**, lançado em junho de 2026, com **36 ações e ETFs**.
+Quem emite os tokens é a empresa **Reality**, e cada token acompanha o preço da ação lá fora numa relação de **um pra um**.
+O investidor fica com a **exposição ao preço, mas NÃO é dono da ação**: não aparece no registro de acionistas da empresa
+e **não tem direito a voto**. Dividendo em dinheiro é repassado pela Bitget, convertido em USDT, direto no saldo. Split e
+reestruturação são ajustados pela Bitget no saldo. A disponibilidade muda de país pra país e depende da verificação da conta.
 
-Ou seja: o preço e a exposição seguem a ação real. Ressalvas ao responder o cliente: (1) o **formato**
-ainda é **tokenizado** (não é a ação tradicional com custódia numa corretora de bolsa) — quem quer o
+Ressalvas ao responder o cliente: (1) o cliente precisa saber que é **token que segue o preço**, não ação com titularidade;
+(2) a disponibilidade varia por país e pela verificação da conta; (3) não dar orientação jurídica sobre tokenização.
+Histórico da versão antiga (superada): quem quer o
 modelo clássico usa **BDR na B3** ou **corretora com acesso à bolsa americana**; (2) a **regulação de
 ativos tokenizados no Brasil** ainda está em evolução, então não damos orientação jurídica definitiva.
-Pra quem já usa a Bitget (a exchange que recomendamos pra cripto), é um caminho prático e com lastro
-real pra montar a Carteira IA. Fontes: bitget.com/campaigns/bitget-rtoken; matérias de lançamento do
-Stocks 2.0 e do Stock+.
+Fontes da versão antiga: bitget.com/campaigns/bitget-rtoken; matérias de lançamento do Stocks 2.0 e do Stock+.
+Fonte da correção: Gui Telles (10/10/2026).
 
 ### Uma ação indicada está acima do preço de entrada — entro agora?
 Pode entrar com **metade** do que foi recomendado agora e **aguardar um pullback** pra entrar
