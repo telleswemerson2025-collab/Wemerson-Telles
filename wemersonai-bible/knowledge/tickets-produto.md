@@ -33,6 +33,12 @@
   reclamação de atraso de notificação, checar primeiro se não é o fuso:** pedir pro cliente comparar o horário em
   que o E-MAIL da decisão chegou (esse vem no fuso dele) com o horário exibido no post. Se a diferença for o fuso,
   o "delay" é exibição. Corrigir o fuso pra America/Sao_Paulo resolve boa parte dessas reclamações.
+- **Caso Egon André Martello (egonandre@gmail.com, 11/10 00h38): notificações chegando com ~5 min de atraso.**
+  Ação: reclamação de atraso no feed vai pra **RECUSAR no feed + resposta por e-mail, tratada pessoalmente**
+  (regra da equipe: é caso a caso, não se responde em público). Antes de responder, checar o fuso (comparar o horário
+  do e-mail da decisão com o do post). Orientação ao cliente: o disparo é feito na hora; a entrega até o aparelho depende
+  do celular (notificações ligadas, conexão, reinstalar o app se persistir); feed é o canal mais imediato (F5); e-mail
+  é o segundo caminho. Registrar o caso aqui pra acompanhar se o padrão se repete.
 
 ## 2b. Ferramenta de Portfólio — sem histórico de registros / auditoria (SEVERIDADE ALTA)
 - **Bug/lacuna:** o cliente **não consegue ver o histórico dos registros** de compra/venda que fez no
