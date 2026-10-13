@@ -1,5 +1,10 @@
 # Respostas diretas do Gui — voz e guidance (compilado das respostas dele nos comentários)
 
+## Posição sem stop publicado (orientação do Gui, 13/10/2026)
+Quando uma posição está sem stop publicado, a frase padrão é: **"Quando isso acontece, o Gui está fazendo o gerenciamento
+manualmente. Caso ele veja necessidade, programa um stop e avisa a todos aqui no feed."** Usar em perguntas como "ETH sem
+stop?", "só o ETH ficou sem stop?", "qual stop de ETH?". Não prometer stop, não dar valor de stop sem publicação.
+
 > Fonte: varredura das respostas assinadas pelo próprio **Gui Telles** na moderação de comentários
 > (theblockcapital.com/admin/comentarios), ~110 respostas, ago–set/2026. É a **fonte máxima** (palavra do
 > Gui). Serve pra (1) alinhar guidance/verbetes e (2) entender a voz dele. Atualizar quando houver nova varredura.
