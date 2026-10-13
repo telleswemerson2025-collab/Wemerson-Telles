@@ -5,6 +5,14 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## OUTUBRO/2026
+- **13/10 09:33 — ENTRADA SOL: 0%→10% a US$106,24** (caixa 26%→16%). Volta à faixa dos US$106, região que segurou o movimento
+  de setembro, com o indicador subindo desde o fundo da semana. **Stop US$101,30, com ordem limite** (perda de 0,46% do
+  patrimônio se acionado).
+- **13/10 09:02 — ENTRADA XRP: 0%→10% a US$1,356** (caixa 36%→26%). Mesma leitura da Ethereum: volta ao fundo anterior perto
+  de US$1,32, com divergência de alta. **Stop US$1,30, com ordem limite** (perda de 0,41% do patrimônio se acionado).
+- **13/10 08:50 — ENTRADA ETH: 0%→15% a US$2.502,00** (caixa 51%→36%). Fundo duplo na região dos US$2.420, com divergência
+  de alta: o segundo fundo no mesmo nível, com força de venda menor. "O Bitcoin segue com stop em US$80.267." Sem stop
+  de ETH publicado nessa decisão.
 - **12/10 20:56 — ENCERRAMENTO DOT a US$1,18 (peso 27% → 0%; caixa 24% → 51%).** "Vamos encerrar a posição em Polkadot a
   US$1,18. Usem ordem limite." Operação **+8,6% em cinco dias**. A DOT caiu 5,8% nas últimas horas, depois de falhar pela
   terceira vez na região dos US$1,29. "O Bitcoin segue na carteira, com stop loss em US$80.267." Estado: **BTC 50% (stop
