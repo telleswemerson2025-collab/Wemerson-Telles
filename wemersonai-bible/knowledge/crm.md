@@ -43,18 +43,17 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 09/10/2026 12:47: BTC 50% + DOT 27% + Caixa 24% (76% alocado). Carteira segue montando DOT.**
-- **Bitcoin (BTC)** — **50%** · ENTRADA 08/10 17:03 a **US$81.809,93** (0%→50%, caiu 1,82% no dia). "Posição principal de
-  volta." O preço saiu de US$87.000 e voltou pra média que sustenta a subida desde setembro (~US$81.800). "Compramos no
-  susto, não na euforia."
-- **Polkadot (DOT)** — **27%** · **PM US$1,0867** · 3º trade no DOT (anteriores +51% e +19,7%). Montado em parcelas:
-  08/10 16:58 entrada 0%→10% a US$1,0464; 08/10 21:00 reforço 10%→20% a US$1,0888; **09/10 12:47 REFORÇO (3ª parcela)
-  22%→27% a US$1,1703** (a mais cara das três, de propósito, com o movimento confirmado — posição já +9,6% desde a 1ª
-  compra). PM subiu pra US$1,0867 e a posição segue +7,7%.
-- **Caixa (USD)** — **24%** (era 100% até 08/10). "Montar a posição em partes é o que permite comprar na queda sem depender
-  de acertar o fundo. Cada parcela só entra quando a anterior mostra que estava certa."
-- ⚠️ **Posições SEM stop publicado ainda** (08/10) — o gerenciamento é manual do Gui; quando ele definir stop/ajuste,
-  avisa no feed. Pode vir mais compra; a composição vigente é sempre a última publicada.
+🟢 **ESTADO ATUAL — 12/10/2026 20:56: BTC 50% + Caixa 51% (DOT encerrado). Carteira segue com BTC, com stop publicado.**
+- **Bitcoin (BTC)** — **50%** · ENTRADA 08/10 17:03 a **US$81.809,93**. Segue na carteira com **STOP LOSS em US$80.267**
+  (publicado em 12/10 20:56, junto com o encerramento da DOT).
+- **Polkadot (DOT)** — **0%** · **ENCERRADA em 12/10 20:56 a US$1,18** (ordem limite, "usem ordem limite"). Peso 27% → 0%.
+  PM da posição era US$1,0867; a operação fechou com **+8,6% em cinco dias**. Motivo: a DOT caiu 5,8% nas últimas horas,
+  depois de falhar pela terceira vez na região dos US$1,29.
+- **Caixa (USD)** — **51%** (era 24%). O caixa sobe com o encerramento da DOT.
+- A composição vigente é sempre a última publicada no feed.
+
+🔻 **DECISÃO 12/10/2026 20:56 — ENCERRAMENTO DOT a US$1,18 (peso 27% → 0%, caixa 24% → 51%):** "Vamos encerrar a posição
+em Polkadot a US$1,18. Usem ordem limite." Operação +8,6% em cinco dias. BTC segue com stop loss em US$80.267.
 
 🟡 **ESTADO ANTERIOR — CICLO ENCERRADO, 100% CAIXA (29/09 a 07/10, SUPERADO pelas compras de 08/10):** carteira ficou 100%
 em caixa (US$67.189) após encerrar BTC (+8,63%), DOT (+19,7%) e MORPHO (−3,67%); ciclo +US$5.436; setembro +18,3% no mês,

@@ -5,6 +5,10 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## OUTUBRO/2026
+- **12/10 20:56 — ENCERRAMENTO DOT a US$1,18 (peso 27% → 0%; caixa 24% → 51%).** "Vamos encerrar a posição em Polkadot a
+  US$1,18. Usem ordem limite." Operação **+8,6% em cinco dias**. A DOT caiu 5,8% nas últimas horas, depois de falhar pela
+  terceira vez na região dos US$1,29. "O Bitcoin segue na carteira, com stop loss em US$80.267." Estado: **BTC 50% (stop
+  US$80.267) + Caixa 51%**.
 - **09/10 12:47 — REFORÇO DOT (3ª parcela): 22%→27% a US$1,1703** (caixa 29%→24%). "A parcela mais cara das três, e de
   propósito": compraram na queda, reforçaram na reação e agora pagam mais caro porque o movimento se confirmou. DOT sobe
   7,39% no dia; a posição já acumula **+9,6% desde a 1ª compra**. **PM sobe de US$1,0672 → US$1,0867**, e mesmo assim a
