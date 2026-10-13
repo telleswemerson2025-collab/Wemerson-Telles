@@ -21,6 +21,13 @@ por exemplo "**Boa tarde, [Nome], tudo bem?**" (ajustar bom dia / boa tarde / bo
 corpo, e fecha com **"Atenciosamente, Wemerson Telles"** (na BlockCapital). É só no **chat/app/comentários** que
 a gente começa **direto no nome, sem saudação**. Não misturar: chat = nome direto; e-mail = saudação + nome.
 
+## 🚩 REGRA DE MODERAÇÃO — DIRETRIZ DIRETA DO GUI (13/10/2026): RECUSAR comentários de "pagar mais caro / preço andou / dica do que fazer"
+**Diretriz do Gui (13/10/2026, WhatsApp): "Não aprova comentários sobre 'tive que pagar mais caro', 'o preço andou', 'dica
+do que devemos ou não fazer'."** Vale pro feed (RECUSAR), sem resposta pública. Quando o cliente pedir ajuda com isso,
+a resposta vai por e-mail, com o método (ordem limite na zona indicada, parciais, sem perseguir preço), sem debater o
+caso no feed. Cobre, por exemplo: "fiquei fora porque o preço andou", "paguei mais caro na entrada", "devíamos ter
+esperado o pullback", "dica: não vendam abaixo de X".
+
 ## 🚩 REGRA DE MODERAÇÃO — DIRETRIZ DIRETA DO GUI (19/09/2026)
 **NÃO aprovar / não engajar comentários que discutam COMO as operações devem ser feitas ou COMO foram feitas no
 passado** (debate de execução, "eu faria assim", análise/crítica de trades passados, comparações tipo "não deixem
