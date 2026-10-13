@@ -91,6 +91,20 @@ que substituiu o "Trader de Sucesso") é anual como os demais, **mas quem é Vit
 a acessá-lo por 2 anos**. Ou seja: 12 meses é o padrão; os "2 anos" são o benefício do Vitalício
 especificamente sobre o treinamento em análise. A liberação acontece **em até 7 dias** após a compra.
 
+### Compra que não aparece / não localizada no e-mail — encaminhar pro suporte da Hotmart (regra 13/10/2026)
+Quando o cliente pagou (ou aparece cobrança no banco) mas a compra não é localizada no e-mail, o próprio cliente deve
+registrar o caso no suporte oficial da Hotmart: **https://help.hotmart.com/pt-br/contact-us?subject=bought-and-need-help**.
+Para a equipe conseguir ajudar depois, o cliente deve incluir no formulário:
+- E-mail usado para fazer a compra;
+- Código da transação (começa com HP, seguido de números);
+- CPF do titular;
+- Print nítido da tela inteira, mostrando o erro.
+
+Motivo: dados sensíveis só podem ser repassados pelo próprio titular. Ao responder: usar "cliente" (nunca "aluno") e
+não pedir CPF nem print por chat sem necessidade; se ele já enviou o HP, a equipe confere primeiro no painel.
+Cobranças em "Em processamento" aparecendo várias vezes no banco podem ser tentativas duplicadas: orientar o cliente a
+não refazer a compra até a Hotmart confirmar qual transação ficou válida.
+
 ### Formas de pagamento
 Pela Hotmart (cartão, boleto ou Pix) ou em cripto: USDT ou USDC na rede BSC/BEP-20
 (0x2538e340d59345cfd316e516f93df7965de11868) ou BTC na rede nativa
