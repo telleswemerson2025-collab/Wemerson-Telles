@@ -43,13 +43,19 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 13/10/2026 09:33: BTC 50% + ETH 15% + XRP 10% + SOL 10% + Caixa 16%. Carteira voltou a montar posições (entradas de 13/10).** Pesos aproximados: o BTC pode ter variado com a valorização, então a composição vigente é sempre a última publicada e conferida no app.
+🟢 **ESTADO ATUAL — 13/10/2026 20:34 (balanço dos stops): BTC 50% + ETH 15% + XRP 10% + SOL 10% + Caixa 16%. Quatro posições abertas, todas com stop.** Pesos aproximados: a composição vigente é sempre a última publicada e conferida no app.
 
-- **Ethereum (ETH)** — **15%** · ENTRADA 13/10 08:50 a **US$2.502,00** (0%→15%, caixa 51%→36%). Fundo duplo na região dos US$2.420, com divergência de alta. ⚠️ Sem stop publicado na decisão.
-- **XRP** — **10%** · ENTRADA 13/10 09:02 a **US$1,356** (0%→10%, caixa 36%→26%). Stop **US$1,30**, com ordem limite (perda de 0,41% do patrimônio se acionado).
-- **Solana (SOL)** — **10%** · ENTRADA 13/10 09:33 a **US$106,24** (0%→10%, caixa 26%→16%). Stop **US$101,30**, com ordem limite (perda de 0,46% do patrimônio se acionado).
-- **Bitcoin (BTC)** — **50%** · ENTRADA 08/10 17:03 a **US$81.809,93**. Segue na carteira com **STOP LOSS em US$80.267**
-  (publicado em 12/10 20:56, junto com o encerramento da DOT).
+**STOPS VIGENTES (balanço 13/10 20:34, "programem como ordem de stop limite, nunca a mercado"):**
+- BTC: **US$80.252** (ajustado de US$80.267) · perda na carteira −0,92%
+- ETH: **US$2.401** (primeiro stop publicado do ETH) · perda na carteira −0,61%
+- SOL: **US$101,52** (ajustado de US$101,30) · perda na carteira −0,44%
+- XRP: **US$1,307** (ajustado de US$1,30) · perda na carteira −0,36%
+- Total se os quatro forem acionados: −2,34%. Se todos saírem, a carteira vira caixa com **US$67.001**, que é o piso do patrimônio.
+
+- **Ethereum (ETH)** — **15%** · ENTRADA 13/10 08:50 a **US$2.502,00** (0%→15%, caixa 51%→36%). Fundo duplo na região dos US$2.420, com divergência de alta. Stop **US$2.401** (publicado no balanço de 20:34).
+- **XRP** — **10%** · ENTRADA 13/10 09:02 a **US$1,356** (0%→10%, caixa 36%→26%). Stop **US$1,307** (balanço 20:34; antes US$1,30).
+- **Solana (SOL)** — **10%** · ENTRADA 13/10 09:33 a **US$106,24** (0%→10%, caixa 26%→16%). Stop **US$101,52** (balanço 20:34; antes US$101,30).
+- **Bitcoin (BTC)** — **50%** · ENTRADA 08/10 17:03 a **US$81.809,93**. Stop **US$80.252** (balanço 20:34; antes US$80.267).
 - **Polkadot (DOT)** — **0%** · **ENCERRADA em 12/10 20:56 a US$1,18** (ordem limite, "usem ordem limite"). Peso 27% → 0%.
   PM da posição era US$1,0867; a operação fechou com **+8,6% em cinco dias**. Motivo: a DOT caiu 5,8% nas últimas horas,
   depois de falhar pela terceira vez na região dos US$1,29.

@@ -5,6 +5,10 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## OUTUBRO/2026
+- **13/10 20:34 — BALANÇO "Os stops das quatro posições".** Stops publicados e programados como **ordem de stop limite, nunca
+  a mercado**: BTC **US$80.252** (antes US$80.267), ETH **US$2.401** (primeiro stop do ETH), SOL **US$101,52** (antes
+  US$101,30), XRP **US$1,307** (antes US$1,30). Perda na carteira se os quatro forem acionados: **−2,34%**. Nesse caso a
+  carteira vira caixa com **US$67.001**, "esse é o piso do nosso patrimônio".
 - **13/10 09:33 — ENTRADA SOL: 0%→10% a US$106,24** (caixa 26%→16%). Volta à faixa dos US$106, região que segurou o movimento
   de setembro, com o indicador subindo desde o fundo da semana. **Stop US$101,30, com ordem limite** (perda de 0,46% do
   patrimônio se acionado).
