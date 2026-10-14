@@ -5,6 +5,9 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## OUTUBRO/2026
+- **14/10 09:45 — ENTRADA DOT: 0%→10% a US$1,1385** (caixa 16%→6%). "O preço voltou para a média longa, na mesma região que
+  sustentou a subida desde setembro." "Por hora, sem stop programado." Com esta compra, a carteira fica praticamente toda
+  posicionada. Estado: **BTC 50% + ETH 15% + XRP 10% + SOL 10% + DOT 10% + Caixa 6%**.
 - **13/10 20:34 — BALANÇO "Os stops das quatro posições".** Stops publicados e programados como **ordem de stop limite, nunca
   a mercado**: BTC **US$80.252** (antes US$80.267), ETH **US$2.401** (primeiro stop do ETH), SOL **US$101,52** (antes
   US$101,30), XRP **US$1,307** (antes US$1,30). Perda na carteira se os quatro forem acionados: **−2,34%**. Nesse caso a
