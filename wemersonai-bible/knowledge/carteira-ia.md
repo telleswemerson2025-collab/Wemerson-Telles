@@ -85,6 +85,20 @@ acionamento (gatilho): o caminho é a opção **TP/SL** (take profit / stop loss
 gatilho. Orientar: abrir o **TP/SL**, definir o **preço de acionamento** = valor do stop publicado, e o **preço limite**
 um pouquinho abaixo do gatilho (pra garantir a execução). Vale tanto pra ações tokenizadas quanto pra cripto na Bitget.
 
+### Passo a passo da ORDEM LIMITE na Bitget (CONFIRMADO Wemerson, 14/10/2026)
+1. Abrir o par que você quer operar (ex.: BTC/USDT), na aba **Spot**.
+2. No painel de ordem, do lado direito, trocar a aba de **Mercado** para **Limite**.
+3. Aparecem dois campos: **Preço** e **Quantidade**.
+4. No **Preço**: o valor que a decisão indica como referência, ou um pouco abaixo dele na compra.
+5. Na **Quantidade**: o valor desejado, ou usar a barrinha de porcentagem logo abaixo.
+6. Conferir o valor total antes de confirmar e clicar em **Comprar** (ou **Vender**).
+7. Acompanhar e cancelar, se quiser, na parte de baixo da tela, em **Ordens abertas**.
+
+Regras que acompanham o passo a passo:
+- Compra com preço **acima** do atual executa na hora (o mercado já está melhor que o pedido). Na compra, o preço fica **abaixo** do atual.
+- A ordem limite **não tem prazo**: fica aberta até executar ou até o cliente cancelar.
+- Orientação da equipe: ordem limite na zona indicada, **nunca a mercado**; montar em parciais, sem perseguir o preço.
+
 ### Como operar a Carteira IA (Brasil)
 A casa **não indica corretora específica** — recomenda o **ativo**, não o caminho (Mr. G, 31/08).
 Compra pelo **código de cada ação**, respeitando o **peso** da posição. Caminhos: BDR na B3
