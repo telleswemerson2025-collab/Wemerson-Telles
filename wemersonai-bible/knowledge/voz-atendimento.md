@@ -21,6 +21,12 @@ por exemplo "**Boa tarde, [Nome], tudo bem?**" (ajustar bom dia / boa tarde / bo
 corpo, e fecha com **"Atenciosamente, Wemerson Telles"** (na BlockCapital). É só no **chat/app/comentários** que
 a gente começa **direto no nome, sem saudação**. Não misturar: chat = nome direto; e-mail = saudação + nome.
 
+## 🚩 DIRETRIZ DO GUI (15/10/2026): NÃO APROVAR COMENTÁRIOS SOBRE STOP
+**Palavras do Gui (WhatsApp, 15/10, 08h13): "Não aprova comentários sobre stop! Hoje devemos receber uma chuva de comentários negativos! Quem tiver dúvida de como programar, chama no e-mail."**
+- Comentário sobre stop (pergunta, crítica, "stopado", "sem stop", "stop não acionou", "stop muito baixo", etc.) → **RECUSAR no feed**.
+- A resposta vai **por e-mail**, dentro do que já está publicado. Não citar valor de stop que não esteja publicado.
+- Isso vale mesmo para perguntas neutras sobre stop. Ajusta respostas que já tinham sido aprovadas antes desta data.
+
 ## 🚩 REGRA DE MODERAÇÃO — DIRETRIZ DIRETA DO GUI (13/10/2026): RECUSAR comentários de "pagar mais caro / preço andou / dica do que fazer"
 **Diretriz do Gui (13/10/2026, WhatsApp): "Não aprova comentários sobre 'tive que pagar mais caro', 'o preço andou', 'dica
 do que devemos ou não fazer'."** Vale pro feed (RECUSAR), sem resposta pública. Quando o cliente pedir ajuda com isso,
