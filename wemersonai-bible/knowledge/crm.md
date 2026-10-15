@@ -43,7 +43,9 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 14/10/2026 09:45: BTC 50% + ETH 15% + XRP 10% + SOL 10% + DOT 10% + Caixa 6%. Carteira praticamente toda posicionada.** Pesos aproximados: a composição vigente é sempre a última publicada e conferida no app.
+🟢 **ESTADO ATUAL — 15/10/2026 10:34: 100% EM CAIXA (US$66.607). Carteira em preservação patrimonial, sem posições abertas.** Última posição encerrada: DOT, por stop acionado em US$1,0689 (peso 10% → 0%; caixa 90% → 100%). O post diz que a DOT era a última posição aberta, então BTC, ETH, XRP e SOL (balanço de 13/10) foram encerrados antes, por stop. ⚠️ As datas e valores de execução desses stops NÃO estão na base: confirmar com o Gui antes de citar.
+
+*Composição ANTERIOR (superada):* 14/10 09:45: BTC 50% + ETH 15% + XRP 10% + SOL 10% + DOT 10% + Caixa 6%.
 
 - **Polkadot (DOT)** — **10%** · ENTRADA 14/10 09:45 a **US$1,1385** (0%→10%, caixa 16%→6%). "O preço voltou para a média longa, na mesma região que sustentou a subida desde setembro." ⚠️ **Sem stop programado por enquanto** ("por hora, sem stop programado").
 
