@@ -12,6 +12,12 @@ já correu** — o valor está na infraestrutura que sustenta a IA. Tem a aba "T
 e a aba "Decisões" (execução real). Horizonte de 18 a 36 meses, rebalanceamento semestral.
 
 ### Composição atual da carteira (última leitura oficial)
+🛡️ **ESTADO ATUAL — 15/10/2026 10:41: ZERADA, 100% EM CAIXA (patrimônio US$95.426).** Encerradas as quatro posições de IA (SanDisk, Micron, Vertiv e Western Digital). Motivo, segundo o post: estresse no mercado americano, com o S&P 500 falhando o rompimento. "Em ambiente assim, posição de tecnologia é a que mais apanha, e a nossa carteira é inteira de tecnologia." Não é stop: foi saída por decisão. Carteira fica em US$95.426, 4,6% abaixo do capital inicial de US$100.000. "A tese de infraestrutura de IA não mudou." "Fico observando os pontos de recompra. Quando houver preço, aviso aqui." Decisão detalhada em breve.
+
+*Composição ANTERIOR (superada):* 09/10 em diante: BTC/IA (VRT 13% + WDC 15% + Caixa 72%), e antes disso MU, SNDK, VRT, WDC (14/10 e 15/10).
+
+⚡ **DECISÃO 15/10/2026 10:41 — ENCERRAMENTO das 4 posições (caixa 35% → 100%):** SanDisk (−2,5% no patrimônio, peso 19%), Micron (−1,9%, peso 20%), Vertiv (−4,6%, peso 12%), Western Digital (−2,2%, peso 14%). Saída por decisão, não por stop.
+
 🛡️ **ESTADO ATUAL — 09/10/2026: 2 ativos + caixa 72%, após STOP + REENTRADA na WDC.** A carteira segue defensiva desde o
 encerramento de MOD e CGNX (15/09). Performance total **+3,83%**, retorno −2,23%, 28% investido.
 - **VRT (Vertiv)** — **13%** · entrada US$286,16 · atual ~US$245,46 · **−14,22%** (segue abaixo da entrada)
