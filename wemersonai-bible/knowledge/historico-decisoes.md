@@ -5,6 +5,8 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## OUTUBRO/2026
+- **16/10 08:30 — ENTRADA DOT: 0%→10% a US$1,1459** (caixa 50%→40%). "O preço voltou a subir depois do fundo de ontem e trabalha de novo acima da média longa, na região dos US$ 1,14." "Por hora, sem stop programado." "Devemos fazer mais compras nos próximos dias."
+- **16/10 08:17 — ENTRADA BTC: 0%→50% a US$82.578,71** (caixa 100%→50%). "Vamos remontar a posição em Bitcoin." "O preço se mantém acima da média longa, com os US$ 80 mil defendidos nesta semana." "Por hora, sem stop programado."
 - **15/10 10:34 — ENCERRAMENTO DOT por STOP acionado a US$1,0689 (peso 10% → 0%; caixa 90% → 100%). CARTEIRA 100% EM CAIXA, US$66.607.** "Era a última posição aberta." "Agora seguimos em preservação patrimonial, com o caixa inteiro pronto para a próxima oportunidade." Post cita: patrimônio cruzou US$60.000 em 25/08 e está 11% acima; resultado veio de DOT (51% e 19,7%) e Aerodrome (28% e 23%). Comentário de cliente no post: "todos os stops foram batidos". ⚠️ Os stops de BTC, ETH, XRP e SOL (balanço de 13/10 20:34) não têm decisão registrada aqui: confirmar datas e valores com o Gui.
 - **14/10 09:45 — ENTRADA DOT: 0%→10% a US$1,1385** (caixa 16%→6%). "O preço voltou para a média longa, na mesma região que
   sustentou a subida desde setembro." "Por hora, sem stop programado." Com esta compra, a carteira fica praticamente toda

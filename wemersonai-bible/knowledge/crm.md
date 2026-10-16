@@ -43,7 +43,14 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 15/10/2026 10:34: 100% EM CAIXA (US$66.607). Carteira em preservação patrimonial, sem posições abertas.** Última posição encerrada: DOT, por stop acionado em US$1,0689 (peso 10% → 0%; caixa 90% → 100%). O post diz que a DOT era a última posição aberta, então BTC, ETH, XRP e SOL (balanço de 13/10) foram encerrados antes, por stop. ⚠️ As datas e valores de execução desses stops NÃO estão na base: confirmar com o Gui antes de citar.
+🟢 **ESTADO ATUAL — 16/10/2026 08:30: BTC 50% + DOT 10% + Caixa 40%. Carteira voltou a comprar.** Pelo post, "devemos fazer mais compras nos próximos dias". ⚠️ **Sem stop programado** em BTC e DOT ("por hora, sem stop programado").
+
+- **Bitcoin (BTC)** — **50%** · ENTRADA 16/10 08:17 a **US$82.578,71** (0%→50%, caixa 100%→50%). "O preço se mantém acima da média longa, com os US$ 80 mil defendidos nesta semana." Sem stop programado.
+- **Polkadot (DOT)** — **10%** · ENTRADA 16/10 08:30 a **US$1,1459** (0%→10%, caixa 50%→40%). "O preço reage do fundo de ontem e volta para cima da média longa." Sem stop programado.
+
+*Estado ANTERIOR (superado):* 15/10 10:34: 100% em caixa (US$66.607), após stop da DOT em US$1,0689.
+
+Composição anterior à de hoje, para referência: 15/10 10:34: 100% EM CAIXA (US$66.607). Carteira em preservação patrimonial, sem posições abertas. Última posição encerrada: DOT, por stop acionado em US$1,0689 (peso 10% → 0%; caixa 90% → 100%). O post diz que a DOT era a última posição aberta, então BTC, ETH, XRP e SOL (balanço de 13/10) foram encerrados antes, por stop. ⚠️ As datas e valores de execução desses stops NÃO estão na base: confirmar com o Gui antes de citar.
 
 *Composição ANTERIOR (superada):* 14/10 09:45: BTC 50% + ETH 15% + XRP 10% + SOL 10% + DOT 10% + Caixa 6%.
 
