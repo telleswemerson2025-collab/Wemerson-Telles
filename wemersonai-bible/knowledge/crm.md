@@ -43,7 +43,12 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 16/10/2026 08:30: BTC 50% + DOT 10% + Caixa 40%. Carteira voltou a comprar.** Pelo post, "devemos fazer mais compras nos próximos dias". ⚠️ **Sem stop programado** em BTC e DOT ("por hora, sem stop programado").
+🟢 **ESTADO ATUAL — 19/10/2026 09:35: BTC 50% + DOT 20% + Caixa 30%.** Reforço em DOT hoje: PM cai de US$1,1459 para US$1,1260. Sem stop informado no post de 19/10 (a base não registra stop programado para BTC nem para DOT). Pelo post: "parcela nova só entra com o preço mais baixo que a anterior, e cada uma derruba o custo médio."
+
+- **Bitcoin (BTC)** — **50%** · ENTRADA 16/10 08:17 a **US$82.578,71**. Sem stop programado.
+- **Polkadot (DOT)** — **20%** · **PM US$1,1260** · ENTRADA 16/10 08:30 a US$1,1459 (10%) e **REFORÇO 19/10 09:35 a US$1,1067** (10% → 20%, caixa 40% → 30%). Sem stop programado.
+
+*Estado ANTERIOR (superado):* 16/10 08:30: BTC 50% + DOT 10% + Caixa 40%.
 
 - **Bitcoin (BTC)** — **50%** · ENTRADA 16/10 08:17 a **US$82.578,71** (0%→50%, caixa 100%→50%). "O preço se mantém acima da média longa, com os US$ 80 mil defendidos nesta semana." Sem stop programado.
 - **Polkadot (DOT)** — **10%** · ENTRADA 16/10 08:30 a **US$1,1459** (0%→10%, caixa 50%→40%). "O preço reage do fundo de ontem e volta para cima da média longa." Sem stop programado.
