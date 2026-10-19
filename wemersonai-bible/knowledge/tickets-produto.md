@@ -40,6 +40,11 @@
   do celular (notificações ligadas, conexão, reinstalar o app se persistir); feed é o canal mais imediato (F5); e-mail
   é o segundo caminho. Registrar o caso aqui pra acompanhar se o padrão se repete.
 
+### Causa comum de atraso de notificação: otimização de bateria (confirmada por cliente, 16/10/2026)
+- **Caso:** Geovani Aranha (Samsung S23 Ultra). Notificação atrasava quando a tela estava apagada. O app estava em "padrão" na otimização de bateria, e o Android limita apps que não são abertos todo dia.
+- **Orientação ao cliente:** nas configurações de bateria do celular, deixar o app do BlockCapital **sem restrição** (ou "não otimizar"), pra receber os avisos em segundo plano. Também conferir se as notificações do app estão permitidas.
+- **Quando usar:** atraso de notificação com tela apagada, em Android. Antes de tratar como falha de entrega, perguntar se a otimização de bateria está ativa para o app.
+
 ## 2b. Ferramenta de Portfólio — sem histórico de registros / auditoria (SEVERIDADE ALTA)
 - **Bug/lacuna:** o cliente **não consegue ver o histórico dos registros** de compra/venda que fez no
   portfólio, então não tem como conferir nem corrigir com segurança. O "Corrigir a Posição na Mão" não
