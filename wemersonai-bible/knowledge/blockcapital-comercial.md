@@ -91,6 +91,19 @@ que substituiu o "Trader de Sucesso") é anual como os demais, **mas quem é Vit
 a acessá-lo por 2 anos**. Ou seja: 12 meses é o padrão; os "2 anos" são o benefício do Vitalício
 especificamente sobre o treinamento em análise. A liberação acontece **em até 7 dias** após a compra.
 
+### Parceria: Declare Cripto (declaração de imposto cripto) — divulgada em outubro/2026
+- **O que é:** plataforma brasileira de declaração de criptoativos. Processa operações de corretoras e carteiras e entrega a declaração mensal, o ganho de capital, as guias e os dados para o IRPF anual.
+- **Link da parceria (público):** declarecripto.com.br/parceiro/guitelles
+- **Benefício para clientes BlockCapital (condição da Declare):** 30% de desconto nos planos anuais até 31/10/2026 (Pré Black November); 20% de desconto em qualquer época depois disso; prioridade no suporte. Quem acessa pelo link da parceria recebe o benefício.
+- **Planos (por número de transações no ano):** Lite (até 6.000), Advanced (até 60.000) e Prime (ilimitadas). Checkup gratuito, em cerca de 3 minutos. Raio-X opcional a R$149,00. Cálculo retroativo de até 5 anos.
+- **Acesso:** chave somente leitura; carteira própria só com endereço público. Nunca se pede frase de recuperação nem chave privada, conforme o material da empresa.
+- **Ressalvas obrigatórias:**
+  - Os números da empresa (10.000+ investidores, R$20,5 bi declarados) são informados pela própria Declare. Citar com atribuição.
+  - As datas regulatórias citadas pelo material (migração da Binance Brasil em 29/10/2026, transferências com carteira própria a partir de 01/10/2026, bancos sem licença a partir de 06/11/2026, intercâmbio com 70 países em 2027) NÃO foram verificadas pela equipe. Não citar como fato sem conferir nas fontes oficiais.
+  - Não é orientação fiscal, contábil ou jurídica individual. Em resposta a cliente, a equipe não dá orientação de imposto.
+  - Divulgação obrigatória: a BlockCapital é parceira licenciada e pode ser remunerada pelas contratações feitas pelo link.
+- **Fonte:** material de divulgação "Declare Cripto" recebido pelo Wemerson em 20/10/2026.
+
 ### Compra que não aparece / não localizada no e-mail — encaminhar pro suporte da Hotmart (regra 13/10/2026)
 Quando o cliente pagou (ou aparece cobrança no banco) mas a compra não é localizada no e-mail, o próprio cliente deve
 registrar o caso no suporte oficial da Hotmart: **https://help.hotmart.com/pt-br/contact-us?subject=bought-and-need-help**.
