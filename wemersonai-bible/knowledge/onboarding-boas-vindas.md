@@ -1,5 +1,29 @@
 # Onboarding — Manual de boas-vindas do cliente novo (modelo pronto)
 
+## REGRA (Wemerson, 20/10/2026): boas-vindas SEMPRE para todo cliente novo
+Sempre que um cliente entrar (compra confirmada ou acesso liberado), enviar a mensagem de boas-vindas abaixo, junto com o link mágico e o manual. Não pular, mesmo que o cliente já tenha pedido só o acesso.
+
+### Modelo de boas-vindas (chat/WhatsApp; trocar [Nome])
+[Nome], seja bem-vindo à Carteira Rumo ao Milhão! A gente fica muito feliz em ter você com a gente nessa jornada.
+
+Pra começar, acompanhe as decisões publicadas no feed, com o preço de referência e o peso de cada posição, e siga no seu ritmo.
+
+Um ponto importante desde o começo: a declaração de cripto. A legislação brasileira mudou bastante neste ano. Se você reside no Brasil, vale conhecer a Declare Cripto, parceira da BlockCapital, para entender a sua situação de forma individual. Até 31/10, quem entra pelo link da parceria tem 30% de desconto nos planos anuais.
+
+O guia completo está no anúncio que o Gui publicou em 19/10, e o acesso à parceria é pelo link: declarecripto.com.br/parceiro/guitelles
+
+A Bitget segue como a corretora que indicamos. Em breve vamos anunciar novas opções, pra quem quer operar no Brasil ou no exterior, e a gente te avisa.
+
+A decisão final é sempre sua. Qualquer dúvida, é só chamar.
+
+Você pode contar com toda a nossa equipe nessa jornada.
+
+### Regras de uso do modelo
+- Declaração: sempre como recomendação individual, nunca como obrigação para todos. Declare atende só o Brasil (confirmado Gui, 20/10): não oferecer a quem mora no exterior.
+- Desconto de 30% até 31/10: vale só pelo link da parceria, para planos anuais. Não é desconto da BlockCapital direto.
+- Não citar nome, data ou benefício das novas parcerias (anúncio pendente).
+- Link mágico e manual vão junto, em mensagem separada ou logo abaixo, conforme o canal. Link mágico é pessoal e nunca vai para a base.
+
 > Mensagem pronta pra enviar ao cliente recém-chegado (app/chat ou e-mail). Explica do zero:
 > instalar o app, entrar pelo link mágico, ativar notificações e como acompanhar no dia a dia.
 > Fonte: modelo oficial aprovado pelo Wemerson (07/09/2026). Manual com imagens:
