@@ -95,6 +95,7 @@ especificamente sobre o treinamento em análise. A liberação acontece **em at�
 - **O que é:** plataforma brasileira de declaração de criptoativos. Processa operações de corretoras e carteiras e entrega a declaração mensal, o ganho de capital, as guias e os dados para o IRPF anual.
 - **Link da parceria (público):** declarecripto.com.br/parceiro/guitelles
 - **Benefício para clientes BlockCapital (condição da Declare):** 30% de desconto nos planos anuais até 31/10/2026 (Pré Black November); 20% de desconto em qualquer época depois disso; prioridade no suporte. Quem acessa pelo link da parceria recebe o benefício.
+- **Alcance (CONFIRMADO Gui, 20/10/2026, WhatsApp): APENAS BRASIL.** Quem mora no exterior não é atendido pela Declare. Responder a dúvidas sobre exterior com "só para o Brasil".
 - **Planos (por número de transações no ano):** Lite (até 6.000), Advanced (até 60.000) e Prime (ilimitadas). Checkup gratuito, em cerca de 3 minutos. Raio-X opcional a R$149,00. Cálculo retroativo de até 5 anos.
 - **Acesso:** chave somente leitura; carteira própria só com endereço público. Nunca se pede frase de recuperação nem chave privada, conforme o material da empresa.
 - **Ressalvas obrigatórias:**
