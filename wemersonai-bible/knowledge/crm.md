@@ -17,7 +17,8 @@ bull market, para proteger o patrimônio.
 
 ### Aportes da CRM
 Os aportes são semanais, de US$200, às segundas-feiras, direcionados a USDT ou ao ativo
-em foco conforme a fase da estratégia — retomados em 02/03/2026. A gestão é sempre manual (não há aporte
+em foco conforme a fase da estratégia.
+**Linha do tempo dos aportes semanais (CONFIRMADO Wemerson, 19/10/2026):** recomeçaram em **02/03/2026**; foram **suspensos em 03/08/2026** (Gui: "nas próximas semanas não realizarei novos aportes"); **não voltaram desde então**. Ao responder, não dizer que os aportes estão ativos. A gestão é sempre manual (não há aporte
 automático) e a consistência importa mais que o tamanho do aporte.
 ⚠️ **DOIS números diferentes — não confundir (esclarecido 01/10/2026):**
 - **Total aportado na carteira-modelo ao longo de TODA a jornada (desde o início, mar/2023): em torno de US$23 mil.**
