@@ -13,7 +13,7 @@ cartão** ou **R$1.897,00 à vista/ano** (Pix também aceito), acesso anual (12 
 Os valores mudam conforme a campanha — pra cravar, confirme o checkout oficial.
 
 ### Diferença entre planos + preço da Carteira IA + desconto
-- **CRM (Rumo ao Milhão):** ver "Planos e valores" acima (anual R$175,51/mês).
+- **CRM (Rumo ao Milhão):** ver "Planos e valores" acima (anual R$1.897,00 à vista ou 12x de R$196,19).
 - **Carteira IA avulsa:** **R$2.997,00 por ano à vista**, ou **12x de R$309,96 no cartão** (checkout
   Hotmart "Carteira BlockCapital IA", confirmado 10/09/2026). **Sem desconto** na avulsa.
 - **Vitalício:** acesso contínuo e **inclui as duas carteiras (CRM + Carteira IA)** + relatórios
@@ -49,7 +49,7 @@ Valores mudam conforme a campanha — confirme o checkout oficial.
 > - (Quando a promoção sair do ar, remover/atualizar esta nota.)
 
 ### Renovação anual da CRM (valor)
-A renovação anual da CRM é **R$1.697,00**. O **parcelado tem juros**. (Renovação é diferente da
+A renovação anual da CRM é **R$1.897,00 à vista** (ou 12x de R$196,19 no cartão), conforme o checkout de 10/09/2026. O **parcelado tem juros**. (Renovação é diferente da
 primeira adesão; confirme o valor vigente no checkout.)
 
 ### "Comprei o anual mas caiu como assinatura mensal, e o valor veio menor" — POR QUÊ (CONFIRMADO Gui, 08/10/2026)
@@ -81,7 +81,7 @@ agente pode estar repetindo; corrigir quando puder.) ⚠️ Correção de guidan
 cupom** (ex.: cliente novo, cliente da Europa que não conseguia ver o valor com desconto). O percentual
 e o valor final variam por campanha/caso; confirmar o cupom vigente antes de prometer um número. O link
 de checkout/cupom é de campanha (pode expirar) — **não registrar o link na base**, gerar/enviar na hora.
-(Obs.: R$1.697,00 é o valor do anual **à vista**; o parcelado em 12x de R$175,51 sai mais caro por causa
+(Obs.: R$1.897,00 é o valor do anual **à vista** (checkout 10/09/2026); o parcelado em 12x de R$196,19 sai mais caro por causa
 dos juros.)
 
 ### Curso / treinamento + duração de acesso (regra geral)
