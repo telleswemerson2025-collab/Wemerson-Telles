@@ -91,6 +91,12 @@ que substituiu o "Trader de Sucesso") é anual como os demais, **mas quem é Vit
 a acessá-lo por 2 anos**. Ou seja: 12 meses é o padrão; os "2 anos" são o benefício do Vitalício
 especificamente sobre o treinamento em análise. A liberação acontece **em até 7 dias** após a compra.
 
+### Anúncio pendente: nova parceira de corretora (Gui, 19/10/2026)
+- **O que o Gui disse:** a Bitget continua sendo a parceira atual e é uma corretora internacional. Em breve (nos próximos dias) será anunciada uma **nova parceria**, para que o cliente escolha entre operar em território internacional ou dentro do território brasileiro.
+- **Status:** ANÚNCIO PENDENTE. Nome da corretora, datas e condições NÃO divulgados. Não citar nome, data ou benefício até o anúncio oficial.
+- **Como responder até lá:** "a Bitget segue como a corretora que indicamos; em breve vamos anunciar uma nova opção, para quem quer operar no Brasil ou no exterior." Sem prazo.
+- **Fonte:** anúncio do Gui em 19/10/2026 (declaração e guia, com link da Declare).
+
 ### Parceria: Declare Cripto (declaração de imposto cripto) — divulgada em outubro/2026
 - **O que é:** plataforma brasileira de declaração de criptoativos. Processa operações de corretoras e carteiras e entrega a declaração mensal, o ganho de capital, as guias e os dados para o IRPF anual.
 - **Link da parceria (público):** declarecripto.com.br/parceiro/guitelles
