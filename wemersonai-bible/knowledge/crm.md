@@ -44,11 +44,12 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 20/10/2026 11:22: BTC 50% + DOT 20% + AERO 15% + Caixa 14%** (patrimônio US$67.048, segundo o vídeo de gerenciamento de 20/10). Caixa saiu de 100% para 15% nesta semana. Sem stop programado em nenhuma das três posições. Reforço em DOT hoje: PM cai de US$1,1459 para US$1,1260. Sem stop informado no post de 19/10 (a base não registra stop programado para BTC nem para DOT). Pelo post: "parcela nova só entra com o preço mais baixo que a anterior, e cada uma derruba o custo médio."
+🟢 **ESTADO ATUAL — 21/10/2026 08:58: BTC 50% + DOT 25% + AERO 15% + Caixa 10%** (patrimônio US$67.048, segundo o vídeo de gerenciamento de 20/10). Caixa saiu de 100% para 15% nesta semana. Sem stop programado em nenhuma das três posições. Reforço em DOT hoje: PM cai de US$1,1459 para US$1,1260. Sem stop informado no post de 19/10 (a base não registra stop programado para BTC nem para DOT). Pelo post: "parcela nova só entra com o preço mais baixo que a anterior, e cada uma derruba o custo médio."
 
 - **Aerodrome (AERO)** — **15%** · ENTRADA 20/10 11:22 a **US$0,8273** (0%→15%, caixa 29%→14%). "Terceiro trade na Aerodrome. Os dois anteriores fecharam com 28% e 23% de lucro." Sem stop programado.
 - **Bitcoin (BTC)** — **50%** · ENTRADA 16/10 08:17 a **US$82.578,71**. Sem stop programado.
-- **Polkadot (DOT)** — **20%** · **PM US$1,1260** · ENTRADA 16/10 08:30 a US$1,1459 (10%) e **REFORÇO 19/10 09:35 a US$1,1067** (10% → 20%, caixa 40% → 30%). Sem stop programado.
+- **Polkadot (DOT)** — **25%** · **PM US$1,1309** (reforço 21/10 08:58 a US$1,1506, 20% → 25%, caixa 15% → 10%; sem stop programado)
+- *Histórico DOT anterior:* **PM US$1,1260** · ENTRADA 16/10 08:30 a US$1,1459 (10%) e **REFORÇO 19/10 09:35 a US$1,1067** (10% → 20%, caixa 40% → 30%). Sem stop programado.
 
 *Estado ANTERIOR (superado):* 16/10 08:30: BTC 50% + DOT 10% + Caixa 40%.
 
