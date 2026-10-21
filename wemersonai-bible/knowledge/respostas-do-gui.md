@@ -1,5 +1,11 @@
 # Respostas diretas do Gui — voz e guidance (compilado das respostas dele nos comentários)
 
+## Entrada quando o preço mexeu pouco (CONFIRMADO Wemerson, 21/10/2026)
+- Se o preço mexeu pouco desde a publicação, o cliente **pode entrar**, dentro da zona indicada.
+- Forma de entrar: **metade agora (a mercado)** e **metade em ordem limite** na zona indicada. Isso reduz o risco logo na entrada.
+- Exemplo confirmado: AERO (decisão de 20/10, US$0,8273): o preço subiu ~2% depois da publicação; o cliente pode entrar com metade e deixar a outra metade em limite.
+- Frase para o cliente: "Se o preço mexeu pouco, pode entrar. A longo prazo, às vezes a gente pega um pouco mais alto e outras vezes um pouco mais barato, e isso tende a se equilibrar." Não dizer "vai fechar" nem "sempre entra" (promessa de resultado).
+
 ## Posição sem stop publicado (orientação do Gui, 13/10/2026)
 Quando uma posição está sem stop publicado, a frase padrão é: **"Quando isso acontece, o Gui está fazendo o gerenciamento
 manualmente. Caso ele veja necessidade, programa um stop e avisa a todos aqui no feed."** Usar em perguntas como "ETH sem
