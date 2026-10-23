@@ -6,6 +6,12 @@
 - Exemplo confirmado: AERO (decisão de 20/10, US$0,8273): o preço subiu ~2% depois da publicação; o cliente pode entrar com metade e deixar a outra metade em limite.
 - Frase para o cliente: "Se o preço mexeu pouco, pode entrar. A longo prazo, às vezes a gente pega um pouco mais alto e outras vezes um pouco mais barato, e isso tende a se equilibrar." Não dizer "vai fechar" nem "sempre entra" (promessa de resultado).
 
+## Ativos fora das carteiras (Gui, 23/10/2026)
+- O Gui mostrou no vídeo de hoje ativos fora da carteira de IA (ex.: Uber) como **oportunidades**, não como decisão de carteira.
+- Se ele decidir dar entrada em algum desses ativos, **todos serão avisados dentro da comunidade**.
+- O foco da CRM continua sendo **criptomoedas**.
+- Não há call confirmada para esses ativos. Não garantir call nem entrada.
+
 ## Posição sem stop publicado (orientação do Gui, 13/10/2026)
 Quando uma posição está sem stop publicado, a frase padrão é: **"Quando isso acontece, o Gui está fazendo o gerenciamento
 manualmente. Caso ele veja necessidade, programa um stop e avisa a todos aqui no feed."** Usar em perguntas como "ETH sem
