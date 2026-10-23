@@ -12,6 +12,7 @@ capital e construir posição quando a relação risco-retorno é favorável.
 
 ### Quando a CRM começou
 O primeiro aporte da CRM foi em março de 2023, quando o BTC ainda estava em bear market.
+⚠️ **PENDÊNCIA (23/10/2026, a confirmar com o Gui):** o gráfico de performance do app mostra +192% com início em **05/06/2023**, segundo o cliente José Mário (e-mail de 22/10). A base registra março de 2023 como início da carteira. Não citar percentual de performance nem data de início do gráfico até o Gui confirmar. Aportes: começou com ~US$200; aportes semanais de US$200, total ~US$23 mil, com pausa; suspensos desde 03/08/2026.
 A filosofia do Gui é montar posição de forma gradual antes da confirmação de um novo
 bull market, para proteger o patrimônio.
 
