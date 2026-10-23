@@ -45,7 +45,16 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 21/10/2026 08:58: BTC 50% + DOT 25% + AERO 15% + Caixa 10%** (patrimônio US$67.048, segundo o vídeo de gerenciamento de 20/10). Caixa saiu de 100% para 15% nesta semana. Sem stop programado em nenhuma das três posições. Reforço em DOT hoje: PM cai de US$1,1459 para US$1,1260. Sem stop informado no post de 19/10 (a base não registra stop programado para BTC nem para DOT). Pelo post: "parcela nova só entra com o preço mais baixo que a anterior, e cada uma derruba o custo médio."
+🟢 **ESTADO ATUAL — 23/10/2026 10:13: BTC 50% + Caixa 50%.** Encerradas DOT e AERO (decisão de 23/10, ordem limite). Patrimônio US$66.356. Pelo post: "Programaremos um stop no Bitcoin em breve." BTC segue sem stop programado até essa publicação.
+
+- **Bitcoin (BTC)** — **50%** · ENTRADA 16/10 08:17 a **US$82.578,71** (e, pela composição de 21/10, segue 50%). Sem stop programado; o Gui vai programar em breve.
+- **Polkadot (DOT)** — **0%** · ENCERRADA em 23/10 10:13 a **US$1,182** (peso 25% → 0%). Resultado na carteira: **+1,14%**. "Usem ordem limite."
+- **Aerodrome (AERO)** — **0%** · ENCERRADA em 23/10 10:13 a **US$0,779** (peso 15% → 0%). Resultado na carteira: **-0,89%**.
+- **Caixa (USD)** — **50%** (era 10%).
+
+*Estado ANTERIOR (superado):* 21/10 08:58: BTC 50% + DOT 25% + AERO 15% + Caixa 10%.
+
+🔻 **DECISÃO 23/10/2026 10:13 — ENCERRAMENTO DOT e AERO (caixa 10% → 50%):** "Saímos das duas altcoins da carteira. Vendemos a Polkadot a US$ 1,182 e a Aerodrome a US$ 0,779." "Montamos Polkadot e Aerodrome apostando em rotação: Bitcoin firme e o dinheiro caminhando para as moedas de maior risco. Essa rotação não veio." "A Polkadot entregou o movimento que esperávamos e nos pagou por isso. A Aerodrome não andou e foi devolvendo terreno." Patrimônio US$66.356, "saímos no zero a zero".
 
 - **Aerodrome (AERO)** — **15%** · ENTRADA 20/10 11:22 a **US$0,8273** (0%→15%, caixa 29%→14%). "Terceiro trade na Aerodrome. Os dois anteriores fecharam com 28% e 23% de lucro." Sem stop programado.
 - **Bitcoin (BTC)** — **50%** · ENTRADA 16/10 08:17 a **US$82.578,71**. Sem stop programado.

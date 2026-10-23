@@ -5,6 +5,7 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## OUTUBRO/2026
+- **23/10 10:13 — ENCERRAMENTO DOT e AERO (caixa 10%→50%).** DOT vendida a US$1,182 (+1,14% na carteira); AERO a US$0,779 (-0,89%). "Use ordem limite." "Uma posição pagou a outra... Saímos no zero a zero." Motivo: rotação esperada (Bitcoin firme e dinheiro indo para moedas de maior risco) não veio. Patrimônio US$66.356. Estado: **BTC 50% + Caixa 50%**. "Programaremos um stop no Bitcoin em breve."
 - **21/10 08:58 — REFORÇO DOT: 20%→25% a US$1,1506** (caixa 15%→10%). PM sobe para **US$1,1309**. "O preço trabalha de novo acima da média longa, na faixa dos US$ 1,14, depois de defender a região dos US$ 1,05 na semana passada." "Por hora, seguimos sem stop programado." Estado: **BTC 50% + DOT 25% + AERO 15% + Caixa 10%**.
 - **20/10 11:22 — ENTRADA AERO (Aerodrome): 0%→15% a US$0,8273** (caixa 29%→14%). "O preço corrigiu desde a máxima de outubro, apoiou na média longa, perto dos US$ 0,79, e voltou a subir." Terceiro trade na Aerodrome; os dois anteriores fecharam com 28% e 23%. "Por hora, sem stop programado." Vídeo de gerenciamento do mesmo dia: patrimônio US$67.048; caixa de 100% para 15%.
 - **19/10 09:35 — REFORÇO DOT: 10%→20% a US$1,1067** (caixa 40%→30%). PM cai de US$1,1459 para **US$1,1260**. "Mesma lógica das compras anteriores: parcela nova só entra com o preço mais baixo que a anterior, e cada uma derruba o custo médio." Faixa de compra: US$1,04 a US$1,13, depois do topo em US$1,30. "Sobram 30% em caixa." Estado: **BTC 50% + DOT 20% + Caixa 30%**.
