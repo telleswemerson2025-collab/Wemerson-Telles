@@ -13,7 +13,7 @@
 
 ## Ativos fora das carteiras (Gui, 23/10/2026)
 - O Gui mostrou no vídeo de hoje ativos fora da carteira de IA (ex.: Uber) como **oportunidades**, não como decisão de carteira.
-- Se ele decidir dar entrada em algum desses ativos, **todos serão avisados dentro da comunidade**.
+- Se ele decidir dar entrada em algum desses ativos, **a informação sai no feed**, que é o canal de todos. Não há aviso individual para cada cliente.
 - O foco da CRM continua sendo **criptomoedas**.
 - Não há call confirmada para esses ativos. Não garantir call nem entrada.
 
