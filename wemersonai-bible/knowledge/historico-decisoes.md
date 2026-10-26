@@ -5,6 +5,8 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## OUTUBRO/2026
+- **23/10 20:29 — STOP BTC ACIONADO a US$80.736,97 (peso 49%→0%; caixa 51%→100%).** Carteira 100% em caixa. "Devemos ficar na defensiva até sinais de fundo e reversões aparecerem."
+- **23/10 14:38 — PROGRAMADO STOP BTC em US$80.736,97** (ordem limite). "O preço perdeu a média que vinha sustentando a alta." Se acionado: prejuízo na carteira 1,12%, patrimônio US$66.022, caixa 100%. "Stop não é previsão de queda."
 - **23/10 10:13 — ENCERRAMENTO DOT e AERO (caixa 10%→50%).** DOT vendida a US$1,182 (+1,14% na carteira); AERO a US$0,779 (-0,89%). "Use ordem limite." "Uma posição pagou a outra... Saímos no zero a zero." Motivo: rotação esperada (Bitcoin firme e dinheiro indo para moedas de maior risco) não veio. Patrimônio US$66.356. Estado: **BTC 50% + Caixa 50%**. "Programaremos um stop no Bitcoin em breve."
 - **21/10 08:58 — REFORÇO DOT: 20%→25% a US$1,1506** (caixa 15%→10%). PM sobe para **US$1,1309**. "O preço trabalha de novo acima da média longa, na faixa dos US$ 1,14, depois de defender a região dos US$ 1,05 na semana passada." "Por hora, seguimos sem stop programado." Estado: **BTC 50% + DOT 25% + AERO 15% + Caixa 10%**.
 - **20/10 11:22 — ENTRADA AERO (Aerodrome): 0%→15% a US$0,8273** (caixa 29%→14%). "O preço corrigiu desde a máxima de outubro, apoiou na média longa, perto dos US$ 0,79, e voltou a subir." Terceiro trade na Aerodrome; os dois anteriores fecharam com 28% e 23%. "Por hora, sem stop programado." Vídeo de gerenciamento do mesmo dia: patrimônio US$67.048; caixa de 100% para 15%.

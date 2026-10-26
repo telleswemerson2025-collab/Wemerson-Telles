@@ -45,7 +45,15 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 23/10/2026 10:13: BTC 50% + Caixa 50%.** Encerradas DOT e AERO (decisão de 23/10, ordem limite). Patrimônio US$66.356. Pelo post: "Programaremos um stop no Bitcoin em breve." BTC segue sem stop programado até essa publicação.
+🟢 **ESTADO ATUAL — 23/10/2026 20:29: 100% EM CAIXA.** Stop do BTC acionado em US$80.736,97 (peso 49% → 0%; caixa 51% → 100%). Sem posições abertas. Pelo post: "Devemos ficar na defensiva até sinais de fundo e reversões aparecerem."
+
+- **Bitcoin (BTC)** — **0%** · ENCERRADA em 23/10 20:29 no stop de **US$80.736,97** (ordem limite). Carteira: 1,12% de prejuízo estimado no stop (post 14:38).
+
+*Estado ANTERIOR (superado):* 23/10 10:13: BTC 50% + Caixa 50%.
+
+📌 **Stop do BTC programado em 23/10 14:38:** US$80.736,97, "use ordem limite". Se acionado: patrimônio estimado US$66.022, caixa 100%.
+
+🔻 **DECISÃO 23/10/2026 20:29 — STOP do BTC acionado (caixa 51% → 100%):** "Nosso stop em BTC foi acionado nos US$ 80.736,97. Com isso nossa carteira está 100% em caixa." "O risco de aceleração de queda está aumentando e ao longo do dia aumento mais."
 
 - **Bitcoin (BTC)** — **50%** · ENTRADA 16/10 08:17 a **US$82.578,71** (e, pela composição de 21/10, segue 50%). Sem stop programado; o Gui vai programar em breve.
 - **Polkadot (DOT)** — **0%** · ENCERRADA em 23/10 10:13 a **US$1,182** (peso 25% → 0%). Resultado na carteira: **+1,14%**. "Usem ordem limite."
