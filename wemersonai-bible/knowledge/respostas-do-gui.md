@@ -6,6 +6,11 @@
 - Exemplo confirmado: AERO (decisão de 20/10, US$0,8273): o preço subiu ~2% depois da publicação; o cliente pode entrar com metade e deixar a outra metade em limite.
 - Frase para o cliente: "Se o preço mexeu pouco, pode entrar. A longo prazo, às vezes a gente pega um pouco mais alto e outras vezes um pouco mais barato, e isso tende a se equilibrar." Não dizer "vai fechar" nem "sempre entra" (promessa de resultado).
 
+## Câmbio: a carteira trabalha em dólar (Gui, 26/10/2026)
+- A carteira trabalha e é medida em **dólar**. A orientação é **manter o valor em dólar**.
+- A carteira **não faz** movimento de câmbio: não realiza dólar se o dólar sobe, nem troca para real se o dólar cai.
+- Se perguntarem se vale realizar dólares para real (ex.: após alta do USDT/BRL), a resposta é: a carteira segue em dólar, e a decisão de câmbio é de cada cliente.
+
 ## Ativos fora das carteiras (Gui, 23/10/2026)
 - O Gui mostrou no vídeo de hoje ativos fora da carteira de IA (ex.: Uber) como **oportunidades**, não como decisão de carteira.
 - Se ele decidir dar entrada em algum desses ativos, **todos serão avisados dentro da comunidade**.
