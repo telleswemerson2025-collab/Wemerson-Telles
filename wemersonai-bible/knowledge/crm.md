@@ -45,7 +45,7 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 23/10/2026 20:29: 100% EM CAIXA.** Stop do BTC acionado em US$80.736,97 (peso 49% → 0%; caixa 51% → 100%). Sem posições abertas. Pelo post: "Devemos ficar na defensiva até sinais de fundo e reversões aparecerem."
+🟢 **ESTADO ATUAL — 26/10/2026 10:22: 100% EM CAIXA (preservação patrimonial, risco fora de zero).** Tese do dia 26/10: próximas decisões serão de trading no BTC, com zero em altcoins; altcoins só voltam quando o risco voltar a zero. Antes: 23/10 20:29: 100% EM CAIXA. Stop do BTC acionado em US$80.736,97 (peso 49% → 0%; caixa 51% → 100%). Sem posições abertas. Pelo post: "Devemos ficar na defensiva até sinais de fundo e reversões aparecerem."
 
 - **Bitcoin (BTC)** — **0%** · ENCERRADA em 23/10 20:29 no stop de **US$80.736,97** (ordem limite). Carteira: 1,12% de prejuízo estimado no stop (post 14:38).
 

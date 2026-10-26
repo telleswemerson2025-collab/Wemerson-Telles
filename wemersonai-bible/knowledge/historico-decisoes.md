@@ -5,6 +5,7 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## OUTUBRO/2026
+- **26/10 10:22 — TESE "O risco saiu de zero": carteira segue em preservação patrimonial, 100% em caixa.** "Quando o risco volta a cair, buscamos trading no Bitcoin, com zero exposição em altcoins. E só voltamos às altcoins quando o risco volta a zero." "As próximas decisões devem ser de trading no Bitcoin." "A altcoin é a ponta que mais apanha... é a primeira a sair e a última a entrar." Não é previsão de queda: "mede a chance de uma queda ganhar velocidade".
 - **23/10 20:29 — STOP BTC ACIONADO a US$80.736,97 (peso 49%→0%; caixa 51%→100%).** Carteira 100% em caixa. "Devemos ficar na defensiva até sinais de fundo e reversões aparecerem."
 - **23/10 14:38 — PROGRAMADO STOP BTC em US$80.736,97** (ordem limite). "O preço perdeu a média que vinha sustentando a alta." Se acionado: prejuízo na carteira 1,12%, patrimônio US$66.022, caixa 100%. "Stop não é previsão de queda."
 - **23/10 10:13 — ENCERRAMENTO DOT e AERO (caixa 10%→50%).** DOT vendida a US$1,182 (+1,14% na carteira); AERO a US$0,779 (-0,89%). "Use ordem limite." "Uma posição pagou a outra... Saímos no zero a zero." Motivo: rotação esperada (Bitcoin firme e dinheiro indo para moedas de maior risco) não veio. Patrimônio US$66.356. Estado: **BTC 50% + Caixa 50%**. "Programaremos um stop no Bitcoin em breve."
