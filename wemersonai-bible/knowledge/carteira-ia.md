@@ -12,6 +12,13 @@ já correu** — o valor está na infraestrutura que sustenta a IA. Tem a aba "T
 e a aba "Decisões" (execução real). Horizonte de 18 a 36 meses, rebalanceamento semestral.
 
 ### Composição atual da carteira (última leitura oficial)
+🟢 **ESTADO ATUAL — 27/10/2026 10:18: SpaceX (SPCX) 20% + Bank of America (BAC) 10% + Caixa 70%.** Voltou a comprar após a zeragem de 15/10. Sem stop informado nos posts de 27/10.
+- **SpaceX (SPCX)** — **20%** · ENTRADA 27/10 09:59 a **US$148,64** (0%→20%, caixa 100%→80%). "Segundo trade na SpaceX. O primeiro foi encerrado em 14 de setembro, com 20,9% de lucro."
+- **Bank of America (BAC)** — **10%** · ENTRADA 27/10 10:18 a **US$50,55** (0%→10%, caixa 80%→70%). "O preço corrigiu desde a máxima de agosto, perto dos US$ 65, e trabalha abaixo da média longa, hoje em US$ 56,58."
+*Estado ANTERIOR (superado):* 15/10 10:41: 100% em caixa (US$95.426).
+
+⚡ **DECISÃO 27/10/2026 09:59 — ENTRADA SpaceX (20%, a US$148,64)** e **10:18 — ENTRADA Bank of America (10%, a US$50,55)**. Caixa 100% → 70%. "Decisão detalhada em breve."
+
 🛡️ **ESTADO ATUAL — 15/10/2026 10:41: ZERADA, 100% EM CAIXA (patrimônio US$95.426).** Encerradas as quatro posições de IA (SanDisk, Micron, Vertiv e Western Digital). Motivo, segundo o post: estresse no mercado americano, com o S&P 500 falhando o rompimento. "Em ambiente assim, posição de tecnologia é a que mais apanha, e a nossa carteira é inteira de tecnologia." Não é stop: foi saída por decisão. Carteira fica em US$95.426, 4,6% abaixo do capital inicial de US$100.000. "A tese de infraestrutura de IA não mudou." "Fico observando os pontos de recompra. Quando houver preço, aviso aqui." Decisão detalhada em breve.
 
 *Composição ANTERIOR (superada):* 09/10 em diante: BTC/IA (VRT 13% + WDC 15% + Caixa 72%), e antes disso MU, SNDK, VRT, WDC (14/10 e 15/10).
