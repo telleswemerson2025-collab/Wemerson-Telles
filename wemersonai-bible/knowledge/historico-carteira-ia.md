@@ -6,6 +6,7 @@
 > MOD 5% · VST 5% · CGNX 4% · Caixa 4%.
 
 ## Linha do tempo (mais recente → mais antiga)
+- **27/10 12:55 — ENTRADA SanDisk (SNDK): 0%→20% a US$1.300,96** (caixa 70%→50%). Correção desde a máxima de setembro (perto de US$1.900); defendeu US$1.230 na semana passada; média longa em US$1.486.
 - **27/10 10:18 — ENTRADA Bank of America (BAC): 0%→10% a US$50,55** (caixa 80%→70%). Correção desde a máxima de agosto (perto de US$65); preço abaixo da média longa (US$56,58); defendeu a faixa de US$49 nas últimas semanas.
 - **27/10 09:59 — ENTRADA SpaceX (SPCX): 0%→20% a US$148,64** (caixa 100%→80%). Preço voltou para a faixa de US$147, logo abaixo da média longa (US$152). Segundo trade na SpaceX; o primeiro fechou com +20,9% em 14/09.
 - **15/10 10:41 — ENCERRAMENTO das 4 posições de IA: caixa 35% → 100% (patrimônio US$95.426).** Motivo: estresse no mercado americano, com o S&P 500 falhando o rompimento, o que "deixa espaço aberto para uma retração maior". "Posição de tecnologia é a que mais apanha, e a nossa carteira é inteira de tecnologia." Custo de cada saída (impacto no patrimônio): SanDisk −2,5% (peso 19%), Micron −1,9% (peso 20%), Vertiv −4,6% (peso 12%), Western Digital −2,2% (peso 14%). "Preservar capital é uma decisão ativa, não desistência." "A tese de infraestrutura de IA não mudou. O que mudou foi o preço que o mercado está disposto a pagar por ela agora." Decisão detalhada em breve.
