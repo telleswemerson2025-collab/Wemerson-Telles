@@ -12,6 +12,7 @@ já correu** — o valor está na infraestrutura que sustenta a IA. Tem a aba "T
 e a aba "Decisões" (execução real). Horizonte de 18 a 36 meses, rebalanceamento semestral.
 
 ### Composição atual da carteira (última leitura oficial)
+> **Tese das entradas em BAC e GOOG (Gui, 29/10/2026):** "IA não está entregando os resultados que esperamos... abrimos espaço para BAC e GOOG." Entradas de oportunidade enquanto a IA não performa. Ver `respostas-do-gui.md`.
 🟢 **ESTADO ATUAL — 29/10/2026 11:25: Alphabet (GOOG) 30% + SpaceX (SPCX) 20% + SanDisk (SNDK) 20% + Bank of America (BAC) 10% + Caixa 20%.** Alphabet é a maior posição da carteira. Voltou a comprar após a zeragem de 15/10. Sem stop informado nos posts de 27/10.
 - **SpaceX (SPCX)** — **20%** · ENTRADA 27/10 09:59 a **US$148,64** (0%→20%, caixa 100%→80%). "Segundo trade na SpaceX. O primeiro foi encerrado em 14 de setembro, com 20,9% de lucro."
 - **Alphabet (GOOG)** — **30%** · ENTRADA 29/10 11:25 a **US$283,59** (0%→30%, caixa 50%→20%). "A ação cai 11,9% hoje e volta ao patamar de agosto. A distância para a média longa, em US$ 339,84, é a maior desde o começo do ano." "É a maior posição da carteira, e entramos de uma vez, aproveitando a queda." Decisão detalhada em breve.

@@ -11,6 +11,11 @@
 - A carteira **não faz** movimento de câmbio: não realiza dólar se o dólar sobe, nem troca para real se o dólar cai.
 - Se perguntarem se vale realizar dólares para real (ex.: após alta do USDT/BRL), a resposta é: a carteira segue em dólar, e a decisão de câmbio é de cada cliente.
 
+## Por que bancos e Alphabet entraram na Carteira de IA (Gui, WhatsApp, 29/10/2026, 15h00)
+- Texto do Gui: "IA não está entregando os resultados que esperamos, principalmente após os líderes do setor falarem que precisarão frear a evolução. Em um cenário como isso ou ficar aguardando o dia que IA vai performar ou aproveitamos outras coisas! Por isso abrimos espaço para BAC e GOOG."
+- Ou seja: a entrada em **Bank of America (BAC)** e **Alphabet (GOOG)** na Carteira de IA é uma escolha de **aproveitar outras oportunidades** enquanto o setor de IA não performa, e não uma mudança de tese de IA.
+- Para o cliente: a carteira segue de ações, e essas duas posições foram abertas nesse contexto. Não prometer resultado.
+
 ## Ativos fora das carteiras (Gui, 23/10/2026)
 - O Gui mostrou no vídeo de hoje ativos fora da carteira de IA (ex.: Uber) como **oportunidades**, não como decisão de carteira.
 - Se ele decidir dar entrada em algum desses ativos, **a informação sai no feed**, que é o canal de todos. Não há aviso individual para cada cliente.
