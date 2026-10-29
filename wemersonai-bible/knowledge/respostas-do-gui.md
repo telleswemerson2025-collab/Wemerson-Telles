@@ -16,9 +16,10 @@
 - Ou seja: a entrada em **Bank of America (BAC)** e **Alphabet (GOOG)** na Carteira de IA é uma escolha de **aproveitar outras oportunidades** enquanto o setor de IA não performa, e não uma mudança de tese de IA.
 - Para o cliente: a carteira segue de ações, e essas duas posições foram abertas nesse contexto. Não prometer resultado.
 
-## Ação citada pelo Gui que não está em carteira (Wemerson, 29/10/2026, repassando o Gui)
-- Quando o Gui cita uma ação e ela não está alocada em nenhuma carteira, é uma **posição pessoal** dele, um investimento particular.
-- Ao responder cliente: explicar que a ação não está em carteira e que não há call da carteira para ela. Não dizer que é recomendação.
+## Ação citada pelo Gui que não está em carteira (Wemerson, 29/10/2026, CORRIGIDO)
+- O canal do YouTube **não é a CRM nem a Carteira de IA**. É o canal diário de análise do Gui, para um público diferente, e nele o Gui dá dicas de ações e cripto que não estão em nenhuma carteira.
+- Portanto, uma ação citada no YouTube que não está em carteira **não é automaticamente posição pessoal**, e também **não é call de carteira**. Não dizer que é posição pessoal nem que é recomendação.
+- Ao responder cliente: a ação foi citada na análise do canal, não faz parte das carteiras, e não há call de carteira para ela.
 
 ## Ativos fora das carteiras (Gui, 23/10/2026)
 - O Gui mostrou no vídeo de hoje ativos fora da carteira de IA (ex.: Uber) como **oportunidades**, não como decisão de carteira.
