@@ -22,6 +22,12 @@
 - **Em qualquer dos dois casos, não é call de carteira.** Ao responder cliente: a ação foi citada na análise do canal, não faz parte das carteiras, e não há call de carteira para ela.
 - Não afirmar qual dos dois casos é para um ativo específico, a menos que o Gui confirme.
 
+## Posição PESSOAL do Gui em BSX (Gui, repassado por Wemerson, 29/10/2026) — NÃO É CALL DE CARTEIRA
+- O Gui tem uma posição pessoal em BSX, que ele vem comentando na análise. Não está em nenhuma carteira.
+- Ele disse que não há certeza de que os ativos vão subir: alguns sobem, outros batem stop, e o objetivo é ganhar no longo prazo e devolver de colher.
+- Na queda do dia anterior, ele não estopou, aumentou levemente a posição em uma recuperação abaixo do preço de compra anterior, e segue com ela, com custo médio ainda acima do preço.
+- **Não repassar esses níveis a clientes como orientação de carteira.** Ao responder cliente: é investimento pessoal do Gui, não faz parte das carteiras, e não há call de carteira para o ativo.
+
 ## Ativos fora das carteiras (Gui, 23/10/2026)
 - O Gui mostrou no vídeo de hoje ativos fora da carteira de IA (ex.: Uber) como **oportunidades**, não como decisão de carteira.
 - Se ele decidir dar entrada em algum desses ativos, **a informação sai no feed**, que é o canal de todos. Não há aviso individual para cada cliente.
