@@ -12,8 +12,9 @@ já correu** — o valor está na infraestrutura que sustenta a IA. Tem a aba "T
 e a aba "Decisões" (execução real). Horizonte de 18 a 36 meses, rebalanceamento semestral.
 
 ### Composição atual da carteira (última leitura oficial)
-🟢 **ESTADO ATUAL — 27/10/2026 12:55: SpaceX (SPCX) 20% + Bank of America (BAC) 10% + SanDisk (SNDK) 20% + Caixa 50%.** Voltou a comprar após a zeragem de 15/10. Sem stop informado nos posts de 27/10.
+🟢 **ESTADO ATUAL — 29/10/2026 11:25: Alphabet (GOOG) 30% + SpaceX (SPCX) 20% + SanDisk (SNDK) 20% + Bank of America (BAC) 10% + Caixa 20%.** Alphabet é a maior posição da carteira. Voltou a comprar após a zeragem de 15/10. Sem stop informado nos posts de 27/10.
 - **SpaceX (SPCX)** — **20%** · ENTRADA 27/10 09:59 a **US$148,64** (0%→20%, caixa 100%→80%). "Segundo trade na SpaceX. O primeiro foi encerrado em 14 de setembro, com 20,9% de lucro."
+- **Alphabet (GOOG)** — **30%** · ENTRADA 29/10 11:25 a **US$283,59** (0%→30%, caixa 50%→20%). "A ação cai 11,9% hoje e volta ao patamar de agosto. A distância para a média longa, em US$ 339,84, é a maior desde o começo do ano." "É a maior posição da carteira, e entramos de uma vez, aproveitando a queda." Decisão detalhada em breve.
 - **SanDisk (SNDK)** — **20%** · ENTRADA 27/10 12:55 a **US$1.300,96** (0%→20%, caixa 70%→50%). "O preço corrigiu desde a máxima de setembro, perto dos US$ 1.900, e defendeu a faixa dos US$ 1.230 na semana passada. A média longa está logo acima, em US$ 1.486." Decisão detalhada em breve.
 - **Bank of America (BAC)** — **10%** · ENTRADA 27/10 10:18 a **US$50,55** (0%→10%, caixa 80%→70%). "O preço corrigiu desde a máxima de agosto, perto dos US$ 65, e trabalha abaixo da média longa, hoje em US$ 56,58."
 *Estado ANTERIOR (superado):* 15/10 10:41: 100% em caixa (US$95.426).

@@ -6,6 +6,7 @@
 > MOD 5% · VST 5% · CGNX 4% · Caixa 4%.
 
 ## Linha do tempo (mais recente → mais antiga)
+- **29/10 11:25 — ENTRADA Alphabet (GOOG): 0%→30% a US$283,59** (caixa 50%→20%). "A ação cai 11,9% hoje e volta ao patamar de agosto." Maior posição da carteira; "entramos de uma vez, aproveitando a queda." Decisão detalhada em breve.
 - **27/10 12:55 — ENTRADA SanDisk (SNDK): 0%→20% a US$1.300,96** (caixa 70%→50%). Correção desde a máxima de setembro (perto de US$1.900); defendeu US$1.230 na semana passada; média longa em US$1.486.
 - **27/10 10:18 — ENTRADA Bank of America (BAC): 0%→10% a US$50,55** (caixa 80%→70%). Correção desde a máxima de agosto (perto de US$65); preço abaixo da média longa (US$56,58); defendeu a faixa de US$49 nas últimas semanas.
 - **27/10 09:59 — ENTRADA SpaceX (SPCX): 0%→20% a US$148,64** (caixa 100%→80%). Preço voltou para a faixa de US$147, logo abaixo da média longa (US$152). Segundo trade na SpaceX; o primeiro fechou com +20,9% em 14/09.
