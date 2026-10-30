@@ -11,6 +11,12 @@
 - A carteira **não faz** movimento de câmbio: não realiza dólar se o dólar sobe, nem troca para real se o dólar cai.
 - Se perguntarem se vale realizar dólares para real (ex.: após alta do USDT/BRL), a resposta é: a carteira segue em dólar, e a decisão de câmbio é de cada cliente.
 
+## Corretoras — posição do Gui (feed, 30/10/2026)
+- **Bitget (internacional)** e **Bybit (nacionalizada)**. Gui: "Recomendo ter as duas" (30/10, 16h55). Quem pergunta "qual das duas recomenda" recebe: "As duas! Bybit é nacionalizada e Bitget internacional."
+- **Bitget:** "Voltou ao normal?" → "Zero, seguimos com nossa parceria!" (30/10).
+- **Binance:** "Não temos parceria ou contato com a Binance. Nesse cenário não conseguimos dar suporte pois não sabemos nada da empresa." Gui cita "o 3 do hack do ano" (30/10). Não orientar retirada nem permanência na Binance.
+- **Bybit (cliente que já tem conta):** "O suporte vai lhe chamar no e-mail, vamos solicitar para a Bybit registrar você como cliente nosso. Assim você participa das nossas campanhas." Ver `blockcapital-comercial.md` (Nova parceria: Bybit).
+
 ## Por que bancos e Alphabet entraram na Carteira de IA (Gui, WhatsApp, 29/10/2026, 15h00)
 - Texto do Gui: "IA não está entregando os resultados que esperamos, principalmente após os líderes do setor falarem que precisarão frear a evolução. Em um cenário como isso ou ficar aguardando o dia que IA vai performar ou aproveitamos outras coisas! Por isso abrimos espaço para BAC e GOOG."
 - Ou seja: a entrada em **Bank of America (BAC)** e **Alphabet (GOOG)** na Carteira de IA é uma escolha de **aproveitar outras oportunidades** enquanto o setor de IA não performa, e não uma mudança de tese de IA.
