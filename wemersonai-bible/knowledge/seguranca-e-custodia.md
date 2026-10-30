@@ -4,6 +4,27 @@
 > seguro; é decisão pessoal do investidor**; a equipe não opina sobre rumores. Corretora
 > recomendada: Bitget. Carteira usada pela equipe: Ledger Nano S Plus.
 
+### 🚨 EVENTO EXTERNO: ROUBO NA BINANCE (29/10/2026) — AVISO PARA RESPOSTAS (Wemerson, 30/10)
+**Fatos informados no aviso (declarações de terceiros e da Binance; a equipe NÃO verificou os números):**
+- Em 29/10/2026, por volta de 20h05 UTC, carteiras quentes da Binance foram drenadas em dez blockchains ao mesmo tempo. Valor citado: cerca de US$ 6,36 bilhões.
+- A Binance informou que um hacker acessou o notebook comprometido de um engenheiro. A causa raiz ainda não foi publicada pela Binance.
+- Empresas de inteligência blockchain atribuem o ataque, com alta confiança, ao TraderTraitor (Coreia do Norte, ligado ao Lazarus). **A Binance não confirmou.**
+- Cerca de US$ 2,7 bilhões foram congelados por emissores (Tether, Circle, Ripple e outros). Citados: mais de 420 mil ETH e 18.270 BTC ainda com o atacante.
+- A Binance suspendeu depósitos e saques, declarou que vai cobrir todas as perdas e que os fundos dos usuários estão seguros. BTC caiu cerca de 5%, abaixo de US$ 77 mil.
+
+**Como responder (regra):**
+1. Dizer que a Block Capital não foi afetada: não tem custódia de moeda de ninguém. O cliente compra na corretora dele, em nome dele.
+2. Sobre o dinheiro na Binance: repassar o que a Binance declarou, sempre atribuindo a ela. Nunca "você não vai perder nada".
+3. Depósitos e saques suspensos: o cliente acompanha os canais oficiais da própria Binance.
+4. Perda ou saque bloqueado: orientar a abrir chamado no suporte da Binance. Não prometer intermediar.
+5. Onde deixar as moedas: informar a diferença entre corretora e carteira própria (risco de corretora x risco de perder a frase de recuperação). A escolha é do cliente. Nunca empurrar um caminho.
+
+**Proibido:** mandar sair da Binance ou mudar de corretora; recomendar corretora substituta; garantir que não perde nada; dizer que o preço vai cair ou se recuperar; usar o evento para vender (nenhuma oferta, desconto ou gancho do Vitalício); repetir a atribuição à Coreia do Norte como fato.
+
+**Tom:** informativo e calmo, sem alarme, sem ironia com a Binance.
+
+⚠️ **Conflito a confirmar:** o Gui respondeu no feed (30/10) "Recomendamos a Bybit (nacionalizada) e Bitget (internacional)". O aviso proíbe recomendar corretora substituta. Em respostas sobre a Binance, use o aviso; em respostas sobre corretora em geral, use a posição do Gui. Confirmar com o Gui.
+
 ### 🚨 INCIDENTE DE SEGURANÇA NA BITGET (24/09/2026) — COMUNICADO OFICIAL DO GUI / BlockCapital Research
 Em **24/09/2026** a **Bitget confirmou um incidente de segurança**: transferências não autorizadas em parte das
 carteiras **quentes e mornas** da plataforma. Detectado às **15h31 (Brasília)**. Estimativa inicial da própria Bitget:
