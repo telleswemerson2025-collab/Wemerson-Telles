@@ -91,6 +91,13 @@ que substituiu o "Trader de Sucesso") é anual como os demais, **mas quem é Vit
 a acessá-lo por 2 anos**. Ou seja: 12 meses é o padrão; os "2 anos" são o benefício do Vitalício
 especificamente sobre o treinamento em análise. A liberação acontece **em até 7 dias** após a compra.
 
+### Nova parceria: Bybit — cliente que já tem conta (Gui, WhatsApp, 30/10/2026)
+- A parceria aparece publicamente no feed como "Nova parceria: Bybit" (30/10).
+- **Procedimento do Gui:** para quem **já tem conta na Bybit**, entrar em contato com o cliente por **e-mail** e solicitar o **UID** dele na Bybit. Depois, enviar o UID para o Wemerson, para que a Bybit registre o cliente como cliente da parceria.
+- Pedir **somente o UID**. Nunca pedir senha, frase de recuperação, código de verificação nem chave de API.
+- Não citar benefício, desconto ou prazo da Bybit (não confirmados).
+- Cliente que **não tem conta** na Bybit: não há procedimento na base; não orientar a criar conta até o Gui confirmar.
+
 ### Anúncio pendente: NOVAS PARCERIAS (Gui, 19/10/2026)
 - **O que o Gui disse:** a Bitget continua sendo a parceira atual e é uma corretora internacional. Vão ser anunciadas **novas parcerias** (no plural), em breve, sem nome ainda, para que o cliente escolha entre operar em território internacional ou dentro do território brasileiro.
 - **Status:** ANÚNCIO PENDENTE. Nomes, datas e condições NÃO divulgados. Não citar nome, data ou benefício até o anúncio oficial.
