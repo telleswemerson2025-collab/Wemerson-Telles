@@ -1,3 +1,9 @@
+## Figurinhas (insígnias e marcos) no app novo — confirmado Wemerson, 31/10/2026
+- **Raríssima (Vitalício):** figurinha de quem tem o Plano Vitalício.
+- **Insígnia Rumo ao Milhão:** figurinha de quem tem só o plano anual.
+- **Marco da carteira US$60 mil (ago/2026) e US$70 mil (out/2026):** patamares de patrimônio que a carteira conquistou. As figurinhas mostram esses marcos, e não são promessa de resultado.
+- Ao explicar a um cliente: a figurinha indica o tipo de plano e os patamares já alcançados pela carteira. Não usar a figurinha como argumento de resultado futuro.
+
 # Produtos, plataformas e status (respostas oficiais)
 
 > Status de produtos e ferramentas — o que está ativo, descontinuado ou em manutenção, e como
