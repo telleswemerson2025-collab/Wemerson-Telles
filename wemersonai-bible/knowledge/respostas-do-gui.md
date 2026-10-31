@@ -11,6 +11,12 @@
 - A carteira **não faz** movimento de câmbio: não realiza dólar se o dólar sobe, nem troca para real se o dólar cai.
 - Se perguntarem se vale realizar dólares para real (ex.: após alta do USDT/BRL), a resposta é: a carteira segue em dólar, e a decisão de câmbio é de cada cliente.
 
+## SanDisk com preço abaixo da entrada (Wemerson, repassando o Gui, 31/10/2026)
+- Entrada de referência: SanDisk (SNDK) em 27/10, às 12h55, a US$1.300,96, peso 20%.
+- Orientação: **o cliente pode entrar em SanDisk**, porque o preço está abaixo da entrada publicada, e vai pegar um preço menor.
+- Forma de entrar: parciais, dentro da zona indicada, sem perseguir o preço. A referência continua sendo a publicada em 27/10.
+- Não citar percentual de queda (o gráfico é uma foto do momento). Não prometer resultado.
+
 ## Corretoras — posição do Gui (feed, 30/10/2026)
 - **Bitget (internacional)** e **Bybit (nacionalizada)**. Gui: "Recomendo ter as duas" (30/10, 16h55). Quem pergunta "qual das duas recomenda" recebe: "As duas! Bybit é nacionalizada e Bitget internacional."
 - **Bitget:** "Voltou ao normal?" → "Zero, seguimos com nossa parceria!" (30/10).
