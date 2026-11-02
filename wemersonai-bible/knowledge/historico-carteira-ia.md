@@ -6,6 +6,8 @@
 > MOD 5% · VST 5% · CGNX 4% · Caixa 4%.
 
 ## Linha do tempo (mais recente → mais antiga)
+- **02/11 11:04 — REFORÇO Alphabet (GOOG): 41%→52% a US$280,88, pré-mercado** (caixa 11%→0%). Preço médio US$282,32. "Estamos entrando forte na Alphabet porque a queda da semana passada foi exagerada." Carteira inteiramente posicionada. Decisão detalhada em breve.
+- **30/10 11:53 — REFORÇO Alphabet (GOOG): 31%→41% a US$279,91** (caixa 21%→11%). Preço médio US$282,69. "O preço segue na região em que entramos ontem, bem abaixo da média longa, em US$ 338,65." Decisão detalhada em breve.
 - **29/10 11:25 — ENTRADA Alphabet (GOOG): 0%→30% a US$283,59** (caixa 50%→20%). "A ação cai 11,9% hoje e volta ao patamar de agosto." Maior posição da carteira; "entramos de uma vez, aproveitando a queda." Decisão detalhada em breve.
 - **27/10 12:55 — ENTRADA SanDisk (SNDK): 0%→20% a US$1.300,96** (caixa 70%→50%). Correção desde a máxima de setembro (perto de US$1.900); defendeu US$1.230 na semana passada; média longa em US$1.486.
 - **27/10 10:18 — ENTRADA Bank of America (BAC): 0%→10% a US$50,55** (caixa 80%→70%). Correção desde a máxima de agosto (perto de US$65); preço abaixo da média longa (US$56,58); defendeu a faixa de US$49 nas últimas semanas.
