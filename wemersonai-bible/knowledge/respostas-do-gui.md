@@ -6,6 +6,12 @@
 - Exemplo confirmado: AERO (decisão de 20/10, US$0,8273): o preço subiu ~2% depois da publicação; o cliente pode entrar com metade e deixar a outra metade em limite.
 - Frase para o cliente: "Se o preço mexeu pouco, pode entrar. A longo prazo, às vezes a gente pega um pouco mais alto e outras vezes um pouco mais barato, e isso tende a se equilibrar." Não dizer "vai fechar" nem "sempre entra" (promessa de resultado).
 
+## Cada carteira tem a sua estratégia separada (regra da equipe, 02/11/2026)
+- CRM (Rumo ao Milhão), Carteira de Infraestrutura de IA e Vitalício têm estratégias, teses e gerenciamento separados.
+- A Carteira de IA mantém a sua própria tese. Não responder como se fosse a mesma estratégia da CRM, nem misturar
+  regras de uma com as da outra.
+- Quando o cliente pedir formato ou orientação para uma carteira, responder dentro da estratégia dela.
+
 ## Câmbio: a carteira trabalha em dólar (Gui, 26/10/2026)
 - A carteira trabalha e é medida em **dólar**. A orientação é **manter o valor em dólar**.
 - A carteira **não faz** movimento de câmbio: não realiza dólar se o dólar sobe, nem troca para real se o dólar cai.
