@@ -337,6 +337,10 @@ caso a caso.)
   custa R$1.897,00 à vista para os outros clientes (checkout de 10/09/2026).
 - Vale também para o anual cobrado mensalmente (caso Adrinaldo, 02/11/2026): a pergunta "o upgrade suspende a
   cobrança mensal?" tem resposta não.
+- Cancelar a renovação não mexe na assinatura vigente (regra do Gui, 02/11/2026). A renovação é o próximo
+  ano. A assinatura atual continua até o fim do período pago, e as parcelas que faltam seguem sendo pagas.
+- Para não renovar depois do Vitalício, o cliente cancela a renovação automática na própria conta da Hotmart,
+  antes da data de renovação.
 
 ### Upgrade CRM → Vitalício: quando ABATE/reembolsa e quando é SÓ desconto (cada caso é um caso)
 Regra prática (confirmada 08/08/2026):
