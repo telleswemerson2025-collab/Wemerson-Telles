@@ -171,6 +171,18 @@ Hotmart com antecedência** (ver "Renovação automática e como cancelar"). O �
 > deve cancelar ANTES (termos da Hotmart). (3) **Cobrança indevida após o Vitalício = reembolso
 > imediato**. Qualquer cortesia/benefício além disso (ex.: converter em desconto) é caso a caso.
 
+### Compra parcelada no cartão do cliente — quem é o credor (regra do Gui, 02/11/2026)
+- Quando a compra é parcelada no cartão, o parcelamento é um contrato entre o cliente e a instituição
+  do cartão (a bandeira/banco emissor "empresta" o valor). A BlockCapital não tem parcela a cobrar nem
+  parcela a cancelar nesse contrato.
+- Parcela restante **não é reembolsada** pela BlockCapital. Reembolso só existe nos casos acima
+  (arrependimento de 7 dias da compra inicial, cobrança indevida após o Vitalício).
+- Se o cliente já cancelou a renovação na Hotmart e não há cobrança nova, não há o que resolver aqui:
+  responder que a BlockCapital não cobra parcelas adicionais e que as parcelas do cartão são tratadas
+  com a instituição do próprio cartão.
+- Não afirmar prazo, valor nem procedimento específico do banco. O que a base não cobre (como o cliente
+  pede a suspensão das parcelas no banco) fica caso a caso, sem promessa.
+
 ### Chargeback
 Se o cliente abre chargeback no banco, é o **próprio banco** que cancela a compra e faz o
 reembolso — a BlockCapital não tem controle sobre isso. O cliente deve falar com o banco pra
