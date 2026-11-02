@@ -328,6 +328,16 @@ depois disso, a equipe **faz o estorno da primeira compra**. (É um caso de troc
 pagamento — não confundir com pedido de reembolso puro; reembolso de renovação segue tratado
 caso a caso.)
 
+### Upgrade do anual para o Vitalício: o anual continua sendo pago (regra do Gui, 02/11/2026)
+- Anual e Vitalício são dois produtos diferentes. Quem fez o upgrade continua pagando o anual até ele terminar,
+  e paga o Vitalício à parte.
+- O upgrade não suspende nem abate as parcelas do anual, não importa se o cliente já pagou 1, 2, 3 ou 4 meses.
+- Exemplo: anual em 12 parcelas, com 2 pagas. No upgrade, o cliente paga as 10 parcelas restantes do anual e
+  também o Vitalício. Sem isso, o Vitalício sairia de graça para quem já pagou parte do anual, enquanto o anual
+  custa R$1.897,00 à vista para os outros clientes (checkout de 10/09/2026).
+- Vale também para o anual cobrado mensalmente (caso Adrinaldo, 02/11/2026): a pergunta "o upgrade suspende a
+  cobrança mensal?" tem resposta não.
+
 ### Upgrade CRM → Vitalício: quando ABATE/reembolsa e quando é SÓ desconto (cada caso é um caso)
 Regra prática (confirmada 08/08/2026):
 - **Renovação recém-feita** (a assinatura anual acabou de renovar agora): dá pra aproveitar esse
