@@ -115,6 +115,18 @@ Regras que acompanham o passo a passo:
 - A ordem limite **não tem prazo**: fica aberta até executar ou até o cliente cancelar.
 - Orientação da equipe: ordem limite na zona indicada, **nunca a mercado**; montar em parciais, sem perseguir o preço.
 
+### Compra no pré-mercado americano (CONFIRMADO Wemerson, 02/11/2026)
+1. **Corretora:** nem toda corretora dá acesso ao horário estendido do mercado americano. A sessão de pré-mercado
+   costuma estar disponível em corretora internacional, onde o cliente escolhe a sessão ao enviar a ordem. Se a
+   corretora do cliente não tiver essa opção, não há como operar no pré-mercado por ela.
+2. **Tipo de ordem:** no pré-mercado, a ordem é limitada, com preço definido pelo cliente. Ordem a mercado normalmente
+   é recusada nesse horário.
+3. **Cuidado:** volume baixo e spread maior. A ordem limitada é a proteção; colocar o preço e deixar trabalhar, sem
+   correr atrás.
+- Se não der para entrar no pré-mercado, não há problema: o pregão regular abre às **11h30 de Brasília** (9h30 de Nova
+  York) e o cliente monta a posição normalmente, com o preço de referência do post.
+- Observação: o horário de Brasília depende do horário de verão dos EUA; após 1/11/2026 o pregão abre às 11h30.
+
 ### Como operar a Carteira IA (Brasil)
 A casa **não indica corretora específica** — recomenda o **ativo**, não o caminho (Mr. G, 31/08).
 Compra pelo **código de cada ação**, respeitando o **peso** da posição. Caminhos: BDR na B3
