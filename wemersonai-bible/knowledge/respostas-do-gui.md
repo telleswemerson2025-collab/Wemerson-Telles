@@ -6,6 +6,14 @@
 - Exemplo confirmado: AERO (decisão de 20/10, US$0,8273): o preço subiu ~2% depois da publicação; o cliente pode entrar com metade e deixar a outra metade em limite.
 - Frase para o cliente: "Se o preço mexeu pouco, pode entrar. A longo prazo, às vezes a gente pega um pouco mais alto e outras vezes um pouco mais barato, e isso tende a se equilibrar." Não dizer "vai fechar" nem "sempre entra" (promessa de resultado).
 
+## Ouro na CRM: o ativo é XAUT na Bybit (Gui, WhatsApp, 03/11/2026, 12h18)
+- Gui respondeu "XAUT" à pergunta de qual ouro usar na Bybit. Não usar PAXG nem XAU para a Bybit.
+- Verificação feita pela equipe em 03/11/2026, 12h09: na Bybit, o único ouro no mercado à vista (Spot) é o XAUT/USDT.
+  PAXG e XAU aparecem só em futuros (perpétuo e com vencimento). Os futuros não são a entrada da CRM, que é spot.
+- Na Bitget, a equipe indicou que o PAXG tem spot (relato, não verificado pela base).
+- XAUT e PAXG são tokens de ouro de emissores diferentes. Não tratar como o mesmo ativo.
+- Pendência: o post de 03/11 (entrada em ouro) diz "PAXG ou XAU". Corrigir o post com o Gui.
+
 ## Cada carteira tem a sua estratégia separada (regra da equipe, 02/11/2026)
 - CRM (Rumo ao Milhão), Carteira de Infraestrutura de IA e Vitalício têm estratégias, teses e gerenciamento separados.
 - A Carteira de IA mantém a sua própria tese. Não responder como se fosse a mesma estratégia da CRM, nem misturar
