@@ -4,6 +4,10 @@
 > real de cada post. Este é o "compilado de operações" que resolve boa parte das dúvidas
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
+## NOVEMBRO/2026
+- **03/11 11:05 — ENTRADA OURO (PAXG): 0%→10% a US$3.960,98** (caixa 60%→50%). Pode ser PAXG ou XAU, na Bitget ou na Bybit. Preço dentro de canal desde a máxima de outubro, reagindo na borda de baixo (~US$3.880). **Stop em US$3.866, ordem limite.** Se acionado: perda de 2,4% na posição e 0,24% do patrimônio.
+- **03/11 10:56 — ENTRADA BTC (curto prazo, trading): 0%→40% a US$77.306,03** (caixa 100%→60%). "O cenário de risco não mudou, e por isso entramos com uma fração menor e com stop definido desde o começo." **Stop em US$76.229, ordem limite.** Se acionado: perda de 1,4% na posição e 0,56% do patrimônio.
+
 ## OUTUBRO/2026
 - **26/10 10:22 — TESE "O risco saiu de zero": carteira segue em preservação patrimonial, 100% em caixa.** "Quando o risco volta a cair, buscamos trading no Bitcoin, com zero exposição em altcoins. E só voltamos às altcoins quando o risco volta a zero." "As próximas decisões devem ser de trading no Bitcoin." "A altcoin é a ponta que mais apanha... é a primeira a sair e a última a entrar." Não é previsão de queda: "mede a chance de uma queda ganhar velocidade".
 - **23/10 20:29 — STOP BTC ACIONADO a US$80.736,97 (peso 49%→0%; caixa 51%→100%).** Carteira 100% em caixa. "Devemos ficar na defensiva até sinais de fundo e reversões aparecerem."
