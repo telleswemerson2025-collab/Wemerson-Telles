@@ -45,7 +45,7 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 03/11/2026 11:05: BTC 40% (entrada 10:56 a US$77.306,03, stop US$76.229, ordem limite) + Ouro PAXG 10% (entrada 11:05 a US$3.960,98, stop US$3.866, ordem limite) · Caixa 50%.** Trading de curto prazo no Bitcoin, com ouro como segunda posição. Antes: 26/10/2026 10:22: 100% EM CAIXA (preservação patrimonial, risco fora de zero). Tese do dia 26/10: próximas decisões serão de trading no BTC, com zero em altcoins; altcoins só voltam quando o risco voltar a zero. Antes: 23/10 20:29: 100% EM CAIXA. Stop do BTC acionado em US$80.736,97 (peso 49% → 0%; caixa 51% → 100%). Sem posições abertas. Pelo post: "Devemos ficar na defensiva até sinais de fundo e reversões aparecerem."
+🟢 **ESTADO ATUAL — 04/11/2026 09:13: Ouro (PAXG na Bitget / XAUT na Bybit) 10% · Caixa 90%.** BTC encerrado: stop acionado na madrugada a US$76.229 (perda de 1,4% na operação). Reentrada no BTC em análise, sem decisão publicada. Antes: 03/11/2026 11:05: BTC 40% + Ouro 10% · Caixa 50%.
 
 - **Bitcoin (BTC)** — **0%** · ENCERRADA em 23/10 20:29 no stop de **US$80.736,97** (ordem limite). Carteira: 1,12% de prejuízo estimado no stop (post 14:38).
 
