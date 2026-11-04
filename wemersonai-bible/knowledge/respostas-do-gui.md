@@ -10,7 +10,8 @@
 - Gui respondeu "XAUT" à pergunta de qual ouro usar na Bybit. Não usar PAXG nem XAU para a Bybit.
 - Verificação feita pela equipe em 03/11/2026, 12h09: na Bybit, o único ouro no mercado à vista (Spot) é o XAUT/USDT.
   PAXG e XAU aparecem só em futuros (perpétuo e com vencimento). Os futuros não são a entrada da CRM, que é spot.
-- Na Bitget, a equipe indicou que o PAXG tem spot (relato, não verificado pela base).
+- Confirmado pelo Gui (WhatsApp, 04/11/2026): na Bitget o ouro é o PAXG; na Bybit o ouro é o XAUT.
+- Pendência: o site ainda mostra "PAXG" para a posição de ouro da CRM, e o post de 03/11 diz "PAXG ou XAU". Corrigir com o Gui.
 - XAUT e PAXG são tokens de ouro de emissores diferentes. Não tratar como o mesmo ativo.
 - Pendência: o post de 03/11 (entrada em ouro) diz "PAXG ou XAU". Corrigir o post com o Gui.
 
