@@ -5,6 +5,7 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## NOVEMBRO/2026
+- **02/11 15:30 — VÍDEO DE GERENCIAMENTO (Rumo ao Milhão).** "Foram dez dias sem nenhuma operação. A carteira segue 100% em caixa desde o stop do Bitcoin, no dia 23, e o patrimônio está preservado em US$ 66.085." Vídeo no feed e no YouTube.
 - **03/11 11:05 — ENTRADA OURO (PAXG): 0%→10% a US$3.960,98** (caixa 60%→50%). Pode ser PAXG ou XAU, na Bitget ou na Bybit. Preço dentro de canal desde a máxima de outubro, reagindo na borda de baixo (~US$3.880). **Stop em US$3.866, ordem limite.** Se acionado: perda de 2,4% na posição e 0,24% do patrimônio.
 - **03/11 10:56 — ENTRADA BTC (curto prazo, trading): 0%→40% a US$77.306,03** (caixa 100%→60%). "O cenário de risco não mudou, e por isso entramos com uma fração menor e com stop definido desde o começo." **Stop em US$76.229, ordem limite.** Se acionado: perda de 1,4% na posição e 0,56% do patrimônio.
 
