@@ -6,14 +6,21 @@
 - Exemplo confirmado: AERO (decisão de 20/10, US$0,8273): o preço subiu ~2% depois da publicação; o cliente pode entrar com metade e deixar a outra metade em limite.
 - Frase para o cliente: "Se o preço mexeu pouco, pode entrar. A longo prazo, às vezes a gente pega um pouco mais alto e outras vezes um pouco mais barato, e isso tende a se equilibrar." Não dizer "vai fechar" nem "sempre entra" (promessa de resultado).
 
-## Ouro na CRM: o ativo é XAUT na Bybit (Gui, WhatsApp, 03/11/2026, 12h18)
-- Gui respondeu "XAUT" à pergunta de qual ouro usar na Bybit. Não usar PAXG nem XAU para a Bybit.
+## Uma carteira, duas corretoras: o nome do ativo muda por corretora (regra do Gui, 04/11/2026)
+- A carteira é uma só e roda nas duas corretoras. Bitget é a linha internacional. Bybit é a nacional.
+  O cliente escolhe por onde quer operar.
+- Quando o ativo tem nome diferente nas duas corretoras, é o mesmo ativo com dois tickers. Não é posição
+  diferente, não é decisão da casa e não é mudança de carteira.
+- Ouro, por exemplo: PAXG é o nome na Bitget. XAUT é o nome na Bybit. Vale para qualquer ativo com nome
+  diferente nas duas corretoras, não só o ouro.
+- Sequência ao responder sobre um ativo (única ordem permitida):
+  1. Descobrir em qual corretora o cliente está.
+  2. Dar o ticker daquela corretora.
+  3. Se ele ainda não escolheu corretora, explicar que Bitget é a linha internacional e Bybit é a nacional, e que a escolha é dele.
 - Verificação feita pela equipe em 03/11/2026, 12h09: na Bybit, o único ouro no mercado à vista (Spot) é o XAUT/USDT.
-  PAXG e XAU aparecem só em futuros (perpétuo e com vencimento). Os futuros não são a entrada da CRM, que é spot.
-- Confirmado pelo Gui (WhatsApp, 04/11/2026): na Bitget o ouro é o PAXG; na Bybit o ouro é o XAUT.
-- Pendência: o site ainda mostra "PAXG" para a posição de ouro da CRM, e o post de 03/11 diz "PAXG ou XAU". Corrigir com o Gui.
-- XAUT e PAXG são tokens de ouro de emissores diferentes. Não tratar como o mesmo ativo.
-- Pendência: o post de 03/11 (entrada em ouro) diz "PAXG ou XAU". Corrigir o post com o Gui.
+  PAXG e XAU aparecem só em futuros. Os futuros não são a entrada da CRM, que é spot.
+- Pendências enviadas ao Gui (ainda sem resposta): (1) SanDisk caiu de 20% para 18% sem post; (2) se o rGOOGL é o
+  mesmo GOOG da carteira; (3) o que é o item "Tutoriais" no menu do site.
 
 ## Cada carteira tem a sua estratégia separada (regra da equipe, 02/11/2026)
 - CRM (Rumo ao Milhão), Carteira de Infraestrutura de IA e Vitalício têm estratégias, teses e gerenciamento separados.
