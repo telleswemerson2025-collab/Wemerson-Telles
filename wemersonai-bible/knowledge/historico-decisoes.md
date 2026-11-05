@@ -5,6 +5,8 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## NOVEMBRO/2026
+- **04/11 21:36 — REFORÇO OURO (PAXG): 10%→20% a US$4.090,20, sem stop** (caixa 70%→60%). Preço médio US$4.024,46. "Cancelem o stop em US$3.866. Por hora esta posição fica sem stop programado." "Vale pelo PAXG ou pelo XAUT."
+- **04/11 21:22 — REENTRADA BTC: 0%→20% a US$80.645,65, sem stop** (caixa 90%→70%). "Entramos com metade do tamanho da posição anterior, que era de 40%." Média longa em US$80.400. "Por hora, sem stop programado."
 - **04/11 09:13 — ENCERRAMENTO BTC: stop acionado na madrugada a US$76.229** (peso 40%→0%; caixa 50%→90%). Perda de 1,4% na operação, 0,56% do patrimônio. O preço voltou a US$78.197. "Vamos analisar nas próximas horas se faz sentido reentrar. Por hora, seguimos de fora." Ouro segue com 10%, +1,8% desde a compra de ontem.
 - **04/11 madrugada — correção:** a informação passada aos clientes na manhã de 04/11, de que o stop não tinha sido acionado, estava errada. Foi erro da equipe ao informar, e não do Gui.
 - **02/11 15:30 — VÍDEO DE GERENCIAMENTO (Rumo ao Milhão).** "Foram dez dias sem nenhuma operação. A carteira segue 100% em caixa desde o stop do Bitcoin, no dia 23, e o patrimônio está preservado em US$ 66.085." Vídeo no feed e no YouTube.
