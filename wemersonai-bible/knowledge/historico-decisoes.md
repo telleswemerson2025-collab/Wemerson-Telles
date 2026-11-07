@@ -5,6 +5,11 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## NOVEMBRO/2026
+- **06/11 12:53 — REFORÇO BTC: 59%→69% a US$75.706,55, sem stop programado** (caixa 41%→31%). Preço médio US$77.974,26. "É o caixa que levantamos no ouro hoje de manhã sendo usado na região que esperávamos." Seguimos sem stop programado.
+- **06/11 10:47 — ENCERRAMENTO OURO (PAXG): 20%→0% a US$4.046,41** (caixa 21%→41%). Fecha no zero a zero, com 0,5% de ganho. "É uma decisão de caixa, não de tese sobre o ouro." "O Bitcoin pode buscar os US$ 75 mil."
+- **05/11 17:55 — REFORÇO BTC: 49%→59% a US$76.237,32, sem stop programado** (caixa 30%→20%). Preço médio US$78.359,51. "Cada queda que o preço entrega, nós usamos para baixar o custo."
+- **05/11 12:57 — REFORÇO BTC: 39%→49% a US$75.701,46, sem stop programado** (caixa 40%→30%). Preço médio US$78.796,53. "O preço cai 5,9% no dia e segue descendo. Compramos em degraus, e cada degrau baixa o nosso custo."
+- **05/11 12:19 — REFORÇO** (o texto do post não veio completo; registrar os detalhes quando o post for enviado de novo).
 - **04/11 21:36 — REFORÇO OURO (PAXG): 10%→20% a US$4.090,20, sem stop** (caixa 70%→60%). Preço médio US$4.024,46. "Cancelem o stop em US$3.866. Por hora esta posição fica sem stop programado." "Vale pelo PAXG ou pelo XAUT."
 - **04/11 21:22 — REENTRADA BTC: 0%→20% a US$80.645,65, sem stop** (caixa 90%→70%). "Entramos com metade do tamanho da posição anterior, que era de 40%." Média longa em US$80.400. "Por hora, sem stop programado."
 - **04/11 09:13 — ENCERRAMENTO BTC: stop acionado na madrugada a US$76.229** (peso 40%→0%; caixa 50%→90%). Perda de 1,4% na operação, 0,56% do patrimônio. O preço voltou a US$78.197. "Vamos analisar nas próximas horas se faz sentido reentrar. Por hora, seguimos de fora." Ouro segue com 10%, +1,8% desde a compra de ontem.
