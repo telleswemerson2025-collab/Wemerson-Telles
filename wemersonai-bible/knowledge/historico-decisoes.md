@@ -5,6 +5,7 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## NOVEMBRO/2026
+- **09/11 11:07 — REFORÇO BTC: 79%→89% a US$74.590,01, sem stop programado** (caixa 21%→11%). Preço médio US$77.235,04. "Seguimos sem stop programado."
 - **08/11 21:24 — REFORÇO BTC: 69%→79% a US$74.823,23, sem stop programado** (caixa 31%→21%). Preço médio US$77.573,49. "Seguimos sem stop programado."
 - **06/11 12:53 — REFORÇO BTC: 59%→69% a US$75.706,55, sem stop programado** (caixa 41%→31%). Preço médio US$77.974,26. "É o caixa que levantamos no ouro hoje de manhã sendo usado na região que esperávamos." Seguimos sem stop programado.
 - **06/11 10:47 — ENCERRAMENTO OURO (PAXG): 20%→0% a US$4.046,41** (caixa 21%→41%). Fecha no zero a zero, com 0,5% de ganho. "É uma decisão de caixa, não de tese sobre o ouro." "O Bitcoin pode buscar os US$ 75 mil."
