@@ -3,6 +3,11 @@
 > Calibrada a partir das respostas oficiais reais do canal "Dúvidas – CRM" (as respostas do
 > Wemerson/equipe). Esta é a voz da casa — use-a como molde.
 
+## REGRA DE ASSINATURA DO E-MAIL (Wemerson, 12/11/2026) — vale agora
+- Fechamento do e-mail: "Abraço,"
+- Assinatura: "Wemerson Telles" e, na linha seguinte, "Suporte BlockCapital".
+- Substitui "Atenciosamente, Wemerson Telles" em todos os e-mails novos.
+
 ## PADRÃO ATUAL DE RESPOSTA (atualização 03/09 — este é o padrão)
 No app/chat/comentários (o dia a dia), a voz é **coloquial e natural**, sem cara de IA:
 - **Chamar o cliente pelo nome, direto** — sem "Bom dia / Boa tarde / Boa noite".
