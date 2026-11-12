@@ -5,6 +5,10 @@
 > recorrentes. A posição vigente é sempre a última decisão publicada na CRM.
 
 ## NOVEMBRO/2026
+- **12/11 11:42 — ENCERRAMENTO BTC: stop acionado em US$71.998,00, saindo do preço médio de US$76.942,48** (peso 100%→0%; caixa 0%→100%). Prejuízo de 6,42% na operação. Patrimônio da carteira em US$61.561. "Só voltamos a comprar com confirmação de reversão de tendência. Até lá, seguimos de fora."
+- **12/11 11:05 — PLANO: stop do BTC programado em US$71.998,00, com ordem limite.** Carteira 100% em Bitcoin, preço médio US$76.942,48. "Caso o stop seja acionado, só voltamos a comprar com confirmação de reversão de tendência."
+- **09/11 16:12 — VÍDEO DE GERENCIAMENTO:** carteira "de volta inteira para o mercado", 100% em Bitcoin, sem caixa, preço médio US$76.942. Patrimônio em US$63.788.
+- **Atenção:** o post de 09/11 às 11h07 deixou caixa em 11%, e o vídeo de 09/11 às 16h12 diz 100% em Bitcoin. Não há post registrado entre os dois horários que zere esse caixa.
 - **09/11 11:07 — REFORÇO BTC: 79%→89% a US$74.590,01, sem stop programado** (caixa 21%→11%). Preço médio US$77.235,04. "Seguimos sem stop programado."
 - **08/11 21:24 — REFORÇO BTC: 69%→79% a US$74.823,23, sem stop programado** (caixa 31%→21%). Preço médio US$77.573,49. "Seguimos sem stop programado."
 - **06/11 12:53 — REFORÇO BTC: 59%→69% a US$75.706,55, sem stop programado** (caixa 41%→31%). Preço médio US$77.974,26. "É o caixa que levantamos no ouro hoje de manhã sendo usado na região que esperávamos." Seguimos sem stop programado.

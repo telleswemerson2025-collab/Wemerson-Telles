@@ -45,7 +45,7 @@ Patrimonial; desde 15–16/09 voltou pro mercado.)
 > **Fonte agora é o APP NOVO** (BlockCapital, aba Carteira → "Performance desde a compra"). É de
 > onde a gente lê a composição e a performance ao vivo daqui pra frente.
 
-🟢 **ESTADO ATUAL — 09/11/2026 11:07: BTC 89% (preço médio US$77.235,04, sem stop programado) · Caixa 11%.** Ouro encerrado em 06/11 às 10h47 (saída a US$4.046,41, 0,5% de ganho). Antes: 08/11/2026 21:24: BTC 79% · Caixa 21%.
+🟢 **ESTADO ATUAL — 12/11/2026 11:42: Caixa 100%.** Stop do BTC acionado em US$71.998,00 (prejuízo de 6,42% na operação; preço médio US$76.942,48). Carteira fora do mercado. Só volta a comprar com confirmação de reversão de tendência. Antes: 09/11/2026 11:07: BTC 89% · Caixa 11% (e o vídeo de 09/11 16h12 diz 100% em BTC: caixa a confirmar).
 
 - **Bitcoin (BTC)** — **0%** · ENCERRADA em 23/10 20:29 no stop de **US$80.736,97** (ordem limite). Carteira: 1,12% de prejuízo estimado no stop (post 14:38).
 
