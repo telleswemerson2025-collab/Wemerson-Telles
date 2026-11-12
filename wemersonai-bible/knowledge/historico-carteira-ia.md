@@ -6,6 +6,9 @@
 > MOD 5% · VST 5% · CGNX 4% · Caixa 4%.
 
 ## Linha do tempo (mais recente → mais antiga)
+- **12/11 11:36 — ENTRADA NVIDIA (NVDA): 0%→10% a US$156,67** (caixa 14%→4%). A ação caiu 9,8% no dia, abriu na mínima de 52 semanas (US$149,22). Média longa US$210,88. O capital veio do caixa levantado na SanDisk. "O resultado do trimestre sai no dia 17. A entrada acontece antes do número, então ela nasce com volatilidade alta."
+- **12/11 11:32 — ENCERRAMENTO SanDisk (SNDK): 16%→0% a US$872,85** (caixa 0%→14%). Entrada média US$1.300,96. Operação fecha com perda de 6,86% da carteira. "Não é um movimento que muda a tese do setor, é a nossa posição específica que não andou."
+- **10/11 14:09 — ENTRADA Boston Scientific (BSX): 0%→21% a US$43,86** (caixa 21%→0%). Substitui o peso da SpaceX. "Não aumentamos a exposição total, trocamos de posição."
 - **02/11 11:04 — REFORÇO Alphabet (GOOG): 41%→52% a US$280,88, pré-mercado** (caixa 11%→0%). Preço médio US$282,32. "Estamos entrando forte na Alphabet porque a queda da semana passada foi exagerada." Carteira inteiramente posicionada. Decisão detalhada em breve.
 - **30/10 11:53 — REFORÇO Alphabet (GOOG): 31%→41% a US$279,91** (caixa 21%→11%). Preço médio US$282,69. "O preço segue na região em que entramos ontem, bem abaixo da média longa, em US$ 338,65." Decisão detalhada em breve.
 - **29/10 11:25 — ENTRADA Alphabet (GOOG): 0%→30% a US$283,59** (caixa 50%→20%). "A ação cai 11,9% hoje e volta ao patamar de agosto." Maior posição da carteira; "entramos de uma vez, aproveitando a queda." Decisão detalhada em breve.
