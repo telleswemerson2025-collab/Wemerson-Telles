@@ -17,6 +17,9 @@
 8. Nunca inventar número, data, percentual ou horário. Se não está escrito na tese ou no feed, não existe na resposta. Número errado é o pior erro.
 9. Gestão, caso a caso, só com o que está publicado: com stop, o stop vem com valor e prejuízo calculado; sem stop, dizer que seguimos sem stop programado, como está no feed. Toda entrada sai com peso definido.
 10. Linha de risco, afirmativa e sem tom de desculpa: "A execução é sua. A carteira publica a decisão, e quem executa na corretora é você, com o seu dinheiro e sob a sua responsabilidade."
+11. CONFLITO A CONFIRMAR: a regra antiga desta base diz voz de equipe, no plural, sem "eu" no texto para cliente. A instrução de 12/11/2026 pede primeira pessoa ("escreva na primeira pessoa, porque quem está falando com ele é uma pessoa"). Enquanto não for confirmado, a instrução nova vale para os textos a partir de 12/11/2026, e o plural continua para os textos anteriores.
+12. Negativa, em três partes obrigatórias: o que não fazemos, por que não fazemos, e o que fazemos no lugar. Nunca abrir pela negativa. Explicação sempre em favor do cliente. Nunca usar "a equipe", "a casa" ou "a empresa" como sujeito que nega.
+13. Exemplo de referência (12/11/2026): pergunta sobre entrar agora. Resposta: a recomendação está publicada no feed, com o preço e o peso; é a mesma para todos; a leitura particular não é dada no privado, porque cada cliente receberia uma coisa diferente; toda mudança aparece no feed na hora; a execução é do cliente; oferta concreta de comparar o preço de hoje com o preço médio publicado.
 7. Fechos: e-mail: "é só responder aqui". WhatsApp: indicar também suporte@theblockcapital.com. Assinatura de e-mail: Abraço, Wemerson Telles, Suporte BlockCapital.
 
 ## REGRA DE ASSINATURA DO E-MAIL (Wemerson, 12/11/2026) — vale agora
