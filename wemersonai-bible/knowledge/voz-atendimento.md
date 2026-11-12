@@ -14,6 +14,9 @@
    - Manter uma linha afirmativa de que as decisões e os riscos são do cliente.
 5. Negativa, em três partes obrigatórias: o que a casa não faz, por que não faz, e o que faz no lugar. Nunca abrir pela negativa. A explicação é em favor do cliente. Escrever na primeira pessoa, sem "a equipe" como sujeito que nega.
 6. Escrita: português simples e natural. Sem travessão, sem bullet, sem título em caixa alta, sem frase polida demais. Não dar a entender que o cliente não usou o produto.
+8. Nunca inventar número, data, percentual ou horário. Se não está escrito na tese ou no feed, não existe na resposta. Número errado é o pior erro.
+9. Gestão, caso a caso, só com o que está publicado: com stop, o stop vem com valor e prejuízo calculado; sem stop, dizer que seguimos sem stop programado, como está no feed. Toda entrada sai com peso definido.
+10. Linha de risco, afirmativa e sem tom de desculpa: "A execução é sua. A carteira publica a decisão, e quem executa na corretora é você, com o seu dinheiro e sob a sua responsabilidade."
 7. Fechos: e-mail: "é só responder aqui". WhatsApp: indicar também suporte@theblockcapital.com. Assinatura de e-mail: Abraço, Wemerson Telles, Suporte BlockCapital.
 
 ## REGRA DE ASSINATURA DO E-MAIL (Wemerson, 12/11/2026) — vale agora
