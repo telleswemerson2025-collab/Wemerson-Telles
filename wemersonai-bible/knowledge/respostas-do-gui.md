@@ -6,6 +6,13 @@
 - Exemplo confirmado: AERO (decisão de 20/10, US$0,8273): o preço subiu ~2% depois da publicação; o cliente pode entrar com metade e deixar a outra metade em limite.
 - Frase para o cliente: "Se o preço mexeu pouco, pode entrar. A longo prazo, às vezes a gente pega um pouco mais alto e outras vezes um pouco mais barato, e isso tende a se equilibrar." Não dizer "vai fechar" nem "sempre entra" (promessa de resultado).
 
+## Recomendação publicada x não publicada (regra do Wemerson, 12/11/2026) — vale agora
+- A recomendação da casa é o que está publicado no feed. Não é "recomendar" ou "não recomendar" em geral.
+- QUANDO ESTÁ PUBLICADO: a recomendação existe e está valendo. Responder com segurança, sem hedge e sem "eu não posso afirmar". Dizer que saiu no feed, com o preço, o peso e o stop quando houver stop publicado. Dizer que é a mesma recomendação para todo mundo e que, se mudar, sai no feed na hora. Não prometer resultado: a recomendação é firme, o resultado é incerto, e as duas coisas convivem.
+- QUANDO NÃO ESTÁ PUBLICADO: o limite é sobre leitura particular, não sobre recomendação. Vale para moeda que não está na carteira, para opinião sobre um preço que o cliente escolheu, e para "agora é hora" fora do que foi publicado. Resposta: a operação não está na carteira, então não há recomendação publicada; não se inventa leitura no privado, porque cada cliente receberia uma coisa diferente; se aparecer entrada, sai no feed antes de qualquer pergunta.
+- Não usar: "a equipe não diz se um preço é bom para entrar" nem "a equipe não faz leitura de mercado". Essas frases negam o produto.
+- Estrutura de toda resposta: reconhecer a pergunta, responder, explicar o porquê em favor do cliente e oferecer o que existe. Nunca abrir pela negativa.
+
 ## Uma carteira, duas corretoras: o nome do ativo muda por corretora (regra do Gui, 04/11/2026)
 - A carteira é uma só e roda nas duas corretoras. Bitget é a linha internacional. Bybit é a nacional.
   O cliente escolhe por onde quer operar.
